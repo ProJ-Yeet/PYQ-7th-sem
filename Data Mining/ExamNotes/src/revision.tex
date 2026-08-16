@@ -1,0 +1,212 @@
+%=======================================================================
+%  LAST-MINUTE REVISION
+%=======================================================================
+\cleardoublepage
+\section{Last-Minute Revision}
+
+{\color{sub}\footnotesize Built from the frequency analysis of all 17 papers (2070--2081 BS).
+Nothing here is new material: everything points back into the chapters.}
+
+\hr
+
+\T{R.1 Must Know \mk{(the 15 TOP-tier topics --- these carry the paper)}}
+
+\begin{tabularx}{\textwidth}{@{}L{0.9cm}L{5.4cm}L{1.5cm}X@{}}
+\toprule
+\hrow \thead{Ch} & \thead{Topic} & \thead{Papers} & \thead{The one thing to be able to do} \\
+6 & \textbf{Anomaly detection} $+$ distance-based methods & \textbf{17/17} & Define outlier vs noise; DB$(r,\pi)$; distance vs density-based \\
+2 & Data pre-processing, 5 major tasks & 12/17 & Name the 5 tasks, 1 technique each \\
+4 & \textbf{FP-Growth / FP-Tree} & 11/17 & Build the tree, then mine it bottom-up \\
+7 & Web mining & 11/17 & The 3-branch taxonomy $+$ PageRank formula \\
+2 & OLAP \& multidimensional analysis & 10/17 & The 5 OLAP operations $+$ OLAP vs OLTP \\
+5 & Cluster analysis basics \& types & 10/17 & Types of clusters; clustering vs classification \\
+1 & DW fundamentals & 9/17 & S-I-T-N $+$ three-tier architecture \\
+3 & \textbf{Decision tree classifier} & 9/17 & Information gain, full tree build \\
+4 & Frequent itemsets \& Apriori & 9/17 & The Apriori property $+$ join/prune/count \\
+3 & Bayesian classifier & 8/17 & Naive Bayes numerical $+$ Laplacian correction \\
+5 & K-means & 8/17 & Run it to convergence, state limitations \\
+5 & DBSCAN & 8/17 & Core/border/noise $+$ density-reachable vs connected \\
+1 & DM origin / KDD process & 7/17 & The 7 KDD steps $+$ the pipeline diagram \\
+3 & Overfitting, validation, model comparison & 7/17 & Confusion matrix, all 6 metrics \\
+4 & Association basics & 7/17 & Support, confidence, market basket \\
+\bottomrule
+\end{tabularx}
+
+\hr
+
+\T{R.2 Must Memorize \mk{(formulas you cannot derive in the hall)}}
+
+\sbs{%
+\lead{Ch 2 --- preprocessing \& similarity}
+\begin{itemize}
+  \item Min-max: $v' = \frac{v-min_A}{max_A-min_A}(nmax-nmin)+nmin$
+  \item Z-score: $v' = \frac{v-\bar{A}}{\sigma_A}$ \ \mk{mean, not min}
+  \item Decimal scaling: $v'=v/10^{\,j}$, $\max|v'|<1$
+  \item Equal-width bin: $W=(B-A)/N$ \ \mk{max minus min}
+  \item Minkowski: $\big(\sum|p_k-q_k|^r\big)^{1/r}$;
+        $r{=}1$ Manhattan, $r{=}2$ Euclidean, $r{\to}\infty$ supremum
+  \item $SMC=\frac{q+t}{q+r+s+t}$, \ $J=\frac{q}{q+r+s}$ \ \mk{Jaccard drops $t$}
+  \item $\cos(d_1,d_2)=\frac{d_1\cdot d_2}{\lVert d_1\rVert \lVert d_2\rVert}$
+  \item Nominal: $d=(p-m)/p$ \quad Ordinal: $z=\frac{r-1}{M-1}$
+  \item PCA variance explained $=\lambda_i/\sum\lambda_j$; \ $\sum\lambda =$ trace
+  \item $n$ dims $\rightarrow$ $2^n$ cuboids
+\end{itemize}
+\lead{Ch 3 --- classification}
+\begin{itemize}
+  \item $Info(D)=-\sum p_i\log_2 p_i$
+  \item $Info_A(D)=\sum\frac{|D_j|}{|D|}Info(D_j)$; \ $Gain=Info(D)-Info_A(D)$
+  \item $SplitInfo_A=-\sum\frac{|D_j|}{|D|}\log_2\frac{|D_j|}{|D|}$;
+        \ $GainRatio=\frac{Gain}{SplitInfo}$
+  \item $Gini(D)=1-\sum p_i^2$ \ \mk{binary splits only}
+  \item Bayes: $P(H|X)=\frac{P(X|H)P(H)}{P(X)}$; \ naive: $P(X|C_i)=\prod P(x_k|C_i)$
+  \item Laplace correction: $\frac{n_k+1}{|C_{i,D}|+k}$
+  \item Sigmoid $\sigma(z)=\frac{1}{1+e^{-z}}$, \ $\sigma'=\sigma(1-\sigma)$
+  \item Rule: $Laplace=\frac{n_{correct}+1}{n_{covers}+k}$
+\end{itemize}}{%
+\lead{Ch 3 --- the metric table \mk{(8 papers)}}
+\begin{itemize}
+  \item Accuracy $=\frac{TP+TN}{P+N}$ \quad Error $=1-$accuracy
+  \item Sensitivity $=$ recall $=$ TPR $=\frac{TP}{P}$
+  \item Specificity $=$ TNR $=\frac{TN}{N}$
+  \item FPR $=$ false alarm $=\frac{FP}{N}=1-$specificity
+  \item Precision $=\frac{TP}{TP+FP}$
+  \item $F_1=\frac{2\,prec\cdot rec}{prec+rec}$
+  \item \mk{$P=TP+FN$ (actual positives), $N=FP+TN$}
+\end{itemize}
+\lead{Ch 4 --- association}
+\begin{itemize}
+  \item $support(A\Rightarrow B)=P(A\cup B)$
+  \item $confidence(A\Rightarrow B)=\frac{sup(A\cup B)}{sup(A)}$
+  \item $lift=\frac{P(A\cup B)}{P(A)P(B)}$ \ \mk{$>$1 positive, $<$1 negative}
+  \item $\chi^2=\sum\frac{(obs-exp)^2}{exp}$
+  \item $all\_conf=\frac{sup(A\cup B)}{\max\{sup(A),sup(B)\}}$;
+        \ $Kulc=\frac{1}{2}(P(A|B)+P(B|A))$
+  \item $k$-itemset $\rightarrow$ $2^k-2$ candidate rules
+\end{itemize}
+\lead{Ch 5 --- clustering}
+\begin{itemize}
+  \item $SSE=\sum_i\sum_{x\in C_i} dist(x,c_i)^2$
+  \item Silhouette $s=\frac{b-a}{\max(a,b)}$
+  \item DBSCAN: core if $|N_\varepsilon(p)|\ge$ MinPts
+\end{itemize}
+\lead{Ch 6 \& 7}
+\begin{itemize}
+  \item DB$(r,\pi)$-outlier: $\frac{\lVert\{o'|dist(o,o')\le r\}\rVert}{\lVert D\rVert}\le\pi$
+  \item $P(I|A)=\frac{P(A|I)P(I)}{P(A|I)P(I)+P(A|\lnot I)P(\lnot I)}$
+  \item $PR(A)=(1-d)+d\sum\frac{PR(T_i)}{C(T_i)}$, \ $d=0.85$
+\end{itemize}}
+
+\hr
+
+\T{R.3 Must Practice \mk{(numericals, ranked by how often they appear)}}
+
+\begin{tabularx}{\textwidth}{@{}L{0.9cm}L{5.0cm}L{1.3cm}X@{}}
+\toprule
+\hrow \thead{Ch} & \thead{Numerical} & \thead{Papers} & \thead{Trap that costs the marks} \\
+3 & \textbf{Confusion matrix metrics} & \textbf{8} & \mk{Papers flip actual/predicted between years.} Label the axes first \\
+5 & \textbf{K-means} & 7 & Seed choice changes the answer; state your seeds \\
+4 & \textbf{Apriori} & 7 & Convert \% to a count first; show the prune step \\
+4 & \textbf{FP-tree $+$ FP-Growth} & 6 & Reorder each transaction into F-list order; state the tie-break \\
+5 & Hierarchical dendrogram & 4 & Single $=$ MIN, complete $=$ MAX; heights never decrease \\
+3 & Decision tree (ID3) & 3 & A pure partition contributes $Info=0$ \\
+2 & Similarity / distance & 3 & Normalise before cosine on mixed scales \\
+3 & Naive Bayes & 2 & Any zero $\rightarrow$ Laplacian correction \\
+2 & Normalisation & 1 & $j$ must make $\max|v'|$ \emph{strictly} $<1$ \\
+2 & PCA & 1 & Eigenvalues must sum to the trace \\
+3 & KNN & 1 & Show the whole distance table \\
+7 & PageRank & 1 & Split a page's rank across \emph{all} its outlinks \\
+6 & Base rate fallacy & 1 & The prior is the point; compute $P(I|A)$ \\
+3 & ANN gradients & 1 & Chain rule; $x_2$ and $u_1$ must both appear \\
+\bottomrule
+\end{tabularx}
+
+\hr
+
+\T{R.4 Most Repeated PYQs \mk{(if you only revise 12 questions, revise these)}}
+
+\begin{enumerate}
+  \item \textbf{What is anomaly detection? Explain distance-based methods.}
+        \hfill \m{2+3}\m{8}\m{10} \yr{6 papers}
+  \item \textbf{What is FP-Growth? Explain with example.} \hfill \m{2+5}\m{8}\m{10} \yr{7 papers}
+  \item \textbf{What is data mining? Explain the steps of the KDD process.}
+        \hfill \m{2+3}\m{2+6} \yr{7 papers}
+  \item \textbf{Explain typical OLAP operations $+$ differentiate OLAP and OLTP.}
+        \hfill \m{6+4}\m{10} \yr{4 papers}
+  \item \textbf{Confusion matrix $\rightarrow$ accuracy, sensitivity, specificity, precision.}
+        \hfill \m{4}\m{10} \yr{8 papers}
+  \item \textbf{Core, border and noise points $+$ the DBSCAN algorithm.}
+        \hfill \m{3+5}\m{8} \yr{4 papers}
+  \item \textbf{What is cluster analysis? Applications $+$ types of clusters.}
+        \hfill \m{8}\m{5} \yr{5 papers}
+  \item \textbf{Decision tree $+$ how information gain selects attributes.}
+        \hfill \m{8}\m{10} \yr{9 papers}
+  \item \textbf{Explain Naive Bayesian classification with a suitable example.}
+        \hfill \m{6}\m{8}\m{10} \yr{8 papers}
+  \item \textbf{What is web mining? Explain its taxonomy.} \hfill \m{3+5}\m{6}\m{8} \yr{4 papers}
+  \item \textbf{Apriori algorithm $+$ generate frequent itemsets from the given table.}
+        \hfill \m{8}\m{10} \yr{7 papers}
+  \item \textbf{Why data preprocessing? Explain its major tasks.}
+        \hfill \m{2+7}\m{4+4} \yr{3 papers}
+\end{enumerate}
+
+\begin{center}\fbox{\begin{minipage}{0.92\textwidth}\small
+\mk{Marks arithmetic.} Chapters 3, 4 and 5 (classification, association, clustering) together carry
+\textbf{31 of the 45 syllabus hours} and supply most of the numericals. Chapters 1, 6 and 7 are only
+8 hours combined but appear in \textbf{16--17 of 17 papers} as short, high-yield theory.
+\mk{Do not skip the small chapters} --- they are the cheapest marks in the paper.
+\end{minipage}}\end{center}
+
+\hr
+
+\T{R.5 One-Day Revision Checklist}
+
+\sbs{%
+\lead{Morning --- theory (about 4 hrs)}
+\begin{itemize}
+  \item[$\square$] \textbf{Ch 1} (20 min): KDD 7 steps $+$ diagram $\cdot$ S-I-T-N $\cdot$ three-tier
+        DW architecture $\cdot$ 4 coupling schemes
+  \item[$\square$] \textbf{Ch 2 theory} (40 min): 5 preprocessing tasks $\cdot$ missing-value methods
+        $\cdot$ 5 OLAP operations $\cdot$ OLAP vs OLTP table $\cdot$ attribute types
+  \item[$\square$] \textbf{Ch 3 theory} (60 min): 2-step classification $\cdot$ Hunt's algorithm
+        $\cdot$ the 3 selection measures $\cdot$ pruning $\cdot$ rule-based $+$ conflict resolution
+        $\cdot$ Naive Bayes vs BBN $\cdot$ ANN backprop steps $\cdot$ validation methods $+$ ROC
+  \item[$\square$] \textbf{Ch 4 theory} (40 min): support/confidence $\cdot$ Apriori property
+        $\cdot$ Apriori vs FP-Growth table $\cdot$ lift $\cdot$ categorical issues $\cdot$ sequential
+        $+$ subgraph
+  \item[$\square$] \textbf{Ch 5 theory} (40 min): types of clusters $\cdot$ K-means limitations
+        $\cdot$ single vs complete link $\cdot$ DBSCAN definitions $\cdot$ cluster validity
+  \item[$\square$] \textbf{Ch 6} (30 min): \mk{highest yield per minute} --- outlier vs noise
+        $\cdot$ 3 outlier types $\cdot$ 3 method families $\cdot$ DB$(r,\pi)$ $\cdot$ convex hull
+        $\cdot$ base rate fallacy
+  \item[$\square$] \textbf{Ch 7} (25 min): web mining taxonomy $\cdot$ PageRank $\cdot$ text mining
+        steps $\cdot$ T-C-S-I $\cdot$ multimedia $+$ visual mining
+\end{itemize}}{%
+\lead{Afternoon --- numericals (about 4 hrs)}
+\begin{itemize}
+  \item[$\square$] \textbf{Confusion matrix} (30 min): do all 8 from the Ch 3 companion.
+        \mk{Do the 75 Ash / 72 Ch pair back to back} to burn in the orientation trap
+  \item[$\square$] \textbf{Apriori} (45 min): 80 Bh, 80 Ba, 76 Ch
+  \item[$\square$] \textbf{FP-Growth} (45 min): 81 Ba end to end, then 78 Bh tree
+  \item[$\square$] \textbf{K-means} (45 min): 78 Bh both seedings, then 76 Ch with $K=3$
+  \item[$\square$] \textbf{Hierarchical} (30 min): 76 Ch single \emph{and} complete link
+  \item[$\square$] \textbf{Decision tree} (30 min): 79 Bh full build
+  \item[$\square$] \textbf{Naive Bayes} (20 min): 72 Ch, then 79 Bh with the Laplacian correction
+  \item[$\square$] \textbf{Quick set} (25 min): normalisation $\cdot$ PCA $\cdot$ similarity
+        $\cdot$ PageRank $\cdot$ base rate
+\end{itemize}
+\lead{Evening --- consolidation (about 1 hr)}
+\begin{itemize}
+  \item[$\square$] Re-read \textbf{R.2 Must Memorize} twice. Write the formulas from memory once.
+  \item[$\square$] Re-read every \mk{orange} line in the chapters --- they are the traps.
+  \item[$\square$] Skim the \textbf{PYQ mapping} at the end of each chapter to see the wording
+        variants examiners use.
+  \item[$\square$] Check the \textbf{abbreviation chart} so nothing in your own notes is unfamiliar.
+\end{itemize}
+\lead{In the hall}
+\begin{itemize}
+  \item[$\square$] Confusion matrix $\rightarrow$ \mk{label the axes before computing}
+  \item[$\square$] Association $\rightarrow$ \mk{convert \% to a count first}
+  \item[$\square$] K-means $\rightarrow$ \mk{state your initial centroids}
+  \item[$\square$] Every numerical $\rightarrow$ \mk{write the formula before substituting}
+  \item[$\square$] Diagrams earn marks: draw the KDD pipeline, the FP-tree, the dendrogram
+\end{itemize}}

@@ -1,0 +1,128 @@
+\documentclass[10pt]{article}
+\usepackage{hyperref}
+\usepackage{amsmath, amssymb, amsfonts}
+\usepackage[margin=1cm]{geometry}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{multicol}
+\usepackage{titlesec}
+\parindent 0pt
+\setlength{\columnsep}{18pt}
+\setlist{noitemsep, topsep=1pt, leftmargin=1.4em}
+\titlespacing*{\section}{0pt}{4pt}{2pt}
+\titleformat{\section}{\normalfont\large\bfseries}{\thesection.}{0.5em}{}
+
+\title{Artificial Intelligence (CT653 / CT710)\\[0.3em]\large Concise PYQ}
+\author{}
+\date{\today}
+
+\begin{document}
+\maketitle
+\vspace{-1em}
+\small
+\textbf{Notes:} TU IOE PYQ 2069--2081. Regular = \textbf{bold}, Back = normal; BEI/CT710 = \texttt{mono}.
+Marks in (); unique values only.
+Keys: (I)=Importance/Need \quad (+)=Advantage \quad (-)=Disadvantage \quad +Fig=Figure \quad +Eg=Example \quad Vs=Compare/Differentiate.
+\vspace{2pt}
+\hrule
+\vspace{4pt}
+
+\begin{multicols}{2}
+\footnotesize
+
+\section*{1. Introduction}
+\begin{itemize}
+  \item Define AI; AI Vs Natural (human) intelligence; can AI replace humans \hfill (7)(6)(1+3+4)
+  \item Turing test (I); measure machine intelligence; passed $\Rightarrow$ intelligent? \hfill (7)(2+5)
+  \item Intelligent / rational agent; types +Eg; PEAS (Medical Diagnosis) \hfill (1+6)(2+6)(2+2+3)
+  \item History of AI +chronological \hfill (2+5)(2+6)
+  \item Applications of AI / fields in daily life \hfill (7)(6)
+  \item Knowledge Vs learning; acting humanly \hfill (2+5+1)
+    \begin{itemize}
+      \item Learning essential for agents +role \hfill (4+4)
+    \end{itemize}
+\end{itemize}
+
+\section*{2. Problem Solving}
+\begin{itemize}
+  \item Well-defined problem / problem space +state-space framework \hfill (3+4)
+  \item Problem-solving steps --- water jug 3/5/9 gal, +production rules +search tree \hfill (2+1+2+3)
+  \item Farmer goat/wolf/cabbage --- formulate + solve +tree \hfill (8)
+  \item CSP crypto-arithmetic \hfill (7)(1+6)(2+6)(3+5)(5+3)
+    \begin{itemize}
+      \item LOGIC+LOGIC=PROLOG; RIGHT+RIGHT=WRONG; WRONG+WRONG=RIGHT
+      \item ONE+ONE+TWO=FOUR; SEND+MORE=MONEY; SWIM+WEAR=RELAX
+      \item BASE+BALL=GAMES; TEN+TEN+FORTY=SIXTY; LOVE+LOVE=HATE; EAT+THAT=APPLE
+    \end{itemize}
+  \item Production system +Eg; why searching needed \hfill (2+6)
+\end{itemize}
+
+\section*{3. Search Techniques}
+\begin{itemize}
+  \item Necessity of searching +justify \hfill (2+7)
+  \item BFS Vs DFS +performance; depth-limit search (+) \hfill (9)(4+4)(4+5)(1+7)
+  \item Hill climbing +problems +solutions; simulated annealing; local maxima \hfill (9)(6+2)(3+5)(4+4)
+  \item A* path+heuristic +Eg; greedy drawbacks Vs A* \hfill (8)(2+7)(2+6)
+  \item Minimax +alpha-beta pruning +Fig(tree) \hfill (2+6)(2+4+3)
+\end{itemize}
+
+\section*{4. Knowledge Rep., Inference \& Reasoning}
+\begin{itemize}
+  \item CNF conversion steps +Eg \hfill (10)(8)(2+6)
+  \item FOPL need + rules of inference; horn clause; skolemization +Eg \hfill (2+3+3)(1+7)(2)
+  \item Resolution refutation proofs \hfill (7)(8)(10)
+    \begin{itemize}
+      \item American/weapons--criminal; oversmart--Ram; block-world supports
+      \item John/Sita--peanuts/mushroom; pompeian--Caesar; Charlie--horse/mammal
+      \item Mary/John--study; Ram--peanuts; Sneha--happy
+    \end{itemize}
+  \item Forward Vs backward chaining +Eg; rule-based reasoning \hfill (4+4)(7)(2+5)
+  \item Bayes / causal / belief network reasoning +Eg \hfill (2+5)(2+6)(7)(3+5)(8)(5+3)
+    \begin{itemize}
+      \item meningitis/stiff-neck; flu/measles rash; county/cigar; prior Vs posterior
+    \end{itemize}
+\end{itemize}
+
+\section*{5. Structured Knowledge Representation}
+\begin{itemize}
+  \item KR models / approaches / issues; how KR evaluated \hfill (7)(2+5)(3+5)(2+6)
+  \item Semantic net +Eg; convert sentences $\to$ net \hfill (8)(7)(2+6)
+  \item Frames +Eg; frame Vs semantic net; convert net$\to$frame \hfill (7)(4+4)(3+5)
+  \item Conceptual dependency + primitives \hfill (2+5)
+\end{itemize}
+
+\section*{6. Machine Learning}
+\begin{itemize}
+  \item Methods of learning; learning by analogy \hfill (3+5)(1+7)
+  \item Inductive learning / ID3 +Eg \hfill (2+6)
+  \item Genetic algorithm --- steps / operators +Fig +Eg; mutation (I); applications \hfill (10)(2+8)(8)(2+6)(2+6+2)(3+5)
+  \item Fuzzy logic / learning; Fuzzy (Mamdani) inference +Eg; membership \hfill (4)(2+6)(3+7)(8)
+  \item Boltzmann machine +algo \hfill (1+7)(2+8)
+\end{itemize}
+
+\section*{7. Applications of AI}
+\textbf{Neural Networks}
+\begin{itemize}
+  \item Backprop algo; perceptron; math model + train NN; ANN non-linearity \hfill (4+4)(2+4+4)(3+5)(2+2+4)(1+7)
+  \item Supervised Vs unsupervised; ANN Vs human brain \hfill (6)(3+5)
+  \item Perceptron as OR/XOR gate; McCulloch--Pitts AND (not XOR) \hfill (2+7)(1+7)(8)(2+6)
+  \item Hebbian network (AND); Hopfield +steps +Eg; SOM +steps +Eg; Hopfield Vs Kohonen \hfill (3+7)(8)(2+5)
+\end{itemize}
+\textbf{Expert System}
+\begin{itemize}
+  \item Development steps / stages +Fig block; create scenario \hfill (8)(4+4)(2+6)
+  \item Architecture; characteristics; inference \hfill (2+4)(2+5)(3+5)
+  \item Declarative Vs procedural knowledge + architecture \hfill (2+6)(3+6)
+  \item (+)(-) of ES; knowledge acquisition +Eg +architecture \hfill (8)(2+6)(2+5)
+\end{itemize}
+\textbf{NLP \& Machine Vision}
+\begin{itemize}
+  \item NLP steps +Fig +Eg; NLU/NLG \hfill (6)(8)(2+4)(3+5)(2+7)
+  \item Machine translation +challenges; NLP issues \hfill (1+7)(2+6)
+  \item Syntactic / semantic / pragmatic / morphological analysis; problems \hfill (2+2+2+2)(3+5)(2+5)
+  \item Machine / computer vision (I) +Eg \hfill (3+5)(2+5)
+\end{itemize}
+
+\end{multicols}
+\end{document}

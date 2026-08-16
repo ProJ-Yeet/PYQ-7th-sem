@@ -1,0 +1,550 @@
+%=======================================================================
+%  CHAPTER 1 — INTRODUCTION  (2 hrs)
+%=======================================================================
+\section{Introduction}
+
+{\color{sub}\footnotesize 2 hrs \gap$\cdot$\gap in 16/17 papers \gap$\cdot$\gap 2 topics, both TOP tier
+\gap$\cdot$\gap no numericals in this ch.}
+
+\lead{Whole chapter in 2 items:}
+\begin{itemize}
+  \item KDD process \tS{7}
+  \item DW fundamentals \tS{9}
+\end{itemize}
+
+\hr
+
+\T{1.1 Data Mining Origin}
+
+\Q{What is DM? + Explain steps of KDD process}{\m{2+3}\m{2+5}\m{2+6}\m{1+5}\m{4}}
+{\color{sub}\footnotesize \tS{7} \gap Most repeated Q in the paper.}
+
+\lead{DM}
+\begin{itemize}
+  \item Extraction of \textbf{interesting} patterns/knowledge from large data.
+  \item Interesting $=$ non-trivial $+$ implicit $+$ previously unknown $+$ potentially useful.
+  \item Not retrieval:
+  \begin{itemize}
+    \item Query tool $\rightarrow$ answers what you already know to ask.
+    \item DM $\rightarrow$ finds patterns you didnt know to look for.
+  \end{itemize}
+  \item Also called: KDD, knowledge extraction, data/pattern analysis, data archaeology, data dredging, BI.
+\end{itemize}
+
+\lead{Not DM}
+\begin{itemize}
+  \item Phone-book lookup, \code{SELECT AVG(salary)}, web search $\rightarrow$ info retrieval (query states exactly what is wanted).
+\end{itemize}
+
+\sbs{%
+\lead{Descriptive DM}
+\begin{itemize}
+  \item Characterise the general properties of data.
+  \item Unsupervised.
+  \item ``What is in data? Unusual patterns?''
+  \item Clustering, association, summarisation, visualisation.
+\end{itemize}}{%
+\lead{Predictive DM}
+\begin{itemize}
+  \item Infer unknown $Y=f(X)$ from known $X$.
+  \item Supervised.
+  \item ``Which customers leave in 6 months?''
+  \item Classification, regression, prediction.
+\end{itemize}}
+
+\vspace{3pt}
+\lead{DM vs KDD}
+\begin{itemize}
+  \item Strictly: DM $=$ \textbf{one step} of KDD (the step that runs the algorithms).
+  \item In practice treated as synonyms. \textbf{IOE papers use them interchangeably.}
+  \item \mk{If Q says ``steps of data mining'' $\rightarrow$ write KDD steps.}
+\end{itemize}
+
+\vspace{4pt}
+\sbsr{0.63}{%
+\lead{KDD: 7 steps (Han \& Kamber) $\rightarrow$ default answer}
+\begin{enumerate}
+  \item \textbf{Data cleaning}: rm noise, smooth outliers, fill missing, fix inconsistency.
+  \item \textbf{Data integration}: combine multiple heterogeneous sources.
+  \item \textbf{Data selection}: retrieve only task-relevant data.
+  \item \textbf{Data transformation}: normalise, aggregate, generalise, discretise.
+  \item \textbf{Data mining}: apply algorithms. \emph{Essential step.}
+  \item \textbf{Pattern evaluation}: keep truly interesting patterns (support, confidence, lift, novelty).
+  \item \textbf{Knowledge presentation}: visualise + represent for user.
+\end{enumerate}
+\vspace{2pt}
+{\footnotesize Steps 1--4 $=$ data preparation $\approx$ \textbf{60\% of effort}.}}{%
+\figT{kdd_process}}
+
+\vspace{2pt}
+\lead{\textcolor{mkc}{Conflict in your sources} \added}
+\begin{itemize}
+  \item \code{Chapter 2\_Data Warehouse.ppt} $\rightarrow$ \textbf{6 stages} (Adriaans \& Zantinge):
+        selection $\rightarrow$ cleaning $\rightarrow$ enrichment $\rightarrow$ coding $\rightarrow$ mining $\rightarrow$ reporting.
+  \item Han \& Kamber (syllabus ref. book 2) $\rightarrow$ \textbf{7 steps} above.
+  \item Both examined at IOE (old CT 725 paper asked ``Cleaning, Enrichment, Coding'').
+  \item \mk{Write 7-step version, add 1 line naming the 6-stage variant.}
+\end{itemize}
+
+\lead{Answer skeleton [5--7]}
+\begin{enumerate}
+  \item DM definition, 1 line $+$ ``one step of KDD''.
+  \item \mk{Draw the pipeline} (markers reward the fig).
+  \item 7 steps, \textbf{1 line each}. No more.
+  \item Close: ``steps 1--4 $=$ data prep $\approx$60\% effort''.
+\end{enumerate}
+
+%-----------------------------------------------------------------------
+\Q{Origin of DM: why it emerged}{\m{2}\m{3}}
+
+\sbs{%
+\lead{Confluence of disciplines}
+\begin{itemize}
+  \item DB systems
+  \item Statistics
+  \item Machine learning
+  \item AI / pattern recognition
+  \item Visualisation
+  \item High-performance computing
+\end{itemize}
+\lead{Drivers}
+\begin{itemize}
+  \item Automated collection $\rightarrow$ data explosion (POS scanners, txn logs, sensors, satellites, Web).
+  \item Cheap storage $\rightarrow$ hoarding became rational. Analysis did not keep pace.
+  \item Competition $\rightarrow$ unmined data $=$ wasted asset.
+\end{itemize}}{%
+\lead{Why traditional/manual analysis fails}
+\begin{itemize}
+  \item Enormity (TB scale).
+  \item \textbf{High dimensionality} (1000s of attrs).
+  \item Sources heterogeneous $+$ distributed.
+  \item Data collected for \textbf{ops}, not analysis $\rightarrow$ noisy, incomplete, inconsistent.
+\end{itemize}
+\lead{DM vs query tools (SQL)}
+\begin{itemize}
+  \item SQL: must know \emph{exactly} what you want. DM: only \emph{vaguely}.
+  \item SQL $\rightarrow$ facts/aggregates. DM $\rightarrow$ patterns/trends.
+  \item SQL: deterministic retrieval. DM: ML/statistical search.
+  \item Hidden relations:
+  \begin{itemize}
+    \item SQL cant trace them
+    \item DM finds them automatically
+  \end{itemize}
+\end{itemize}}
+
+%-----------------------------------------------------------------------
+\Q{``The world is data rich but information poor''. Justify.}{\m{8}}
+{\color{sub}\footnotesize \tP{1} \yr{73 Shr} \gap Justify-in-own-words $\rightarrow$ needs structure, not definitions.}
+
+\begin{enumerate}
+  \item \textbf{State paradox}: TBs stored, decisions still on intuition. Data $\ne$ info $\ne$ knowledge.
+  \item \textbf{Data rich}: POS logs, bank txns, telecom call records, remote sensing, Web. Growth automated.
+  \item \textbf{Info poor, why:}
+  \begin{itemize}
+    \item Volume defeats manual inspection.
+    \item Data is operational $\rightarrow$ noisy, incomplete, inconsistent.
+    \item Scattered across heterogeneous systems.
+    \item Query tools answer only what is asked.
+    \item Shortage of analysts.
+  \end{itemize}
+  \item \textbf{Consequence}: ``data tombs'' $=$ archives written, never read. Decisions made w/o evidence already paid for.
+  \item \textbf{Resolution}:
+  \begin{itemize}
+    \item DW consolidates $+$ cleans
+    \item DM extracts the patterns
+    \item Data $\rightarrow$ Info $\rightarrow$ Knowledge $\rightarrow$ Decision
+  \end{itemize}
+  \item \textbf{Eg}: retail chain holds millions of receipts (rich) but cant say which products sell together (poor)
+        until association analysis gives \{nappies\} $\Rightarrow$ \{beer\}.
+\end{enumerate}
+
+%-----------------------------------------------------------------------
+\Q{Architecture of a typical DM system (+Fig)}{\m{2}\m{4+2}}
+{\color{sub}\footnotesize \yr{78 Bh} asked as ``Explain DM process with diagram''.}
+
+\sbsr{0.60}{%
+\begin{itemize}
+  \item \textbf{Data sources}: DB, DW, WWW, other repos.
+  \item \textbf{DB/DW server}: fetches data relevant to the request.
+  \item \textbf{Knowledge base}: domain knowledge guiding search $+$ judging interestingness
+        (concept hierarchies, user beliefs, constraints).
+  \item \textbf{DM engine}: characterisation, association, classification, clustering, outlier, evolution analysis.
+  \item \textbf{Pattern evaluation}: applies interestingness measures.
+        \emph{Best pushed into the engine} so dull patterns are never generated.
+  \item \textbf{UI}: specify task, browse schemas/hierarchies, visualise results.
+\end{itemize}}{%
+\figT{dm_system_arch}}
+
+%-----------------------------------------------------------------------
+\Q{DM functionalities}{\m{2}\m{4}}
+\begin{itemize}
+  \item \textbf{Characterisation \& discrimination}:
+  \begin{itemize}
+    \item summarise the target class
+    \item contrast it against a comparative class
+  \end{itemize}
+  \item \textbf{Association \& correlation}: freq patterns, rules $X\Rightarrow Y$. \hfill{\footnotesize$\rightarrow$ Ch 4}
+  \item \textbf{Classification \& prediction}: assign class labels / predict numeric. \hfill{\footnotesize$\rightarrow$ Ch 3}
+  \item \textbf{Cluster analysis}: group w/o pre-defined labels. \hfill{\footnotesize$\rightarrow$ Ch 5}
+  \item \textbf{Outlier / anomaly}: objects not complying w/ general behaviour.
+        Noise to discard, but \emph{the prize} in fraud. \hfill{\footnotesize$\rightarrow$ Ch 6}
+  \item \textbf{Evolution analysis}: trends for objects changing over time. \hfill{\footnotesize$\rightarrow$ Ch 7}
+\end{itemize}
+
+%-----------------------------------------------------------------------
+\Q{What is DM? Explain its applications.}{\m{10}}
+{\color{sub}\footnotesize \tP{1} \yr{71 Ch}}
+
+\begin{tabularx}{\textwidth}{@{}L{2.9cm}X@{}}
+\toprule
+\hrow \thead{Domain} & \thead{What is mined} \\
+\midrule
+Biomedical / DNA & Similarity search across DNA seqs; \textbf{association analysis} for co-occurring genes
+(most diseases $=$ gene combinations, not 1 gene); path analysis linking genes to disease stages. \\
+Financial & DW design for multidim analysis; loan payment prediction, credit policy;
+classification $+$ clustering for customer targeting; \textbf{money-laundering detection}. \\
+Retail / market basket & Which products sell together; customer retention; campaign effectiveness; recommendation. \\
+Telecom & Fraudulent usage patterns; multidim analysis of calls; mobile user behaviour. \\
+Intrusion detection & Anomaly detection over traffic $+$ audit logs. \hfill{\footnotesize$\rightarrow$ Ch 6} \\
+Web mining & PageRank, usage $+$ structure mining. \hfill{\footnotesize$\rightarrow$ Ch 7} \\
+\bottomrule
+\end{tabularx}
+
+\hr
+
+\T{1.2 Data Mining \& Data Warehousing Basics}
+
+\Q{What is a DW? Write its key features.}{\m{2}\m{2+4}\m{2+5}}
+{\color{sub}\footnotesize \tS{9}}
+
+\lead{Definition (Inmon)}
+\begin{itemize}
+  \item DW $=$ \textbf{subject-oriented}, \textbf{integrated}, \textbf{time-variant}, \textbf{non-volatile}
+        collection of data supporting management decision-making.
+  \item \mk{Memorise as S-I-T-N} $\rightarrow$ this is the whole ``key features'' answer.
+\end{itemize}
+
+\sbs{%
+\begin{itemize}
+  \item \thead{S = Subject-oriented}
+  \begin{itemize}
+    \item Organised around subjects (customer, product, sales), not daily ops.
+    \item Data useless for decisions is excluded.
+  \end{itemize}
+  \item \thead{I = Integrated}
+  \begin{itemize}
+    \item Built from heterogeneous sources (relational DBs, flat files, txn records).
+    \item Cleaning $+$ integration force consistent naming, encoding, units.
+    \item $\rightarrow$ 1 name per entity.
+  \end{itemize}
+\end{itemize}}{%
+\begin{itemize}
+  \item \thead{T = Time-variant}
+  \begin{itemize}
+    \item Long history (5--10 yrs).
+    \item Every key structure carries a time element.
+    \item Operational DB holds only the \emph{current} value.
+  \end{itemize}
+  \item \thead{N = Non-volatile}
+  \begin{itemize}
+    \item Physically separate. No operational update.
+    \item Only 2 ops: \textbf{initial load} $+$ \textbf{access}.
+    \item $\rightarrow$ no txn processing, recovery or concurrency control needed.
+  \end{itemize}
+\end{itemize}}
+
+\begin{itemize}
+  \item \textbf{Data warehous\emph{ing}} $=$ the \emph{process} of building $+$ using a DW
+        (extract, transform operational data, load into central store).
+\end{itemize}
+
+%-----------------------------------------------------------------------
+\Q{How is DW diff from a DB? How are they similar?}{\m{2+2}}
+{\color{sub}\footnotesize \tP{2} \yr{75 Ash} \gap Asks \textbf{both} directions.}
+
+\begin{tabularx}{\textwidth}{@{}L{2.5cm}XX@{}}
+\toprule
+\hrow  & \thead{Operational DB (OLTP)} & \thead{Data warehouse (OLAP)} \\
+\midrule
+Purpose & Run day-to-day business & Support analysis $+$ decisions \\
+Content & Current, detailed & Historical, summarised $+$ detailed \\
+Design & Highly normalised, many tables (ER) & De-normalised, few tables; star/snowflake \\
+Access & Short read/write txns & Long, complex, read-mostly \\
+Users & Clerks, DBAs, front-line & Managers, analysts, execs \\
+Unit of work & Simple txn & Complex query \\
+Records/query & Tens & Millions \\
+Size & 100 MB--GB & 100 GB--TB \\
+\bottomrule
+\end{tabularx}
+
+\sbs{%
+\lead{Similarities \added}
+\begin{itemize}
+  \item Both persistent, managed data stores.
+  \item Both usually on a relational DBMS.
+  \item Both use schemas, indexes, SQL.
+  \item Both enforce integrity $+$ security.
+  \item DW is \emph{built from} the DBs.
+\end{itemize}}{%
+\lead{Why keep them separate}
+\begin{itemize}
+  \item \textbf{Performance}: opposite tuning.
+  \begin{itemize}
+    \item DBMS $\rightarrow$ OLTP (indexing, concurrency, recovery)
+    \item DW $\rightarrow$ OLAP (multidim views, consolidation)
+    \item both on 1 system degrades both
+  \end{itemize}
+  \item \textbf{Missing data}: decisions need history ops DBs dont keep.
+  \item \textbf{Consolidation}: needs aggregation across heterogeneous sources.
+  \item \textbf{Data quality}: inconsistent codes/formats reconciled once, centrally.
+\end{itemize}}
+
+%-----------------------------------------------------------------------
+\Q{Explain DW architecture with its analytical processing}{\m{8}}
+{\color{sub}\footnotesize \tS{9} \yr{75 Ch} \gap 2 architectures in your sources: \textbf{complementary, not contradictory}
+(three-tier $=$ layered, process $=$ component-wise).}
+
+\lead{(a) Three-tier architecture (Han \& Kamber) $\rightarrow$ standard answer}
+\sbsr{0.55}{%
+\begin{itemize}
+  \item \textbf{Bottom tier} $=$ warehouse DB server (relational).
+  \begin{itemize}
+    \item Data pulled via \textbf{gateways}: ODBC, OLE-DB, JDBC.
+    \item Back-end tools: extract, clean, transform, load, refresh.
+    \item Holds \textbf{metadata repo}.
+  \end{itemize}
+  \item \textbf{Middle tier} $=$ \textbf{OLAP server} (presents data as a cube).
+  \begin{itemize}
+    \item \textbf{ROLAP}:
+  \begin{itemize}
+    \item extended relational DBMS
+    \item maps multidim ops $\rightarrow$ relational ops
+    \item scales to large data
+  \end{itemize}
+    \item \textbf{MOLAP}:
+  \begin{itemize}
+    \item special-purpose server, direct multidim arrays
+    \item fast, but sparse data wastes space
+  \end{itemize}
+    \item \textbf{HOLAP}:
+  \begin{itemize}
+    \item hybrid of the two
+    \item detail in relational, aggregates in arrays
+  \end{itemize}
+  \end{itemize}
+  \item \textbf{Top tier} $=$ front-end client: query \& reporting, analysis, DM tools.
+\end{itemize}}{%
+\figT{dw_three_tier}}
+
+\vspace{2pt}
+\lead{(b) Process / component architecture (form drawn in class notes)}
+\sbs{%
+\begin{itemize}
+  \item \textbf{Load manager}: all extract $+$ load ops. Fast-loads into temp store, simple transforms.
+  \item \textbf{Warehouse manager}:
+  \begin{itemize}
+    \item consistency $+$ referential checks
+    \item merges temp store into the published DW
+    \item creates indexes $+$ business views
+    \item updates aggregations
+    \item backup $+$ archive
+  \end{itemize}
+  \item \textbf{Query manager}:
+  \begin{itemize}
+    \item directs queries to the right tables
+    \item stops 1 query starving the system
+    \item captures query profiles
+  \end{itemize}
+  \item \textbf{Detailed info}: lowest-granularity data retained.
+  \item \textbf{Summary info}:
+  \begin{itemize}
+    \item pre-computed aggregations built by the warehouse manager
+    \item transient, changes as query profiles change
+  \end{itemize}
+  \item \textbf{Metadata}: data about data. Describes how info is structured, maps sources to a common view.
+\end{itemize}}{%
+\figT{dw_process_arch}}
+
+\vspace{2pt}
+\lead{(c) ``\ldots with its analytical processing'' $\rightarrow$ 3 kinds of DW application}
+\begin{enumerate}
+  \item \textbf{Information processing}: querying, basic stats, reporting (crosstabs, tables, charts). \emph{No new knowledge.}
+  \item \textbf{Analytical processing (OLAP)}: multidim analysis. Roll-up, drill-down, slice, dice, pivot. \emph{Summarises, doesnt learn.}
+  \item \textbf{Data mining}: knowledge discovery from hidden patterns. \emph{Creates new knowledge.}
+\end{enumerate}
+
+%-----------------------------------------------------------------------
+\Q{What is DW and data mart? (short notes)}{\m{15}\m{2+4}}
+{\color{sub}\footnotesize \tP{2} \yr{70 Ch, 71 Shr}}
+
+\lead{Data mart}
+\begin{itemize}
+  \item Subset of a DW, confined to 1 user group / functional area, in its own DB.
+  \item \textbf{Dependent}: sourced \emph{from} an enterprise DW $\rightarrow$ consistent by construction.
+  \item \textbf{Independent}: populated \emph{directly} from sources, no central DW
+        $\rightarrow$ faster to build, risks inconsistency between marts.
+  \item \textbf{Benefit}:
+  \begin{itemize}
+    \item less volume to scan $\rightarrow$ faster queries
+    \item each department owns its own structures
+  \end{itemize}
+  \item \textbf{Eg}: departmental store sales mart, bank loan mart.
+\end{itemize}
+
+\lead{3 DW models}
+\begin{itemize}
+  \item \textbf{Enterprise warehouse}: all subjects, whole org. Cross-functional, large, slow to build.
+  \item \textbf{Data mart}: subset for a specific group.
+  \item \textbf{Virtual warehouse}:
+  \begin{itemize}
+    \item set of \emph{views} over operational DBs
+    \item only some summary views materialised
+    \item easy to build, but loads the operational systems
+  \end{itemize}
+\end{itemize}
+
+%-----------------------------------------------------------------------
+\Q{Describe Snowflake schema with example}{\m{4}}
+{\color{sub}\footnotesize \tP{1} \yr{74 Ch}}
+
+\sbs{%
+\begin{itemize}
+  \item \textbf{Star}: 1 central \textbf{fact table} (measures $+$ FKs) $+$ \textbf{de-normalised} dimension tables.
+        Simple, fast joins.
+  \item \textbf{Snowflake}: star refined, some dimension hierarchies \textbf{normalised} into smaller sub-dimension tables.
+        Saves space, less redundancy, but more joins $\rightarrow$ slower.
+  \item \textbf{Fact constellation (galaxy)}: multiple fact tables sharing dimension tables $=$ collection of stars.
+\end{itemize}
+\lead{Eg: sales DW}
+\begin{itemize}
+  \item Fact \texttt{Sales}: \texttt{time\_key, item\_key, branch\_key, location\_key, units\_sold, dollars\_sold, avg\_sales}.
+  \item \texttt{location} normalised: \texttt{location} $\rightarrow$ \texttt{city} $\rightarrow$ \texttt{province}.
+  \item \texttt{item} $\rightarrow$ \texttt{supplier}.
+  \item \mk{That normalisation of the dimension hierarchy is what makes it snowflake, not star.}
+\end{itemize}}{%
+\figT{snowflake_schema}}
+
+{\color{sub}\footnotesize $\rightarrow$ Full multidim model (cuboids, base/apex, star-schema \emph{drawing} numerical)
+sits in \textbf{Ch 2, OLAP \& Multidimensional Data Analysis}, where it is examined harder.}
+
+%-----------------------------------------------------------------------
+\Q{Fundamental differences between DM and DW}{\m{3}}
+{\color{sub}\footnotesize \tP{2} \yr{76 Ash}}
+
+\begin{tabularx}{\textwidth}{@{}L{2.3cm}XX@{}}
+\toprule
+\hrow  & \thead{Data warehousing} & \thead{Data mining} \\
+\midrule
+Nature & \emph{Storage} architecture & \emph{Analysis} process \\
+Purpose & Consolidate $+$ organise data & Discover hidden patterns in it \\
+Output & Consistent query-able historical data & Rules, models, clusters, predictions \\
+Done by & Engineers / DBAs & Analysts, statisticians, business users \\
+Relation & \multicolumn{2}{L{11.5cm}}{DW $=$ infrastructure; DM $=$ 1 of its 3 uses.
+DW not required for DM, but a clean DW makes DM far more effective.} \\
+\bottomrule
+\end{tabularx}
+
+%-----------------------------------------------------------------------
+\Q{How can a DM system be integrated with a DB/DW system?}{\m{4}}
+{\color{sub}\footnotesize \tP{1} \yr{78 Bh} \gap Answer $=$ the \textbf{4 coupling schemes}.}
+
+\lead{1. No coupling}
+\begin{itemize}
+  \item Uses no DB/DW function at all.
+  \item Reads flat file $\rightarrow$ mines $\rightarrow$ writes to another file.
+  \item Simple, but: poor data selection, no scalability, no consistency.
+\end{itemize}
+
+\lead{2. Loose coupling}
+\begin{itemize}
+  \item Mining system $\rightarrow$ fetches data from repo managed by DB/DW.
+  \item Stores results back into a file / designated place in DB.
+  \item Uses DBMS for storage $+$ retrieval only.
+  \item Cant exploit indexing or query optimisation $\rightarrow$ memory-bound, doesnt scale well.
+\end{itemize}
+
+\lead{3. Semi-tight coupling}
+\begin{itemize}
+  \item Besides linking, DB/DW provides efficient \textbf{mining primitives}.
+  \item Primitives: sorting, indexing, aggregation, histogram analysis, multi-way join.
+  \item $+$ pre-computed stats: sum, count, max, min.
+  \item $\rightarrow$ materially better performance.
+\end{itemize}
+
+\lead{4. Tight coupling}
+\begin{itemize}
+  \item DM system \textbf{smoothly integrated into} DB/DW as 1 functional component.
+  \item Mining queries optimised alongside DB queries.
+  \item Intermediate results can be stored.
+  \item Scales. \mk{Most desirable design.}
+\end{itemize}
+
+\hr
+
+%-----------------------------------------------------------------------
+\T{1.3 PYQ Mapping}
+
+{\color{sub}\footnotesize Tiers: \tS{} $=$ 7+/17 papers \gap \tF{} $=$ 4--6 \gap \tP{} $=$ 1--3 but $\ge$8 marks.
+Same Q in diff wording grouped under 1 entry.}
+
+\creamq{1.1 Data Mining Origin}{}
+\begin{enumerate}
+  \item \tS{7} \textbf{Define DM $+$ explain KDD / DM process.} \hfill \m{2+3} to \m{2+6}
+  \begin{itemize}
+    \item ``What is data mining? Explain the process of data mining.'' \yr{74 Ash}
+    \item ``\ldots Explain all the steps of knowledge discovery.'' \yr{72 Ch}
+    \item ``\ldots What are the steps involved in knowledge discovery process?'' \yr{79 Bh}
+    \item ``\ldots Explain the steps of KDD process briefly.'' \yr{81 Ba}
+    \item ``\ldots Explain general steps in brief.'' \yr{72 Ka}
+    \item ``What is a Data Mining? Explain its application.'' \yr{71 Ch} $\rightarrow$ 2nd half swaps to applications.
+  \end{itemize}
+  \item \tP{1} ``The world is data rich but information poor''. Justify. \hfill \m{8} \yr{73 Shr}
+\end{enumerate}
+
+\creamq{1.2 DM \& DW basics}{}
+\begin{enumerate}[start=3]
+  \item \tF{3} \textbf{What is a DW / key features $+$ architecture.}
+  \begin{itemize}
+    \item ``What is data warehousing? Explain with example where data warehouses are used.'' \hfill \m{2+4} \yr{80 Ba}
+    \item ``Write key features of data warehouse. Explain each step of the KDD process w/ example.'' \hfill \m{2+5} \yr{80 Bh}
+    \item ``Explain Data Warehouse architecture with its analytical processing.'' \hfill \m{8} \yr{75 Ch}
+  \end{itemize}
+  \item \tP{2} \textbf{DM vs DW / DW vs DB.}
+  \begin{itemize}
+    \item ``What are the fundamental differences between Data Mining and Data Warehousing? Describe the steps of KDD.'' \hfill \m{3+7} \yr{76 Ash}
+    \item ``How is data warehouse different from a database? How are they similar?'' \hfill \m{2+2} \yr{75 Ash}
+  \end{itemize}
+  \item \tP{1} ``Explain how DM system can be integrated with DB/DW system. Explain DM process with diagram.'' \hfill \m{4+2} \yr{78 Bh}
+  \item \tP{1} ``What is data warehouse and data mart? Describe Snowflake scheme with example.'' \hfill \m{2+4} \yr{74 Ch}
+  \item \tP{2} Short notes: \textbf{Data warehouse and Data mart.} \hfill \m{15} \yr{70 Ch, 71 Shr}
+\end{enumerate}
+
+\lead{Coverage check}
+\begin{itemize}
+  \item All Ch 1 PYQs covered above.
+  \item Filled by research, absent from your notes \added:
+  \begin{itemize}
+    \item \emph{Similarity} half of ``how are DW and DB similar?'' \yr{75 Ash} (notes only contrast them).
+    \item Reconciliation of the \textbf{6-stage vs 7-step KDD} clash between your 2 sources.
+  \end{itemize}
+\end{itemize}
+
+\lead{Sources used for this chapter}
+\begin{itemize}
+  \item \textbf{Han \& Kamber 3rd ed} (full textbook PDF): ch 1 KDD process, DM system architecture,
+        functionalities, applications; ch 4 DW definition, 3-tier architecture, DW models, DW usage.
+        \mk{Primary authority; all of the above re-verified against it.}
+  \item \textbf{Han \& Kamber 1st ed manuscript} (\code{ch01.pdf}, \code{ch2.pdf}): source of the
+        two architecture figures, and of the \textbf{4 coupling schemes}, which the 3rd ed drops.
+        \mk{78 Bh still examines coupling}, so it is kept here.
+  \item \code{Chapter 2\_Data Warehouse.ppt}, \code{Chapter 4 and 5 DW Architecture.ppt},
+        \code{applicationDM.ppt}, \code{data mining\_/Chapter 1\_2.pdf}.
+  \item \textbf{No DBK lecture exists for Unit-1}, so class slides could not be used here.
+\end{itemize}
+
+\lead{Numericals}
+\begin{itemize}
+  \item \mk{Ch 1 has no numerical component.} No Q in 17 papers needs a calculation here
+        $\rightarrow$ no ``Ch1 Numerical'' companion. First numericals appear in Ch 2
+        (normalisation, similarity measures, PCA).
+\end{itemize}

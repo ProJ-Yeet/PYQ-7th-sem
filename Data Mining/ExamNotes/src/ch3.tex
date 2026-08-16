@@ -1,0 +1,708 @@
+%=======================================================================
+%  CHAPTER 3 — CLASSIFICATION  (12 hrs)
+%=======================================================================
+\section{Classification}
+
+{\color{sub}\footnotesize 12 hrs \gap$\cdot$\gap in 17/17 papers \gap$\cdot$\gap 7 topics, 3 TOP tier
+\gap$\cdot$\gap \textbf{largest chapter in the syllabus} \gap$\cdot$\gap numericals $\rightarrow$ Ch 3 companion.}
+
+\lead{Weight of the chapter:}
+\begin{itemize}
+  \item Decision Tree Classifier \tS{9} \gap $\rightarrow$ nearly always a full numerical.
+  \item Bayesian Classifier \tS{8}
+  \item Issues: Overfitting, Validation, Model Comparison \tS{7} \gap $\rightarrow$
+        \mk{confusion-matrix numerical appears in 8 papers}.
+  \item ANN Classifier \tF{5} \gap $\cdot$\gap Rule Based \tF{4}
+  \item Basics \tP{3} \gap $\cdot$\gap Nearest Neighbor \tP{2}
+\end{itemize}
+
+\hr
+
+\T{3.1 Basics and Algorithms}
+
+\Q{Why is classification a supervised learning method?}{\m{2}\m{10}}
+{\color{sub}\footnotesize \tP{3} \yr{71 Shr, 74 Ch, 80 Bh}}
+
+\sbs{%
+\lead{Classification}
+\begin{itemize}
+  \item Predicts \textbf{categorical} class labels (discrete, nominal).
+  \item \textbf{Supervised}: the training tuples come w/ a known \textbf{class label}.
+        The model learns from labelled answers.
+  \item vs \textbf{unsupervised} (clustering): no labels given, groups discovered.
+        {\footnotesize$\rightarrow$ Ch 5}
+  \item vs \textbf{prediction / regression}: predicts a \emph{continuous} value, not a label.
+\end{itemize}
+\lead{2-step process \mk{(this is the block diagram Q)}}
+\begin{enumerate}
+  \item \textbf{Learning / model construction} (training)
+  \begin{itemize}
+    \item Input: \textbf{training set}, each tuple w/ its class label.
+    \item Output: the model, as rules / tree / formula.
+  \end{itemize}
+  \item \textbf{Classification / model usage} (testing then deployment)
+  \begin{itemize}
+    \item Estimate accuracy on an \textbf{independent test set}.
+    \item \mk{Test set must be separate from the training set}, else the accuracy is
+          optimistic (the model has memorised).
+    \item If accuracy acceptable $\rightarrow$ classify new, unlabelled data.
+  \end{itemize}
+\end{enumerate}}{%
+\lead{Where each classifier fits}
+\begin{itemize}
+  \item \textbf{Eager learners} build the model \emph{before} seeing a query:
+        decision tree, Bayes, ANN, rule-based, SVM.
+  \item \textbf{Lazy learners} store the data and act only at query time: KNN, case-based.
+\end{itemize}
+\lead{Applications}
+\begin{itemize}
+  \item Credit / loan approval, fraud detection, medical diagnosis, target marketing,
+        churn prediction, spam filtering.
+\end{itemize}
+\lead{Answer skeleton \m{10}}
+\begin{enumerate}
+  \item Definition $+$ ``supervised because labels are given''.
+  \item \mk{Draw the 2-step block diagram} (training $\rightarrow$ model $\rightarrow$ testing $\rightarrow$ deployment).
+  \item Name the classifiers, 1 line each.
+  \item Close w/ the 2--3 metrics used to judge one.
+\end{enumerate}}
+
+\hr
+
+\T{3.2 Decision Tree Classifier}
+
+\Q{What is a decision tree? How is information gain used for attribute selection?}{\m{8}\m{10}\m{4+6}}
+{\color{sub}\footnotesize \tS{9} \yr{79 Bh, 78 Bh, 76 Ch, 76 Ash, 75 Ch, 74 Ch, 73 Shr, 72 Ka, 71 Ch}
+\gap \mk{Almost always a full tree-building numerical} $\rightarrow$ companion.}
+
+\sbsr{0.56}{%
+\lead{Structure}
+\begin{itemize}
+  \item Flow-chart-like \textbf{inverted tree}.
+  \item \textbf{Root node}: topmost, the first test.
+  \item \textbf{Internal node}: a test on one attribute.
+  \item \textbf{Branch}: an outcome of that test.
+  \item \textbf{Leaf node}: holds a \textbf{class label}.
+  \item Path root $\rightarrow$ leaf $=$ one classification rule.
+\end{itemize}
+\lead{Why popular}
+\begin{itemize}
+  \item No domain knowledge or parameter setting needed.
+  \item Handles high-dimensional data.
+  \item \mk{Human-readable} $\rightarrow$ easy to convert to IF-THEN rules.
+  \item Fast; good accuracy in most cases.
+\end{itemize}}{%
+\figT{dt_example}}
+
+\vspace{2pt}
+\sbs{%
+\lead{Hunt's algorithm \yr{72 Ka \m{10}} $\rightarrow$ the ancestor of all of them}
+Let $D_t$ $=$ training records reaching node $t$, $y=\{y_1\dots y_c\}$ the class labels.
+\begin{enumerate}
+  \item If all records in $D_t$ belong to the same class $y_t$
+        $\rightarrow$ $t$ is a \textbf{leaf} labelled $y_t$.
+  \item If $D_t$ is empty $\rightarrow$ leaf labelled w/ the \textbf{majority class of the parent}.
+  \item If $D_t$ has records of more than 1 class
+        $\rightarrow$ pick an \textbf{attribute test}, split $D_t$ into subsets,
+        \textbf{recurse} on each subset.
+\end{enumerate}
+\begin{itemize}
+  \item Descendants: \textbf{ID3} $\rightarrow$ \textbf{C4.5} $\rightarrow$ C5.0 (Quinlan),
+        \textbf{CART}, SLIQ, SPRINT.
+\end{itemize}
+\lead{Generic induction algorithm}
+\begin{itemize}
+  \item \textbf{Greedy}, \textbf{top-down}, \textbf{recursive}, \textbf{divide-and-conquer}.
+  \item Greedy $=$ picks the locally best attribute at each node, never backtracks.
+  \item \textbf{Stopping conditions:}
+  \begin{itemize}
+    \item all tuples at the node share 1 class, or
+    \item no attributes left $\rightarrow$ leaf $=$ majority class, or
+    \item no tuples left $\rightarrow$ leaf $=$ majority class of parent.
+  \end{itemize}
+\end{itemize}}{%
+\lead{Test conditions per attribute type \yr{72 Ka asks this}}
+\begin{itemize}
+  \item \textbf{Binary}: 2 outcomes, forced.
+  \item \textbf{Nominal}
+  \begin{itemize}
+    \item \emph{Multi-way}: 1 branch per value.
+    \item \emph{Binary}: split values into 2 subsets. $2^{v-1}-1$ ways.
+  \end{itemize}
+  \item \textbf{Ordinal}: same as nominal, but a grouping must \mk{not break the order}.
+  \item \textbf{Continuous}
+  \begin{itemize}
+    \item \emph{Binary}: test $A \le t$ vs $A > t$.
+    \item \emph{Multi-way}: discretise into ranges first.
+    \item Split point: sort values, try the \textbf{midpoint} of each adjacent pair,
+          $\frac{a_i + a_{i+1}}{2}$; $v$ values $\rightarrow$ $v-1$ candidate splits.
+          Pick the one w/ minimum $Info_A(D)$.
+  \end{itemize}
+\end{itemize}}
+
+\vspace{3pt}
+\creamq{The 3 attribute selection measures \mk{(memorise all three)}}{}
+
+\sbsr{0.50}{%
+\lead{1. Information gain \gap \textbf{ID3} \gap \emph{maximise}}
+\[ Info(D) = -\sum_{i=1}^{m} p_i \log_2 (p_i) \]
+\[ Info_A(D) = \sum_{j=1}^{v}\frac{|D_j|}{|D|}\times Info(D_j) \]
+\[ Gain(A) = Info(D) - Info_A(D) \]
+\begin{itemize}
+  \item $p_i = |C_{i,D}|/|D|$ $=$ fraction of class $i$. $Info(D)$ $=$ \textbf{entropy}, in bits.
+  \item Pick the attribute w/ the \mk{highest} $Gain$.
+  \item \textbf{Bias}: prefers attrs w/ \textbf{many distinct values}
+        (a unique ID gives $Info_A=0$, so maximal gain, yet is useless).
+\end{itemize}
+\lead{2. Gain ratio \gap \textbf{C4.5} \gap \emph{maximise}}
+\[ SplitInfo_A(D) = -\sum_{j=1}^{v}\frac{|D_j|}{|D|}\log_2\!\Big(\frac{|D_j|}{|D|}\Big) \]
+\[ GainRatio(A) = \frac{Gain(A)}{SplitInfo_A(D)} \]
+\begin{itemize}
+  \item Normalises the gain $\rightarrow$ \mk{fixes the many-values bias.}
+  \item Unstable as $SplitInfo \rightarrow 0$; constrain $Gain$ to be at least the average.
+\end{itemize}}{%
+\lead{3. Gini index \gap \textbf{CART} \gap \emph{minimise}}
+\[ Gini(D) = 1 - \sum_{i=1}^{m} p_i^{\,2} \]
+\[ Gini_A(D) = \frac{|D_1|}{|D|}Gini(D_1) + \frac{|D_2|}{|D|}Gini(D_2) \]
+\[ \Delta Gini(A) = Gini(D) - Gini_A(D) \]
+\begin{itemize}
+  \item \mk{Gini considers only BINARY splits} $\rightarrow$ for $v$ values, try all
+        $2^{v-1}-1$ subset splits and keep the best.
+  \item Pick the attribute w/ the \textbf{largest $\Delta Gini$} (equivalently smallest $Gini_A$).
+  \item \textbf{Bias}: toward attrs w/ many values, and toward equal-sized balanced partitions.
+\end{itemize}
+\lead{Reading the measures}
+\begin{itemize}
+  \item All 3 measure \textbf{impurity}. Pure node $\rightarrow$ $Info=0$, $Gini=0$.
+  \item Max impurity: 2 classes 50/50 $\rightarrow$ $Info=1$, $Gini=0.5$.
+\end{itemize}}
+
+\vspace{3pt}
+\sbs{%
+\lead{Overfitting + pruning \yr{75 Ch \m{4}}}
+\begin{itemize}
+  \item Tree grows branches that fit \textbf{noise and outliers} $\rightarrow$ poor accuracy on new data.
+  \item \textbf{Pre-pruning} (early stopping)
+  \begin{itemize}
+    \item Halt splitting at a node; make it a leaf w/ the majority class.
+    \item Stop if: gain below a threshold, too few tuples, purity high enough.
+    \item \mk{Hard to pick the threshold} $\rightarrow$ too high underfits, too low overfits.
+  \end{itemize}
+  \item \textbf{Post-pruning} (grow full, then cut) \mk{$\rightarrow$ preferred}
+  \begin{itemize}
+    \item Remove subtrees from a fully grown tree, replace w/ a leaf.
+    \item CART uses \emph{cost complexity} pruning w/ a separate prune set.
+    \item C4.5 uses \emph{pessimistic} pruning, no extra data needed.
+  \end{itemize}
+  \item Other fixes: more training data, cross-validation, ensembles.
+\end{itemize}}{%
+\lead{Advantages}
+\begin{itemize}
+  \item Simple, fast to build and to apply.
+  \item Self-explanatory, converts directly to rules.
+  \item No normalisation or scaling needed.
+  \item Handles both nominal and numeric attrs, and irrelevant attrs.
+\end{itemize}
+\lead{Disadvantages}
+\begin{itemize}
+  \item \textbf{Greedy} $\rightarrow$ locally optimal, not guaranteed globally optimal.
+  \item Prone to \textbf{overfitting} without pruning.
+  \item Unstable: a small data change can restructure the whole tree.
+  \item Axis-parallel splits only $\rightarrow$ struggles w/ diagonal boundaries.
+  \item Biased toward attrs w/ many values (unless gain ratio used).
+\end{itemize}}
+
+\hr
+
+\T{3.3 Rule Based Classifier}
+
+\Q{How does a Rule Based Classifier work? Explain with example.}{\m{7}\m{2+8}\m{9}}
+{\color{sub}\footnotesize \tF{4} \yr{80 Bh, 76 Ch, 74 Ash, 70 Ch}}
+
+\sbs{%
+\lead{Form}
+\begin{itemize}
+  \item Model $=$ a set of \textbf{IF-THEN} rules.
+  \item \code{IF (age = youth) AND (student = yes) THEN buys\_computer = yes}
+  \item \textbf{Antecedent} (LHS, the condition) $\rightarrow$ \textbf{Consequent} (RHS, the class).
+  \item A rule \textbf{covers} a tuple if the antecedent holds; the rule is then said to be
+        \emph{triggered}.
+\end{itemize}
+\lead{Rule quality measures \yr{70 Ch asks Accuracy + Laplace} \added}
+\begin{itemize}
+  \item $n_{covers}$ $=$ tuples covered by $R$, $n_{correct}$ $=$ those it labels correctly,
+        $|D|$ $=$ size of the data set, $k$ $=$ no. of classes.
+\end{itemize}
+\[ Coverage(R) = \frac{n_{covers}}{|D|} \qquad Accuracy(R) = \frac{n_{correct}}{n_{covers}} \]
+\[ Laplace(R) = \frac{n_{correct}+1}{n_{covers}+k} \qquad
+   m\text{-}estimate(R) = \frac{n_{correct}+k\,p}{n_{covers}+k} \]
+\begin{itemize}
+  \item \mk{Why Laplace}: plain accuracy rates a rule covering 1 tuple correctly as $1.0$,
+        which is meaningless. Laplace pulls small-coverage rules toward the prior, so a rule
+        must cover \emph{enough} tuples to score well.
+  \item Eg 1 tuple, 1 correct, 2 classes: $Accuracy = 1/1 = 1.0$ but $Laplace = 2/3 = 0.67$.
+\end{itemize}}{%
+\lead{Conflict resolution \yr{76 Ch \m{2+4}}}
+\begin{itemize}
+  \item \textbf{Why needed}: a tuple may trigger \textbf{several rules predicting different
+        classes}, or \textbf{no rule at all}.
+  \item \textbf{Size ordering} (rule antecedent size): the \emph{most specific} rule wins, ie the
+        one w/ the most attribute tests. Intuition: more conditions $=$ more evidence.
+  \item \textbf{Class-based ordering}: classes sorted by decreasing prevalence (or by
+        misclassification cost). All rules of one class come as a block.
+  \item \textbf{Rule-based ordering (decision list)}: rules ranked by quality
+        (accuracy, coverage, size) by the expert or the algorithm. \textbf{First rule that fires wins.}
+  \item \textbf{No rule fires} $\rightarrow$ use a \textbf{default rule}, predicting the majority
+        class of the tuples not covered by any rule. Always placed last.
+\end{itemize}
+\lead{Two useful properties}
+\begin{itemize}
+  \item \textbf{Mutually exclusive}: no 2 rules fire on the same tuple $\rightarrow$ no conflict possible.
+  \item \textbf{Exhaustive}: every possible tuple is covered $\rightarrow$ no default rule needed.
+  \item Rules extracted from a decision tree are \textbf{both} by construction.
+\end{itemize}}
+
+\vspace{2pt}
+\sbs{%
+\lead{Rule extraction from a decision tree}
+\begin{itemize}
+  \item 1 rule per \textbf{root-to-leaf path}. Each split condition ANDed; leaf $=$ consequent.
+  \item Mutually exclusive $+$ exhaustive by construction.
+  \item Rules can then be \textbf{pruned} individually, which may break exclusivity
+        $\rightarrow$ then class-based ordering is applied.
+\end{itemize}}{%
+\lead{Sequential covering (direct rule induction) \yr{70 Ch asks CN2} \added}
+\begin{itemize}
+  \item Learns rules \textbf{directly from the data}, one class at a time.
+  \item Algorithms: \textbf{CN2}, \textbf{RIPPER}, AQ, FOIL.
+  \item Steps:
+  \begin{enumerate}
+    \item Pick a class. Learn 1 rule that covers many of its tuples and few others.
+    \item \textbf{Remove} the tuples that rule covers.
+    \item Repeat on what remains until a stopping criterion is met.
+  \end{enumerate}
+  \item \textbf{CN2} specifically: general-to-specific beam search; starts from the empty
+        antecedent and repeatedly appends the test that most improves the rule, scored by
+        \textbf{entropy} and checked by a \textbf{likelihood-ratio significance test}.
+        Produces an ordered rule list (decision list) $+$ a default rule.
+\end{itemize}}
+
+\hr
+
+\T{3.4 Nearest Neighbor Classifier}
+
+\Q{What is a Nearest Neighbor Classifier? Main issues? Propose a fix.}{\m{1+3+4}\m{3+6}}
+{\color{sub}\footnotesize \tP{2} \yr{80 Ba, 80 Bh} \gap \yr{80 Bh} is a numerical $\rightarrow$ companion.}
+
+\sbs{%
+\lead{Idea}
+\begin{itemize}
+  \item \textbf{Lazy learner} / instance-based: stores all training tuples, builds \textbf{no model}.
+  \item All work happens at query time.
+  \item ``Tell me who your neighbours are and I will tell you who you are.''
+\end{itemize}
+\lead{Algorithm (KNN)}
+\begin{enumerate}
+  \item Choose $k$ and a distance measure (usually Euclidean).
+  \item Compute the distance from the query tuple to \textbf{every} training tuple.
+  \item Take the $k$ smallest $\rightarrow$ the $k$ nearest neighbours.
+  \item \textbf{Classification}: assign the \textbf{majority class} among those $k$.
+        \textbf{Prediction}: take their \textbf{mean} value.
+\end{enumerate}
+\begin{itemize}
+  \item \mk{Normalise the attributes first}, else large-range attrs dominate the distance.
+  \item $k$ odd for 2 classes $\rightarrow$ avoids ties.
+\end{itemize}}{%
+\lead{Choosing $k$}
+\begin{itemize}
+  \item $k$ too small $\rightarrow$ sensitive to \textbf{noise}, overfits.
+  \item $k$ too large $\rightarrow$ neighbourhood includes other classes, underfits.
+  \item Pick by cross-validation; rule of thumb $k \approx \sqrt{n}$.
+\end{itemize}
+\lead{Issues \mk{(80 Ba asks exactly this)}}
+\begin{itemize}
+  \item \textbf{Expensive at query time}: $O(n)$ distance computations \emph{per} query,
+        no model to shortcut it.
+  \item \textbf{Curse of dimensionality}: distances lose meaning in high dims.
+  \item \textbf{Scale sensitive}: needs normalisation.
+  \item \textbf{Irrelevant attributes} distort distance equally w/ relevant ones.
+  \item Needs the whole training set in memory.
+\end{itemize}
+\lead{Fixes / classifier to propose}
+\begin{itemize}
+  \item Speed: k-d trees, ball trees, partial distance, editing (drop redundant tuples).
+  \item \textbf{Attribute weighting} or feature selection for irrelevant attrs.
+  \item \textbf{Distance-weighted voting}: nearer neighbours count more, $w = 1/d^2$.
+  \item \mk{Propose an eager learner} instead: a \textbf{decision tree} or \textbf{Naive Bayes}
+        builds the model once, then classifies in near-constant time, and ignores irrelevant attrs.
+\end{itemize}}
+
+\hr
+
+\T{3.5 Bayesian Classifier}
+
+\Q{Explain Naive Bayesian classification with a suitable example.}{\m{8}\m{6}\m{10}\m{3+7}}
+{\color{sub}\footnotesize \tS{8} \yr{81 Ba, 79 Bh, 78 Bh, 76 Ash, 75 Ash, 72 Ch, 71 Ch, 71 Shr}
+\gap \mk{Numerical in 79 Bh and 72 Ch} $\rightarrow$ companion.}
+
+\sbsr{0.52}{%
+\lead{Bayes theorem}
+\[ P(H|X) = \frac{P(X|H)\,P(H)}{P(X)} \]
+\begin{itemize}
+  \item $X$ $=$ the tuple (evidence), $H$ $=$ hypothesis ``$X$ belongs to class $C$''.
+  \item $P(H)$ $=$ \textbf{prior}: probability of the class before seeing $X$.
+  \item $P(H|X)$ $=$ \textbf{posterior}: after seeing $X$. \mk{This is what we want.}
+  \item $P(X|H)$ $=$ \textbf{likelihood}. \quad $P(X)$ $=$ \textbf{evidence}.
+  \item \yr{76 Ash asks prior vs posterior directly.}
+\end{itemize}
+\lead{Naive Bayes}
+\begin{itemize}
+  \item Classify $X$ to the class $C_i$ w/ the largest $P(C_i|X)$.
+  \item $P(X)$ is the \textbf{same for every class} $\rightarrow$ ignore it; just maximise
+        $P(X|C_i)P(C_i)$.
+  \item \mk{``Naive'' = class-conditional independence assumption}: given the class, the attributes
+        are assumed independent, so
+        \[ P(X|C_i) = \prod_{k=1}^{n} P(x_k|C_i) \]
+  \item That turns 1 hard joint probability into $n$ easy counts. \textbf{This is the whole trick.}
+\end{itemize}}{%
+\lead{Algorithm steps \mk{(write these, then compute)}}
+\begin{enumerate}
+  \item Compute the prior $P(C_i) = |C_{i,D}|/|D|$ for each class.
+  \item For each attribute value $x_k$ in $X$, compute $P(x_k|C_i)$ from the counts.
+  \begin{itemize}
+    \item Categorical: $P(x_k|C_i) = |{\rm tuples\ in\ }C_i{\rm\ with\ }x_k| / |C_{i,D}|$.
+    \item Continuous: assume Gaussian,
+          $g(x,\mu,\sigma)=\frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{(x-\mu)^2}{2\sigma^2}}$.
+  \end{itemize}
+  \item Multiply: $P(X|C_i) = \prod_k P(x_k|C_i)$.
+  \item Compute $P(X|C_i)\,P(C_i)$ for every class.
+  \item \textbf{Predict the class w/ the maximum value.}
+\end{enumerate}
+\lead{Laplacian correction \yr{78 Bh short note \m{4}}}
+\begin{itemize}
+  \item \textbf{Problem}: if any $P(x_k|C_i)=0$, the whole product collapses to \textbf{zero},
+        wiping out all the other evidence.
+  \item \textbf{Fix}: add 1 to every count (and $k$ to each denominator, $k$ $=$ no. of values):
+        \[ P(x_k|C_i) = \frac{n_{k}+1}{|C_{i,D}|+k} \]
+  \item Eg counts $0, 990, 10$ $\rightarrow$ probabilities $0, 0.990, 0.010$;
+        after correction $\frac{1}{1003}, \frac{991}{1003}, \frac{11}{1003}
+        = 0.001,\ 0.988,\ 0.011$.
+  \item \mk{Estimates barely move, but the zero is gone.}
+\end{itemize}}
+
+\vspace{3pt}
+\sbsr{0.60}{%
+\creamq{Bayesian Belief Network (BBN)}{\m{3+5}\m{10}}
+{\color{sub}\footnotesize \yr{81 Ba, 71 Ch} \gap 81 Ba is a numerical $\rightarrow$ companion.}
+\begin{itemize}
+  \item \textbf{Limitation of Naive Bayes}: the independence assumption is
+        \mk{almost never true} in practice. Correlated attributes get double-counted, which
+        skews the posterior.
+  \item \textbf{BBN drops it}: allows a \emph{subset} of attributes to be conditionally dependent.
+  \item Two parts:
+  \begin{enumerate}
+    \item \textbf{Directed acyclic graph (DAG)}: node $=$ variable, arc $=$ direct causal
+          dependence. Arc $Y \rightarrow Z$ means $Y$ is a \textbf{parent} of $Z$.
+    \item \textbf{Conditional probability table (CPT)} at each node, giving
+          $P(Z\,|\,\text{parents}(Z))$.
+  \end{enumerate}
+  \item Joint probability:
+        $P(x_1,\dots,x_n) = \prod_{i=1}^{n} P\big(x_i\,|\,\text{parents}(x_i)\big)$
+  \item A node is conditionally independent of its non-descendants given its parents.
+  \item \textbf{When to use which} \yr{71 Ch}:
+  \begin{itemize}
+    \item \textbf{Naive Bayes} $\rightarrow$ attributes roughly independent, need speed,
+          little data, many attributes. Eg text/spam classification.
+    \item \textbf{BBN} $\rightarrow$ known causal structure and clear dependencies,
+          need to reason w/ missing values. Eg medical diagnosis.
+  \end{itemize}
+\end{itemize}}{%
+\figT{pyq_bbn_81ba}
+{\color{sub}\footnotesize The 81 Ba network and its CPTs. Solved in the companion.}}
+
+\vspace{2pt}
+\sbs{%
+\lead{Advantages}
+\begin{itemize}
+  \item Fast to train and to classify; single pass over the data.
+  \item Needs little training data.
+  \item Handles missing values naturally (skip that factor).
+  \item \textbf{Provably optimal} when the independence assumption actually holds.
+  \item Incremental: counts can be updated as data arrives.
+\end{itemize}}{%
+\lead{Disadvantages}
+\begin{itemize}
+  \item Independence assumption rarely holds $\rightarrow$ accuracy loss on correlated attrs.
+  \item Zero-frequency problem (needs Laplacian correction).
+  \item Cannot model interactions between attributes.
+  \item Continuous attributes need a distribution assumption (usually Gaussian) or discretisation.
+\end{itemize}}
+
+\hr
+
+\T{3.6 Artificial Neural Network Classifier}
+
+\Q{How does an ANN classifier work? Explain with algorithm.}{\m{8}\m{2+6}\m{5}}
+{\color{sub}\footnotesize \tF{5} \yr{81 Ba, 80 Ba, 76 Ch, 75 Ch, 72 Ka} \gap
+\yr{76 Ch} is a gradient numerical $\rightarrow$ companion.}
+
+\sbsr{0.58}{%
+\lead{Structure}
+\begin{itemize}
+  \item Set of connected \textbf{units (neurons)} in layers, each connection carrying a \textbf{weight}.
+  \item \textbf{Input layer} (1 unit per attribute) $\rightarrow$ one or more \textbf{hidden layers}
+        $\rightarrow$ \textbf{output layer} (1 unit per class).
+  \item \textbf{Multilayer feed-forward}: no cycles, no connections within a layer.
+  \item Each unit: net input $=\sum_i w_i x_i + \theta$ (bias), then an \textbf{activation function}.
+  \item \textbf{Sigmoid} (logistic):
+        \[ \sigma(\theta) = \frac{1}{1+e^{-\theta}}, \qquad
+           \sigma'(\theta) = \sigma(\theta)\big(1-\sigma(\theta)\big) \]
+  \item \mk{That derivative identity is why sigmoid is used} $\rightarrow$ makes backprop cheap.
+\end{itemize}
+\lead{Backpropagation algorithm}
+\begin{enumerate}
+  \item \textbf{Initialise} weights and biases to small random numbers.
+  \item \textbf{Forward pass}: compute net input and output for each unit, layer by layer.
+  \item \textbf{Compute error at the output}: $Err_j = O_j(1-O_j)(T_j - O_j)$
+        where $T_j$ $=$ target.
+  \item \textbf{Backpropagate}: for a hidden unit,
+        $Err_j = O_j(1-O_j)\sum_k Err_k w_{jk}$.
+  \item \textbf{Update} weights and biases:
+        $w_{ij} \mathrel{+}= l\cdot Err_j\cdot O_i$, \quad $\theta_j \mathrel{+}= l\cdot Err_j$
+        \ ($l$ $=$ learning rate).
+  \item \textbf{Repeat} until the terminating condition (error small, or epoch limit).
+\end{enumerate}}{%
+\figT{pyq_ann_76ch}
+{\color{sub}\footnotesize The 76 Ch network. Gradients derived in the companion.}
+\vspace{3pt}
+\lead{General considerations \yr{72 Ka asks this}}
+\begin{itemize}
+  \item \textbf{Network topology}: no. of hidden layers and units. Chosen by trial and error;
+        no rule.
+  \item \textbf{Input encoding}: normalise inputs to $[0,1]$; one unit per nominal value.
+  \item \textbf{Output encoding}: 1 unit for 2 classes, else 1 per class.
+  \item \textbf{Learning rate $l$}: too large $\rightarrow$ oscillation; too small $\rightarrow$
+        slow. Often $1/t$ w/ epoch $t$.
+  \item \textbf{Initial weights}: small random, to break symmetry.
+  \item \textbf{Update mode}: case updating (per tuple) vs epoch updating (per pass).
+\end{itemize}}
+
+\vspace{2pt}
+\sbs{%
+\lead{Advantages}
+\begin{itemize}
+  \item High tolerance of \textbf{noisy} data.
+  \item Classifies patterns it was not trained on.
+  \item Works when the relationship is unknown / non-linear.
+  \item Well suited to continuous-valued inputs and outputs.
+  \item Inherently \textbf{parallel}.
+\end{itemize}}{%
+\lead{Disadvantages}
+\begin{itemize}
+  \item \mk{Black box}: poor interpretability, hard to justify a decision.
+  \item Long training times.
+  \item Many parameters set empirically (topology, $l$, epochs).
+  \item Needs numeric input $\rightarrow$ encoding effort.
+  \item Can get stuck in a \textbf{local minimum}.
+\end{itemize}}
+
+\hr
+
+\T{3.7 Issues: Overfitting, Validation, Model Comparison}
+
+\Q{Confusion matrix: calculate accuracy, sensitivity, specificity, precision, recall.}{\m{4}\m{10}\m{3+5}}
+{\color{sub}\footnotesize \tS{7} \yr{80 Ba, 78 Bh, 75 Ash, 74 Ash, 73 Shr, 72 Ch, 70 Ch, 74 Ch}
+\gap \mk{8 papers. Highest-yield numerical in the whole syllabus} $\rightarrow$ companion.}
+
+\sbsr{0.55}{%
+\lead{The 4 building blocks}
+\begin{itemize}
+  \item \textbf{TP}: positive tuples correctly labelled positive.
+  \item \textbf{TN}: negative tuples correctly labelled negative.
+  \item \textbf{FP}: negative tuples wrongly labelled positive \emph{(false alarm)}.
+  \item \textbf{FN}: positive tuples wrongly labelled negative \emph{(miss)}.
+  \item $P = TP+FN$ (all actual positives), $N = FP+TN$ (all actual negatives).
+\end{itemize}
+\lead{All the formulas \mk{(one table, learn it whole)}}
+\begin{tabularx}{\linewidth}{@{}L{3.5cm}X@{}}
+\toprule
+\hrow \thead{Measure} & \thead{Formula} \\
+Accuracy & $(TP+TN)/(P+N)$ \\
+Error rate & $(FP+FN)/(P+N) = 1-$accuracy \\
+Sensitivity, recall, TPR & $TP/P$ \\
+Specificity, TNR & $TN/N$ \\
+False alarm rate, FPR & $FP/N = 1-$specificity \\
+Precision & $TP/(TP+FP)$ \\
+$F_1$ score & $\dfrac{2\times prec \times rec}{prec+rec}$ \\
+$F_\beta$ & $\dfrac{(1+\beta^2)\,prec\times rec}{\beta^2 prec+rec}$ \\
+\bottomrule
+\end{tabularx}
+\begin{itemize}
+  \item \textbf{Recall $=$ sensitivity $=$ TPR}. Three names, one thing. Papers use all three.
+  \item $F_1$ $=$ harmonic mean of precision and recall.
+\end{itemize}}{%
+\figT{confusion_matrix}
+\vspace{2pt}
+\begin{center}\fbox{\begin{minipage}{0.95\linewidth}\small
+\mk{THE trap in this chapter.} Han \& Kamber put \textbf{actual on the rows, predicted on the
+columns}. \textbf{The IOE papers flip this between years}: 74 Ch and 75 Ash write
+``Actual $\backslash$ Predicted'', but 78 Bh and 72 Ch write ``Predicted / Actual''. \\
+If you read the orientation wrong, \textbf{FP and FN swap}, so sensitivity and specificity swap
+and precision is wrong. \\
+\mk{Always copy the row/column labels onto your answer sheet first}, mark which axis is actual,
+then compute. \added
+\end{minipage}}\end{center}}
+
+\vspace{3pt}
+\sbs{%
+\lead{When accuracy is the wrong measure \yr{80 Ba \m{3}}}
+\begin{itemize}
+  \item \mk{Class imbalance.} If 99\% of tuples are negative, a classifier that always says
+        ``negative'' scores \textbf{99\% accuracy} and is useless.
+  \item Examples: cancer screening, fraud detection, intrusion detection, defect detection.
+  \item \textbf{Use instead}: sensitivity $+$ specificity separately, precision/recall, $F_1$,
+        ROC/AUC, or cost-sensitive measures.
+  \item Note: $accuracy = sensitivity\frac{P}{P+N} + specificity\frac{N}{P+N}$
+        $\rightarrow$ accuracy hides the split.
+\end{itemize}
+\lead{Precision vs recall trade-off \yr{74 Ch asks the inverse relation}}
+\begin{itemize}
+  \item Loosen the threshold $\rightarrow$ more positives flagged $\rightarrow$ recall $\uparrow$,
+        precision $\downarrow$.
+  \item Tighten it $\rightarrow$ precision $\uparrow$, recall $\downarrow$.
+  \item Perfect precision \emph{and} recall is only possible w/ a perfect classifier
+        $\rightarrow$ report $F_1$ to balance them.
+\end{itemize}}{%
+\lead{Validation methods}
+\begin{itemize}
+  \item \textbf{Holdout}: split, typically $\tfrac{2}{3}$ train / $\tfrac{1}{3}$ test. Fast, but
+        depends on the one split.
+  \item \textbf{Random subsampling}: holdout repeated $k$ times, accuracies averaged.
+  \item \textbf{$k$-fold cross-validation} \mk{(the standard)}
+  \begin{itemize}
+    \item Split into $k$ equal folds. Train on $k-1$, test on 1. Rotate $k$ times.
+    \item Every tuple is used for training $k-1$ times and testing exactly once.
+    \item \textbf{$k=10$ recommended} (low bias and variance).
+    \item \emph{Stratified}: each fold keeps the class distribution. Preferred.
+  \end{itemize}
+  \item \textbf{Leave-one-out}: $k = n$. Expensive; for very small data sets.
+  \item \textbf{Bootstrap (.632)}: sample $n$ tuples \emph{with} replacement. On average
+        63.2\% of tuples appear in the training set. Best for small data sets.
+\end{itemize}
+\lead{ROC curve \yr{73 Shr \m{1}}}
+\begin{itemize}
+  \item Plot of \textbf{TPR (y)} vs \textbf{FPR (x)} as the decision threshold sweeps.
+  \item Diagonal $=$ random guessing. Top-left corner $=$ perfect.
+  \item \textbf{AUC} $=$ area under the curve. Closer to 1 $=$ better; 0.5 $=$ useless.
+  \item Lets you compare 2 classifiers \textbf{independently of the threshold} and of class balance.
+\end{itemize}}
+
+\vspace{2pt}
+\lead{Improving accuracy: ensembles \mk{(1 line each is enough)}}
+\begin{itemize}
+  \item \textbf{Bagging}: train $k$ models on bootstrap samples, take a \textbf{majority vote}.
+        Reduces \emph{variance}; helps unstable learners like decision trees.
+  \item \textbf{Boosting / AdaBoost}: train models \textbf{sequentially}, each re-weighting the
+        tuples the previous one got wrong; weighted vote. Reduces \emph{bias}; can overfit noise.
+  \item \textbf{Random forest}: bagging $+$ a random attribute subset at each split.
+        Robust to overfitting, handles many attributes.
+\end{itemize}
+
+\hr
+
+%-----------------------------------------------------------------------
+\T{3.8 PYQ Mapping}
+
+{\color{sub}\footnotesize \mk{N} marks a question fully solved in the Ch 3 Numerical companion.}
+
+\creamq{3.1 Basics}{}
+\begin{enumerate}
+  \item \tP{3} Block diagram of classification stages $+$ inverse precision/recall relation
+        $+$ confusion matrix \mk{N}. \hfill \m{2+3+5} \yr{74 Ch}
+  \item Why is classification supervised? $+$ impurity measures. \hfill \m{10} \yr{71 Shr}
+  \item When do we use a classifier? (asked w/ the KNN numerical) \hfill \m{3} \yr{80 Bh}
+\end{enumerate}
+
+\creamq{3.2 Decision Tree}{}
+\begin{enumerate}[start=4]
+  \item \mk{N} Draw a decision tree using \textbf{ID3}. \hfill \m{10} \yr{79 Bh}
+  \item \mk{N} Construct a tree using \textbf{information gain} $+$ predict a new tuple. \hfill \m{8} \yr{78 Bh}
+  \item \mk{N} Which attribute would ID-3 choose as root? $+$ draw the full tree. \hfill \m{2+5} \yr{76 Ch}
+  \item \tS{} Decision tree $+$ how information gain selects attributes, w/ example. \hfill \m{8} \yr{73 Shr}
+  \item Accuracy of classifiers $+$ how to select the best root attribute. \hfill \m{4+6} \yr{76 Ash}
+  \item \tP{2} Gini-Index w/ example $+$ handling overfitting. \hfill \m{6+4} \yr{75 Ch} \m{10} \yr{71 Ch}
+  \item \tP{1} \textbf{Hunt's Algorithm} $+$ test conditions per attribute type. \hfill \m{10} \yr{72 Ka}
+  \item \tP{1} Decision tree w/ the concept of Naive Bayes classification. \hfill \m{10} \yr{74 Ch}
+\end{enumerate}
+
+\creamq{3.3 Rule Based}{}
+\begin{enumerate}[start=12]
+  \item \tF{4} How a rule-based classifier works, w/ example. \hfill \m{7} \yr{80 Bh} \m{2+8} \yr{74 Ash}
+  \item \tP{1} Rule-based classifier $+$ \textbf{CN2} $+$ define \textbf{Accuracy} and
+        \textbf{Laplace} measures. \hfill \m{9} \yr{70 Ch}
+  \item \tP{1} Why is conflict resolution necessary? $+$ common strategies. \hfill \m{2+4} \yr{76 Ch}
+\end{enumerate}
+
+\creamq{3.4 Nearest Neighbor}{}
+\begin{enumerate}[start=15]
+  \item \mk{N} Classify a flower w/ \textbf{KNN}, $K=3$, Euclidean. \hfill \m{3+6} \yr{80 Bh}
+  \item \tP{1} What is KNN? Main issues? Propose a classifier that solves them. \hfill \m{1+3+4} \yr{80 Ba}
+\end{enumerate}
+
+\creamq{3.5 Bayesian}{}
+\begin{enumerate}[start=17]
+  \item \tS{} Naive Bayes w/ suitable example. \hfill \m{8} \yr{75 Ash} \m{6} \yr{78 Bh}
+  \item \mk{N} Classify \code{X = (Home Owner=No, Marital Status=Married, Income=\$120K)}. \hfill \m{6} \yr{79 Bh}
+  \item \mk{N} Predict class for \code{X = (age=youth, income=medium, student=yes, credit=fair)}. \hfill \m{10} \yr{72 Ch}
+  \item \tP{1} Prior and posterior probabilities $+$ algorithmic steps $+$ strengths. \hfill \m{3+7} \yr{76 Ash}
+  \item \tP{1} Bayes classifier $+$ when to use Naive Bayes vs BBN. \hfill \m{10} \yr{71 Ch}
+  \item \tP{1} Naive Bayes $+$ solving overfitting in classification. \hfill \m{10} \yr{71 Shr}
+  \item \mk{N} Limitation of Naive Bayes $+$ how BBN overcomes it $+$ heart-disease inference. \hfill \m{3+5} \yr{81 Ba}
+  \item \tP{1} Short note: \textbf{Laplacian correction}. \hfill \m{4} \yr{78 Bh}
+\end{enumerate}
+
+\creamq{3.6 ANN}{}
+\begin{enumerate}[start=25]
+  \item \tF{3} How does an ANN classifier work? w/ algorithm. \hfill \m{8} \yr{81 Ba, 75 Ch} \m{2+6} \yr{72 Ka}
+  \item \mk{N} Compute activation at $h_1$, $\partial E/\partial o$, $\partial E/\partial w_{12}$. \hfill \m{2+3+4} \yr{76 Ch}
+  \item \tP{1} Short note: Neural Network Classifier. \hfill \m{5} \yr{80 Ba}
+\end{enumerate}
+
+\creamq{3.7 Issues: Overfitting, Validation, Model Comparison}{}
+\begin{enumerate}[start=28]
+  \item \mk{N} \tS{7} \textbf{Confusion matrix numericals} (8 papers, same method, different tables):
+  \begin{itemize}
+    \item Classification error, sensitivity, false alarm rate, specificity \hfill \m{3+5} \yr{80 Ba}
+    \item Accuracy, TPR, FPR, precision \hfill \m{4} \yr{78 Bh}
+    \item Accuracy, sensitivity, specificity, precision \hfill \m{10} \yr{75 Ash, 74 Ash}
+    \item $+$ recall \hfill \m{10} \yr{72 Ch}
+    \item ROC $+$ TPR, FPR, precision \hfill \m{1+3+6} \yr{73 Shr}
+    \item Build the matrix from 2 predicted sequences, then 4 metrics \hfill \m{10} \yr{70 Ch}
+    \item Given matrix $\rightarrow$ accuracy, sensitivity, precision \hfill \m{5} \yr{74 Ch}
+  \end{itemize}
+  \item \tP{1} When can you \emph{not} use accuracy? Give examples. \hfill \m{3} \yr{80 Ba}
+  \item \tP{1} Short note: Overfitting problem in classification. \hfill \m{4} \yr{78 Bh}
+\end{enumerate}
+
+\lead{Coverage check}
+\begin{itemize}
+  \item All Ch 3 PYQs covered. \textbf{12 are numerical} $\rightarrow$ all solved in the companion.
+  \item \textbf{Gaps filled by research} \added:
+  \begin{itemize}
+    \item \textbf{Laplace and m-estimate} rule measures and the \textbf{CN2} algorithm \yr{70 Ch}:
+          absent from every source note; taken from Tan/Steinbach and Han \& Kamber §8.4.
+    \item \textbf{Conflict resolution strategies} \yr{76 Ch}: only named in the notes, not explained.
+    \item The \textbf{confusion-matrix orientation trap} (papers flip actual/predicted between years).
+  \end{itemize}
+\end{itemize}
+
+\lead{Sources used for this chapter}
+\begin{itemize}
+  \item \textbf{Han \& Kamber 3rd ed}, ch 8 (basic concepts, decision tree induction, attribute
+        selection measures, Bayes, rule-based, model evaluation) and ch 9 (BBN, backpropagation,
+        lazy learners). \mk{Primary authority; every formula above checked against it.}
+  \item \textbf{DBK Lectures 5--11} (Thapathali): Hunt's algorithm, tree construction, Naive Bayes,
+        KNN, ANN, evaluation.
+  \item \code{data mining\_/Chapter 3 - Classification.pdf}, \code{hunts algorithm.pdf},
+        \code{ClassificationDecisionTree.ppt}, \code{Chapter8\_2.ppt}, \code{Bayes\_Net.docx}.
+\end{itemize}

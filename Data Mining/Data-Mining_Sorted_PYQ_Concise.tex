@@ -1,0 +1,230 @@
+\documentclass[10pt]{article}
+\usepackage{hyperref}
+\usepackage{amsmath, amssymb, amsfonts}
+\usepackage[margin=1cm]{geometry}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{multicol}
+\usepackage{titlesec}
+\parindent 0pt
+\setlength{\columnsep}{18pt}
+\setlist{noitemsep, topsep=1pt, leftmargin=1.4em}
+\titlespacing*{\section}{0pt}{4pt}{2pt}
+\titleformat{\section}{\normalfont\large\bfseries}{\thesection.}{0.5em}{}
+
+\begin{document}
+\begin{center}
+  {\Large\bfseries Data Mining (CT72502 / CT725)} \quad {\large Concise PYQ}
+\end{center}
+\vspace{2pt}
+\small
+\textbf{Notes:} TU IOE PYQ 2070--2081 (17 papers). Regular = \textbf{bold}, Back / New Back = normal.
+Single common paper for BEX + BCT --- no programme split.
+Marks in (); unique values only.
+Keys: (I)=Importance/Need \quad (+)=Advantage \quad (-)=Disadvantage \quad +Fig=Figure \quad +Eg=Example \quad Vs=Compare/Differentiate.
+\vspace{2pt}
+\hrule
+\vspace{4pt}
+
+\begin{multicols}{2}
+\footnotesize
+
+\section*{1. Introduction}
+\begin{itemize}
+  \item Data mining +process / general steps; applications \hfill (2+3)(2+6)(1+5)(4)(10)
+  \item KDD steps +Eg \hfill (2+5)(3+7)
+  \item ``Data rich but information poor'' --- justify \hfill (8)
+  \item Data warehousing +Eg where used; key features \hfill (2+4)(2+5)
+  \item DW architecture +analytical processing \hfill (8)
+  \item DW Vs data mining; DW Vs database (similar too) \hfill (3+7)(2+2)
+  \item DM system integrated with DB/DW +Fig process \hfill (4+2)
+  \item Data warehouse Vs data mart; snowflake scheme +Eg \hfill (2+4)(15)
+\end{itemize}
+
+\section*{2. Data Preprocessing}
+\begin{itemize}
+  \item Data types of attributes \hfill (10)
+  \item Data pre-processing (I) +major tasks; data clearing \hfill (2+7)(4+4)(5+5)
+  \item Data quality elements; data transformation by normalization +Eg \hfill (2+6)
+  \item Normalize 200/300/400/600/1000 --- min-max (0,1), Z-score, decimal scaling \hfill (2+2+2)
+  \item Missing values --- methods to handle \hfill (5)(2)
+  \item Data integration issues \hfill (5)
+  \item Curse of dimensionality +avoid; noisy data impact \hfill (5)
+  \item PCA for dimensionality reduction; principal components + \% variance ($3\times3$ covariance) \hfill (10)(4)
+  \item Short notes: data smoothing, data normalization, data transformation \hfill (3)(4)
+\end{itemize}
+\textbf{OLAP \& Multidimensional}
+\begin{itemize}
+  \item OLAP operations over multidim. DW; OLAP Vs OLTP \hfill (6+4)(10)(5+5)(2+5+3)
+  \item Dimensional data; base \& apex cuboid; slice \& dice; roll up/down +Eg \hfill (2+3+3+3)
+  \item Star schema (spectator/location/game, charge) + OLAP ops \hfill (3+3)
+  \item Snowflake schema (time/location/supplier/brand/product) + OLAP ops \hfill (3+3)
+  \item Short notes: OLAP; OLAP operations; OLAP and OLTP \hfill (4)
+\end{itemize}
+\textbf{Similarity Measures}
+\begin{itemize}
+  \item Similarity/dissimilarity; cosine + Euclidean (Size/Weight/Color/Taste table) \hfill (3+3+3)
+  \item Types of similarity measures +application areas \hfill (3)
+  \item Jaccard, SMC, symmetric dissimilarity (Ram/Laxmi/Shyam); cosine of d1,d2 \hfill (2+2+2+1)
+  \item Manhattan \& Supremum distance matrix; cosine D1/D2; Jaccard+SMC P/Q \hfill (2+1+2)
+  \item Minkowski distance --- metric properties \hfill (10)(4)(3)
+\end{itemize}
+
+\section*{3. Classification}
+\begin{itemize}
+  \item Classification stages +Fig block; precision Vs recall inverse \hfill (2+3+5)
+  \item Classification as supervised learning; impurity measures \hfill (10)
+\end{itemize}
+\textbf{Decision Tree}
+\begin{itemize}
+  \item ID3 tree (Age/Income/Student/Credit\_Rating $\to$ Buy's Computer) \hfill (10)
+  \item Information gain tree (Gender/Car/Travel cost/Income $\to$ Transport) +predict \hfill (8)
+  \item Mushroom (Shape/Color/Odor) --- ID3 root +full tree \hfill (2+5)
+  \item Decision tree + information gain for attribute selection +Eg \hfill (8)
+  \item Gini index +Eg; overfitting in DT \hfill (6+4)(10)
+  \item Best root attribute; classifier accuracy \hfill (4+6)
+  \item Hunt's algorithm + test conditions per attribute type \hfill (10)
+  \item DT with Naive Bayes concept +Eg \hfill (10)
+\end{itemize}
+\textbf{Rule Based}
+\begin{itemize}
+  \item Rule based classifier working +Eg; classification principles \hfill (7)(2+8)
+  \item CN2 algorithm; ``Accuracy'' \& ``Laplace'' rule-evaluation measures \hfill (9)
+  \item Conflict resolution strategies (I) \hfill (2+4)
+\end{itemize}
+\textbf{Nearest Neighbor}
+\begin{itemize}
+  \item KNN K=3 Euclidean (iris Sepal/Petal table) \hfill (3+6)
+  \item NN classifier + issues + better classifier \hfill (1+3+4)
+\end{itemize}
+\textbf{Bayesian}
+\begin{itemize}
+  \item Naive Bayesian classification +Eg; algorithmic steps +strengths \hfill (8)(6)(3+7)
+  \item Prior Vs posterior probability \hfill (3)
+  \item Classify X=(Home Owner, Marital Status, Income \$120K) --- defaulted borrower \hfill (6)
+  \item Classify X=(youth, medium, student yes, fair) --- buys computer (RID table) \hfill (10)
+  \item Naive Bayes limitation; Bayesian Belief Network +Fig (heart disease CPTs) \hfill (3+5)(10)
+  \item Laplacian correction \hfill (4)
+\end{itemize}
+\textbf{ANN Classifier}
+\begin{itemize}
+  \item How ANN / neural net classifier works +algorithm +general considerations \hfill (8)(2+6)(5)
+  \item Feed-forward net +Fig --- activation at $h_1$; $\partial E/\partial o$; $\partial E/\partial w_{12}$ \hfill (2+3+4)
+\end{itemize}
+\textbf{Issues: Overfitting / Validation}
+\begin{itemize}
+  \item Confusion matrix $\to$ accuracy, sensitivity, specificity, precision, recall \hfill (10)(4)
+  \item When accuracy fails +Eg; classification error, false alarm rate \hfill (3+5)
+  \item ROC +TPR, FPR, precision \hfill (1+3+6)
+  \item Confusion matrix from predicted sequences (classifiers X, Y) \hfill (10)
+  \item Overfitting problem \hfill (4)
+\end{itemize}
+
+\section*{4. Association Analysis}
+\begin{itemize}
+  \item Association analysis (I) +market-basket; where applicable \hfill (2+5)(2+6)(10)
+  \item Support \& confidence (I) \hfill (10)
+  \item Pattern evaluation (I) --- statistical interestingness measures +Eg \hfill (8)
+  \item Market basket analysis \hfill (4)
+\end{itemize}
+\textbf{Apriori}
+\begin{itemize}
+  \item Apriori principle +Eg; optimizing brute force; generate rules \hfill (2+6)(10)
+  \item Why 100\% confidence uninteresting but 99\% interesting \hfill (4)
+  \item Apriori numericals \hfill (2+7)(4+5)(8)(12)(10)
+    \begin{itemize}
+      \item min sup count 4, conf 80\% (T100--T106, F/A/C/D/G\dots)
+      \item min sup 2 (10=ACD, 20=BCE, 30=ABCE, 40=BE)
+      \item sup 50\%, conf 80\% (6 txns A,B/A,D/A,C/B,E/B,D,E/A,E,C)
+      \item sup 2/9, conf 7/9 (fast food Order:1--9, M1--M5) +rules $X\wedge Y\to Z$
+      \item conf 60\%, sup 30\%, L=3 +F-List (T1--T6, A,B,C,T,M,P,D,K)
+      \item sup 20\%, conf 80\% (TID 1--9, M1--M5)
+      \item sup 50\% (1=ACD, 2=BD, 3=ABCE, 4=BDF)
+    \end{itemize}
+\end{itemize}
+\textbf{FP-Growth / FP-Tree}
+\begin{itemize}
+  \item FP-Growth algorithm +Eg; (+) over Apriori; frequent itemset \hfill (2+5)(8)(10)(2+6)(1+8)
+  \item FP-Tree construction numericals \hfill (4+4)(2+7)(2+8)
+    \begin{itemize}
+      \item TID 01--05 (f,a,c,d,g,i,m,p \dots)
+      \item min sup 60\%, conf 80\% (T100--T500, \{M,O,N,K,E,Y\}\dots)
+      \item sup 33.34\%, conf 60\% (HotDogs/Buns/Ketchup/Coke/Chips)
+      \item Camera/Laptop/Pen drive/Mobile/Earphone (T1--T6)
+      \item sup 30\%, conf 75\% (1--8, P,Q,R,S,T)
+    \end{itemize}
+\end{itemize}
+\textbf{Categorical / Sequential / Subgraph}
+\begin{itemize}
+  \item Categorical attributes --- handling +issues +Eg \hfill (3+3)(2+3+3)(4)
+  \item Subsequences of $<$\{2,3,5\}\{6,7,8\}\{9,1\}\{7,4\}$>$; 4-subsequences of $<$\{1,3\}\{2\}\{2,3\}\{4\}$>$ \hfill (3+3)
+  \item Subgraph pattern; candidate sub-graphs by edge-growing +Fig \hfill (2)(3+3)
+  \item AprioriALL sequential pattern mining; sequential pattern \hfill (3)
+\end{itemize}
+
+\section*{5. Cluster Analysis}
+\begin{itemize}
+  \item Cluster analysis + applications + types of clusters; Vs classification \hfill (8)(5)(2+6)(3+4)
+  \item Clustering as unsupervised learning; Bisecting K-means \hfill (10)
+  \item Types of clustering methods; partition based methods \hfill (10)
+  \item Contiguous cluster + algorithm \hfill (10)
+  \item Internet-user segmentation --- choose algorithm +validate cluster \hfill (2+6)
+\end{itemize}
+\textbf{K-means}
+\begin{itemize}
+  \item K-means algorithm +limitation/demerits; optimal K strategy \hfill (2+6)(4+4)(4+6)
+  \item Hierarchical Vs partitioning clustering \hfill (2+8)
+  \item K-means numericals \hfill (2+8)(5+3)(10)(8)
+    \begin{itemize}
+      \item K=2, 6 instances (1,2)(2.5,1)(3.5,1.5)(4,1)(3.5,2.5)(5,3)
+      \item K=2, A/B (1,2)(2.5,4.5)(4,6)(3.5,4)(4,5.5)(3,6)
+      \item A/B (1,1)(1.5,2)(3,4)(5,7)(3.5,5)(4.5,5)(3.5,4.5)
+      \item K=3, matrix $X$ (10 pts), centers (6.2,3.2)(6.6,3.7)(6.5,3.0)
+    \end{itemize}
+\end{itemize}
+\textbf{Hierarchical}
+\begin{itemize}
+  \item Hierarchical clustering +dendrogram; agglomerative Vs divisive +Eg \hfill (2+7)(10)
+  \item Dendrogram numericals \hfill (8)(4+4)
+    \begin{itemize}
+      \item p1--p6 distance matrix (0.24/0.22/0.37\dots)
+      \item complete-linkage, Euclidean, p1--p6 (x,y) coordinates
+      \item A--F distance matrix --- single-link \& complete-link
+    \end{itemize}
+\end{itemize}
+\textbf{DBSCAN}
+\begin{itemize}
+  \item DBSCAN algorithm +Eg; core/border/noise points; handling noise; avoid issues \hfill (3+5)(8)(8+2)(7)
+  \item Neighborhood quantification; Eps \& MinPts empirically; Eps1$<$Eps2 subset proof \hfill (2+2+2)
+  \item Density based cluster + algorithm; outliers \hfill (8)
+  \item Density reachable / density connected \hfill (4)
+\end{itemize}
+\textbf{Issues}
+\begin{itemize}
+  \item Cluster validity measures; cluster evaluation; issues in clustering \hfill (10)(4)(3)
+\end{itemize}
+
+\section*{6. Anomaly / Fraud Detection}
+\begin{itemize}
+  \item Anomaly detection (I) +distance based method \hfill (2+3)(8)(2+6)(4+3)(10)(5)
+  \item Types of anomaly detection schemes; compare three methods \hfill (2+2+4)(6)
+  \item Where applicable; importance in security \hfill (3+3)(5)
+  \item Types of outlier +Eg; density based outlier detection \hfill (5+3)
+  \item Issues in anomaly detection \hfill (2)(4)
+  \item False alarm rate \& detection rate (P=0.01 / 0.99, 99\% normal) \hfill (3)
+  \item Nearest-Neighbor for anomaly detection \hfill (10)
+  \item Clustering for anomaly detection; base rate fallacy; convex hull method \hfill (3)(15)
+\end{itemize}
+
+\section*{7. Advanced Applications}
+\begin{itemize}
+  \item Web mining --- structure/taxonomy/categories; challenges \hfill (3+5)(6)(8)(5)
+  \item Text mining key steps; page rank +algorithm \hfill (4+4)(5)(4)
+  \item PageRank numerical --- damping 0.85, 5 iterations, initial 0.25 +Fig \hfill (8)
+  \item Multimedia mining; visual data mining \hfill (6)(3)(4)
+  \item Time series data mining +Eg \hfill (6)(5)(4)
+\end{itemize}
+
+\end{multicols}
+\end{document}

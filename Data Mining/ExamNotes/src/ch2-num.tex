@@ -1,0 +1,635 @@
+%=======================================================================
+%  CH 2 — NUMERICAL PROBLEMS & SOLUTIONS
+%=======================================================================
+\section*{\color{acc}Ch 2 --- Data Preprocessing --- Numerical Problems \& Solutions}
+\vspace{-4pt}{\color{acc}\rule{\textwidth}{1.1pt}}\vspace{4pt}
+
+{\color{sub}\footnotesize 6 distinct numerical methods $\cdot$ 8 PYQ instances solved $\cdot$
+2 extra practice problems. Every answer independently recomputed, not copied from the source notes.}
+
+\lead{Methods in this chapter}
+\begin{itemize}
+  \item \textbf{M1} Normalisation: min-max, z-score, decimal scaling \hfill \yr{78 Bh}
+  \item \textbf{M2} PCA: principal components + proportion of variance \hfill \yr{76 Ch}
+  \item \textbf{M3} Distance measures + distance matrix (Euclidean, Manhattan, Supremum) \hfill \yr{80 Bh, 76 Ch}
+  \item \textbf{M4} Cosine similarity \hfill \yr{80 Bh, 80 Ba, 76 Ch}
+  \item \textbf{M5} Binary similarity: Jaccard, SMC, symmetric dissimilarity \hfill \yr{80 Ba, 76 Ch}
+  \item \textbf{M6} Schema design + OLAP operation sequence \hfill \yr{78 Bh, 76 Ch}
+\end{itemize}
+
+\hr
+
+%=======================================================================
+\T{M1. Normalisation}
+
+\lead{Method}
+\begin{itemize}
+  \item \textbf{Min-max} maps $v$ into $[new\_min,\ new\_max]$, preserves relationships exactly:
+        \[ v' = \frac{v - min_A}{max_A - min_A}(new\_max_A - new\_min_A) + new\_min_A \]
+  \item \textbf{Z-score} uses mean $\bar{A}$ and std deviation $\sigma_A$. Use when min/max unknown,
+        or outliers would squash a min-max result:
+        \[ v' = \frac{v - \bar{A}}{\sigma_A} \qquad
+           \sigma_A = \sqrt{\tfrac{1}{n}\textstyle\sum (v_i-\bar{A})^2} \]
+  \item \textbf{Decimal scaling} moves the decimal point:
+        \[ v' = \frac{v}{10^{\,j}}, \quad j = \text{smallest int such that } \max(|v'|) < 1 \]
+\end{itemize}
+
+\begin{center}\fbox{\begin{minipage}{0.9\textwidth}\small
+\mk{Two traps.} (1) Z-score uses the \textbf{mean}, not the min. (2) For decimal scaling,
+$j$ must make the max \emph{strictly} less than 1, so $\max|v|=1000$ needs $j=4$, not $j=3$.
+\end{minipage}}\end{center}
+
+\creamq{Problem 1.1}{\m{2+2+2}}
+{\color{sub}\footnotesize \yr{78 Bh} \gap ``Use the following methods to normalize the data:
+200, 300, 400, 600 and 1000.'' \ (a) min-max with $min=0,max=1$ \ (b) z-score \ (c) decimal scaling.}
+
+\lead{Given} $v = \{200, 300, 400, 600, 1000\}$, $n = 5$, $min_A = 200$, $max_A = 1000$.
+
+\vspace{2pt}
+\sbsr{0.46}{%
+\lead{(a) Min-max, $new\_min=0$, $new\_max=1$}
+\[ v' = \frac{v-200}{1000-200} = \frac{v-200}{800} \]
+\begin{tabularx}{\linewidth}{@{}L{1.6cm}X@{}}
+\toprule
+\hrow \thead{$v$} & \thead{$v'$} \\
+200  & $0/800 = \mathbf{0}$ \\
+300  & $100/800 = \mathbf{0.125}$ \\
+400  & $200/800 = \mathbf{0.25}$ \\
+600  & $400/800 = \mathbf{0.5}$ \\
+1000 & $800/800 = \mathbf{1}$ \\
+\bottomrule
+\end{tabularx}}{%
+\lead{(b) Z-score}
+\begin{itemize}
+  \item Mean $\bar{A} = \dfrac{200+300+400+600+1000}{5} = \dfrac{2500}{5} = 500$
+  \item Deviations: $-300,\,-200,\,-100,\,+100,\,+500$
+  \item $\sum(v-\bar{A})^2 = 90000+40000+10000+10000+250000 = 400000$
+  \item $\sigma_A = \sqrt{400000/5} = \sqrt{80000} = 282.84$
+\end{itemize}
+\begin{tabularx}{\linewidth}{@{}L{1.6cm}X@{}}
+\toprule
+\hrow \thead{$v$} & \thead{$v' = (v-500)/282.84$} \\
+200  & $-300/282.84 = \mathbf{-1.0607}$ \\
+300  & $-200/282.84 = \mathbf{-0.7071}$ \\
+400  & $-100/282.84 = \mathbf{-0.3536}$ \\
+600  & $+100/282.84 = \mathbf{+0.3536}$ \\
+1000 & $+500/282.84 = \mathbf{+1.7678}$ \\
+\bottomrule
+\end{tabularx}}
+
+\vspace{3pt}
+\sbsr{0.46}{%
+\lead{(c) Decimal scaling}
+\begin{itemize}
+  \item $\max|v| = 1000$.
+  \item $j=3$: $1000/10^3 = 1$, not $<1$. \mk{Rejected.}
+  \item $j=4$: $1000/10^4 = 0.1 < 1$. \textbf{Use $j=4$.}
+\end{itemize}
+\begin{tabularx}{\linewidth}{@{}L{1.6cm}X@{}}
+\toprule
+\hrow \thead{$v$} & \thead{$v' = v/10000$} \\
+200  & $\mathbf{0.02}$ \\
+300  & $\mathbf{0.03}$ \\
+400  & $\mathbf{0.04}$ \\
+600  & $\mathbf{0.06}$ \\
+1000 & $\mathbf{0.1}$ \\
+\bottomrule
+\end{tabularx}}{%
+\lead{Note on $\sigma$ \added}
+\begin{itemize}
+  \item Above uses the \textbf{population} std deviation, $\sqrt{\sum(v-\bar A)^2/n}$.
+        This is the form Han \& Kamber use, so it is the safe default.
+  \item If the examiner wants the \textbf{sample} std deviation, divide by $n-1$:
+        $s = \sqrt{400000/4} = 316.23$, giving
+        $-0.9487,\ -0.6325,\ -0.3162,\ +0.3162,\ +1.5811$.
+  \item \mk{State which one you used.} Either is accepted if labelled.
+\end{itemize}}
+
+\lead{Final answer}
+\begin{itemize}
+  \item Min-max: $0,\ 0.125,\ 0.25,\ 0.5,\ 1$
+  \item Z-score: $-1.0607,\ -0.7071,\ -0.3536,\ +0.3536,\ +1.7678$
+  \item Decimal scaling: $0.02,\ 0.03,\ 0.04,\ 0.06,\ 0.1$
+\end{itemize}
+
+\hr
+
+%=======================================================================
+\T{M2. PCA: principal components and proportion of variance}
+
+\lead{Method}
+\begin{enumerate}
+  \item Start from the \textbf{covariance matrix} $\Sigma$ (if given raw data: subtract the mean first,
+        then compute $\Sigma$).
+  \item Solve the characteristic equation $|\Sigma - \lambda I| = 0$ for the eigenvalues $\lambda$.
+  \item Sort $\lambda$ in \textbf{descending} order. $\lambda_i$ $=$ variance carried by component $i$.
+  \item For each $\lambda_i$ solve $(\Sigma - \lambda_i I)\,\mathbf{v} = 0$ for the eigenvector, then
+        normalise it to unit length.
+  \item Proportion of total variance explained by component $i$:
+        \[ \frac{\lambda_i}{\sum_j \lambda_j}, \qquad \sum_j\lambda_j = \text{trace}(\Sigma) \]
+\end{enumerate}
+\begin{itemize}
+  \item \mk{Check:} the eigenvalues must sum to the trace. Free and catches arithmetic slips.
+\end{itemize}
+
+\creamq{Problem 2.1}{\m{4}}
+{\color{sub}\footnotesize \yr{76 Ch} \gap ``Find the principal components and the proportion of the
+total variance explained by each when the covariance matrix of $X_1, X_2, X_3$ is:''}
+
+\lead{Given}
+\[ \Sigma = \begin{bmatrix} 1 & -2 & 0 \\ -2 & 5 & 0 \\ 0 & 0 & 2 \end{bmatrix} \]
+
+\lead{Step 1: characteristic equation}
+\begin{itemize}
+  \item The third row/column is decoupled, so $\Sigma$ splits into a $2\times2$ block and a $1\times1$ block.
+  \item From the $1\times1$ block: $(2-\lambda) = 0 \Rightarrow \boxed{\lambda = 2}$
+  \item From the $2\times2$ block:
+        \[ (1-\lambda)(5-\lambda) - (-2)(-2) = 0 \]
+        \[ 5 - 6\lambda + \lambda^2 - 4 = 0 \;\Rightarrow\; \lambda^2 - 6\lambda + 1 = 0 \]
+        \[ \lambda = \frac{6 \pm \sqrt{36-4}}{2} = \frac{6 \pm \sqrt{32}}{2} = 3 \pm 2\sqrt{2} \]
+\end{itemize}
+
+\lead{Step 2: eigenvalues, sorted}
+\begin{itemize}
+  \item $\lambda_1 = 3 + 2\sqrt{2} = \mathbf{5.8284}$
+  \item $\lambda_2 = \mathbf{2}$
+  \item $\lambda_3 = 3 - 2\sqrt{2} = \mathbf{0.1716}$
+  \item \textbf{Check}: $5.8284 + 2 + 0.1716 = 8 = $ trace$(\Sigma) = 1+5+2$. \mk{Correct.}
+\end{itemize}
+
+\vspace{2pt}
+\sbsr{0.52}{%
+\lead{Step 3: eigenvectors}
+\begin{itemize}
+  \item \textbf{For $\lambda_1 = 5.8284$}: row 1 gives
+        $(1-5.8284)v_1 - 2v_2 = 0 \Rightarrow v_2 = -2.4142\,v_1$; row 3 gives $v_3=0$.
+        \\ $\mathbf{e}_1 \propto (1,\ -2.4142,\ 0)$, length $\sqrt{1+5.8284}=2.6131$
+        \\ $\mathbf{e}_1 = (0.3827,\ -0.9239,\ 0)$
+  \item \textbf{For $\lambda_2 = 2$}: rows 1 and 2 force $v_1=v_2=0$, $v_3$ free.
+        \\ $\mathbf{e}_2 = (0,\ 0,\ 1)$
+  \item \textbf{For $\lambda_3 = 0.1716$}: row 1 gives
+        $0.8284\,v_1 = 2v_2 \Rightarrow v_2 = 0.4142\,v_1$; $v_3=0$.
+        \\ $\mathbf{e}_3 \propto (1,\ 0.4142,\ 0)$, length $1.0824$
+        \\ $\mathbf{e}_3 = (0.9239,\ 0.3827,\ 0)$
+  \item \textbf{Check}: $\mathbf{e}_1\cdot\mathbf{e}_3 = (0.3827)(0.9239)+(-0.9239)(0.3827) = 0$
+        $\rightarrow$ orthogonal, as required for a symmetric matrix.
+\end{itemize}}{%
+\lead{Step 4: proportion of variance}
+\begin{tabularx}{\linewidth}{@{}L{1.5cm}L{1.7cm}X@{}}
+\toprule
+\hrow \thead{PC} & \thead{$\lambda_i$} & \thead{$\lambda_i/8$} \\
+PC1 & 5.8284 & $\mathbf{72.86\%}$ \\
+PC2 & 2.0000 & $\mathbf{25.00\%}$ \\
+PC3 & 0.1716 & $\mathbf{2.14\%}$ \\
+\midrule
+Total & 8.0000 & 100\% \\
+\bottomrule
+\end{tabularx}
+\vspace{3pt}
+\lead{Interpretation}
+\begin{itemize}
+  \item PC1 alone carries $\approx$73\% of the variance.
+  \item PC1 $+$ PC2 carry $\mathbf{97.86\%}$ $\rightarrow$ dropping PC3 loses only $2.14\%$.
+  \item So 3 dims reduce to \textbf{2} with almost no information loss.
+\end{itemize}}
+
+\lead{Final answer}
+\begin{itemize}
+  \item PC1: $\lambda_1 = 5.8284$, $\mathbf{e}_1 = (0.3827, -0.9239, 0)$, \textbf{72.86\%}
+  \item PC2: $\lambda_2 = 2$, $\mathbf{e}_2 = (0, 0, 1)$, \textbf{25.00\%}
+  \item PC3: $\lambda_3 = 0.1716$, $\mathbf{e}_3 = (0.9239, 0.3827, 0)$, \textbf{2.14\%}
+\end{itemize}
+
+\hr
+
+%=======================================================================
+\T{M3. Distance measures and the distance matrix}
+
+\lead{Method}
+\begin{itemize}
+  \item All three are Minkowski with a different $r$:
+        \[ dist(p,q) = \Big(\textstyle\sum_{k=1}^{n}|p_k-q_k|^{\,r}\Big)^{1/r} \]
+  \item $r=1$ \textbf{Manhattan}: $\sum|p_k-q_k|$
+  \item $r=2$ \textbf{Euclidean}: $\sqrt{\sum(p_k-q_k)^2}$
+  \item $r\to\infty$ \textbf{Supremum} ($L_\infty$, Chebyshev): $\max_k|p_k-q_k|$
+  \item A \textbf{distance matrix} is symmetric with a zero diagonal, so only the lower triangle
+        needs computing.
+\end{itemize}
+
+\creamq{Warm-up (Han \& Kamber Example 2.19--2.20)}{}
+{\color{sub}\footnotesize Smallest case that shows all three at once. Worth memorising as a check. \added}
+\begin{itemize}
+  \item $x_1 = (1,2)$, $x_2 = (3,5)$. Differences: $2$ and $3$.
+  \item Euclidean $=\sqrt{2^2+3^2} = \sqrt{13} = \mathbf{3.61}$
+  \item Manhattan $= 2+3 = \mathbf{5}$
+  \item Supremum $= \max(2,3) = \mathbf{3}$
+  \item \mk{Ordering}: supremum $\le$ Euclidean $\le$ Manhattan. Always true. Use it to catch slips.
+\end{itemize}
+
+\creamq{Problem 3.1}{\m{2}}
+{\color{sub}\footnotesize \yr{76 Ch} \gap ``Given the following points compute the distance matrix
+using the Manhattan and the Supremum distance.''}
+
+\lead{Given} $P_1(6,3)$, $P_2(2,2)$, $P_3(3,4)$.
+
+\vspace{2pt}
+\sbs{%
+\lead{Manhattan ($L_1$)}
+\begin{itemize}
+  \item $d(P_1,P_2) = |6-2|+|3-2| = 4+1 = 5$
+  \item $d(P_1,P_3) = |6-3|+|3-4| = 3+1 = 4$
+  \item $d(P_2,P_3) = |2-3|+|2-4| = 1+2 = 3$
+\end{itemize}
+\begin{tabularx}{\linewidth}{@{}L{1.1cm}XXX@{}}
+\toprule
+\hrow & \thead{$P_1$} & \thead{$P_2$} & \thead{$P_3$} \\
+$P_1$ & 0 & 5 & 4 \\
+$P_2$ & 5 & 0 & 3 \\
+$P_3$ & 4 & 3 & 0 \\
+\bottomrule
+\end{tabularx}}{%
+\lead{Supremum ($L_\infty$)}
+\begin{itemize}
+  \item $d(P_1,P_2) = \max(4,1) = 4$
+  \item $d(P_1,P_3) = \max(3,1) = 3$
+  \item $d(P_2,P_3) = \max(1,2) = 2$
+\end{itemize}
+\begin{tabularx}{\linewidth}{@{}L{1.1cm}XXX@{}}
+\toprule
+\hrow & \thead{$P_1$} & \thead{$P_2$} & \thead{$P_3$} \\
+$P_1$ & 0 & 4 & 3 \\
+$P_2$ & 4 & 0 & 2 \\
+$P_3$ & 3 & 2 & 0 \\
+\bottomrule
+\end{tabularx}}
+
+\vspace{2pt}
+\begin{itemize}
+  \item \mk{Sanity check}: supremum $\le$ Euclidean $\le$ Manhattan, always. Holds here (4$\le$5, 3$\le$4, 2$\le$3).
+\end{itemize}
+
+\creamq{Problem 3.2}{\m{3}}
+{\color{sub}\footnotesize \yr{80 Bh} \gap ``Calculate the Euclidean distance between object 1, 3 and object 1, 4.''}
+
+\lead{Given}
+\begin{tabularx}{0.72\textwidth}{@{}L{1.6cm}XXXX@{}}
+\toprule
+\hrow \thead{Object} & \thead{Size} & \thead{Weight} & \thead{Color\_Code} & \thead{Taste\_Score} \\
+1 & 4 & 56 & 7 & 10 \\
+2 & 3 & 53 & 8 & 11 \\
+3 & 7 & 58 & 6 & 9 \\
+4 & 9 & 55 & 7 & 12 \\
+\bottomrule
+\end{tabularx}
+
+\lead{Step-by-step}
+\begin{itemize}
+  \item $d(O_1,O_3)$: differences $(4-7, 56-58, 7-6, 10-9) = (-3,-2,1,1)$
+        \[ = \sqrt{9+4+1+1} = \sqrt{15} = \mathbf{3.873} \]
+  \item $d(O_1,O_4)$: differences $(4-9, 56-55, 7-7, 10-12) = (-5,1,0,-2)$
+        \[ = \sqrt{25+1+0+4} = \sqrt{30} = \mathbf{5.477} \]
+\end{itemize}
+
+\lead{Final answer} $d(O_1,O_3) = 3.873$, \quad $d(O_1,O_4) = 5.477$.
+Object 1 is closer to object 3 than to object 4.
+
+\hr
+
+%=======================================================================
+\T{M4. Cosine similarity}
+
+\lead{Method}
+\[ \cos(d_1,d_2) = \frac{d_1\cdot d_2}{\lVert d_1\rVert\,\lVert d_2\rVert},
+   \qquad d_1\cdot d_2 = \sum_k d_{1k}d_{2k}, \qquad \lVert d\rVert = \sqrt{\sum_k d_k^2} \]
+\begin{itemize}
+  \item Measures \textbf{angle only}, ignores magnitude $\rightarrow$ used for documents.
+  \item Always lay out 3 lines: dot product, then each length, then divide.
+\end{itemize}
+
+\begin{center}\fbox{\begin{minipage}{0.9\textwidth}\small
+\mk{Typo in your class notes} \added\ : DBK's Lecture-2 cosine example prints
+$\lVert d_2\rVert = (6)^{0.5} = 2.245$. In fact $\sqrt{6} = \mathbf{2.449}$.
+His final answer $0.3150$ is correct and only follows from $2.449$
+($5/(6.481\times2.449) = 0.315$), so $2.245$ is a slip. Copy the method, not that number.
+\end{minipage}}\end{center}
+
+\creamq{Problem 4.1}{\m{3}}
+{\color{sub}\footnotesize \yr{80 Bh} \gap ``Find the cosine similarity between Object-2 and 4.''
+Same table as Problem 3.2.}
+
+\lead{Given} $O_2 = (3, 53, 8, 11)$, \quad $O_4 = (9, 55, 7, 12)$.
+
+\lead{Step-by-step}
+\begin{itemize}
+  \item Dot product: $3(9) + 53(55) + 8(7) + 11(12) = 27 + 2915 + 56 + 132 = 3130$
+  \item $\lVert O_2\rVert = \sqrt{9 + 2809 + 64 + 121} = \sqrt{3003} = 54.800$
+  \item $\lVert O_4\rVert = \sqrt{81 + 3025 + 49 + 144} = \sqrt{3299} = 57.437$
+  \item $\cos = \dfrac{3130}{54.800 \times 57.437} = \dfrac{3130}{3147.5}$
+\end{itemize}
+
+\lead{Final answer} $\cos(O_2,O_4) = \mathbf{0.9944}$.
+\begin{itemize}
+  \item Nearly 1 $\rightarrow$ the two objects point almost the same direction.
+  \item \mk{Why so high:} \emph{Weight} ($\approx$50) dwarfs the other attributes and dominates
+        the dot product. \textbf{Normalise before using cosine} on mixed-scale attributes,
+        or the answer means very little. \added
+\end{itemize}
+
+\creamq{Problem 4.2}{\m{1}}
+{\color{sub}\footnotesize \yr{80 Ba} \gap ``Find the Cosine similarity between documents
+$d_1 = (4,1,2,0,2,0,0)$ and $d_2 = (2,1,3,0,1,1,1)$.''}
+
+\begin{itemize}
+  \item Dot: $8 + 1 + 6 + 0 + 2 + 0 + 0 = 17$
+  \item $\lVert d_1\rVert = \sqrt{16+1+4+0+4+0+0} = \sqrt{25} = 5$
+  \item $\lVert d_2\rVert = \sqrt{4+1+9+0+1+1+1} = \sqrt{17} = 4.1231$
+  \item $\cos = 17/(5 \times 4.1231) = 17/20.6155$
+\end{itemize}
+\lead{Final answer} $\mathbf{0.8246}$
+
+\creamq{Problem 4.3}{\m{1}}
+{\color{sub}\footnotesize \yr{76 Ch} \gap ``Given the following two vectors compute the Cosine
+similarity: $D_1 = [4\ 0\ 2\ 0\ 1]$, $D_2 = [2\ 0\ 0\ 2\ 2]$.''}
+
+\begin{itemize}
+  \item Dot: $8 + 0 + 0 + 0 + 2 = 10$
+  \item $\lVert D_1\rVert = \sqrt{16+0+4+0+1} = \sqrt{21} = 4.5826$
+  \item $\lVert D_2\rVert = \sqrt{4+0+0+4+4} = \sqrt{12} = 3.4641$
+  \item $\cos = 10/(4.5826 \times 3.4641) = 10/15.8745$
+\end{itemize}
+\lead{Final answer} $\mathbf{0.6300}$
+
+\hr
+
+%=======================================================================
+\T{M5. Binary similarity: Jaccard, SMC, symmetric dissimilarity}
+
+\lead{Method}
+\begin{itemize}
+  \item Encode each object as a 0/1 vector, then count over all attribute positions:
+  \begin{itemize}
+    \item $M_{11}$: both 1 \qquad $M_{00}$: both 0
+    \item $M_{10}$: $p=1,q=0$ \qquad $M_{01}$: $p=0,q=1$
+  \end{itemize}
+  \item \textbf{SMC} (symmetric binary, 0-0 counts):
+        $\displaystyle \frac{M_{11}+M_{00}}{M_{11}+M_{00}+M_{10}+M_{01}}$
+  \item \textbf{Jaccard} (asymmetric binary, 0-0 ignored):
+        $\displaystyle \frac{M_{11}}{M_{11}+M_{10}+M_{01}}$
+  \item \textbf{Symmetric binary dissimilarity}:
+        $\displaystyle d = \frac{M_{10}+M_{01}}{M_{11}+M_{00}+M_{10}+M_{01}} = 1 - SMC$
+  \item \textbf{Nominal (non-binary) dissimilarity}: $d = (p-m)/p$, $m =$ matches, $p =$ total attrs.
+\end{itemize}
+
+\creamq{Problem 5.1}{\m{2}}
+{\color{sub}\footnotesize \yr{76 Ch} \gap ``Given the following two binary vectors compute the
+Jaccard similarity and Simple Matching Coefficient. $P = [0\ 0\ 1\ 1\ 0\ 1]$, $Q = [1\ 1\ 1\ 1\ 0\ 1]$.''}
+
+\lead{Step-by-step: tabulate position by position}
+\begin{tabularx}{0.78\textwidth}{@{}L{1.8cm}XXXXXX@{}}
+\toprule
+\hrow \thead{Position} & 1 & 2 & 3 & 4 & 5 & 6 \\
+$P$ & 0 & 0 & 1 & 1 & 0 & 1 \\
+$Q$ & 1 & 1 & 1 & 1 & 0 & 1 \\
+Category & $M_{01}$ & $M_{01}$ & $M_{11}$ & $M_{11}$ & $M_{00}$ & $M_{11}$ \\
+\bottomrule
+\end{tabularx}
+
+\begin{itemize}
+  \item $M_{11} = 3$, \quad $M_{01} = 2$, \quad $M_{10} = 0$, \quad $M_{00} = 1$ \quad (total $= 6$ \checkmark)
+  \item $J = \dfrac{3}{3+0+2} = \dfrac{3}{5}$
+  \item $SMC = \dfrac{3+1}{6} = \dfrac{4}{6}$
+\end{itemize}
+\lead{Final answer} $J = \mathbf{0.6}$, \quad $SMC = \mathbf{0.667}$.
+SMC is higher because it credits the one 0-0 match that Jaccard discards.
+
+\creamq{Problem 5.2}{\m{2+2+2}}
+{\color{sub}\footnotesize \yr{80 Ba} \gap (i) Jaccard(Ram, Laxmi) for asymmetric binary attributes
+\ (ii) symmetric-binary dissimilarity $d$(Laxmi, Shyam) \ (iii) SMC(Ram, Shyam).}
+
+\lead{Given}
+\begin{tabularx}{\textwidth}{@{}L{1.5cm}XXXXXXX@{}}
+\toprule
+\hrow \thead{Name} & \thead{Gender} & \thead{Eyecolor} & \thead{Haircolor} & \thead{Test-1} & \thead{Test-2} & \thead{Fever} & \thead{Cough} \\
+Ram   & M & Black & Gray  & P & N & P & N \\
+Laxmi & F & Blue  & Black & P & P & N & N \\
+Shyam & M & Blue  & Gray  & N & P & N & P \\
+\bottomrule
+\end{tabularx}
+
+\lead{Step 0: split the attributes \mk{(the whole question turns on this)}}
+\begin{itemize}
+  \item \textbf{Asymmetric binary} $=$ Test-1, Test-2, Fever, Cough. Encode $P=1$, $N=0$.
+        A shared ``N'' is uninformative, which is exactly what ``asymmetric'' means.
+  \item \textbf{Symmetric} $=$ Gender, Eyecolor, Haircolor. Both/all states are equally meaningful.
+  \item Encoded: Ram $=(1,0,1,0)$, \ Laxmi $=(1,1,0,0)$, \ Shyam $=(0,1,0,1)$.
+\end{itemize}
+
+\vspace{2pt}
+\sbsr{0.48}{%
+\lead{(i) Jaccard(Ram, Laxmi)}
+\begin{tabularx}{\linewidth}{@{}L{1.7cm}XXXX@{}}
+\toprule
+\hrow & \thead{T1} & \thead{T2} & \thead{Fev} & \thead{Cou} \\
+Ram   & 1 & 0 & 1 & 0 \\
+Laxmi & 1 & 1 & 0 & 0 \\
+Cat.  & $M_{11}$ & $M_{01}$ & $M_{10}$ & $M_{00}$ \\
+\bottomrule
+\end{tabularx}
+\begin{itemize}
+  \item $M_{11}=1,\ M_{01}=1,\ M_{10}=1,\ M_{00}=1$
+  \item $J = \dfrac{1}{1+1+1} = \dfrac{1}{3}$
+\end{itemize}
+\lead{Answer} $J = \mathbf{0.333}$
+
+\vspace{3pt}
+\lead{(iii) SMC(Ram, Shyam)}
+\begin{tabularx}{\linewidth}{@{}L{1.7cm}XXXX@{}}
+\toprule
+\hrow & \thead{T1} & \thead{T2} & \thead{Fev} & \thead{Cou} \\
+Ram   & 1 & 0 & 1 & 0 \\
+Shyam & 0 & 1 & 0 & 1 \\
+Cat.  & $M_{10}$ & $M_{01}$ & $M_{10}$ & $M_{01}$ \\
+\bottomrule
+\end{tabularx}
+\begin{itemize}
+  \item $M_{11}=0,\ M_{00}=0,\ M_{10}=2,\ M_{01}=2$
+  \item $SMC = \dfrac{0+0}{4} = 0$
+\end{itemize}
+\lead{Answer} $SMC = \mathbf{0}$ \ (they disagree on every test).}{%
+\lead{(ii) $d$(Laxmi, Shyam), symmetric binary attributes}
+\begin{itemize}
+  \item Across these 3 people each of Gender / Eyecolor / Haircolor takes exactly \textbf{2 states},
+        and neither state is an ``absence'' $\rightarrow$ all 3 are \textbf{symmetric binary}.
+  \item Encode: Gender M$=$1 $\cdot$ Eyecolor Black$=$1 $\cdot$ Haircolor Gray$=$1.
+\end{itemize}
+\begin{tabularx}{\linewidth}{@{}L{1.7cm}XXX@{}}
+\toprule
+\hrow & \thead{Gender} & \thead{Eye} & \thead{Hair} \\
+Laxmi (F, Blue, Black) & 0 & 0 & 0 \\
+Shyam (M, Blue, Gray)  & 1 & 0 & 1 \\
+Category & $s$ & $t$ & $s$ \\
+\bottomrule
+\end{tabularx}
+\begin{itemize}
+  \item $q=0$, \ $r=0$, \ $s=2$, \ $t=1$ \quad (total $p=3$ \checkmark)
+  \item Symmetric binary dissimilarity keeps $t$:
+        \[ d = \frac{r+s}{q+r+s+t} = \frac{0+2}{3} = \frac{2}{3} \]
+\end{itemize}
+\lead{Answer} $d = \mathbf{0.667}$
+
+\vspace{2pt}
+\begin{center}\fbox{\begin{minipage}{0.95\linewidth}\small
+\mk{Cross-check}: for binary attrs the symmetric formula reduces to the nominal mismatch ratio
+$(p-m)/p = (3-1)/3 = 2/3$. Same answer by both routes, so the encoding choice is safe. \added
+\end{minipage}}\end{center}}
+
+\hr
+
+%=======================================================================
+\T{M6. Schema design + OLAP operation sequence}
+
+\lead{Method}
+\begin{enumerate}
+  \item Put the \textbf{measures} in a central \textbf{fact table}, plus one foreign key per dimension.
+  \item Draw one \textbf{dimension table} per dimension around it.
+  \begin{itemize}
+    \item \textbf{Star} $\rightarrow$ leave dimension tables flat (de-normalised).
+    \item \textbf{Snowflake} $\rightarrow$ normalise the hierarchies into sub-tables
+          (\texttt{location} $\rightarrow$ \texttt{city} $\rightarrow$ \texttt{province}).
+  \end{itemize}
+  \item For the OLAP sequence, work from the base cuboid and ask, per dimension:
+  \begin{itemize}
+    \item Need a coarser level? $\rightarrow$ \textbf{roll-up}
+    \item Need a finer level? $\rightarrow$ \textbf{drill-down}
+    \item Restricting 1 dimension? $\rightarrow$ \textbf{slice}. Restricting $\ge$2? $\rightarrow$ \textbf{dice}
+    \item Dimension not wanted at all? $\rightarrow$ \textbf{roll-up to \texttt{all}} (dimension reduction)
+  \end{itemize}
+  \item $n$ dimensions $\rightarrow$ $2^n$ cuboids in the lattice.
+\end{enumerate}
+
+\creamq{Problem 6.1}{\m{3+3}}
+{\color{sub}\footnotesize \yr{78 Bh} \gap DW with dimensions \emph{date, spectator, location, game}
+and measures \emph{count, charge}. (a) Draw a star schema. (b) From the base cuboid, which OLAP
+operations list the total charge paid by \emph{student} spectators at \emph{Dashrath Stadium} in \emph{2021}?}
+
+\sbsr{0.55}{%
+\lead{(a) Star schema}
+\begin{itemize}
+  \item \textbf{Fact table} \texttt{Sales}: \texttt{date\_key}, \texttt{spectator\_key},
+        \texttt{location\_key}, \texttt{game\_key}, \texttt{count}, \texttt{charge}.
+  \item \textbf{Dimension tables} (flat, one hop from the fact table):
+  \begin{itemize}
+    \item \texttt{date(date\_key, day, month, quarter, year)}
+    \item \texttt{spectator(spectator\_key, name, status, phone, address)}
+          where \texttt{status} $\in$ \{student, adult, senior\}
+    \item \texttt{location(location\_key, name, street, city, province, country)}
+    \item \texttt{game(game\_key, name, description, sport\_type)}
+  \end{itemize}
+  \item 4 dimensions $\rightarrow$ $2^4 = \mathbf{16}$ cuboids in the lattice.
+\end{itemize}
+\vspace{2pt}
+\lead{(b) OLAP operation sequence}
+\begin{enumerate}
+  \item \textbf{Roll-up} on \emph{date} from \texttt{date\_key} to \texttt{year}.
+  \item \textbf{Roll-up} on \emph{spectator} from \texttt{spectator\_key} to \texttt{status}.
+  \item \textbf{Roll-up} on \emph{location} from \texttt{location\_key} to \texttt{location\_name}.
+  \item \textbf{Roll-up} on \emph{game} to \texttt{all} (the question does not split by game).
+  \item \textbf{Dice} with
+        \texttt{year = 2021} \textbf{and} \texttt{status = student}
+        \textbf{and} \texttt{location\_name = ``Dashrath Stadium''}.
+  \item Read off the \texttt{charge} measure (summed).
+\end{enumerate}
+\begin{itemize}
+  \item \mk{Dice, not slice} $\rightarrow$ 3 dimensions are being restricted at once.
+\end{itemize}}{%
+\figT{star_schema}}
+
+\creamq{Problem 6.2}{\m{3+3}}
+{\color{sub}\footnotesize \yr{76 Ch} \gap DW with dimensions \emph{time, location, supplier, brand,
+product} and measures \emph{count, price}. (a) Draw a snowflake schema. (b) From the base cuboid,
+which OLAP operations list total \emph{count} for a certain \emph{brand}, for each \emph{state},
+per \emph{year}? \emph{location} has country/state/city; \emph{time} has year/month/day.}
+
+\sbsr{0.55}{%
+\lead{(a) Snowflake schema}
+\begin{itemize}
+  \item \textbf{Fact table} \texttt{Sales}: \texttt{time\_key}, \texttt{location\_key},
+        \texttt{supplier\_key}, \texttt{brand\_key}, \texttt{product\_key},
+        \texttt{count}, \texttt{price}.
+  \item \textbf{Normalised hierarchies} (this is what makes it a snowflake, not a star):
+  \begin{itemize}
+    \item \texttt{time(time\_key, day, month\_key)} $\rightarrow$
+          \texttt{month(month\_key, month, year)}
+    \item \texttt{location(location\_key, city\_key)} $\rightarrow$
+          \texttt{city(city\_key, city, state\_key)} $\rightarrow$
+          \texttt{state(state\_key, state, country)}
+    \item \texttt{product(product\_key, name, brand\_key)} $\rightarrow$
+          \texttt{brand(brand\_key, brand\_name)}
+    \item \texttt{supplier(supplier\_key, supplier\_name, supplier\_type)}
+  \end{itemize}
+  \item 5 dimensions $\rightarrow$ $2^5 = \mathbf{32}$ cuboids.
+\end{itemize}
+\vspace{2pt}
+\lead{(b) OLAP operation sequence}
+\begin{enumerate}
+  \item \textbf{Roll-up} on \emph{time} from \texttt{day} to \texttt{year}.
+  \item \textbf{Roll-up} on \emph{location} from \texttt{city} to \texttt{state}.
+  \item \textbf{Roll-up} on \emph{supplier} to \texttt{all} (not wanted).
+  \item \textbf{Roll-up} on \emph{product} to \texttt{brand} level.
+  \item \textbf{Slice} on \texttt{brand = }the given brand (1 dimension restricted).
+  \item Result: cuboid \texttt{[year, state]} holding total \texttt{count}.
+\end{enumerate}}{%
+\figT{snowflake_schema}}
+
+\hr
+
+%=======================================================================
+\T{Extra practice (patterns not yet fully covered)}
+
+\creamq{Practice A --- binning for noise smoothing}{}
+{\color{sub}\footnotesize Binning is examined in prose \yr{72 Ka, 76 Ash} but never as a numerical.
+\mk{This is DBK's own worked example} (Lecture-1, ``Binning Methods for Data Smoothing''), so it is
+the likeliest form any future numerical would take. Answers below independently recomputed and they
+match his slide exactly.}
+
+\lead{Problem} Sorted price data: 4, 8, 9, 15, 21, 21, 24, 25, 26, 28, 29, 34.
+Partition into \textbf{equal-depth} bins of depth 4 and smooth by (i) bin means (ii) bin boundaries.
+
+\lead{Solution}
+\begin{itemize}
+  \item 12 values, depth 4 $\rightarrow$ 3 bins.
+  \begin{itemize}
+    \item Bin 1: 4, 8, 9, 15 \qquad Bin 2: 21, 21, 24, 25 \qquad Bin 3: 26, 28, 29, 34
+  \end{itemize}
+  \item \textbf{(i) Smoothing by bin means}
+  \begin{itemize}
+    \item Bin 1 mean $= 36/4 = 9$ $\rightarrow$ \textbf{9, 9, 9, 9}
+    \item Bin 2 mean $= 91/4 = 22.75 \approx 23$ $\rightarrow$ \textbf{23, 23, 23, 23}
+    \item Bin 3 mean $= 117/4 = 29.25 \approx 29$ $\rightarrow$ \textbf{29, 29, 29, 29}
+  \end{itemize}
+  \item \textbf{(ii) Smoothing by bin boundaries} (each value $\rightarrow$ nearer of min/max)
+  \begin{itemize}
+    \item Bin 1 (min 4, max 15): 4, 8, 9, 15 $\rightarrow$ \textbf{4, 4, 4, 15}
+          {\footnotesize (8 and 9 are nearer 4)}
+    \item Bin 2 (min 21, max 25): 21, 21, 24, 25 $\rightarrow$ \textbf{21, 21, 25, 25}
+    \item Bin 3 (min 26, max 34): 26, 28, 29, 34 $\rightarrow$ \textbf{26, 26, 26, 34}
+  \end{itemize}
+  \item \textbf{Equal-width} for contrast: range $=34-4=30$, $N=3$ $\rightarrow$ $W=(B-A)/N = 10$.
+        Intervals $[4,14), [14,24), [24,34]$ $\rightarrow$ counts 3, 3, 6. \mk{Unequal counts:
+        that is the difference from equal-depth.}
+\end{itemize}
+
+\creamq{Practice B --- min-max into a range other than [0,1]}{}
+{\color{sub}\footnotesize Every PYQ so far uses $[0,1]$. The figures below are
+\textbf{Han \& Kamber 3rd ed Example 3.4}, so they are the canonical ones. \added}
+
+\lead{Problem} Income values 12{,}000 to 98{,}000. Normalise \textbf{73{,}600} to the range $[0,1]$,
+then to $[-1,1]$.
+
+\lead{Solution}
+\begin{itemize}
+  \item To $[0,1]$: $v' = \dfrac{73600-12000}{98000-12000}(1-0)+0 = \dfrac{61600}{86000} = \mathbf{0.716}$
+  \item To $[-1,1]$: $v' = \dfrac{61600}{86000}\big(1-(-1)\big)+(-1) = 0.716(2) - 1 = \mathbf{0.432}$
+  \item \mk{Check}: the value sits 71.6\% of the way up the range, so in $[-1,1]$ it must land
+        slightly above the midpoint 0. It does.
+\end{itemize}

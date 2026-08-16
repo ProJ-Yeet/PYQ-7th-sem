@@ -1,0 +1,357 @@
+%=======================================================================
+%  CH 5 — NUMERICAL PROBLEMS & SOLUTIONS
+%=======================================================================
+\section*{\color{acc}Ch 5 --- Cluster Analysis --- Numerical Problems \& Solutions}
+\vspace{-4pt}{\color{acc}\rule{\textwidth}{1.1pt}}\vspace{4pt}
+
+{\color{sub}\footnotesize 3 methods $\cdot$ 11 PYQ instances $\cdot$ every distance recomputed.
+K-means appears in 7 papers and hierarchical dendrograms in 4, so these two methods alone are worth
+around 60 marks across the archive.}
+
+\lead{Methods}
+\begin{itemize}
+  \item \textbf{M1} K-means \hfill \yr{78 Bh, 74 Ash, 75 Ash, 71 Shr, 76 Ch, 81 Ba}
+  \item \textbf{M2} Agglomerative hierarchical clustering $+$ dendrogram \hfill \yr{80 Bh, 80 Ba, 76 Ch}
+  \item \textbf{M3} DBSCAN point classification \hfill \emph{practice}
+\end{itemize}
+
+\hr
+
+%=======================================================================
+\T{M1. K-means}
+
+\lead{Method}
+\begin{enumerate}
+  \item State $K$ and the initial centroids. \mk{Always write down which points you seeded with}
+        --- the answer depends on it and the examiner needs to follow you.
+  \item Build a distance table: every point against every centroid.
+  \item Assign each point to its nearest centroid.
+  \item Recompute each centroid as the \textbf{mean} of its members.
+  \item Repeat until the assignment does not change. \textbf{That repetition is the convergence proof.}
+\end{enumerate}
+\begin{itemize}
+  \item You may compare \emph{squared} distances to avoid square roots --- the ordering is identical.
+        Say that you are doing it.
+\end{itemize}
+
+\creamq{Problems 1.1 and 1.2}{\m{2+6}\m{2+8}}
+{\color{sub}\footnotesize \yr{78 Bh} and \yr{74 Ash} print the \textbf{same 6 instances}
+(A/B vs X/Y column names only). $K=2$.}
+
+\lead{Given} $p_1(1,2)$, $p_2(2.5,1)$, $p_3(3.5,1.5)$, $p_4(4,1)$, $p_5(3.5,2.5)$, $p_6(5,3)$.
+
+\lead{Seeds} Take the two \textbf{most widely separated} points, $c_1 = p_1(1,2)$ and
+$c_2 = p_6(5,3)$. \ (A standard, defensible heuristic; state it.)
+
+\lead{Iteration 1}
+\begin{tabularx}{0.86\textwidth}{@{}L{1.5cm}XXL{2.2cm}@{}}
+\toprule
+\hrow \thead{Point} & \thead{$d$ to $c_1(1,2)$} & \thead{$d$ to $c_2(5,3)$} & \thead{Cluster} \\
+$p_1(1,2)$   & 0     & 4.123 & C1 \\
+$p_2(2.5,1)$ & 1.803 & 3.202 & C1 \\
+$p_3(3.5,1.5)$ & 2.550 & 2.121 & C2 \\
+$p_4(4,1)$   & 3.162 & 2.236 & C2 \\
+$p_5(3.5,2.5)$ & 2.550 & 1.581 & C2 \\
+$p_6(5,3)$   & 4.123 & 0     & C2 \\
+\bottomrule
+\end{tabularx}
+\begin{itemize}
+  \item C1 $=\{p_1,p_2\}$ $\rightarrow$ new centroid $\big(\tfrac{1+2.5}{2},\tfrac{2+1}{2}\big) = \mathbf{(1.75,\ 1.5)}$
+  \item C2 $=\{p_3,p_4,p_5,p_6\}$ $\rightarrow$ new centroid
+        $\big(\tfrac{3.5+4+3.5+5}{4},\tfrac{1.5+1+2.5+3}{4}\big) = \mathbf{(4,\ 2)}$
+\end{itemize}
+
+\lead{Iteration 2}
+\begin{tabularx}{0.86\textwidth}{@{}L{1.5cm}XXL{2.2cm}@{}}
+\toprule
+\hrow \thead{Point} & \thead{$d$ to $(1.75,1.5)$} & \thead{$d$ to $(4,2)$} & \thead{Cluster} \\
+$p_1$ & 0.901 & 3.000 & C1 \\
+$p_2$ & 0.901 & 1.803 & C1 \\
+$p_3$ & 1.750 & 0.707 & C2 \\
+$p_4$ & 2.305 & 1.000 & C2 \\
+$p_5$ & 2.016 & 0.707 & C2 \\
+$p_6$ & 3.580 & 1.414 & C2 \\
+\bottomrule
+\end{tabularx}
+\begin{itemize}
+  \item \mk{Assignment unchanged $\rightarrow$ converged.}
+\end{itemize}
+
+\lead{Final answer}
+\begin{itemize}
+  \item \textbf{Cluster 1} $=\{(1,2),\ (2.5,1)\}$, centroid $(1.75,\ 1.5)$
+  \item \textbf{Cluster 2} $=\{(3.5,1.5),\ (4,1),\ (3.5,2.5),\ (5,3)\}$, centroid $(4,\ 2)$
+  \item Converged in \textbf{2 iterations}.
+\end{itemize}
+
+\begin{center}\fbox{\begin{minipage}{0.92\textwidth}\small
+\mk{Seed sensitivity --- worth a line, since the question asks for limitations.}
+Seeding instead with the \emph{first two} points, $c_1=p_1(1,2)$ and $c_2=p_2(2.5,1)$, gives
+C1$=\{p_1\}$ and C2$=\{p_2,\dots,p_6\}$, which also converges but leaves a
+\textbf{degenerate 1-point cluster}. \\
+Same data, same $K$, \textbf{different answer} --- this is exactly the ``sensitive to initial
+centroids / converges to a local optimum'' limitation. \added
+\end{minipage}}\end{center}
+
+\creamq{Problem 1.3}{\m{4+6}}
+{\color{sub}\footnotesize \yr{75 Ash} \gap 6 rows: (1,2), (2.5,4.5), (4,6), (3.5,4), (4,5.5), (3,6). $K=2$.}
+\begin{itemize}
+  \item Seeds: $c_1 = (1,2)$ (clearly isolated), $c_2 = (4,6)$.
+  \item \textbf{Iteration 1}: $(1,2)\rightarrow$C1. All of $(2.5,4.5)$, $(4,6)$, $(3.5,4)$,
+        $(4,5.5)$, $(3,6)$ are nearer $(4,6)$ $\rightarrow$ C2.
+  \begin{itemize}
+    \item Eg $(2.5,4.5)$: $d$ to $c_1 = \sqrt{1.5^2+2.5^2}=2.92$; to $c_2 = \sqrt{1.5^2+1.5^2}=2.12$ $\rightarrow$ C2.
+    \item Eg $(3.5,4)$: $d$ to $c_1 = \sqrt{2.5^2+2^2}=3.20$; to $c_2 = \sqrt{0.5^2+2^2}=2.06$ $\rightarrow$ C2.
+  \end{itemize}
+  \item New centroids: C1 $=(1,2)$; C2 $=\big(\tfrac{2.5+4+3.5+4+3}{5},\tfrac{4.5+6+4+5.5+6}{5}\big)
+        = \mathbf{(3.4,\ 5.2)}$
+  \item \textbf{Iteration 2}: every C2 member stays nearer $(3.4,5.2)$ than $(1,2)$ $\rightarrow$
+        unchanged $\rightarrow$ \mk{converged}.
+\end{itemize}
+\lead{Final answer} C1 $=\{(1,2)\}$, \ C2 $=\{(2.5,4.5),(4,6),(3.5,4),(4,5.5),(3,6)\}$, centroid $(3.4,5.2)$.
+\begin{itemize}
+  \item \mk{Note}: $(1,2)$ is a genuine outlier here, so the 1-point cluster is the honest answer,
+        not a seeding artefact. Say so, and add that \textbf{K-medoids or DBSCAN} would treat it as noise.
+\end{itemize}
+
+\creamq{Problem 1.4}{\m{10}}
+{\color{sub}\footnotesize \yr{71 Shr} \gap 7 rows: (1,1), (1.5,2), (3,4), (5,7), (3.5,5), (4.5,5), (3.5,4.5). $K=2$.}
+\begin{itemize}
+  \item Seeds $c_1=(1,1)$, $c_2=(5,7)$.
+  \item \textbf{Iteration 1}: $(1,1)$ and $(1.5,2)$ $\rightarrow$ C1; the rest $\rightarrow$ C2.
+  \begin{itemize}
+    \item $(3,4)$: $d$ to $c_1=\sqrt{4+9}=3.61$; to $c_2=\sqrt{4+9}=3.61$ --- \mk{an exact tie}.
+          Break it toward C2 (state your rule).
+  \end{itemize}
+  \item Centroids: C1 $=(1.25,\ 1.5)$; C2 $=\big(\tfrac{3+5+3.5+4.5+3.5}{5},\tfrac{4+7+5+5+4.5}{5}\big)
+        = \mathbf{(3.9,\ 5.1)}$
+  \item \textbf{Iteration 2}: assignments unchanged $\rightarrow$ converged.
+\end{itemize}
+\lead{Final answer} C1 $=\{(1,1),(1.5,2)\}$ centroid $(1.25,1.5)$; \
+C2 $=\{(3,4),(5,7),(3.5,5),(4.5,5),(3.5,4.5)\}$ centroid $(3.9,5.1)$.
+
+\creamq{Problem 1.5}{\m{8}}
+{\color{sub}\footnotesize \yr{76 Ch} \gap 10 points in matrix $X$, $K=3$, initial centres
+red $(6.2,3.2)$, green $(6.6,3.7)$, blue $(6.5,3.0)$. Give the final centres and comment on the
+number of iterations.}
+
+\lead{Given} $p_1(5.9,3.2)$ $p_2(4.6,2.9)$ $p_3(6.2,2.8)$ $p_4(4.7,3.2)$ $p_5(5.5,4.2)$
+$p_6(5.0,3.0)$ $p_7(4.9,3.1)$ $p_8(6.7,3.1)$ $p_9(5.1,3.8)$ $p_{10}(6.0,3.0)$
+
+\lead{Iteration 1} (assign to nearest of the 3 given centres)
+\begin{itemize}
+  \item \textbf{red} $\{p_1,p_2,p_4,p_6,p_7,p_9,p_{10}\}$ \quad \textbf{green} $\{p_5\}$ \quad
+        \textbf{blue} $\{p_3,p_8\}$
+  \item New centres: red $(5.171,\ 3.171)$, green $(5.5,\ 4.2)$, blue $(6.45,\ 2.95)$
+\end{itemize}
+
+\lead{Iteration 2}
+\begin{itemize}
+  \item \textbf{red} $\{p_2,p_4,p_6,p_7\}$ \quad \textbf{green} $\{p_5,p_9\}$ \quad
+        \textbf{blue} $\{p_1,p_3,p_8,p_{10}\}$
+  \item New centres: red $(4.8,\ 3.05)$, green $(5.3,\ 4.0)$, blue $(6.2,\ 3.025)$
+\end{itemize}
+
+\lead{Iteration 3}
+\begin{itemize}
+  \item Every point stays where it was $\rightarrow$ \mk{converged}.
+\end{itemize}
+
+\lead{Final answer}
+\begin{tabularx}{0.86\textwidth}{@{}L{1.9cm}XL{3.2cm}@{}}
+\toprule
+\hrow \thead{Cluster} & \thead{Members} & \thead{Final centre} \\
+red   & $p_2, p_4, p_6, p_7$ & $\mathbf{(4.80,\ 3.05)}$ \\
+green & $p_5, p_9$ & $\mathbf{(5.30,\ 4.00)}$ \\
+blue  & $p_1, p_3, p_8, p_{10}$ & $\mathbf{(6.20,\ 3.025)}$ \\
+\bottomrule
+\end{tabularx}
+\begin{itemize}
+  \item \textbf{Comment on iterations}: assignments changed at iterations 1 and 2 and were stable at
+        iteration 3, so \mk{convergence took 3 iterations (2 real updates $+$ 1 confirming pass)}.
+  \item Worth adding: the 3 supplied centres were all bunched on the right of the data
+        ($x \approx 6.2$--$6.6$), yet K-means still pulled them apart into a sensible left / middle /
+        right split. Good illustration that it converges quickly even from a poor start.
+\end{itemize}
+
+\creamq{Problem 1.6 --- the defective question}{\m{5+3}}
+{\color{sub}\footnotesize \yr{81 Ba} \gap ``Use K-means clustering to cluster the following given data
+for K $=$ 2 with Euclidean distance matrix. List down the demerits of this algorithm.''}
+
+\begin{center}\fbox{\begin{minipage}{0.92\textwidth}\small
+\mk{The paper prints NO data table for this question} --- it jumps straight from the sentence to Q5.
+Verified against the original scan and recorded in the PYQ archive. \\
+\textbf{In the exam}: answer the 3-mark demerits part in full (§5.2), write the 5 steps of the
+algorithm, and demonstrate on any small dataset of your own, stating that you assumed one.
+Use \textbf{Problem 1.1's} 6 points --- it is the dataset this paper's sister questions use. \added
+\end{minipage}}\end{center}
+
+\hr
+
+%=======================================================================
+\T{M2. Agglomerative hierarchical clustering}
+
+\lead{Method}
+\begin{enumerate}
+  \item Start with each point as its own cluster; write the distance matrix.
+  \item Find the \textbf{smallest} entry $\rightarrow$ merge those 2 clusters.
+        \mk{Record the merge height} --- that value is the dendrogram bar.
+  \item Update the matrix using the linkage rule:
+        \textbf{single} $=$ MIN of the two rows, \textbf{complete} $=$ MAX.
+  \item Repeat until one cluster remains, then draw the dendrogram with merges at their heights.
+\end{enumerate}
+\begin{itemize}
+  \item \mk{Merge heights never decrease.} If yours does, you have made an arithmetic slip.
+  \item $n$ points always give exactly $n-1$ merges.
+\end{itemize}
+
+\creamq{Problem 2.1}{\m{2+7}}
+{\color{sub}\footnotesize \yr{80 Bh} \gap 6$\times$6 distance matrix for $p_1$--$p_6$; draw the
+dendrogram. Distances are given directly, so no coordinate work. Use \textbf{single link}.}
+
+\lead{Merge sequence}
+\begin{tabularx}{0.94\textwidth}{@{}L{1.1cm}L{2.3cm}L{1.5cm}X@{}}
+\toprule
+\hrow \thead{Step} & \thead{Merge} & \thead{Height} & \thead{Updated distances (MIN)} \\
+1 & $p_3, p_6$ & \textbf{0.11} & to $p_1$ 0.22, $p_2$ 0.15, $p_4$ 0.15, $p_5$ 0.28 \\
+2 & $p_2, p_5$ & \textbf{0.14} & to $p_1$ 0.24, $p_4$ 0.20, $\{p_3p_6\}$ 0.15 \\
+3 & $\{p_3p_6\}, p_4$ & \textbf{0.15} & to $p_1$ 0.22, $\{p_2p_5\}$ 0.15 \\
+4 & $\{p_3p_4p_6\}, \{p_2p_5\}$ & \textbf{0.15} & to $p_1$ 0.22 \\
+5 & all, $+\,p_1$ & \textbf{0.22} & --- \\
+\bottomrule
+\end{tabularx}
+
+\lead{Final answer} Dendrogram heights: \mk{0.11, 0.14, 0.15, 0.15, 0.22}.
+\begin{itemize}
+  \item Reading it: $\{p_3,p_6\}$ is the tightest pair; $p_1$ is the most isolated point, joining last.
+  \item Cutting between 0.15 and 0.22 gives \textbf{2 clusters}: $\{p_1\}$ and $\{p_2,p_3,p_4,p_5,p_6\}$.
+\end{itemize}
+
+\creamq{Problem 2.2}{\m{8}}
+{\color{sub}\footnotesize \yr{80 Ba} \gap 6 points given as \emph{coordinates}; use
+\textbf{complete linkage} and draw the dendrogram.}
+
+\lead{Step 1: Euclidean distance matrix} $p_1(0.40,0.53)$ $p_2(0.22,0.38)$ $p_3(0.35,0.32)$
+$p_4(0.26,0.19)$ $p_5(0.08,0.41)$ $p_6(0.45,0.30)$
+\begin{tabularx}{0.80\textwidth}{@{}L{1.1cm}XXXXX@{}}
+\toprule
+\hrow & \thead{$p_1$} & \thead{$p_2$} & \thead{$p_3$} & \thead{$p_4$} & \thead{$p_5$} \\
+$p_2$ & 0.234 & & & & \\
+$p_3$ & 0.216 & 0.143 & & & \\
+$p_4$ & 0.368 & 0.194 & 0.158 & & \\
+$p_5$ & 0.342 & 0.143 & 0.285 & 0.284 & \\
+$p_6$ & 0.235 & 0.244 & \textbf{0.102} & 0.219 & 0.386 \\
+\bottomrule
+\end{tabularx}
+
+\lead{Step 2: merge sequence (MAX update)}
+\begin{tabularx}{0.94\textwidth}{@{}L{1.1cm}L{2.5cm}L{1.5cm}X@{}}
+\toprule
+\hrow \thead{Step} & \thead{Merge} & \thead{Height} & \thead{Updated distances (MAX)} \\
+1 & $p_3, p_6$ & \textbf{0.102} & to $p_1$ 0.235, $p_2$ 0.244, $p_4$ 0.219, $p_5$ 0.386 \\
+2 & $p_2, p_5$ & \textbf{0.143} & to $p_1$ 0.342, $p_4$ 0.284, $\{p_3p_6\}$ 0.386 \\
+3 & $\{p_3p_6\}, p_4$ & \textbf{0.219} & to $p_1$ 0.368, $\{p_2p_5\}$ 0.386 \\
+4 & $p_1, \{p_2p_5\}$ & \textbf{0.342} & to $\{p_3p_4p_6\}$ 0.386 \\
+5 & the two remaining & \textbf{0.386} & --- \\
+\bottomrule
+\end{tabularx}
+\lead{Final answer} Heights \mk{0.102, 0.143, 0.219, 0.342, 0.386}; cutting below 0.386 gives
+$\{p_1,p_2,p_5\}$ and $\{p_3,p_4,p_6\}$.
+
+\creamq{Problem 2.3}{\m{4+4}}
+{\color{sub}\footnotesize \yr{76 Ch} \gap Same 6-object distance matrix (A--F), asked for
+\textbf{both} single-link and complete-link dendrograms. \mk{This is the ideal question for showing
+you understand the difference.}}
+
+\sbs{%
+\lead{(a) Single link (MIN)}
+\begin{tabularx}{\linewidth}{@{}L{0.7cm}L{2.4cm}X@{}}
+\toprule
+\hrow & \thead{Merge} & \thead{Height} \\
+1 & A, B & 0.12 \\
+2 & C, D & 0.14 \\
+3 & \{AB\}, \{CD\} & 0.16 \\
+4 & \{ABCD\}, F & 0.20 \\
+5 & all, $+$ E & 0.28 \\
+\bottomrule
+\end{tabularx}
+\begin{itemize}
+  \item Heights: \mk{0.12, 0.14, 0.16, 0.20, 0.28}
+  \item Everything merges early and at similar heights $\rightarrow$ \textbf{chaining}.
+\end{itemize}}{%
+\lead{(b) Complete link (MAX)}
+\begin{tabularx}{\linewidth}{@{}L{0.7cm}L{2.4cm}X@{}}
+\toprule
+\hrow & \thead{Merge} & \thead{Height} \\
+1 & A, B & 0.12 \\
+2 & C, D & 0.14 \\
+3 & \{AB\}, F & 0.61 \\
+4 & \{CD\}, E & 0.70 \\
+5 & the two groups & 0.93 \\
+\bottomrule
+\end{tabularx}
+\begin{itemize}
+  \item Heights: \mk{0.12, 0.14, 0.61, 0.70, 0.93}
+  \item Final 2 clusters: \mk{\{A,B,F\} and \{C,D,E\}} --- a balanced split.
+\end{itemize}}
+
+\begin{center}\fbox{\begin{minipage}{0.92\textwidth}\small
+\mk{The comparison is the marks.} The first 2 merges are identical, then the methods diverge
+completely: single link strings everything onto the A--B--C--D chain and leaves E as a straggler,
+while complete link produces two clean balanced groups. \\
+\textbf{Single link} chases the nearest neighbour, so it follows chains and elongated shapes.
+\textbf{Complete link} is held back by the worst pair, so it prefers compact globular clusters. \added
+\end{minipage}}\end{center}
+
+\hr
+
+%=======================================================================
+\T{M3. DBSCAN point classification}
+
+\lead{Method}
+\begin{enumerate}
+  \item For each point, count how many points lie within $\varepsilon$ \textbf{(include the point itself)}.
+  \item Count $\ge$ MinPts $\rightarrow$ \textbf{core}.
+  \item Otherwise, within $\varepsilon$ of a core point $\rightarrow$ \textbf{border}.
+  \item Otherwise $\rightarrow$ \textbf{noise}.
+  \item Join core points within $\varepsilon$ of each other into clusters; attach the border points.
+\end{enumerate}
+
+\creamq{Practice}{}
+{\color{sub}\footnotesize No PYQ sets a DBSCAN numerical, but the algorithm is asked in 8 papers and
+a worked classification makes the definitions concrete. \added}
+
+\lead{Problem} Points $A(1,1)$, $B(1,2)$, $C(2,1)$, $D(8,8)$, $E(8,9)$, $F(25,25)$.
+Take $\varepsilon = 2$, MinPts $= 3$.
+
+\lead{Step 1: neighbourhood counts} (including the point itself)
+\begin{tabularx}{0.86\textwidth}{@{}L{1.2cm}XL{1.6cm}L{2.2cm}@{}}
+\toprule
+\hrow \thead{Point} & \thead{Points within $\varepsilon=2$} & \thead{Count} & \thead{Type} \\
+$A(1,1)$ & A, B (1.00), C (1.00) & 3 & \textbf{core} \\
+$B(1,2)$ & B, A (1.00), C (1.41) & 3 & \textbf{core} \\
+$C(2,1)$ & C, A (1.00), B (1.41) & 3 & \textbf{core} \\
+$D(8,8)$ & D, E (1.00) & 2 & border \\
+$E(8,9)$ & E, D (1.00) & 2 & border \\
+$F(25,25)$ & F only & 1 & \textbf{noise} \\
+\bottomrule
+\end{tabularx}
+
+\lead{Step 2: form clusters}
+\begin{itemize}
+  \item A, B, C are all core and all within $\varepsilon$ of each other $\rightarrow$
+        \textbf{Cluster 1 $=\{A,B,C\}$}.
+  \item D and E have only 2 neighbours each, and \mk{neither is within $\varepsilon$ of any core point}
+        $\rightarrow$ they are \textbf{not border points after all, they are noise}.
+  \item F is isolated $\rightarrow$ \textbf{noise}.
+\end{itemize}
+
+\lead{Final answer}
+\begin{itemize}
+  \item \textbf{1 cluster}: $\{A,B,C\}$. \quad \textbf{Noise}: $D$, $E$, $F$.
+  \item \mk{The trap}: D and E look like a cluster to the eye, but with MinPts $=3$ a pair can never
+        form one. \textbf{A border point must be within $\varepsilon$ of an actual core point} ---
+        being near a non-core point is not enough.
+  \item Lower MinPts to 2 and $\{D,E\}$ becomes a second cluster. \textbf{Quote your parameters
+        with the answer.}
+\end{itemize}

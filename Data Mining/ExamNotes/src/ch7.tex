@@ -1,0 +1,243 @@
+%=======================================================================
+%  CHAPTER 7 — ADVANCED APPLICATIONS  (3 hrs)
+%=======================================================================
+\section{Advanced Applications}
+
+{\color{sub}\footnotesize 3 hrs \gap$\cdot$\gap in 16/17 papers \gap$\cdot$\gap 3 topics
+\gap$\cdot$\gap 1 numerical (PageRank) $\rightarrow$ Ch 7 companion.}
+
+\lead{Weight of the chapter:}
+\begin{itemize}
+  \item Web mining \tS{11} \gap $\rightarrow$ \mk{3 hrs of syllabus, asked in 11 papers.
+        Best marks-per-hour after Ch 6.}
+  \item Time-series data mining \tF{6} \gap $\cdot$\gap Mining object \& multimedia \tP{3}
+  \item Mostly \textbf{short notes}, so breadth beats depth here.
+\end{itemize}
+
+\hr
+
+\T{7.1 Web Mining}
+
+\Q{What is Web Mining? Briefly explain the structure / taxonomy of Web Mining.}{\m{3+5}\m{6}\m{8}}
+{\color{sub}\footnotesize \tS{11} \yr{81 Ba, 80 Bh, 79 Bh, 78 Bh, 76 Ch, 76 Ash, 75 Ch, 74 Ch, 74 Ash, 73 Shr, 70 Ch}}
+
+\sbsr{0.52}{%
+\lead{Definition}
+\begin{itemize}
+  \item \textbf{Web mining} $=$ applying data mining to discover patterns from \textbf{web data}:
+        the content, the link structure and the usage logs.
+\end{itemize}
+\lead{Why the Web is hard \mk{(good opening lines)}}
+\begin{itemize}
+  \item Huge, growing, and \textbf{widely distributed}.
+  \item \textbf{Semi-structured / unstructured} (HTML, not tables).
+  \item \textbf{Highly dynamic}; heterogeneous; multilingual.
+  \item Only a \textbf{tiny fraction} is relevant to any one user.
+  \item Broad topics return hundreds of thousands of documents $\rightarrow$
+        \mk{search returns too much, and misses too much}.
+\end{itemize}
+\lead{The taxonomy \mk{(3 branches --- this IS the answer)}}
+\begin{enumerate}
+  \item \textbf{Web Content Mining}: mine the \emph{content} of pages (text, images, video).
+  \begin{itemize}
+    \item \emph{Web page content mining}: extract facts from within pages.
+    \item \emph{Search result mining}: summarise / cluster / categorise results.
+  \end{itemize}
+  \item \textbf{Web Structure Mining}: mine the \emph{hyperlink graph}.
+  \begin{itemize}
+    \item Links carry authority: a link is a \textbf{vote}.
+    \item Algorithms: \textbf{PageRank}, \textbf{HITS}, CLEVER.
+    \item Finds authoritative pages, hubs, and web communities.
+  \end{itemize}
+  \item \textbf{Web Usage Mining}: mine the \emph{server logs} / click-streams.
+  \begin{itemize}
+    \item \emph{General access pattern tracking}: how the site is used overall.
+    \item \emph{Customised usage tracking}: per-user personalisation.
+    \item Uses: site restructuring, recommendation, targeted ads, caching, fraud detection.
+  \end{itemize}
+\end{enumerate}}{%
+\lead{PageRank \mk{(asked as a short note in 2 papers + 1 numerical)}}
+\begin{itemize}
+  \item Ranks a page by \textbf{who links to it}, not by what it says.
+  \item \textbf{Two ideas}:
+  \begin{enumerate}
+    \item A link from page $T$ to page $A$ is a \textbf{vote} for $A$.
+    \item Votes are \textbf{weighted by the voter's own rank}, and \textbf{split} across all its
+          outgoing links.
+  \end{enumerate}
+  \item \mk{Recursive}: a page is important if important pages point to it.
+\end{itemize}
+\[ PR(A) = (1-d) + d\sum_{i}\frac{PR(T_i)}{C(T_i)} \]
+\begin{itemize}
+  \item $T_i$ $=$ pages linking to $A$; \ $C(T_i)$ $=$ number of \textbf{outbound} links from $T_i$.
+  \item $d$ $=$ \textbf{damping factor}, usually \textbf{0.85}.
+  \item \textbf{Random surfer model}: with probability $d$ the surfer follows a link, with
+        probability $(1-d)$ they jump to a random page.
+  \item \mk{Why damping is needed}: without it, a group of pages linking only to each other would
+        hoard all the rank (a ``rank sink''), and pages with no outlinks would leak it.
+  \item Computed \textbf{iteratively} until the values settle; ranks converge quickly.
+\end{itemize}
+\lead{HITS (for contrast)}
+\begin{itemize}
+  \item Two scores per page: \textbf{authority} (pointed to by good hubs) and
+        \textbf{hub} (points to good authorities).
+  \item \mk{Query-dependent} and computed at query time; PageRank is query-independent and
+        precomputed.
+\end{itemize}}
+
+\vspace{2pt}
+\sbs{%
+\creamq{Text mining \yr{81 Ba \m{4}}}{}
+\begin{itemize}
+  \item \textbf{Key steps:}
+  \begin{enumerate}
+    \item \textbf{Text preprocessing}: tokenise, remove \textbf{stop words}, \textbf{stemming}
+          (reduce to root form), case folding.
+    \item \textbf{Feature/attribute generation}: build the \textbf{term vector} (bag of words).
+    \item \textbf{Feature selection}: drop uninformative terms; weight by \textbf{TF--IDF}.
+    \item \textbf{Mining}: classification, clustering, association, topic modelling.
+    \item \textbf{Analysis / interpretation} of the results.
+  \end{enumerate}
+  \item Similarity between documents $\rightarrow$ \textbf{cosine similarity}
+        {\footnotesize$\rightarrow$ Ch 2, §2.4}.
+  \item \textbf{Information retrieval} measures: precision and recall
+        {\footnotesize$\rightarrow$ Ch 3, §3.7}.
+\end{itemize}
+\lead{Challenges of web mining \yr{75 Ch \m{5}}}
+\begin{itemize}
+  \item Scale and growth rate; dynamic content; the deep/hidden web.
+  \item Noise: ads, navigation bars, boilerplate.
+  \item \textbf{Spam}: link farms deliberately gaming the ranking.
+  \item Privacy concerns in usage mining; no schema; duplicates and mirrors.
+\end{itemize}}{%
+\creamq{Mining object and multimedia data}{\m{6}\m{3}\m{4}}
+{\color{sub}\footnotesize \tP{3} \yr{75 Ash, 74 Ch, 75 Ch}}
+\begin{itemize}
+  \item \textbf{Multimedia data} $=$ image, audio, video, text-plus-media in digital form.
+  \item \textbf{Feature extraction first} --- you never mine the raw pixels:
+  \begin{itemize}
+    \item Image: colour histogram, texture, shape, edges.
+    \item Audio: pitch, frequency, MFCC. \quad Video: motion vectors, key frames.
+  \end{itemize}
+  \item \textbf{Tasks}: similarity search (content-based retrieval),
+        classification, clustering, association among media features, video-shot detection.
+  \item \textbf{Challenges}: very high dimensionality, huge volume, and the
+        \mk{semantic gap} --- low-level features do not map cleanly to human meaning.
+\end{itemize}
+\lead{Visual data mining \yr{75 Ch short note \m{4}}}
+\begin{itemize}
+  \item Uses \textbf{visualisation} to help the user discover knowledge, combining human perception
+        with machine computation.
+  \item \textbf{Categories}: data visualisation, mining-\emph{result} visualisation,
+        mining-\emph{process} visualisation, and interactive visual mining.
+  \item Techniques: scatter plots, box plots, parallel coordinates, pixel-oriented, dendrograms.
+  \item \mk{Why it works}: humans spot patterns and outliers in a picture far faster than in a table.
+\end{itemize}}
+
+\hr
+
+\T{7.2 Time-Series Data Mining}
+
+\Q{Explain time series data mining with an example.}{\m{6}\m{5}\m{4}\m{3}}
+{\color{sub}\footnotesize \tF{6} \yr{80 Ba, 75 Ch, 74 Ch, 72 Ch, 72 Ka, 71 Shr} \gap Mostly short notes.}
+
+\sbs{%
+\lead{Definition}
+\begin{itemize}
+  \item A \textbf{time series} is a sequence of values recorded at \textbf{successive, usually equal,
+        time intervals}.
+  \item \textbf{Time-series data mining} $=$ finding patterns, trends and regularities in such data.
+  \item Eg stock prices, daily temperature, sales per month, sensor readings, ECG, network traffic,
+        power consumption.
+  \item \mk{What makes it different}: the \textbf{order matters} and consecutive values are
+        \textbf{correlated}, so the usual ``independent tuples'' assumption breaks.
+\end{itemize}
+\lead{The 4 components of a time series \mk{(memorise: T-C-S-I)}}
+\begin{itemize}
+  \item \textbf{Trend (T)}: the long-term overall direction. Eg steady sales growth.
+  \item \textbf{Cyclic (C)}: long, irregular swings, over years. Eg business cycles.
+  \item \textbf{Seasonal (S)}: regular, calendar-fixed variation. Eg umbrella sales in monsoon.
+  \item \textbf{Irregular / random (I)}: residual noise left after the other three.
+  \item Models: multiplicative $Y = T \times C \times S \times I$, or additive $Y = T+C+S+I$.
+\end{itemize}}{%
+\lead{Tasks}
+\begin{itemize}
+  \item \textbf{Trend analysis} $+$ \textbf{forecasting} (moving average, exponential smoothing, ARIMA).
+  \item \textbf{Similarity search}: find series that behave alike.
+  \begin{itemize}
+    \item \emph{Whole-sequence} matching vs \emph{subsequence} matching.
+    \item Needs \textbf{normalisation} (offset and amplitude) first, else scale dominates.
+    \item \textbf{Dynamic Time Warping (DTW)} aligns series that are out of phase or run at
+          different speeds --- Euclidean distance cannot. \added
+  \end{itemize}
+  \item \textbf{Motif discovery}: repeated subsequences. \quad
+        \textbf{Anomaly detection}: unusual subsequences {\footnotesize$\rightarrow$ Ch 6}.
+  \item \textbf{Segmentation} and \textbf{classification} of series.
+\end{itemize}
+\lead{Smoothing: moving average}
+\begin{itemize}
+  \item Replace each value by the mean of a window around it $\rightarrow$ removes the irregular
+        component and exposes the trend.
+  \item A larger window smooths more but lags more.
+\end{itemize}
+\lead{Example to quote}
+\begin{itemize}
+  \item Daily closing prices of a share over 5 years: the \textbf{trend} is the multi-year rise, the
+        \textbf{seasonal} part is the recurring festival-quarter bump, the \textbf{cyclic} part is
+        the multi-year market swing, and a one-day crash is \textbf{irregular}.
+        Mining finds the trend for forecasting and the crash as an anomaly.
+\end{itemize}}
+
+\hr
+
+%-----------------------------------------------------------------------
+\T{7.3 PYQ Mapping}
+
+{\color{sub}\footnotesize \mk{N} $=$ solved in the Ch 7 Numerical companion.}
+
+\creamq{7.1 Web mining}{}
+\begin{enumerate}
+  \item \tS{4} What is web mining $+$ its structure / categories / taxonomy.
+        \hfill \m{3+5} \yr{80 Bh} \m{6} \yr{74 Ash} \m{8} \yr{76 Ash} \m{5} \yr{75 Ch}
+  \item \tP{1} Key steps in \textbf{text mining} $+$ how to find page rank. \hfill \m{4+4} \yr{81 Ba}
+  \item \mk{N} \textbf{PageRank} with damping factor 0.85, 5 iterations, initial rank 0.25.
+        \hfill \m{8} \yr{76 Ch}
+  \item \tP{2} Short notes: Page Rank algorithm \hfill \m{5} \yr{79 Bh} \m{4} \yr{78 Bh}
+  \item \tF{3} Short note: Web mining \hfill \m{4} \yr{73 Shr} \m{3} \yr{74 Ch} \yr{70 Ch}
+\end{enumerate}
+
+\creamq{7.2 Mining object and multimedia}{}
+\begin{enumerate}[start=6]
+  \item \tP{1} Explain Web mining and Multimedia mining. \hfill \m{6} \yr{75 Ash}
+  \item \tP{2} Short notes: Multimedia mining \hfill \m{3} \yr{74 Ch};
+        Visual Data Mining \hfill \m{4} \yr{75 Ch}
+\end{enumerate}
+
+\creamq{7.3 Time-series}{}
+\begin{enumerate}[start=8]
+  \item \tP{1} Explain time series data mining in brief. \hfill \m{6} \yr{72 Ka}
+  \item \tP{1} Challenges of web mining $+$ time series data mining w/ example. \hfill \m{5} \yr{75 Ch}
+  \item \tF{4} Short note: Time Series Data Mining.
+        \hfill \m{5} \yr{80 Ba} \m{3} \yr{74 Ch} \m{4} \yr{72 Ch} \yr{71 Shr}
+\end{enumerate}
+
+\lead{Coverage check}
+\begin{itemize}
+  \item All Ch 7 PYQs covered. 1 numerical \yr{76 Ch} $\rightarrow$ companion.
+  \item \mk{This chapter is 3 hrs of syllabus but appears in 16/17 papers}, almost entirely as
+        \textbf{4--6 mark short notes}. Learn the \textbf{web mining taxonomy}, the
+        \textbf{PageRank formula} and the \textbf{4 time-series components} and you can answer
+        nearly every one of them.
+  \item \textbf{Gaps filled by research} \added: the \textbf{PageRank formula and the random-surfer
+        justification for damping} (your slides name PageRank but never give the equation);
+        \textbf{DTW}; the \textbf{T-C-S-I} decomposition; the \textbf{semantic gap} in multimedia mining.
+\end{itemize}
+
+\lead{Sources used for this chapter}
+\begin{itemize}
+  \item \textbf{Han \& Kamber 3rd ed} ch 13 (trends and applications) and the mining-complex-data
+        material. \mk{Primary authority.}
+  \item \code{Chapter9\_0.ppt} (web mining taxonomy), \code{Chapter9\_1.ppt} (multimedia),
+        \code{Chapter9\_2.ppt} (text and web), \code{a1VisualMine.ppt} (visual data mining),
+        \code{data mining\_/Chapter 6 \_ 7.pdf}, \textbf{DBK Lectures 18--19}.
+\end{itemize}

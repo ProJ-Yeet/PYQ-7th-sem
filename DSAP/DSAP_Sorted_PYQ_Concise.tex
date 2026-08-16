@@ -1,0 +1,101 @@
+\documentclass[10pt]{article}
+\usepackage{hyperref}
+\usepackage{amsmath, amssymb, amsfonts}
+\usepackage[margin=1cm]{geometry}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{multicol}
+\usepackage{titlesec}
+\parindent 0pt
+\setlength{\columnsep}{18pt}
+\setlist{noitemsep, topsep=1pt, leftmargin=1.4em}
+\titlespacing*{\section}{0pt}{4pt}{2pt}
+\titleformat{\section}{\normalfont\large\bfseries}{\thesection.}{0.5em}{}
+
+\title{Digital Signal Analysis and Processing (CT704)\\[0.3em]\large Concise PYQ}
+\author{}
+\date{\today}
+
+\begin{document}
+\maketitle
+\vspace{-1em}
+\small
+\textbf{Notes:} TU IOE PYQ 2069--2081 (CT704, BEI/BCT). Regular = \textbf{bold}, Back = normal.
+Marks in (); unique values only.
+Keys: (I)=Importance/Need \quad (+)=Advantage \quad (-)=Disadvantage \quad +Fig=Figure \quad +Eg=Example \quad Vs=Compare/Differentiate.
+\vspace{2pt}
+\hrule
+\vspace{4pt}
+
+\begin{multicols}{2}
+\footnotesize
+
+\section*{1. Discrete-Time Signals \& Systems}
+\begin{itemize}
+  \item Even/odd DT signals +Eg; even/odd part; plot $x[-2n+3]$ +Fig \hfill (2+3)(3)(4+5)
+  \item Unit step +Fig; relation to unit impulse \hfill (1+2)
+  \item Energy Vs power signal; check type \hfill (2+2)(2+3)(3+4)
+  \item Periodicity + fundamental period \hfill (5)(4)(3)(2+2)
+  \item System properties: linear / time-invariant / stable / memoryless; BIBO \hfill (2+2+2)(3+3)(5)
+  \item Fourier series coeff; FT multiplication property; Dirichlet conditions \hfill (3)(4)(4+3)
+  \item LTI convolution output (various $h,x$) \hfill (4)(5)(6)(3+7)
+  \item Significance of convolution summation + compute \hfill (2+4)
+\end{itemize}
+
+\section*{2. Z-Transform}
+\begin{itemize}
+  \item ROC definition + properties + locate ROC \hfill (1)(2+4)(3+6)(4+6)
+  \item Z-transform properties: convolution, time-shift \hfill (3+3)(3+6)
+  \item Inverse Z-transform (partial fraction / long division), various $X(z)$ \& ROC \hfill (6)(1+5)(2+6)(2+2+3)
+\end{itemize}
+
+\section*{3. Analysis of LTI in Frequency Domain}
+\begin{itemize}
+  \item Pole-zero + magnitude / phase response (various diff.\ eqns) \hfill (2+4)(3+7)(2+6)(2+8)
+  \item FIR Vs IIR system \hfill (4+6)
+  \item LCCDE + system function; zero-input response \hfill (3+7)(2+3+5)(4)
+  \item Stability \& causality via impulse response \& ROC \hfill (4)(4+3)
+  \item Linear-phase FIR condition; show $h=\{-1,0,1\}$ linear phase \hfill (2+4)
+\end{itemize}
+
+\section*{4. Discrete Filter Structures}
+\begin{itemize}
+  \item Direct Form I \& II (various systems) \hfill (2+2)(4)(5)
+  \item Cascade form, 2nd-order sections \hfill (4)(5)
+  \item Lattice / lattice-ladder (FIR \& IIR) + stability \hfill (5)(6)(6+4)(9)(10)
+    \begin{itemize}
+      \item 3-stage lattice $K_1,K_2,K_3\to$ system function + FIR coeff \hfill (5)(6)
+      \item represent fraction in sign-mag / 1's / 2's complement \hfill (3)
+    \end{itemize}
+  \item Limit cycle in recursive system +Eg \hfill (1)(3)
+  \item Quantization (I); rounding Vs truncation; dead band \hfill (1+1+2+1)
+\end{itemize}
+
+\section*{5. FIR Filter Design}
+\begin{itemize}
+  \item Window method + window characteristics; Gibbs phenomenon (rectangular) +minimize \hfill (4+4)(5+3)(3+3)(5)(6)
+  \item FIR LPF via window (specs $\omega_p,\omega_s,\alpha_s$; Hanning; first coeffs) \hfill (8)(10)(5+3)(2+6)(9)
+  \item Kaiser window design (ripple / $\beta$ / length $M{+}1$) \hfill (8)(10)(2+8)(9+3)(8+4)
+  \item Optimum filter / Remez exchange (math expr + flowchart + derivation) \hfill (1+6)(2+6)(7)(9)
+\end{itemize}
+
+\section*{6. IIR Filter Design}
+\begin{itemize}
+  \item Bilinear-transformation Butterworth LPF (various specs); LP$\to$HP convert \hfill (10)(12)(15)(11+4)
+  \item Impulse-invariance Butterworth; pre-warping (I) \hfill (12+3)(13)
+  \item Bilinear Vs impulse invariance (+) \hfill (2+10)(3+12)
+  \item Spectral (digital-domain) transformation LP$\to$HP; features / params \hfill (2)(4)(5)
+\end{itemize}
+
+\section*{7. Discrete Fourier Transform (DFT / FFT)}
+\begin{itemize}
+  \item DFT need; DFT Vs DTFT; complexity DFT Vs FFT \hfill (2)(2+5)
+  \item Circular convolution property (state + prove); zero padding \hfill (2+2+4)(1)
+  \item FFT (DIT / DIF) $N$-pt DFT + butterfly (many sequences) \hfill (7)(8)(2+6)(3+7)
+  \item Circular convolution --- direct / via DFT \hfill (6)(7)(2+5)(1+5)
+  \item $x_3=\mathrm{IDFT}(X_1{\cdot}X_2)$ (product of DFTs) \hfill (5)(6)(7)(2+6)
+\end{itemize}
+
+\end{multicols}
+\end{document}

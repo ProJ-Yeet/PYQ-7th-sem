@@ -1,0 +1,407 @@
+%=======================================================================
+%  CHAPTER 5 — CLUSTER ANALYSIS  (9 hrs)
+%=======================================================================
+\section{Cluster Analysis}
+
+{\color{sub}\footnotesize 9 hrs \gap$\cdot$\gap in 17/17 papers \gap$\cdot$\gap 5 topics, 3 TOP tier
+\gap$\cdot$\gap numericals $\rightarrow$ Ch 5 companion.}
+
+\lead{Weight of the chapter:}
+\begin{itemize}
+  \item Basics \& types of clustering \tS{10} \gap $\cdot$\gap K-means \tS{8} \gap $\cdot$\gap DBSCAN \tS{8}
+  \item Hierarchical \tF{4} \gap $\cdot$\gap Evaluation / issues \tF{4}
+  \item \mk{K-means numerical appears in 8 papers, hierarchical dendrogram in 4.}
+\end{itemize}
+
+\hr
+
+\T{5.1 Basics and Algorithms}
+
+\Q{What is cluster analysis? Applications? How does it differ from classification?}{\m{8}\m{5}\m{2+6}\m{3+4}}
+{\color{sub}\footnotesize \tS{10} \yr{81 Ba, 80 Bh, 79 Bh, 75 Ch, 74 Ash, 73 Shr, 72 Ch, 72 Ka, 71 Ch, 71 Shr}}
+
+\sbs{%
+\lead{Definition}
+\begin{itemize}
+  \item \textbf{Cluster} $=$ a collection of objects \textbf{similar within} the group and
+        \textbf{dissimilar to} objects in other groups.
+  \item \textbf{Cluster analysis} $=$ grouping objects so that intra-cluster similarity is
+        \textbf{maximised} and inter-cluster similarity \textbf{minimised}.
+  \item \mk{Unsupervised}: no class labels are given. The classes are the \emph{output}, not the input.
+  \item Also called \textbf{unsupervised classification} or segmentation.
+\end{itemize}
+\lead{Clustering vs classification \yr{72 Ka \m{5}}}
+\begin{tabularx}{\linewidth}{@{}L{2.1cm}XX@{}}
+\toprule
+\hrow & \thead{Classification} & \thead{Clustering} \\
+Learning & Supervised & Unsupervised \\
+Labels & Given in training & None; discovered \\
+Goal & Predict a known label & Find the groups themselves \\
+Evaluation & Accuracy vs truth & Cohesion / separation \\
+Classes & Fixed, known & Number often unknown \\
+\bottomrule
+\end{tabularx}}{%
+\lead{Applications \yr{asked in 5 papers}}
+\begin{itemize}
+  \item \textbf{Market segmentation}: group customers by behaviour.
+  \item \textbf{Document / search-result grouping}, topic discovery.
+  \item \textbf{Image segmentation} and pattern recognition.
+  \item \textbf{Biology}: taxonomy of species, gene expression grouping.
+  \item \textbf{Land use} from satellite data; city planning; earthquake epicentre grouping.
+  \item \textbf{Outlier detection} --- points in no cluster {\footnotesize$\rightarrow$ Ch 6}.
+  \item \textbf{Data reduction / preprocessing} step for other algorithms.
+\end{itemize}
+\lead{Requirements of a good clustering method}
+\begin{itemize}
+  \item Scalability; handles \textbf{mixed attribute types}; finds \textbf{arbitrary shapes}.
+  \item Minimal domain knowledge for parameters; copes with \textbf{noise and outliers}.
+  \item \textbf{Insensitive to input order}; handles high dimensionality;
+        interpretable and usable.
+\end{itemize}}
+
+\vspace{3pt}
+\creamq{Types of clusters \mk{(81 Ba asks this directly)}}{}
+\sbs{%
+\begin{itemize}
+  \item \textbf{Well-separated}: every point is closer to all points in its own cluster than to any
+        point outside. The ideal case.
+  \item \textbf{Prototype-based (centre-based)}: each point is closer to its cluster's
+        \textbf{centroid} (mean) or \textbf{medoid} (most central actual point) than to any other.
+        $\rightarrow$ what K-means finds.
+  \item \textbf{Contiguity-based (nearest neighbour)} \yr{71 Shr \m{10}}: each point is closer to at
+        least \textbf{one point} in its cluster than to any point outside. Handles chains and
+        irregular shapes; \mk{breaks down when noise bridges 2 clusters}.
+        $\rightarrow$ single-link hierarchical, or DBSCAN.
+\end{itemize}}{%
+\begin{itemize}
+  \item \textbf{Density-based}: a cluster is a \textbf{dense region} separated by low-density
+        regions. Handles arbitrary shapes and noise. $\rightarrow$ DBSCAN.
+  \item \textbf{Conceptual (shared-property)}: points share some general property, not just
+        proximity. Needs a concept definition.
+\end{itemize}
+\lead{Types of clustering \emph{methods}}
+\begin{itemize}
+  \item \textbf{Partitioning}: K-means, K-medoids/PAM, CLARA.
+  \item \textbf{Hierarchical}: AGNES, DIANA, BIRCH, Chameleon.
+  \item \textbf{Density-based}: DBSCAN, OPTICS, DENCLUE.
+  \item \textbf{Grid-based}: STING, CLIQUE, WaveCluster.
+  \item \textbf{Model-based}: EM, COBWEB, SOM.
+\end{itemize}}
+
+\hr
+
+\T{5.2 K-means Clustering}
+
+\Q{Write the K-means algorithm. Explain with example and state its limitations.}{\m{2+6}\m{2+8}\m{4+6}\m{4+4}}
+{\color{sub}\footnotesize \tS{8} \yr{81 Ba, 80 Ba, 78 Bh, 76 Ch, 75 Ash, 74 Ch, 74 Ash, 71 Shr}
+\gap \mk{Numerical in 7 of those} $\rightarrow$ companion.}
+
+\sbsr{0.50}{%
+\lead{Algorithm \mk{(write these 5 steps, then compute)}}
+\begin{enumerate}
+  \item Choose $K$, the number of clusters.
+  \item \textbf{Initialise} $K$ centroids (usually $K$ randomly chosen data points).
+  \item \textbf{Assign} each point to the cluster whose centroid is nearest (Euclidean).
+  \item \textbf{Recompute} each centroid as the \textbf{mean} of the points assigned to it.
+  \item \textbf{Repeat} 3--4 until the assignment stops changing (or centroids move less than a
+        tolerance, or a max iteration count is hit).
+\end{enumerate}
+\lead{Objective function}
+\[ SSE = \sum_{i=1}^{K}\sum_{x \in C_i} dist(x, c_i)^2 \]
+\begin{itemize}
+  \item K-means \textbf{minimises SSE} (within-cluster sum of squared error).
+  \item The mean is provably the point minimising SSE for a cluster --- \mk{that is why step 4
+        uses the mean}.
+  \item Complexity $O(nKId)$: $n$ points, $K$ clusters, $I$ iterations, $d$ dimensions.
+        Linear in $n$ $\rightarrow$ scales well.
+\end{itemize}}{%
+\lead{Choosing $K$ \yr{80 Ba \m{4}}}
+\begin{itemize}
+  \item \textbf{Elbow method}: plot SSE against $K$; take the $K$ where the curve bends.
+        SSE always falls as $K$ rises, so the \emph{bend}, not the minimum, is the answer.
+  \item \textbf{Silhouette coefficient}: pick the $K$ maximising it.
+  \item \textbf{Domain knowledge}; cross-validation; gap statistic.
+  \item Rule of thumb $K \approx \sqrt{n/2}$.
+\end{itemize}
+\lead{Limitations \mk{(asked with almost every numerical)}}
+\begin{itemize}
+  \item \mk{$K$ must be given in advance.}
+  \item \mk{Sensitive to the initial centroids} $\rightarrow$ different seeds give different
+        clusterings; converges to a \textbf{local} optimum, not the global one.
+        \emph{Fix}: run several times and keep the lowest SSE, or use K-means++.
+  \item \textbf{Sensitive to outliers}: the mean is dragged by extreme values.
+        \emph{Fix}: K-medoids.
+  \item Only finds \textbf{convex, roughly spherical, similar-sized} clusters.
+        Fails on elongated or nested shapes.
+  \item Cannot handle \textbf{categorical} data (no mean). \emph{Fix}: K-modes.
+  \item Empty clusters can occur; needs a re-seeding rule.
+\end{itemize}}
+
+\vspace{2pt}
+\sbs{%
+\creamq{K-medoids (PAM)}{}
+\begin{itemize}
+  \item Uses an \textbf{actual data point} (the medoid) as the cluster centre instead of the mean.
+  \item Minimises the sum of \emph{absolute} distances rather than squared distances.
+  \item \mk{Far more robust to outliers} and works with any distance measure.
+  \item Cost: $O(K(n-K)^2)$ per iteration $\rightarrow$ much slower; CLARA samples to scale it.
+\end{itemize}}{%
+\creamq{Bisecting K-means \yr{71 Ch \m{10}}}{}
+\begin{itemize}
+  \item Hybrid: produces a \textbf{hierarchy} using K-means as the engine.
+  \item Steps:
+  \begin{enumerate}
+    \item Start with all points in one cluster.
+    \item Pick a cluster to split (largest, or highest SSE).
+    \item Split it in two with K-means ($K=2$); do this several times and keep the best split.
+    \item Repeat until $K$ clusters exist.
+  \end{enumerate}
+  \item \mk{Less sensitive to initialisation} than plain K-means, and gives a dendrogram.
+\end{itemize}}
+
+\hr
+
+\T{5.3 Hierarchical Clustering}
+
+\Q{What is hierarchical clustering? Agglomerative vs divisive. Draw the dendrogram.}{\m{2+7}\m{8}\m{4+4}\m{10}}
+{\color{sub}\footnotesize \tF{4} \yr{80 Bh, 80 Ba, 76 Ch, 70 Ch} \gap \mk{All 4 are numericals}
+$\rightarrow$ companion.}
+
+\sbs{%
+\lead{Idea}
+\begin{itemize}
+  \item Produces a \textbf{nested tree of clusters}, not a single flat partition.
+  \item \textbf{No need to specify $K$ in advance} --- cut the dendrogram at any height to get any $K$.
+  \item \textbf{Dendrogram}: tree diagram where the \textbf{height of a merge $=$ the distance
+        between the two clusters merged}.
+\end{itemize}
+\lead{Two directions}
+\begin{itemize}
+  \item \textbf{Agglomerative (AGNES)} --- \mk{bottom-up}, the common one.
+  \begin{enumerate}
+    \item Start: every point is its own cluster.
+    \item Merge the \textbf{two closest} clusters.
+    \item Update the distance matrix.
+    \item Repeat until one cluster remains.
+  \end{enumerate}
+  \item \textbf{Divisive (DIANA)} --- \mk{top-down}.
+  \begin{enumerate}
+    \item Start: all points in one cluster.
+    \item Split the cluster that is least cohesive.
+    \item Repeat until every point is alone (or a stopping rule fires).
+  \end{enumerate}
+  \item \mk{Divisive is more expensive} ($2^{n-1}-1$ ways to split), so agglomerative dominates.
+\end{itemize}}{%
+\lead{Linkage: how to measure cluster-to-cluster distance \mk{(this is the whole exam question)}}
+\begin{itemize}
+  \item \textbf{Single link (MIN)}: distance $=$ \textbf{closest} pair between the 2 clusters.
+  \begin{itemize}
+    \item $+$ Finds \textbf{arbitrary, elongated} shapes.
+    \item $-$ \mk{Chaining effect}: a line of noise points can bridge 2 real clusters.
+  \end{itemize}
+  \item \textbf{Complete link (MAX)}: distance $=$ \textbf{farthest} pair.
+  \begin{itemize}
+    \item $+$ Less sensitive to noise, gives compact balanced clusters.
+    \item $-$ Biased to globular shapes; \textbf{breaks large clusters}.
+  \end{itemize}
+  \item \textbf{Average link}: mean of all pairwise distances. A compromise.
+  \item \textbf{Centroid / Ward's}: distance between centroids / merge that increases SSE least.
+\end{itemize}
+\lead{Pros and cons}
+\begin{itemize}
+  \item $+$ No $K$ needed; the dendrogram is highly interpretable; any $K$ obtainable afterwards.
+  \item $-$ \mk{$O(n^2)$ space and $O(n^3)$ time} $\rightarrow$ does not scale.
+  \item $-$ \mk{Merges are irreversible} --- a bad merge can never be undone (greedy).
+\end{itemize}}
+
+\hr
+
+\T{5.4 DBSCAN}
+
+\Q{What are core, border and noise points? Write the DBSCAN algorithm and how it handles noise.}{\m{3+5}\m{8}\m{8+2}\m{7}}
+{\color{sub}\footnotesize \tS{8} \yr{79 Bh, 78 Bh, 76 Ash, 75 Ch, 75 Ash, 74 Ash, 72 Ka, 70 Ch}}
+
+\sbsr{0.50}{%
+\lead{Two parameters}
+\begin{itemize}
+  \item $\varepsilon$ (Eps) $=$ the neighbourhood radius.
+  \item \textbf{MinPts} $=$ minimum number of points required inside that radius.
+  \item $\varepsilon$-neighbourhood: $N_\varepsilon(p) = \{q \in D \mid dist(p,q) \le \varepsilon\}$
+\end{itemize}
+\lead{Three kinds of point \mk{(learn these exactly)}}
+\begin{itemize}
+  \item \textbf{Core point}: $|N_\varepsilon(p)| \ge$ MinPts. \ Sits in the \emph{interior} of a cluster.
+  \item \textbf{Border point}: fewer than MinPts neighbours, \textbf{but lies within $\varepsilon$
+        of a core point}. On the \emph{edge}.
+  \item \textbf{Noise point}: neither. \mk{Discarded --- this is how DBSCAN handles noise.}
+\end{itemize}
+\lead{The reachability definitions \yr{74 Ash short note}}
+\begin{itemize}
+  \item \textbf{Directly density-reachable}: $q$ is directly density-reachable from $p$ if
+        $p$ is a \textbf{core} point and $q \in N_\varepsilon(p)$.
+  \item \textbf{Density-reachable}: there is a \textbf{chain} $p_1,\dots,p_n$ where each
+        $p_{i+1}$ is directly density-reachable from $p_i$. \mk{Not symmetric} (the end may be a border point).
+  \item \textbf{Density-connected}: $p$ and $q$ are density-connected if some object $o$ exists from
+        which \textbf{both} are density-reachable. \mk{This one IS symmetric.}
+  \item \textbf{A cluster} $=$ a maximal set of density-connected points.
+\end{itemize}}{%
+\lead{Algorithm}
+\begin{enumerate}
+  \item Label every point as core, border or noise by counting its $\varepsilon$-neighbours.
+  \item Discard the noise points.
+  \item Put an edge between every pair of core points within $\varepsilon$ of each other.
+  \item Each \textbf{connected group of core points} becomes a cluster.
+  \item Assign each border point to a cluster of one of its associated core points.
+\end{enumerate}
+\lead{Choosing the parameters \yr{78 Bh asks this}}
+\begin{itemize}
+  \item \textbf{$k$-distance plot}: for each point compute the distance to its $k$th nearest
+        neighbour ($k =$ MinPts), sort descending, plot. The \mk{sharp bend (knee)} gives $\varepsilon$.
+  \item Rule of thumb: MinPts $\ge d+1$, commonly $2\times d$ for $d$ dimensions; MinPts $=4$ for 2-D.
+\end{itemize}
+\lead{Pros}
+\begin{itemize}
+  \item Finds \textbf{arbitrarily shaped} clusters. \quad $\bullet$ \textbf{$K$ is not needed}.
+  \item \mk{Explicitly identifies noise / outliers} rather than forcing every point into a cluster.
+  \item Insensitive to the order of points (except some border cases).
+\end{itemize}
+\lead{Cons and their fixes \yr{76 Ash asks ``how do we avoid the issues''}}
+\begin{itemize}
+  \item \mk{Fails on clusters of varying density} --- one $(\varepsilon,\text{MinPts})$ pair cannot
+        suit both a dense and a sparse cluster. \emph{Fix}: \textbf{OPTICS}, which orders points
+        across a range of $\varepsilon$.
+  \item Very sensitive to the 2 parameters. \emph{Fix}: the $k$-distance plot.
+  \item Degrades in \textbf{high dimensions} (distance loses meaning). \emph{Fix}: reduce dimensions first.
+  \item A border point reachable from 2 clusters is assigned by processing order.
+\end{itemize}}
+
+\hr
+
+\T{5.5 Issues: Evaluation, Scalability, Comparison}
+
+\Q{Explain the different measures of cluster validity. How do you evaluate the clusters generated?}{\m{10}\m{4}\m{3}}
+{\color{sub}\footnotesize \tF{4} \yr{80 Bh, 74 Ch, 72 Ka, 71 Ch}}
+
+\sbs{%
+\lead{Why it is hard}
+\begin{itemize}
+  \item Clustering is unsupervised, so \mk{there is no ground truth to compare against}.
+  \item Any algorithm will return clusters even on \textbf{random data} --- so the first question is
+        whether cluster structure exists at all (\textbf{cluster tendency}).
+\end{itemize}
+\lead{Three families of measure}
+\begin{itemize}
+  \item \textbf{Internal (unsupervised)} --- uses only the data.
+  \begin{itemize}
+    \item \textbf{Cohesion} (compactness): within-cluster SSE. Lower is better.
+    \item \textbf{Separation}: between-cluster sum of squares. Higher is better.
+    \item \textbf{Silhouette coefficient} for point $i$:
+          \[ s = \frac{b-a}{\max(a,b)} \]
+          $a =$ mean distance to points in its own cluster, $b =$ mean distance to the nearest
+          other cluster. Range $[-1,1]$; near \textbf{1} good, near \textbf{0} on a boundary,
+          \mk{negative $=$ probably in the wrong cluster}.
+  \end{itemize}
+  \item \textbf{External (supervised)} --- compares against known labels.
+  \begin{itemize}
+    \item \textbf{Purity}, \textbf{entropy}, \textbf{precision/recall/F},
+          \textbf{Rand index}, \textbf{Jaccard coefficient}.
+  \end{itemize}
+  \item \textbf{Relative} --- compares 2 clusterings, eg by SSE or silhouette, to choose $K$.
+\end{itemize}}{%
+\lead{Other issues}
+\begin{itemize}
+  \item \textbf{Determining $K$} --- see the elbow and silhouette methods in §5.2.
+  \item \textbf{Scalability}: hierarchical is $O(n^3)$; K-means is linear but needs many passes;
+        BIRCH and CLARA exist to scale.
+  \item \textbf{High dimensionality}: distances converge $\rightarrow$ use subspace clustering
+        (CLIQUE) or reduce dimensions first (PCA, Ch 2).
+  \item \textbf{Mixed attribute types}: needs a mixed dissimilarity measure (Ch 2, §2.4).
+  \item \textbf{Outliers} distort centroids $\rightarrow$ K-medoids or DBSCAN.
+  \item \textbf{Interpretability}: a cluster is only useful if it can be described.
+\end{itemize}
+\lead{Choosing an algorithm \yr{79 Bh \m{2+6}}}
+\begin{itemize}
+  \item Mixed attribute types (keywords, URLs, purchases, usage level) and unknown $K$
+        $\rightarrow$ \mk{use a method that needs no $K$ and handles mixed data}: DBSCAN on a
+        suitable dissimilarity measure, or hierarchical clustering.
+  \item Validate with silhouette $+$ domain inspection of the resulting segments.
+\end{itemize}}
+
+\hr
+
+%-----------------------------------------------------------------------
+\T{5.6 PYQ Mapping}
+
+{\color{sub}\footnotesize \mk{N} $=$ solved in the Ch 5 Numerical companion.}
+
+\creamq{5.1 Basics}{}
+\begin{enumerate}
+  \item \tS{10} Cluster analysis $+$ applications $+$ types of clusters.
+        \hfill \m{8} \yr{81 Ba} \m{5} \yr{72 Ka} \m{2+6} \yr{75 Ch} \m{8} \yr{73 Shr} \m{3+4} \yr{80 Bh}
+  \item \tP{1} Why is clustering unsupervised? $+$ hierarchical clusters via \textbf{Bisecting K-means}.
+        \hfill \m{10} \yr{71 Ch}
+  \item \tP{2} Types of clustering methods $+$ DBSCAN w/ example \hfill \m{10} \yr{72 Ch};
+        partition methods $+$ hierarchical w/ example \hfill \m{10} \yr{74 Ash}
+  \item \tP{1} What is a \textbf{contiguous cluster}? Explain an algorithm that generates them.
+        \hfill \m{10} \yr{71 Shr}
+  \item \tP{1} Internet-marketer segmentation: which algorithm, and how to validate. \hfill \m{2+6} \yr{79 Bh}
+\end{enumerate}
+
+\creamq{5.2 K-means}{}
+\begin{enumerate}[start=6]
+  \item \tP{1} K-means algorithm $+$ strategy for choosing optimal $K$. \hfill \m{4+4} \yr{80 Ba}
+  \item \mk{N} Cluster for $K=2$ w/ Euclidean distance $+$ demerits. \hfill \m{5+3} \yr{81 Ba}
+        \mk{$\rightarrow$ the paper prints NO data table; see the companion.}
+  \item \mk{N} Two clusters from the 6-instance dataset. \hfill \m{2+6} \yr{78 Bh} \m{2+8} \yr{74 Ash}
+  \item \mk{N} K-means w/ limitations, 6-row dataset. \hfill \m{4+6} \yr{75 Ash}
+  \item \mk{N} K-means w/ limitations, 7-row dataset. \hfill \m{10} \yr{71 Shr}
+  \item \mk{N} Matrix $X$, $K=3$, given initial centres; final centres $+$ iteration count. \hfill \m{8} \yr{76 Ch}
+  \item \tP{1} Hierarchical vs partitioning $+$ how K-means is applied, w/ example. \hfill \m{2+8} \yr{74 Ch}
+\end{enumerate}
+
+\creamq{5.3 Hierarchical}{}
+\begin{enumerate}[start=13]
+  \item \mk{N} Draw the dendrogram for the 6$\times$6 distance matrix. \hfill \m{2+7} \yr{80 Bh}
+  \item \mk{N} \textbf{Complete-linkage} clustering $+$ dendrogram from coordinates. \hfill \m{8} \yr{80 Ba}
+  \item \mk{N} \textbf{Single-link and complete-link} dendrograms for 6 objects. \hfill \m{4+4} \yr{76 Ch}
+  \item \tP{1} Agglomerative vs divisive w/ illustrative examples. \hfill \m{10} \yr{70 Ch}
+\end{enumerate}
+
+\creamq{5.4 DBSCAN}{}
+\begin{enumerate}[start=17]
+  \item \tS{4} Core / border / noise points $+$ DBSCAN algorithm $+$ noise handling.
+        \hfill \m{3+5} \yr{79 Bh} \m{8} \yr{75 Ch} \m{8+2} \yr{76 Ash} \m{7} \yr{72 Ka}
+  \item \tP{1} Neighbourhood quantification, how clusters are found, choosing Eps and MinPts,
+        and the $\varepsilon_1 < \varepsilon_2$ subset proof. \hfill \m{2+2+2} \yr{78 Bh}
+  \item \tP{2} Density-based cluster $+$ an algorithm that generates them.
+        \hfill \m{8} \yr{70 Ch} \m{8} \yr{75 Ash}
+  \item \tP{1} Short note: Density reachable and Density connected. \hfill \m{4} \yr{74 Ash}
+\end{enumerate}
+
+\creamq{5.5 Issues}{}
+\begin{enumerate}[start=21]
+  \item \tP{1} Different measures of cluster validity. \hfill \m{10} \yr{71 Ch}
+  \item \tP{3} How do you evaluate the clusters generated? \hfill \m{4} \yr{80 Bh};
+        short notes: Issues in clustering \yr{74 Ch}, Cluster evaluation \yr{72 Ka}. \hfill \m{3}
+\end{enumerate}
+
+\lead{Coverage check}
+\begin{itemize}
+  \item All Ch 5 PYQs covered. \textbf{11 are numerical} $\rightarrow$ companion.
+  \item \textbf{Known defect in the source} \yr{81 Ba}: Q4b says ``cluster the following given data
+        for K $=$ 2'' but \mk{the paper prints no data table} --- it jumps straight to Q5. Confirmed
+        against the scan. The companion supplies a substitute dataset. \added
+  \item \textbf{Gaps filled by research} \added: the \textbf{silhouette coefficient} formula, the
+        \textbf{$k$-distance plot} for choosing $\varepsilon$, and the formal
+        \textbf{density-reachable vs density-connected} distinction (your notes use the terms
+        without defining them).
+\end{itemize}
+
+\lead{Sources used for this chapter}
+\begin{itemize}
+  \item \textbf{Han \& Kamber 3rd ed} ch 10 (basic cluster analysis, partitioning, hierarchical,
+        density-based, evaluation) and ch 11 (advanced). \mk{Primary authority.}
+  \item \textbf{DBK Lectures 15--16}, \code{data mining\_/Chapter 5- Clustering.pdf},
+        \code{Clustering.pdf}, \code{ch7\_ClusterAnalysis.ppt}, \code{Chapter7\_3.ppt},
+        \code{kmedoids.doc}.
+\end{itemize}
