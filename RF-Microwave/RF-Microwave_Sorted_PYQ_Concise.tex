@@ -1,0 +1,111 @@
+\documentclass[10pt]{article}
+\usepackage{hyperref}
+\usepackage{amsmath, amssymb, amsfonts}
+\usepackage[margin=1cm]{geometry}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{multicol}
+\usepackage{titlesec}
+\parindent 0pt
+\setlength{\columnsep}{18pt}
+\setlist{noitemsep, topsep=1pt, leftmargin=1.4em}
+\titlespacing*{\section}{0pt}{4pt}{2pt}
+\titleformat{\section}{\normalfont\large\bfseries}{\thesection.}{0.5em}{}
+
+\title{RF and Microwave Engineering (EX752 / EX716)\\[0.3em]\large Concise PYQ}
+\author{}
+\date{\today}
+
+\begin{document}
+\maketitle
+\vspace{-1em}
+\small
+\textbf{Notes:} TU IOE PYQ 2069--2081. Regular = \textbf{bold}, Back = normal; BEX = normal font, BEI (EX716) = \texttt{mono}.
+Marks in (); unique values only.
+Keys: (I)=Importance/Need \quad (+)=Advantage \quad (-)=Disadvantage \quad +Fig=Figure \quad +Eg=Example \quad Vs=Compare/Differentiate.
+\vspace{2pt}
+\hrule
+\vspace{4pt}
+
+\begin{multicols}{2}
+\footnotesize
+
+\section*{1. Introduction}
+\begin{itemize}
+  \item Microwave frequency bands (IEEE) + applications; comm protocols \hfill (4)(2+4)(3+3)(2+6)(3+3+4)
+  \item Conventional Vs RF/microwave circuits; lumped Vs distributed \hfill (4+2)(3+3)
+  \item (+)(-) of microwaves Vs acoustic / conventional / lower-freq \hfill (5)(6)(2+4)
+  \item Seismic band Vs RF/microwave circuit \hfill (8)
+\end{itemize}
+
+\section*{2. RF \& M/W Transmission Lines}
+\begin{itemize}
+  \item Microwave TL Vs conventional; microstrip Vs strip-lines \hfill (4)(5)
+  \item Admittance / immittance chart; sketch + duality parameters \hfill (2)(10)(4)
+  \item Single-stub matching ($Z_L{=}80{+}j100$; $\Gamma_L{=}0.5\angle51°$) +Smith \hfill (2+8)(8)
+  \item Double-stub matching ($3\lambda/8$) +Fig/+S-matrix; various loads \hfill (8)(10)(8+2)
+    \begin{itemize}
+      \item $Z_L{=}300{+}j300$, $Z_L{=}80{+}j180$@3GHz, $Z_L{=}190{+}j110$@10GHz
+      \item $Z_L{=}60{-}j80$/50$\Omega$, $109{+}j120$/75$\Omega$ coax, $\Gamma{=}0.64\angle58°$/100$\Omega$
+      \item admittance $0.00813{+}j0.0065\,\mho$/50$\Omega$; short-ckt $75{+}j75$, $0.4{+}j0.85$
+    \end{itemize}
+\end{itemize}
+
+\section*{3. RF \& M/W Network Theory}
+\begin{itemize}
+  \item S-parameters (I); Vs h-parameters; return \& insertion loss \hfill (4)(4+4)(2)
+  \item S-parameters --- two-port (derive); three-port network +Eg \hfill (2+6)(4+5)(4+4)
+  \item S-matrix analysis: reciprocal / lossless / return loss / reflected power \hfill (3+1+1+1+2)
+  \item Passive device from S-matrix (4-port); power splitter; E/H-Tee \& Duplexer S-matrices \hfill (6)(8)
+\end{itemize}
+
+\section*{4. RF/Microwave Components \& Devices}
+\begin{itemize}
+  \item Waveguide --- rect TE/TM field equations; modes + parameters \hfill (7+3)(8+2)(10)
+    \begin{itemize}
+      \item $\text{TE}_{10}$ Vs $\text{TE}_{20}$ cutoff; prove $\text{TM}_{01}/\text{TM}_{10}$ absent; dominant mode \hfill (2)(3)(5)
+      \item circular waveguide TE/TM field; air-filled rect (cutoff/velocities/$Z_0$) +directional coupler \hfill (10)(6+4)
+    \end{itemize}
+  \item Tee junctions --- Magic Tee (S-params, +derive); E-plane Vs H-plane; hybrid tee \hfill (3+3)(4)(5)(8)
+  \item Directional couplers; circulators; cavity resonators; microstrips \hfill (6)(5)(6)(5)
+  \item Probe- Vs loop-coupling; Gunn diode; MASER \hfill (5)(4)
+\end{itemize}
+
+\section*{5. Microwave Generators}
+\begin{itemize}
+  \item Transit-time effect + two-cavity klystron; bunching (density modulation) \hfill (2+8)(2)
+  \item Klystron oscillator (multi-cavity); velocity modulation + reflex klystron +Fig \hfill (2+7)(5)(10)
+  \item Magnetron construction/operation; cross-field ($45°/60°$ phase) as power amp \hfill (2+8)(10)(6+2)(8)
+  \item TWT construction \& operation; conventional-tube limits at microwave; BWO; LNA \hfill (2+6)(2+8)(5)
+\end{itemize}
+
+\section*{6. RF Design Practices}
+\begin{itemize}
+  \item Filter --- insertion loss method; Butterworth/Chebyshev prototype \hfill (5)(8)(4)
+  \item LPF/HPF via microstrip ($\pi$-section, T-type, double-section shunt) +prototyping \hfill (3+5)(6+4)(10)(7+3)
+  \item Amplifier --- stability + max gain (bilateral \& unilateral), +Smith, +flowchart \hfill (5+5)(10)(12)(18)
+    \begin{itemize}
+      \item S-params: $0.894\angle{-60.6}$; $0.55\angle150$; $0.656\angle146.7$; $0.72\angle{-116}$ (GaAs); $0.64\angle{-169}$; $0.55\angle{-160}$ (MESFET)
+      \item flowchart (GaAsFET) + $\Gamma_{in}/\Gamma_{out}$ trace; amplifier Vs oscillator (stability factor) \hfill (4)(5+5)
+    \end{itemize}
+  \item Oscillator \& mixer theory \hfill (5)(8)
+\end{itemize}
+
+\section*{7. Microwave Antennas \& Propagation}
+\begin{itemize}
+  \item RF/MW radiation hazards + fields; safety practices \& standards (SARPs) \hfill (8)(5)(6)(3+3)
+  \item Effect of SAR; how radiation is hazardous; GSM BTS propagation fields + SAR \hfill (6)(5)(4+4)
+  \item Antenna as DUT --- measurement tool + working principle; HERP \hfill (8)(4)
+\end{itemize}
+
+\section*{8. RF/Microwave Measurements}
+\begin{itemize}
+  \item Power measurement --- VSWR meter + low power / bolometry; VSWR $>$ 10 \hfill (2+8)(4+6)(2+6)
+  \item Calorimeter --- static / circulating Vs flow; calorimeter wattmeter \hfill (5)(2+8)(6+2)
+  \item Bolometer bridge (single-bridge limits, double-channel); network analyzer; two-port model \hfill (8)(4)(10)
+  \item Microwave Vs low-frequency measurements; spectrum analyzer \hfill (3)(4)
+\end{itemize}
+
+\end{multicols}
+\end{document}

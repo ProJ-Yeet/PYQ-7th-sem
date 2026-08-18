@@ -1,25 +1,22 @@
-# Source scans and third-party material — large binaries, not authored here.
+# Staging area for newly-received scans. Once a subject is merged, its
+# source PDF is copied into the subject folder and tracked there.
 New PYQ/
+
+# Third-party / reference material, not authored here (~650 MB combined).
 Old Sorted PYQ/
 Prajit Notes/
 Data Mining/Notes/
 BEI IV-I(1).pdf
-*.png
-!*/images/*.png
-
-# Raw subject scans (the inputs the OCR archives were made from)
-AI/CT-*.pdf
-DSAP/CT-*.pdf
-O&M/ME-*.pdf
-RF-Microwave/EX-*.pdf
-RF-Microwave/EG-*.pdf
-Wireless/EX-*.pdf
-Data Mining/Data-Mining.pdf
-Data Mining/Syllabus*.pdf
 
 # LaTeX build artefacts
 *.aux
 *.log
-*.out
 *.toc
+*.out
+*.fls
+*.fdb_latexmk
 *.synctex.gz
+*.gz
+
+# Loose scratch images in the project root; images/ folders are tracked.
+/*.png

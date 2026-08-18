@@ -1,0 +1,403 @@
+\documentclass[12pt]{article}
+\usepackage{hyperref}
+\usepackage{amsmath, amssymb, amsfonts}
+\usepackage[margin=1.2cm]{geometry}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\parindent 0pt
+\newcommand{\lb}{\\$\left|\rightarrow\right.$}
+\newcommand{\enter}{\\\textcolor{white}{1}}
+\ExplSyntaxOn
+\NewDocumentCommand{\bo}{m}
+ {
+   \bold_commas:n { #1 }
+ }
+\cs_new:Npn \bold_commas:n #1
+ {
+   \seq_set_split:Nnn \l_tmpa_seq { , } { #1 }
+   \seq_map_indexed_function:NN \l_tmpa_seq \__bold_commas_aux:nn
+ }
+\cs_new:Npn \__bold_commas_aux:nn #1 #2
+ {
+   \textbf{#2}
+   \int_compare:nNnTF { #1 } < { \seq_count:N \l_tmpa_seq }
+     { , }
+     { }
+ }
+\ExplSyntaxOff
+
+\title{Wireless Communication (EX751 / EX715)\\[0.4em]\large Detailed PYQ}
+\author{}
+\date{\today}
+
+\begin{document}
+\maketitle
+\vspace{6cm}
+\textbf{Notes}
+\begin{itemize}[noitemsep]
+  \item PYQs from TU, IOE, BEX (EX751) and BEI (EX715) programmes combined (2070--2081 BS).
+  \item BEX questions are in normal font; BEI questions are in \texttt{this monospace style}.
+  \item Regular exam = \bo{bold}, Back exam = regular font.
+  \item So: \bo{72 Ash} = BEX Regular, 73 Ma = BEX Back, \bo{\texttt{79 Bh}} = BEI Regular, \texttt{80 Ba} = BEI Back.
+  \item Months: Bh = Bhadra, Ma = Magh, Ash = Ashwin, Ba = Baishakh.
+  \item Keywords: (I) = Importance/Need/Significance, (+) = Advantage, (-) = Disadvantage, +Fig = Figure, +Eg = Example, Vs = Compare/Differentiate.
+\end{itemize}
+\pagebreak
+\tableofcontents
+\pagebreak
+
+%=======================================================================
+\section{Introduction}
+\begin{center}(2 Hours)\end{center}
+
+  \subsection{Evolution of Wireless Communications (1G--5G)}
+    \begin{enumerate}[topsep=0pt, noitemsep]
+      \item Briefly explain evolution of wireless communications 1G--3G \hfill [6] (70 Ma)
+        \lb Evolution of wireless comm. in terms of technology \& worldwide market penetration \hfill [6] (70 Magh)
+        \lb Evolution of cellular radio 1G--3G \hfill [4] (71 Bh)
+        \lb Development of mobile comm., evolution path up to 3G technology \hfill [4] (74 Ma)
+        \lb Evolution of different generations of cellular systems \hfill [4] (\bo{75 Bh})
+        \lb Evolution from 1G to 2G, 2.5G, TDMA-based \hfill [4] (71 Ma)
+      \item 2G Vs 3G with +Eg of technologies; prioritized handoff + cell dragging \hfill [4+2] (\bo{72 Ash})
+      \item 3G Vs 4G mobile comm. standards Vs, technology advancement \hfill [4] (\bo{75 Bh}) [6] (\bo{74 Bh})
+        \lb 1G, 2G, 3G, 4G Vs, technology advancement \hfill [6] (\bo{74 Bh})
+        \lb 3G Vs 4G \hfill [4] (\texttt{80 Ba, 81 Ba})
+        \lb 2G Vs 3G Vs 4G standards, technology advancement \hfill [4] (\bo{\texttt{80 Bh}})
+        \lb Improvements in 2G, 3G, beyond 3G standards \hfill [6] (\bo{70 Bh})
+      \item Forward \& reverse channel; 5G Vs 4G mobile communication \hfill [2+2] (\bo{\texttt{79 Bh}})
+        \lb Define forward and reverse channel \hfill [2] (\bo{\texttt{80 Bh}})
+    \end{enumerate}
+
+\pagebreak
+%=======================================================================
+\section{Cellular Mobile Communication Concepts}
+\begin{center}(4 Hours)\end{center}
+
+  \subsection{Frequency Reuse and Channel Assignment}
+    \begin{enumerate}[topsep=0pt, noitemsep]
+      \item Frequency reuse concept; co-channel reuse ratio \hfill [6] (72 Ma)
+        \lb Minimizing reuse distance maximizes spectral efficiency (I) \hfill [4] (\bo{74 Bh})
+      \item Prove co-channel reuse ratio $Q = \sqrt{3N}$; find N for
+        omni, 120° \& 60° sectoring (SIR = 15 dB, n = 4)
+        \enter\hfill [1+4] (71 Bh)
+        \lb Prove $Q = \sqrt{3N}$; find N for omni, 120°, 60° sectoring
+        (SIR = 15 dB, n = 3) \hfill [3+5] (\bo{\texttt{79 Bh}})
+        \lb Derive co-channel reuse ratio $Q = \sqrt{3N}$ \hfill [4] (\bo{\texttt{80 Bh}})
+        \lb Co-channel Vs adjacent channel interference; prove $Q = \sqrt{3N}$;
+        find duplex channels (N = 4, 20 MHz, 25 kHz simplex)
+        \enter\hfill [3+4+3] (\bo{70 Bh})
+      \item For 7-cell reuse, find min. distance between co-channel cells (area = 23 km²) \hfill [4] (\bo{74 Bh})
+    \end{enumerate}
+
+  \subsection{Handoff Strategies and Types}
+    \begin{enumerate}[topsep=0pt, noitemsep]
+      \item Handoff margin +Fig \hfill [3] (\bo{75 Bh})
+      \item Handoff strategies used in GSM \hfill [8] (70 Ma)
+      \item Handover process; types of handover with application \hfill [6] (74 Ma)
+        \lb Practical handoff considerations \hfill [4] (\texttt{79 Bh}, 73 Ma)
+        \lb Prioritized handoff; cell dragging \hfill [2] (\bo{72 Ash})
+    \end{enumerate}
+
+  \subsection{Grade of Service (GoS) and Trunking}
+    \begin{enumerate}[topsep=0pt, noitemsep]
+      \item GoS, measurement in blocked call cleared trunking system \hfill [3+5] (\bo{\texttt{79 Bh}})
+        \lb GoS + find optimal N (omni, 120°, 60° sectoring, SIR = 15 dB, n = 3) \hfill [3+5] (\bo{\texttt{79 Bh}})
+      \item 394 cells, 19 ch., 2\% blocking, 2 calls/hr, 3 min. duration
+        --- find users \& market penetration \hfill [5] (\texttt{80 Ba, 81 Ba})
+      \item 12-cell system, 1500 km² city, find: clusters, channels/cell,
+        max. traffic, users (2\% GoS), mobiles/channel, theoretical max. users \hfill [12] (72 Ma)
+      \item Determine cluster size, number of clusters, max. users in service area \hfill [6] (73 Ma)
+      \item $S/I = n\sqrt{3N}/i_0$ --- derive expression \hfill [4] (74 Ma)
+    \end{enumerate}
+
+  \subsection{Coverage and Capacity Enhancement}
+    \begin{enumerate}[topsep=0pt, noitemsep]
+      \item Microcell zone concept (I) + explain \hfill [3] (\texttt{80 Ba, 81 Ba})
+      \item Sectoring Vs cell splitting: best option for capacity expansion \hfill [5] (\bo{75 Bh})
+      \item Techniques for enhancing capacity \& coverage in cellular network \hfill [8] (71 Ma)
+    \end{enumerate}
+
+\pagebreak
+%=======================================================================
+\section{Radio Wave Propagation in Mobile Network Environment}
+\begin{center}(12 Hours)\end{center}
+
+  \subsection{Free Space Propagation and Link Budget}
+    \begin{enumerate}[topsep=0pt, noitemsep]
+      \item Free space propagation: receiver 10 km, 50 W TX, 900 MHz,
+        $G_T{=}1$, $G_R{=}2$, $Z{=}50\,\Omega$ ---
+        find: received power, E-field magnitude, power flux density, rms voltage
+        \enter\hfill [8] (\texttt{80 Ba, 81 Ba})
+      \item TX output 165 W at 325 MHz, antenna gain 12 dBi; RX 15 km away, gain 6 dBi;
+        find power delivered to receiver (free-space, no other losses)
+        \enter\hfill [6] (\bo{\texttt{80 Bh}})
+      \item Link budget: BS 10 W, 250 MHz, 20 m coax (3 dB/100 m), 9 dBi TX ant.,
+        25 km, 4 dBi RX ant., 0.2 dB mismatch loss --- power delivered to receiver
+        \enter\hfill [8] (\bo{72 Ash})
+      \item Radio coverage range: BS at 150 W, threshold $-104$ dBm,
+        path loss at 1 m = 15 dB, exponent = 4 \hfill [6] (\bo{70 Bh})
+      \item Mobile 5 km from BS, $\lambda/4$ monopole (gain 2.55 dB),
+        E-field = $10^{-3}$ V/m at 1 km, 900 MHz:
+        find length \& aperture; received power (2-ray, TX ht. 50 m, RX ht. 1.5 m)
+        \enter\hfill [6] (71 Bh)
+    \end{enumerate}
+
+  \subsection{Large-Scale Path Loss: Propagation Mechanisms}
+    \begin{enumerate}[topsep=0pt, noitemsep]
+      \item Large scale Vs small scale propagation model;
+        propagation mechanisms in mobile environment \hfill [3+5] (\bo{72 Ash})
+        \lb Large scale path loss Vs small scale fading \hfill [8] (72 Ma)
+      \item Define path loss; parameters of a mobile multipath channel used to classify types of fading \hfill [2+4] (\bo{\texttt{80 Bh}})
+      \item Derive expression for phase difference: two-ray free space propagation model \hfill [8] (71 Bh)
+        \lb Diffraction in radio wave propagation; derive phase difference
+        (Fresnel Zone Geometry model) \hfill [2+6] (\bo{\texttt{79 Bh}})
+      \item Scattering; derive expression for two-ray ground reflection model \hfill [2+8] (\bo{74 Bh})
+      \item Path loss Vs signal fading; time dispersion fading + types \hfill [2+6] (71 Bh)
+    \end{enumerate}
+
+  \subsection{Outdoor Propagation Models}
+    \begin{enumerate}[topsep=0pt, noitemsep]
+      \item Outdoor propagation models (any two) \hfill [3+3] (\bo{75 Bh}) [5] (73 Ma)
+      \item Okumura model: median path loss for T-R = 50 km,
+        $h_{BS}{=}100$ m, $h_{MS}{=}10$ m, suburban, correction = 9 dB, 900 MHz \hfill [4+4] (74 Ma)
+        \lb Okumura model, suburban, $d{=}50$ km, $h_{te}{=}100$ m, $h_{re}{=}10$ m, EIRP 1 kW at 900 MHz;
+        find EIRP (dBm) \& received power (RX gain 10 dB, median attenuation 43 dB, area gain 9 dB) \hfill [4+2+2] (\bo{\texttt{80 Bh}})
+        \lb Hata model: correction factor + pathloss for medium city,
+        $f_c{=}950$ MHz, $h_{BS}{=}45$ m, $d{=}10$ km, $h_{MS}{=}5$ m;
+        free space pathloss; compare both \hfill [4+4] (\bo{\texttt{79 Bh}})
+        \lb Hata model: max. cell radius \& area, BS = 50 W, $-91$ dBm threshold,
+        900 MHz, $h_{BS}{=}30$ m, $h_{MS}{=}1$ m \hfill [6] (73 Ma)
+      \item What is the Ericsson Multiple Breakpoint model? \hfill [2] (\bo{\texttt{80 Bh}})
+      \item 10-km wireless link feasibility, Okumura model, suburban:
+        AP (5 dBi, 20 dBm TX, $-80$ dBm sens., 100 m ht.) ---
+        client (20 dBi, 15 dBm TX, $-75$ dBm sens., 10 m ht.) ---
+        cables: 3 dB loss, 2.4 GHz \hfill [12] (\bo{74 Bh})
+      \item Two-ray mobile point-to-point: path loss, 800 MHz,
+        TX ht. = 30 m, RX ht. = 2 m, d = 10 km; Vs free-space \hfill [4+4] (70 Ma)
+    \end{enumerate}
+
+  \subsection{Indoor Propagation Models}
+    \begin{enumerate}[topsep=0pt, noitemsep]
+      \item Indoor propagation models (any two) \hfill [8] (\bo{70 Bh})
+    \end{enumerate}
+
+  \subsection{Small Scale Fading and Multipath}
+    \begin{enumerate}[topsep=0pt, noitemsep]
+      \item Small scale fading: types + factors influencing \hfill [2+4+4] (\bo{75 Bh})
+        \lb Small scale fading: types + factors \hfill [4+4] (\texttt{80 Ba, 81 Ba})
+        \lb Small scale fading: types + factors \hfill [2+2] (73 Ma)
+        \lb Small scale fading + factors (10 questions combined) \hfill [3+6] (72 Ma)
+      \item Parameters of mobile multipath channel \hfill [7] (71 Ma)
+    \end{enumerate}
+
+  \subsection{Doppler Spread, Coherence Bandwidth and Time}
+    \begin{enumerate}[topsep=0pt, noitemsep]
+      \item Doppler spread; small-scale fading types based on Doppler spread;
+        mean excess delay, rms delay spread, 90\% \& 50\% coherence BW
+        from multipath profile \hfill [4+4] (70 Ma)
+      \item Coherence bandwidth + coherence time (I) in mobile radio propagation \hfill [4] (73 Ma)
+      \item Fading classification: RMS delay spread Vs coherence time \hfill [4+4] (74 Ma)
+      \item Determine smallest symbol period $T_s$ (greatest symbol rate) without equalizer
+        from power-delay profile: BER OK when $\sigma_\tau/T_s \le 0.1$ \hfill [8] (\bo{75 Bh})
+      \item Rayleigh Vs Rician fading channel (with expressions) \hfill [2] (71 Ma)
+        \lb Rayleigh \& Ricean fading distribution \hfill [5] (70 Ma, 72 Ash)
+      \item RMS delay spread + 90\% coherence BW from power-delay profile;
+        flat Vs frequency-selective for AMPS (30 kHz) \& GSM (200 kHz) \hfill [2+6] (71 Ma)
+    \end{enumerate}
+
+\pagebreak
+%=======================================================================
+\section{Modulation-Demodulation Methods in Mobile Communications}
+\begin{center}(4 Hours)\end{center}
+
+  \subsection{Digital Linear Modulation: BPSK, DPSK, QPSKs}
+    \begin{enumerate}[topsep=0pt, noitemsep]
+      \item QPSK transmission \& detection process \hfill [6] (\bo{75 Bh})
+        \lb QPSK transmission \& detection \hfill [8] (72 Ma)
+      \item OQPSK transmitter \& receiver; $\pi/4$-QPSK Vs OQPSK \hfill [5+2] (71 Bh)
+      \item DPSK modulation: transmitter, receiver + PN sequence (I) \hfill [4+2+2] (72 Ma)
+    \end{enumerate}
+
+  \subsection{Constant Envelope Modulation: MSK, GMSK}
+    \begin{enumerate}[topsep=0pt, noitemsep]
+      \item MSK as special type of continuous-phase FSK \& OQPSK;
+        OQPSK Vs MSK Vs GMSK: BW efficiency, power efficiency;
+        suitable for GSM modulation \hfill [3+3+2] (\texttt{80 Ba, 81 Ba})
+      \item Digital modulation (+) over analog; GMSK: TX \& detection
+        process +Fig, constellation diagram \hfill [2+6] (\bo{\texttt{79 Bh}})
+      \item MSK \& GMSK modulation techniques; OFDM modulator \& demodulator +Fig \hfill [8] (70 Ma)
+    \end{enumerate}
+
+  \subsection{M-ary Modulation and OFDM}
+    \begin{enumerate}[topsep=0pt, noitemsep]
+      \item OFDM operation +Fig (block diagram of transmitter \& receiver) \hfill [8] (\bo{74 Bh}, \bo{\texttt{80 Bh}})
+        \lb OFDM: generalize modulation \& demodulation technique \hfill [8] (71 Ma)
+        \lb OFDM principle; spread spectrum modulation techniques \hfill [4+4] (\bo{70 Bh})
+    \end{enumerate}
+
+  \subsection{Spread Spectrum: DS and FH}
+    \begin{enumerate}[topsep=0pt, noitemsep]
+      \item Direct Sequence \& Frequency Hopped Spread Spectrum techniques \hfill [4] (73 Ma)
+        \lb Spread spectrum Vs various MA techniques; FDMA Vs CDMA \hfill [6+2] (72 Ma)
+    \end{enumerate}
+
+\pagebreak
+%=======================================================================
+\section{Equalization and Diversity Techniques}
+\begin{center}(4 Hours)\end{center}
+
+  \subsection{Equalization}
+    \begin{enumerate}[topsep=0pt, noitemsep]
+      \item Equalization (I) in wireless comm.; signal processing to minimize ISI \hfill [2+6] (\bo{75 Bh})
+        \lb Equalization (I); basic equalization technique \hfill [2+5] (72 Ma)
+        \lb Fundamentals of equalization w.r.t. comm. system \hfill [4] (73 Ma)
+      \item MSE algorithm: optimal weights, derivation +Fig \hfill [8] (\bo{\texttt{79 Bh}})
+      \item Maximum Likelihood Sequence Estimation (MLSE) +Fig;
+        time diversity (definition + two implementations) \hfill [6+1+5] (\bo{72 Ash})
+        \lb MLSE equalization +Fig \hfill [4] (71 Ma, 72 Ma)
+      \item Adaptive equalization algorithms (any two) \hfill [4] (73 Ma)
+    \end{enumerate}
+
+  \subsection{Diversity Techniques}
+    \begin{enumerate}[topsep=0pt, noitemsep]
+      \item Equalization \& diversity (I); space diversity reception methods;
+        explain any one \hfill [3+3+2] (\texttt{80 Ba, 81 Ba})
+      \item Why implement diversity? Maximum ratio combining (space diversity) \hfill [2+2] (\bo{\texttt{80 Bh}})
+      \item Diversity (I) in wireless comm.; types of diversity techniques \hfill [2+6] (71 Bh)
+        \lb Diversity techniques; combining methods for space diversity \hfill [4+4] (74 Ma)
+        \lb Diversity (I); diversity combining techniques \hfill [4+6] (\bo{70 Bh})
+        \lb Various space diversity techniques +Fig \hfill [4] (73 Ma)
+      \item Antenna diversity techniques Vs; discuss \& compare \hfill [4] (71 Ma)
+    \end{enumerate}
+
+  \subsection{RAKE Receiver}
+    \begin{enumerate}[topsep=0pt, noitemsep]
+      \item RAKE receiver: M-branch working \hfill [8] (\bo{72 Ash})
+        \lb RAKE receiver +Fig \hfill [4] (70 Ma)
+        \lb RAKE receiver \hfill [4] (\texttt{79 Bh})
+    \end{enumerate}
+
+\pagebreak
+%=======================================================================
+\section{Speech and Channel Coding Fundamentals}
+\begin{center}(4 Hours)\end{center}
+
+  \subsection{Speech Characteristics and Vocoders}
+    \begin{enumerate}[topsep=0pt, noitemsep]
+      \item Characteristics of speech signal \hfill [8] (\bo{72 Ash}) [3] (73 Ma, \texttt{79 Bh})
+        \lb Characteristics of speech signal; used in designing coders \hfill [8] (\bo{72 Ash})
+      \item Vocoder (I); any two predictive coders \hfill [2+6] (\bo{70 Bh})
+        \lb Formant vocoder operation; characteristics of speech signal \hfill [4+4] (71 Bh)
+        \lb Waveform \& voice coding techniques; characteristics of speech; GSM CODEC +Fig \hfill [4+2+2] (74 Ma)
+        \lb Vocoders + block diagram; types of vocoders \hfill [2+3] (73 Ma)
+        \lb Speech coding (I); VOCODER basic concept \hfill [4+4] (70 Ma)
+        \lb Source coders (any two) in speech coding \hfill [6] (\bo{74 Bh})
+      \item Characteristics of speech signal; Linear Predictive Coder (LPC) + block diagram \hfill [2+6] (\texttt{80 Ba, 81 Ba})
+        \lb LPC operation \hfill [3+5] (\bo{\texttt{79 Bh}}) [2+6] (72 Ma) [3+5] (73 Ma)
+      \item Sub-band coding with transmitter and receiver \hfill [6] (\bo{\texttt{80 Bh}})
+    \end{enumerate}
+
+  \subsection{Channel Coding: Convolutional, Turbo, Interleaving}
+    \begin{enumerate}[topsep=0pt, noitemsep]
+      \item Channel coding; types of linear predictive coder \hfill [2+6] (71 Ma)
+      \item Convolutional encoding and decoding \hfill [5] (\bo{74 Bh})
+      \item Viterbi decoding algorithm \hfill [3] (\bo{75 Bh}) [3] (70 Ma) [3] (\bo{72 Ash})
+      \item Turbo coding \hfill [5] (74 Ma)
+      \item Why is interleaving needed in wireless communication? Explain its working \hfill [4] (\bo{\texttt{80 Bh}})
+    \end{enumerate}
+
+\pagebreak
+%=======================================================================
+\section{Multiple Access in Wireless Communications}
+\begin{center}(9 Hours)\end{center}
+
+  \subsection{FDMA}
+    \begin{enumerate}[topsep=0pt, noitemsep]
+      \item FDMA non-linear effect; 25 MHz total, 100 kHz guard, 200 kHz ch. BW
+        --- find number of channels \hfill [3+2] (\texttt{80 Ba, 81 Ba})
+      \item FDMA (+) (-) \hfill [4] (73 Ma)
+        \lb FDMA Vs CDMA \hfill [2+4] (70 Ma, 72 Ma)
+    \end{enumerate}
+
+  \subsection{TDMA}
+    \begin{enumerate}[topsep=0pt, noitemsep]
+      \item TDMA (+) over FDMA \hfill [4] (71 Ma, 73 Ma)
+      \item GSM time slot efficiency: 6 trailing + 8.25 guard + 26 training + 2×58 data bits;
+        find frame efficiency \hfill [4] (\bo{70 Bh})
+    \end{enumerate}
+
+  \subsection{Spread Spectrum Multiple Access: CDMA and FHMA}
+    \begin{enumerate}[topsep=0pt, noitemsep]
+      \item CDMA: characteristics, (+), (-) \hfill [2+6] (\bo{\texttt{79 Bh}})
+        \lb CDMA design considerations \hfill [4] (\texttt{80 Ba, 81 Ba})
+        \lb CDMA (+) (-) \hfill [4] (73 Ma)
+      \item Construct a Hadamard matrix for $H_8$ (Walsh codes for CDMA) \hfill [4] (\bo{\texttt{80 Bh}})
+      \item SSMA: DS \& FH spread spectrum techniques; (+) (-) of FDMA, TDMA, CDMA \hfill [4+4] (73 Ma)
+        \lb Spread spectrum MA techniques; FDMA Vs CDMA \hfill [6+2] (72 Ma)
+        \lb Spread spectrum MA types \hfill [8] (74 Ma)
+      \item FHMA: working with +Eg \hfill [4] (\bo{\texttt{79 Bh}})
+        \lb FHMA technique with block diagram (transmitter \& receiver) \hfill [6] (\bo{\texttt{80 Bh}}) [7] (\texttt{80 Ba, 81 Ba})
+        \lb FHMA principle; hybrid spectrum MA technique (near-far mitigation) \hfill [4+6] (\bo{74 Bh})
+        \lb FHMA \hfill [5] (\bo{75 Bh}) [4] (73 Ma)
+      \item Explain any two hybrid multiple access techniques \hfill [4] (\bo{\texttt{80 Bh}})
+        \lb Self-jamming in CDMA; FHMA +Fig; two hybrid SS MA (+) (-) \hfill [2+4+6] (\bo{72 Ash})
+        \lb FHMA principle; near-far effect in CDMA + solution \hfill [3+4] (71 Ma)
+        \lb Near-far effect; one hybrid SS MA technique \hfill [2+2] (71 Ma)
+    \end{enumerate}
+
+  \subsection{SDMA}
+    \begin{enumerate}[topsep=0pt, noitemsep]
+      \item SDMA; two hybrid SS MA techniques (near-far mitigation) \hfill [2+6] (\bo{75 Bh})
+    \end{enumerate}
+
+  \subsection{Multiple Access Comparison}
+    \begin{enumerate}[topsep=0pt, noitemsep]
+      \item Multiple access (define); TDMA, CDMA, SDMA \hfill [2+6] (71 Bh)
+      \item FDMA Vs CDMA Vs TDMA: (+) (-) each \hfill [4] (73 Ma)
+    \end{enumerate}
+
+  \subsection{Wireless LAN Standards}
+    \begin{enumerate}[topsep=0pt, noitemsep]
+      \item WLAN \hfill [3] (72 Ash)
+      \item WiMAX \hfill [3] (\bo{72 Ash}) [3] (70 Ma)
+    \end{enumerate}
+
+\pagebreak
+%=======================================================================
+\section{Wireless Systems and Standards}
+\begin{center}(6 Hours)\end{center}
+
+  \subsection{GSM: Architecture and Channels}
+    \begin{enumerate}[topsep=0pt, noitemsep]
+      \item GSM architecture: operation of each component \hfill [8] (\texttt{80 Ba, 81 Ba})
+        \lb GSM architecture: draw \& explain \hfill [8] (70 Ma, \bo{\texttt{79 Bh}}, 73 Ma)
+      \item GSM traffic \& control channels \hfill [8] (\bo{75 Bh}, \bo{72 Ash})
+      \item Broadcast Control Channel (BCH) \& Common Control Channel (CCCH) in GSM \hfill [4+4] (\bo{\texttt{80 Bh}})
+      \item GSM frame structure; TDMA frame efficiency cannot reach 100\% \hfill [6+2] (74 Ma)
+        \lb GSM frame structure; traffic \& control channels during a call \hfill [4+4] (\bo{70 Bh})
+      \item Signal processing in GSM: convert speech to radio signal and back \hfill [8] (71 Bh)
+      \item GSM \& CDMA standards; GSM architecture \hfill [4+4] (71 Ma)
+    \end{enumerate}
+
+  \subsection{CDMA Standards: IS-95 Channels}
+    \begin{enumerate}[topsep=0pt, noitemsep]
+      \item Channelization code; forward channels in cdma IS-95 \hfill [4] (73 Ma)
+        \lb Draw the forward CDMA (IS-95) channel \hfill [4] (\bo{\texttt{80 Bh}})
+      \item CDMA Vs LTE system architecture; functions of entities \hfill [3+5] (74 Ma)
+    \end{enumerate}
+
+  \subsection{Regulatory Issues and Interference}
+    \begin{enumerate}[topsep=0pt, noitemsep]
+      \item Regulatory issues in wireless communication \hfill [4] (\texttt{80 Ba, 81 Ba}) [5] (\bo{74 Bh})
+        \lb Spectrum regulations \hfill [4] (\texttt{79 Bh})
+      \item Interference in wireless/mobile communication \hfill [4] (\texttt{80 Ba, 81 Ba})
+    \end{enumerate}
+
+  \subsection{Advanced Standards: LTE, WiMAX, UMTS}
+    \begin{enumerate}[topsep=0pt, noitemsep]
+      \item WiMAX \hfill [3] (72 Ash, 70 Ma)
+      \item LTE \hfill [3] (\bo{72 Ash})
+    \end{enumerate}
+
+\end{document}
