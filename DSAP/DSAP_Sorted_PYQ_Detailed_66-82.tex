@@ -51,79 +51,13 @@
     Note \bo{70 Asa} (2070 Ashad, CT704) and 75 Ash (2075 Ashwin, CT704) are different months --- do not merge them.
   \item Keywords: (I) = Importance/Need, (+) = Advantage, (-) = Disadvantage, +Fig = Figure, +Eg = Example, Vs = Compare/Differentiate.
   \item Marks kept in [brackets] as originally split (e.g.\ [2+6]).
-  \item Chapters 1 and 9 are asked almost exclusively by EX753; CT704 never sets a sampling/quantization or DSP-processor question. Everything in between is common ground.
+  \item Chapters 1--7 are the CT704 syllabus chapters, in syllabus order, with the official hour count printed under each. Chapter 8 collects the topics that lie outside that syllabus and are set only by \texttt{EX753} (DSP fundamentals, A/D quantization, DSP processors). Sampling questions belong to Chapter 1 (syllabus 1.10) and are filed there.
   \item Every question statement here is reproduced \textbf{in full}, with all its given data. Nothing is abbreviated. Where the original paper itself omits data or misprints a symbol, that is stated in place.
 \end{itemize}
 \pagebreak
 \tableofcontents
 \pagebreak
 
-%=======================================================================
-\section{Introduction to DSP, Sampling and Quantization}
-\begin{center}(EX753 only --- CT704 does not set this chapter)\end{center}
-
-  \subsection{Basic elements, advantages, disadvantages, applications}
-    \begin{enumerate}[topsep=0pt, noitemsep]
-      \item Explain the basic elements of Digital Signal Processing with necessary block diagram. Also list out the general application areas of Digital Signal Processing. \hfill [4+2] (\bo{\texttt{77 Ch}})
-        \lb What are the basic elements of Digital Signal Processing (DSP) system? Explain Analog to Digital conversion process in brief. \hfill [3+4] (\bo{\texttt{74 Bh}})
-        \lb Explain Digital Signal Processing with its advantages and applications. \hfill [7] (\bo{\texttt{70 Bh}})
-
-      \item List out the advantages of digital signal processing over analog signal processing. \hfill [2] (\bo{\texttt{78 Ch}})
-        \lb What are the advantages of DSP? Explain the significance of A/D and D/A conversion in DSP. \hfill [3+4] (\bo{\texttt{71 Bh}})
-        \lb What are the advantages of DSP over analog signal processing? Explain the significance of A/D and D/A conversion in DSP. \hfill [3+4] (\texttt{70 Ma})
-
-      \item List out the major disadvantages of Digital Signal Processing. When does oversampling occur? \hfill [2+1] (\bo{\texttt{76 Bh}})
-        \lb Describe Spectral properties of time domain sampling principle with a suitable example. List out the disadvantages of Digital Signal Processing. \hfill [4+2] (\bo{\texttt{75 Bh}})
-
-      \item Explain the general application areas of digital Signal Processing. \hfill [3] (\bo{\texttt{73 Bh}})
-        \lb Describe the different application of a digital signal processing. \hfill [3] (\texttt{73 Ma})
-        \lb What are the applications of DSP? (asked as the lead-in to the sampling numericals below.) \hfill [2] (\bo{\texttt{79 Ch}, \texttt{72 Ash}}, \texttt{72 Ma})
-    \end{enumerate}
-
-  \subsection{Sampling theorem, Nyquist rate, aliasing}
-    \begin{enumerate}[topsep=0pt, noitemsep]
-      \item Consider the analog signal $x_a(t)=3\cos 100\pi t$.
-        \begin{enumerate}[label=(\alph*), noitemsep, topsep=0pt]
-          \item Determine the minimum sampling rate required to avoid aliasing.
-          \item Suppose that signal is sampled at $F_s=75$ Hz. What is the discrete time signal obtained after sampling?
-          \item Assume now that we sample this signal using a sampling rate $F_s=5{,}000$ samples/sec. What is discrete time signal after sampling?
-        \end{enumerate}
-        \hfill [1+3+3] (\bo{\texttt{81 Ch}}); [7] (\texttt{74 Ma})
-        \lb Same signal $x(t)=3\cos(100\pi t)$, only two parts: (a) minimum sampling rate to avoid aliasing; (b) if sampled at $F_s=200$ Hz, what is the discrete time signal obtained after sampling? Also list out the advantages of digital signal processing over analog signal processing. \hfill [2+2+3] (\bo{\texttt{78 Ch}})
-
-      \item Define causal and stable system with examples. Consider a continuous time signal $x(t)=\sin 2000\pi t-5\cos 12000\pi t+10\sin 6000\pi t$. What is the discrete time signal obtained after sampling the signal at a sampling rate of 5000 samples per second for $0\le n\le 3$? \hfill [3+4] (\bo{\texttt{80 Ch}})
-        \lb Explain the general application areas of digital Signal Processing. Consider a continuous time signal $x(t)=\sin 2000\pi t+5\cos 12000\pi t+10\sin 6000\pi t$. What is the discrete time signal obtained after sampling the signal at a sampling rate of 5000 samples per second for $0\le n\le 3$? \hfill [3+4] (\bo{\texttt{73 Bh}})
-        \lb Consider a continuous time signal $x(t)=\cos 1000\pi t+3\sin 3000\pi t+5\cos 5000\pi t$. Calculate the discrete time signal for sampling rate of 6000 samples per second for $0\le n\le 3$. \hfill [4] (\texttt{73 Ma})
-
-      \item List out the major disadvantages of Digital Signal Processing. When does oversampling occur? Consider the analog signal $x(t)=3\cos 50\pi t+10\sin 300\pi t-0.7\cos 100\pi t$:
-        \begin{enumerate}[label=(\alph*), noitemsep, topsep=0pt]
-          \item What is the Nyquist rate for this signal?
-          \item Suppose that the signal is sampled at the rate of $F_s=5000$ samples per second, what is the discrete-time signal obtained after sampling?
-          \item What is the analog signal we can reconstruct from the samples?
-        \end{enumerate}
-        \hfill [2+1+1+2+2] (\bo{\texttt{76 Bh}})
-
-      \item Why do you need anti-aliasing filter? Describe the effect of sample and hold circuit at the input of the A/D conversion of Discrete Time Processing of continuous time signal. \hfill [2+5] (\bo{\texttt{69 Bh}})
-    \end{enumerate}
-
-  \subsection{Quantization of the sampled signal and quantization error}
-    \begin{enumerate}[topsep=0pt, noitemsep]
-      \item What are the applications of digital signal processing? Consider a continuous time signal $x(t)=2\cos 3000\pi t+3\sin 4000\pi t+7\cos 6000\pi t$. If the sampling rate is 8000 samples per second and quantized at 8 bits, find:
-        \begin{enumerate}[label=(\alph*), noitemsep, topsep=0pt]
-          \item Discrete values at any two points.
-          \item Quantization error at those points.
-        \end{enumerate}
-        \hfill [1+3+3] (\bo{\texttt{79 Ch}}); [2+5] (\bo{\texttt{72 Ash}})
-
-      \item List the applications of Digital Signal Processing. Consider the analog signal $x(t)=3\cos 2000\pi t+5\sin 4000\pi t+8\cos 7000\pi t$. If sampling rate is 10,000 samples per second and quantized at 10 bits:
-        \begin{enumerate}[label=(\roman*), noitemsep, topsep=0pt]
-          \item Plot any two discrete values
-          \item Quantization errors at two points
-        \end{enumerate}
-        \hfill [2+5] (\texttt{72 Ma})
-    \end{enumerate}
-
-\pagebreak
 %=======================================================================
 \section{Discrete-Time Signals and Systems}
 \begin{center}(8 Hours)\end{center}
@@ -199,9 +133,6 @@
       \item Find the expression for discrete Fourier series of the sequence $x(n)=\sum_{m=-\infty}^{\infty}\delta(n-4m)$. \hfill [4] (\bo{66 Ma})
         \lb Find the period of the signal $x[n]=\sum_{m=-\infty}^{\infty}\delta[n-2-3m]$. Find the Fourier series coefficients of the signal $x[n]$. \hfill [6] (\bo{68 Bh})
         \lb Find the discrete Fourier coefficients of the periodic sequence with period $N=11$ defined over a period as $x[n]=\{1,\ |n|\le2;\ 0,\ 2<|n|\le5\}$. \hfill [4] (\bo{67 Mng})
-
-      \item What is a sampling? How are the spectrum of continuous time signal and the spectrum of signal obtained by sampling the continuous time signal related? Illustrate with diagram. \hfill [6] (\bo{69 Bh})
-        \lb How is the spectrum of continuous time signal related to spectrum of corresponding discrete time signal obtained by sampling the continuous time signal? Explain. Discuss what is aliasing and how it occurs. \hfill [8] (\bo{68 Bh})
     \end{enumerate}
 
   \subsection{Convolution --- output of an LTI system}
@@ -248,6 +179,35 @@
         \lb $h[-2]=1,\ h[0]=2,\ h[1]=3$; $x[0]=1/2,\ x[2]=2,\ x[3]=3$ \hfill [3+2] (\bo{72 Ch})
         \lb Given as stem plots: $h[0]=0.5,\ h[1]=0.75,\ h[2]=1$; $x[-2]=1,\ x[0]=0.5,\ x[2]=1,\ x[3]=0.75$ (zero at $n=-1$ and $n=1$) \hfill [7] (\bo{\texttt{71 Bh}})\\
         \includegraphics[width=5in]{images/dsap_71bh_ex753_stem.png}
+    \end{enumerate}
+
+  \subsection{Sampling of continuous-time signals, spectral properties of sampled signal}
+    \begin{enumerate}[topsep=0pt, noitemsep]
+      \item What is a sampling? How are the spectrum of continuous time signal and the spectrum of signal obtained by sampling the continuous time signal related? Illustrate with diagram. \hfill [6] (\bo{69 Bh})
+        \lb How is the spectrum of continuous time signal related to spectrum of corresponding discrete time signal obtained by sampling the continuous time signal? Explain. Discuss what is aliasing and how it occurs. \hfill [8] (\bo{68 Bh})
+
+      \item Consider the analog signal $x_a(t)=3\cos 100\pi t$.
+        \begin{enumerate}[label=(\alph*), noitemsep, topsep=0pt]
+          \item Determine the minimum sampling rate required to avoid aliasing.
+          \item Suppose that signal is sampled at $F_s=75$ Hz. What is the discrete time signal obtained after sampling?
+          \item Assume now that we sample this signal using a sampling rate $F_s=5{,}000$ samples/sec. What is discrete time signal after sampling?
+        \end{enumerate}
+        \hfill [1+3+3] (\bo{\texttt{81 Ch}}); [7] (\texttt{74 Ma})
+        \lb Same signal $x(t)=3\cos(100\pi t)$, only two parts: (a) minimum sampling rate to avoid aliasing; (b) if sampled at $F_s=200$ Hz, what is the discrete time signal obtained after sampling? Also list out the advantages of digital signal processing over analog signal processing. \hfill [2+2+3] (\bo{\texttt{78 Ch}})
+
+      \item Define causal and stable system with examples. Consider a continuous time signal $x(t)=\sin 2000\pi t-5\cos 12000\pi t+10\sin 6000\pi t$. What is the discrete time signal obtained after sampling the signal at a sampling rate of 5000 samples per second for $0\le n\le 3$? \hfill [3+4] (\bo{\texttt{80 Ch}})
+        \lb Explain the general application areas of digital Signal Processing. Consider a continuous time signal $x(t)=\sin 2000\pi t+5\cos 12000\pi t+10\sin 6000\pi t$. What is the discrete time signal obtained after sampling the signal at a sampling rate of 5000 samples per second for $0\le n\le 3$? \hfill [3+4] (\bo{\texttt{73 Bh}})
+        \lb Consider a continuous time signal $x(t)=\cos 1000\pi t+3\sin 3000\pi t+5\cos 5000\pi t$. Calculate the discrete time signal for sampling rate of 6000 samples per second for $0\le n\le 3$. \hfill [4] (\texttt{73 Ma})
+
+      \item List out the major disadvantages of Digital Signal Processing. When does oversampling occur? Consider the analog signal $x(t)=3\cos 50\pi t+10\sin 300\pi t-0.7\cos 100\pi t$:
+        \begin{enumerate}[label=(\alph*), noitemsep, topsep=0pt]
+          \item What is the Nyquist rate for this signal?
+          \item Suppose that the signal is sampled at the rate of $F_s=5000$ samples per second, what is the discrete-time signal obtained after sampling?
+          \item What is the analog signal we can reconstruct from the samples?
+        \end{enumerate}
+        \hfill [2+1+1+2+2] (\bo{\texttt{76 Bh}})
+
+      \item Why do you need anti-aliasing filter? Describe the effect of sample and hold circuit at the input of the A/D conversion of Discrete Time Processing of continuous time signal. \hfill [2+5] (\bo{\texttt{69 Bh}})
     \end{enumerate}
 
 \pagebreak
@@ -694,8 +654,43 @@
 
 \pagebreak
 %=======================================================================
-\section{DSP Processors and Implementation}
-\begin{center}(EX753 only --- CT704 does not set this chapter)\end{center}
+\section{Additional Topics --- \texttt{EX753} only}
+\begin{center}(Outside the CT704 syllabus --- set only in \texttt{EX753} papers)\end{center}
+
+  \subsection{Introduction to DSP: basic elements, advantages, applications}
+    \begin{enumerate}[topsep=0pt, noitemsep]
+      \item Explain the basic elements of Digital Signal Processing with necessary block diagram. Also list out the general application areas of Digital Signal Processing. \hfill [4+2] (\bo{\texttt{77 Ch}})
+        \lb What are the basic elements of Digital Signal Processing (DSP) system? Explain Analog to Digital conversion process in brief. \hfill [3+4] (\bo{\texttt{74 Bh}})
+        \lb Explain Digital Signal Processing with its advantages and applications. \hfill [7] (\bo{\texttt{70 Bh}})
+
+      \item List out the advantages of digital signal processing over analog signal processing. \hfill [2] (\bo{\texttt{78 Ch}})
+        \lb What are the advantages of DSP? Explain the significance of A/D and D/A conversion in DSP. \hfill [3+4] (\bo{\texttt{71 Bh}})
+        \lb What are the advantages of DSP over analog signal processing? Explain the significance of A/D and D/A conversion in DSP. \hfill [3+4] (\texttt{70 Ma})
+
+      \item List out the major disadvantages of Digital Signal Processing. When does oversampling occur? \hfill [2+1] (\bo{\texttt{76 Bh}})
+        \lb Describe Spectral properties of time domain sampling principle with a suitable example. List out the disadvantages of Digital Signal Processing. \hfill [4+2] (\bo{\texttt{75 Bh}})
+
+      \item Explain the general application areas of digital Signal Processing. \hfill [3] (\bo{\texttt{73 Bh}})
+        \lb Describe the different application of a digital signal processing. \hfill [3] (\texttt{73 Ma})
+        \lb What are the applications of DSP? (asked as the lead-in to the sampling numericals in Ch.~1 and the quantization numericals below.) \hfill [2] (\bo{\texttt{79 Ch}, \texttt{72 Ash}}, \texttt{72 Ma})
+    \end{enumerate}
+
+  \subsection{Quantization of the sampled signal and quantization error}
+    \begin{enumerate}[topsep=0pt, noitemsep]
+      \item What are the applications of digital signal processing? Consider a continuous time signal $x(t)=2\cos 3000\pi t+3\sin 4000\pi t+7\cos 6000\pi t$. If the sampling rate is 8000 samples per second and quantized at 8 bits, find:
+        \begin{enumerate}[label=(\alph*), noitemsep, topsep=0pt]
+          \item Discrete values at any two points.
+          \item Quantization error at those points.
+        \end{enumerate}
+        \hfill [1+3+3] (\bo{\texttt{79 Ch}}); [2+5] (\bo{\texttt{72 Ash}})
+
+      \item List the applications of Digital Signal Processing. Consider the analog signal $x(t)=3\cos 2000\pi t+5\sin 4000\pi t+8\cos 7000\pi t$. If sampling rate is 10,000 samples per second and quantized at 10 bits:
+        \begin{enumerate}[label=(\roman*), noitemsep, topsep=0pt]
+          \item Plot any two discrete values
+          \item Quantization errors at two points
+        \end{enumerate}
+        \hfill [2+5] (\texttt{72 Ma})
+    \end{enumerate}
 
   \subsection{Bit-serial and distributed arithmetic}
     \begin{enumerate}[topsep=0pt, noitemsep]

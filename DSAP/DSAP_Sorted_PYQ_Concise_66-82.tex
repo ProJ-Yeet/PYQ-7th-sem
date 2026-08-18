@@ -27,7 +27,7 @@
 \texttt{EX753} (BEX, IV/II, 2069 Bh--2081 Ch, 17 papers) = \texttt{typewriter}.
 Regular = \textbf{bold}, Back = normal. Marks in (); unique values only.
 Keys: (I)=Importance/Need \quad (+)=Advantage \quad (-)=Disadvantage \quad +Fig=Figure \quad +Eg=Example \quad Vs=Compare/Differentiate.
-Ch.\ 1 and 9 are \texttt{EX753} only.
+Ch.\ 1--7 follow the CT704 syllabus; Ch.\ 8 is the \texttt{EX753}-only material that lies outside it.
 \vspace{2pt}
 \hrule
 \vspace{4pt}
@@ -35,20 +35,7 @@ Ch.\ 1 and 9 are \texttt{EX753} only.
 \begin{multicols}{2}
 \footnotesize
 
-\section*{1. Intro to DSP, Sampling \& Quantization \textnormal{(\texttt{EX753})}}
-\begin{itemize}
-  \item Basic elements of DSP +Fig; A/D--D/A conversion (I) \hfill (3+4)(4+2)(7)
-  \item DSP (+) over analog; (-) of DSP; applications \hfill (2)(3)(6)
-  \item Sampling theorem; Nyquist rate; aliasing; oversampling; anti-aliasing filter; sample-and-hold \hfill (2+5)(7)(1+3+3)
-    \begin{itemize}
-      \item $x_a(t)=3\cos100\pi t$ at $F_s=75$ Hz / 200 Hz / 5000 Hz
-      \item multi-tone $x(t)$ sampled at 5000 / 6000 / 8000 / 10000 samples/s
-    \end{itemize}
-  \item Quantization at 8 / 10 bits; discrete values + quantization error \hfill (2+5)(1+3+3)
-  \item Spectral properties of time-domain sampling +Eg \hfill (4+2)
-\end{itemize}
-
-\section*{2. Discrete-Time Signals \& Systems}
+\section*{1. Discrete-Time Signals \& Systems}
 \begin{itemize}
   \item Even/odd DT signals +Eg; even/odd part; plot $x[-2n+3]$ +Fig \hfill (2)(3)(2+3)(4+5)
   \item Plot a composite sequence of $u[n],\delta[n],nu[n]$ \hfill (2)(3+2)
@@ -58,12 +45,18 @@ Ch.\ 1 and 9 are \texttt{EX753} only.
   \item System properties: linear / time-invariant / causal / memoryless / BIBO stable \hfill (3)(4)(5)(2+2+2)(3+3)(10)
   \item LTI system properties; recursive Vs non-recursive; moving-average recursive form \hfill (3+3)(5)(6)(8)
   \item Fourier series coefficients; discrete Fourier series of an impulse train; FT multiplication property; Dirichlet conditions \hfill (3)(4)(6)(4+3)
-  \item Spectrum of CT Vs sampled signal +Fig \hfill (6)(8)
   \item Convolution summation --- derive, significance \hfill (3)(1+3)(2+4)
   \item LTI convolution output (many $h,x$ pairs: finite sequences, $u[n]$ gates, $a^n u[n]$, complex exponential inputs, tabulated / stem-plot data) \hfill (4)(5)(6)(7)(8)(3+7)(2+2+6)
+  \item Spectrum of CT Vs sampled signal +Fig \hfill (6)(8)
+  \item Sampling theorem; Nyquist rate; aliasing; oversampling; anti-aliasing filter; sample-and-hold \hfill (2+5)(7)(1+3+3)
+    \begin{itemize}
+      \item $x_a(t)=3\cos100\pi t$ at $F_s=75$ Hz / 200 Hz / 5000 Hz
+      \item multi-tone $x(t)$ sampled at 5000 / 6000 / 8000 / 10000 samples/s
+    \end{itemize}
+  \item Spectral properties of time-domain sampling +Eg \hfill (4+2)
 \end{itemize}
 
-\section*{3. Z-Transform}
+\section*{2. Z-Transform}
 \begin{itemize}
   \item ROC definition + properties + locate ROC \hfill (1)(2+4)(3+6)(4+6)(5)
   \item One-sided Z-transform (I); $Z\{na^n u[n]\}$; $Z\{\cos\omega n\}$ \hfill (5)(3+3)(3+8)
@@ -72,7 +65,7 @@ Ch.\ 1 and 9 are \texttt{EX753} only.
   \item Inverse Z-transform by long division (both ROCs) \hfill (6)(2+6)
 \end{itemize}
 
-\section*{4. Analysis of LTI in Frequency Domain}
+\section*{3. Analysis of LTI in Frequency Domain}
 \begin{itemize}
   \item Pole-zero plot + magnitude / phase response from a difference equation (many 2nd- and 3rd-order eqns) \hfill (6)(7)(8)(2+4)(3+7)(2+2+6)
   \item Same from given pole / zero locations ($0.45\pm j1.06$, $0.58\pm j2.06$, etc.) \hfill (8)(2+6)(2+8)(4+6)
@@ -84,7 +77,7 @@ Ch.\ 1 and 9 are \texttt{EX753} only.
   \item Linear-phase FIR condition; show $h=\{-1,0,1\}$ linear phase; derive freq.\ response for odd $M$ \hfill (6)(2+4)
 \end{itemize}
 
-\section*{5. Discrete Filter Structures}
+\section*{4. Discrete Filter Structures}
 \begin{itemize}
   \item Direct Form I \& II (many systems) \hfill (4)(5)(9)(2+2)
   \item Cascade form of 2nd-order sections; parallel form \hfill (4)(5)(6)(7)
@@ -97,7 +90,7 @@ Ch.\ 1 and 9 are \texttt{EX753} only.
   \item Quantization (I); rounding Vs truncation; sign-magnitude / 1's / 2's complement; truncation-error bounds \hfill (6)(3+4)(1+1+2+1)
 \end{itemize}
 
-\section*{6. FIR Filter Design}
+\section*{5. FIR Filter Design}
 \begin{itemize}
   \item Window method + window characteristics; key points of windowing \hfill (4)(5)(4+4)(5+3)
   \item Gibbs phenomenon --- how it arises with the rectangular window, how to minimize \hfill (3+3)(5)(6)(1+4)(2+5)
@@ -109,7 +102,7 @@ Ch.\ 1 and 9 are \texttt{EX753} only.
   \item Linear phase FIR from kHz specs (2 kHz / 5 kHz / 42 dB / 20 kHz) \hfill (10)
 \end{itemize}
 
-\section*{7. IIR Filter Design}
+\section*{6. IIR Filter Design}
 \begin{itemize}
   \item Bilinear-transformation Butterworth LPF --- many spec sets, given as $|H|$ bounds, as dB deviations, or in Hz \hfill (9)(10)(11)(12)(15)(18)(11+4)
     \begin{itemize}
@@ -123,7 +116,7 @@ Ch.\ 1 and 9 are \texttt{EX753} only.
   \item Spectral (digital-domain) transformation LP$\to$HP; features / parameters; (I) \hfill (2)(4)(5)
 \end{itemize}
 
-\section*{8. Discrete Fourier Transform (DFT / FFT)}
+\section*{7. Discrete Fourier Transform (DFT / FFT)}
 \begin{itemize}
   \item DFT need (I); DFT Vs DTFT; complexity DFT Vs FFT; FFT (+) \hfill (1)(2)(4)(5)(2+5)(4+2)
   \item Circular convolution property (state + prove); multiplication property; zero padding; Parseval \hfill (1)(2)(6)(2+2+4)
@@ -135,8 +128,11 @@ Ch.\ 1 and 9 are \texttt{EX753} only.
   \item $x_3=\mathrm{IDFT}(X_1{\cdot}X_2)$, 4-pt \& 5-pt \hfill (5)(6)(7)(1+5)(2+4)(2+6)
 \end{itemize}
 
-\section*{9. DSP Processors \textnormal{(\texttt{EX753})}}
+\section*{8. Extra: DSP Fundamentals \& Processors \textnormal{(\texttt{EX753} only, outside the CT704 syllabus)}}
 \begin{itemize}
+  \item Basic elements of DSP +Fig; A/D--D/A conversion (I) \hfill (3+4)(4+2)(7)
+  \item DSP (+) over analog; (-) of DSP; applications \hfill (2)(3)(6)
+  \item Quantization at 8 / 10 bits; discrete values + quantization error \hfill (2+5)(1+3+3)
   \item Bit-serial arithmetic +Fig; distributed arithmetic \hfill (5)(6)(3+3)
   \item Pipelined implementation of DSP processors \hfill (6)
   \item DSP processor chips --- where used, general Vs special purpose, features \hfill (6)(2+4)
