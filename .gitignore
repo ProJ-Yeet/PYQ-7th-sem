@@ -8,6 +8,19 @@ Prajit Notes/
 Data Mining/Notes/
 BEI IV-I(1).pdf
 
+# Extracted full text of copyrighted textbooks and lecture slides.
+# Kept locally as a build input; never published.
+Data Mining/ocr/notes_text/
+
+# Internal working notes, not for publication.
+handoff.txt
+handoff-current.txt
+Data Mining/NOTES-BUILD-PROGRESS.md
+New Text Document.txt
+
+# Vendored binaries — fetch the toolchain instead of committing it.
+*.exe
+
 # LaTeX build artefacts
 *.aux
 *.log
