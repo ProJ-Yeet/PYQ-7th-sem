@@ -1,0 +1,670 @@
+%=======================================================================
+%  CHAPTER 2 — DATA PREPROCESSING  (6 hrs)
+%=======================================================================
+\section{Data Preprocessing}
+
+{\color{sub}\footnotesize 6 hrs \gap$\cdot$\gap in 17/17 papers \gap$\cdot$\gap 4 topics, 2 TOP tier
+\gap$\cdot$\gap \textbf{first chapter with numericals} $\rightarrow$ see the Ch 2 Numerical companion.}
+
+\lead{Weight of the chapter:}
+\begin{itemize}
+  \item Data Pre-processing \tS{12} \gap $\rightarrow$ most-asked topic in the whole syllabus.
+  \item OLAP \& Multidim Analysis \tS{10}
+  \item Similarity Measures \tF{6} \gap $\rightarrow$ nearly always a numerical.
+  \item Data Types \& Attributes \tP{1}
+\end{itemize}
+
+\hr
+
+\T{2.1 Data Types and Attributes}
+
+\Q{What is DM? Explain diff data types of attributes in a dataset.}{\m{10}}
+{\color{sub}\footnotesize \tP{1} \yr{71 Shr} \gap DM definition $\rightarrow$ Ch 1. Only attribute types needed here.}
+
+\sbsr{0.56}{%
+\lead{Attribute}
+\begin{itemize}
+  \item Property / characteristic of an object. Eg eye colour, temperature.
+  \item Also called: variable, field, feature, characteristic.
+  \item \textbf{Object} $=$ record, point, case, sample, entity, instance.
+  \item Same attr $\rightarrow$ diff value sets (height in ft or m).
+  \item Diff attrs $\rightarrow$ same value set, diff properties
+        (ID and age are both int, but ID has no max).
+\end{itemize}
+\lead{Han \& Kamber 3rd ed: 4 types \mk{(use this, it is the syllabus ref book)}}
+\begin{itemize}
+  \item \textbf{Nominal}: names / categories only, no order. Zip code, employee ID, eye colour.
+  \item \textbf{Binary}: nominal w/ exactly 2 states (0/1).
+  \begin{itemize}
+    \item \textbf{Symmetric}: both states equally valuable. Gender.
+    \item \textbf{Asymmetric}: one state rarer + more important. Disease test P/N.
+          \mk{Convention: rarest outcome $=1$.}
+  \end{itemize}
+  \item \textbf{Ordinal}: order meaningful, gap between successive values unknown.
+        \{small, medium, large\}, grades, mineral hardness.
+  \item \textbf{Numeric}: measurable quantity.
+  \begin{itemize}
+    \item \emph{Interval-scaled}: gaps meaningful, \textbf{no true zero}. Dates, temp in $^\circ$C/$^\circ$F.
+    \item \emph{Ratio-scaled}: gaps \emph{and} ratios meaningful, true zero. Temp in K, money, counts, age.
+  \end{itemize}
+\end{itemize}
+\lead{Older N-O-I-R split (Tan; DBK's slide)}
+\begin{itemize}
+  \item Nominal, Ordinal, Interval, Ratio. Binary folded into nominal.
+  \item \mk{Same content, different grouping.} Either scores; H\&K's is safer as it names binary
+        explicitly, which the similarity questions depend on.
+\end{itemize}}{%
+\figT{attr_transform}}
+
+\vspace{2pt}
+\sbs{%
+\lead{2nd cut: discrete vs continuous}
+\begin{itemize}
+  \item \textbf{Discrete}: finite / countably infinite set. Zip codes, counts, words in a doc. Usually int.
+  \begin{itemize}
+    \item \textbf{Binary} $=$ special case of discrete.
+    \item \textbf{Symmetric binary}: both states equally valuable (gender).
+    \item \textbf{Asymmetric binary}: one state rarer + more important (disease test P/N).
+          \mk{Matters: Jaccard ignores 0-0 matches, SMC does not.}
+  \end{itemize}
+  \item \textbf{Continuous}: real values. Temp, height, weight. Stored as float.
+\end{itemize}}{%
+\lead{Types of datasets}
+\begin{itemize}
+  \item \textbf{Record}
+  \begin{itemize}
+    \item \emph{Data matrix}: $m$ objects $\times$ $n$ numeric attrs $\rightarrow$ points in $n$-dim space.
+    \item \emph{Document data}: each doc $=$ term vector, value $=$ term frequency.
+    \item \emph{Transaction data}: each record $=$ set of items. Eg grocery basket.
+  \end{itemize}
+  \item \textbf{Graph}: nodes $+$ links. Eg WWW, molecular structures.
+  \item \textbf{Ordered}: spatial (geo coords), temporal ($d=f(t)$), sequential, sequence data.
+\end{itemize}
+\lead{Characteristics of structured data}
+\begin{itemize}
+  \item \textbf{Dimensionality} $\rightarrow$ curse of dimensionality (see 2.2).
+  \item \textbf{Sparsity}: \% of cells not populated. Sparsity $+$ density $=$ 100.
+  \item \textbf{Resolution}: patterns depend on the scale you look at.
+\end{itemize}}
+
+\hr
+
+\T{2.2 Data Pre-processing}
+
+\Q{What is Data Pre-Processing? Explain the major tasks performed in it.}{\m{2+7}\m{4+4}\m{5+5}}
+{\color{sub}\footnotesize \tS{12} \yr{81 Ba, 75 Ch, 72 Ka} \gap Most-asked topic in the syllabus.}
+
+\sbs{%
+\lead{Why preprocess}
+\begin{itemize}
+  \item Real data is \textbf{dirty}: incomplete, noisy, inconsistent.
+  \item Cause: huge size $+$ multiple heterogeneous sources.
+  \item \mk{Garbage in $\rightarrow$ garbage out.} Low quality data $\rightarrow$ low quality mining.
+  \item Data prep $\approx$ \textbf{60\% of total effort} in KDD.
+\end{itemize}
+\lead{Measures of data quality \yr{73 Shr asks this}}
+\begin{itemize}
+  \item \textbf{Accuracy}: values correct.
+  \item \textbf{Completeness}: no missing values.
+  \item \textbf{Consistency}: no contradictions.
+  \item \textbf{Timeliness}: updated in time.
+  \item \textbf{Believability}: how far users trust it.
+  \item \textbf{Interpretability}: how easily understood.
+\end{itemize}}{%
+\lead{5 major tasks \mk{(this is the answer)}}
+\begin{enumerate}
+  \item \textbf{Data cleaning}: fill missing, smooth noise, fix inconsistency, rm duplicates.
+  \item \textbf{Data integration}: merge multiple sources into 1 coherent store.
+  \item \textbf{Data transformation}: normalise, aggregate, generalise, construct attrs.
+  \item \textbf{Data reduction}: smaller volume, same analytical result.
+  \item \textbf{Data discretisation}: continuous $\rightarrow$ intervals (part of reduction).
+\end{enumerate}
+\lead{Answer skeleton \m{7}}
+\begin{enumerate}
+  \item Definition $+$ ``why'': dirty data, garbage in garbage out.
+  \item Name the 5 tasks.
+  \item 2 lines each, with 1 concrete technique per task.
+  \item Close: cleaning $+$ integration dominate the effort.
+\end{enumerate}}
+
+%-----------------------------------------------------------------------
+\creamq{(a) Data cleaning}{}
+
+\sbs{%
+\lead{Missing values: why}
+\begin{itemize}
+  \item Equipment malfunction, misunderstanding at entry, deleted as inconsistent,
+        not considered important, no change recorded.
+\end{itemize}
+\lead{How to handle missing data \yr{74 Ash, 74 Ch}}
+\begin{enumerate}
+  \item \textbf{Ignore the tuple}: usual when class label missing. Bad if \% missing varies a lot.
+  \item \textbf{Fill manually}: tedious, infeasible at scale.
+  \item \textbf{Global constant}: eg ``Unknown''. Risk: mining may treat ``Unknown'' as a real class.
+  \item \textbf{Attribute mean} of all samples.
+  \item \textbf{Attribute mean of same class} $\rightarrow$ better than plain mean.
+  \item \textbf{Most probable value}: regression, Bayesian inference, decision tree. \mk{Most popular + most accurate.}
+\end{enumerate}}{%
+\lead{Noisy data}
+\begin{itemize}
+  \item Noise $=$ random error / variance in a measured variable.
+  \item Cause: faulty instruments, entry error, transmission error, tech limits, naming inconsistency.
+\end{itemize}
+\lead{How to handle noise}
+\begin{itemize}
+  \item \textbf{Binning}: sort, partition into bins, smooth by bin \emph{mean} / \emph{median} / \emph{boundary}.
+  \item \textbf{Regression}: fit data to a function.
+  \item \textbf{Clustering}: detect + rm outliers.
+  \item \textbf{Combined computer $+$ human}: machine flags suspicious, human checks.
+\end{itemize}
+\lead{Binning: 2 partitioning rules}
+\begin{itemize}
+  \item \textbf{Equal-width (distance)}: $N$ intervals of equal size.
+  \item \textbf{Equal-depth (frequency)}: $N$ intervals, each with $\approx$ same no. of samples.
+        Better for skewed data.
+\end{itemize}}
+
+\vspace{2pt}
+\begin{center}\fbox{\begin{minipage}{0.66\textwidth}
+\small
+\textbf{Equal-width bin width}, $A =$ lowest value, $B =$ highest, $N =$ no. of bins:
+\[ W = \frac{B - A}{N} \]
+\mk{Your class notes print $W=(A-B)/N$, which gives a negative width. Wrong: it is $(B-A)/N$.}
+\added
+\end{minipage}}\end{center}
+
+%-----------------------------------------------------------------------
+\creamq{(b) Data integration}{\m{5}}
+{\color{sub}\footnotesize \yr{75 Ash}}
+
+\begin{itemize}
+  \item Combines data from multiple sources into 1 coherent store.
+  \item \textbf{Issues:}
+  \begin{itemize}
+    \item \textbf{Entity identification}: is \texttt{cust\_id} in A the same as \texttt{cust\_no} in B?
+          Solved w/ metadata.
+    \item \textbf{Redundancy}: an attr derivable from another. Detect by \textbf{correlation analysis}
+          ($\chi^2$ for nominal, correlation coefficient $+$ covariance for numeric).
+    \item \textbf{Data value conflicts}: same entity, diff values across sources
+          (diff units, scales, currency, representation).
+    \item \textbf{Duplication} at tuple level.
+  \end{itemize}
+  \item Careful integration $\rightarrow$ reduces/avoids redundancy $\rightarrow$ improves mining speed + quality.
+\end{itemize}
+
+%-----------------------------------------------------------------------
+\creamq{(c) Data transformation + normalisation}{\m{2+6}\m{4}\m{2+2+2}}
+{\color{sub}\footnotesize \tS{} \yr{73 Shr, 75 Ch, 78 Bh} \gap \textbf{Normalisation numerical is a
+recurring 6-mark question} $\rightarrow$ full solution in the Numerical companion.}
+
+\sbsr{0.42}{%
+\lead{Transformation methods}
+\begin{itemize}
+  \item \textbf{Smoothing}: rm noise.
+  \item \textbf{Aggregation}: summarise, build data cube.
+  \item \textbf{Generalisation}: climb concept hierarchy (street $\rightarrow$ city $\rightarrow$ country).
+  \item \textbf{Normalisation}: scale into a small range.
+  \item \textbf{Attribute construction}: build new attrs from given ones.
+\end{itemize}
+\lead{Why normalise}
+\begin{itemize}
+  \item Stops large-range attrs dominating small-range ones.
+  \item Required by distance-based methods: KNN, K-means, ANN.
+\end{itemize}}{%
+\lead{The 3 normalisation formulas \mk{(memorise exactly)}}
+\vspace{2pt}
+\textbf{1. Min-max} $\rightarrow$ maps to $[new\_min,\ new\_max]$:
+\[ v' = \frac{v - min_A}{max_A - min_A}\,(new\_max_A - new\_min_A) + new\_min_A \]
+\textbf{2. Z-score} (zero-mean) $\rightarrow$ use when min/max unknown or outliers present:
+\[ v' = \frac{v - \bar{A}}{\sigma_A} \qquad \bar{A}=\text{mean},\ \sigma_A=\text{std deviation} \]
+\textbf{3. Decimal scaling}:
+\[ v' = \frac{v}{10^{\,j}} \quad j = \text{smallest int s.t. } \max(|v'|) < 1 \]
+\vspace{1pt}
+\textbf{Variant of 2: z-score w/ mean absolute deviation} $s_A$, more robust to outliers than
+$\sigma_A$ (deviations are not squared):
+\[ s_A = \tfrac{1}{n}\textstyle\sum_i |v_i - \bar{A}| \qquad v' = \frac{v-\bar{A}}{s_A} \]}
+
+\vspace{2pt}
+\begin{center}\fbox{\begin{minipage}{0.86\textwidth}
+\small
+\mk{Error in your class notes} \added\ : z-score is printed there as
+$v' = (v - min)/\sigma$. That is \textbf{wrong}. It is $(v - \textbf{mean})/\sigma$.
+Using $min$ makes every $v'\ge 0$, which defeats the whole point of a zero-mean score.
+\end{minipage}}\end{center}
+
+%-----------------------------------------------------------------------
+\creamq{(d) Data reduction}{\m{5}}
+
+\sbs{%
+\begin{itemize}
+  \item Smaller volume, \textbf{same (or nearly same) analytical result}.
+  \item \textbf{Strategies:}
+  \begin{itemize}
+    \item \textbf{Sampling} (below)
+    \item \textbf{Dimensionality reduction}: PCA, SVD, wavelet
+    \item \textbf{Feature subset selection}
+    \item \textbf{Aggregation} / data cube
+    \item \textbf{Discretisation} + concept hierarchy
+    \item \textbf{Compression}: lossy / lossless
+  \end{itemize}
+\end{itemize}
+\lead{Sampling types}
+\begin{itemize}
+  \item \textbf{Simple random}: equal prob for each item.
+  \item \textbf{W/o replacement}: item removed once picked.
+  \item \textbf{W/ replacement}: not removed, same item can repeat.
+  \item \textbf{Stratified}: split into partitions, sample each. Best for skewed data.
+\end{itemize}}{%
+\lead{Feature subset selection}
+\begin{itemize}
+  \item Rm \textbf{redundant} features (purchase price + sales tax paid).
+  \item Rm \textbf{irrelevant} features (student ID for predicting GPA).
+  \item \textbf{Techniques:}
+  \begin{itemize}
+    \item \emph{Brute force}: try all subsets.
+    \item \emph{Embedded}: selection happens inside the algorithm.
+    \item \emph{Filter}: select before the algorithm runs.
+    \item \emph{Wrapper}: use algorithm as a black box to score subsets.
+  \end{itemize}
+\end{itemize}
+\lead{Discretisation \mk{(feeds Ch 3 decision trees)}}
+\begin{itemize}
+  \item Continuous $\rightarrow$ small no. of interval labels. Many algorithms need discrete input.
+  \item \textbf{Unsupervised} (no class labels):
+  \begin{itemize}
+    \item Equal-width, equal-frequency, \textbf{k-means} (cluster values, 1 bin per cluster).
+  \end{itemize}
+  \item \textbf{Supervised} (uses class labels): \textbf{entropy-based}.
+  \begin{itemize}
+    \item $H(p_1,\dots,p_s) = \sum_i p_i \log_2(1/p_i) = -\sum_i p_i \log_2(p_i)$
+          \ \ {\footnotesize\mk{same quantity as $Info(D)$ in Ch 3, §3.2} --- written both ways in
+          the literature}
+    \item Split $S$ at boundary $T$: $E(S,T) = \frac{|S_1|}{|S|}Ent(S_1) + \frac{|S_2|}{|S|}Ent(S_2)$
+    \item Pick $T$ \textbf{minimising} $E$; recurse until $Ent(S)-E(T,S) \le \delta$.
+  \end{itemize}
+  \item Also: \textbf{mapping to a new space} (Fourier, wavelet transform).
+\end{itemize}
+
+\lead{Curse of dimensionality \yr{70 Ch \m{5}}}
+\begin{itemize}
+  \item As dims $\uparrow$, data becomes increasingly \textbf{sparse} in the space it occupies.
+  \item Density + distance lose meaning $\rightarrow$ breaks clustering + outlier detection.
+  \item All points start looking equidistant.
+  \item \textbf{Avoid by}: dimensionality reduction (PCA/SVD), feature subset selection,
+        feature construction, domain knowledge.
+\end{itemize}}
+
+%-----------------------------------------------------------------------
+\creamq{(e) PCA for dimensionality reduction}{\m{10}\m{4}}
+{\color{sub}\footnotesize \yr{71 Shr \m{10}, 76 Ch \m{4} numerical} \gap Numerical worked in the companion.}
+
+\sbs{%
+\lead{Key idea}
+\begin{itemize}
+  \item Find a \textbf{projection capturing the largest variance} in the data.
+  \item New axes $=$ eigenvectors of the \textbf{covariance matrix}, ordered by eigenvalue.
+  \item Eigenvalue $\lambda_i$ $=$ variance carried by principal component $i$.
+  \item Keep the top $r$ components $\rightarrow$ drop the rest w/ little info loss.
+  \item Components are \textbf{orthogonal} (uncorrelated).
+\end{itemize}
+\lead{Proportion of variance explained}
+\[ \frac{\sum_{i=1}^{r}\lambda_i}{\sum_{i=1}^{m}\lambda_i}
+   = \frac{\lambda_1+\dots+\lambda_r}{\lambda_1+\dots+\lambda_m} \]
+\begin{itemize}
+  \item Denominator $=$ trace of covariance matrix $=$ total variance.
+\end{itemize}}{%
+\lead{PCA process: 5 steps \mk{(DBK's sequence)}}
+\begin{enumerate}
+  \item \textbf{Subtract the mean} from each dimension $\rightarrow$ zero-mean data.
+  \item \textbf{Compute the covariance matrix}.
+  \item \textbf{Compute eigenvalues + eigenvectors} of that matrix.
+  \item \textbf{Choose components, form feature vector}: sort $\lambda$ descending, keep top $r$,
+        put their eigenvectors in columns.
+  \item \textbf{Derive new data}:
+        \texttt{FinalData = RowFeatureVector} $\times$ \texttt{RowZeroMeanData}.
+\end{enumerate}
+\lead{Notes}
+\begin{itemize}
+  \item Eigenvectors exist only for \textbf{square} matrices.
+  \item An $m\times m$ matrix gives $m$ of them.
+  \item Eigenvectors of a \textbf{symmetric} matrix are mutually perpendicular.
+  \item Normalise eigenvectors to unit length.
+  \item Highly correlated dims $\rightarrow$ few large $\lambda$ $\rightarrow$ PCA helps a lot.
+        Uncorrelated dims $\rightarrow$ $r\approx m$ $\rightarrow$ \textbf{PCA does not help}.
+\end{itemize}}
+
+\vspace{2pt}
+\begin{center}\fbox{\begin{minipage}{0.86\textwidth}
+\small
+\mk{Error in your class notes} \added\ : the PCA section there lists ``construct a neighbourhood
+graph'' and ``compute shortest-path / geodesic distances''. Those steps belong to \textbf{Isomap},
+a non-linear method, \textbf{not} PCA. PCA is purely linear: covariance $\rightarrow$ eigenvectors.
+\end{minipage}}\end{center}
+
+\hr
+
+\T{2.3 OLAP \& Multidimensional Data Analysis}
+
+\Q{Explain typical OLAP operations over a multidim DW. Differentiate OLAP vs OLTP.}{\m{6+4}\m{10}\m{5+5}\m{2+5+3}}
+{\color{sub}\footnotesize \tS{10} \yr{79 Bh, 72 Ch, 75 Ash, 74 Ch}}
+
+\sbsr{0.55}{%
+\lead{Multidimensional model}
+\begin{itemize}
+  \item \textbf{Dimension}: perspective the org keeps records by. Eg time, item, location, branch.
+  \item \textbf{Measure}: the numeric quantity analysed. Eg \texttt{units\_sold}, \texttt{dollars\_sold}.
+  \item \textbf{Fact table}: stores measures $+$ FKs to dimension tables.
+  \item \textbf{Data cube}: lets you view measures against a set of dims.
+  \item \textbf{Cuboid}: the cube at one level of summarisation.
+  \begin{itemize}
+    \item \textbf{Base cuboid} $=$ lowest level, all $n$ dims.
+    \item \textbf{Apex cuboid} $=$ 0-D, highest summary, denoted \texttt{all}.
+    \item Lattice of cuboids $=$ the full cube. \mk{$n$ dims $\rightarrow$ $2^n$ cuboids.}
+  \end{itemize}
+  \item Schemas: \textbf{star}, \textbf{snowflake}, \textbf{fact constellation}
+        {\footnotesize$\rightarrow$ defined in Ch 1}.
+  \item \textbf{Concept hierarchy}: the levels of abstraction inside 1 dim, eg
+        \texttt{street} $<$ \texttt{city} $<$ \texttt{province} $<$ \texttt{country}.
+  \begin{itemize}
+    \item This is \mk{what roll-up and drill-down actually climb}.
+    \item Supplied manually by users/experts, or generated automatically from the data distribution.
+  \end{itemize}
+\end{itemize}
+\lead{3 kinds of measure, by aggregate function}
+\begin{itemize}
+  \item \textbf{Distributive}: partition the data, aggregate each part, aggregate the results
+        $\rightarrow$ same answer. \texttt{sum(), count(), min(), max()}.
+  \item \textbf{Algebraic}: computable from a bounded no. of distributive functions.
+        \texttt{avg() = sum()/count()}, \texttt{min\_N()}, \texttt{standard\_deviation()}.
+  \item \textbf{Holistic}: no constant-size sub-aggregate suffices. \texttt{median(), mode(), rank()}.
+        \mk{Expensive} $\rightarrow$ usually estimated.
+\end{itemize}}{%
+\figT{cuboid_lattice}}
+
+\vspace{2pt}
+\lead{The 5 OLAP operations \mk{(the core answer)}}
+\begin{itemize}
+  \item \textbf{Roll-up (drill-up)}: summarise by climbing a hierarchy \emph{or} reducing a dim.
+        Eg city $\rightarrow$ country; or drop \emph{time} entirely.
+  \item \textbf{Drill-down (roll-down)}: reverse of roll-up. Summary $\rightarrow$ detail,
+        or introduce a new dim. Eg quarter $\rightarrow$ month.
+  \item \textbf{Slice}: select on \textbf{one} dim $\rightarrow$ sub-cube. Eg \texttt{time = Q1}.
+  \item \textbf{Dice}: select on \textbf{two or more} dims. Eg
+        \texttt{location} in \{Kathmandu, Pokhara\} \textbf{and} \texttt{time} in \{Q1,Q2\}.
+  \item \textbf{Pivot (rotate)}: rotate axes to give an alternative presentation. 3-D $\rightarrow$ series of 2-D planes.
+  \item \emph{Others}: \textbf{drill-across} (across $\ge$2 fact tables), \textbf{drill-through}
+        (down to the back-end relational tables).
+\end{itemize}
+
+\vspace{2pt}
+\sbsr{0.52}{%
+\lead{OLAP vs OLTP \mk{(asked 4 times)}}
+\begin{itemize}
+  \item \textbf{Users}: OLTP clerks / IT $\cdot$ OLAP knowledge workers.
+  \item \textbf{Function}: OLTP day-to-day ops $\cdot$ OLAP decision support.
+  \item \textbf{DB design}: OLTP application-oriented, normalised (ER) $\cdot$
+        OLAP subject-oriented, de-normalised (star/snowflake).
+  \item \textbf{Data}: OLTP current, detailed, isolated $\cdot$
+        OLAP historical, summarised, multidim, consolidated.
+  \item \textbf{Usage}: OLTP repetitive $\cdot$ OLAP ad-hoc.
+  \item \textbf{Access}: OLTP read/write, index on primary key $\cdot$ OLAP lots of scans.
+  \item \textbf{Unit of work}: OLTP short simple txn $\cdot$ OLAP complex query.
+  \item \textbf{Records accessed}: tens $\cdot$ millions.
+  \item \textbf{Size}: 100 MB--GB $\cdot$ 100 GB--TB.
+  \item \textbf{Metric}: txn throughput $\cdot$ query throughput / response.
+\end{itemize}}{%
+\figT{oltp_vs_olap}}
+
+\vspace{2pt}
+\lead{OLAP server types {\footnotesize (detail in Ch 1, DW architecture)}}
+\begin{itemize}
+  \item \textbf{ROLAP}: relational back end. Scales best.
+  \item \textbf{MOLAP}: multidim array store. Fastest, wastes space on sparse data.
+  \item \textbf{HOLAP}: hybrid. Detail relational $+$ aggregates multidim.
+\end{itemize}
+
+\creamq{Base \& apex cuboid, slice \& dice, roll-up \& drill-down w/ example}{\m{2+3+3+3}}
+{\color{sub}\footnotesize \yr{76 Ash} \gap Answer $=$ the definitions above $+$ 1 worked example each.
+Cuboid-count and schema-drawing questions are worked in the Numerical companion \yr{78 Bh, 76 Ch}.}
+
+\hr
+
+\T{2.4 Various Similarity Measures}
+
+\Q{How is similarity/dissimilarity calculated? Properties of a distance metric.}{\m{3}\m{10}\m{4}}
+{\color{sub}\footnotesize \tF{6} \yr{80 Bh, 80 Ba, 78 Bh, 76 Ch, 76 Ash, 71 Ch}
+\gap \mk{Almost always numerical} $\rightarrow$ companion.}
+
+\sbs{%
+\lead{Similarity vs dissimilarity}
+\begin{itemize}
+  \item \textbf{Similarity}: how alike 2 objects are. \emph{Higher} $=$ more alike. Usually $[0,1]$.
+  \item \textbf{Dissimilarity / distance}: how different. \emph{Lower} $=$ more alike.
+        Min $=0$, upper limit varies, often $[0,\infty]$.
+  \item Used for: clustering, KNN, outlier detection, search, recommendation, near-duplicate detection.
+\end{itemize}}{%
+\lead{Distance metric: 4 properties \mk{(71 Ch asks exactly this, \m{10})}}
+\begin{enumerate}
+  \item \textbf{Non-negativity}: $d(x,y) \ge 0$.
+  \item \textbf{Identity}: $d(x,y) = 0$ iff $x = y$.
+  \item \textbf{Symmetry}: $d(x,y) = d(y,x)$.
+  \item \textbf{Triangle inequality}: $d(x,y) \le d(x,z) + d(z,y)$.
+\end{enumerate}
+\begin{itemize}
+  \item Triangle inequality $\rightarrow$ guarantees the function is \emph{well behaved}:
+        the direct connection is the shortest.
+  \item A measure satisfying all 4 $=$ a \textbf{metric}. Minkowski distances are metrics for $r\ge1$.
+  \item \mk{Subtle point worth 1 mark}: non-negativity is \emph{implied} by the other 3, so
+        strictly only 3 are independent.
+  \item \textbf{Weighted Euclidean} (attrs of unequal importance):
+        $d(i,j)=\sqrt{\sum_k w_k (x_{ik}-x_{jk})^2}$.
+\end{itemize}}
+
+\vspace{3pt}
+\creamq{Minkowski family: the one formula that generates the rest}{}
+
+\sbsr{0.50}{%
+\begin{center}
+$\displaystyle dist(p,q) = \Big(\sum_{k=1}^{n} |p_k - q_k|^{\,r}\Big)^{1/r}$
+\end{center}
+\begin{itemize}
+  \item $n$ $=$ no. of dims, $r$ $=$ parameter, $r \ge 1$. \mk{Do not confuse $r$ with $n$.}
+  \item \mk{Notation clash}: H\&K call the parameter $h$ and reserve $p$ for the no. of attrs;
+        other books write $L_p$ where their $p$ is this $r$. \textbf{Define your symbols.}
+  \item $r=1$ $\rightarrow$ \textbf{Manhattan} ($L_1$, city block, taxicab).
+        Binary case $=$ \textbf{Hamming distance}.
+  \item $r=2$ $\rightarrow$ \textbf{Euclidean} ($L_2$).
+  \item $r\rightarrow\infty$ $\rightarrow$ \textbf{Supremum} ($L_{max}$, $L_\infty$, Chebyshev,
+        chessboard) $=$ max difference in any single coordinate.
+\end{itemize}
+\lead{Written out}
+\begin{itemize}
+  \item Euclidean: $\sqrt{\sum_k (p_k-q_k)^2}$
+  \item Manhattan: $\sum_k |p_k - q_k|$
+  \item Supremum: $\max_k |p_k - q_k|$
+\end{itemize}}{%
+\figT{dist_examples}
+\vspace{3pt}
+\figT{minkowski_matrices}}
+
+\vspace{3pt}
+\sbsr{0.52}{%
+\creamq{Binary attributes: SMC vs Jaccard}{\m{2+2+2}}
+Build a $2\times2$ contingency count for objects $i,j$. \mk{Two notations exist, know both:}
+\begin{itemize}
+  \item $q = M_{11}$ $=$ attrs where both $=1$ \qquad $t = M_{00}$ $=$ attrs where both $=0$
+  \item $r = M_{10}$ $=$ $i{=}1,\,j{=}0$ \qquad\quad $s = M_{01}$ $=$ $i{=}0,\,j{=}1$
+  \item Total $p = q+r+s+t$. \ \ \emph{H\&K use $q,r,s,t$; Tan and DBK use $M_{11}$ etc.}
+\end{itemize}
+\[ \underbrace{d = \frac{r+s}{q+r+s+t}}_{\textbf{symmetric}} \qquad
+   \underbrace{d = \frac{r+s}{q+r+s}}_{\textbf{asymmetric}} \qquad
+   \underbrace{SMC = \frac{q+t}{q+r+s+t}}_{=\,1-d_{sym}} \qquad
+   \underbrace{J = \frac{q}{q+r+s}}_{=\,1-d_{asym}} \]
+\begin{itemize}
+  \item \mk{Only difference: Jaccard/asymmetric drop $t$ (the 0-0 matches).}
+  \item \textbf{SMC} $\rightarrow$ \textbf{symmetric} binary (a 0-0 match is informative).
+  \item \textbf{Jaccard} $\rightarrow$ \textbf{asymmetric} binary
+        (0-0 meaningless: 2 people both lacking a rare disease says nothing).
+  \item Sets form: $J(A,B) = |A\cap B| / |A\cup B|$.
+  \item \mk{Read the verb.} ``Find the Jaccard \emph{coefficient}'' wants $J$;
+        ``find the \emph{dissimilarity}'' wants $d = 1-J$.
+\end{itemize}}{%
+\figT{smc_jaccard}}
+
+\vspace{3pt}
+\sbs{%
+\creamq{Nominal attributes}{}
+\[ d(i,j) = \frac{p-m}{p} \qquad sim(i,j) = 1-d(i,j) = \frac{m}{p} \]
+\begin{itemize}
+  \item $m$ $=$ no. of attrs where $i$ and $j$ are in the \textbf{same state}, $p$ $=$ total attrs.
+  \item Alternative: encode each of the $M$ states as an \textbf{asymmetric binary} attr,
+        then use Jaccard.
+\end{itemize}
+\creamq{Ordinal attributes}{}
+\begin{enumerate}
+  \item Replace value $x_{if}$ by its \textbf{rank} $r_{if} \in \{1,\dots,M_f\}$.
+  \item Normalise rank to $[0,1]$ so every attr has equal weight:
+        \[ z_{if} = \frac{r_{if}-1}{M_f-1} \]
+  \item Treat $z_{if}$ as \textbf{numeric} $\rightarrow$ use Euclidean / Manhattan.
+\end{enumerate}
+\begin{itemize}
+  \item Eg \{fair, good, excellent\}, $M_f=3$ $\rightarrow$ ranks 1,2,3 $\rightarrow$ $z = 0,\ 0.5,\ 1$.
+\end{itemize}}{%
+\creamq{Data matrix vs dissimilarity matrix}{}
+\begin{itemize}
+  \item \textbf{Data matrix} ($n$ objects $\times$ $p$ attrs): stores the objects themselves.
+        \textbf{Two-mode} (rows $=$ objects, cols $=$ attrs).
+  \item \textbf{Dissimilarity matrix} ($n\times n$): stores $d(i,j)$ for every pair.
+        \textbf{One-mode} (both axes are objects).
+  \item Properties: $d(i,i)=0$, $d(i,j)=d(j,i)$ $\rightarrow$ only the \textbf{lower triangle} is written.
+  \item Most clustering + KNN algorithms run on the dissimilarity matrix.
+\end{itemize}
+\creamq{Mixed attribute types}{}
+\[ d(i,j) = \frac{\sum_{f=1}^{p}\delta_{ij}^{(f)} d_{ij}^{(f)}}{\sum_{f=1}^{p}\delta_{ij}^{(f)}} \]
+\begin{itemize}
+  \item $\delta_{ij}^{(f)}=0$ if the attr is missing for either object, or it is asymmetric binary
+        and both are 0. Else $\delta = 1$.
+  \item $d_{ij}^{(f)}$ computed per attr type, each scaled to $[0,1]$
+        (numeric: divide by the range).
+\end{itemize}}
+
+\vspace{3pt}
+\sbs{%
+\creamq{Cosine similarity}{\m{3}}
+\[ \cos(d_1,d_2) = \frac{d_1 \cdot d_2}{\lVert d_1\rVert\,\lVert d_2\rVert} \]
+\begin{itemize}
+  \item $d_1\cdot d_2 =$ dot product, $\lVert d\rVert = \sqrt{\sum d_k^2}$ $=$ vector length.
+  \item Range $[0,1]$ for non-negative vectors.
+  \item Aligned $\rightarrow$ angle $0^\circ$ $\rightarrow$ $\cos=1$.
+        Orthogonal (no common terms) $\rightarrow$ $90^\circ$ $\rightarrow$ $\cos=0$.
+  \item \mk{Ignores magnitude, measures direction only} $\rightarrow$ ideal for documents,
+        where doc length shouldnt matter.
+\end{itemize}}{%
+\creamq{Correlation coefficient}{}
+\[ corr(x,y) = \frac{\sum_i (x_i-\mu_x)(y_i-\mu_y)}
+     {\sqrt{\sum_i (x_i-\mu_x)^2}\sqrt{\sum_i (y_i-\mu_y)^2}} = \frac{s_{xy}}{s_x s_y} \]
+\begin{itemize}
+  \item $=$ cosine similarity of the \textbf{mean-centred} vectors.
+  \item Range $[-1,1]$: $+1$ positive, $-1$ negative, $0$ no correlation.
+  \item \textbf{Covariance} $s_{xy} = \frac{1}{n-1}\sum_k (x_k-\bar{x})(y_k-\bar{y})$.
+  \item Correlation $=$ scaled (unit-free) version of covariance.
+\end{itemize}}
+
+\vspace{3pt}
+\lead{Which measure for which data \mk{(picking wrong = losing the marks)}}
+\begin{tabularx}{\textwidth}{@{}L{4.1cm}X@{}}
+\toprule
+\hrow \thead{Data} & \thead{Use} \\
+Numeric, scale matters & Euclidean / Manhattan / Minkowski \\
+Numeric, only direction matters (documents) & Cosine \\
+Symmetric binary & SMC \\
+Asymmetric binary, sets & Jaccard \\
+Nominal / categorical & Simple mismatch $d = (p-m)/p$, $m=$ no. of matches, $p=$ total attrs \\
+Strings & Hamming (equal length) / Levenshtein edit distance \\
+Testing linear relationship & Correlation coefficient \\
+\bottomrule
+\end{tabularx}
+
+\hr
+
+%-----------------------------------------------------------------------
+\T{2.5 PYQ Mapping}
+
+{\color{sub}\footnotesize Tiers: \tS{} $=$ 7+/17 \gap \tF{} $=$ 4--6 \gap \tP{} $=$ 1--3 but $\ge$8 marks.
+\mk{N} marks a question fully solved in the Ch 2 Numerical companion.}
+
+\creamq{2.1 Data Types and Attributes}{}
+\begin{enumerate}
+  \item \tP{1} ``What is data mining? Explain different data types of attributes in a dataset.'' \hfill \m{10} \yr{71 Shr}
+\end{enumerate}
+
+\creamq{2.2 Data Pre-processing}{}
+\begin{enumerate}[start=2]
+  \item \tS{12} \textbf{Why preprocess $+$ major tasks / methods.}
+  \begin{itemize}
+    \item ``What is Data Pre-Processing? Briefly explain the major tasks performed.'' \hfill \m{2+7} \yr{81 Ba}
+    \item ``Why data preprocessing is necessary? Explain methods to maintain data quality.'' \hfill \m{4+4} \yr{75 Ch}
+    \item ``Why is it required? Explain approaches of data cleaning.'' \hfill \m{5+5} \yr{72 Ka}
+  \end{itemize}
+  \item \tP{1} ``Measuring elements of data Quality? Data transformation by normalization w/ example.'' \hfill \m{2+6} \yr{73 Shr}
+  \item \mk{N} ``Use the following methods to normalize 200, 300, 400, 600, 1000'' (min-max, z-score, decimal scaling). \hfill \m{2+2+2} \yr{78 Bh}
+  \item \tP{2} Handling missing values. \hfill \m{5} \yr{74 Ash} \m{2} \yr{74 Ch}
+  \item \tP{1} Issues in Data Integration. \hfill \m{5} \yr{75 Ash}
+  \item \tP{1} ``What is `curve of Dimensionality'? How can it be avoided?'' \hfill \m{5} \yr{70 Ch}
+        {\footnotesize\mk{paper typo: ``curse''}}
+  \item \tP{1} ``Discuss the impact of noisy data in data mining.'' \hfill \m{5} \yr{70 Ch}
+  \item \tP{1} ``How can PCA be used for dimensionality reduction?'' \hfill \m{10} \yr{71 Shr}
+  \item \mk{N} ``Find the principal components + proportion of total variance'' (3$\times$3 covariance matrix). \hfill \m{4} \yr{76 Ch}
+  \item \tP{3} Short notes: data smoothing \yr{76 Ash} $\cdot$ data normalization \yr{75 Ch} $\cdot$
+        data transformation \yr{73 Shr, 72 Ka}. \hfill \m{3}\m{4}
+\end{enumerate}
+
+\creamq{2.3 OLAP \& Multidimensional Data Analysis}{}
+\begin{enumerate}[start=12]
+  \item \tS{10} \textbf{OLAP operations $+$ OLAP vs OLTP.}
+  \begin{itemize}
+    \item ``Explain typical OLAP operations\ldots Differentiate OLAP and OLTP tools.'' \hfill \m{6+4} \yr{79 Bh}
+    \item ``How do you perform analysis of multidimensional data? Explain w/ OLAP.'' \hfill \m{10} \yr{72 Ch}
+    \item ``Discuss Data Integration issues. Describe OLAP + operations w/ example.'' \hfill \m{5+5} \yr{75 Ash}
+    \item ``Approaches to handle missing data? OLAP + operations? OLAP vs OLTP.'' \hfill \m{2+5+3} \yr{74 Ch}
+  \end{itemize}
+  \item \tP{1} ``Dimensional data? Base \& apex cuboid? Slicing \& Dicing? Roll Down/Up? Give example.'' \hfill \m{2+3+3+3} \yr{76 Ash}
+  \item \mk{N} Star schema for a 4-dim DW $+$ which OLAP ops list total charge. \hfill \m{3+3} \yr{78 Bh}
+  \item \mk{N} Snowflake schema for a 5-dim DW $+$ OLAP ops for count per state per year. \hfill \m{3+3} \yr{76 Ch}
+  \item \tP{3} Short notes: OLAP Operations \yr{74 Ash, 73 Shr} $\cdot$ OLAP and OLTP \yr{75 Ch}. \hfill \m{4}
+\end{enumerate}
+
+\creamq{2.4 Various Similarity Measures}{}
+\begin{enumerate}[start=17]
+  \item \mk{N} Cosine sim (Obj 2,4) $+$ Euclidean (1,3) and (1,4), 4-attribute object table. \hfill \m{3+3+3} \yr{80 Bh}
+  \item \mk{N} Jaccard (asymmetric) $+$ symmetric-binary dissimilarity $+$ SMC $+$ cosine of 2 doc vectors. \hfill \m{2+2+2+1} \yr{80 Ba}
+  \item \mk{N} Manhattan $+$ Supremum distance matrix $\cdot$ cosine of 2 vectors $\cdot$ Jaccard $+$ SMC of 2 binary vectors. \hfill \m{2+1+2} \yr{76 Ch}
+  \item \tP{1} ``Properties a Distance Metric needs to support w.r.t. Minkowski's distance.'' \hfill \m{10} \yr{71 Ch}
+  \item \tP{1} ``List types of similarity measures $+$ their application areas.'' \hfill \m{3} \yr{80 Ba}
+  \item \tP{2} Short notes: Minkowski Distance \yr{78 Bh} $\cdot$ similarity measures between tuples \yr{76 Ash}. \hfill \m{4}\m{3}
+\end{enumerate}
+
+\lead{Coverage check}
+\begin{itemize}
+  \item All Ch 2 PYQs covered. 8 are numerical $\rightarrow$ fully solved in the companion.
+  \item \textbf{3 errors in your source notes corrected here} \added:
+  \begin{itemize}
+    \item Z-score written as $(v-min)/\sigma$ $\rightarrow$ must be $(v-\text{mean})/\sigma$.
+    \item Equal-width bin width $W=(A-B)/N$ $\rightarrow$ must be $(B-A)/N$.
+    \item PCA section contaminated w/ Isomap steps (neighbourhood graph, geodesic distances).
+  \end{itemize}
+  \item \textbf{Gap filled by research} \added: similarity-measure formulas were absent from the
+        typed notes (they say only ``Refer Class Note''), so they were taken from DBK Lecture-2
+        and then \textbf{verified against Han \& Kamber 3rd ed} (the syllabus reference book).
+\end{itemize}
+
+\lead{Sources used for this chapter}
+\begin{itemize}
+  \item \textbf{Han \& Kamber, 3rd ed} (full textbook PDF): ch 2 attribute types $+$ all proximity
+        measures, ch 3 preprocessing $+$ normalisation, ch 4 data cube $+$ OLAP. \mk{Primary authority.}
+  \item \textbf{DBK Lectures 1--4} (Thapathali class slides): attribute types, binning example,
+        discretisation, distance/similarity, PCA process, data cube $+$ concept hierarchies.
+  \item \code{data mining\_/Chapter 1\_2.pdf} (Bhupesh K. Mishra), \code{Chapter3\_0.ppt},
+        \code{Chapter 2\_Data Warehouse.ppt}.
+  \item Where sources disagree, \textbf{Han \& Kamber 3rd ed wins} and the clash is flagged inline.
+\end{itemize}

@@ -1,0 +1,107 @@
+\documentclass[10pt]{article}
+\usepackage{hyperref}
+\usepackage{amsmath, amssymb, amsfonts}
+\usepackage[margin=1cm]{geometry}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{multicol}
+\usepackage{titlesec}
+\parindent 0pt
+\setlength{\columnsep}{18pt}
+\setlist{noitemsep, topsep=1pt, leftmargin=1.4em}
+\titlespacing*{\section}{0pt}{4pt}{2pt}
+\titleformat{\section}{\normalfont\large\bfseries}{\thesection.}{0.5em}{}
+
+\title{Wireless Communication (EX751 / EX715)\\[0.3em]\large Concise PYQ}
+\author{}
+\date{\today}
+
+\begin{document}
+\maketitle
+\vspace{-1em}
+\small
+\textbf{Notes:} TU IOE PYQ 2070--2081. Regular = \textbf{bold}, Back = normal; BEX = normal font, BEI (EX715) = \texttt{mono}.
+Marks in (); unique values only.
+Keys: (I)=Importance/Need \quad (+)=Advantage \quad (-)=Disadvantage \quad +Fig=Figure \quad +Eg=Example \quad Vs=Compare/Differentiate.
+\vspace{2pt}
+\hrule
+\vspace{4pt}
+
+\begin{multicols}{2}
+\footnotesize
+
+\section*{1. Introduction}
+\begin{itemize}
+  \item Evolution of wireless / cellular (1G--5G); technology + market penetration \hfill (4)(6)
+  \item 1G/2G/3G/4G Vs, technology advancement; 5G Vs 4G; forward \& reverse channel \hfill (4)(6)(2+2)
+\end{itemize}
+
+\section*{2. Cellular Concepts}
+\begin{itemize}
+  \item Frequency reuse; co-channel reuse ratio $Q{=}\sqrt{3N}$ (derive); find $N$ (omni/120°/60°) \hfill (6)(4)(1+4)(3+5)
+  \item Min.\ co-channel distance (7-cell); co- Vs adjacent-channel interference \hfill (4)(3+4+3)
+  \item Handoff --- margin +Fig, strategies (GSM), types \& application, cell dragging \hfill (3)(6)(8)
+  \item GoS + trunking (blocked-call-cleared); market penetration; clusters/capacity \hfill (3+5)(5)(12)(6)
+  \item Microcell zone concept; sectoring Vs cell splitting; capacity/coverage enhancement \hfill (3)(5)(8)
+\end{itemize}
+
+\section*{3. Radio Wave Propagation}
+\begin{itemize}
+  \item Free-space \& link budget --- received power / E-field / flux / rms voltage \hfill (8)(6)
+    \begin{itemize}
+      \item TX/RX distance + gains (50 W@900 MHz; 165 W@325 MHz; 150 W threshold; monopole 2-ray)
+    \end{itemize}
+  \item Propagation mechanisms; large- Vs small-scale; define path loss + multipath params \hfill (3+5)(8)(2+4)
+  \item Two-ray / Fresnel diffraction --- phase difference; scattering + ground-reflection model \hfill (8)(2+6)(2+8)
+  \item Outdoor models --- Okumura / Hata (median path loss, correction factor, EIRP) \hfill (4+4)(4+2+2)(3+3)
+    \begin{itemize}
+      \item Ericsson Multiple Breakpoint model; 10-km link feasibility; 2-ray point-to-point \hfill (2)(12)(4+4)
+    \end{itemize}
+  \item Indoor models; small-scale fading types + factors \hfill (8)(2+4+4)(4+4)
+  \item Doppler spread / coherence BW \& time; delay spread; $T_s$ without equalizer \hfill (4+4)(4)(8)
+  \item Rayleigh Vs Rician fading; flat Vs frequency-selective (AMPS/GSM) \hfill (2)(5)(2+6)
+\end{itemize}
+
+\section*{4. Modulation--Demodulation}
+\begin{itemize}
+  \item QPSK / OQPSK / $\pi/4$-QPSK --- Tx \& detection; DPSK + PN sequence \hfill (6)(8)(5+2)(4+2+2)
+  \item MSK Vs GMSK Vs OQPSK (BW/power efficiency, GSM); GMSK Tx +constellation \hfill (3+3+2)(2+6)(8)
+  \item OFDM operation +Fig (Tx/Rx); modulation/demodulation technique \hfill (8)(4+4)
+  \item Spread spectrum --- DS \& FH; Vs multiple-access techniques \hfill (4)(6+2)
+\end{itemize}
+
+\section*{5. Equalization \& Diversity}
+\begin{itemize}
+  \item Equalization (I), minimize ISI; MSE (optimal weights); MLSE +Fig; adaptive algorithms \hfill (2+6)(8)(6+1+5)(4)
+  \item Diversity (I) + types; combining (max-ratio / space); antenna diversity Vs \hfill (2+6)(2+2)(4+6)(3+3+2)
+  \item RAKE receiver (M-branch) +Fig \hfill (8)(4)
+\end{itemize}
+
+\section*{6. Speech \& Channel Coding}
+\begin{itemize}
+  \item Speech signal characteristics; vocoder (I) + predictive coders; GSM CODEC +Fig \hfill (8)(3)(2+6)(4+2+2)
+  \item LPC + block diagram; sub-band coding (Tx/Rx); source coders \hfill (2+6)(3+5)(6)
+  \item Convolutional / turbo coding; Viterbi decoding; interleaving (need + working) \hfill (5)(3)(4)
+\end{itemize}
+
+\section*{7. Multiple Access}
+\begin{itemize}
+  \item FDMA --- non-linear effect, no.\ of channels; (+)(-); FDMA Vs CDMA \hfill (3+2)(4)(2+4)
+  \item TDMA --- (+) over FDMA; GSM frame efficiency \hfill (4)
+  \item CDMA --- characteristics/(+)(-); design considerations; Hadamard $H_8$ (Walsh) \hfill (2+6)(4)
+  \item SSMA (DS \& FH); FHMA +block diagram +Eg; near-far effect + solution \hfill (4+4)(6)(7)(3+4)
+  \item Hybrid SS MA (near-far mitigation); SDMA; multiple access Vs (TDMA/CDMA/SDMA) \hfill (2+6)(4)(2+6)
+  \item WLAN; WiMAX \hfill (3)
+\end{itemize}
+
+\section*{8. Wireless Systems \& Standards}
+\begin{itemize}
+  \item GSM architecture (each component); traffic \& control channels; BCH \& CCCH \hfill (8)(4+4)
+  \item GSM frame structure; TDMA frame efficiency $<$ 100\%; speech-to-radio signal processing \hfill (6+2)(4+4)(8)
+  \item CDMA IS-95 forward channels (draw); CDMA Vs LTE architecture \hfill (4)(3+5)
+  \item Regulatory issues / spectrum regulation; interference; LTE / WiMAX / UMTS \hfill (4)(5)(3)
+\end{itemize}
+
+\end{multicols}
+\end{document}

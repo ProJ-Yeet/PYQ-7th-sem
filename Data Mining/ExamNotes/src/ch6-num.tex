@@ -1,0 +1,151 @@
+%=======================================================================
+%  CH 6 — NUMERICAL PROBLEMS & SOLUTIONS
+%=======================================================================
+\section*{\color{acc}Ch 6 --- Anomaly / Fraud Detection --- Numerical Problems \& Solutions}
+\vspace{-4pt}{\color{acc}\rule{\textwidth}{1.1pt}}\vspace{4pt}
+
+{\color{sub}\footnotesize This chapter is \textbf{almost entirely theory}. Across all 17 papers
+there is exactly \textbf{one} numerical \yr{76 Ch}, on the base rate fallacy. It is solved below,
+plus 2 practice problems covering the patterns a future numerical would most likely take.}
+
+\lead{Methods}
+\begin{itemize}
+  \item \textbf{M1} Base rate fallacy: detection rate, false alarm rate, Bayesian detection rate
+        \hfill \yr{76 Ch}
+  \item \textbf{M2} Distance-based outlier: the DB$(r,\pi)$ test \hfill \emph{practice}
+\end{itemize}
+
+\hr
+
+%=======================================================================
+\T{M1. Base rate fallacy}
+
+\lead{Method}
+\begin{itemize}
+  \item Let $I$ $=$ anomalous, $\lnot I$ $=$ normal, $A$ $=$ alarm raised.
+  \item \textbf{Detection rate} $= P(A|I)$ \qquad \textbf{False alarm rate} $= P(A|\lnot I)$
+  \item \textbf{Bayesian detection rate} (what an analyst actually cares about):
+        \[ P(I|A) = \frac{P(A|I)\,P(I)}{P(A|I)P(I) + P(A|\lnot I)P(\lnot I)} \]
+\end{itemize}
+\begin{itemize}
+  \item \mk{Fastest safe route}: invent a round population (10,000), build the confusion matrix,
+        read every rate off it. No formula to misremember.
+\end{itemize}
+
+\creamq{Problem 1.1}{\m{3}}
+{\color{sub}\footnotesize \yr{76 Ch} \gap ``If the probability that a normal object is classified as
+an anomaly is 0.01 and the probability that an anomalous object is classified as anomalous is 0.99,
+then what is the false alarm rate and detection rate if 99\% of the objects are normal?''}
+
+\lead{Given}
+\begin{itemize}
+  \item $P(A|\lnot I) = 0.01$ \quad (normal object raises an alarm)
+  \item $P(A|I) = 0.99$ \quad (anomalous object raises an alarm)
+  \item $P(\lnot I) = 0.99$, \ so $P(I) = 0.01$
+\end{itemize}
+
+\lead{Step 1: the two rates asked for, read straight off the givens}
+\begin{itemize}
+  \item \textbf{False alarm rate} $= P(A|\lnot I) = \mathbf{0.01}$ \ (1\%)
+  \item \textbf{Detection rate} $= P(A|I) = \mathbf{0.99}$ \ (99\%)
+\end{itemize}
+
+\lead{Step 2: why the 99\% prior was given --- build the matrix on 10,000 objects}
+\begin{tabularx}{0.86\textwidth}{@{}L{3.6cm}XXL{2.1cm}@{}}
+\toprule
+\hrow & \thead{Alarm} & \thead{No alarm} & \thead{Total} \\
+Anomalous ($I$)   & $0.99\times100=\mathbf{99}$ (TP) & 1 (FN)   & 100 \\
+Normal ($\lnot I$)& $0.01\times9900=\mathbf{99}$ (FP) & 9801 (TN)& 9,900 \\
+Total & 198 & 9,802 & 10,000 \\
+\bottomrule
+\end{tabularx}
+
+\begin{itemize}
+  \item Check: detection rate $=99/100=0.99$ \checkmark \quad
+        false alarm rate $=99/9900=0.01$ \checkmark
+\end{itemize}
+
+\lead{Step 3: Bayesian detection rate}
+\[ P(I|A) = \frac{(0.99)(0.01)}{(0.99)(0.01) + (0.01)(0.99)}
+          = \frac{0.0099}{0.0099+0.0099} = \frac{99}{198} = \mathbf{0.50} \]
+
+\lead{Final answer}
+\begin{itemize}
+  \item False alarm rate $= \mathbf{0.01}$, \ detection rate $= \mathbf{0.99}$.
+  \item \mk{But the Bayesian detection rate is only 0.50} --- half of every alarm raised is false,
+        despite a detector that is 99\% accurate in both directions.
+  \item \textbf{This is the base rate fallacy.} The normal population (9,900) is so much larger than
+        the anomalous one (100) that its 1\% error rate manufactures exactly as many false alarms
+        (99) as there are true detections (99).
+  \item \textbf{Say this in the exam}: it is the whole point of the question and is worth more than
+        the two arithmetic lines.
+\end{itemize}
+
+\begin{center}\fbox{\begin{minipage}{0.9\textwidth}\small
+\mk{If the examiner wanted only the two conditional rates}, they are given directly and the
+question is trivial --- which is the clue that the \textbf{99\% prior} must be used for something.
+Answer both readings: state the two rates, then compute $P(I|A)$ and name the fallacy. \added
+\end{minipage}}\end{center}
+
+\creamq{Practice A --- rarer anomalies}{}
+{\color{sub}\footnotesize Same detector, but anomalies are 1 in 1,000 instead of 1 in 100.
+Shows how fast the Bayesian rate collapses. \added}
+
+\begin{itemize}
+  \item On 100,000 objects: 100 anomalous, 99,900 normal.
+  \item TP $=0.99\times100 = 99$ \qquad FP $=0.01\times99{,}900 = 999$
+  \item $P(I|A) = \dfrac{99}{99+999} = \dfrac{99}{1098} = \mathbf{0.090}$
+  \item \mk{Only 9\% of alarms are real.} Detection rate and false alarm rate are unchanged at
+        0.99 and 0.01 --- \textbf{only the base rate moved}.
+  \item \textbf{Conclusion (Axelsson)}: to keep $P(I|A)$ usable when $P(I)$ is tiny you must drive
+        the \emph{false alarm rate} down, not push the detection rate up.
+\end{itemize}
+
+\hr
+
+%=======================================================================
+\T{M2. Distance-based outlier: the DB$(r,\pi)$ test}
+
+\lead{Method}
+\begin{itemize}
+  \item Object $o$ is a \textbf{DB$(r,\pi)$-outlier} if
+        \[ \frac{\lVert\{o' \mid dist(o,o') \le r\}\rVert}{\lVert D\rVert} \le \pi \]
+  \item In words: count how many objects (including $o$ itself, per Han \& Kamber) lie within
+        distance $r$; if that count as a fraction of $|D|$ is at most $\pi$, it is an outlier.
+  \item Equivalent form: with $k=\lceil \pi|D|\rceil$, $o$ is an outlier if $dist(o,o_k) > r$.
+\end{itemize}
+
+\creamq{Practice B}{}
+{\color{sub}\footnotesize No PYQ has set this yet, but it is the only computable form of the
+distance-based question that is asked in 6 papers, so it is worth one run-through. \added}
+
+\lead{Problem} Points $P_1(1,1)$, $P_2(1,2)$, $P_3(2,1)$, $P_4(2,2)$, $P_5(8,8)$.
+Take $r = 2$, $\pi = 0.4$. Which points are DB$(2, 0.4)$-outliers? Use Euclidean distance.
+
+\lead{Step 1: distance matrix}
+\begin{tabularx}{0.72\textwidth}{@{}L{1.2cm}XXXXX@{}}
+\toprule
+\hrow & \thead{$P_1$} & \thead{$P_2$} & \thead{$P_3$} & \thead{$P_4$} & \thead{$P_5$} \\
+$P_1$ & 0 & 1 & 1 & 1.414 & 9.899 \\
+$P_2$ & 1 & 0 & 1.414 & 1 & 9.220 \\
+$P_3$ & 1 & 1.414 & 0 & 1 & 9.220 \\
+$P_4$ & 1.414 & 1 & 1 & 0 & 8.485 \\
+$P_5$ & 9.899 & 9.220 & 9.220 & 8.485 & 0 \\
+\bottomrule
+\end{tabularx}
+
+\lead{Step 2: count neighbours within $r = 2$} \ (threshold $\pi|D| = 0.4\times5 = 2$ objects)
+\begin{itemize}
+  \item $P_1$: itself, $P_2$, $P_3$, $P_4$ $= 4$ \quad $4/5 = 0.8 > 0.4$ $\rightarrow$ normal
+  \item $P_2$, $P_3$, $P_4$: 4 each by symmetry $\rightarrow$ normal
+  \item $P_5$: only itself $= 1$ \quad $1/5 = 0.2 \le 0.4$ $\rightarrow$ \mk{\textbf{outlier}}
+\end{itemize}
+
+\lead{Final answer} $P_5$ is the only DB$(2,0.4)$-outlier.
+\begin{itemize}
+  \item \textbf{Cross-check with the $k$-NN form}: $k=\lceil 0.4\times5\rceil = 2$.
+        For $P_5$, its 2nd nearest neighbour is at $8.485 > 2$ $\rightarrow$ outlier \checkmark.
+        For $P_1$, its 2nd nearest is at $1 \le 2$ $\rightarrow$ normal \checkmark.
+  \item \mk{Note the sensitivity to $r$}: raise $r$ to 9 and $P_5$ stops being an outlier
+        altogether. Quoting the chosen $r$ and $\pi$ is part of the answer.
+\end{itemize}

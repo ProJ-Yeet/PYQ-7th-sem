@@ -1,0 +1,82 @@
+\documentclass[10pt]{article}
+\input{preamble}
+\usepackage{pifont}
+\usepackage{bookmark}
+
+\begin{document}
+
+% ------------------------------------------------ title page
+\thispagestyle{empty}
+\vspace*{2.2cm}
+\begin{center}
+  {\Huge\bfseries\color{acc} Data Mining}\\[6pt]
+  {\LARGE\bfseries Complete Exam Notes}\\[14pt]
+  {\large\color{sub} CT 72502 (Elective I)}\\[3pt]
+  {\color{sub} BEI / BEX $\cdot$ Year IV Part I}\\[3pt]
+  {\color{sub} Institute of Engineering, Tribhuvan University}\\[22pt]
+  \begin{minipage}{0.76\textwidth}
+    \color{sub}\small
+    Built from the syllabus, the class notes, and \textbf{all 17 past papers
+    (2070--2081 BS)}. Every topic carries a frequency tier computed from those papers,
+    and every formula is checked against Han \& Kamber, \emph{Data Mining: Concepts and
+    Techniques}, 3rd edition.\\[8pt]
+    Numerical solutions live in the \textbf{per-chapter numerical companions};
+    each chapter marks its numericals with \mk{N}.\\[8pt]
+    \textbf{Short on time?} Go straight to \textbf{§8, Last-Minute Revision}.
+  \end{minipage}
+\end{center}
+
+\vfill
+\begin{center}
+\begin{tabularx}{0.82\textwidth}{@{}L{1.1cm}XL{1.9cm}L{2.4cm}@{}}
+\toprule
+\hrow \thead{Ch} & \thead{Topic} & \thead{Hours} & \thead{Papers} \\
+1 & Introduction & 2 & 16/17 \\
+2 & Data Preprocessing & 6 & 17/17 \\
+3 & Classification & 12 & 17/17 \\
+4 & Association Analysis & 10 & 17/17 \\
+5 & Cluster Analysis & 9 & 17/17 \\
+6 & Anomaly / Fraud Detection & 3 & \textbf{17/17} \\
+7 & Advanced Applications & 3 & 16/17 \\
+\midrule
+& \textbf{Total} & \textbf{45} & \\
+\bottomrule
+\end{tabularx}
+\end{center}
+\vspace{1.4cm}
+
+% ------------------------------------------------ contents
+\cleardoublepage
+\pagestyle{fancy}
+{\Large\bfseries\color{acc} Contents}
+\vspace{-6pt}{\color{acc}\rule{\textwidth}{1.1pt}}\vspace{4pt}
+\begingroup
+\renewcommand{\contentsname}{}
+\setcounter{tocdepth}{1}
+\vspace{-24pt}
+\tableofcontents
+\endgroup
+
+% ------------------------------------------------ chapters
+\cleardoublepage
+\input{ch1}
+\cleardoublepage
+\input{ch2}
+\cleardoublepage
+\input{ch3}
+\cleardoublepage
+\input{ch4}
+\cleardoublepage
+\input{ch5}
+\cleardoublepage
+\input{ch6}
+\cleardoublepage
+\input{ch7}
+
+% ------------------------------------------------ revision + abbreviations
+\input{revision}
+
+\cleardoublepage
+\input{abbrev}
+
+\end{document}

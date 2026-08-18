@@ -1,0 +1,25 @@
+# Source scans and third-party material — large binaries, not authored here.
+New PYQ/
+Old Sorted PYQ/
+Prajit Notes/
+Data Mining/Notes/
+BEI IV-I(1).pdf
+*.png
+!*/images/*.png
+
+# Raw subject scans (the inputs the OCR archives were made from)
+AI/CT-*.pdf
+DSAP/CT-*.pdf
+O&M/ME-*.pdf
+RF-Microwave/EX-*.pdf
+RF-Microwave/EG-*.pdf
+Wireless/EX-*.pdf
+Data Mining/Data-Mining.pdf
+Data Mining/Syllabus*.pdf
+
+# LaTeX build artefacts
+*.aux
+*.log
+*.out
+*.toc
+*.synctex.gz
