@@ -352,6 +352,7 @@
   \subsection{FIR vs IIR, LCCDE, linear phase, stability / causality}
     \begin{enumerate}[topsep=0pt, noitemsep]
       \item Differentiate between FIR system and IIR system. \hfill [4] (80 Ba, \bo{\texttt{76 Bh}})
+        \lb How does an IIR filter differ from an FIR filter? \hfill (marks clipped in the scan) (\bo{67 Mng})
       \item State linear constant coefficient difference equation and the corresponding system function. \hfill [3] (73 Shr, 71 Shr)
         \lb Why do we need difference equation? \hfill [2] (71 Shr, \bo{69 Ch, \texttt{69 Bh}})
         \lb Define the difference equation with example. \hfill [2] (\bo{73 Ch})
@@ -382,13 +383,18 @@
         \lb $H(z)=\dfrac{(1-\tfrac15 e^{-j\pi/5}z^{-1})(1-\tfrac13 z^{-1})(1-\tfrac15 e^{j\pi/5}z^{-1})}{(1-\tfrac45 z^{-1})(1-\tfrac17 e^{j\pi/7}z^{-1})(1-\tfrac15 z^{-1})(1-\tfrac17 e^{-j\pi/7}z^{-1})}$ in terms of Direct Form I and Direct Form II structures; draw the corresponding block diagrams. \hfill [9] (\bo{68 Bh})
 
       \item Realize the given system in cascade form of second-order sections (signal flow graph):
-        \lb $H(z)=\dfrac{10(1-0.25z^{-1})(1-0.667z^{-1})(1+2z^{-1})}{(1-0.75z^{-1})(1-0.125z^{-1})\{1-(0.5+j0.5)z^{-1}\}\{1-(0.5-j0.5)z^{-1}\}}$ \hfill [5] (81 Ba)
-        \lb Cascaded \emph{and parallel} form of $H(z)=\dfrac{5(1-0.25z^{-1})(1-0.667z^{-1})(1+2z^{-1})}{(1-0.75z^{-1})(1-0.125z^{-1})[1-(0.5+j0.5)z^{-1}][1-(0.5-j0.5)z^{-1}]}$ \hfill [7] (\texttt{74 Ma})
-        \lb $H(z)=\dfrac{(1-0.4z^{-1})(1+0.2z^{-1})(1-0.3e^{j\pi/6}z^{-1})(1-0.3e^{-j\pi/6}z^{-1})}{(1-0.5e^{j\pi/3}z^{-1})(1-0.5e^{-j\pi/3}z^{-1})(1+0.7e^{j\pi/4}z^{-1})(1+0.7e^{-j\pi/4}z^{-1})}$ \hfill [4] (80 Ba)
-        \lb $H(z)=\dfrac{(1-0.5z^{-1})(1+0.35z^{-1})(1-0.3e^{j2n\pi/5}z^{-1})(1-0.3e^{-j2n\pi/5}z^{-1})}{(1-0.6e^{jn\pi/3}z^{-1})(1-0.6e^{-jn\pi/3}z^{-1})(1+0.5e^{j2n\pi/7}z^{-1})(1+0.5e^{-j2n\pi/7}z^{-1})}$ \hfill [4] (\bo{76 Ch})
+        \lb Cascade of 2nd-order sections \hfill [5] (81 Ba)\\
+          \mbox{}\hfill {\small $H(z)=\dfrac{10(1-0.25z^{-1})(1-0.667z^{-1})(1+2z^{-1})}{(1-0.75z^{-1})(1-0.125z^{-1})\{1-(0.5+j0.5)z^{-1}\}\{1-(0.5-j0.5)z^{-1}\}}$}\hfill\mbox{}
+        \lb Cascaded \emph{and parallel} form \hfill [7] (\texttt{74 Ma})\\
+          \mbox{}\hfill {\small $H(z)=\dfrac{5(1-0.25z^{-1})(1-0.667z^{-1})(1+2z^{-1})}{(1-0.75z^{-1})(1-0.125z^{-1})[1-(0.5+j0.5)z^{-1}][1-(0.5-j0.5)z^{-1}]}$}\hfill\mbox{}
+        \lb Cascade of 2nd-order sections \hfill [4] (80 Ba)\\
+          \mbox{}\hfill {\small $H(z)=\dfrac{(1-0.4z^{-1})(1+0.2z^{-1})(1-0.3e^{j\pi/6}z^{-1})(1-0.3e^{-j\pi/6}z^{-1})}{(1-0.5e^{j\pi/3}z^{-1})(1-0.5e^{-j\pi/3}z^{-1})(1+0.7e^{j\pi/4}z^{-1})(1+0.7e^{-j\pi/4}z^{-1})}$}\hfill\mbox{}
+        \lb Cascade of 2nd-order sections \hfill [4] (\bo{76 Ch})\\
+          \mbox{}\hfill {\small $H(z)=\dfrac{(1-0.5z^{-1})(1+0.35z^{-1})(1-0.3e^{j2n\pi/5}z^{-1})(1-0.3e^{-j2n\pi/5}z^{-1})}{(1-0.6e^{jn\pi/3}z^{-1})(1-0.6e^{-jn\pi/3}z^{-1})(1+0.5e^{j2n\pi/7}z^{-1})(1+0.5e^{-j2n\pi/7}z^{-1})}$}\hfill\mbox{}
         \lb $H(z)=\dfrac{2(1-0.4z^{-1})(1-0.5z^{-1})}{(1+0.2z^{-1})(1-0.25z^{-1})[1-(-0.5+j0.15)z^{-1}][1-(-0.5-j0.15)z^{-1}]}$ \hfill [7] (\bo{\texttt{77 Ch}})
         \lb $H(z)=\dfrac{1}{(1-0.5z^{-1})(1-0.7e^{-j\pi/4}z^{-1})(1-0.7e^{j\pi/4}z^{-1})(1-0.3z^{-1})}$; draw the block diagram of the cascade realization. \hfill [6] (\bo{69 Bh})
-        \lb $H(z)=\dfrac{(1-\tfrac13 z^{-1})(1-\tfrac14 z^{-1})(1-\tfrac18 z^{-1})}{(1-\tfrac56 z^{-1})(1-\tfrac16 z^{-1})(1-\tfrac34 e^{-j\pi/4}z^{-1})(1-\tfrac34 e^{+j\pi/4}z^{-1})}$; draw the block diagram of the cascade realization. (The paper prints the last factor with a $-j\pi/4$ exponent twice; the conjugate is meant.) \hfill (marks clipped in the scan) (\bo{67 Mng})
+        \lb Realize the following in cascade form and draw the block diagram of the cascade realization. (The paper prints the last denominator factor with a $-j\pi/4$ exponent twice; the conjugate is meant.) \hfill (marks clipped in the scan) (\bo{67 Mng})\\
+          \mbox{}\hfill $H(z)=\dfrac{(1-\tfrac13 z^{-1})(1-\tfrac14 z^{-1})(1-\tfrac18 z^{-1})}{(1-\tfrac56 z^{-1})(1-\tfrac16 z^{-1})(1-\tfrac34 e^{-j\pi/4}z^{-1})(1-\tfrac34 e^{+j\pi/4}z^{-1})}$\hfill\mbox{}
         \lb $y[n]-\tfrac34 y[n-1]+\tfrac18 y[n-2]-x[n]-2x[n-1]=0$ \hfill [4] (\bo{70 Ch})
 
       \item A system has an impulse response $h[n]=(0.5)^n u[n]+n(0.2)^n u[n]$. Determine the parallel form realization. \hfill [6] (\bo{\texttt{78 Ch}})
