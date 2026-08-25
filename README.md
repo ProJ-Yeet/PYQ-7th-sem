@@ -21,7 +21,7 @@ Each subject folder contains:
 - `images/` — figures cropped out of scanned papers and referenced by the `.tex` files
 - `ocr/` — a verbatim transcription of every scanned paper, so the scans never have to be re-read
 
-Once a subject has been extended with newer papers, its filenames carry the year span they cover, e.g. `DSAP_Sorted_PYQ_Detailed_66-82.pdf`.
+Once a subject has been extended with newer papers, its filenames carry the year span they cover, e.g. `DSAP_Sorted_PYQ_Detailed_66-82.pdf`, `Wireless_Sorted_PYQ_Detailed_70-82.pdf`.
 
 `Data Mining/ExamNotes/` additionally has a full set of syllabus-order exam notes (7 chapters + numerical-problem companions), with LaTeX sources under `src/`.
 
@@ -44,5 +44,6 @@ Once a subject has been extended with newer papers, its filenames carry the year
 | DSAP (EX753) | 17 | 2069–2081 |
 | Organization and Management | 21 | 2069–2081 |
 | RF and Microwave | 14 | 2069–2081 |
-| Wireless Communication | 14 | 2070–2081 |
+| Wireless Communication (EX751) | 16 | 2070–2080 |
+| Wireless Communication (EX715) | 6 | 2079–2082 |
 | Data Mining | 17 | 2070–2081 |
