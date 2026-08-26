@@ -1,0 +1,876 @@
+%=======================================================================
+%  CHAPTER 6 — SPEECH AND CHANNEL CODING FUNDAMENTALS  (4 hrs)
+%=======================================================================
+\section{Speech and Channel Coding Fundamentals}
+
+{\color{sub}\footnotesize 4 hrs \gap$\cdot$\gap asked in \mk{22 of 22 papers}
+\gap$\cdot$\gap 5 syllabus sub-topics \gap$\cdot$\gap a few worked examples
+$\rightarrow$ Ch 6 numerical companion.}
+
+\lead{Read this first:}
+\begin{itemize}
+  \item \textbf{Speech coding is the single most reliable topic in the whole paper.} Some part of
+        it appears in \mk{21 of 22 papers}, and \textbf{characteristics of the speech signal}
+        \tS{7} plus \textbf{vocoders} \tS{10} plus \textbf{LPC} \tS{8} are the three that recur.
+  \item Almost every speech question is a \textbf{pair}: characteristics of speech
+        \textbf{plus} one coder. So learn the ACF / PDF / PSD trio once, then attach whichever
+        coder is asked.
+  \item \textbf{Channel coding} is examined much more lightly, in \tF{9} papers but never for more
+        than \m{5}. Viterbi \tF{4} and turbo \m{5} are the recurring ones.
+  \item \mk{The one link to remember between the two halves:} speech coding \textbf{removes}
+        redundancy to save bandwidth, and channel coding then \textbf{adds} redundancy back to
+        survive the channel. They pull in opposite directions on purpose.
+\end{itemize}
+
+\hr
+
+\T{6.1 Speech coding: why, and the two families}
+
+\Q{Why do we need speech coding techniques?}{\m{4}\m{2}}
+{\color{sub}\footnotesize \yr{70 Ma, \textbf{78 Ch}} \gap$\cdot$\gap
+the framing paragraph for every other question in this section}
+
+\sbsr{0.55}{%
+\lead{Goals of speech coding}
+\begin{itemize}
+  \item \textbf{Remove redundancy} from the speech signal.
+  \item \textbf{Achieve compression}: use the minimum number of bits while maintaining quality.
+  \item \textbf{Reduce transmission and storage cost}.
+  \item In wireless specifically: \mk{transmit speech at the highest possible quality using the
+        least possible channel capacity}, so more speech channels fit in a given bandwidth.
+\end{itemize}
+
+\lead{The trade-offs}
+\begin{itemize}
+  \item Higher speech bit rate $\rightarrow$ higher quality, but greater bandwidth and storage.
+  \item So a balance is struck between \textbf{bit-rate efficiency} and
+        \textbf{algorithmic complexity}.
+  \item A third axis matters in mobile: \textbf{robustness to channel errors}. A very low rate
+        coder throws away so much that a single bit error is audible.
+\end{itemize}
+
+\lead{The two families \mk{(state this split before naming any coder)}}
+\begin{itemize}
+  \item \textbf{Waveform coders}
+  \begin{itemize}
+    \item \textbf{No speech model is required.} Work on \textbf{any} input analog signal.
+    \item Designed to be \textbf{source independent}, so they code music and tones equally well.
+    \item Aim: reproduce the \textbf{time waveform} as closely as possible, minimising the bits
+          per sample.
+    \item \textbf{($+$)} Robust across a wide range of speakers and noisy environments.
+          \textbf{Minimal complexity.}
+    \item \textbf{($-$)} Only \textbf{moderate} bit-rate economy, ie \mk{low compression ratio}.
+    \item Eg \textbf{PCM, DPCM, ADPCM, delta modulation, CVSDM}, and the frequency-domain
+          coders below.
+  \end{itemize}
+  \item \textbf{Source coders (vocoders)}
+  \begin{itemize}
+    \item Use \textbf{a priori knowledge} of how speech is produced.
+    \item Recreate the \textbf{spectral characteristics} of speech by modelling the vocal tract
+          as a \textbf{time-varying digital filter}.
+    \item Filter parameters are extracted at the encoder, \textbf{only the parameters are sent},
+          and the decoder \textbf{re-synthesises} speech from them.
+    \item \textbf{($+$) Very high economy in bit rate}, down to 2.4 kbps.
+    \item \textbf{($-$) High complexity}, and quality is low and \mk{mechanical sounding},
+          though intelligible. Performance is also \textbf{talker dependent}.
+  \end{itemize}
+  \item \textbf{Hybrid coders} sit between the two and are what modern cellular actually uses.
+        \added
+\end{itemize}}{%
+\figT{c6_hierarchy.png}
+\vspace{1pt}
+{\color{sub}\footnotesize The hierarchy of speech coders. \mk{Draw this tree and the ``types of
+speech coder'' mark is banked.}}}
+
+\Q{Explain the characteristics of the speech signal, and how they are used in designing coders}{\m{8}\m{6}\m{4}\m{3}}
+{\color{sub}\footnotesize \tS{7} \yr{\textbf{72 Ash}, \textbf{77 Ch}, 73 Ma, \texttt{79 Bh},
+\textbf{80 Ch}, \textbf{\texttt{82 Bh}}, \texttt{81 Ba}} \gap$\cdot$\gap
+\mk{the most repeated question in the chapter, and it pairs with almost every other one}}
+
+{\color{sub}\footnotesize Speech waveforms have properties that can be \textbf{exploited} when
+designing efficient coders. Three are used most often. For each one, always say
+\textbf{what the property is} and then \textbf{which coder design it justifies}: that second half
+is where the marks are.}
+
+\vspace{2pt}
+\begin{tabularx}{\textwidth}{@{}L{3.5cm}XX@{}}
+\toprule
+\hrow \thead{Property} & \thead{What it says} & \thead{What it justifies} \\
+\midrule
+\textbf{Autocorrelation function (ACF)} &
+  Adjacent samples of a speech segment are \textbf{strongly correlated}. Typical adjacent-sample
+  correlation is \mk{0.85 to 0.9}. So every sample is largely \textbf{predictable} from previous
+  samples, plus a small random error.
+  \[ C(k) = \frac{1}{N}\sum_{n=0}^{N-|k|-1} x(n)\,x(n+|k|) \] &
+  \textbf{All differential and predictive coding schemes}: DPCM, ADPCM, delta modulation, and
+  \textbf{LPC}. Send the small prediction error instead of the sample. \\
+\midrule
+\textbf{Probability density function (PDF)} &
+  Speech amplitude has a \textbf{highly non-uniform} pdf: very high probability of
+  \textbf{near-zero} amplitudes, small but significant probability of very high amplitudes, and a
+  \textbf{monotonically decreasing} function in between.
+  \[ p(x) = \frac{1}{\sqrt{2}\,\sigma_x}\exp\!\left(\frac{-\sqrt{2}\,|x|}{\sigma_x}\right) \] &
+  \textbf{Non-uniform quantizers} and \textbf{vector quantizers}: put \mk{more quantization levels
+  where the probability is high} and fewer where it is low. This is why $\mu$-law and A-law
+  companding exist. \\
+\midrule
+\textbf{Power spectral density (PSD)} &
+  The PSD of speech is strongly \textbf{non-flat}: energy is concentrated at low frequencies.
+  High-frequency components carry \textbf{little energy but a lot of information}. &
+  \textbf{Frequency-domain coding}: code different frequency bands separately and allocate bits
+  per band. \mk{Significant coding gain}, but high bands must still be adequately represented or
+  intelligibility collapses. \\
+\bottomrule
+\end{tabularx}
+
+\vspace{3pt}
+\sbs{%
+\lead{Two more properties worth a line}
+\begin{itemize}
+  \item \textbf{Band-limited}: speech is essentially confined to \textbf{300 Hz to 3400 Hz},
+        so 8 kHz sampling suffices. This is what makes digital speech possible at all. \added
+  \item \textbf{Quasi-stationary}: speech statistics are roughly constant over
+        \textbf{10 to 30 ms}, which is why every coder works on frames of that length. \added
+\end{itemize}}{%
+\lead{Voiced Vs unvoiced speech +Fig}
+\begin{itemize}
+  \item \textbf{Voiced} sounds (``m'', ``v'', all vowels) are produced by
+        \textbf{quasi-periodic} vocal cord vibration. High energy, clear \textbf{pitch period}.
+  \item \textbf{Unvoiced} sounds (``s'', ``f'') are produced by turbulent air, so they look like
+        \textbf{random noise}. Low energy, no pitch.
+  \item \mk{Every vocoder must transmit a voiced / unvoiced decision plus the pitch period.}
+\end{itemize}
+\vspace{2pt}
+\figT{c6_speech_wave.png}}
+
+\hr
+
+\T{6.2 Frequency domain coding of speech}
+
+\Q{Explain the types of frequency domain coding of speech. Explain sub-band coding}{\m{4}\m{6}}
+{\color{sub}\footnotesize \tP{2} \yr{\textbf{73 Bh}, \textbf{\texttt{80 Bh}}} \gap$\cdot$\gap
+80 Bh asks for sub-band coding \mk{with transmitter and receiver}}
+
+\sbsr{0.52}{%
+\lead{The idea}
+\begin{itemize}
+  \item Frequency-domain coding is a \textbf{waveform} coding method.
+  \item Think of it as \mk{distributing quantization noise across the signal spectrum} on purpose,
+        rather than letting it spread uniformly.
+  \item The speech signal is split into a set of \textbf{frequency components}, which are
+        \textbf{quantized and encoded separately}.
+  \item The bits allocated to each component can be \textbf{varied dynamically} and shared between
+        bands.
+  \item Two algorithms are examined: \textbf{sub-band coding} and \textbf{adaptive transform
+        coding}.
+\end{itemize}
+
+\lead{Sub-band coding (SBC)}
+\begin{itemize}
+  \item Divides speech into \textbf{4 or 8 sub-bands} using a \textbf{bank of filters}.
+  \item Each sub-band is \textbf{sampled at its bandpass Nyquist rate}, then encoded
+        \textbf{separately}.
+  \item Aim: \textbf{control and distribute the quantization noise} over the whole spectrum.
+  \begin{itemize}
+    \item Noise generated in one band \textbf{stays in that band}.
+    \item So a low-energy band is not swamped by noise leaking from a high-energy one.
+  \end{itemize}
+  \item Bits per band are allocated by \textbf{perceptual importance}: low bands carry most of the
+        energy and get the most bits.
+  \item \textbf{Bit rate range: 9.6 kbps to 32 kbps.}
+  \item \textbf{Implementation trick:} each sub-band is \textbf{low-pass translated to zero
+        frequency} using a scheme like single-sideband modulation. That
+        \mk{reduces the required sampling rate} for each band.
+  \item \textbf{Receiver}: decode each band, \textbf{interpolate} back up, band-pass translate to
+        the original position, and \textbf{sum}.
+  \item \textbf{($+$)} Good quality at moderate rates, and the split is easy to implement.
+        \textbf{($-$)} Filter bank adds delay and complexity.
+\end{itemize}}{%
+\figT{c6_subband.png}
+\vspace{1pt}
+{\color{sub}\footnotesize Sub-band coder and decoder. LP translator, decimator and encoder per
+band on the left, the inverse chain on the right.}
+
+\lead{Adaptive transform coding (ATC) \pill{gdL}{gd}{syllabus, no PYQ yet}}
+\begin{itemize}
+  \item Applies a \textbf{block transform} to windowed segments of the speech waveform.
+  \item Each segment becomes a set of \textbf{transform coefficients}, quantized separately with a
+        number of bits \textbf{proportional to its perceptual significance}.
+  \item \textbf{Bit rate range: 9.6 kbps to 20 kbps.}
+  \item Most common transform: the \textbf{discrete cosine transform (DCT)}
+        \[ X_c(k) = \sum_{n=0}^{N-1} x(n)\,g(k)\,
+           \cos\!\left[\frac{(2n+1)k\pi}{2N}\right], \quad k = 0,1,\dots,N-1 \]
+        \[ x(n) = \frac{1}{N}\sum_{k=0}^{N-1} X_c(k)\,g(k)\,
+           \cos\!\left[\frac{(2n+1)k\pi}{2N}\right] \]
+        with $g(0)=1$ and $g(k)=\sqrt{2}$ for $k = 1,\dots,N-1$.
+  \item \mk{SBC splits with filters, ATC splits with a transform.} That one line answers
+        ``compare them''.
+\end{itemize}}
+
+\hr
+
+\T{6.3 Vocoders}
+
+\Q{What is a vocoder? Explain its operation with a block diagram, and the different kinds}{\m{2+6}\m{2+3}\m{3+5}\m{4}\m{6}}
+{\color{sub}\footnotesize \tS{10} \yr{\textbf{70 Bh}, 70 Ma, \textbf{71 Bh}, \textbf{73 Bh},
+73 Ma, \textbf{74 Bh}, 74 Ma, \textbf{78 Ch}, \textbf{\texttt{81 Bh}}, \texttt{81 Ba}}
+\gap$\cdot$\gap \mk{the single most repeated question in the whole chapter}}
+
+\sbsr{0.52}{%
+\lead{What a vocoder does, in three steps}
+\begin{itemize}
+  \item \textbf{Analyze} the voice signal at the transmitter.
+  \item \textbf{Transmit only the parameters} derived from that analysis, never the waveform.
+  \item \textbf{Synthesize} the voice at the receiver from those parameters.
+\end{itemize}
+\begin{itemize}
+  \item All vocoders model \textbf{speech generation as a dynamic system} and quantify the
+        \textbf{physical constraints} of that system.
+  \item Those constraints then give a very compact description of the signal.
+  \item \textbf{($+$) Very high economy in transmission bit rate.}
+  \item \textbf{($-$)} Much more complex than a waveform coder, \textbf{less robust}, and
+        performance is \mk{talker dependent}.
+\end{itemize}
+
+\lead{The speech generation model +Fig \mk{(draw this first, always)}}
+\begin{itemize}
+  \item Sound is \textbf{generated} by an excitation source, then \textbf{modulated} as it passes
+        through the vocal tract.
+  \item So the synthesiser needs exactly two things:
+  \begin{itemize}
+    \item a sequence of \textbf{excitation signals}, and
+    \item a \textbf{vocal tract approximation} to modulate them.
+  \end{itemize}
+  \item \textbf{Excitation} is switched by the voiced / unvoiced decision:
+  \begin{itemize}
+    \item \textbf{voiced} $\rightarrow$ a \textbf{pulse source}, a series of periodic pulses at
+          the pitch rate,
+    \item \textbf{unvoiced} $\rightarrow$ a \textbf{noise source}, a random sequence.
+  \end{itemize}
+  \item \textbf{Vocal tract} is modelled as a \textbf{linear filter}.
+  \item Parameters transmitted: \textbf{pitch period}, \textbf{voiced / unvoiced flag},
+        \textbf{pole frequencies} of the filter, \textbf{amplitude / gain}.
+  \item \mk{Every vocoder below is a different way of describing that filter.} Say that and the
+        four types fall out naturally.
+\end{itemize}}{%
+\figT{c6_speech_gen.png}
+\vspace{1pt}
+{\color{sub}\footnotesize The traditional speech generation model, the basis of \emph{all}
+vocoding systems. Noise source and pulse source feed a vocal tract filter.}
+
+\lead{The four classical vocoders \mk{(plus LPC)}}
+\begin{itemize}
+  \item \textbf{Channel vocoder} $=$ describes the filter by its \textbf{spectral envelope}, band
+        by band.
+  \item \textbf{Formant vocoder} $=$ describes it by the \textbf{positions of the spectral peaks}.
+  \item \textbf{Cepstrum vocoder} $=$ separates source from filter by
+        \textbf{homomorphic (log-spectrum) processing}.
+  \item \textbf{Voice-excited vocoder} $=$ avoids describing the excitation at all, by sending the
+        low band as PCM.
+  \item \textbf{Linear predictive coder (LPC)} $=$ describes the filter by
+        \textbf{prediction coefficients} in the \textbf{time} domain.
+        \mk{The most popular of all.}
+\end{itemize}}
+
+\creamq{Channel vocoder}{\m{4}}
+\sbsr{0.50}{%
+\begin{itemize}
+  \item The \textbf{first} analysis-synthesis system ever built.
+  \item A \textbf{frequency domain} vocoder: it determines the \textbf{envelope} of the speech
+        signal for a number of frequency bands, then samples, encodes and multiplexes those
+        samples.
+  \item Also transmits, per frame, the \textbf{voiced / unvoiced decision} and the
+        \textbf{pitch frequency}.
+  \item Sampling is done every \textbf{10 ms to 30 ms}.
+\end{itemize}
+
+\lead{Analyzer}
+\begin{itemize}
+  \item A bank of \textbf{bandpass filters}, each \textbf{100 Hz to 300 Hz} wide.
+  \item Each filter output is \textbf{rectified} then \textbf{low-pass filtered}
+        $\rightarrow$ this pair performs \textbf{envelope detection}.
+  \item The low-pass bandwidth is chosen to \mk{match the rate at which the vocal tract changes},
+        typically a few tens of Hz.
+  \item Each envelope is \textbf{A/D converted} and fed to the encoder.
+  \item In parallel, a \textbf{voicing detector} and a \textbf{pitch estimator} run on the input.
+\end{itemize}
+
+\lead{Synthesizer}
+\begin{itemize}
+  \item Decoder splits the stream back into band envelopes plus voicing and pitch.
+  \item \textbf{Switch} selects the excitation:
+        \textbf{pulse generator} driven by the received pitch period for voiced,
+        \textbf{random noise generator} for unvoiced.
+  \item Excitation is \textbf{multiplied} by each band envelope, then passed through the matching
+        \textbf{bandpass filter}.
+  \item All bands are \textbf{summed} to give the output speech.
+\end{itemize}}{%
+\figT{c6_chvoc_ana.png}
+\vspace{1pt}
+{\color{sub}\footnotesize Channel vocoder \textbf{analyzer}. Bandpass filter $\rightarrow$
+rectifier $\rightarrow$ lowpass filter is the envelope detector.}
+\vspace{4pt}
+\figT{c6_chvoc_syn.png}
+\vspace{1pt}
+{\color{sub}\footnotesize Channel vocoder \textbf{synthesizer}. The switch picks pulse or noise
+excitation from the received voicing information.}}
+
+\creamq{Formant vocoder}{\m{4+4}}
+{\color{sub}\footnotesize \tP{1} \yr{\textbf{71 Bh}} \gap$\cdot$\gap asked as
+``formant vocoder operation \textbf{plus} characteristics of speech''}
+
+\sbsr{0.50}{%
+\begin{itemize}
+  \item \textbf{Formants} $=$ the \textbf{spectral peaks} of the sound spectrum $|P(f)|$.
+  \begin{itemize}
+    \item They are frequency peaks with a \textbf{high degree of energy}.
+    \item Especially prominent in \textbf{vowels}.
+    \item Each corresponds to a \textbf{resonance of the vocal tract}.
+    \item Roughly \mk{one formant every 1000 Hz}.
+  \end{itemize}
+  \item Can be viewed as a \textbf{type of channel vocoder} that estimates only the
+        \textbf{first three or four formants} in a segment of speech.
+  \item \mk{Key difference from the channel vocoder}: instead of sending samples of the whole
+        power spectrum envelope, it sends only the \textbf{positions of the peaks}.
+  \item It must also control the \textbf{intensities} of those formants, and send the
+        \textbf{pitch period} and \textbf{voicing}.
+  \item Per formant $k$ it transmits $F_k$ (the frequency) and $B_k$ (the bandwidth).
+  \item \textbf{($+$)} Far fewer parameters than a channel vocoder $\rightarrow$
+        \mk{much lower bit rate}.
+  \item \textbf{($-$)} Reliable \textbf{formant tracking is hard}, especially for unvoiced speech
+        and for nasals, so quality suffers.
+\end{itemize}}{%
+\figT{c6_formants.png}
+\vspace{1pt}
+{\color{sub}\footnotesize Spectral envelope of an [i] spoken by a male speaker. $F_1$, $F_2$ and
+$F_3$ are the first three formants.}
+\vspace{3pt}
+\figT{c6_formant_ana.png}
+\vspace{1pt}
+{\color{sub}\footnotesize Formant vocoder \textbf{analyzer}: extracts $F_1..F_3$, their bandwidths
+$B_1..B_3$, plus the voiced/unvoiced flag and pitch $F_0$.}
+\vspace{3pt}
+\figT{c6_formant_syn.png}
+\vspace{1pt}
+{\color{sub}\footnotesize Formant vocoder \textbf{synthesizer}: the excitation signal is shaped by
+three resonators and summed.}}
+
+\sbs{%
+\lead{Cepstrum vocoder}
+\begin{itemize}
+  \item Speech is a \textbf{convolution} of an excitation source and the vocal tract system.
+        Separating them normally needs deconvolution.
+  \item \textbf{Objective of cepstral analysis:} separate the two \mk{without any prior knowledge
+        of either}.
+  \item \textbf{Cepstrum} $=$ the \textbf{inverse Fourier transform of the logarithm} of the
+        estimated spectrum.
+  \item The trick is that the log turns a product into a sum:
+        \[ X(\omega) = E(\omega)\,V(\omega)
+           \;\Longrightarrow\;
+           \log X(\omega) = \log E(\omega) + \log V(\omega) \]
+  \item After the inverse transform the two land in \textbf{different regions}:
+  \begin{itemize}
+    \item \textbf{low-frequency (low-quefrency)} coefficients $\rightarrow$ the
+          \textbf{vocal tract spectral envelope},
+    \item \textbf{high-frequency} coefficients $\rightarrow$ the \textbf{excitation}, a periodic
+          pulse train at multiples of the pitch period.
+  \end{itemize}
+  \item So they can simply be \textbf{separated by windowing} (liftering).
+  \item \textbf{Transmit only the vocal tract cepstral coefficients.}
+  \item At the receiver: Fourier transform them to get the \textbf{vocal tract impulse response},
+        then \textbf{convolve} that with a synthetic excitation to reconstruct the speech.
+\end{itemize}}{%
+\lead{Voice-excited vocoder}
+\begin{itemize}
+  \item \textbf{Hybrid}: \textbf{PCM} transmission of the \textbf{lower} frequency band of speech,
+        combined with \textbf{channel vocoding} of the \textbf{higher} bands.
+  \item At the synthesizer a \textbf{pitch signal is generated} from the received baseband by
+        \textbf{rectifying, bandpass filtering and clipping} it. That creates a
+        \textbf{spectrally flattened} signal with energy at the pitch harmonics.
+  \item \mk{($+$) This eliminates the need for pitch extraction and voicing detection}, which are
+        the two most error-prone operations in any vocoder.
+  \item \textbf{($-$)} Costs bit rate: designed for \textbf{7.2 kbps to 9.6 kbps}, well above a
+        pure vocoder.
+\end{itemize}
+
+\lead{Comparing the four}
+\vspace{2pt}
+\begin{tabularx}{\linewidth}{@{}L{1.95cm}XL{1.6cm}@{}}
+\toprule
+\hrow \thead{Vocoder} & \thead{What it sends} & \thead{Domain} \\
+\midrule
+Channel & Envelope per band, pitch, voicing & Frequency \\
+Formant & 3--4 formant frequencies + bandwidths, pitch, voicing & Frequency \\
+Cepstrum & Low-quefrency cepstral coefficients & Cepstral \\
+Voice-excited & Baseband as PCM + high bands as channel vocoder & Hybrid \\
+LPC & Prediction coefficients, gain, pitch, voicing & \textbf{Time} \\
+\bottomrule
+\end{tabularx}}
+
+\hr
+
+\T{6.4 Linear predictive coders}
+
+\Q{Explain the linear predictive coder (LPC) with a neat block diagram}{\m{2+6}\m{3+5}\m{6}}
+{\color{sub}\footnotesize \tS{8} \yr{\texttt{80 Ba}, \texttt{81 Ba}, 72 Ma, \texttt{79 Bh},
+73 Ma, \textbf{76 Bh}, \textbf{75 Bh}, 71 Ma} \gap$\cdot$\gap
+\mk{almost always paired with ``characteristics of the speech signal''}}
+
+\sbsr{0.52}{%
+\lead{What makes LPC different}
+\begin{itemize}
+  \item The \textbf{time domain} class of vocoders. All the others above work in frequency.
+  \item Extracts the significant features of speech \textbf{from the time waveform} directly.
+  \item \textbf{Computationally intensive}, but \mk{by far the most popular of the low bit rate
+        vocoders}.
+  \item Transmits \textbf{good quality voice at 4.8 kbps}, and intelligible speech at 2.4 kbps.
+\end{itemize}
+
+\lead{The model}
+\begin{itemize}
+  \item Models the vocal tract as an \textbf{all-pole linear filter}:
+        \[ H(z) \;=\; \frac{G}{1 + \displaystyle\sum_{k=1}^{M} b_k z^{-k}} \]
+        $G$ $=$ filter gain, $b_k$ $=$ filter (prediction) coefficients, $M$ $=$ order,
+        typically 10.
+  \item \textbf{All-pole is enough} because the vocal tract is a tube with resonances, and
+        resonances are poles. \mk{That is the physical justification the examiner wants.}
+  \item Coefficients are found by \textbf{minimum mean square error (MMSE)}:
+        minimise the average energy in the \textbf{error signal}, the difference between
+        \textbf{predicted} and \textbf{actual} speech amplitude.
+  \item That works because of the \textbf{ACF property}: adjacent speech samples are 0.85 to 0.9
+        correlated, so a short-order predictor already explains most of the signal.
+\end{itemize}
+
+\lead{Operation}
+\begin{itemize}
+  \item \textbf{Encoder}: buffer a frame $\rightarrow$ run \textbf{LP analysis} for the
+        coefficients $\rightarrow$ decide \textbf{voiced / unvoiced} $\rightarrow$ estimate
+        \textbf{pitch} $\rightarrow$ compute \textbf{gain}.
+  \item Speech type, pitch, filter coefficients and gain are \textbf{coded into a bit stream} and
+        transmitted.
+  \item \textbf{Decoder}: pick pulse or noise excitation, scale by the gain, drive $H(z)$
+        $\rightarrow$ \textbf{synthesized speech}.
+\end{itemize}}{%
+\figT{c6_lpc.png}
+\vspace{1pt}
+{\color{sub}\footnotesize Block diagram of an LPC coding system. Three parallel paths: LPC filter
+coefficients, voiced/unvoiced decision, pitch. The synthesizer recombines them.}
+
+\lead{Types of LPC \mk{(71 Ma asks for the types, \m{6})}}
+\begin{itemize}
+  \item Plain LPC uses a \textbf{single pulse per pitch period}, which sounds
+        \mk{buzzy and synthetic}. The three variants below all improve the
+        \textbf{excitation model}, and that is the only thing that separates them.
+  \item \textbf{Multipulse excited LPC (MPE-LPC)}: uses \textbf{several pulses per frame}, with
+        positions and amplitudes chosen by analysis-by-synthesis. No voiced / unvoiced decision is
+        needed at all.
+  \item \textbf{Residual excited LPC (RELP)}: see below.
+  \item \textbf{Code excited LPC (CELP)}: the excitation sequence is selected from a
+        \textbf{codebook of zero-mean Gaussian sequences}, shared by encoder and decoder.
+  \begin{itemize}
+    \item \textbf{Analysis by synthesis}: the encoder tries every codebook entry, synthesises
+          speech with it, and keeps the one giving the smallest perceptually weighted error.
+    \item Only the \textbf{codebook index} is transmitted, which is why it is so efficient.
+    \item Bit rate \textbf{4800 bps}.
+  \end{itemize}
+\end{itemize}}
+
+\sbsr{0.52}{%
+\lead{Residual excited LPC (RELP)}
+\begin{itemize}
+  \item Improves quality \textbf{at the expense of a higher bit rate}, by computing and
+        transmitting a \textbf{residual error}, exactly as DPCM does.
+  \item Steps:
+  \begin{itemize}
+    \item LPC model and excitation parameters are estimated from a \textbf{frame of speech}.
+    \item Speech is \textbf{synthesized at the transmitter} using them.
+    \item The synthesized speech is \textbf{subtracted from the original} to form the
+          \textbf{residual error}.
+    \item The residual is \textbf{quantized, coded and transmitted} alongside the parameters.
+  \end{itemize}
+  \item At the receiver: synthesize from the model, then \textbf{add the residual back}.
+  \item \mk{The receiver therefore gets the part of the signal the model could not explain},
+        which is what lifts the quality above plain LPC.
+\end{itemize}}{%
+\figT{c6_relp.png}
+\vspace{1pt}
+{\color{sub}\footnotesize RELP encoder. The residual is formed by subtracting locally synthesized
+speech from the buffered input.}}
+
+\creamq{The GSM codec}{\m{2}}
+{\color{sub}\footnotesize \yr{74 Ma} \gap$\cdot$\gap asked as part of a
+``waveform + voice coding + GSM CODEC +Fig'' question}
+
+\sbsr{0.50}{%
+\begin{itemize}
+  \item GSM uses the \textbf{regular pulse excited, long term prediction (RPE-LTP)} codec.
+  \item It \textbf{combines} the earlier French \textbf{baseband RELP} codec with the German
+        \textbf{multipulse excited long-term prediction (MPE-LTP)} codec.
+  \item \mk{So it is a hybrid}: a source model (LPC) driving a partly waveform-coded excitation.
+  \item Chain, left to right:
+  \begin{itemize}
+    \item \textbf{Pre-processing}: Hamming window, segmentation into 20 ms frames, pre-emphasis.
+    \item \textbf{STP} (short term prediction): LPC inverse filter and STP analysis filter produce
+          the residual $e_n$ and the \textbf{LAR($k$)} log-area-ratio coefficients.
+    \item \textbf{LTP} (long term prediction): removes the \textbf{pitch periodicity} left in the
+          residual, giving lag $P_n$ and gain $g_n$.
+    \item \textbf{RPE}: low-pass filter, then \textbf{grid selection} picks the best regular pulse
+          sequence $x_m$.
+    \item All parameters are \textbf{multiplexed} into the coded speech stream.
+  \end{itemize}
+  \item Output rate \textbf{13 kbps} (full rate GSM), from 104 kbps of 13-bit input samples.
+        \added
+  \item \textbf{($-$) Relatively complex and power hungry.}
+\end{itemize}}{%
+\figT{c6_gsm_codec.png}
+\vspace{1pt}
+{\color{sub}\footnotesize GSM RPE-LTP speech encoder: pre-processing, short term prediction, long
+term prediction, regular pulse excitation, multiplexer.}}
+
+\hr
+
+\T{6.5 Channel coding}
+
+\Q{What is channel coding? Explain block codes and the definitions}{\m{2}}
+{\color{sub}\footnotesize \yr{71 Ma} \gap$\cdot$\gap the definitions below are needed by every
+other question in this section}
+
+\sbsr{0.53}{%
+\lead{The basic idea}
+\begin{itemize}
+  \item Add a \textbf{controlled amount of redundancy} to the message \textbf{before} it goes
+        through the noisy channel.
+  \item The redundancy is extra symbols added \textbf{in a known manner}, so the receiver can use
+        them to \textbf{detect} and often \textbf{correct} errors.
+  \item \textbf{Everyday analogy}: English already carries redundancy, which is why
+        \mk{``CODNG THEORY IS AN INTRSTNG SUBJCT'' is still readable}.
+  \item \mk{Note the tension with Ch 6.1}: speech coding strips redundancy out, channel coding
+        puts a different, engineered redundancy back in.
+  \item Improves \textbf{small-scale link performance}: faded data can still be recovered.
+\end{itemize}
+
+\lead{Definitions \mk{(learn these five)}}
+\begin{itemize}
+  \item A \textbf{word} is a sequence of symbols. A \textbf{code} is a set of vectors called
+        \textbf{codewords}.
+  \item \textbf{Hamming weight} $w(c)$ $=$ number of \textbf{non-zero elements} in a codeword.
+        Eg $w(10110) = 3$.
+  \item \textbf{Hamming distance} $d(c_1,c_2)$ $=$ number of places the two codewords
+        \textbf{differ}. Eg $d(10110, 11011) = 3$.
+        Note $d(c_1,c_2) = w(c_1 - c_2)$.
+  \item \textbf{Minimum distance} $d'$ $=$ the smallest Hamming distance between any two
+        codewords, $d' = \min_{i \ne j} d(c_i,c_j)$.
+  \item \textbf{Code rate} of an $(n,k)$ code $= k/n$. It is the fraction of the codeword that is
+        actual information.
+\end{itemize}
+
+\lead{Error detection and correction capability}
+\begin{itemize}
+  \item To \textbf{detect} $t$ errors per block: \; $d' \ge t+1$
+  \item To \textbf{correct} $t$ errors per block: \; $d' \ge 2t+1$
+  \item \mk{So minimum distance is the single number that decides how strong a code is.}
+\end{itemize}}{%
+\lead{Block codes}
+\begin{itemize}
+  \item A \textbf{block code} is a set of \textbf{fixed length} codewords. That fixed length is
+        the \textbf{block length} $n$.
+  \item A block code of size $M$ over a $q$-symbol alphabet is a set of $M$ $q$-ary sequences of
+        length $n$.
+  \item If $q = 2$ the symbols are \textbf{bits} and the code is \textbf{binary}.
+  \item Usually $M = q^k$, and we call it an \textbf{$(n,k)$ code}: $k$ information symbols in,
+        $n$ out, so \textbf{$n-k$ redundant symbols}.
+  \item Block codes are \textbf{forward error correction (FEC)} codes: no return channel is needed.
+\end{itemize}
+
+\lead{Linear block codes (LBC)}
+\begin{itemize}
+  \item A code is \textbf{linear} if:
+  \begin{itemize}
+    \item the \textbf{sum of any two codewords} is also a codeword,
+    \item the \textbf{all-zero codeword} is always a codeword.
+  \end{itemize}
+  \item Consequence: for a linear code the \textbf{minimum distance equals the minimum weight} of
+        any non-zero codeword, $d' = w'$.
+        \mk{This makes $d'$ far cheaper to compute: check $M$ weights instead of $M^2$ distances.}
+  \item \textbf{Careful}: the presence of an all-zero codeword is \textbf{necessary but not
+        sufficient} for linearity.
+  \item \textbf{Matrix description}: a \textbf{generator matrix} $G$ ($k \times n$) encodes an
+        information word $i$ of length $k$ into a codeword $c$ of length $n$:
+        \[ c = i\,G \]
+\end{itemize}
+
+\lead{Cyclic codes}
+\begin{itemize}
+  \item A code $C$ is \textbf{cyclic} if it is \textbf{linear} \emph{and} \textbf{any cyclic shift}
+        of a codeword is also a codeword.
+  \item Ie if $a_0 a_1 \dots a_{n-1} \in C$ then $a_{n-1} a_0 \dots a_{n-2} \in C$.
+  \item Eg $C_1 = \{0000, 0101, 1010, 1111\}$ is cyclic.
+        $C_2 = \{0000, 0110, 1001, 1111\}$ is \textbf{not}, though it is
+        \textbf{equivalent} to $C_1$: swapping the third and fourth components of $C_2$ gives
+        $C_1$.
+  \item \textbf{($+$)} Encoding and syndrome computation reduce to
+        \mk{polynomial division, which is a simple shift register}. That is why nearly every
+        practical block code is cyclic.
+\end{itemize}}
+
+\Q{Explain the 7-bit Hamming code method with a relevant example}{\m{5}}
+{\color{sub}\footnotesize \tP{1} \yr{\textbf{80 Ch}} \gap$\cdot$\gap
+\mk{worked both ways (encode and detect) in the Ch 6 companion}}
+
+\sbsr{0.52}{%
+\begin{itemize}
+  \item A \textbf{linear block code} able to \textbf{identify and correct any single-bit error}
+        within a block. Written as an $(n,k)$ Hamming code.
+  \item Uses \textbf{modulo-2 arithmetic}, ie XOR.
+  \item Parameters, for any integer $m \ge 3$:
+  \begin{itemize}
+    \item block length \; $n = 2^m - 1$
+    \item message bits \; $k = 2^m - m - 1$
+    \item parity check bits \; $n - k = m$
+    \item minimum distance \; $d_{\min} = 3$, so error-correcting capability
+          $t = \lfloor (d_{\min}-1)/2 \rfloor = 1$
+    \item code efficiency (rate) \; $= k/n$
+  \end{itemize}
+  \item For $m = 3$: $n = 7$, $k = 4$. \mk{That is the ``7-bit Hamming code'' the paper asks for.}
+  \item \textbf{($-$)} Offers \mk{little protection against burst errors}, since it corrects only
+        one bit per block. Interleaving (Ch 5) is the standard fix.
+\end{itemize}
+
+\lead{Structure}
+\begin{itemize}
+  \item Parity bits are \textbf{inserted in between} the data bits, at positions
+        $1, 2, 4, \dots$ (the powers of 2).
+  \item Layout, bit 1 on the right:
+        \; $D_7\,D_6\,D_5\,P_4\,D_3\,P_2\,P_1$
+  \item Each parity bit covers the positions whose binary index includes its own bit:
+  \begin{itemize}
+    \item $P_1$ covers positions \textbf{1, 3, 5, 7}
+    \item $P_2$ covers positions \textbf{2, 3, 6, 7}
+    \item $P_4$ covers positions \textbf{4, 5, 6, 7}
+  \end{itemize}
+\end{itemize}}{%
+\figT{c6_hamming_struct.png}
+\vspace{2pt}
+
+\lead{Worked example 1: encode 1011 with even parity}
+\begin{itemize}
+  \item Data goes into positions 7, 6, 5, 3: \; $D_7{=}1,\;D_6{=}0,\;D_5{=}1,\;D_3{=}1$.
+  \item $P_1 = $ parity of positions 1,3,5,7 $= (P_1,1,1,1)$. Three ones already, so
+        \textbf{$P_1 = 1$} to make it even.
+  \item $P_2 = $ parity of positions 2,3,6,7 $= (P_2,1,0,1)$. Two ones, so \textbf{$P_2 = 0$}.
+  \item $P_4 = $ parity of positions 4,5,6,7 $= (P_4,1,0,1)$. Two ones, so \textbf{$P_4 = 0$}.
+  \item Transmitted codeword (bit 7 first): \; \mk{\textbf{1 0 1 0 1 0 1}}
+\end{itemize}
+
+\lead{Worked example 2: check the received word 1011011}
+\begin{itemize}
+  \item $P_1$ group (positions 1,3,5,7) reads \textbf{1011} $\rightarrow$ \textbf{odd} parity
+        $\rightarrow$ error, set $P_1 = 1$.
+  \item $P_2$ group (positions 2,3,6,7) reads \textbf{1001} $\rightarrow$ \textbf{even} parity
+        $\rightarrow$ no error, set $P_2 = 0$.
+  \item $P_4$ group (positions 4,5,6,7) reads \textbf{1101} $\rightarrow$ \textbf{odd} parity
+        $\rightarrow$ error, set $P_4 = 1$.
+  \item \textbf{Syndrome} $= P_4 P_2 P_1 = 101 = 5$ in decimal.
+  \item \mk{So the received word is incorrect, and bit position 5 is the one in error.} Flip it to
+        correct the word.
+  \item \textbf{That is the whole elegance of the Hamming code}: the syndrome read as a binary
+        number \textbf{is} the position of the faulty bit.
+\end{itemize}}
+
+\creamq{Other block codes}{\pill{gdL}{gd}{syllabus, no PYQ yet}}
+
+\sbs{%
+\begin{itemize}
+  \item \textbf{Hadamard codes}
+  \begin{itemize}
+    \item Codewords are the \textbf{rows of a Hadamard matrix} $A$: an $N \times N$ matrix of 1s
+          and 0s in which every row differs from every other in \textbf{exactly $N/2$} places.
+    \item One row is all zeros; the rest have $N/2$ zeros and $N/2$ ones.
+    \item Minimum distance $d_{\min} = N/2$, so it is a \mk{very strong but very low rate} code.
+    \item Used for the \textbf{Walsh functions} that separate IS-95 CDMA channels.
+  \end{itemize}
+  \item \textbf{Golay codes}
+  \begin{itemize}
+    \item Linear binary \textbf{(23,12)} codes with $d_{\min} = 7$, so they correct
+          \textbf{3 bits}.
+    \item \mk{The only non-trivial perfect code that exists.} Every possible received word lies
+          within distance 3 of exactly one codeword, so maximum likelihood decoding is exact.
+  \end{itemize}
+\end{itemize}}{%
+\begin{itemize}
+  \item \textbf{BCH (Bose--Chaudhuri--Hocquenghem) codes}
+  \begin{itemize}
+    \item \mk{One of the most powerful known classes of linear cyclic block codes.}
+    \item A \textbf{subset of cyclic codes} whose generator polynomial roots are chosen carefully
+          to give good error-correcting capability.
+    \item Each BCH code corrects up to \textbf{$t$ random errors} per codeword.
+    \item Parameters: block length $n = 2^m - 1$ ($m \ge 3$), message bits $k \ge n - mt$,
+          minimum distance $d_{\min} \ge 2t+1$.
+  \end{itemize}
+  \item \textbf{Reed--Solomon (RS) codes}
+  \begin{itemize}
+    \item A subclass of \textbf{non-binary} BCH codes.
+    \item \mk{The encoder operates on multi-bit symbols, not individual bits.}
+    \item For $m$-bit symbols: block length $n = 2^m - 1$ symbols, message $k$ symbols, parity
+          $n-k = 2t$ symbols, $d_{\min} = 2t+1$.
+    \item \textbf{($+$)} Because a whole symbol counts as one error however many of its bits are
+          wrong, RS codes are \mk{excellent against burst errors}.
+    \item Used in CD / DVD, deep space links, and digital broadcasting.
+  \end{itemize}
+\end{itemize}}
+
+\Q{Explain convolutional encoding and decoding, and the Viterbi algorithm}{\m{5}\m{3}}
+{\color{sub}\footnotesize \tF{5} \yr{\textbf{74 Bh}, \textbf{75 Bh}, 70 Ma, \textbf{72 Ash},
+\textbf{73 Bh}} \gap$\cdot$\gap
+\mk{Viterbi alone is asked in 4 papers} $\rightarrow$ worked example in the Ch 6 companion}
+
+\sbsr{0.53}{%
+\lead{How convolutional codes differ from block codes}
+\begin{itemize}
+  \item In a block code, each codeword depends \textbf{only} on the current block of $k$ message
+        digits.
+  \item In a convolutional code, the block of \textbf{$n$ code digits} produced at each time unit
+        depends on the current $k$ message digits \textbf{and on the previous ones held in
+        memory}.
+  \item \mk{So the encoder has memory. That is the whole difference.}
+  \item No fixed block boundary is needed, which suits a \textbf{continuous} data stream.
+\end{itemize}
+
+\lead{Encoder parameters +Fig}
+\begin{itemize}
+  \item \textbf{Constraint length $K$} $=$ number of symbols the shift register can store,
+        ie how far back the memory reaches. For the figure, $K = 3$.
+  \item If the register stores $m$ previous information frames of length $k_0$, then
+        \textbf{$v = m k_0$}.
+  \item $k = 1$ message bit in, $n = 2$ encoded bits out.
+  \item \textbf{Code rate} $= k/n = 1/2$, \textbf{code dimension} $= (n,k) = (2,1)$.
+  \item Outputs are \textbf{mod-2 sums (XOR)} of selected register stages:
+        \[ X_1 = M + M_1 + M_2, \qquad X_2 = M + M_2 \]
+  \item \mk{The tap pattern is the code.} Two encoders with the same $K$ but different taps are
+        different codes with different performance.
+\end{itemize}
+
+\lead{Three ways to represent the same encoder}
+\begin{itemize}
+  \item \textbf{Code tree}: every branch is one input symbol, labelled with the output pair.
+        \textbf{Input 0 takes the upper branch, input 1 the lower.}
+        \mk{($-$) Grows exponentially}, so it is unusable beyond a few bits.
+  \item \textbf{State diagram}: nodes are the register contents, arcs are transitions. Compact,
+        but hides time.
+  \item \textbf{Trellis}: the state diagram \textbf{drawn against time}.
+        \mk{A compact representation of the code tree}: the tree's repeating structure is folded
+        back onto the same set of states at every step. This is what the decoder actually walks.
+\end{itemize}}{%
+\figT{c6_conv_enc.png}
+\vspace{1pt}
+{\color{sub}\footnotesize Rate 1/2, $K=3$ convolutional encoder. Two mod-2 adders tap the shift
+register.}
+\vspace{3pt}
+\figT{c6_code_tree.png}
+\vspace{1pt}
+{\color{sub}\footnotesize Code tree for the message 110. States $a{=}00$, $b{=}01$, $c{=}10$,
+$d{=}11$.}
+\vspace{3pt}
+\figT{c6_trellis.png}
+\vspace{1pt}
+{\color{sub}\footnotesize Code trellis and the equivalent state diagram. Solid line $=$ input 0,
+dashed $=$ input 1.}}
+
+\creamq{Viterbi decoding}{\m{3}\m{5}}
+\sbsr{0.53}{%
+\begin{itemize}
+  \item Used for decoding convolutional codes. Also known as
+        \textbf{maximum likelihood decoding}, because it finds the
+        \mk{single most likely transmitted sequence}, not the most likely symbol.
+  \item It is the practical implementation of \textbf{MLSE} (Ch 5).
+\end{itemize}
+
+\lead{The algorithm}
+\begin{itemize}
+  \item Walk the \textbf{trellis} one time step at a time.
+  \item At each step, every node has \textbf{two incoming branches} (for a rate 1/2 code).
+  \item For each branch compute a \textbf{metric}: the \textbf{Hamming distance} between the
+        branch's expected output and the actually received pair. (Soft-decision decoders use
+        Euclidean distance instead.)
+  \item Add the branch metric to the surviving path metric that led into it.
+  \item \mk{Keep only the smaller of the two, and discard the other.} The kept one is the
+        \textbf{survivor} for that node.
+  \item Repeat for every node at every step. \textbf{The number of survivors never grows}, which
+        is exactly why the algorithm is tractable while an exhaustive tree search is not.
+  \item At the end, trace back the survivor with the lowest total metric. Its branch labels give
+        the decoded message.
+\end{itemize}
+
+\lead{Why it is optimal}
+\begin{itemize}
+  \item Discarding the worse of two paths into a node is safe: \mk{any future extension of the
+        worse path can be applied equally to the better one}, so the worse path can never win
+        later.
+  \item Complexity is \textbf{linear in the message length} but \textbf{exponential in the
+        constraint length $K$}, which is why practical $K$ stays around 7 to 9.
+\end{itemize}}{%
+\figT{c6_viterbi.png}
+\vspace{1pt}
+{\color{sub}\footnotesize Decoding $Y = 11\;01\;10$. Path metrics accumulate along the trellis;
+at each node the larger metric is discarded.}}
+
+\Q{Define turbo coding}{\m{2}\m{5}}
+{\color{sub}\footnotesize \tP{2} \yr{\textbf{\texttt{82 Bh}}, 74 Ma}}
+
+\sbsr{0.55}{%
+\begin{itemize}
+  \item A turbo code \textbf{combines the capability of convolutional codes with channel
+        estimation theory}. It can be thought of as \textbf{nested or parallel convolutional
+        codes}.
+  \item \textbf{Structure} +Fig: two \textbf{recursive systematic convolutional} encoders
+        $C_1$ and $C_2$, working on the \textbf{same} input bits but in \textbf{different
+        orders}.
+  \begin{itemize}
+    \item $M$ in the figure is a \textbf{memory register}.
+    \item A \textbf{delay line} and an \textbf{interleaver} (which reorders the information bits)
+          force the input $d_k$ to appear in different sequences at the two encoders.
+    \item \mk{The interleaver is what makes it a turbo code.} Without it the two encoders would
+          see the same bit pattern and fail on the same errors.
+    \item Because the encoders are \textbf{systematic}, the input sequence $d_k$ appears
+          \textbf{directly at the output} $x_k$ alongside the parity streams $y_{1k}$ and
+          $y_{2k}$.
+  \end{itemize}
+  \item \textbf{Decoding} is \textbf{iterative}: two soft-input soft-output decoders exchange
+        \textbf{extrinsic information} and refine each other's estimates over
+        $n_1$ and $n_2$ iterations. The name comes from this feedback, by analogy with a
+        turbocharger. \added
+  \item \textbf{Why it matters}: coding gains \textbf{far superior} to all previous error
+        correcting codes, letting a wireless link come
+        \mk{amazingly close to the Shannon capacity bound}.
+  \item \textbf{($-$)} \textbf{Large decoding delay} from the interleaver and the iterations, so
+        it suits data far better than real-time voice.
+\end{itemize}
+
+\lead{Coding gain \pill{gdL}{gd}{syllabus, no PYQ yet}}
+\begin{itemize}
+  \item For a given modulation and target BER, \textbf{coding gain} $=$ the ratio of the
+        \textbf{SNR per bit required uncoded} to the \textbf{SNR per bit required coded}:
+        \[ G(\text{dB}) = \left(\frac{E_b}{N_0}\right)_{\text{uncoded}}(\text{dB})
+                        - \left(\frac{E_b}{N_0}\right)_{\text{coded}}(\text{dB}) \]
+  \item Ie \mk{how much transmit power the code saves you}.
+  \item Every error control code has its own coding gain, depending on the code, the decoder
+        implementation and the channel BER.
+\end{itemize}
+
+\lead{Trellis coded modulation (TCM) \pill{gdL}{gd}{syllabus, no PYQ yet}}
+\begin{itemize}
+  \item Traditionally coding and modulation are designed \textbf{separately}, even though both
+        exist to fight channel errors.
+  \item TCM \textbf{integrates the channel encoder with the modulator}, so coding gain is obtained
+        \mk{without any bandwidth expansion}.
+  \item Uses \textbf{signal set expansion} (eg 8-PSK instead of 4-PSK) to supply the redundancy,
+        then designs the coding and the signal mapping \textbf{jointly} to maximise the
+        \textbf{free distance}, ie the minimum Euclidean distance between coded sequences.
+  \item Decoded by a \textbf{soft decision maximum likelihood sequence decoder}, ie Viterbi again.
+  \item Gains as large as \textbf{6 dB} with \textbf{no bandwidth expansion and no reduction in
+        information rate}.
+\end{itemize}}{%
+\figT{c6_turbo.png}
+\vspace{1pt}
+{\color{sub}\footnotesize Turbo encoder. Two systematic convolutional encoders $C_1$ and $C_2$;
+the interleaver ahead of $C_2$ makes the two see different bit orders.}}

@@ -86,6 +86,15 @@ Classes & Fixed, known & Number often unknown \\
   \item \textbf{Density-based}: DBSCAN, OPTICS, DENCLUE.
   \item \textbf{Grid-based}: STING, CLIQUE, WaveCluster.
   \item \textbf{Model-based}: EM, COBWEB, SOM.
+\end{itemize}
+\lead{Grid-based, in 3 steps \pillo{gd}{NEW}}
+\begin{itemize}
+  \item \textbf{Partition} the data space into a multi-dim grid of finite cells.
+  \item \textbf{Compute cell statistics}: count, mean, density per cell.
+  \item \textbf{Merge} adjacent cells above a density threshold into clusters.
+  \item \mk{Why it is the fast one}: cost depends on the \textbf{number of cells}, not the number
+        of points $\rightarrow$ scales to huge datasets. Price paid: resolution is capped by
+        cell size.
 \end{itemize}}
 
 \hr

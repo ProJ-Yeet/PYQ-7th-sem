@@ -1,0 +1,509 @@
+%=======================================================================
+%  CHAPTER 6 — NUMERICAL PROBLEMS AND SOLUTIONS
+%=======================================================================
+\section*{\color{acc}Ch 6 \textperiodcentered{} Speech and Channel Coding \gap
+\textcolor{sub}{Numerical Problems \& Solutions}}
+\vspace{-4pt}{\color{acc}\rule{\textwidth}{1.1pt}}\vspace{4pt}
+
+{\color{sub}\footnotesize The examined calculation here is the \textbf{7-bit Hamming code}
+\yr{(\textbf{80 Ch} \m{5})}, worked both ways below. \textbf{Convolutional encoding, Viterbi
+decoding} \tF{5} are asked as ``explain'', but they are only convincing with a worked trellis, so
+one is given. The remaining problems are the tutorial-set coder-rate calculations, which are the
+standard follow-ups to the speech coding theory.}
+
+\lead{The formula sheet}
+\begin{itemize}
+  \item \textbf{Hamming code} \; $n = 2^m - 1$, \; $k = 2^m - m - 1$, \; $n-k = m$, \;
+        $d_{\min} = 3$, \; $t = 1$, \; rate $= k/n$
+  \item \textbf{Detect} $t$ errors: $d' \ge t+1$. \qquad \textbf{Correct} $t$ errors:
+        $d' \ge 2t+1$
+  \item \textbf{Convolutional code} \; rate $= k/n$, \; constraint length $K$, \;
+        $2^{K-1}$ trellis states
+  \item \textbf{Nyquist} \; a band-pass signal of bandwidth $B$ needs $f_s = 2B$ samples/s
+  \item \textbf{Bit rate} \; $R = f_s \times$ (bits per sample)
+  \item \textbf{Quantizer} \;
+        $D = \displaystyle\int (x - f_Q(x))^2 p(x)\,dx$, \quad
+        $S = E[x^2] = \displaystyle\int x^2 p(x)\,dx$, \quad
+        $\text{SDR} = 10\log_{10}(S/D)$
+  \item \textbf{Coding gain} \;
+        $G = \left(\dfrac{E_b}{N_0}\right)_{\text{uncoded}}
+           - \left(\dfrac{E_b}{N_0}\right)_{\text{coded}}$ dB, at the same BER
+\end{itemize}
+
+\hr
+
+\T{Problem 1 \quad 7-bit Hamming code: encode and then detect}
+{\color{sub}\footnotesize \tP{1} \yr{\textbf{80 Ch} \m{5}} \gap$\cdot$\gap
+\mk{the only pure channel-coding calculation in 22 papers, so it is worth banking exactly}}
+
+\begin{asked}{2080 Chaitra \textperiodcentered{} Q7 \textperiodcentered{} [3+5]}
+Explain the characteristics of Speech. Explain 7-bit hamming code method with relevant example.
+\end{asked}
+{\color{sub}\footnotesize The paper prints no data word, so supply your own. The run below
+encodes \textbf{1011} into a $(7,4)$ Hamming codeword, then receives a corrupted word and
+locates the faulty bit --- that is the ``relevant example'' the 5 marks are for. \added}
+
+\lead{Step 0: the structure, once}
+\begin{itemize}
+  \item For $m = 3$: \; $n = 2^3 - 1 = 7$, \; $k = 2^3 - 3 - 1 = 4$, \; parity bits $= 3$.
+  \item Parity bits go in positions that are \textbf{powers of 2}: 1, 2, 4. Data fills the rest:
+        3, 5, 6, 7.
+  \item Layout, written with bit 7 on the \emph{left} and bit 1 on the \emph{right}:
+        \[ D_7\; D_6\; D_5\; P_4\; D_3\; P_2\; P_1 \]
+  \item Each parity bit checks the positions whose binary index contains its own bit:
+\end{itemize}
+
+\vspace{2pt}
+\begin{center}\small
+\begin{tabular}{@{}llll@{}}
+\toprule
+\hrow \thead{Parity bit} & \thead{Checks positions} & \thead{Binary indices} &
+\thead{Why} \\
+\midrule
+$P_1$ & 1, 3, 5, 7 & 001, 011, 101, 111 & all have bit 0 set \\
+$P_2$ & 2, 3, 6, 7 & 010, 011, 110, 111 & all have bit 1 set \\
+$P_4$ & 4, 5, 6, 7 & 100, 101, 110, 111 & all have bit 2 set \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\vspace{2pt}
+{\color{sub}\footnotesize \mk{This is the whole trick.} Because the groups are built on the binary
+indices, the three parity checks read together \textbf{are} the binary address of the faulty bit.}
+
+\lead{Part A \; Encode the data word 1011 with even parity}
+
+\begin{itemize}
+  \item \textbf{Step 1: place the data bits} into positions 7, 6, 5, 3:
+        \[ D_7 = 1,\quad D_6 = 0,\quad D_5 = 1,\quad D_3 = 1 \]
+  \item \textbf{Step 2: compute each parity bit} so that its group has an \textbf{even} number of
+        ones.
+\end{itemize}
+
+\vspace{2pt}
+\begin{center}\small
+\begin{tabular}{@{}lllr@{}}
+\toprule
+\hrow \thead{Parity} & \thead{Group contents} & \thead{Ones already present} & \thead{Set to} \\
+\midrule
+$P_1$ & $(P_1,\,D_3,\,D_5,\,D_7) = (P_1,1,1,1)$ & 3 (odd) & $\mathbf{1}$ \\
+$P_2$ & $(P_2,\,D_3,\,D_6,\,D_7) = (P_2,1,0,1)$ & 2 (even) & $\mathbf{0}$ \\
+$P_4$ & $(P_4,\,D_5,\,D_6,\,D_7) = (P_4,1,0,1)$ & 2 (even) & $\mathbf{0}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{itemize}
+  \item \textbf{Step 3: assemble the codeword}, bit 7 first:
+\end{itemize}
+
+\vspace{2pt}
+\begin{center}\small
+\begin{tabular}{@{}rccccccc@{}}
+\toprule
+\hrow Position & 7 & 6 & 5 & 4 & 3 & 2 & 1 \\
+Contents & $D_7$ & $D_6$ & $D_5$ & $P_4$ & $D_3$ & $P_2$ & $P_1$ \\
+\midrule
+\textbf{Value} & \textbf{1} & \textbf{0} & \textbf{1} & \textbf{0} & \textbf{1} &
+\textbf{0} & \textbf{1} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\[ \boxed{\text{transmitted codeword} = 1\,0\,1\,0\,1\,0\,1} \]
+
+\lead{Part B \; A codeword $1011011$ is received. Is it correct? If not, locate the error.}
+
+\begin{itemize}
+  \item \textbf{Step 1: lay out the received bits.}
+\end{itemize}
+
+\vspace{2pt}
+\begin{center}\small
+\begin{tabular}{@{}rccccccc@{}}
+\toprule
+\hrow Position & 7 & 6 & 5 & 4 & 3 & 2 & 1 \\
+\textbf{Received} & \textbf{1} & \textbf{0} & \textbf{1} & \textbf{1} & \textbf{0} &
+\textbf{1} & \textbf{1} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{itemize}
+  \item \textbf{Step 2: recheck each parity group}, still assuming even parity.
+\end{itemize}
+
+\vspace{2pt}
+\begin{center}\small
+\begin{tabular}{@{}llllr@{}}
+\toprule
+\hrow \thead{Check} & \thead{Positions} & \thead{Bits read} & \thead{Parity} &
+\thead{Syndrome bit} \\
+\midrule
+$P_1$ & 1, 3, 5, 7 & $1,0,1,1$ & \mk{ODD} $\rightarrow$ error & $\mathbf{1}$ \\
+$P_2$ & 2, 3, 6, 7 & $1,0,0,1$ & EVEN $\rightarrow$ ok & $\mathbf{0}$ \\
+$P_4$ & 4, 5, 6, 7 & $1,1,0,1$ & \mk{ODD} $\rightarrow$ error & $\mathbf{1}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{itemize}
+  \item \textbf{Step 3: read the syndrome.} Write it as $P_4 P_2 P_1$:
+        \[ \text{syndrome} = 1\,0\,1_{(2)} = 4 + 0 + 1 = 5 \]
+  \item \textbf{Step 4: conclude.}
+        \[ \boxed{\text{The received word is INCORRECT; bit position 5 is in error.}} \]
+  \item \textbf{Step 5: correct it} by flipping bit 5, $1 \rightarrow 0$:
+        \[ \text{corrected codeword} = 1\,0\,0\,1\,0\,1\,1 \]
+        \[ \text{recovered data (positions 7,6,5,3)} = 1\,0\,0\,0 \]
+  \item \mk{Non-zero syndrome $=$ error, and its decimal value is the position.
+        A zero syndrome means no single-bit error.}
+  \item \textbf{Limitation to state:} $d_{\min} = 3$, so this code corrects \textbf{one} bit and
+        detects \textbf{two}. A \textbf{two-bit} error produces a non-zero syndrome pointing at
+        the \emph{wrong} position, and ``correcting'' it makes things worse.
+        \mk{That is why Hamming codes are always paired with interleaving} (Ch 5) on a fading
+        channel, where errors arrive in bursts.
+\end{itemize}
+
+\lead{Hamming code parameters for other $m$}
+\vspace{2pt}
+\begin{center}\small
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+\hrow $m$ & $n = 2^m-1$ & $k = 2^m-m-1$ & parity bits & rate $k/n$ \\
+\midrule
+3 & 7  & 4  & 3 & 0.571 \\
+4 & 15 & 11 & 4 & 0.733 \\
+5 & 31 & 26 & 5 & 0.839 \\
+6 & 63 & 57 & 6 & 0.905 \\
+\bottomrule
+\end{tabular}
+\end{center}
+{\color{sub}\footnotesize \mk{The rate improves as $m$ grows}, but the code still corrects only
+\textbf{one} bit per block, so the protection per bit gets \emph{weaker}. That trade-off is worth
+one line in any Hamming answer.}
+
+\hr
+
+\T{Problem 2 \quad Convolutional encoding and Viterbi decoding}
+{\color{sub}\footnotesize \tF{5} \yr{\textbf{74 Bh} \m{5}, \textbf{75 Bh}, 70 Ma,
+\textbf{72 Ash} \m{3}, \textbf{73 Bh} \m{5}}}
+
+\begin{asked}{5 papers, always as a short note}
+Write short notes on: \textbf{Convolutional encoding and decoding}
+\ \yr{(2074 Bhadra Q9 c \m{5})}
+\par\vspace{1pt}
+Write short notes on: \textbf{Viterbi decoding algorithm}
+\ \yr{(2073 Bhadra Q9 c \m{5} \textperiodcentered{} 2072 Ashwin Q9 c \m{3}
+\textperiodcentered{} 2075 Bhadra Q12 b \textperiodcentered{} 2070 Magh Q10 c)}
+\end{asked}
+\begin{asked}[PROBLEM]{not a PYQ \textperiodcentered{} the example that carries the short note \added}
+For the rate 1/2, constraint length $K = 3$ convolutional encoder defined by
+$X_1 = M + M_1 + M_2$ and $X_2 = M + M_2$ (mod-2 addition), encode the message \textbf{1011}.
+Then decode the received sequence $Y = 11\ 01\ 10$ using the Viterbi algorithm, showing the
+trellis and the surviving path metrics.
+\end{asked}
+
+\lead{Part A \; Encoding 1011}
+\begin{itemize}
+  \item State $=$ the contents of the two memory stages $(M_1 M_2)$, so there are
+        $2^{K-1} = 4$ states: $a = 00$, $b = 01$, $c = 10$, $d = 11$.
+  \item Two flush (tail) bits are appended so the encoder returns to state $a$.
+\end{itemize}
+
+\vspace{2pt}
+\begin{center}\small
+\begin{tabular}{@{}rccccc@{}}
+\toprule
+\hrow \thead{Input $M$} & \thead{State $(M_1M_2)$} & \thead{$X_1 = M{+}M_1{+}M_2$} &
+\thead{$X_2 = M{+}M_2$} & \thead{Output} & \thead{Next state} \\
+\midrule
+1 & 00 & $1{+}0{+}0 = 1$ & $1{+}0 = 1$ & \textbf{11} & 10 \\
+0 & 10 & $0{+}1{+}0 = 1$ & $0{+}0 = 0$ & \textbf{10} & 01 \\
+1 & 01 & $1{+}0{+}1 = 0$ & $1{+}1 = 0$ & \textbf{00} & 10 \\
+1 & 10 & $1{+}1{+}0 = 0$ & $1{+}0 = 1$ & \textbf{01} & 11 \\
+0 & 11 & $0{+}1{+}1 = 0$ & $0{+}1 = 1$ & \textbf{01} & 01 \\
+0 & 01 & $0{+}0{+}1 = 1$ & $0{+}1 = 1$ & \textbf{11} & 00 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\[ \boxed{\text{encoded output} = 11\;10\;00\;01\;01\;11} \]
+
+\begin{itemize}
+  \item 4 message bits plus 2 flush bits give 6 input bits, and at rate 1/2 that is
+        \textbf{12 output bits}. \checkmark
+  \item \mk{Code rate including the tail} is $4/12 = 1/3$, not $1/2$. Real systems use long
+        frames so the tail overhead is negligible. Worth a line.
+\end{itemize}
+
+\lead{Part B \; Viterbi decoding of $Y = 11\;01\;10$}
+\begin{itemize}
+  \item \textbf{Metric used:} \textbf{Hamming distance} between the branch's expected output and
+        the received pair. Lower is better.
+  \item At every node keep only the \textbf{smaller-metric} incoming path (the survivor) and
+        discard the other.
+\end{itemize}
+
+\vspace{2pt}
+\begin{center}\small
+\begin{tabular}{@{}lllll@{}}
+\toprule
+\hrow \thead{Step} & \thead{Received} & \thead{State} & \thead{Path metric} &
+\thead{Surviving input path} \\
+\midrule
+1 & 11 & 00 & 2 & 0 \\
+  &    & 10 & \mk{0} & 1 \\
+\midrule
+2 & 01 & 00 & 3 & 0, 0 \\
+  &    & 01 & 2 & 1, 0 \\
+  &    & 10 & 3 & 0, 1 \\
+  &    & 11 & \mk{0} & 1, 1 \\
+\midrule
+3 & 10 & 00 & 3 & 1, 0, 0 \\
+  &    & 01 & 2 & 1, 1, 0 \\
+  &    & 10 & 3 & 1, 0, 1 \\
+  &    & 11 & \mk{0} & 1, 1, 1 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\lead{Reading the table}
+\begin{itemize}
+  \item \textbf{Step 1.} From state $00$, input 0 gives output $00$ (distance 2 from the received
+        $11$), input 1 gives output $11$ (distance 0). So state $10$ carries metric 0.
+  \item \textbf{Step 2.} From state $10$, input 0 gives $10$ (distance 1 from $01$) and input 1
+        gives $01$ (distance 0). The path $1,1$ into state $11$ keeps metric 0.
+  \item \textbf{Step 3.} From state $11$, input 1 gives output $10$, which \textbf{matches the
+        received $10$ exactly}, so the metric stays 0.
+  \item \textbf{Survivor:} the path ending in state $11$ with total metric $\mathbf{0}$.
+        \[ \boxed{\text{decoded message} = 1\,1\,1} \]
+  \item \textbf{Verify by re-encoding} $1,1,1$ from state $00$:
+        $11$, then $01$, then $10$ $\;=\; Y$ exactly. \checkmark
+        \mk{Metric 0 means the received sequence was a valid codeword, ie no channel errors.}
+  \item \mk{Why Viterbi is tractable:} after every step there are still only \textbf{4} survivors,
+        never more, because each state keeps one path. An exhaustive tree search would have
+        $2^{L}$ paths after $L$ bits.
+\end{itemize}
+
+\hr
+
+\T{Problem 3 \quad Sub-band coder bit rate}
+{\color{sub}\footnotesize \tP{1} \yr{\textbf{\texttt{80 Bh}} \m{6}} \gap$\cdot$\gap
+the calculation behind ``sub-band coding with transmitter and receiver''}
+
+\begin{asked}{2080 Bhadra \textperiodcentered{} Q6 (a) \textperiodcentered{} [6]}
+Explain sub-band coding with transmitter and receiver.
+\end{asked}
+\begin{asked}[PROBLEM]{not a PYQ \textperiodcentered{} the rate sum behind the block diagram \added}
+A sub-band coder splits the input into the four sub-bands tabulated below and samples each at
+its band-pass Nyquist rate. Find the total encoding bit rate, and compare it with coding the
+full band at the same resolution.
+\end{asked}
+
+\vspace{2pt}
+\begin{center}\small
+\begin{tabular}{@{}rrrrrr@{}}
+\toprule
+\hrow \thead{Sub-band} & \thead{Band (Hz)} & \thead{Bandwidth} & \thead{$f_s = 2B$} &
+\thead{Bits/sample} & \thead{Rate (bps)} \\
+\midrule
+1 & 225--450   & 225 Hz & 450 & 4 & 1800 \\
+2 & 450--900   & 450 Hz & 900 & 3 & 2700 \\
+3 & 1000--1500 & 500 Hz & 1000 & 2 & 2000 \\
+4 & 1800--2700 & 900 Hz & 1800 & 1 & 1800 \\
+\midrule
+\multicolumn{5}{r}{\textbf{Total}} & \textbf{8300} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{itemize}
+  \item \textbf{Step 1: bandwidth of each band} $= f_{\text{high}} - f_{\text{low}}$.
+  \item \textbf{Step 2: sampling rate.} For \textbf{perfect reconstruction} each band-pass signal
+        must be sampled at \textbf{twice its own bandwidth}, not twice its highest frequency.
+        \mk{That saving is the whole reason for the low-pass translation step in the sub-band
+        coder.}
+        \[ f_{s,1} = 2(450-225) = 450\ \text{samples/s}, \quad
+           f_{s,2} = 2(900-450) = 900 \]
+        \[ f_{s,3} = 2(1500-1000) = 1000, \quad
+           f_{s,4} = 2(2700-1800) = 1800 \]
+  \item \textbf{Step 3: total rate.}
+        \[ R = 450(4) + 900(3) + 1000(2) + 1800(1) \]
+        \[ = 1800 + 2700 + 2000 + 1800 = \boxed{8300\ \text{bps} = 8.3\ \text{kbps}} \]
+  \item \mk{Note the bit allocation:} the \textbf{narrowest, lowest} band gets the \textbf{most}
+        bits (4), and the widest, highest band gets the fewest (1). That follows directly from the
+        \textbf{PSD property} of speech: low bands carry most of the energy and most of the
+        perceptual weight.
+  \item \textbf{Compare:} plain 8 kHz / 8-bit PCM of the same speech would need
+        \textbf{64 kbps}. Sub-band coding achieves nearly \mk{8:1 compression} while remaining a
+        waveform coder.
+\end{itemize}
+
+\hr
+
+\T{Problem 4 \quad Upper bound on speech coder rate in an FDMA system}
+{\color{sub}\footnotesize \yr{tutorial set; the calculation behind ``choosing a speech codec for
+mobile communications''}}
+
+\begin{asked}[PROBLEM]{not a PYQ \textperiodcentered{} the sum behind ``choosing a speech codec'' \added}
+A digital mobile system uses 810--826 MHz for the forward channel and 940--956 MHz for the
+reverse channel. 90\% of the bandwidth is given to traffic channels, and the system must support
+at least 1150 simultaneous calls using FDMA. The modulation achieves a spectral efficiency of
+1.68 bps/Hz, and channel impairments force rate 1/2 forward error correction. Find the upper
+bound on the transmission bit rate that a speech coder in this system can use.
+\end{asked}
+
+\begin{itemize}
+  \item \textbf{Step 1: total band.}
+        \[ B_{\text{total}} = 826 - 810 = 16\ \text{MHz} \]
+        {\color{sub}\footnotesize The reverse band is the same width, and FDMA pairs them, so work
+        with one direction.}
+  \item \textbf{Step 2: bandwidth actually available to traffic.}
+        \[ B_{\text{traffic}} = 0.9 \times 16 = 14.4\ \text{MHz} \]
+        \mk{The other 10\,\% goes to control channels and guard bands.}
+  \item \textbf{Step 3: bandwidth per channel.} FDMA divides it among the simultaneous calls:
+        \[ B_{\text{ch}} = \frac{14.4\ \text{MHz}}{1150} = 12.52\ \text{kHz} \]
+        \[ \Rightarrow \boxed{\text{maximum channel bandwidth} = 12.5\ \text{kHz}} \]
+  \item \textbf{Step 4: raw bit rate the channel can carry.}
+        \[ R_{\text{raw}} = 1.68\ \frac{\text{bps}}{\text{Hz}} \times 12.52\ \text{kHz}
+                          = 21.04\ \text{kbps} \]
+  \item \textbf{Step 5: subtract the FEC overhead.} A rate 1/2 code doubles the bits, so only half
+        the raw rate is available to the speech coder:
+        \[ R_{\text{speech}} = 0.5 \times 21.04 = \boxed{10.52\ \text{kbps}} \]
+  \item \mk{Interpretation:} the speech coder must run at \textbf{10.5 kbps or below}. A plain
+        waveform coder cannot do that at toll quality, so this system needs a
+        \textbf{hybrid or vocoder} class coder, eg RPE-LTP at 13 kbps (too fast here) or a CELP
+        variant at 8 kbps (fits).
+  \item \mk{This is exactly the reasoning that forces cellular systems onto low-rate coders},
+        and it is the numerical answer to ``why do we need speech coding techniques''.
+\end{itemize}
+
+\hr
+
+\T{Problem 5 \quad Quantizer mean square error and signal to distortion ratio}
+{\color{sub}\footnotesize \yr{tutorial set; the calculation behind the \textbf{PDF} property of
+speech \tS{7}}}
+
+\begin{asked}[PROBLEM]{not a PYQ \textperiodcentered{} the PDF property of speech, made numerical \added}
+The input signal to a quantizer has the probability density function $p(x) = x/32$ for
+$0 \le x \le 8$ and zero elsewhere. The quantization levels are $\{1, 3, 5, 7\}$.
+\begin{enumerate}[label=\alph*), leftmargin=1.6em]
+  \item Compute the mean square error distortion at the quantizer output.
+  \item Compute the output signal to distortion ratio.
+  \item How would you redistribute the quantization levels to decrease the distortion, and for
+        what input pdf would this quantizer already be optimal?
+\end{enumerate}
+\end{asked}
+
+\begin{itemize}
+  \item \textbf{Step 0: check the pdf is valid.}
+        \[ \int_0^8 \frac{x}{32}\,dx = \left[\frac{x^2}{64}\right]_0^8 = \frac{64}{64} = 1
+           \quad\checkmark \]
+  \item \textbf{Step 1: set the decision boundaries.} With levels at 1, 3, 5, 7 the midpoints give
+        boundaries at $\{0, 2, 4, 6, 8\}$, so the quantizer is \textbf{uniform} with step 2.
+  \item \textbf{Step 2: mean square error distortion.}
+        \[ D = \int_{-\infty}^{\infty}\left(x - f_Q(x)\right)^2 p(x)\,dx \]
+        \[ = \int_0^2 (x-1)^2\frac{x}{32}dx + \int_2^4 (x-3)^2\frac{x}{32}dx
+          + \int_4^6 (x-5)^2\frac{x}{32}dx + \int_6^8 (x-7)^2\frac{x}{32}dx \]
+  \item \textbf{Step 3: evaluate one integral to show the method.} For the first,
+        \[ \int_0^2 (x^2-2x+1)\frac{x}{32}dx
+           = \frac{1}{32}\int_0^2 \left(x^3 - 2x^2 + x\right)dx \]
+        \[ = \frac{1}{32}\left[\frac{x^4}{4} - \frac{2x^3}{3} + \frac{x^2}{2}\right]_0^2
+           = \frac{1}{32}\left(4 - \frac{16}{3} + 2\right)
+           = \frac{1}{32}\cdot\frac{2}{3} = \frac{1}{48} \]
+        The other three evaluate to $\tfrac{3}{48}$, $\tfrac{5}{48}$ and $\tfrac{7}{48}$ by the
+        same method.
+  \item \textbf{Step 4: total distortion.}
+        \[ D = \frac{1+3+5+7}{48} = \frac{16}{48} = \frac{1}{3}
+             = \boxed{0.3333} \]
+  \item \textbf{Step 5: signal power.}
+        \[ S = E[x^2] = \int_0^8 x^2 \frac{x}{32}dx = \frac{1}{32}\left[\frac{x^4}{4}\right]_0^8
+             = \frac{1}{32}\cdot\frac{4096}{4} = \boxed{32} \]
+  \item \textbf{Step 6: signal to distortion ratio.}
+        \[ \text{SDR} = 10\log_{10}\!\left(\frac{S}{D}\right)
+                      = 10\log_{10}\!\left(\frac{32}{0.3333}\right)
+                      = 10\log_{10}(96.0) = \boxed{19.82\ \text{dB}} \]
+  \item \textbf{Step 7: how to reduce the distortion.}
+  \begin{itemize}
+    \item Note that the four sub-integrals came out as $1,3,5,7$ over 48:
+          \mk{the top interval contributes seven times as much distortion as the bottom one}.
+    \item That is because $p(x) = x/32$ \textbf{rises} with $x$, so most of the probability mass
+          sits at large amplitudes.
+    \item \textbf{Fix: use a non-uniform quantizer.} Place \textbf{more levels where the
+          probability is high} (large $x$) and fewer where it is low (small $x$), ie shrink the
+          step size towards $x = 8$.
+    \item This is exactly the \textbf{PDF property} of speech being exploited, and it is the
+          principle behind $\mu$-law and A-law companding.
+  \end{itemize}
+  \item \textbf{Step 8: for what pdf is this quantizer optimal?}
+        A \textbf{uniform} quantizer is optimal when every interval contributes equally, which
+        happens only when the input is \mk{uniformly distributed} over $[0,8]$, ie
+        $p(x) = 1/8$.
+\end{itemize}
+
+\hr
+
+\T{Problem 6 \quad Speech coder rates: what fits in what}
+{\color{sub}\footnotesize \yr{supporting numbers for the vocoder \tS{10} and LPC \tS{8}
+questions}}
+
+{\color{sub}\footnotesize Reference figures. \mk{Quoting one correct rate is often worth a mark}
+in an otherwise descriptive answer.}
+
+\vspace{2pt}
+\begin{center}\small
+\begin{tabular}{@{}llll@{}}
+\toprule
+\hrow \thead{Coder} & \thead{Class} & \thead{Bit rate} & \thead{Note} \\
+\midrule
+PCM (toll reference)   & Waveform & 64 kbps  & 8 kHz, 8 bit, $\mu$-law \\
+ADPCM                  & Waveform & 32 kbps  & G.726 \\
+Sub-band coding        & Waveform & 9.6--32 kbps & 4 or 8 bands \\
+Adaptive transform (ATC) & Waveform & 9.6--20 kbps & DCT based \\
+Voice-excited vocoder  & Hybrid   & 7.2--9.6 kbps & no pitch extraction needed \\
+GSM RPE-LTP            & Hybrid   & \mk{13 kbps} & full rate GSM \\
+CELP                   & Vocoder  & \mk{4.8 kbps} & codebook excitation \\
+LPC                    & Vocoder  & 4.8 kbps (good quality), 2.4 kbps & all-pole model \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{itemize}
+  \item \textbf{Compression achieved} against the 64 kbps PCM reference:
+        ADPCM $2\times$, sub-band $\approx 7\times$, GSM $\approx 5\times$,
+        CELP $\approx 13\times$.
+  \item \mk{The pattern to remember:} rate falls, complexity rises, and robustness falls.
+        A 4.8 kbps CELP frame damaged by the channel is far more audible than a damaged
+        64 kbps PCM sample. \textbf{That is why the lowest-rate coders need the strongest channel
+        coding}, which is the link between the two halves of this chapter.
+\end{itemize}
+
+\hr
+
+\T{Problem 7 \quad Coding gain}
+{\color{sub}\footnotesize \pill{gdL}{gd}{syllabus, no PYQ yet} \gap$\cdot$\gap included because
+it is the number that justifies every code in the chapter}
+
+\begin{asked}[PROBLEM]{not a PYQ \textperiodcentered{} the number that justifies every code here \added}
+An uncoded BPSK link needs $E_b/N_0 = 10.5$ dB to reach a BER of $10^{-5}$. With a rate 1/2,
+$K = 7$ convolutional code and soft-decision Viterbi decoding, the same BER is reached at
+$E_b/N_0 = 4.5$ dB. Find the coding gain in dB and the transmit power saving it represents.
+\end{asked}
+
+\begin{itemize}
+  \item \textbf{Step 1: coding gain.}
+        \[ G = \left(\frac{E_b}{N_0}\right)_{\text{uncoded}}
+             - \left(\frac{E_b}{N_0}\right)_{\text{coded}}
+             = 10.5 - 4.5 = \boxed{6\ \text{dB}} \]
+  \item \textbf{Step 2: what 6 dB is worth in power.}
+        \[ 10^{6/10} = 3.98 \approx 4 \]
+        \mk{The transmitter can run at one quarter of the power for the same quality.}
+  \item \textbf{Step 3: what it is worth in range}, at path loss exponent $n = 3.5$:
+        \[ 10^{6/(10 \times 3.5)} = 10^{0.1714} = 1.48 \]
+        ie \textbf{48\,\% more range}, or $1.48^2 = 2.2$ times the area from one site.
+  \item \textbf{Step 4: what it costs.} The rate 1/2 code \textbf{doubles the transmitted bit
+        rate}, so it needs twice the bandwidth (or halves the user data rate).
+  \item \mk{TCM exists precisely to escape that cost}: by combining coding with a larger signal
+        constellation it delivers coding gains up to 6 dB with \textbf{no bandwidth expansion}.
+        Turbo codes then push the gain further still, close to the Shannon bound.
+\end{itemize}

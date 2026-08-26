@@ -41,9 +41,25 @@ Also: \mk{support is over ALL transactions; confidence is over the antecedent's 
 \end{itemize}
 
 \creamq{Problem 1.1}{\m{2+7}}
-{\color{sub}\footnotesize \yr{80 Bh} \gap 7 transactions, \textbf{min support count $=$ 4}, confidence 80\%.
-Note T106 prints ``F, A, C, I, B, A, P'' --- \mk{A is repeated; a transaction is a set}, so treat it as
-\{F,A,C,I,B,P\}.}
+\begin{asked}{2080 Bhadra \textperiodcentered{} Q3 (b) \textperiodcentered{} [2+7]}
+What is Association Analysis? Explain with different use cases? Use the Apriori algorithm to
+find the frequent itemsets. Assume minimum support count is 4 and confidence is 80\%.
+\par\vspace{2pt}
+\begin{tabularx}{0.62\textwidth}{@{}L{1.9cm}X@{}}
+\toprule
+\hrow \thead{TID} & \thead{Items} \\
+T100 & F, A, C, D, G, I, M, P, N \\
+T101 & A, B, C, D, F, L, M, O, P \\
+T102 & B, F, H, V, J, O, P \\
+T103 & B, C, K, S, A, V \\
+T104 & L, A, F, C, E, P, M, N, V \\
+T105 & I, B, A, P, S, M \\
+T106 & F, A, C, I, B, A, P \\
+\bottomrule
+\end{tabularx}
+\end{asked}
+{\color{sub}\footnotesize T106 genuinely prints ``F, A, C, I, B, A, P'' ---
+\mk{A is repeated; a transaction is a set}, so treat it as \{F,A,C,I,B,P\}.}
 
 \lead{Step 1: item counts} (7 transactions)
 \begin{itemize}
@@ -60,15 +76,15 @@ Note T106 prints ``F, A, C, I, B, A, P'' --- \mk{A is repeated; a transaction is
 
 \lead{Step 3: $L_3$}
 \begin{itemize}
-  \item ABP: all 3 subsets present $\rightarrow$ counted $=3$ ✗
-  \item \textbf{ACF(4)}, \textbf{ACP(4)}, \textbf{AFP(4)}, \textbf{AMP(4)}, \textbf{CFP(4)} ✓
+  \item ABP: all 3 subsets present $\rightarrow$ counted $=3$ \xmark
+  \item \textbf{ACF(4)}, \textbf{ACP(4)}, \textbf{AFP(4)}, \textbf{AMP(4)}, \textbf{CFP(4)} \checkmark
   \item Pruned without counting: ABC (BC$\notin L_2$), ABF (BF), ABM (BM), ACM (CM), AFM (FM)
 \end{itemize}
 
 \lead{Step 4: $L_4$}
 \begin{itemize}
-  \item ACFP: subsets ACF ✓ ACP ✓ AFP ✓ CFP ✓ $\rightarrow$ candidate.
-        Count $=4$ (T100, T101, T104, T106) ✓
+  \item ACFP: subsets ACF \checkmark ACP \checkmark AFP \checkmark CFP \checkmark $\rightarrow$ candidate.
+        Count $=4$ (T100, T101, T104, T106) \checkmark
   \item $\mathbf{L_4 = \{ACFP(4)\}}$. \ $L_5$ empty $\rightarrow$ stop.
 \end{itemize}
 
@@ -78,58 +94,179 @@ Note T106 prints ``F, A, C, I, B, A, P'' --- \mk{A is repeated; a transaction is
 \end{itemize}
 
 \creamq{Problem 1.2}{\m{5}}
-{\color{sub}\footnotesize \yr{80 Ba} \gap 4 transactions, min support 2.}
+\begin{asked}{2080 Baishakh \textperiodcentered{} Q5 \textperiodcentered{} [4+5]}
+Generally, we will be more interested in associated rules with high confidence. However, often
+we will not be interested in association rules that have a confidence of 100\%. Why? Then
+specifically explain why association rules with 99\% confidence may be interesting (i.e., what
+might they indicate)? Identify the candidate and large item sets of the following transaction
+table using Apriori algorithm with minimum support 2.
+\par\vspace{2pt}
+\begin{tabularx}{0.42\textwidth}{@{}L{1.9cm}X@{}}
+\toprule
+\hrow \thead{TID} & \thead{Items} \\
+10 & A, C, D \\
+20 & B, C, E \\
+30 & A, B, C, E \\
+40 & B, E \\
+\bottomrule
+\end{tabularx}
+\end{asked}
+
+\lead{Step 1: $L_1$, count every item across the 4 transactions}
 \begin{itemize}
-  \item $L_1$: A(2), B(3), C(3), E(3) \quad (D has count 1, dropped)
-  \item $C_2 \rightarrow L_2$: \textbf{AC(2), BC(2), BE(3), CE(2)}; \ dropped AB(1), AE(1)
-  \item $C_3$: BCE (subsets BC, BE, CE all present) $\rightarrow$ count $=2$ ✓.
-        \ AC joins with nothing.
-  \item $\mathbf{L_3 = \{BCE(2)\}}$
+  \item A appears in T1, T3 $\rightarrow$ 2 \quad B appears in T2, T3, T4 $\rightarrow$ 3
+  \item C appears in T1, T2, T3 $\rightarrow$ 3 \quad D appears in T1 only $\rightarrow$ 1 \mk{(dropped)}
+  \item E appears in T2, T3, T4 $\rightarrow$ 3
+  \item $\mathbf{L_1 = \{A(2),\ B(3),\ C(3),\ E(3)\}}$
 \end{itemize}
-\lead{Final answer} Frequent: A, B, C, E, AC, BC, BE, CE, BCE.
+
+\lead{Step 2: $C_2$, join $L_1$ with itself, then count each pair against the transactions}
+\begin{itemize}
+  \item AB: only T3 $\rightarrow$ 1 \xmark \quad AC: T1, T3 $\rightarrow$ \textbf{2} \checkmark \quad
+        AE: only T3 $\rightarrow$ 1 \xmark
+  \item BC: T2, T3 $\rightarrow$ \textbf{2} \checkmark \quad BE: T2, T3, T4 $\rightarrow$ \textbf{3} \checkmark \quad
+        CE: T2, T3 $\rightarrow$ \textbf{2} \checkmark
+  \item $\mathbf{L_2 = \{AC(2),\ BC(2),\ BE(3),\ CE(2)\}}$; dropped AB(1), AE(1)
+\end{itemize}
+
+\lead{Step 3: $C_3$, join $L_2$ with itself, prune, then count}
+\begin{itemize}
+  \item BC and BE share prefix B $\rightarrow$ candidate \textbf{BCE}. Subsets BC \checkmark, BE \checkmark, CE \checkmark
+        all in $L_2$ $\rightarrow$ not pruned.
+  \item AC joins with nothing else in $L_2$ (no other pair starts with A) $\rightarrow$ no candidate.
+  \item Count BCE against the transactions: T2 $=\{B,C,E\}$ \checkmark, T3 $=\{A,B,C,E\}$ \checkmark
+        $\rightarrow$ count $=\mathbf{2}$ \checkmark (meets threshold).
+  \item $\mathbf{L_3 = \{BCE(2)\}}$. \ $C_4$ is empty (only one 3-itemset survived) $\rightarrow$ stop.
+\end{itemize}
+\lead{Final answer} Frequent itemsets: A, B, C, E, AC, BC, BE, CE, BCE.
 
 \creamq{Problem 1.3}{\m{10}}
-{\color{sub}\footnotesize \yr{70 Ch} \gap 4 transactions (ACD, BD, ABCE, BDF), support 50\% $\rightarrow$ count 2.}
+\begin{asked}{2070 Chaitra \textperiodcentered{} Q4 \textperiodcentered{} [10]}
+Explain Apriori algorithm. Use Apriori to generate frequent item sets with support of 50\% for
+the following transaction database.
+\par\vspace{2pt}
+\begin{tabularx}{0.36\textwidth}{@{}L{1.9cm}X@{}}
+\toprule
+\hrow \thead{TID} & \thead{Items} \\
+1 & ACD \\
+2 & BD \\
+3 & ABCE \\
+4 & BDF \\
+\bottomrule
+\end{tabularx}
+\end{asked}
+{\color{sub}\footnotesize 4 transactions, 50\% $\rightarrow$ min count $=$ 2.}
 \begin{itemize}
   \item $L_1$: A(2), B(3), C(2), D(3) \quad (E:1, F:1 dropped)
-  \item $C_2$: AB(1)✗ AC(2)✓ AD(1)✗ BC(1)✗ BD(2)✓ CD(1)✗
+  \item $C_2$: AB(1)\xmark AC(2)\checkmark AD(1)\xmark BC(1)\xmark BD(2)\checkmark CD(1)\xmark
   \item $\mathbf{L_2 = \{AC(2),\ BD(2)\}}$
   \item $C_3$: AC and BD share no common prefix $\rightarrow$ \textbf{no candidates}. Stop.
 \end{itemize}
 \lead{Final answer} Frequent itemsets: A, B, C, D, AC, BD.
 
 \creamq{Problems 1.4 and 1.5}{\m{5+3}\m{8}}
-{\color{sub}\footnotesize \yr{76 Ch} (min sup 2/9, min conf 7/9) and \yr{74 Ash} (min sup 20\%, min conf 80\%).
-\mk{Identical 9-transaction table, and both thresholds work out to a count of 2}, so the frequent
-itemsets are the same; only the rule filter differs.}
+\begin{asked}{2076 Chaitra \textperiodcentered{} Q7 \textperiodcentered{} [5+3]}
+Consider the transaction data shown in the following table from a fast food restaurant.
+\par\vspace{2pt}
+\begin{tabularx}{0.62\textwidth}{@{}L{2.3cm}X@{}}
+\toprule
+\hrow \thead{Meal Item} & \thead{List of Item IDs} \\
+Order:1 & M1, M2, M5 \\
+Order:2 & M2, M4 \\
+Order:3 & M2, M3 \\
+Order:4 & M1, M2, M4 \\
+Order:5 & M1, M3 \\
+Order:6 & M2, M3 \\
+Order:7 & M1, M3 \\
+Order:8 & M1, M2, M3, M5 \\
+Order:9 & M1, M2, M3 \\
+\bottomrule
+\end{tabularx}
+\par\vspace{2pt}
+There are 9 distinct transactions (Order:~1 -- Order:~9) and each transaction involves between
+2 and 4 meal items. There are a total of 5 meal items that are involved in the transactions.
+For simplicity, the meal items have been assigned short names (M1--M5). Assume that the minimum
+support is 2/9 and the minimum confidence is 7/9.
+\begin{enumerate}[label=\alph*), leftmargin=1.6em]
+  \item Apply the Apriori algorithm to the dataset of transactions and identify all frequent
+        $k$-itemsets.
+  \item Find all strong association rules of the form: $X \wedge Y \rightarrow Z$ and note
+        their confidence values.
+\end{enumerate}
+\end{asked}
+\begin{asked}{2074 Ashwin \textperiodcentered{} Q5 \textperiodcentered{} [8]}
+Identify the candidate, frequent item sets and association rules for the following transaction
+data using Apriori algorithm.
+\par\vspace{2pt}
+\begin{tabularx}{0.50\textwidth}{@{}L{1.9cm}X@{}}
+\toprule
+\hrow \thead{TID} & \thead{ITEMS} \\
+1 & M1, M2, M5 \\
+2 & M2, M4 \\
+3 & M2, M3 \\
+4 & M1, M2, M4 \\
+5 & M1, M3 \\
+6 & M2, M3 \\
+7 & M1, M3 \\
+8 & M1, M2, M3, M5 \\
+9 & M1, M2, M3 \\
+\bottomrule
+\end{tabularx}
+\par\vspace{2pt}
+Take minimum support $=$ 20\%, minimum confidence 80\%
+\end{asked}
+{\color{sub}\footnotesize \mk{Identical 9-transaction table, and both thresholds work out to a
+count of 2}, so the frequent itemsets are the same; only the rule filter differs.}
 
 \lead{Frequent itemsets} (9 transactions, min count 2)
 \begin{itemize}
-  \item $L_1$: M1(6), M2(7), M3(6), M4(2), M5(2)
-  \item $L_2$: \textbf{M1M2(4), M1M3(4), M1M5(2), M2M3(4), M2M4(2), M2M5(2)};
+  \item \textbf{Step 1, $L_1$}: M1 in T1,T4,T5,T7,T8,T9 $\rightarrow$ 6. \
+        M2 in T1,T2,T3,T4,T6,T8,T9 $\rightarrow$ 7. \
+        M3 in T3,T5,T6,T7,T8,T9 $\rightarrow$ 6. \
+        M4 in T2,T4 $\rightarrow$ 2. \ M5 in T1,T8 $\rightarrow$ 2.
+  \item $\mathbf{L_1 = \{M1(6),\ M2(7),\ M3(6),\ M4(2),\ M5(2)\}}$ (nothing dropped, all 5 items clear count 2)
+  \item \textbf{Step 2, $C_2 \rightarrow L_2$}: check each pair against the table.
+        M1M2: T1,T4,T8,T9 $\rightarrow$ \textbf{4} \checkmark. \
+        M1M3: T5,T7,T8,T9 $\rightarrow$ \textbf{4} \checkmark. \
+        M1M4: T4 only $\rightarrow$ 1 \xmark. \
+        M1M5: T1,T8 $\rightarrow$ \textbf{2} \checkmark. \
+        M2M3: T3,T6,T8,T9 $\rightarrow$ \textbf{4} \checkmark. \
+        M2M4: T2,T4 $\rightarrow$ \textbf{2} \checkmark. \
+        M2M5: T1,T8 $\rightarrow$ \textbf{2} \checkmark. \
+        M3M4: never together $\rightarrow$ 0 \xmark. \
+        M3M5: T8 only $\rightarrow$ 1 \xmark. \
+        M4M5: never together $\rightarrow$ 0 \xmark.
+  \item $\mathbf{L_2 = \{M1M2(4),\ M1M3(4),\ M1M5(2),\ M2M3(4),\ M2M4(2),\ M2M5(2)\}}$;
         dropped M1M4(1), M3M4(0), M3M5(1), M4M5(0)
-  \item $L_3$: \textbf{M1M2M3(2)}, \textbf{M1M2M5(2)}.
-        \ Pruned: M1M2M4 (M1M4 ✗), M2M3M5 (M3M5 ✗), M1M3M5 (M3M5 ✗)
-  \item $L_4$: M1M2M3M5 pruned (M1M3M5 ✗) $\rightarrow$ empty.
+  \item \textbf{Step 3, $C_3$}: join pairs sharing a prefix, prune by subset, then count.
+        M1M2M3 (from M1M2 + M1M3, needs M2M3 too $\rightarrow$ present) $\rightarrow$ count in
+        T8,T9 $\rightarrow$ \textbf{2} \checkmark. \
+        M1M2M5 (from M1M2 + M1M5, needs M2M5 $\rightarrow$ present) $\rightarrow$ count in
+        T1,T8 $\rightarrow$ \textbf{2} \checkmark. \
+        M1M2M4 pruned (subset M1M4 $\notin L_2$). \
+        M2M3M5 pruned (subset M3M5 $\notin L_2$). \ M1M3M5 pruned (subset M3M5 $\notin L_2$).
+  \item $\mathbf{L_3 = \{M1M2M3(2),\ M1M2M5(2)\}}$
+  \item \textbf{Step 4, $C_4$}: only candidate is M1M2M3M5 (from M1M2M3 + M1M2M5), pruned because
+        its subset M1M3M5 $\notin L_3$ $\rightarrow$ $L_4$ empty $\rightarrow$ stop.
 \end{itemize}
 
 \sbs{%
 \lead{1.4 --- rules $X \wedge Y \Rightarrow Z$, min conf $7/9 = 0.778$}
 \begin{itemize}
-  \item From M1M2M3 (sup 2): all three give $2/4 = 0.5$ ✗
+  \item From M1M2M3 (sup 2): all three give $2/4 = 0.5$ \xmark
   \item From M1M2M5 (sup 2):
   \begin{itemize}
-    \item M1$\wedge$M2$\Rightarrow$M5 $= 2/4 = 0.5$ ✗
-    \item \textbf{M1$\wedge$M5$\Rightarrow$M2 $= 2/2 = 1.0$} ✓
-    \item \textbf{M2$\wedge$M5$\Rightarrow$M1 $= 2/2 = 1.0$} ✓
+    \item M1$\wedge$M2$\Rightarrow$M5 $= 2/4 = 0.5$ \xmark
+    \item \textbf{M1$\wedge$M5$\Rightarrow$M2 $= 2/2 = 1.0$} \checkmark
+    \item \textbf{M2$\wedge$M5$\Rightarrow$M1 $= 2/2 = 1.0$} \checkmark
   \end{itemize}
 \end{itemize}
 \lead{Answer} 2 strong rules, both at 100\% confidence.}{%
 \lead{1.5 --- all rules, min conf 0.80}
 \begin{itemize}
-  \item \textbf{M5$\Rightarrow$M1} $=2/2=1.0$ ✓ \quad \textbf{M5$\Rightarrow$M2} $=2/2=1.0$ ✓
-  \item \textbf{M4$\Rightarrow$M2} $=2/2=1.0$ ✓
-  \item \textbf{M5$\Rightarrow$M1$\wedge$M2} $=2/2=1.0$ ✓
+  \item \textbf{M5$\Rightarrow$M1} $=2/2=1.0$ \checkmark \quad \textbf{M5$\Rightarrow$M2} $=2/2=1.0$ \checkmark
+  \item \textbf{M4$\Rightarrow$M2} $=2/2=1.0$ \checkmark
+  \item \textbf{M5$\Rightarrow$M1$\wedge$M2} $=2/2=1.0$ \checkmark
   \item Plus the two 3-itemset rules from 1.4.
   \item All rules with M1, M2 or M3 as antecedent fail
         (best is $4/6 = 0.667$).
@@ -140,12 +277,28 @@ itemsets are the same; only the rule filter differs.}
 \end{itemize}}
 
 \creamq{Problem 1.6}{\m{8}}
-{\color{sub}\footnotesize \yr{79 Bh} \gap 6 transactions, min support 50\%, min confidence 80\%.
-\mk{This one has a surprise.}}
+\begin{asked}{2079 Bhadra \textperiodcentered{} Q5 \textperiodcentered{} [8]}
+Derive association rule for the following market basket transactions.
+
+Minimum support $=$ 50\% \qquad Minimum confidence $=$ 80\%
+\par\vspace{2pt}
+\begin{tabularx}{0.46\textwidth}{@{}L{3.0cm}X@{}}
+\toprule
+\hrow \thead{Transaction ID} & \thead{Item Set} \\
+1 & A,B \\
+2 & A,D \\
+3 & A,C \\
+4 & B,E \\
+5 & B,D,E \\
+6 & A,E,C \\
+\bottomrule
+\end{tabularx}
+\end{asked}
+{\color{sub}\footnotesize \mk{This one has a surprise.}}
 \begin{itemize}
   \item 6 transactions, 50\% $\rightarrow$ min count $=3$.
-  \item $L_1$: A(4), B(3), E(3) \quad (C:2 ✗, D:2 ✗)
-  \item $C_2$: AB $=1$ ✗ \quad AE $=1$ ✗ \quad BE $=2$ ✗
+  \item $L_1$: A(4), B(3), E(3) \quad (C:2 \xmark, D:2 \xmark)
+  \item $C_2$: AB $=1$ \xmark \quad AE $=1$ \xmark \quad BE $=2$ \xmark
   \item $\mathbf{L_2 = \emptyset}$
 \end{itemize}
 \lead{Final answer}
@@ -175,16 +328,22 @@ itemsets are the same; only the rule filter differs.}
 \end{itemize}
 
 \creamq{Worked example}{}
-From $l=\{$K,E,O$\}$ with $sup=3$ (see Problem 3.1), $|l|=3 \rightarrow 6$ candidate rules:
+\begin{asked}[PROBLEM]{not a PYQ \textperiodcentered{} the rule half of 2081 Baishakh Q3 (b) \added}
+The frequent itemset $l = \{$K, E, O$\}$ has support count 3 in the 5-transaction database of
+Problem 3.1, where $sup$(K)~$=5$, $sup$(E)~$=4$, $sup$(O)~$=3$, $sup$(K,E)~$=4$,
+$sup$(K,O)~$=3$ and $sup$(E,O)~$=3$. List every association rule that $l$ can generate and its
+confidence, and say which are strong at a minimum confidence of 80\%.
+\end{asked}
+From $l=\{$K,E,O$\}$ with $sup=3$ (see Problem 3.1), $|l|=3 \rightarrow 6$ candidate rules:\par
 \begin{tabularx}{0.86\textwidth}{@{}L{4.2cm}L{3.6cm}XL{1.4cm}@{}}
 \toprule
 \hrow \thead{Rule} & \thead{Confidence} & \thead{Value} & \thead{$\ge$80\%?} \\
-K $\Rightarrow$ E,O & $3/5$ & 0.60 & ✗ \\
-E $\Rightarrow$ K,O & $3/4$ & 0.75 & ✗ \\
-\textbf{O $\Rightarrow$ K,E} & $3/3$ & \textbf{1.00} & ✓ \\
-K,E $\Rightarrow$ O & $3/4$ & 0.75 & ✗ \\
-\textbf{K,O $\Rightarrow$ E} & $3/3$ & \textbf{1.00} & ✓ \\
-\textbf{E,O $\Rightarrow$ K} & $3/3$ & \textbf{1.00} & ✓ \\
+K $\Rightarrow$ E,O & $3/5$ & 0.60 & \xmark \\
+E $\Rightarrow$ K,O & $3/4$ & 0.75 & \xmark \\
+\textbf{O $\Rightarrow$ K,E} & $3/3$ & \textbf{1.00} & \checkmark \\
+K,E $\Rightarrow$ O & $3/4$ & 0.75 & \xmark \\
+\textbf{K,O $\Rightarrow$ E} & $3/3$ & \textbf{1.00} & \checkmark \\
+\textbf{E,O $\Rightarrow$ K} & $3/3$ & \textbf{1.00} & \checkmark \\
 \bottomrule
 \end{tabularx}
 \begin{itemize}
@@ -207,10 +366,26 @@ K,E $\Rightarrow$ O & $3/4$ & 0.75 & ✗ \\
 \end{enumerate}
 
 \creamq{Problem 3.1}{\m{2+7}}
-{\color{sub}\footnotesize \yr{81 Ba} \gap 5 transactions, min support 60\%, min confidence 80\%.
-Find all frequent itemsets using FP-growth, then all strong rules.}
-
-\lead{Given} \code{T100 \{M,O,N,K,E,Y\} T200 \{D,O,N,K,E,Y\} T300 \{M,A,K,E\} T400 \{M,U,C,K,Y\} T500 \{C,O,O,K,I,E\}}
+\begin{asked}{2081 Baishakh \textperiodcentered{} Q3 (b) \textperiodcentered{} [2+7]}
+What is limitation of Apriori algorithm compared to FP-growth? A database has 5 transactions,
+given in table below. Let min support $=$ 60\% and min confidence $=$ 80\%.
+\par\vspace{2pt}
+\begin{tabularx}{0.50\textwidth}{@{}L{1.9cm}X@{}}
+\toprule
+\hrow \thead{TID} & \thead{Item\_bought} \\
+T100 & \{M, O, N, K, E, Y\} \\
+T200 & \{D, O, N, K, E, Y\} \\
+T300 & \{M, A, K, E\} \\
+T400 & \{M, U, C, K, Y\} \\
+T500 & \{C, O, O, K, I, E\} \\
+\bottomrule
+\end{tabularx}
+\par\vspace{2pt}
+\begin{enumerate}[label=\roman*), leftmargin=1.9em]
+  \item Find all frequent itemsets using FP-growth.
+  \item List all of the strong association rules (with support and confidence).
+\end{enumerate}
+\end{asked}
 \begin{itemize}
   \item \mk{T500 prints O twice} --- a transaction is a set, so it is \{C,O,K,I,E\}.
   \item 5 transactions, 60\% $\rightarrow$ \textbf{min count $=$ 3}.
@@ -218,7 +393,7 @@ Find all frequent itemsets using FP-growth, then all strong rules.}
 
 \lead{Step 1: counts and F-list}
 \begin{itemize}
-  \item K:5, E:4, M:3, O:3, Y:3 \quad ✓ \qquad N:2, C:2, D:1, A:1, U:1, I:1 \quad ✗
+  \item K:5, E:4, M:3, O:3, Y:3 \quad \checkmark \qquad N:2, C:2, D:1, A:1, U:1, I:1 \quad \xmark
   \item \textbf{F-list $=$ K(5), E(4), M(3), O(3), Y(3)} \ (ties at 3 broken alphabetically)
 \end{itemize}
 
@@ -262,24 +437,38 @@ K & --- & \{K\}:5 \\
 
 \lead{Strong rules (min conf 80\%)}
 \begin{itemize}
-  \item \textbf{K$\Rightarrow$E} $=4/5=0.80$ ✓ \quad \textbf{E$\Rightarrow$K} $=4/4=1.0$ ✓
-  \item \textbf{M$\Rightarrow$K} $=3/3=1.0$ ✓ \quad \textbf{O$\Rightarrow$K} $=3/3=1.0$ ✓ \quad
-        \textbf{Y$\Rightarrow$K} $=3/3=1.0$ ✓ \quad \textbf{O$\Rightarrow$E} $=3/3=1.0$ ✓
-  \item \textbf{K,O$\Rightarrow$E} $=1.0$ ✓ \quad \textbf{E,O$\Rightarrow$K} $=1.0$ ✓ \quad
-        \textbf{O$\Rightarrow$K,E} $=1.0$ ✓
+  \item \textbf{K$\Rightarrow$E} $=4/5=0.80$ \checkmark \quad \textbf{E$\Rightarrow$K} $=4/4=1.0$ \checkmark
+  \item \textbf{M$\Rightarrow$K} $=3/3=1.0$ \checkmark \quad \textbf{O$\Rightarrow$K} $=3/3=1.0$ \checkmark \quad
+        \textbf{Y$\Rightarrow$K} $=3/3=1.0$ \checkmark \quad \textbf{O$\Rightarrow$E} $=3/3=1.0$ \checkmark
+  \item \textbf{K,O$\Rightarrow$E} $=1.0$ \checkmark \quad \textbf{E,O$\Rightarrow$K} $=1.0$ \checkmark \quad
+        \textbf{O$\Rightarrow$K,E} $=1.0$ \checkmark
   \item Failing: K$\Rightarrow$M, K$\Rightarrow$O, K$\Rightarrow$Y (all $3/5=0.6$),
         E$\Rightarrow$O (0.75), K,E$\Rightarrow$O (0.75), E$\Rightarrow$K,O (0.75).
 \end{itemize}
 
 \creamq{Problem 3.2}{\m{4+4}}
-{\color{sub}\footnotesize \yr{75 Ch} \gap Draw the FP-tree for the 5-transaction table.
-Min support is not printed; \textbf{use 3}, which is the standard for this dataset. \added}
+\begin{asked}{2075 Chaitra \textperiodcentered{} Q4 \textperiodcentered{} [4+4]}
+What do you mean by frequent Pattern growth, draw FP-tree with given tabular data.
+\par\vspace{2pt}
+\begin{tabularx}{0.56\textwidth}{@{}L{1.9cm}X@{}}
+\toprule
+\hrow \thead{TID} & \thead{Items} \\
+01 & f, a, c, d, g, i, m, p \\
+02 & a, b, c, f, l, m, o \\
+03 & b, f, h, j, o, w \\
+04 & b, c, k, s, p \\
+05 & A, f, c, e, l, p, m, n \\
+\bottomrule
+\end{tabularx}
+\end{asked}
+{\color{sub}\footnotesize Min support is not printed; \textbf{use 3}, which is the standard for
+this dataset. \added}
 
 \sbs{%
 \lead{Counts and F-list}
 \begin{itemize}
-  \item f:4, c:4, a:3, b:3, m:3, p:3 ✓ \quad
-        l:2, o:2, and d,g,i,h,j,k,s,e,n,w all 1 ✗
+  \item f:4, c:4, a:3, b:3, m:3, p:3 \checkmark \quad
+        l:2, o:2, and d,g,i,h,j,k,s,e,n,w all 1 \xmark
   \item \textbf{F-list $=$ f, c, a, b, m, p}
   \item \mk{T05 prints a capital ``A''} --- same item as \texttt{a}.
 \end{itemize}
@@ -303,8 +492,26 @@ Min support is not printed; \textbf{use 3}, which is the standard for this datas
 \end{itemize}}
 
 \creamq{Problem 3.3}{\m{4+4}}
-{\color{sub}\footnotesize \yr{78 Bh} \gap Grocery store, support 33.34\%, confidence 60\%.
-Show how the tree evolves, then mine it.}
+\begin{asked}{2078 Bhadra \textperiodcentered{} Q5 \textperiodcentered{} [4+4]}
+Consider the given transactional database from a grocery store. Use a support threshold of
+33.34\% and confidence threshold of 60\% to compute the following:
+\begin{enumerate}[label=\alph*), leftmargin=1.6em]
+  \item Build a frequent pattern tree (FP-Tree). Show for each transaction how the tree evolves.
+  \item Use FP-Growth algorithm to discover the frequent itemsets from this FP-tree.
+\end{enumerate}
+\par\vspace{2pt}
+\begin{tabularx}{0.58\textwidth}{@{}L{3.0cm}X@{}}
+\toprule
+\hrow \thead{Transcation ID} & \thead{Items} \\
+T1 & HotDogs, Buns, Ketchup \\
+T2 & HotDogs, Buns \\
+T3 & HotDogs, Coke, Chips \\
+T4 & Chips, Coke \\
+T5 & Chips, Ketchup \\
+T6 & HotDogs, Coke, Chips \\
+\bottomrule
+\end{tabularx}
+\end{asked}
 \begin{itemize}
   \item 6 transactions, 33.34\% $\rightarrow$ \textbf{min count $=$ 2}.
   \item Counts: HotDogs 4, Chips 4, Coke 3, Buns 2, Ketchup 2 --- \textbf{all frequent}.
@@ -348,8 +555,23 @@ Chips & --- & \{Ch\}:4 \\
 \end{itemize}}
 
 \creamq{Problem 3.4}{\m{2+8}}
-{\color{sub}\footnotesize \yr{74 Ch} \gap Electronics store, 6 transactions. Min support not printed;
-use 2.}
+\begin{asked}{2074 Chaitra \textperiodcentered{} Q6 \textperiodcentered{} [2+8]}
+How does FP growth approach overcomes the disadvantages of Apriori algorithm. For the
+transaction data given in table generate FP-Tree.
+\par\vspace{2pt}
+\begin{tabularx}{0.58\textwidth}{@{}L{3.0cm}X@{}}
+\toprule
+\hrow \thead{Transaction ID} & \thead{Item set} \\
+T1 & Camera, Laptop, Pen drive \\
+T2 & Laptop, Pen drive \\
+T3 & Laptop, Mobile, Earphone \\
+T4 & Earphone, Mobile \\
+T5 & Camera, Earphone \\
+T6 & Laptop, Mobile, Earphone \\
+\bottomrule
+\end{tabularx}
+\end{asked}
+{\color{sub}\footnotesize Min support is not printed; use 2.}
 \begin{itemize}
   \item Counts: Laptop 4, Earphone 4, Mobile 3, Camera 2, Pen drive 2 --- all frequent.
   \item \textbf{F-list $=$ Earphone(4), Laptop(4), Mobile(3), Camera(2), Pen drive(2)}
@@ -376,8 +598,12 @@ use 2.}
 \end{itemize}
 
 \creamq{Problem 4.1}{\m{8}}
-{\color{sub}\footnotesize \yr{70 Ch} \gap ``Why is pattern evaluation important? Explain with example
-the statistical based measures.'' Use the standard game/video contingency table. \added}
+\begin{asked}{2070 Chaitra \textperiodcentered{} Q5 \textperiodcentered{} [8]}
+Why is pattern evaluation important in association rule mining? Explain with example the
+statistical based measures used for measuring interestingness of association rules.
+\end{asked}
+{\color{sub}\footnotesize The paper prints no data --- the example is yours to supply. The
+standard \emph{game / video} contingency table below is the one every textbook uses. \added}
 
 \lead{Given} 10,000 transactions: 6,000 contain \emph{game}, 7,500 contain \emph{video},
 4,000 contain both.
@@ -438,12 +664,14 @@ col & 6000 & 4000 & 10,000 \\
 \end{itemize}
 
 \creamq{Problem 5.1}{\m{3}}
-{\color{sub}\footnotesize \yr{76 Ch} \gap List all 4-subsequences of
-$s = \langle \{1,3\}\ \{2\}\ \{2,3\}\ \{4\}\rangle$.}
+\begin{asked}{2076 Chaitra \textperiodcentered{} Q8 (a) \textperiodcentered{} [3]}
+List all the 4-subsequences contained in the data sequence:
+$\langle \{1,3\}\ \{2\}\ \{2,3\}\ \{4\} \rangle$
+\end{asked}
 
 \lead{Given} $e_1=\{1,3\}$, $e_2=\{2\}$, $e_3=\{2,3\}$, $e_4=\{4\}$; 6 items in total.
 
-\lead{Step 1: enumerate the item-count splits} $(a,b,c,d)$ with $a\le2, b\le1, c\le2, d\le1$, sum $=4$
+\lead{Step 1: enumerate the item-count splits} $(a,b,c,d)$ with $a\le2, b\le1, c\le2, d\le1$, sum $=4$\par
 \begin{tabularx}{0.9\textwidth}{@{}L{2.2cm}L{1.6cm}X@{}}
 \toprule
 \hrow \thead{$(a,b,c,d)$} & \thead{Ways} & \thead{Subsequences} \\
@@ -468,8 +696,11 @@ $s = \langle \{1,3\}\ \{2\}\ \{2,3\}\ \{4\}\rangle$.}
 \end{itemize}
 
 \creamq{Problem 5.2}{\m{3}}
-{\color{sub}\footnotesize \yr{79 Bh} \gap ``Generate at least four subsequences from
-$\langle \{2,3,5\}, \{6,7,8\}, \{9,1\}, \{7,4\}\rangle$.''}
+\begin{asked}{2079 Bhadra \textperiodcentered{} Q6 (a) \textperiodcentered{} [3+3]}
+How do you handle the categorical attributes in data mining process? Explain with example.
+Generate the at least four subsequences from the given sequence:
+$<\{2,3,5\}, \{6,7,8\}, \{9,1\}, \{7,4\}>$.
+\end{asked}
 \begin{itemize}
   \item Any order-preserving selection works. Four valid examples:
   \begin{itemize}

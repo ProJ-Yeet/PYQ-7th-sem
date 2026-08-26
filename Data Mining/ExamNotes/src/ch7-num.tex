@@ -30,10 +30,15 @@ problem on the variant most likely to be set next.}
 \end{itemize}
 
 \creamq{Problem 1.1}{\m{8}}
-{\color{sub}\footnotesize \yr{76 Ch} \gap ``Apply the PageRank algorithm using a damping factor of
-0.85. A minimum of five iterations are required. Assume initial page rank of all pages is 0.25.''}
-
+\begin{asked}{2076 Chaitra \textperiodcentered{} Q12 \textperiodcentered{} [8]}
 \sbsr{0.56}{%
+Consider the following subset of pages and their links. Apply the PageRank algorithm using a
+damping factor of 0.85. A minimum of five iterations are required. Assume initial page rank of
+all pages is 0.25.}{%
+\vspace{0pt}\includegraphics[width=0.86\linewidth]{figs/pyq_pagerank_76ch}}
+\end{asked}
+
+\sbs{%
 \lead{Step 1: read the graph}
 \begin{tabularx}{\linewidth}{@{}L{1.5cm}XL{1.2cm}X@{}}
 \toprule
@@ -54,13 +59,11 @@ D & C & \textbf{1} & \mk{none} \\
 \begin{itemize}
   \item Note $A$'s rank is divided by 2 because A links to \emph{both} B and C.
 \end{itemize}}{%
-\figT{pyq_pagerank_76ch}}
-
 \lead{Step 3: iterate}
-\begin{tabularx}{0.88\textwidth}{@{}L{2.1cm}XXXX@{}}
+\begin{tabularx}{\linewidth}{@{}L{1.2cm}XXXX@{}}
 \toprule
-\hrow \thead{Iteration} & \thead{PR(A)} & \thead{PR(B)} & \thead{PR(C)} & \thead{PR(D)} \\
-0 (initial) & 0.2500 & 0.2500 & 0.2500 & 0.2500 \\
+\hrow \thead{Iter} & \thead{PR(A)} & \thead{PR(B)} & \thead{PR(C)} & \thead{PR(D)} \\
+0 & 0.2500 & 0.2500 & 0.2500 & 0.2500 \\
 1 & 0.3625 & 0.2563 & 0.6813 & 0.1500 \\
 2 & 0.7291 & 0.3041 & 0.6494 & 0.1500 \\
 3 & 0.7020 & 0.4599 & 0.8459 & 0.1500 \\
@@ -68,14 +71,14 @@ D & C & \textbf{1} & \mk{none} \\
 \textbf{5} & \textbf{0.9718} & \textbf{0.5193} & \textbf{1.0280} & \textbf{0.1500} \\
 \bottomrule
 \end{tabularx}
-
+{\color{sub}\footnotesize Row 0 is the given start value.}
 \lead{Sample working (iteration 1)}
 \begin{itemize}
-  \item $PR(A) = 0.15 + 0.85(0.25) = 0.15+0.2125 = 0.3625$
-  \item $PR(B) = 0.15 + 0.85(0.25/2) = 0.15+0.10625 = 0.2563$
-  \item $PR(C) = 0.15 + 0.85(0.125+0.25+0.25) = 0.15+0.85(0.625) = 0.6813$
+  \item $PR(A) = 0.15 + 0.85(0.25) = 0.3625$
+  \item $PR(B) = 0.15 + 0.85(0.25/2) = 0.2563$
+  \item $PR(C) = 0.15 + 0.85(0.125+0.25+0.25) = 0.6813$
   \item $PR(D) = 0.15$
-\end{itemize}
+\end{itemize}}
 
 \lead{Final answer after 5 iterations}
 \begin{itemize}
@@ -97,8 +100,15 @@ and \textbf{D is stuck at 0.15} because nothing points to it. Linking out never 
 \end{minipage}}\end{center}
 
 \creamq{Practice --- the normalised form}{}
-{\color{sub}\footnotesize Some texts write $PR(A) = \frac{1-d}{N} + d\sum\frac{PR(T_i)}{C(T_i)}$,
-which makes the ranks sum to \textbf{1} instead of $N$. Know both. \added}
+\begin{asked}[PROBLEM]{not a PYQ \textperiodcentered{} the same graph, normalised form \added}
+Repeat Problem 1.1 on the same four-page graph, but using the \emph{normalised} PageRank
+formula
+\[ PR(A) = \frac{1-d}{N} + d\sum_i \frac{PR(T_i)}{C(T_i)} \]
+with $d = 0.85$, $N = 4$ and an initial rank of 0.25 for every page. Compare the converged
+ranks and the ordering with those of Problem 1.1.
+\end{asked}
+{\color{sub}\footnotesize This form makes the ranks sum to \textbf{1} instead of $N$.
+Know both. \added}
 
 \begin{itemize}
   \item With $N=4$, $\frac{1-d}{N} = \frac{0.15}{4} = 0.0375$.

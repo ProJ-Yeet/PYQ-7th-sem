@@ -192,6 +192,29 @@
   \item Careful integration $\rightarrow$ reduces/avoids redundancy $\rightarrow$ improves mining speed + quality.
 \end{itemize}
 
+\sbs{%
+\lead{$\chi^2$ test of independence \mk{(nominal pairs)} \pillo{gd}{NEW}}
+\begin{itemize}
+  \item $H_0$: the 2 attrs are \textbf{independent}. $H_1$: associated (so 1 is redundant).
+  \item Build the \textbf{contingency table} of observed counts $O_{ij}$.
+  \item Expected count $E_{ij} = \dfrac{(\text{row}_i\ \text{total})\times(\text{col}_j\ \text{total})}
+        {\text{grand total}}$
+  \item $\chi^2 = \sum_{i,j} \dfrac{(O_{ij}-E_{ij})^2}{E_{ij}}$, \quad
+        $df = (r-1)(c-1)$.
+  \item $\chi^2 >$ critical value at $\alpha$ $\rightarrow$ \textbf{reject $H_0$} $\rightarrow$
+        correlated $\rightarrow$ drop one attr.
+\end{itemize}}{%
+\lead{Worked in one line}
+\begin{itemize}
+  \item Gender (M/F) vs preference (like/dislike), 100 people, all 4 margins $=50$.
+  \item Every $E_{ij} = \frac{50\times 50}{100} = 25$. Observed 20/30/30/20.
+  \item $\chi^2 = 4\times\frac{5^2}{25} = \mathbf{4}$, \ $df = (2-1)(2-1) = 1$.
+  \item Critical value at $\alpha = 0.05$, $df=1$ is $3.841$. \ $4 > 3.841$
+        $\rightarrow$ \mk{reject $H_0$}, gender and preference are associated.
+  \item \mk{Correlation $\ne$ causation}. Numeric analogue: $r_{A,B} = \frac{Cov(A,B)}{\sigma_A\sigma_B}$,
+        formula in §2.4.
+\end{itemize}}
+
 %-----------------------------------------------------------------------
 \creamq{(c) Data transformation + normalisation}{\m{2+6}\m{4}\m{2+2+2}}
 {\color{sub}\footnotesize \tS{} \yr{73 Shr, 75 Ch, 78 Bh} \gap \textbf{Normalisation numerical is a
@@ -246,6 +269,21 @@ Using $min$ makes every $v'\ge 0$, which defeats the whole point of a zero-mean 
     \item \textbf{Aggregation} / data cube
     \item \textbf{Discretisation} + concept hierarchy
     \item \textbf{Compression}: lossy / lossless
+  \end{itemize}
+  \item \textbf{Han \& Kamber's 3-way split} \pillo{gd}{NEW} \mk{(safer skeleton for a 5-mark answer)}:
+  \begin{itemize}
+    \item \textbf{Dimensionality reduction}: wavelet transform, PCA, attribute subset selection.
+          \emph{Fewer attributes.}
+    \item \textbf{Numerosity reduction}: replace the data by a smaller representation.
+          \emph{Fewer tuples.}
+    \begin{itemize}
+      \item \emph{Parametric}: fit a model, store only its parameters
+            $\rightarrow$ regression, log-linear models.
+      \item \emph{Non-parametric}: store a reduced form directly
+            $\rightarrow$ histograms, clustering, sampling, data cube aggregation.
+    \end{itemize}
+    \item \textbf{Data compression}: lossless (exact rebuild) vs lossy (approximation).
+          The other two are themselves forms of compression.
   \end{itemize}
 \end{itemize}
 \lead{Sampling types}
@@ -588,7 +626,97 @@ Testing linear relationship & Correlation coefficient \\
 \hr
 
 %-----------------------------------------------------------------------
-\T{2.5 PYQ Mapping}
+\T{2.5 Basic Statistical Descriptions of Data}
+
+{\color{sub}\footnotesize \pillo{gd}{NEW} \gap Han \& Kamber 3rd ed §2.2.
+\textbf{Never asked in the 17 papers}, so no tier chip. Added because PC's 2025--26 Unit 2 handout
+and its numerical companion are built entirely on it, and because the IQR outlier rule below is the
+statistical basis of the boxplot test used in Ch 6.
+\mk{Learn the two boxed formulas; skim the rest.}}
+
+\sbs{%
+\lead{Measures of central tendency}
+\begin{itemize}
+  \item \textbf{Mean} $\bar{x} = \frac{1}{n}\sum_i x_i$ (sample), $\mu = \frac{1}{N}\sum x$ (population).
+  \item \textbf{Weighted mean} $\bar{x} = \frac{\sum w_i x_i}{\sum w_i}$.
+  \item \textbf{Trimmed mean}: chop the extreme values first $\rightarrow$ kills outlier
+        sensitivity. Chop at most 2\% per end.
+  \item \textbf{Median}: middle value if $n$ odd, mean of the middle two if $n$ even.
+  \item \mk{Median is holistic} $\rightarrow$ needs a full sort $\rightarrow$ expensive on a large
+        table. {\footnotesize(Same holistic/distributive/algebraic split as the cube measures, §2.3.)}
+  \item \textbf{Mode}: most frequent value. Unimodal / bimodal / trimodal / multimodal.
+        No mode if every value occurs once.
+  \item \textbf{Midrange} $= \frac{max+min}{2}$. Cheap: 1 pass, \texttt{max()} and \texttt{min()}.
+\end{itemize}
+\vspace{2pt}
+\fbox{\begin{minipage}{0.95\linewidth}\small
+\textbf{Median of grouped data} (intervals, not raw values):
+\[ median = L_1 + \left(\frac{N/2 - (\sum freq)_l}{freq_{median}}\right)\times width \]
+$L_1$ $=$ lower boundary of the median interval, $N$ $=$ total count,
+$(\sum freq)_l$ $=$ cumulative frequency of all intervals \emph{below} it,
+$freq_{median}$ $=$ its own frequency, $width$ $=$ its width.\\[2pt]
+\mk{Locate the interval first}: the one where cumulative frequency first reaches $N/2$.
+\end{minipage}}
+\vspace{2pt}
+\fbox{\begin{minipage}{0.95\linewidth}\small
+\textbf{Empirical relation}, unimodal and moderately skewed:
+\[ mean - mode \approx 3\,(mean - median) \]
+\vspace{-8pt}
+\[ \Rightarrow\quad mode \approx 3\,median - 2\,mean \]
+\end{minipage}}
+\lead{Skew, read off mean vs median vs mode}
+\begin{itemize}
+  \item \textbf{Symmetric}: $mean = median = mode$.
+  \item \textbf{Positively skewed} (right tail): $mode < median < mean$.
+  \item \textbf{Negatively skewed} (left tail): $mean < median < mode$.
+  \item \mk{Mean is dragged toward the tail}, median is not. That is why median is the robust one.
+\end{itemize}}{%
+\lead{Measures of dispersion}
+\begin{itemize}
+  \item \textbf{Range} $= max - min$.
+  \item \textbf{Quartiles}: $Q_1$ $=$ 25th percentile, $Q_2$ $=$ median, $Q_3$ $=$ 75th percentile.
+  \item \textbf{IQR} $= Q_3 - Q_1$ $=$ spread of the middle half.
+  \item \textbf{Variance} $s^2 = \frac{1}{n-1}\sum_i (x_i-\bar{x})^2$, \
+        \textbf{std deviation} $s = \sqrt{s^2}$.
+  \item Population forms use $\frac{1}{N}$ and $\sigma$.
+\end{itemize}
+\lead{Two quartile conventions \mk{(they disagree, say which you used)}}
+\begin{itemize}
+  \item \textbf{Positional} \mk{(Han \& Kamber, the syllabus book)}: for $n=12$ take the 3rd, 6th
+        and 9th sorted values directly.
+  \item \textbf{Interpolated} \mk{(PC's class notes)}: position of $Q_k = \frac{k(n+1)}{4}$, then
+        linear interpolation between the two neighbouring values.
+  \item Both are marked correct. \mk{The outlier verdict comes out the same either way}
+        $\rightarrow$ see Ch 2 Numerical, M7.
+\end{itemize}
+\lead{Five-number summary and boxplot}
+\begin{itemize}
+  \item \textbf{Five-number summary}, in this order:
+        $Minimum,\ Q_1,\ Median,\ Q_3,\ Maximum$.
+  \item \textbf{Boxplot}: box spans $Q_1$ to $Q_3$ (box length $=$ IQR), line inside marks the median,
+        two \textbf{whiskers} extend to min and max, outliers plotted as individual points.
+\end{itemize}
+\vspace{2pt}
+\fbox{\begin{minipage}{0.95\linewidth}\small
+\textbf{IQR outlier rule} \mk{(the one to memorise)}: a value is a suspected outlier if
+\[ x < Q_1 - 1.5\,IQR \qquad\text{or}\qquad x > Q_3 + 1.5\,IQR \]
+Beyond $3\,IQR$ $=$ \textbf{extreme} outlier. \mk{Used again in Ch 6} as the boxplot test.
+\end{minipage}}
+\lead{Graphic displays}
+\begin{itemize}
+  \item \textbf{Histogram}: $x$ $=$ value / bin, $y$ $=$ frequency.
+  \item \textbf{Quantile plot}: each $x_i$ against $f_i$, the fraction of data at or below it.
+  \item \textbf{Quantile-quantile (q-q) plot}: quantiles of one distribution against the
+        corresponding quantiles of another $\rightarrow$ compares 2 datasets.
+  \item \textbf{Scatter plot}: each pair as a point $\rightarrow$ shows correlation and clusters.
+  \item \mk{Histogram often tells more than a boxplot}: two datasets can share a boxplot
+        and have completely different histograms.
+\end{itemize}}
+
+\hr
+
+%-----------------------------------------------------------------------
+\T{2.6 PYQ Mapping}
 
 {\color{sub}\footnotesize Tiers: \tS{} $=$ 7+/17 \gap \tF{} $=$ 4--6 \gap \tP{} $=$ 1--3 but $\ge$8 marks.
 \mk{N} marks a question fully solved in the Ch 2 Numerical companion.}
@@ -666,5 +794,10 @@ Testing linear relationship & Correlation coefficient \\
         discretisation, distance/similarity, PCA process, data cube $+$ concept hierarchies.
   \item \code{data mining\_/Chapter 1\_2.pdf} (Bhupesh K. Mishra), \code{Chapter3\_0.ppt},
         \code{Chapter 2\_Data Warehouse.ppt}.
+  \item \textbf{Notes by PC} (Er. Prakash Chandra Prasad, Asst.\ Prof., IOE Pulchowk), dated
+        2025--26: \code{Unit 2.docx}, \code{unit 2 Numerical.docx},
+        \code{Redundancy and Correlation Analysis.docx}. Source of the new §2.5 and of the
+        $\chi^2$ procedure in §2.2(b). \mk{Newest teaching material available}, so treat §2.5 as
+        insurance even though no past paper has asked it.
   \item Where sources disagree, \textbf{Han \& Kamber 3rd ed wins} and the clash is flagged inline.
 \end{itemize}

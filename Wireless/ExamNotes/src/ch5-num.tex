@@ -1,0 +1,328 @@
+%=======================================================================
+%  CHAPTER 5 — NUMERICAL PROBLEMS AND SOLUTIONS
+%=======================================================================
+\section*{\color{acc}Ch 5 \textperiodcentered{} Equalization and Diversity \gap
+\textcolor{sub}{Numerical Problems \& Solutions}}
+\vspace{-4pt}{\color{acc}\rule{\textwidth}{1.1pt}}\vspace{4pt}
+
+{\color{sub}\footnotesize \mk{No PYQ in 22 papers has set a pure calculation on this chapter.}
+What \emph{is} examined, repeatedly, is the \textbf{MSE optimum-weight derivation} \tF{3}, which
+the papers ask for as bookwork with a diagram. The rest of this companion works the tutorial-set
+problems, because they are the standard follow-ups and they make the diversity theory concrete.}
+
+\lead{The formula sheet}
+\begin{itemize}
+  \item \textbf{MSE cost function} \;
+        $\xi = E[x_k^2] + \boldsymbol{\omega}^T\mathbf{R}\boldsymbol{\omega}
+             - 2\mathbf{p}^T\boldsymbol{\omega}$
+  \item \textbf{Optimum weights} \;
+        $\hat{\boldsymbol{\omega}} = \mathbf{R}^{-1}\mathbf{p}$, \qquad
+        $\xi_{\min} = E[x_k^2] - \mathbf{p}^T\hat{\boldsymbol{\omega}}$
+  \item \textbf{LMS update} \;
+        $\boldsymbol{\omega}_{k+1} = \boldsymbol{\omega}_k + \mu\,e_k\,\mathbf{y}_k^{*}$
+  \item \textbf{Selection diversity}, $M$ Rayleigh branches, mean SNR $\Gamma$ each:
+        \[ \Pr[\text{SNR} \le \gamma] = \left(1 - e^{-\gamma/\Gamma}\right)^{M},
+           \qquad \frac{\bar{\gamma}_M}{\Gamma} = \sum_{k=1}^{M}\frac{1}{k} \]
+  \item \textbf{Maximal ratio combining} \;
+        $\displaystyle \gamma_M = \sum_{i=1}^{M}\gamma_i$, so
+        $\bar{\gamma}_M = M\,\Gamma$
+  \item \textbf{Interleaver} \; degree $m$, word length $n$: an $(n,k)$ code handling bursts of
+        $b < (n-k)/2$ becomes an $(mn, mk)$ code handling bursts of $mb$
+\end{itemize}
+
+\hr
+
+\T{Problem 1 \quad Optimum tap weights for a 2-tap equalizer}
+{\color{sub}\footnotesize \tF{3} \yr{\texttt{79 Bh} \m{8}, \textbf{79 Ch} \m{7},
+\textbf{80 Ch} \m{7}} \gap$\cdot$\gap the papers ask for the \textbf{derivation}; this worked
+example shows the derivation actually being used}
+
+\begin{asked}{2079 Bhadra \textperiodcentered{} Q5 \textperiodcentered{} [8]
+\ \textperiodcentered{} \ 2079 Chaitra \textperiodcentered{} Q6 \textperiodcentered{} [7]
+\ \textperiodcentered{} \ 2080 Chaitra \textperiodcentered{} Q6 \textperiodcentered{} [7]}
+Determine the optimal solution of the weights using MSE algorithm with its appropriate diagram
+and derivation.
+\end{asked}
+\begin{asked}[PROBLEM]{not a PYQ \textperiodcentered{} numbers chosen to exercise the result \added}
+A 2-tap adaptive equalizer sees an input correlation matrix
+$\mathbf{R} = \begin{bmatrix} 1 & 0.5 \\ 0.5 & 1 \end{bmatrix}$, a cross-correlation vector
+$\mathbf{p} = \begin{bmatrix} 0.8 \\ 0.5 \end{bmatrix}$ and a transmitted signal power
+$E[x_k^2] = 1$. Find the optimum weight vector $\mathbf{w}_{opt}$ and the minimum mean square
+error $\xi_{min}$.
+\end{asked}
+
+\lead{Step 1: why $\hat{\boldsymbol{\omega}} = \mathbf{R}^{-1}\mathbf{p}$ (the derivation)}
+\begin{itemize}
+  \item Error signal, with $\mathbf{y}_k$ the input vector and $x_k$ the known training symbol:
+        \[ e_k = x_k - \mathbf{y}_k^T\boldsymbol{\omega} \]
+  \item Square it and take expectations:
+        \[ \xi = E[e_k^2]
+               = E[x_k^2] + \boldsymbol{\omega}^T \mathbf{R} \boldsymbol{\omega}
+                 - 2\,\mathbf{p}^T\boldsymbol{\omega} \]
+        with $\mathbf{R} = E[\mathbf{y}_k\mathbf{y}_k^T]$ and
+        $\mathbf{p} = E[x_k\mathbf{y}_k]$.
+  \item $\xi$ is \textbf{quadratic} in $\boldsymbol{\omega}$, so the surface is a bowl with
+        \textbf{one} minimum. Set the gradient to zero:
+        \[ \nabla\xi = 2\mathbf{R}\boldsymbol{\omega} - 2\mathbf{p} = 0
+           \;\Longrightarrow\;
+           \boxed{\hat{\boldsymbol{\omega}} = \mathbf{R}^{-1}\mathbf{p}} \]
+\end{itemize}
+
+\lead{Step 2: invert $\mathbf{R}$}
+\[ \det \mathbf{R} = (1)(1) - (0.5)(0.5) = 0.75 \]
+\[ \mathbf{R}^{-1} = \frac{1}{0.75}\begin{bmatrix} 1 & -0.5 \\ -0.5 & 1 \end{bmatrix}
+   = \begin{bmatrix} 1.3333 & -0.6667 \\ -0.6667 & 1.3333 \end{bmatrix} \]
+{\color{sub}\footnotesize $\mathbf{R}$ must be \textbf{non-singular} for the solution to exist.
+Here $\det\mathbf{R} = 0.75 \ne 0$ \checkmark}
+
+\lead{Step 3: the optimum weights}
+\[ \hat{\boldsymbol{\omega}}
+   = \begin{bmatrix} 1.3333 & -0.6667 \\ -0.6667 & 1.3333 \end{bmatrix}
+     \begin{bmatrix} 0.8 \\ 0.5 \end{bmatrix} \]
+\[ w_0 = 1.3333(0.8) - 0.6667(0.5) = 1.0667 - 0.3333 = 0.7333 \]
+\[ w_1 = -0.6667(0.8) + 1.3333(0.5) = -0.5333 + 0.6667 = 0.1333 \]
+\[ \boxed{\hat{\boldsymbol{\omega}} = \begin{bmatrix} 0.7333 \\ 0.1333 \end{bmatrix}} \]
+
+\lead{Step 4: the minimum MSE}
+\[ \xi_{\min} = E[x_k^2] - \mathbf{p}^T\hat{\boldsymbol{\omega}}
+              = 1 - \left[(0.8)(0.7333) + (0.5)(0.1333)\right] \]
+\[ = 1 - (0.5867 + 0.0667) = 1 - 0.6533 = \boxed{0.3467} \]
+
+\begin{itemize}
+  \item \mk{Interpretation:} the equalizer has removed about 65\,\% of the error energy. The
+        residual 0.3467 is what no linear 2-tap filter can remove.
+  \item \textbf{Adding taps lowers $\xi_{\min}$}, but at the cost of processing time and slower
+        convergence. That trade-off is the practical answer to ``how many taps?''.
+  \item \mk{The examiner wants the derivation, not the arithmetic.} Reproduce Steps 1 and 2
+        symbolically and show the bowl-shaped error surface; the numbers are the easy part.
+\end{itemize}
+
+\hr
+
+\T{Problem 2 \quad Selection diversity: probability of a deep fade}
+{\color{sub}\footnotesize \yr{tutorial set, and the standard companion to the
+``why implement diversity'' question \tS{11}}}
+
+\begin{asked}[PROBLEM]{not a PYQ \textperiodcentered{} the standard companion to the ``why diversity'' question \added}
+Five branches of a selection diversity receiver each receive an independent Rayleigh fading
+signal. The average SNR on every branch is 20 dB. Determine the probability that the SNR of the
+selected branch drops below 10 dB, compute the mean SNR after selection, and compare both with a
+single receiver having no diversity.
+\end{asked}
+{\color{sub}\footnotesize ``Why is there a need to implement diversity?'' is asked in 11 of the
+22 papers; this is the arithmetic that answers it with a number. \added}
+
+\lead{Step 1: form the ratio $\gamma/\Gamma$ \mk{(in linear terms, not dB)}}
+\begin{itemize}
+  \item Threshold $\gamma = 10\ \text{dB} = 10^{10/10} = 10$
+  \item Mean per branch $\Gamma = 20\ \text{dB} = 10^{20/10} = 100$
+  \item \[ \frac{\gamma}{\Gamma} = \frac{10}{100} = 0.1 \]
+  \mk{Subtracting in dB gives the same answer, but watch the order:
+  $10\ \text{dB} - 20\ \text{dB} = -10$ dB, and $10^{-10/10} = 0.1$. \checkmark
+  Either route is fine; mixing them is not.}
+\end{itemize}
+
+\lead{Step 2: probability the SNR falls below the threshold}
+\[ \Pr[\text{SNR} \le \gamma] = \left(1 - e^{-\gamma/\Gamma}\right)^{M}
+   = \left(1 - e^{-0.1}\right)^{M} = (0.09516)^{M} \]
+
+\vspace{2pt}
+\begin{center}\small
+\begin{tabular}{@{}rll@{}}
+\toprule
+\hrow \thead{Branches $M$} & \thead{$\Pr[\text{SNR} \le 10\ \text{dB}]$} & \thead{Meaning} \\
+\midrule
+1 (no diversity) & $9.516\times10^{-2}$ & the link is below threshold \mk{9.5\,\% of the time} \\
+2 & $9.056\times10^{-3}$ & about 1 in 110 \\
+4 & $8.201\times10^{-5}$ & about 1 in 12\,000 \\
+5 & $\boxed{7.804\times10^{-6}}$ & about 1 in 128\,000 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{itemize}
+  \item \mk{Five-branch selection diversity improves the outage probability by more than four
+        orders of magnitude} over a single receiver, from $9.5\times10^{-2}$ to
+        $7.8\times10^{-6}$.
+  \item That is the entire justification for diversity, expressed as a number.
+\end{itemize}
+
+\lead{Step 3: mean SNR after selection combining}
+\[ \frac{\bar{\gamma}_M}{\Gamma} = \sum_{k=1}^{M}\frac{1}{k}
+   = 1 + \frac{1}{2} + \frac{1}{3} + \frac{1}{4} + \frac{1}{5} = 2.2833 \]
+\[ \bar{\gamma}_5 = 100 \times 2.2833 = 228.33 \;=\; \boxed{23.59\ \text{dB}} \]
+
+\begin{itemize}
+  \item So the mean SNR rises only \textbf{3.59 dB}, from 20 dB to 23.59 dB.
+  \item \mk{The important point:} the gain in \textbf{mean} SNR is modest, but the gain in
+        \textbf{outage probability} is enormous. Diversity works by cutting the
+        \textbf{tail} of the distribution, not by lifting the average.
+        \textbf{Say this in the theory answer too.}
+  \item \textbf{Diminishing returns:}
+        $M{=}2$ gives $1.5\Gamma$ (1.76 dB),
+        $M{=}3$ gives $1.833\Gamma$ (2.63 dB),
+        $M{=}4$ gives $2.083\Gamma$ (3.19 dB),
+        $M{=}5$ gives $2.283\Gamma$ (3.59 dB).
+        \mk{Most of the benefit is already in the second branch}, which is why practical systems
+        use 2, occasionally 4, and almost never 5.
+\end{itemize}
+
+\lead{Step 4: compare with maximal ratio combining}
+\begin{itemize}
+  \item MRC output SNR is the \textbf{sum} of the branch SNRs, so
+        \[ \bar{\gamma}_M = M\Gamma = 5 \times 100 = 500 = \boxed{26.99\ \text{dB}} \]
+  \item MRC gains a full \textbf{6.99 dB} against selection diversity's 3.59 dB, and its outage
+        probability at 10 dB falls to $7.67\times10^{-8}$, another factor of 100 better.
+  \item \mk{The price} is $M$ full receivers plus accurate estimation of each branch's amplitude
+        and phase. Selection diversity needs only to compare SNRs.
+\end{itemize}
+
+\hr
+
+\T{Problem 3 \quad Interleaver design against burst errors}
+{\color{sub}\footnotesize \tF{3} \yr{\textbf{\texttt{80 Bh}}, \textbf{\texttt{81 Bh}},
+\texttt{81 Ba}} \gap$\cdot$\gap the papers ask for the \textbf{principle}; this shows the
+design sum behind it}
+
+\begin{asked}{2080 Bhadra \textperiodcentered{} Q5 (b) \textperiodcentered{} [4]
+\ \textperiodcentered{} \ 2081 Bhadra \textperiodcentered{} Q7 \textperiodcentered{} [4]
+\ \textperiodcentered{} \ 2081 Baishakh \textperiodcentered{} Q5 \textperiodcentered{} [2+6]}
+Why interleaving is needed in wireless communication? Explain its working in brief.
+\ \textperiodcentered{}\ Elaborate the working principle behind Interleaving with an appropriate
+diagram. \ \textperiodcentered{}\ Define Interleaving.
+\end{asked}
+\begin{asked}[PROBLEM]{not a PYQ \textperiodcentered{} the design sum behind the principle \added}
+An interleaver has $m$ rows of $n$-bit words. Each word carries $k$ source bits and $(n-k)$
+parity bits of a block code. Show how the interleaver and coder together break up a burst of
+channel errors, and size the interleaver for a $(15,11)$ block code with interleaver degree
+$m = 8$: give the block size, the source bits per block, and the longest burst the arrangement
+can correct.
+\end{asked}
+
+\lead{Step 1: what the block code alone can do}
+\begin{itemize}
+  \item A block code with minimum distance $d'$ corrects $t$ errors when $d' \ge 2t+1$.
+  \item For an $(n,k)$ code the parity budget is $n-k$, so it can handle a burst of
+        \[ b < \frac{n-k}{2} \]
+  \item For the $(15,11)$ code: \; $n-k = 4$, so $t = 2$ and a burst of up to
+        \textbf{2 bits} per codeword is correctable.
+\end{itemize}
+
+\lead{Step 2: what the interleaver does}
+\begin{itemize}
+  \item Coded bits are written into the array \textbf{by column} and read out \textbf{by row}.
+  \item Two bits that were adjacent in a codeword end up \textbf{$m$ bit periods apart} on the
+        channel.
+  \item So a channel burst of length $l = mb$ is spread across $m$ different codewords, giving
+        each of them only $b$ errors, which each can correct.
+\end{itemize}
+
+\lead{Step 3: the resulting combined code}
+\begin{itemize}
+  \item An $(n,k)$ code plus a degree-$m$ interleaver behaves as an
+        \[ (mn,\; mk)\ \text{block code} \]
+  \item For $(15,11)$ with $m = 8$:
+        \[ (8 \times 15,\; 8 \times 11) = \boxed{(120,\,88)\ \text{block code}} \]
+  \item Burst-handling capability:
+        \[ l = m \times b = 8 \times 2 = \boxed{16\ \text{consecutive bits}} \]
+  \item \mk{The code rate is unchanged} at $88/120 = 11/15 = 0.733$. The interleaver costs no
+        redundancy at all: it buys burst protection purely with \textbf{delay and memory}.
+\end{itemize}
+
+\lead{Step 4: the delay penalty}
+\begin{itemize}
+  \item The interleaver must fill all $mn = 120$ bits before the first row can be sent, and the
+        de-interleaver must fill 120 bits before the first row can be decoded.
+  \item At a coded rate of, say, 22.8 kbps (GSM full rate) that is
+        \[ \frac{2 \times 120}{22\,800} = 10.5\ \text{ms of added delay} \]
+  \item \mk{Human speech tolerates delays below about 40 ms}, which is the hard cap on how deeply
+        a voice system may interleave. Data services, with no such limit, interleave far more
+        deeply.
+\end{itemize}
+
+\hr
+
+\T{Problem 4 \quad Choosing the equalizer algorithm from the channel}
+{\color{sub}\footnotesize \yr{the reasoning behind ``explain any two adaptive equalization
+algorithms'' (73 Ma, 74 Ma)}}
+
+\begin{asked}{2073 Magh \textperiodcentered{} Q5 (a) \textperiodcentered{} [4]
+\ \textperiodcentered{} \ 2074 Magh \textperiodcentered{} Q10 (a) \textperiodcentered{} [5]}
+Explain briefly adaptive equalization algorithms (any two).
+\ \textperiodcentered{}\ Write short note on Adaptive Equalization.
+\end{asked}
+\begin{asked}[PROBLEM]{not a PYQ \textperiodcentered{} the reasoning that picks the algorithm \added}
+A GSM mobile travels at 70 km/h on a 900 MHz carrier through a channel whose rms delay spread is
+$\sigma_\tau = 5\ \mu$s. The symbol rate is 270.833 ksym/s. Decide how many equalizer taps are
+needed, how often the equalizer must retrain, and hence which adaptive algorithm (LMS, RLS or
+Kalman) suits the link.
+\end{asked}
+
+\begin{itemize}
+  \item \textbf{Step 1: how many taps?} The tap span must cover the \textbf{maximum expected delay
+        spread}, in symbol periods.
+        \[ T_s = \frac{1}{270\,833} = 3.692\ \mu\text{s} \]
+        \[ \frac{\sigma_\tau}{T_s} = \frac{5}{3.692} = 1.35\ \text{symbols} \]
+        Allowing for the maximum excess delay being several times $\sigma_\tau$, an equalizer
+        spanning \textbf{about 5 symbol periods} is needed. \mk{GSM equalizers are specified to
+        handle 4 to 5 symbols of delay spread, which matches.}
+  \item \textbf{Step 2: how fast does the channel change?}
+        \[ v = 70\ \text{km/h} = 19.44\ \text{m/s}, \qquad
+           \lambda = 0.3333\ \text{m}, \qquad f_m = \frac{v}{\lambda} = 58.33\ \text{Hz} \]
+        \[ T_c \approx \frac{0.423}{f_m} = \frac{0.423}{58.33} = 7.25\ \text{ms} \]
+  \item \textbf{Step 3: retraining rate.} The equalizer must converge and be used well inside
+        7.25 ms.
+        \[ \text{minimum retrain rate} = \frac{1}{7.25\ \text{ms}} = 138\ \text{times per second} \]
+        \mk{GSM sends a training midamble in every 4.615 ms frame}, ie 217 times per second,
+        comfortably inside the requirement. \checkmark
+  \item \textbf{Step 4: which algorithm?}
+  \begin{itemize}
+    \item The channel changes every few milliseconds, and the GSM training sequence is only
+          \textbf{26 bits} long.
+    \item \textbf{LMS} typically needs hundreds of iterations to converge, so 26 bits is not
+          enough.
+    \item \textbf{RLS} converges in roughly $2N$ iterations for an $N$-tap filter, ie about 10
+          for a 5-tap equalizer. \mk{RLS, or an MLSE with a channel estimator, is the only viable
+          choice.}
+    \item That is exactly why GSM receivers use \textbf{MLSE with Viterbi}, not a simple LMS
+          transversal equalizer.
+  \end{itemize}
+\end{itemize}
+
+\hr
+
+\T{Problem 5 \quad Cell-edge SNR gain from two-branch diversity}
+{\color{sub}\footnotesize \yr{the arithmetic behind ``how diversity improves the quality of the
+network'' (\textbf{76 Bh} \m{2})}}
+
+\begin{asked}{2076 Bhadra \textperiodcentered{} Q5 \textperiodcentered{} [2+4]}
+Explain how diversity improves the quality of network. Explain the operation of RAKE receiver
+with appropriate block diagram.
+\end{asked}
+\begin{asked}[PROBLEM]{not a PYQ \textperiodcentered{} the number that answers ``how much'' \added}
+On a Rayleigh channel the mean SNR at the cell edge is 15 dB and the receiver needs 8 dB to
+demodulate. Compare the outage probability with a single antenna and with two-branch selection
+diversity, and state the coverage gain this implies.
+\end{asked}
+
+\begin{itemize}
+  \item \textbf{Step 1: the ratio.}
+        \[ \gamma = 10^{8/10} = 6.31, \qquad \Gamma = 10^{15/10} = 31.62,
+           \qquad \frac{\gamma}{\Gamma} = 0.1995 \]
+  \item \textbf{Step 2: outage with one antenna.}
+        \[ \Pr = 1 - e^{-0.1995} = 0.1809 = \boxed{18.1\ \%} \]
+  \item \textbf{Step 3: outage with two branches.}
+        \[ \Pr = (0.1809)^2 = 0.03273 = \boxed{3.27\ \%} \]
+  \item \textbf{Step 4: what that is worth in dB.}
+        To reach 3.27\,\% outage with a \emph{single} antenna the mean SNR would have to satisfy
+        $1 - e^{-\gamma/\Gamma'} = 0.03273$, ie $\gamma/\Gamma' = 0.03327$, giving
+        \[ \Gamma' = \frac{6.31}{0.03328} = 189.6 = 22.78\ \text{dB} \]
+        \[ \text{diversity gain} = 22.78 - 15 = \boxed{7.78\ \text{dB}} \]
+  \item \mk{Interpretation:} a second antenna is worth almost 8 dB of transmit power at this
+        operating point, for no extra spectrum and no extra power.
+        \textbf{That is why every base station has two receive antennas.}
+  \item \textbf{Coverage implication.} With a path loss exponent $n = 3.5$, 7.78 dB of margin
+        extends the cell radius by
+        \[ 10^{7.78/(10 \times 3.5)} = 10^{0.2223} = 1.67\times \]
+        ie \mk{about 2.8 times the area from the same site}.
+\end{itemize}

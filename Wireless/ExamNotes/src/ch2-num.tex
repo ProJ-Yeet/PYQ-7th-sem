@@ -1,0 +1,578 @@
+%=======================================================================
+%  CHAPTER 2 — NUMERICAL PROBLEMS AND SOLUTIONS
+%=======================================================================
+\section*{\color{acc}Ch 2 \textperiodcentered{} Cellular Concepts \gap
+\textcolor{sub}{Numerical Problems \& Solutions}}
+\vspace{-4pt}{\color{acc}\rule{\textwidth}{1.1pt}}\vspace{4pt}
+
+{\color{sub}\footnotesize Every problem below is a real PYQ, with its year tags and marks.
+Solutions are worked in full: what was calculated, why, and which formula was used.
+\mk{Nothing is skipped to save space.}}
+
+\lead{The five formulas everything here is built on}
+\begin{itemize}
+  \item \textbf{Cluster size} \; $N = i^2 + ij + j^2$ \; (allowed: 1, 3, 4, 7, 9, 12, 13, 16, 19, 21)
+  \item \textbf{Co-channel reuse ratio} \; $Q = D/R = \sqrt{3N}$
+  \item \textbf{Worst-case SIR} \; $\dfrac{S}{I} = \dfrac{(\sqrt{3N})^{\,n}}{i_0}$, \;
+        so \; $N = \dfrac{1}{3}\left(i_0 \cdot \dfrac{S}{I}\right)^{2/n}$
+  \item \textbf{Hexagonal cell area} \; $A = \dfrac{3\sqrt{3}}{2}R^2 = 2.598\,R^2$
+  \item \textbf{Traffic} \; $A_u = \lambda H$, \; $A = U A_u$, \; and Erlang B for the GoS
+\end{itemize}
+{\color{sub}\footnotesize $i_0$ $=$ number of first-tier interferers:
+\textbf{6} omni, \textbf{2} for $120^\circ$ sectoring, \textbf{1} for $60^\circ$ sectoring.
+$n$ $=$ path loss exponent.}
+
+\hr
+
+\T{Problem 1 \quad Prove $Q=\sqrt{3N}$ and find the optimal $N$}
+{\color{sub}\footnotesize \tS{6} \yr{\textbf{71 Bh} \m{4+4}, \texttt{79 Bh} \m{3+5},
+\textbf{\texttt{80 Bh}} \m{4}, \textbf{70 Bh} \m{3+4+3}, \textbf{\texttt{81 Bh}} \m{3+3},
+74 Ma \m{4}}}
+
+\lead{1.1 \; SIR $=$ 15 dB worst case, $n = 4$, considering trunking efficiency
+\yr{(\textbf{71 Bh})}}
+\begin{asked}{2071 Bhadra \textperiodcentered{} Q2 \textperiodcentered{} [4+4]}
+Prove that for a hexagonal geometry the co-channel reuse ratio is given by
+$Q = \sqrt{3N}$; Where $N = i^2 + j^2 + ij$. A cellular service provider decides to use a
+digital TDMA scheme which can tolerate a Signal-to-Interference Ratio of 15 dB in the worst
+case. Find the optimal value of $N$ for
+\begin{enumerate}[label=\alph*), leftmargin=1.6em]
+  \item Omni directional antennas
+  \item $120^\circ$ Sectoring
+  \item $60^\circ$ Sectoring
+\end{enumerate}
+\par\vspace{1pt}
+[Use path loss exponent of 4 and consider trunking efficiency]
+\end{asked}
+
+\begin{itemize}
+  \item \textbf{Step 1: convert SIR to a linear ratio.} The formula is in power ratio, not dB.
+        \[ \frac{S}{I} = 10^{15/10} = 10^{1.5} = 31.6228 \]
+  \item \textbf{Step 2: apply} $\;N = \frac{1}{3}\left(i_0 \cdot S/I\right)^{2/n}\;$
+        for each antenna configuration. Equivalently find $Q$ first, then $N = Q^2/3$.
+\end{itemize}
+
+\par\vspace{2pt}
+\begin{tabularx}{\textwidth}{@{}L{2.6cm}L{1.2cm}XXL{2.4cm}@{}}
+\toprule
+\hrow \thead{Configuration} & \thead{$i_0$} & \thead{$Q=(i_0\,S/I)^{1/n}$} &
+\thead{$N = Q^2/3$} & \thead{Round up to allowed $N$} \\
+\midrule
+Omni-directional & 6 & $(6\times31.6228)^{1/4} = (189.74)^{0.25} = 3.7114$ & $3.7114^2/3 = 4.5915$
+  & \mk{$N=7$} \\
+$120^\circ$ sectoring & 2 & $(2\times31.6228)^{1/4} = (63.246)^{0.25} = 2.8201$ &
+  $2.8201^2/3 = 2.6509$ & \mk{$N=3$} \\
+$60^\circ$ sectoring & 1 & $(31.6228)^{1/4} = 2.3714$ & $2.3714^2/3 = 1.8745$ & \mk{$N=3$} \\
+\bottomrule
+\end{tabularx}
+
+\begin{itemize}
+  \item \textbf{Step 3: why round \emph{up}, not to the nearest.}
+        $N$ must be one of $1,3,4,7,9,12,\dots$, and a \textbf{smaller} $N$ gives a
+        \textbf{worse} SIR. Rounding down would break the 15 dB requirement.
+        \mk{So always take the next allowed value above the computed one.}
+  \begin{itemize}
+    \item omni: $4.5915 \rightarrow$ next allowed is 7 (4 is allowed but $4 < 4.5915$),
+    \item $120^\circ$: $2.6509 \rightarrow 3$,
+    \item $60^\circ$: $1.8745 \rightarrow 3$.
+  \end{itemize}
+  \item \textbf{Step 4: comment on the results \mk{(the marks for ``considering trunking
+        efficiency'')}.}
+  \begin{itemize}
+    \item Sectoring cuts the required cluster size from \textbf{7 to 3}, so each cell keeps
+          \mk{$7/3 = 2.33$ times as many channels}.
+    \item But $60^\circ$ sectoring gives the \textbf{same} $N=3$ as $120^\circ$ here, while
+          splitting each cell's channels into \textbf{6} pools instead of 3.
+    \item A pool of 6 smaller groups carries \textbf{less} traffic at the same GoS than 3 larger
+          ones. \mk{So $60^\circ$ buys no extra capacity and loses more trunking efficiency.}
+    \item \textbf{Conclusion: $120^\circ$ sectoring with $N=3$ is the best choice.}
+  \end{itemize}
+\end{itemize}
+
+\lead{1.2 \; SIR $=$ 15 dB worst case, $n = 3$ \yr{(\texttt{79 Bh})}}
+\begin{asked}{2079 Bhadra \textperiodcentered{} Q2 \textperiodcentered{} [3+5]}
+Define Grade of Service (GoS) and explain how can it be measured in a `blocked call cleared'
+type of trunking system. A cellular service provider decides to use a digital TDMA scheme that
+can tolerate a signal-to-interference ratio of 15 dB in the worst case. The mobile radio
+channel provided a propagation path loss exponent of $n = 3$. Find the optimal value of $N$ for
+(a)~Omni-directional antennas, (b)~1200 sectoring, and Ic)~$60^\circ$ sectoring. Comment on
+your results.
+\par\vspace{1pt}
+{\color{sub}``1200 sectoring'' and ``Ic)'' are the paper's own typos for $120^\circ$ and (c).}
+\end{asked}
+
+\begin{itemize}
+  \item Same $S/I = 31.6228$, but now the exponent is $2/n = 2/3$.
+\end{itemize}
+\par\vspace{2pt}
+\begin{tabularx}{\textwidth}{@{}L{2.6cm}L{1.2cm}XXL{2.4cm}@{}}
+\toprule
+\hrow \thead{Configuration} & \thead{$i_0$} & \thead{$Q=(i_0\,S/I)^{1/3}$} &
+\thead{$N = Q^2/3$} & \thead{Round up} \\
+\midrule
+Omni & 6 & $(189.74)^{1/3} = 5.7462$ & $5.7462^2/3 = 11.0064$ & \mk{$N=12$} \\
+$120^\circ$ & 2 & $(63.246)^{1/3} = 3.9842$ & $3.9842^2/3 = 5.2913$ & \mk{$N=7$} \\
+$60^\circ$ & 1 & $(31.6228)^{1/3} = 3.1623$ & $3.1623^2/3 = 3.3333$ & \mk{$N=4$} \\
+\bottomrule
+\end{tabularx}
+\begin{itemize}
+  \item \textbf{Comment.} A \textbf{smaller path loss exponent means interference decays more
+        slowly}, so co-channel cells must sit further apart and $N$ rises sharply
+        ($7 \rightarrow 12$ for omni).
+  \item \mk{Sectoring is therefore even more valuable in a low-$n$ environment}: it takes $N$ from
+        12 down to 4, a $3\times$ capacity gain.
+\end{itemize}
+
+\lead{1.3 \; The AMPS case, SIR $=$ 18 dB, $n = 4$ \yr{(standard textbook check)}}
+\begin{asked}[PROBLEM]{not a PYQ \textperiodcentered{} the standard AMPS check \added}
+An AMPS operator requires a worst-case signal-to-interference ratio of 18 dB with a path loss
+exponent $n = 4$. Find the smallest allowable cluster size $N$ for omni-directional antennas.
+\end{asked}
+\begin{itemize}
+  \item $S/I = 10^{1.8} = 63.0957$.
+  \item Omni: $Q = (6 \times 63.0957)^{1/4} = (378.57)^{0.25} = 4.4110$, so
+        $N = 4.4110^2/3 = 6.4857 \rightarrow \boxed{N = 7}$.
+  \item \mk{This is exactly why every early AMPS system used a 7-cell cluster.}
+\end{itemize}
+
+\lead{1.4 \; Exact Vs approximate SIR for $N=7$, $n=4$}
+\begin{asked}[PROBLEM]{not a PYQ \textperiodcentered{} the follow-up every examiner likes \added}
+For a 7-cell cluster with $n = 4$, compute the worst-case $S/I$ twice: first with the
+approximation that all six first-tier interferers lie at the same distance $D$, and then
+exactly, with a mobile at the cell edge seeing interferers at $D-R$, $D$, $D$, $D$, $D$ and
+$D+R$. Compare the two, in dB.
+\end{asked}
+\begin{itemize}
+  \item \textbf{Approximate} (all six interferers taken at distance $D$):
+        \[ \frac{S}{I} = \frac{(\sqrt{3\times7})^{4}}{6} = \frac{4.5826^4}{6}
+           = \frac{441.0}{6} = 73.50 \;=\; 18.66\ \text{dB} \]
+  \item \textbf{Exact} (mobile at the cell edge, true distances
+        $D-R,\,D,\,D,\,D,\,D,\,D+R$ with $Q = D/R = 4.5826$):
+        \[ \frac{S}{I} = \frac{1}{2(Q-1)^{-4} + 2(Q+1)^{-4} + 2Q^{-4}}
+           = 53.376 \;=\; 17.27\ \text{dB} \]
+  \item \mk{The approximation is optimistic by about 1.4 dB.} Both fall short of the 18 dB AMPS
+        target, which is the standard justification for sectoring.
+\end{itemize}
+
+\hr
+
+\T{Problem 2 \quad Spectrum, duplex channels and channels per cell}
+{\color{sub}\footnotesize \tP{1} \yr{\textbf{70 Bh} \m{3+4+3}}}
+
+\begin{asked}{2070 Bhadra \textperiodcentered{} Q2 \textperiodcentered{} [3+4+3]}
+Explain the difference between co-channel and adjacent channel interference. Prove that the
+co-channel reuse ratio is given by $Q = \sqrt{3N}$, where $N = i^2 + ij + j^2$ is the cluster
+size. If 20 MHz of total spectrum is allocated for a duplex (i.e.\ bidirectional) wireless
+cellular system and each simplex (i.e.\ one-way) channel has 25 KHz of bandwidth, find
+\begin{enumerate}[label=\alph*), leftmargin=1.6em]
+  \item The number of duplex channels, and
+  \item The total number of channels per cell, assuming a cluster size of $N = 4$.
+\end{enumerate}
+\end{asked}
+{\color{sub}\footnotesize The $Q=\sqrt{3N}$ proof is Problem 1 above; only the spectrum
+arithmetic is new here.}
+
+\begin{itemize}
+  \item \textbf{Step 1: what one duplex channel actually costs.}
+        A duplex (two-way) channel needs \textbf{two} simplex channels, one for each direction.
+        \[ B_{\text{duplex}} = 2 \times 25\ \text{kHz} = 50\ \text{kHz} \]
+        \mk{Missing this factor of 2 is the single most common error in this question.}
+  \item \textbf{Step 2: total duplex channels.}
+        \[ N_{\text{total}} = \frac{20 \times 10^{6}}{50 \times 10^{3}}
+           = \boxed{400\ \text{duplex channels}} \]
+  \item \textbf{Step 3: channels per cell for $N = 4$.}
+        \[ k = \frac{S}{N} = \frac{400}{4} = \boxed{100\ \text{channels per cell}} \]
+  \item \textbf{Step 4: the other cluster sizes, for comparison.}
+  \begin{itemize}
+    \item $N = 7$: $\;400/7 = 57.14 \rightarrow 57$ channels per cell,
+    \item $N = 12$: $\;400/12 = 33.33 \rightarrow 33$ channels per cell.
+  \end{itemize}
+  \item \mk{Always round \emph{down} here}: a fractional channel cannot be allocated.
+\end{itemize}
+
+\hr
+
+\T{Problem 3 \quad Minimum co-channel distance from the cell area}
+{\color{sub}\footnotesize \tP{1} \yr{\textbf{74 Bh} \m{4}}}
+
+\begin{asked}{2074 Bhadra \textperiodcentered{} Q2 (b) \textperiodcentered{} [4]}
+For a seven cell reuse pattern, find the minimum distance between centers of co-channel cells.
+Area of each cell is uniform and is equal to 23 square km.
+\end{asked}
+
+\begin{itemize}
+  \item \textbf{Step 1: get $R$ from the area.} The cell is a regular hexagon of
+        ``radius'' $R$ (centre to vertex), so
+        \[ A = \frac{3\sqrt{3}}{2}R^2 = 2.598\,R^2 \]
+        \[ R = \sqrt{\frac{A}{2.598}} = \sqrt{\frac{23}{2.598}} = \sqrt{8.8530}
+             = 2.9754\ \text{km} \]
+  \item \textbf{Step 2: apply the reuse ratio.} For $N = 7$,
+        \[ Q = \sqrt{3N} = \sqrt{21} = 4.5826 \]
+  \item \textbf{Step 3: minimum co-channel distance.}
+        \[ D = Q \cdot R = 4.5826 \times 2.9754 = \boxed{13.635\ \text{km}} \]
+  \item \textbf{Sanity check.} $D/R = 13.635/2.9754 = 4.58$ \checkmark matches $\sqrt{21}$.
+  \item \mk{If the question had given the area as a circle instead}, use $A = \pi R^2$ and
+        $R = \sqrt{23/\pi} = 2.7052$ km, giving $D = 12.397$ km. Read the wording carefully:
+        ``uniform cell'' in this paper means the hexagon.
+\end{itemize}
+
+\hr
+
+\T{Problem 4 \quad Users supported and market penetration}
+{\color{sub}\footnotesize \tF{3} \yr{\texttt{80 Ba}, \texttt{81 Ba} \m{5}, \textbf{79 Ch}}}
+
+\begin{asked}{2080 Baishakh \textperiodcentered{} Q2 (a) \textperiodcentered{} [5]
+\ \textperiodcentered{} \ 2079 Chaitra \textperiodcentered{} Q2 (a) \textperiodcentered{} [5]}
+An urban area has a population of two million residents. System A has 394 cells with 19
+channels each. Find the number of users that can be supported at 2\% blocking if each user
+average two calls per hour at average call duration of three minutes. Assuming that trunk
+systems are operated at maximum capacity, compute the percentage market penetration of
+cellular provider.
+\par\vspace{1pt}
+{\color{sub}Both papers print this word for word (79 Ch reads ``averages two calls''), and
+79 Ch attaches the Erlang B table with the $N = 19$ row: 11.23 at 1\%, \textbf{12.33 at 2\%}.}
+\end{asked}
+
+\begin{itemize}
+  \item \textbf{Step 1: traffic intensity per user.} $\;A_u = \lambda H$, and both terms must be in
+        the \emph{same} time unit.
+        \[ \lambda = 2\ \text{calls/hour}, \qquad H = 3\ \text{min} = \frac{3}{60}\ \text{hour} \]
+        \[ A_u = 2 \times \frac{3}{60} = \boxed{0.1\ \text{Erlang per user}} \]
+  \item \textbf{Step 2: carried traffic per cell, from the Erlang B table.}
+        With $C = 19$ channels and GoS $=$ 0.02,
+        \[ A = 12\ \text{Erlang} \]
+        {\color{sub}\footnotesize (The exact Erlang B value is 12.333 Erlang; the standard table
+        rounds to 12, which is what the marking scheme expects.)}
+  \item \textbf{Step 3: users per cell.}
+        \[ U = \frac{A}{A_u} = \frac{12}{0.1} = 120\ \text{users per cell} \]
+  \item \textbf{Step 4: total subscribers.}
+        \[ U_{\text{total}} = 120 \times 394 = \boxed{47\,280\ \text{subscribers}} \]
+  \item \textbf{Step 5: market penetration.}
+        \[ \frac{47\,280}{2\,000\,000} = 0.02364 = \boxed{2.364\ \%} \]
+  \item \mk{Note the assumption stated in the question}: ``trunked systems operate at maximum
+        capacity''. That is what allows the full 12 Erlang per cell to be used.
+  \item {\color{sub}\footnotesize Using the exact 12.333 Erlang instead gives 123.33 users/cell,
+        48\,592 subscribers and 2.430\,\% penetration. Either is acceptable if the table value
+        used is stated.}
+\end{itemize}
+
+\hr
+
+\T{Problem 5 \quad Trunking with 1 and 5 channels, then doubled load}
+{\color{sub}\footnotesize \tP{1} \yr{\textbf{77 Ch} \m{2+2+2+3}}}
+
+\begin{asked}{2077 Chaitra \textperiodcentered{} Q2 \textperiodcentered{} [2+2+2+3]}
+A mobile radio system where each user averages three calls per hour and each call lasting an
+average of 5 minutes.
+\begin{enumerate}[label=\alph*), leftmargin=1.6em]
+  \item What is traffic intensity for each user?
+  \item Find the number of users that could use the system with 1\% blocking if only one
+        channel is available.
+  \item Find the number of users that could use the system with 1\% blocking if five trunked
+        channels are available.
+  \item If the number of users you found in (c) is suddenly doubled, what is the new blocking
+        probability of the five channel trunked mobile radio system? Justify whether the
+        performance is acceptable or not.
+\end{enumerate}
+\par\vspace{2pt}
+\begin{tabularx}{0.94\textwidth}{@{}L{2.9cm}XXXXXXXX@{}}
+\toprule
+\hrow \thead{No.\ of Trunks (N)} & \thead{0.1\%} & \thead{0.2\%} & \thead{0.5\%} & \thead{1\%}
+ & \thead{1.2\%} & \thead{3\%} & \thead{5\%} & \thead{7\%} \\
+1 & 0.001 & 0.002 & 0.005 & 0.010 & 0.012 & 0.031 & 0.053 & 0.075 \\
+2 & 0.046 & 0.065 & 0.105 & 0.153 & 0.168 & 0.282 & 0.381 & 0.470 \\
+3 & 0.194 & 0.249 & 0.349 & 0.455 & 0.489 & 0.715 & 0.899 & 1.06 \\
+4 & 0.439 & 0.535 & 0.701 & 0.869 & 0.922 & 1.26 & 1.52 & 1.75 \\
+5 & 0.762 & 0.900 & 1.13 & 1.36 & 1.43 & 1.88 & 2.22 & 2.50 \\
+\bottomrule
+\end{tabularx}
+\par\vspace{1pt}
+{\color{sub}Table caption as printed: ``Traffic (A) in erlangs for B\%''.}
+\end{asked}
+
+\begin{itemize}
+  \item \textbf{(a) Traffic intensity per user.}
+        \[ A_u = \lambda H = 3 \times \frac{5}{60} = \boxed{0.25\ \text{Erlang}} \]
+  \item \textbf{(b) One channel, GoS $=$ 1\,\%.}
+        From the printed table, $C = 1$ and $B = 1\,\%$ give $A = 0.010$ Erlang.
+        \[ U = \frac{A}{A_u} = \frac{0.010}{0.25} = 0.04\ \text{users} \]
+        \[ \Rightarrow \boxed{0\ \text{users}} \]
+        \mk{Interpretation:} a single channel cannot support even one such user at 1\,\% blocking.
+        A lone user offering 0.25 Erlang to one channel would be blocked about
+        $0.25/(1+0.25) = 20\,\%$ of the time.
+  \item \textbf{(c) Five trunked channels, GoS $=$ 1\,\%.}
+        From the table, $C = 5$ and $B = 1\,\%$ give $A = 1.36$ Erlang.
+        \[ U = \frac{1.36}{0.25} = 5.44 \;\Rightarrow\; \boxed{5\ \text{users}} \]
+  \item \mk{This is the whole point of trunking:} 1 channel supports 0 users, but 5 channels
+        support 5. \textbf{Capacity grows faster than the channel count.}
+  \item \textbf{(d) Users doubled to 10.}
+        \[ A = U A_u = 10 \times 0.25 = 2.5\ \text{Erlang} \]
+        Apply the Erlang B formula with $C = 5$, $A = 2.5$:
+        \[ \Pr[\text{blocking}] = \frac{A^C/C!}{\sum_{k=0}^{C} A^k/k!} \]
+        \begin{center}\small
+        \begin{tabular}{@{}lllllll@{}}
+        \toprule
+        $k$ & 0 & 1 & 2 & 3 & 4 & 5 \\
+        \midrule
+        $A^k/k!$ & 1 & 2.5 & 3.125 & 2.6042 & 1.6276 & 0.8138 \\
+        \bottomrule
+        \end{tabular}
+        \end{center}
+        \[ \sum_{k=0}^{5} \frac{A^k}{k!} = 11.6706, \qquad
+           \Pr[\text{blocking}] = \frac{0.8138}{11.6706} = 0.0697 \]
+        \[ \boxed{\text{GoS} = 6.97\ \% } \]
+  \item \textbf{Justification.} The design target was 1\,\%. Doubling the users has pushed
+        blocking to \mk{almost 7\,\%, seven times worse}.
+        \textbf{This is not acceptable}: roughly 1 call in 14 fails in the busy hour.
+  \item \mk{Note how non-linear this is}: doubling the load multiplied the blocking by 7, not by 2.
+        That non-linearity is the reason cellular systems are dimensioned on the busy hour.
+\end{itemize}
+
+\hr
+
+\T{Problem 6 \quad Full system design from area and spectrum}
+{\color{sub}\footnotesize \tP{1} \yr{72 Ma \m{12}} \gap$\cdot$\gap \mk{the longest numerical in
+the chapter}}
+
+\begin{asked}{2072 Magh \textperiodcentered{} Q2 \textperiodcentered{} [12]}
+A city with a coverage area of 1500 sq km is covered with a 12-cell system each with a radius
+of 1.387 km. If the total spectrum allocated is 28.5 MHz with a full duplex channel bandwidth
+of 25 MHz. Assume a GOS of 0.02 for a blocked calls cleared system, is specified and the
+offered traffic per user is 0.03 Erlangs and traffic intensity of each cell is 84 Erlang,
+compute:
+\begin{enumerate}[label=(\alph*), leftmargin=1.9em]
+  \item the number of cells in the service area
+  \item the number of channels per cell
+  \item the maximum carrier traffic
+  \item the total number of users that can be served for 2\% GOS
+  \item the number of mobiles per unique channel.
+  \item Theoretical maximum number of users that could be served at one time by the system.
+\end{enumerate}
+\par\vspace{1pt}
+{\color{sub}\mk{The paper prints ``25 MHz'' for the channel bandwidth} --- a typo for
+\textbf{25 kHz}, since 28.5 MHz would otherwise buy one channel. Solve with 25 kHz and say so.}
+\end{asked}
+
+\begin{itemize}
+  \item \textbf{(a) Number of cells in the service area.}
+        \[ A_{\text{cell}} = 2.598\,R^2 = 2.598 \times (1.387)^2 = 2.598 \times 1.9238
+           = 4.998\ \text{km}^2 \]
+        \[ n_{\text{cells}} = \frac{1500}{4.998} = 300.12 \;\Rightarrow\;
+           \boxed{300\ \text{cells}} \]
+  \item \textbf{(b) Channels per cell.}
+        \[ N_{\text{total}} = \frac{28.5 \times 10^{6}}{25 \times 10^{3}}
+           = 1140\ \text{duplex channels} \]
+        {\color{sub}\footnotesize The question says ``full duplex channel bandwidth 25 kHz'', so
+        the $\times 2$ of Problem 2 does \emph{not} apply here. Read the wording.}
+        \[ k = \frac{1140}{12} = \boxed{95\ \text{channels per cell}} \]
+  \item \textbf{(c) Maximum carried traffic per cell.}
+        The question supplies this as \textbf{84 Erlang}.
+        {\color{sub}\footnotesize Cross-check from Erlang B: $C = 95$ at GoS $=$ 0.02 gives
+        $A = 83.13$ Erlang, so the given 84 is consistent.}
+        \[ A_{\text{cell}} = \boxed{84\ \text{Erlang}} \]
+        System total $= 84 \times 300 = 25\,200$ Erlang.
+  \item \textbf{(d) Total users served at 2\,\% GoS.}
+        \[ U_{\text{cell}} = \frac{A_{\text{cell}}}{A_u} = \frac{84}{0.03} = 2800
+           \ \text{users per cell} \]
+        \[ U_{\text{total}} = 2800 \times 300 = \boxed{840\,000\ \text{users}} \]
+  \item \textbf{(e) Mobiles per unique channel.}
+        \[ \frac{U_{\text{cell}}}{k} = \frac{2800}{95} = \boxed{29.47\ \text{mobiles per channel}} \]
+        \mk{Ie roughly 29 subscribers share each radio channel}, which is exactly the statistical
+        multiplexing gain trunking delivers.
+  \item \textbf{(f) Theoretical maximum users served at one time.}
+        Every channel in every cell busy simultaneously:
+        \[ 95 \times 300 = \boxed{28\,500\ \text{simultaneous calls}} \]
+  \item \mk{Sanity check on (d) against (f):} 840\,000 subscribers share 28\,500 simultaneous
+        circuits, a ratio of 29.5:1, matching (e). \checkmark
+\end{itemize}
+
+\hr
+
+\T{Problem 7 \quad Area, channels and simultaneous calls}
+{\color{sub}\footnotesize \tP{1} \yr{\textbf{\texttt{82 Bh}} \m{4}}}
+
+\begin{asked}{2082 Bhadra \textperiodcentered{} Q2 (b) \textperiodcentered{} [4]}
+The cellular system has 32 cells, each cell has a 1.6 km radius and the system reuse factor is
+7. The system is to support 336 traffic channels in total. Determine the total geographical
+area covered, the number of traffic channels per cell and the total number of simultaneous
+calls supported by this system.
+\end{asked}
+
+\begin{itemize}
+  \item \textbf{Step 1: area of one cell.}
+        \[ A_{\text{cell}} = 2.598 \times (1.6)^2 = 2.598 \times 2.56 = 6.6509\ \text{km}^2 \]
+  \item \textbf{Step 2: total geographical area.}
+        \[ A_{\text{total}} = 32 \times 6.6509 = \boxed{212.83\ \text{km}^2} \]
+  \item \textbf{Step 3: channels per cell.}
+        \[ k = \frac{S}{N} = \frac{336}{7} = \boxed{48\ \text{channels per cell}} \]
+  \item \textbf{Step 4: simultaneous calls.}
+        Every cell can run all 48 of its channels at once, and there are 32 cells:
+        \[ 48 \times 32 = \boxed{1536\ \text{simultaneous calls}} \]
+  \item \mk{Watch the trap:} the 336 channels are the \textbf{system} total, reused by every
+        cluster. The system supports 1536 calls, not 336, because the cluster repeats
+        $32/7 = 4.57$ times.
+\end{itemize}
+
+\hr
+
+\T{Problem 8 \quad Trunking loss from omni to $60^\circ$ sectoring}
+{\color{sub}\footnotesize \tP{1} \yr{\texttt{81 Ba} \m{2+2+2}} \gap$\cdot$\gap
+\mk{the one question where sectoring is shown to \emph{cost} capacity}}
+
+\begin{asked}{2081 Baishakh \textperiodcentered{} Q2 (a) \textperiodcentered{} [2+2+2]}
+For a cluster $N = 7$ system with a blocking probability of 1\% and an average call length of
+two minutes, find the traffic capacity loss for a blocked calls cleared system due to trunking
+for 57 channels when going from omnidirectional antennas to $60^\circ$ sectored antennas. The
+average request rate per user is 1 call per hour.
+\par\vspace{2pt}
+\begin{tabularx}{0.62\textwidth}{@{}L{3.4cm}XXX@{}}
+\toprule
+\hrow \thead{GOS / Channel} & \thead{0.5\%} & \thead{1\%} & \thead{2\%} \\
+1  & .005  & .0101 & .0204 \\
+9  & 3.333 & 3.783 & 4.345 \\
+19 & 10.33 & 11.23 & 12.33 \\
+54 & 39.47 & 41.51 & 44.00 \\
+57 & 42.1  & 44.2  & 46.8  \\
+\bottomrule
+\end{tabularx}
+\end{asked}
+
+\begin{itemize}
+  \item \textbf{Step 1: traffic per user.}
+        \[ A_u = \lambda H = 1 \times \frac{2}{60} = 0.0333\ \text{Erlang} \]
+  \item \textbf{Step 2: omni-directional case.}
+        All 57 channels sit in \textbf{one} trunked pool.
+        From the table, $C = 57$ at 1\,\% gives
+        \[ A_{\text{omni}} = 44.2\ \text{Erlang} \]
+        \[ U_{\text{omni}} = \frac{44.2}{0.0333} = 1326\ \text{users per cell} \]
+  \item \textbf{Step 3: $60^\circ$ sectored case.}
+        The cell is split into \textbf{6 sectors}, and each sector gets its own channel group:
+        \[ \frac{57}{6} = 9.5 \;\Rightarrow\; 9\ \text{channels per sector} \]
+        \mk{Round down: a channel cannot be split between sectors.}
+        From the table, $C = 9$ at 1\,\% gives $A = 3.783$ Erlang \textbf{per sector}, so
+        \[ A_{\text{sectored}} = 6 \times 3.783 = 22.698\ \text{Erlang} \]
+        \[ U_{\text{sectored}} = \frac{22.698}{0.0333} = 681\ \text{users per cell} \]
+  \item \textbf{Step 4: the loss.}
+        \[ \Delta A = 44.2 - 22.698 = \boxed{21.50\ \text{Erlang lost}} \]
+        \[ \frac{21.50}{44.2} \times 100 = \boxed{48.65\ \% \text{ capacity loss}} \]
+  \item \textbf{Why this happens \mk{(state this, it is where the marks are)}.}
+  \begin{itemize}
+    \item Erlang B is \textbf{strongly non-linear} in the channel count. One pool of 57 channels
+          carries 44.2 Erlang, but six pools of 9 carry only $6 \times 3.783 = 22.7$ Erlang.
+    \item That is the \textbf{loss of trunking efficiency}: a large pool absorbs random peaks far
+          better than several small ones.
+    \item Three channels are also lost outright to the rounding ($57 \rightarrow 6 \times 9 = 54$).
+  \end{itemize}
+  \item \mk{The complete engineering picture:} sectoring \textbf{improves SIR}, which lets $N$ be
+        reduced, which gives \emph{more} channels per cell. That gain must beat the
+        \textbf{48.65\,\% trunking loss} computed here, otherwise sectoring is a net loss. This
+        problem deliberately shows only the cost side.
+\end{itemize}
+
+\hr
+
+\T{Problem 9 \quad Calls per cell per hour, and SIR}
+{\color{sub}\footnotesize \yr{lecture-note example, same pattern as \textbf{79 Bh} and 72 Ma}}
+
+\begin{asked}[PROBLEM]{not a PYQ \textperiodcentered{} lecture-note example \added}
+A cellular system has 416 radio channels available, of which 21 are control channels. The
+average channel holding time is 3 minutes and the blocking probability during the busy hour is
+2\%. The frequency reuse factor is 9. Find (i)~the number of calls per cell per hour, and
+(ii)~the signal to co-channel interference ratio in dB (take $n = 4$).
+\end{asked}
+
+\begin{itemize}
+  \item \textbf{Step 1: voice channels.}
+        \[ 416 - 21 = 395\ \text{voice channels} \]
+  \item \textbf{Step 2: voice channels per cell.}
+        \[ \frac{395}{9} = 43.89 \;\Rightarrow\; 44\ \text{channels per cell}
+           \ \text{(taken as 44 for the table lookup)} \]
+  \item \textbf{Step 3: carried traffic.}
+        From the Erlang B table, $C = 44$ at GoS $=$ 0.02 gives
+        \[ A = 34.683\ \text{Erlang} \]
+  \item \textbf{Step 4: convert Erlang to calls.}
+        1 Erlang $=$ one continuously occupied channel. With a 3-minute holding time, one
+        Erlang carries $1/3$ call per minute.
+        \[ \text{calls per cell per minute} = \frac{34.683}{3} = 11.561 \]
+        \[ \text{calls per cell per hour} = 11.561 \times 60 = \boxed{694\ \text{calls/cell/hour}} \]
+  \item \textbf{Step 5: SIR for $N = 9$, $n = 4$.}
+        \[ Q = \sqrt{3 \times 9} = \sqrt{27} = 5.1962 \]
+        \[ \frac{S}{I} = \frac{Q^4}{6} = \frac{729}{6} = 121.5 \]
+        \[ \frac{S}{I}\,[\text{dB}] = 10\log_{10}(121.5) = \boxed{20.85\ \text{dB}} \]
+  \item \mk{Comment:} 20.85 dB comfortably exceeds the 18 dB AMPS requirement, so $N=9$ is a
+        conservative, high-quality plan. $N=7$ would give 18.66 dB, barely adequate.
+\end{itemize}
+
+\hr
+
+\T{Problem 10 \quad Cell splitting: the transmit power reduction}
+{\color{sub}\footnotesize \tF{3} \yr{\textbf{73 Bh}, \textbf{75 Bh}, \textbf{\texttt{81 Bh}}}
+\gap$\cdot$\gap usually a 1 or 2 mark part inside the sectoring Vs splitting question}
+
+\begin{asked}{2081 Bhadra \textperiodcentered{} Q3 \textperiodcentered{} [4]
+\ \textperiodcentered{} \ 2075 Bhadra \textperiodcentered{} Q3 \textperiodcentered{} [5]}
+A telephone network company needs to expand its capacity based on demand on a city. A group of
+engineers was selected to find the solution. Among the solution sectoring and cell splitting
+were major technique for expansion purpose. Being a cellular planning engineer, which option do
+you think is best and why?
+\end{asked}
+\begin{asked}{2073 Bhadra \textperiodcentered{} Q2 (a) \textperiodcentered{} [5]}
+Explain how cell splitting and sectoring improve coverage and capacity in cellular system?
+\end{asked}
+{\color{sub}\footnotesize No paper prints numbers for this. The transmit-power result below is
+the only computable part, and it is what turns a prose answer into a full-mark one. \added}
+
+\begin{itemize}
+  \item \textbf{Requirement.} The new microcell of radius $R/2$ must deliver the \textbf{same
+        received power at its own boundary} as the old cell did at its boundary. Only then does
+        the reuse plan carry over unchanged.
+  \item \textbf{Step 1: write both boundary powers.}
+        \[ P_r[\text{old boundary}] \propto P_{t1} R^{-n}, \qquad
+           P_r[\text{new boundary}] \propto P_{t2} \left(\frac{R}{2}\right)^{-n} \]
+  \item \textbf{Step 2: set them equal.}
+        \[ P_{t1} R^{-n} = P_{t2} \left(\frac{R}{2}\right)^{-n}
+           \;\Longrightarrow\; \frac{P_{t2}}{P_{t1}} = \left(\frac{1}{2}\right)^{n} \]
+  \item \textbf{Step 3: put $n = 4$.}
+        \[ \frac{P_{t2}}{P_{t1}} = \frac{1}{16} = 0.0625 \]
+        \[ 10\log_{10}(0.0625) = \boxed{-12.04\ \text{dB}, \text{ ie reduce power by 12 dB}} \]
+  \item \textbf{Capacity effect.} Halving $R$ needs about \textbf{4 times as many cells}
+        ($A \propto R^2$), so the number of clusters, and therefore the capacity, rises about
+        \mk{4 times} for the same spectrum.
+\end{itemize}
+
+\hr
+
+\T{Erlang B reference table}
+{\color{sub}\footnotesize Values recomputed from
+$\Pr[\text{blocking}] = \dfrac{A^C/C!}{\sum_{k=0}^{C}A^k/k!}$ and cross-checked against the
+tables printed on the 77 Ch and 81 Ba papers. \mk{Both printed tables agree with this one} once
+their differing row labels (``Trunks $N$'' Vs ``GOS / Channel'') are read correctly.}
+
+\vspace{2pt}
+\begin{center}\small
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+\hrow \thead{Channels $C$} & \thead{$A$ at 0.5\,\%} & \thead{$A$ at 1\,\%} &
+\thead{$A$ at 2\,\%} & \thead{$A$ at 5\,\%} \\
+\midrule
+1  &  0.005 &  0.010 &  0.020 &  0.053 \\
+2  &  0.105 &  0.153 &  0.223 &  0.381 \\
+3  &  0.349 &  0.455 &  0.602 &  0.899 \\
+4  &  0.701 &  0.869 &  1.092 &  1.525 \\
+5  &  1.132 &  1.361 &  1.657 &  2.219 \\
+9  &  3.333 &  3.783 &  4.345 &  5.370 \\
+10 &  3.961 &  4.461 &  5.084 &  6.216 \\
+19 & 10.331 & 11.230 & 12.333 & 14.315 \\
+20 & 11.092 & 12.031 & 13.182 & 15.249 \\
+44 & 30.797 & 32.543 & 34.682 & 38.557 \\
+54 & 39.474 & 41.505 & 43.997 & 48.536 \\
+57 & 42.109 & 44.222 & 46.816 & 51.548 \\
+95 & 76.325 & 79.368 & 83.133 & 90.123 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\vspace{2pt}
+{\color{sub}\footnotesize \mk{How to use it in the exam:} you are always given either $C$ and the
+GoS (look up $A$, then divide by $A_u$ for users), or $C$ and $A$ (look across the row for the
+GoS). Never try to sum the series by hand unless $C \le 5$.}

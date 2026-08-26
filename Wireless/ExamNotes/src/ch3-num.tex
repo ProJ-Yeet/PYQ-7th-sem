@@ -1,0 +1,1012 @@
+%=======================================================================
+%  CHAPTER 3 — NUMERICAL PROBLEMS AND SOLUTIONS
+%=======================================================================
+\section*{\color{acc}Ch 3 \textperiodcentered{} Radio Wave Propagation \gap
+\textcolor{sub}{Numerical Problems \& Solutions}}
+\vspace{-4pt}{\color{acc}\rule{\textwidth}{1.1pt}}\vspace{4pt}
+
+{\color{sub}\footnotesize \mk{This is the heaviest numerical chapter in the subject.}
+A propagation numerical has appeared in \textbf{every one of the 22 papers}.
+Every problem below is a real PYQ, worked in full.}
+
+\lead{The formula sheet}
+\begin{itemize}
+  \item \textbf{Free space (Friis)} \;
+        $P_r(d) = \dfrac{P_t G_t G_r \lambda^2}{(4\pi)^2 d^2 L}$, \qquad $\lambda = c/f$
+  \item \textbf{Free space path loss} \;
+        $PL = 20\log\!\left(\dfrac{4\pi d}{\lambda}\right)
+            = 32.44 + 20\log f_{\text{MHz}} + 20\log d_{\text{km}}$
+  \item \textbf{Power flux density} \; $P_d = \dfrac{P_t G_t}{4\pi d^2} = \dfrac{|E|^2}{120\pi}$,
+        \qquad \textbf{aperture} \; $A_e = \dfrac{G_r\lambda^2}{4\pi}$, \qquad $P_r = P_d A_e$
+  \item \textbf{Matched receiver} \; $V_{\text{rms}} = \sqrt{P_r R_{\text{ant}}}$, \;
+        open-circuit $V_{\text{ant}} = 2V_{\text{rms}}$
+  \item \textbf{Two-ray} \; $P_r = P_t G_t G_r \dfrac{h_t^2 h_r^2}{d^4}$, \;
+        $PL = 40\log d - 20\log h_t - 20\log h_r$ (unity gains)
+  \item \textbf{Log-distance} \;
+        $PL(d) = PL(d_0) + 10\,n\log\!\left(\dfrac{d}{d_0}\right) + X_\sigma$
+  \item \textbf{Okumura} \; $L_{50} = L_F + A_{mu} - G(h_{te}) - G(h_{re}) - G_{\text{AREA}}$,
+        with $G(h_{te}) = 20\log\frac{h_{te}}{200}$, \;
+        $G(h_{re}) = 10\log\frac{h_{re}}{3}$ for $h_{re}\le 3$ m, \;
+        $20\log\frac{h_{re}}{3}$ for $3 < h_{re} < 10$ m
+  \item \textbf{Hata (urban)} \;
+        $L_{50} = 69.55 + 26.16\log f_c - 13.82\log h_{te} - a(h_{re})
+                  + (44.9 - 6.55\log h_{te})\log d$
+  \item \textbf{Delay spread} \;
+        $\bar{\tau} = \dfrac{\sum P_k \tau_k}{\sum P_k}$, \;
+        $\overline{\tau^2} = \dfrac{\sum P_k \tau_k^2}{\sum P_k}$, \;
+        $\sigma_\tau = \sqrt{\overline{\tau^2} - \bar{\tau}^2}$
+  \item \textbf{Coherence} \; $B_c \approx \dfrac{1}{50\sigma_\tau}$ (90\,\%), \;
+        $B_c \approx \dfrac{1}{5\sigma_\tau}$ (50\,\%), \;
+        $f_m = \dfrac{v}{\lambda}$, \; $T_c \approx \dfrac{0.423}{f_m}$
+\end{itemize}
+
+{\color{sub}\footnotesize \mk{Units discipline, the source of most lost marks:}
+$P$ in W for Friis, dBm only after conversion. $d$ in \textbf{metres} in
+$20\log(4\pi d/\lambda)$ but in \textbf{km} in the 32.44 form and in Hata. $f$ in
+\textbf{MHz} in the 32.44 form and in Hata. Always write the unit beside every number.}
+
+\hr
+
+\T{Problem 1 \quad Free space: received power, E-field, flux density, rms voltage}
+{\color{sub}\footnotesize \tF{3} \yr{\texttt{80 Ba}, \texttt{81 Ba} \m{8}, \textbf{78 Ch}
+\m{2+2+2+2}} \gap$\cdot$\gap \mk{the classic four-part free space numerical}}
+
+\begin{asked}{2080 Baishakh \textperiodcentered{} Q3 (b) \textperiodcentered{} [8]}
+Assume free space propagation, a receiver is located 10 km away from a 50 w transmitter. The
+carrier frequency is 900 MHza. antenna gain at transmitter and receiver are 1 and 2
+respectively, find:
+\begin{enumerate}[label=\roman*), leftmargin=1.9em]
+  \item The power received at the receiver
+  \item The magnitude of E-field at the receiver antenna
+  \item The power flux density
+  \item The rms voltage applied to the receiver input.
+\end{enumerate}
+\par\vspace{1pt}
+The receiver antenna has a purely real impedance of 50 $\Omega$ and is matched to the receiver.
+\end{asked}
+\begin{asked}{2078 Chaitra \textperiodcentered{} Q3 (b) \textperiodcentered{} [2+2+2+2]}
+Assume free space propagation, a receiver is located 10 km away from a 50W transmitter. The
+carrier frequency is 900 MHz, antenna gain at transmitter and receiver is 1 and 2 respectively.
+Find: (i) The power received at the receiver. (ii) The magnitude of the E-field at the
+receiver. (iii) The rms voltage applied to the receiver input. (iv) The power flux density.
+\par\vspace{1pt}
+{\color{sub}Same numbers, parts (iii) and (iv) swapped. ``900 MHza'' is the 80 Ba paper's typo.}
+\end{asked}
+
+\lead{Step 0: wavelength}
+\[ \lambda = \frac{c}{f} = \frac{3\times10^{8}}{900\times10^{6}} = 0.3333\ \text{m} \]
+
+\lead{(i) Received power}
+\begin{itemize}
+  \item Friis, with $L = 1$ (no system loss stated):
+        \[ P_r = \frac{P_t G_t G_r \lambda^2}{(4\pi)^2 d^2}
+               = \frac{50 \times 1 \times 2 \times (0.3333)^2}{(4\pi)^2 (10^4)^2} \]
+        \[ = \frac{50 \times 2 \times 0.11111}{157.91 \times 10^{8}}
+          = \frac{11.111}{1.5791\times10^{10}} = 7.0362\times10^{-10}\ \text{W} \]
+  \item In dBm:
+        \[ P_r = 10\log_{10}\!\left(7.0362\times10^{-10}\times10^{3}\right)
+               = \boxed{-61.53\ \text{dBm}} \; = -91.53\ \text{dBW} \]
+\end{itemize}
+
+\lead{(iii) Power flux density \mk{(do this before the E-field, it feeds it)}}
+\[ P_d = \frac{P_t G_t}{4\pi d^2} = \frac{50 \times 1}{4\pi (10^4)^2}
+       = \frac{50}{1.2566\times10^{9}} = \boxed{3.9789\times10^{-8}\ \text{W/m}^2} \]
+
+\lead{(ii) Magnitude of the E-field}
+\begin{itemize}
+  \item Free space intrinsic impedance $\eta = 120\pi = 377\ \Omega$, and $P_d = |E|^2/\eta$:
+        \[ |E| = \sqrt{P_d \times 377} = \sqrt{3.9789\times10^{-8} \times 377}
+               = \sqrt{1.5\times10^{-5}} \]
+        \[ = \boxed{3.873\times10^{-3}\ \text{V/m}} = 3.873\ \text{mV/m} \]
+\end{itemize}
+
+\lead{Cross-check: $P_r$ from $P_d$ and the aperture}
+\[ A_e = \frac{G_r\lambda^2}{4\pi} = \frac{2 \times 0.11111}{12.566} = 0.017684\ \text{m}^2 \]
+\[ P_r = P_d A_e = 3.9789\times10^{-8} \times 0.017684 = 7.036\times10^{-10}\ \text{W}
+   \quad\checkmark \text{ matches (i)} \]
+
+\lead{(iv) rms voltage at the receiver input}
+\begin{itemize}
+  \item The antenna is \textbf{matched} to a purely real 50 $\Omega$ load, so the power
+        delivered is
+        \[ P_r = \frac{V_{\text{rms}}^2}{R_{\text{ant}}}
+           \;\Longrightarrow\;
+           V_{\text{rms}} = \sqrt{P_r R_{\text{ant}}} \]
+        \[ = \sqrt{7.0362\times10^{-10} \times 50} = \sqrt{3.5181\times10^{-8}} \]
+        \[ = \boxed{1.8757\times10^{-4}\ \text{V} = 187.57\ \mu\text{V}} \]
+  \item \mk{If the question asks for the open-circuit antenna voltage} $V_{\text{ant}}$ instead,
+        the matched load halves it, so
+        \[ V_{\text{ant}} = 2 V_{\text{rms}} = 375.13\ \mu\text{V} \]
+        \mk{Read the wording: ``applied to the receiver input'' is $V_{\text{rms}}$;
+        ``induced in the antenna'' is $V_{\text{ant}}$.}
+\end{itemize}
+
+\hr
+
+\T{Problem 2 \quad Free space link with dBi antennas}
+{\color{sub}\footnotesize \tP{1} \yr{\textbf{\texttt{80 Bh}} \m{6}}}
+
+\begin{asked}{2080 Bhadra \textperiodcentered{} Q2 (a) \textperiodcentered{} [6]}
+A wireless communication transmitter has an output power of 165 watts at a carrier frequency of
+325 MHz. It is connected to an antenna with a gain of 12 dBi. The receiving antenna is 15 km
+away and has a gain of 6 dBi. Calculate the power delivered to the receiver, considering
+free-space propagation. (Assume that there are no other losses or mismatches in the system.)
+\end{asked}
+
+\begin{itemize}
+  \item \mk{Gains are in dB, so work the whole problem in dB.} Converting them to linear and
+        using Friis directly also works but is slower and more error-prone.
+  \item \textbf{Step 1: transmit power in dBm.}
+        \[ P_t = 10\log_{10}(165 \times 10^{3}) = 10\log_{10}(1.65\times10^{5})
+               = 52.17\ \text{dBm} \]
+  \item \textbf{Step 2: free space path loss.} Using the km / MHz form:
+        \[ PL = 32.44 + 20\log_{10}(325) + 20\log_{10}(15) \]
+        \[ = 32.44 + 50.24 + 23.52 = 106.20\ \text{dB} \]
+        {\color{sub}\footnotesize Check with $\lambda = 3\times10^8/325\times10^6 = 0.9231$ m:
+        $20\log(4\pi \times 15000/0.9231) = 106.20$ dB \checkmark}
+  \item \textbf{Step 3: link equation.}
+        \[ P_r = P_t + G_t + G_r - PL = 52.17 + 12 + 6 - 106.20 \]
+        \[ = \boxed{-36.03\ \text{dBm}} \]
+  \item \textbf{Step 4: convert back to watts if asked.}
+        \[ P_r = 10^{-36.03/10}\ \text{mW} = 2.4966\times10^{-4}\ \text{mW}
+               = \boxed{249.7\ \text{nW}} \]
+\end{itemize}
+
+\hr
+
+\T{Problem 3 \quad Full link budget with feeder and mismatch loss}
+{\color{sub}\footnotesize \tP{1} \yr{\textbf{72 Ash} \m{8}}}
+
+\begin{asked}{2072 Ashwin \textperiodcentered{} Q3 \textperiodcentered{} [8]}
+A BS transmitter has a power output of 10 watts operating at a frequency of 250 MHz. The
+transmitter is connected by 20 m of an RF coaxial cable, which has a loss of 3-dB/100 m
+specification, to an antenna that has a gain of 9 dBi. The receiving antenna is 25 km away and
+has a gain of 4 dBi. There is negligible loss in the receiver feeder line, but the receiver is
+mismatched; the receiving antenna and feeder cable are designed for 50 ohm impedance. The
+receiver impedance loss due to mismatch is of about 0.2 dB. Calculate the power delivered to
+the receiver, assuming free-space propagation.
+\end{asked}
+
+\begin{itemize}
+  \item \textbf{Step 1: transmit power in dBm.}
+        \[ P_t = 10\log_{10}(10 \times 10^{3}) = 40.00\ \text{dBm} \]
+  \item \textbf{Step 2: transmit feeder loss.}
+        \[ L_{\text{coax}} = 20\ \text{m} \times \frac{3\ \text{dB}}{100\ \text{m}}
+                           = 0.60\ \text{dB} \]
+  \item \textbf{Step 3: free space path loss at 25 km, 250 MHz.}
+        \[ PL = 32.44 + 20\log_{10}(250) + 20\log_{10}(25) \]
+        \[ = 32.44 + 47.96 + 27.96 = 108.36\ \text{dB} \]
+  \item \textbf{Step 4: assemble the budget.} Every gain adds, every loss subtracts.
+\end{itemize}
+
+\vspace{2pt}
+\begin{center}\small
+\begin{tabular}{@{}lrl@{}}
+\toprule
+\hrow \thead{Item} & \thead{Value} & \thead{Note} \\
+\midrule
+Transmitter output      & $+40.00$ dBm & 10 W \\
+Transmit feeder (coax)  & $-0.60$ dB   & 20 m at 3 dB/100 m \\
+Transmit antenna gain   & $+9.00$ dB   & 9 dBi \\
+Free space path loss    & $-108.36$ dB & 25 km, 250 MHz \\
+Receive antenna gain    & $+4.00$ dB   & 4 dBi \\
+Receive feeder loss     & $-0.00$ dB   & stated negligible \\
+Receiver mismatch loss  & $-0.20$ dB   & 50 $\Omega$ system \\
+\midrule
+\textbf{Power at receiver} & $\mathbf{-56.16}$ \textbf{dBm} & \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\vspace{2pt}
+\[ P_r = 40.00 - 0.60 + 9.00 - 108.36 + 4.00 - 0.20 = \boxed{-56.16\ \text{dBm}} \]
+\[ = 10^{-56.16/10}\ \text{mW} = 2.42\times10^{-6}\ \text{mW} = \boxed{2.42\ \text{nW}} \]
+
+{\color{sub}\footnotesize \mk{Marking tip:} draw the budget as a table like this one. Examiners
+give method marks for a laid-out budget even when one entry is wrong.}
+
+\hr
+
+\T{Problem 4 \quad Radio coverage range from a receiver threshold}
+{\color{sub}\footnotesize \tP{1} \yr{\textbf{70 Bh} \m{6}}}
+
+\begin{asked}{2070 Bhadra \textperiodcentered{} Q4 \textperiodcentered{} [6]}
+Determine the radio coverage range of a base station that transmits a RF signal at 150 W, given
+the receiver threshold level is $-104$ dBm. Assume that the path loss at the first meter is
+15 dB in a mobile radio propagation condition. (Path loss exponent $=$ 4)
+\end{asked}
+
+\begin{itemize}
+  \item \textbf{Step 1: transmit power in dBm.}
+        \[ P_t = 10\log_{10}(150 \times 10^{3}) = 51.76\ \text{dBm} \]
+  \item \textbf{Step 2: maximum allowable path loss.}
+        The link works as long as $P_r \ge -104$ dBm, so
+        \[ PL_{\max} = P_t - P_{r,\min} = 51.76 - (-104) = 155.76\ \text{dB} \]
+  \item \textbf{Step 3: log-distance model with $d_0 = 1$ m.}
+        \[ PL(d) = PL(d_0) + 10\,n\log_{10}\!\left(\frac{d}{d_0}\right)
+                 = 15 + 40\log_{10}(d) \]
+  \item \textbf{Step 4: solve for $d$.}
+        \[ 155.76 = 15 + 40\log_{10}(d) \]
+        \[ \log_{10}(d) = \frac{155.76 - 15}{40} = \frac{140.76}{40} = 3.519 \]
+        \[ d = 10^{3.519} = \boxed{3304\ \text{m} \approx 3.30\ \text{km}} \]
+  \item \mk{Sanity check:} at 3.3 km with $n=4$ the loss beyond 1 m is
+        $40\log(3304) = 140.8$ dB, plus the 15 dB first-metre loss gives 155.8 dB,
+        which is exactly the budget. \checkmark
+\end{itemize}
+
+\hr
+
+\T{Problem 5 \quad Monopole aperture and two-ray received power}
+{\color{sub}\footnotesize \tP{1} \yr{\textbf{71 Bh} \m{6}}}
+
+\begin{asked}{2071 Bhadra \textperiodcentered{} Q4 \textperiodcentered{} [6]}
+A mobile is located 5 km away from a base station and a vertical $\lambda/4$ monopole antenna
+with a gain of 2.55 dB to receive cellular radio signals. The electric field at 1 km from the
+transmitter is measured to be $10^{-3}$ V/m. The carrier frequency used for this system is
+900 MHz.
+\begin{enumerate}[label=\alph*), leftmargin=1.6em]
+  \item Find the length and effective aperture of the receiving antenna.
+  \item Find the received power at the mobile using two ray ground reflection model assuming
+        the height of the transmitting antenna is 50 m and the receiving antenna is 1.5 m
+        above ground.
+\end{enumerate}
+\end{asked}
+
+\lead{(a) Length and effective aperture}
+\begin{itemize}
+  \item \[ \lambda = \frac{3\times10^{8}}{900\times10^{6}} = 0.3333\ \text{m} \]
+  \item \textbf{Length} of a quarter-wave monopole:
+        \[ L = \frac{\lambda}{4} = \frac{0.3333}{4} = \boxed{0.0833\ \text{m} = 8.33\ \text{cm}} \]
+  \item \textbf{Gain} in linear terms:
+        \[ G_r = 10^{2.55/10} = 1.7989 \]
+  \item \textbf{Effective aperture:}
+        \[ A_e = \frac{G_r \lambda^2}{4\pi} = \frac{1.7989 \times 0.11111}{12.566}
+               = \boxed{0.0159\ \text{m}^2} \]
+\end{itemize}
+
+\lead{(b) Received power from the two-ray model}
+\begin{itemize}
+  \item \textbf{Step 1: the two-ray E-field.} For $d$ well beyond the crossover distance,
+        \[ |E_{\text{tot}}(d)| = \frac{2 E_0 d_0}{d} \cdot \frac{2\pi h_t h_r}{\lambda d} \]
+        with the reference $E_0 d_0 = 10^{-3} \times 1000 = 1$ V (measured at $d_0 = 1$ km).
+  \item \textbf{Step 2: substitute.}
+        \[ |E_{\text{tot}}| = \frac{2 \times 1}{5000}
+           \cdot \frac{2\pi \times 50 \times 1.5}{0.3333 \times 5000} \]
+        \[ = 4\times10^{-4} \times \frac{471.24}{1666.7}
+          = 4\times10^{-4} \times 0.28274 \]
+        \[ = \boxed{1.131\times10^{-4}\ \text{V/m}} \]
+  \item \textbf{Step 3: convert field to power through the aperture.}
+        \[ P_r = \frac{|E_{\text{tot}}|^2}{120\pi} \cdot A_e
+               = \frac{(1.131\times10^{-4})^2}{377} \times 0.0159 \]
+        \[ = \frac{1.2791\times10^{-8}}{377} \times 0.0159
+          = 3.3928\times10^{-11} \times 0.0159 \]
+        \[ = \boxed{5.397\times10^{-13}\ \text{W} = -92.68\ \text{dBm}} \]
+  \item \mk{Check the model is valid here:} crossover distance
+        $d_c = 4\pi h_t h_r/\lambda = 4\pi(50)(1.5)/0.3333 = 2827$ m.
+        Since $d = 5000\ \text{m} > d_c$, the $1/d^2$ field approximation holds. \checkmark
+\end{itemize}
+
+\hr
+
+\T{Problem 6 \quad Free space path loss of a cordless phone}
+{\color{sub}\footnotesize \tF{2} \yr{\textbf{77 Ch} \m{6}, \textbf{80 Ch} \m{2+4}}}
+
+\begin{asked}{2077 Chaitra \textperiodcentered{} Q3 \textperiodcentered{} [6]}
+Given a cordless phone operating at 52000 kHz frequency which has a range of 50m. Determine the
+free space path loss.
+\end{asked}
+\begin{asked}{2080 Chaitra \textperiodcentered{} Q4 (b) \textperiodcentered{} [2+4]}
+Define Doppler's effect in Small Scale Fading. (i) Given a cordless phone operating at
+52000 kHz frequency which has a range of 50m. Determine the free space path loss.
+\end{asked}
+
+\begin{itemize}
+  \item \textbf{Step 1: sort out the units.}
+        \[ f = 52000\ \text{kHz} = 52\ \text{MHz} = 52\times10^{6}\ \text{Hz} \]
+        \mk{The ``52000 kHz'' is deliberately awkward. Convert it first.}
+  \item \textbf{Step 2: wavelength.}
+        \[ \lambda = \frac{3\times10^{8}}{52\times10^{6}} = 5.769\ \text{m} \]
+  \item \textbf{Step 3: path loss.}
+        \[ PL = 20\log_{10}\!\left(\frac{4\pi d}{\lambda}\right)
+              = 20\log_{10}\!\left(\frac{4\pi \times 50}{5.769}\right) \]
+        \[ = 20\log_{10}(108.9) = \boxed{40.74\ \text{dB}} \]
+  \item \textbf{Cross-check} with the km / MHz form, $d = 0.05$ km:
+        \[ PL = 32.44 + 20\log(52) + 20\log(0.05) = 32.44 + 34.32 - 26.02 = 40.74\ \text{dB}
+           \quad\checkmark \]
+  \item \mk{Note how low this is} compared with the 100 dB-plus figures elsewhere: short range and
+        a long wavelength both help. That is why cordless phones need only milliwatts.
+\end{itemize}
+
+\hr
+
+\T{Problem 7 \quad dBm, dBW and received power at two distances}
+{\color{sub}\footnotesize \tP{1} \yr{\texttt{81 Ba} \m{1+1+2+2}}}
+
+\begin{asked}{2081 Baishakh \textperiodcentered{} Q3 (b) \textperiodcentered{} [1+1+2+2]}
+If a transmitter produces 50 watts of power, express the transmit power in units of (i) dBm,
+and (ii) dBW. If 50 watts is applied to a unity gain antenna with a 900 MHz carrier frequency,
+find the received power in dBm at a free space distance of 100 m from the antenna. What is
+$P_r$ (10 km)? Assume unity gain for the receiver antenna.
+\end{asked}
+
+\begin{itemize}
+  \item \textbf{(i)} \[ P_t\,[\text{dBm}] = 10\log_{10}(50 \times 10^{3})
+        = 10\log_{10}(5\times10^{4}) = \boxed{46.99\ \text{dBm}} \]
+  \item \textbf{(ii)} \[ P_t\,[\text{dBW}] = 10\log_{10}(50) = \boxed{16.99\ \text{dBW}} \]
+        {\color{sub}\footnotesize Always $\text{dBm} = \text{dBW} + 30$. \checkmark}
+  \item \textbf{(iii) At $d = 100$ m}, $\lambda = 0.3333$ m, $G_t = G_r = 1$:
+        \[ P_r = \frac{50 \times 1 \times 1 \times (0.3333)^2}{(4\pi)^2 (100)^2}
+               = \frac{5.5556}{157.91 \times 10^{4}} = 3.5181\times10^{-6}\ \text{W} \]
+        \[ = 10\log_{10}(3.5181\times10^{-3}\ \text{mW}) = \boxed{-24.54\ \text{dBm}} \]
+  \item \textbf{(iv) At $d = 10$ km}, use the $1/d^2$ scaling instead of recomputing:
+        \[ P_r(10\ \text{km}) = P_r(100\ \text{m}) \left(\frac{100}{10000}\right)^{2}
+           = 3.5181\times10^{-6} \times 10^{-4} \]
+        \[ = 3.5181\times10^{-10}\ \text{W} = \boxed{-64.54\ \text{dBm}} \]
+  \item \mk{The shortcut in dB:} the distance grew by a factor 100, ie 2 decades, and free space
+        costs \textbf{20 dB per decade}, so $-24.54 - 40 = -64.54$ dBm. \checkmark
+\end{itemize}
+
+\hr
+
+\T{Problem 8 \quad Far-field (Fraunhofer) distance}
+{\color{sub}\footnotesize \tP{1} \yr{\textbf{79 Ch} \m{3+3}}}
+
+\begin{asked}{2079 Chaitra \textperiodcentered{} Q4 (b) \textperiodcentered{} [3+3]}
+Explain basic propagation models. Compute the far field distance for an antenna with maximum
+dimension of 1 m and operating frequency of 900 MHz.
+\end{asked}
+
+\begin{itemize}
+  \item \[ \lambda = \frac{3\times10^{8}}{900\times10^{6}} = 0.3333\ \text{m} \]
+  \item \[ d_f = \frac{2D^2}{\lambda} = \frac{2 \times (1)^2}{0.3333}
+             = \boxed{6\ \text{m}} \]
+  \item \textbf{Verify both side conditions:}
+  \begin{itemize}
+    \item $d_f \gg D$: \; $6 \gg 1$ \checkmark
+    \item $d_f \gg \lambda$: \; $6 \gg 0.3333$ \checkmark
+  \end{itemize}
+  \item \mk{Meaning:} the Friis equation may only be used beyond 6 m from this antenna. Closer in,
+        the wavefront is not yet planar and the formula is meaningless.
+\end{itemize}
+
+\hr
+
+\T{Problem 9 \quad Okumura model: median path loss and received power}
+{\color{sub}\footnotesize \tF{4} \yr{74 Ma \m{4+4}, \textbf{\texttt{80 Bh}} \m{4+2+2},
+\textbf{\texttt{82 Bh}} \m{5}} \gap$\cdot$\gap \mk{the single most repeated numerical in the
+chapter}}
+
+\begin{asked}{2080 Bhadra \textperiodcentered{} Q3 (b) \textperiodcentered{} [4+2+2]}
+Determine the mean path loss using Okumura's model for $d = 50$ km, $h_{te} = 100$ m,
+$h_{re} = 10$ m in a suburban environment. If the base station transmitter radiates an EIRP of
+1kW at a carrier frequency of 900 MHz. Find EIRP (dBm) and the power at the receiver where the
+gain at receiving antenna is 10 dB. The medium attenuation factor is 43 dB and the gain due to
+area is 9 dB for a 50 km distance and 900 MHz frequency of operation.
+\end{asked}
+\begin{asked}{2082 Bhadra \textperiodcentered{} Q3 (b) \textperiodcentered{} [5]}
+Find the mean path loss using Okumura's Model for $d = 50$ km, $h_{te} = 100$m, $h_{re} = 10$m
+in a suburban environment. If the BS transmitter radiates an EIRP oh 1 kW at a carrier frequency
+of 900 MHz, find EIRP in dBm and the power at the receiver where gain of receiving antenna is
+10 dB. (Given: $A_{mu}(f,d) = 43$ dB, $G_{Area}(f) = 9$ dB)
+\end{asked}
+\begin{asked}{2074 Magh \textperiodcentered{} Q3 \textperiodcentered{} [4+4]}
+Explain Okumura model of outdoor radio propagation. Determine the median path loss for T-R
+separation of 50Km, transmit antenna effective height of 100m and receive antenna effective
+height of 10m in a suburban area with correction factor of 9dB at 900MHz. Assume median
+attenuation relative to free space 43dB.
+\end{asked}
+{\color{sub}\footnotesize One set of numbers, three papers. ``EIRP oh 1 kW'' is the 82 Bh
+paper's own typo.}
+
+\lead{Step 1: free space path loss at 50 km, 900 MHz}
+\[ \lambda = 0.3333\ \text{m} \]
+\[ L_F = 20\log_{10}\!\left(\frac{4\pi \times 50\times10^{3}}{0.3333}\right)
+       = 20\log_{10}(1.885\times10^{6}) = 125.51\ \text{dB} \]
+{\color{sub}\footnotesize Check: $32.44 + 20\log(900) + 20\log(50) = 32.44 + 59.08 + 33.98
+= 125.50$ dB \checkmark}
+
+\lead{Step 2: antenna height gain factors}
+\begin{itemize}
+  \item Base station, $h_{te} = 100$ m (valid, since $30 < 100 < 1000$ m):
+        \[ G(h_{te}) = 20\log_{10}\!\left(\frac{100}{200}\right) = 20\log_{10}(0.5)
+                     = -6.02\ \text{dB} \]
+        \mk{Negative, because 100 m is below the 200 m reference.}
+  \item Mobile, $h_{re} = 10$ m. Since $3 < h_{re} < 10$ m the \textbf{20 log} branch applies:
+        \[ G(h_{re}) = 20\log_{10}\!\left(\frac{10}{3}\right) = 20\log_{10}(3.333)
+                     = +10.46\ \text{dB} \]
+        \mk{Choosing the wrong branch here is the standard error. Check $h_{re}$ against 3 m
+        first.}
+\end{itemize}
+
+\lead{Step 3: assemble the Okumura result}
+\[ L_{50} = L_F + A_{mu} - G(h_{te}) - G(h_{re}) - G_{\text{AREA}} \]
+\[ = 125.51 + 43 - (-6.02) - (10.46) - 9 \]
+\[ = 125.51 + 43 + 6.02 - 10.46 - 9 = \boxed{155.07\ \text{dB}} \]
+
+\lead{Step 4 \yr{(80 Bh, 82 Bh)}: EIRP and received power}
+\begin{itemize}
+  \item \[ \text{EIRP} = 1\ \text{kW} = 1000\ \text{W}
+        \;\Rightarrow\; 10\log_{10}(1000 \times 10^{3}) = \boxed{60\ \text{dBm}} \]
+  \item \[ P_r = \text{EIRP} - L_{50} + G_r = 60 - 155.07 + 10 = \boxed{-85.07\ \text{dBm}} \]
+  \item \[ = 10^{-85.07/10}\ \text{mW} = 3.11\times10^{-9}\ \text{mW} = 3.11\ \text{pW} \]
+  \item \mk{Interpretation:} $-85$ dBm is a usable but not comfortable level. Typical GSM
+        sensitivity is around $-104$ dBm, so this link has about 19 dB of margin.
+\end{itemize}
+
+\hr
+
+\T{Problem 10 \quad Okumura run backwards: find the T--R separation}
+{\color{sub}\footnotesize \tP{1} \yr{\textbf{77 Ch} \m{8}}}
+
+\begin{asked}{2077 Chaitra \textperiodcentered{} Q4 (b) \textperiodcentered{} [8]}
+Employing the Okumura model compute the transmitter and receiver separation distance if median
+loss is 167 dB when the carrier frequency is 2.1 GHz. Assume height of transmitting antenna is
+40 m, height of receiving antenna is 2 m, for a large city.
+[$A_{mu} = 34$ dB, $G_{area} = 0$ dB]
+\end{asked}
+
+\begin{itemize}
+  \item \textbf{Step 1: the height gain factors.}
+        \[ G(h_{te}) = 20\log_{10}\!\left(\frac{40}{200}\right) = 20\log_{10}(0.2)
+                     = -13.98\ \text{dB} \]
+        \[ h_{re} = 2\ \text{m} \le 3\ \text{m}
+           \;\Rightarrow\; G(h_{re}) = 10\log_{10}\!\left(\frac{2}{3}\right) = -1.76\ \text{dB} \]
+        \mk{Here the 10 log branch applies. Compare with Problem 9, where it was 20 log.}
+  \item \textbf{Step 2: rearrange Okumura for $L_F$.}
+        \[ L_{50} = L_F + A_{mu} - G(h_{te}) - G(h_{re}) - G_{\text{area}} \]
+        \[ L_F = L_{50} - A_{mu} + G(h_{te}) + G(h_{re}) + G_{\text{area}} \]
+        \[ = 167 - 34 + (-13.98) + (-1.76) + 0 = \boxed{117.26\ \text{dB}} \]
+  \item \textbf{Step 3: invert the free space formula.}
+        \[ \lambda = \frac{3\times10^{8}}{2.1\times10^{9}} = 0.1429\ \text{m} \]
+        \[ L_F = 20\log_{10}\!\left(\frac{4\pi d}{\lambda}\right)
+           \;\Longrightarrow\;
+           d = \frac{\lambda}{4\pi}\,10^{L_F/20} \]
+        \[ = \frac{0.1429}{12.566} \times 10^{117.26/20}
+          = 0.011370 \times 10^{5.863} \]
+        \[ = 0.011370 \times 7.2934\times10^{5} = \boxed{8292\ \text{m} \approx 8.29\ \text{km}} \]
+  \item \mk{Sanity check:} substituting $d = 8.29$ km back gives
+        $L_F = 32.44 + 20\log(2100) + 20\log(8.292) = 32.44 + 66.44 + 18.38 = 117.26$ dB
+        \checkmark
+\end{itemize}
+
+\hr
+
+\T{Problem 11 \quad Hata model, and comparison with free space}
+{\color{sub}\footnotesize \tP{1} \yr{\texttt{79 Bh} \m{4+4}}}
+
+\begin{asked}{2079 Bhadra \textperiodcentered{} Q3 (b) \textperiodcentered{} [4+4]}
+In mobile propagation in a cellular system, find the correction factor and pathloss for a medium
+size city assuming carrier frequency as 950 MHz, height of transmitting antenna at base station
+is 45 m, propagation distance between antennas is 10 km and height of receiving antenna in
+mobile station is 5 m. Compute free space pathloss and compare it with Hata pathloss.
+\end{asked}
+
+\begin{itemize}
+  \item \textbf{Step 1: mobile antenna correction factor}, small/medium city branch:
+        \[ a(h_{re}) = (1.1\log_{10} f_c - 0.7)h_{re} - (1.56\log_{10} f_c - 0.8) \]
+        \[ \log_{10}(950) = 2.9777 \]
+        \[ = (1.1 \times 2.9777 - 0.7)(5) - (1.56 \times 2.9777 - 0.8) \]
+        \[ = (3.2755 - 0.7)(5) - (4.6452 - 0.8) \]
+        \[ = 2.5755 \times 5 - 3.8452 = 12.8775 - 3.8452 = \boxed{9.032\ \text{dB}} \]
+  \item \textbf{Step 2: the four Hata terms.} $\log_{10}(45) = 1.6532$, $\log_{10}(10) = 1$.
+\end{itemize}
+
+\vspace{2pt}
+\begin{center}\small
+\begin{tabular}{@{}llr@{}}
+\toprule
+\hrow \thead{Term} & \thead{Evaluation} & \thead{Value (dB)} \\
+\midrule
+Constant                 & $69.55$                             & $+69.550$ \\
+$26.16\log f_c$          & $26.16 \times 2.9777$               & $+77.897$ \\
+$-13.82\log h_{te}$      & $-13.82 \times 1.6532$              & $-22.847$ \\
+$-a(h_{re})$             & $-9.032$                            & $-9.032$ \\
+$(44.9-6.55\log h_{te})\log d$ & $(44.9 - 10.828)\times 1$     & $+34.072$ \\
+\midrule
+\textbf{$L_{50}$ (urban)} & & $\mathbf{+149.64}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{itemize}
+  \item \[ \boxed{L_{50}(\text{urban}) = 149.64\ \text{dB}} \]
+  \item \textbf{Step 3: free space path loss at the same distance.}
+        \[ PL_{FS} = 32.44 + 20\log(950) + 20\log(10) = 32.44 + 59.56 + 20 = 112.00\ \text{dB} \]
+  \item \textbf{Step 4: compare.}
+        \[ L_{50} - PL_{FS} = 149.64 - 112.00 = \boxed{37.64\ \text{dB}} \]
+  \item \mk{Interpretation:} the urban clutter costs almost \textbf{38 dB} over free space, ie a
+        factor of about 5800 in power. This gap is exactly why free space is useless for cell
+        planning and empirical models exist.
+  \item \textbf{Validity check:} $f_c = 950$ MHz is inside 150--1500 MHz \checkmark,
+        $d = 10$ km inside 1--20 km \checkmark, $h_{te} = 45$ m inside 30--200 m \checkmark,
+        $h_{re} = 5$ m inside 1--10 m \checkmark. \mk{State this; it carries a mark.}
+\end{itemize}
+
+\hr
+
+\T{Problem 12 \quad Hata run backwards: maximum cell radius and area}
+{\color{sub}\footnotesize \tP{1} \yr{73 Ma \m{6}}}
+
+\begin{asked}{2073 Magh \textperiodcentered{} Q3 (b) \textperiodcentered{} [6]}
+Let us consider a medium sized city and assume the typical GSM downlink parameters. The Base
+Station (BS) is transmitting with power 50W. The minimum acceptable received power at Mobile
+Station (MS) is $-91$ dBm. The carrier frequency is 900 MHz, the height of BS is 30m and height
+of MS is 1m. Estimate the maximum cell radius and corresponding cell area using Hata Model.
+\par\vspace{1pt}
+{\color{sub}The paper prints the full Hata model box in its header: $L_{50}$(urban)
+$= 69.55 + 26.16\log f_c - 13.82\log h_{te} - a(h_{re}) + (44.9 - 6.55\log h_{te})\log d$, with
+$a(h_{re}) = (1.1\log f_c - 0.7)h_{re} - (1.56\log f_c - 0.8)$ dB for a medium sized city.}
+\end{asked}
+
+\begin{itemize}
+  \item \textbf{Step 1: allowable path loss.}
+        \[ P_t = 10\log_{10}(50\times10^{3}) = 46.99\ \text{dBm} \]
+        \[ PL_{\max} = 46.99 - (-91) = 137.99\ \text{dB} \]
+  \item \textbf{Step 2: correction factor}, medium city, $\log_{10}(900) = 2.9542$:
+        \[ a(h_{re}) = (1.1 \times 2.9542 - 0.7)(1) - (1.56 \times 2.9542 - 0.8) \]
+        \[ = (3.2496 - 0.7) - (4.6086 - 0.8) = 2.5496 - 3.8086 = \boxed{-1.259\ \text{dB}} \]
+        \mk{A negative correction is normal for a 1 m mobile antenna.}
+  \item \textbf{Step 3: split Hata into $L_{50} = A + B\log d$.} With $\log_{10}(30) = 1.4771$:
+        \[ A = 69.55 + 26.16(2.9542) - 13.82(1.4771) - (-1.259) \]
+        \[ = 69.55 + 77.281 - 20.413 + 1.259 = 127.678 \]
+        \[ B = 44.9 - 6.55(1.4771) = 44.9 - 9.675 = 35.225 \]
+  \item \textbf{Step 4: solve for $d$.}
+        \[ 137.99 = 127.678 + 35.225\log_{10} d \]
+        \[ \log_{10} d = \frac{137.99 - 127.678}{35.225} = \frac{10.312}{35.225} = 0.29274 \]
+        \[ d = 10^{0.29274} = \boxed{1.962\ \text{km}} \]
+  \item \textbf{Step 5: cell area.} Treating the cell as a regular hexagon of radius $R = d$:
+        \[ A_{\text{cell}} = 2.598\,R^2 = 2.598 \times (1.962)^2 = 2.598 \times 3.850
+           = \boxed{10.00\ \text{km}^2} \]
+        {\color{sub}\footnotesize If the cell is taken as a circle instead,
+        $\pi R^2 = 12.10$ km$^2$. State which you used.}
+  \item \mk{Note $d = 1.96$ km is just below the Hata validity floor of 1 km}, so the answer sits
+        at the edge of the model's range. Mention this: it is worth a mark.
+\end{itemize}
+
+\hr
+
+\T{Problem 13 \quad Hata in a large city}
+{\color{sub}\footnotesize \tP{1} \yr{\textbf{73 Bh} \m{7}}}
+
+\begin{asked}{2073 Bhadra \textperiodcentered{} Q3 (b) \textperiodcentered{} [7]}
+Determine the propagation path loss for a radio signal 900 MHz cellular system operating in a
+large urban city, with a base station transmitter antenna height of 100 m and mobile receiver
+antenna height of 2m. The mobile unit is located at a distance of 4 km. Use the Hata propagation
+path loss model.
+\par\vspace{1pt}
+{\color{sub}Hints printed with the question: $L_{50} = 69.55 + 26.16\log f_c - 13.82\log h_t -
+\alpha(h_r) + (44.9 - 6.55\log h_t)\log d$; \ $\alpha(h_r) = (1.1\log f_c - 0.7)h_r -
+(1.56\log f_c - 0.8)$ for a small to medium city, $8.29(\log 1.54h_r)^2 - 1.1$ for a large city
+with $f_c \le 300$ MHz, and $3.2(\log 11.75h_r)^2 - 4.97$ for a large city with
+$f_c > 300$ MHz.}
+\end{asked}
+
+\begin{itemize}
+  \item \textbf{Step 1: pick the correct $a(h_{re})$ branch.} Large city, $f_c = 900 > 300$ MHz,
+        so
+        \[ a(h_{re}) = 3.2\left(\log_{10}(11.75\,h_{re})\right)^2 - 4.97 \]
+        \[ = 3.2\left(\log_{10}(11.75 \times 2)\right)^2 - 4.97
+          = 3.2\left(\log_{10}(23.5)\right)^2 - 4.97 \]
+        \[ = 3.2(1.3711)^2 - 4.97 = 3.2 \times 1.8799 - 4.97 = 6.0156 - 4.97
+          = \boxed{1.045\ \text{dB}} \]
+  \item \textbf{Step 2: the Hata terms.} $\log_{10}(900) = 2.9542$, $\log_{10}(100) = 2$,
+        $\log_{10}(4) = 0.6021$.
+\end{itemize}
+
+\vspace{2pt}
+\begin{center}\small
+\begin{tabular}{@{}llr@{}}
+\toprule
+\hrow \thead{Term} & \thead{Evaluation} & \thead{Value (dB)} \\
+\midrule
+Constant                 & $69.55$                         & $+69.550$ \\
+$26.16\log f_c$          & $26.16 \times 2.9542$           & $+77.281$ \\
+$-13.82\log h_{te}$      & $-13.82 \times 2$               & $-27.640$ \\
+$-a(h_{re})$             & $-1.045$                        & $-1.045$ \\
+$(44.9-6.55\log h_{te})\log d$ & $(44.9 - 13.10)\times 0.6021$ & $+19.147$ \\
+\midrule
+\textbf{$L_{50}$ (urban)} & & $\mathbf{+137.29}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\[ \boxed{L_{50} = 137.29\ \text{dB}} \]
+
+{\color{sub}\footnotesize \mk{Compare with Problem 11:} there the mobile was 5 m high in a medium
+city and the loss was 149.6 dB at 10 km. Here the BS is twice as high and the distance is 2.5
+times shorter, so 137.3 dB is consistent.}
+
+\hr
+
+\T{Problem 14 \quad Two-ray Vs free space path loss}
+{\color{sub}\footnotesize \tP{1} \yr{70 Ma \m{4+4}}}
+
+\begin{asked}{2070 Magh \textperiodcentered{} Q3 \textperiodcentered{} [4+4]}
+Determine the propagation path loss for signal at 800 MHZ, with a transmitting antenna height of
+30 m and a receiving antenna height of 2 m, over a distance of 10 km, using two-ray mobile
+point-to-point propagation model. How is it compared with that of free-space propagation path
+loss model?
+\end{asked}
+
+\begin{itemize}
+  \item \textbf{Step 1: check the model is valid.}
+        \[ \lambda = \frac{3\times10^{8}}{800\times10^{6}} = 0.375\ \text{m} \]
+        \[ d_c = \frac{4\pi h_t h_r}{\lambda} = \frac{4\pi \times 30 \times 2}{0.375}
+              = \frac{754.0}{0.375} = 2011\ \text{m} = 2.01\ \text{km} \]
+        Since $d = 10\ \text{km} > d_c$, the $d^{-4}$ form applies. \checkmark
+        \mk{Always do this check first: below $d_c$ the two-ray model oscillates and this formula
+        is wrong.}
+  \item \textbf{Step 2: two-ray path loss} (unity antenna gains):
+        \[ PL = 40\log_{10} d - \left(20\log_{10} h_t + 20\log_{10} h_r\right) \]
+        \[ = 40\log_{10}(10\,000) - 20\log_{10}(30) - 20\log_{10}(2) \]
+        \[ = 40(4) - 29.54 - 6.02 = 160 - 35.56 = \boxed{124.44\ \text{dB}} \]
+  \item \textbf{Step 3: free space path loss at the same distance.}
+        \[ PL_{FS} = 32.44 + 20\log(800) + 20\log(10)
+                   = 32.44 + 58.06 + 20 = \boxed{110.50\ \text{dB}} \]
+  \item \textbf{Step 4: comparison.}
+        \[ PL_{2\text{-ray}} - PL_{FS} = 124.44 - 110.50 = \boxed{13.94\ \text{dB} \text{ worse}} \]
+  \item \mk{Why the two-ray model predicts more loss:} the ground-reflected ray arrives almost
+        exactly out of phase with the direct ray and \textbf{partially cancels} it. Free space
+        ignores that ray entirely, so it is over-optimistic.
+  \item \mk{Note also:} the two-ray answer contains no $\lambda$ term, so it is
+        \textbf{frequency independent}, while the free space answer is not.
+\end{itemize}
+
+\hr
+
+\T{Problem 15 \quad Link budget with Okumura: reverse-link distance}
+{\color{sub}\footnotesize \tP{1} \yr{\textbf{76 Bh} \m{10}}}
+
+\begin{asked}{2076 Bhadra \textperiodcentered{} Q3 (b) \textperiodcentered{} [10]}
+Estimate the appropriate distance that should be maintained for reverse link between one BTS and
+mobile with appropriate link budget diagram.
+\begin{enumerate}[label=\roman*), leftmargin=1.9em]
+  \item Mobile is connected to antenna with 20dBi gain, with a transmitting power of 15 dBm and
+        a receive sensitivity of $-75$dBm.
+  \item BTS is connected to antenna with 5 dBi gain, with a transmitting power of 20dBm and a
+        receive sensitivity of $-80$dBm.
+  \item Cables in both systems are short, with a loss of 3-dB at each side at 900 MHz frequency
+        of operation.
+\end{enumerate}
+\par\vspace{1pt}
+Use Okamura's model for mean path loss where $G$(Area) $=$ 9dB, $A_{mu} = 43$ dB,
+$h_{re} = 10$m and $h_{te} = 100$m. (Link margin (reverse link) $=$ 10 dB).
+\end{asked}
+
+\begin{itemize}
+  \item \textbf{Step 1: identify the reverse link.} Reverse $=$ \textbf{mobile transmits, BTS
+        receives}. So use the \textbf{mobile's} TX power and the \textbf{BTS's} sensitivity.
+  \item \textbf{Step 2: maximum allowable path loss on the reverse link.}
+\end{itemize}
+
+\vspace{2pt}
+\begin{center}\small
+\begin{tabular}{@{}lrl@{}}
+\toprule
+\hrow \thead{Item} & \thead{Value} & \thead{Note} \\
+\midrule
+Mobile TX power        & $+15$ dBm & \\
+Mobile antenna gain    & $+20$ dB  & 20 dBi \\
+Mobile cable loss      & $-3$ dB   & \\
+BTS antenna gain       & $+5$ dB   & 5 dBi \\
+BTS cable loss         & $-3$ dB   & \\
+BTS sensitivity        & $-(-80)$ dBm & the link must land at or above this \\
+Link margin            & $-10$ dB  & fading reserve \\
+\midrule
+$\mathbf{PL_{\max}}$   & $\mathbf{104}$ \textbf{dB} & \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\[ PL_{\max} = 15 + 20 - 3 + 5 - 3 + 80 - 10 = \boxed{104\ \text{dB}} \]
+
+\begin{itemize}
+  \item \textbf{Step 3: convert this $L_{50}$ into a free space loss.}
+        \[ G(h_{te}) = 20\log\!\left(\frac{100}{200}\right) = -6.02\ \text{dB},
+           \qquad G(h_{re}) = 20\log\!\left(\frac{10}{3}\right) = +10.46\ \text{dB} \]
+        \[ L_F = L_{50} - A_{mu} + G(h_{te}) + G(h_{re}) + G_{\text{AREA}} \]
+        \[ = 104 - 43 + (-6.02) + 10.46 + 9 = 74.44\ \text{dB} \]
+  \item \textbf{Step 4: solve for $d$.}
+        \[ d = \frac{\lambda}{4\pi}\,10^{L_F/20}
+             = \frac{0.3333}{12.566} \times 10^{74.44/20}
+             = 0.026526 \times 5271 \]
+        \[ = \boxed{139.8\ \text{m} \approx 0.14\ \text{km}} \]
+  \item \textbf{Step 5: check the forward link too.} Forward $=$ BTS transmits, mobile receives:
+        \[ PL_{\max} = 20 + 5 - 3 + 20 - 3 + 75 - 10 = 104\ \text{dB} \]
+        \mk{Identical, so the two links are perfectly balanced} and the range is the same,
+        139.8 m. Quote both and say which limits.
+  \item \mk{Flag the inconsistency, it earns credit:} $A_{mu} = 43$ dB is Okumura's value at
+        \emph{tens of km}, not at 140 m. Using it at this range makes the model self-inconsistent.
+        The honest engineering answer is that \textbf{with the stated 43 dB clutter allowance the
+        link only closes over about 140 m}, and that either the clutter figure or the antenna
+        gains in the question are unrealistic.
+\end{itemize}
+
+\hr
+
+\T{Problem 16 \quad Feasibility of a 10 km link at 2.4 GHz}
+{\color{sub}\footnotesize \tP{1} \yr{\textbf{74 Bh} \m{12}} \gap$\cdot$\gap
+\mk{a ``prove it does not work'' question, so the answer must end with a verdict}}
+
+\begin{asked}{2074 Bhadra \textperiodcentered{} Q3 \textperiodcentered{} [12]}
+Estimate the feasibility of a 10-km wireless link in suburban area, with one access point and
+one client radio, using Okumura model for path loss. The median attenuation value is 20 dB and
+gain due to environment is 13 dB. The height of access point antenna is 100 m and that of client
+antennal is 10 m:
+\begin{enumerate}[label=\alph*., leftmargin=1.7em]
+  \item Access point is connected to antenna with 5-dBi gain, with a transmitting power of
+        20-dBm and a receive sensitivity of $-80$-dBm
+  \item Client is connected to antenna with 20-dBi gain, with a transmitting power of 15-dBm and
+        a receive sensitivity of $-75$-dBm
+  \item Cables in both systems are short, with a loss of 3-dB at each side at 2.4-GHz frequency
+        of operation.
+\end{enumerate}
+\end{asked}
+
+\begin{itemize}
+  \item \textbf{Step 1: free space loss at 10 km, 2.4 GHz.}
+        \[ \lambda = \frac{3\times10^{8}}{2.4\times10^{9}} = 0.125\ \text{m} \]
+        \[ L_F = 32.44 + 20\log(2400) + 20\log(10) = 32.44 + 67.60 + 20 = 120.05\ \text{dB} \]
+  \item \textbf{Step 2: Okumura median path loss.}
+        \[ G(h_{te}) = 20\log(100/200) = -6.02\ \text{dB}, \qquad
+           G(h_{re}) = 20\log(10/3) = +10.46\ \text{dB} \]
+        \[ L_{50} = 120.05 + 20 - (-6.02) - 10.46 - 13 = \boxed{122.61\ \text{dB}} \]
+  \item \textbf{Step 3: forward link, AP $\rightarrow$ client.}
+        \[ P_r = 20 + 5 - 3 + 20 - 3 - 122.61 = -83.61\ \text{dBm} \]
+        Client sensitivity is $-75$ dBm, so the margin is
+        \[ -83.61 - (-75) = \boxed{-8.61\ \text{dB}} \quad \text{(shortfall)} \]
+  \item \textbf{Step 4: reverse link, client $\rightarrow$ AP.}
+        \[ P_r = 15 + 20 - 3 + 5 - 3 - 122.61 = -88.61\ \text{dBm} \]
+        AP sensitivity is $-80$ dBm, so the margin is
+        \[ -88.61 - (-80) = \boxed{-8.61\ \text{dB}} \quad \text{(shortfall)} \]
+  \item \textbf{Step 5: verdict.}
+        \mk{Both directions fall 8.6 dB short, so the 10 km link is NOT feasible} as specified,
+        and it fails symmetrically, so no single end can be blamed.
+  \item \textbf{Step 6: what distance \emph{would} work?} Set the margin to zero:
+        \[ L_{50,\max} = 122.61 - 8.61 = 114.00\ \text{dB} \]
+        \[ L_F = 114.00 - 20 + (-6.02) + 10.46 + 13 = 111.44\ \text{dB} \]
+        \[ d = \frac{0.125}{12.566}\,10^{111.44/20} = 0.009947 \times 3.729\times10^{5}
+             = \boxed{3.71\ \text{km}} \]
+  \item \textbf{How to fix it \mk{(worth stating)}:} raise the antenna gains, raise the AP height
+        (each doubling of $h_{te}$ buys 6 dB), or accept a shorter link. Raising transmit power by
+        8.6 dB would also do it but may breach the licence-exempt limit at 2.4 GHz.
+\end{itemize}
+
+\hr
+
+\T{Problem 17 \quad Power delay profile: delay spread and coherence bandwidth}
+{\color{sub}\footnotesize \tF{5} \yr{70 Ma \m{4+4}, 71 Ma \m{6}, \textbf{75 Bh} \m{8},
+\textbf{\texttt{81 Bh}} \m{6}} \gap$\cdot$\gap \mk{four different papers, one method}}
+
+\lead{The method, once}
+\begin{itemize}
+  \item \textbf{Step 1: convert every dB power to a linear ratio}, $P_k = 10^{(\text{dB})/10}$.
+        \mk{Never average in dB.}
+  \item \textbf{Step 2: mean excess delay}
+        $\;\bar{\tau} = \dfrac{\sum P_k\tau_k}{\sum P_k}$
+  \item \textbf{Step 3: second moment}
+        $\;\overline{\tau^2} = \dfrac{\sum P_k\tau_k^2}{\sum P_k}$
+  \item \textbf{Step 4: rms delay spread}
+        $\;\sigma_\tau = \sqrt{\overline{\tau^2} - \bar{\tau}^2}$
+  \item \textbf{Step 5: coherence bandwidth}
+        $\;B_c = \dfrac{1}{50\sigma_\tau}$ (90\,\%) or $\dfrac{1}{5\sigma_\tau}$ (50\,\%).
+\end{itemize}
+
+\lead{17.1 \; The 70 Ma profile \yr{(\m{4+4})}}
+\sbsr{0.62}{%
+\begin{asked}{2070 Magh \textperiodcentered{} Q4 \textperiodcentered{} [4+4]}
+Define Doppler spread. Describe the types of small scale fading based on Doppler spread.
+Calculate the mean excess delay and rms delay spread for the multipath profile given below.
+Estimate the 90\% and 50\% coherence bandwidth of the channel.
+\par\vspace{1pt}
+{\color{sub}The profile is printed as the stem plot reproduced on the right: two components
+only, $-10$ dB at $\tau = 1\ \mu$s and 0 dB at $\tau = 2\ \mu$s.}
+\end{asked}
+\vspace{2pt}
+\begin{center}\small
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+\hrow $\tau_k$ ($\mu$s) & dB & $P_k$ & $P_k\tau_k$ & $P_k\tau_k^2$ \\
+\midrule
+1 & $-10$ & 0.1 & 0.1 & 0.1 \\
+2 & $0$   & 1.0 & 2.0 & 4.0 \\
+\midrule
+\textbf{sum} & & \textbf{1.1} & \textbf{2.1} & \textbf{4.1} \\
+\bottomrule
+\end{tabular}
+\end{center}
+\begin{itemize}
+  \item \[ \bar{\tau} = \frac{2.1}{1.1} = \boxed{1.909\ \mu\text{s}} \]
+  \item \[ \overline{\tau^2} = \frac{4.1}{1.1} = 3.727\ \mu\text{s}^2 \]
+  \item \[ \sigma_\tau = \sqrt{3.727 - (1.909)^2} = \sqrt{3.727 - 3.645}
+           = \sqrt{0.0826} = \boxed{0.287\ \mu\text{s}} \]
+  \item \[ B_c(90\%) = \frac{1}{50 \times 0.287\times10^{-6}} = \boxed{69.6\ \text{kHz}} \]
+  \item \[ B_c(50\%) = \frac{1}{5 \times 0.287\times10^{-6}} = \boxed{695.7\ \text{kHz}} \]
+  \item \textbf{Maximum excess delay} within 10 dB of the peak: the peak is at 2 $\mu$s and the
+        1 $\mu$s component is exactly 10 dB down, so
+        $\tau_{10\text{dB}} = 2 - 1 = 1\ \mu$s.
+\end{itemize}}{%
+\figT{c3_pdp_70ma.png}
+\vspace{1pt}
+{\color{sub}\footnotesize The profile as printed on the 70 Ma paper.}}
+
+\lead{17.2 \; The 75 Bh profile: greatest symbol rate without an equalizer \yr{(\m{8})}}
+\begin{asked}{2075 Bhadra \textperiodcentered{} Q5 \textperiodcentered{} [8]}
+Determine the smallest symbol period $T_s$, and thus the greatest symbol rate that must be sent
+through RF channel with given power delay profile without using an equalizer.
+\par\vspace{2pt}
+\begin{tabularx}{0.60\textwidth}{@{}L{2.6cm}XXXX@{}}
+\toprule
+\hrow \thead{Power [dB]} & 0 & 0 & $-10$ & $-20$ \\
+\thead{Delay [us]} & 0 & 50 & 75 & 100 \\
+\bottomrule
+\end{tabularx}
+\par\vspace{1pt}
+Modulation provides suitable BER performance whenever $\sigma_\tau / T_S \le 0.1$.
+\end{asked}
+
+\vspace{2pt}
+\begin{center}\small
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+\hrow $\tau_k$ ($\mu$s) & dB & $P_k$ & $P_k\tau_k$ & $P_k\tau_k^2$ \\
+\midrule
+0   & $0$   & 1.00 & 0.0  & 0.0 \\
+50  & $0$   & 1.00 & 50.0 & 2500.0 \\
+75  & $-10$ & 0.10 & 7.5  & 562.5 \\
+100 & $-20$ & 0.01 & 1.0  & 100.0 \\
+\midrule
+\textbf{sum} & & \textbf{2.11} & \textbf{58.5} & \textbf{3162.5} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{itemize}
+  \item \[ \bar{\tau} = \frac{58.5}{2.11} = 27.725\ \mu\text{s} \]
+  \item \[ \overline{\tau^2} = \frac{3162.5}{2.11} = 1498.82\ \mu\text{s}^2 \]
+  \item \[ \sigma_\tau = \sqrt{1498.82 - (27.725)^2} = \sqrt{1498.82 - 768.68}
+           = \sqrt{730.14} = \boxed{27.02\ \mu\text{s}} \]
+  \item \textbf{Apply the BER condition.}
+        \[ \frac{\sigma_\tau}{T_s} \le 0.1
+           \;\Longrightarrow\; T_s \ge \frac{\sigma_\tau}{0.1} = 10\,\sigma_\tau \]
+        \[ T_s \ge 10 \times 27.02\ \mu\text{s} = \boxed{270.2\ \mu\text{s}} \]
+  \item \textbf{Greatest symbol rate.}
+        \[ R_s = \frac{1}{T_s} = \frac{1}{270.2\times10^{-6}} = \boxed{3.70\ \text{ksymbols/s}} \]
+  \item \mk{Interpretation:} this channel is so dispersive that without an equalizer the link is
+        limited to under 4 ksym/s. That single number is the practical argument for equalization
+        in Ch 5.
+\end{itemize}
+
+\lead{17.3 \; The 71 Ma profile: is the channel flat for AMPS and for GSM? \yr{(\m{6})}}
+\begin{asked}{2071 Magh \textperiodcentered{} Q3 (b) \textperiodcentered{} [6]}
+A wireless channel is characterized by the following power-delay profile:
+\par\vspace{2pt}
+\begin{tabularx}{0.62\textwidth}{@{}L{2.6cm}XXXX@{}}
+\toprule
+\hrow \thead{Power [dB]} & 0 & $-10$ & $-20$ & $-23$ \\
+\thead{Delays [ns]} & 0 & 100 & 200 & 400 \\
+\bottomrule
+\end{tabularx}
+\par\vspace{1pt}
+Determine the root mean square (rms) delay spread and the 90\% coherence bandwidth of the above
+channel. Is this channel flat fading or frequency selective fading for:
+\begin{enumerate}[label=\roman*), leftmargin=1.9em]
+  \item An AMPS system with transmission bandwidth 30 kHz?
+  \item A GSM system with transmission bandwidth 200 kHz?
+\end{enumerate}
+\end{asked}
+
+\vspace{2pt}
+\begin{center}\small
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+\hrow $\tau_k$ (ns) & dB & $P_k$ & $P_k\tau_k$ & $P_k\tau_k^2$ \\
+\midrule
+0   & $0$   & 1.0000 & 0.00   & 0 \\
+100 & $-10$ & 0.1000 & 10.00  & 1000 \\
+200 & $-20$ & 0.0100 & 2.00   & 400 \\
+400 & $-23$ & 0.0050 & 2.00   & 798 \\
+\midrule
+\textbf{sum} & & \textbf{1.1150} & \textbf{14.005} & \textbf{2201.6} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{itemize}
+  \item \[ \bar{\tau} = \frac{14.005}{1.1150} = 12.560\ \text{ns} \]
+  \item \[ \overline{\tau^2} = \frac{2201.6}{1.1150} = 1974.78\ \text{ns}^2 \]
+  \item \[ \sigma_\tau = \sqrt{1974.78 - (12.560)^2} = \sqrt{1974.78 - 157.76}
+           = \sqrt{1817.02} = \boxed{42.63\ \text{ns}} \]
+  \item \[ B_c(90\%) = \frac{1}{50\sigma_\tau} = \frac{1}{50 \times 42.63\times10^{-9}}
+           = \boxed{469.2\ \text{kHz}} \]
+  \item \textbf{(i) AMPS, 30 kHz.} $30\ \text{kHz} \ll 469.2\ \text{kHz}$, so
+        $B_s \ll B_c$ $\rightarrow$ $\boxed{\text{FLAT fading}}$. No equalizer needed.
+  \item \textbf{(ii) GSM, 200 kHz.} $200\ \text{kHz} < 469.2\ \text{kHz}$, so strictly the
+        channel is still flat, but only by a factor of \textbf{2.3}. \mk{That is not
+        ``much less than'', so GSM is marginal on this channel} and a real GSM receiver would
+        still run its equalizer. State it exactly this way: strictly flat, practically marginal.
+  \item {\color{sub}\footnotesize If the 50\,\% definition is used instead,
+        $B_c = 1/(5\sigma_\tau) = 4.69$ MHz and both systems are comfortably flat.
+        \mk{Always say which definition you used.}}
+\end{itemize}
+
+\lead{17.4 \; The 81 Bh profile \yr{(\m{6})}}
+\begin{asked}{2081 Bhadra \textperiodcentered{} Q5 \textperiodcentered{} [4+6]}
+Compare Okumura model with Hata model. Calculate mean excess delay, rms delay spread and maximum
+excess delay for the multipath profile $P_r(\tau)$ given as: $P_r(\tau) = (-20$dB, $-10$dB,
+$-10$dB, 0dB) for $\tau = (0, 1, 2, 5)$ second. Also estimate 50\% coherence bandwidth.
+\par\vspace{1pt}
+{\color{sub}\mk{``second'' is the paper's own slip} --- the delays are microseconds. Work in
+$\mu$s and say so.}
+\end{asked}
+
+\vspace{2pt}
+\begin{center}\small
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+\hrow $\tau_k$ & dB & $P_k$ & $P_k\tau_k$ & $P_k\tau_k^2$ \\
+\midrule
+0 & $-20$ & 0.01 & 0.00 & 0.00 \\
+1 & $-10$ & 0.10 & 0.10 & 0.10 \\
+2 & $-10$ & 0.10 & 0.20 & 0.40 \\
+5 & $0$   & 1.00 & 5.00 & 25.00 \\
+\midrule
+\textbf{sum} & & \textbf{1.21} & \textbf{5.30} & \textbf{25.50} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{itemize}
+  \item \[ \bar{\tau} = \frac{5.30}{1.21} = \boxed{4.380\ \text{s}} \]
+  \item \[ \overline{\tau^2} = \frac{25.50}{1.21} = 21.074\ \text{s}^2 \]
+  \item \[ \sigma_\tau = \sqrt{21.074 - (4.380)^2} = \sqrt{21.074 - 19.183}
+           = \sqrt{1.891} = \boxed{1.375\ \text{s}} \]
+  \item \textbf{Maximum excess delay (10 dB).} The peak is 0 dB at $\tau = 5$. Components within
+        10 dB of it are those at $\ge -10$ dB, ie $\tau = 1, 2, 5$. So
+        \[ \tau_{10\text{dB}} = 5 - 1 = \boxed{4\ \text{s}} \]
+  \item \[ B_c(50\%) = \frac{1}{5 \times 1.375} = \boxed{0.1455\ \text{Hz}} \]
+  \item \mk{Source defect, state it:} the paper prints the delays in \textbf{seconds}. A real
+        multipath channel has delays of \textbf{microseconds}, and a 0.15 Hz coherence bandwidth
+        is physically impossible. \textbf{Solve it as printed}, then add one line noting that
+        with $\mu$s the answers become
+        $\bar{\tau} = 4.38\ \mu$s, $\sigma_\tau = 1.375\ \mu$s, $B_c(50\%) = 145.5$ kHz.
+\end{itemize}
+
+\hr
+
+\T{Problem 18 \quad Doppler shift and coherence time}
+{\color{sub}\footnotesize \tF{4} \yr{\textbf{78 Ch}, \texttt{81 Ba}, \textbf{80 Ch},
+\textbf{\texttt{82 Bh}}}}
+
+\begin{asked}[PROBLEM]{not a PYQ \textperiodcentered{} the standard Rappaport example \added}
+A US digital cellular system operating at $f_c = 900$ MHz serves a vehicle moving at 70 km/h.
+Compute the received carrier frequency when the mobile moves (a)~directly towards the
+transmitter, (b)~directly away from it, and (c)~perpendicular to the direction of arrival.
+Hence find the Doppler spread and the 50\% coherence time.
+\end{asked}
+{\color{sub}\footnotesize Four papers ask for the Doppler \emph{derivation} in prose
+--- \yr{78 Ch}, \yr{81 Ba}, \yr{80 Ch}, \yr{82 Bh} --- and none prints numbers. This worked
+example is what turns that derivation into a full answer. \added}
+
+\begin{itemize}
+  \item \textbf{Step 1: convert the velocity.} \mk{Always to m/s.}
+        \[ v = 70\ \frac{\text{km}}{\text{h}} \times \frac{1000}{3600}
+             = 19.444\ \text{m/s} \]
+  \item \textbf{Step 2: wavelength and maximum Doppler shift.}
+        \[ \lambda = \frac{3\times10^{8}}{900\times10^{6}} = 0.3333\ \text{m} \]
+        \[ f_m = \frac{v}{\lambda} = \frac{19.444}{0.3333} = \boxed{58.33\ \text{Hz}} \]
+  \item \textbf{(a) Towards the transmitter}, $\theta = 0^\circ$, $\cos\theta = +1$:
+        \[ f_d = +58.33\ \text{Hz}
+           \;\Rightarrow\; f = 900\ \text{MHz} + 58.33\ \text{Hz}
+           = \boxed{900.00005833\ \text{MHz}} \]
+  \item \textbf{(b) Away}, $\theta = 180^\circ$, $\cos\theta = -1$:
+        \[ f_d = -58.33\ \text{Hz}
+           \;\Rightarrow\; f = \boxed{899.99994167\ \text{MHz}} \]
+  \item \textbf{(c) Perpendicular}, $\theta = 90^\circ$, $\cos\theta = 0$:
+        \[ f_d = 0 \;\Rightarrow\; f = \boxed{900\ \text{MHz exactly}} \]
+  \item \textbf{Step 3: coherence time.}
+        \[ T_c \approx \frac{0.423}{f_m} = \frac{0.423}{58.33} = 7.25\ \text{ms} \]
+  \item \mk{Interpretation:} the channel stays essentially constant for only 7.25 ms. A GSM burst
+        is 0.577 ms, so the channel is safely static within one burst, which is exactly the design
+        intent. A data frame lasting longer than 7 ms would see the channel change under it.
+\end{itemize}

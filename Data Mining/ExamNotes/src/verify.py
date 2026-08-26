@@ -311,6 +311,94 @@ r_,pi_=2,0.4
 frac=[sum(1 for q in pts5 if math.dist(p,q)<=r_)/len(pts5) for p in pts5]
 chks("6 DB outliers", [i for i,f in enumerate(frac) if f<=pi_], [4])
 
+# ---- M7 (NEW): central tendency, grouped median, quartiles, IQR, outliers ----
+def grouped_median(L1, N, cum_below, freq_med, width):
+    return L1 + (N / 2 - cum_below) / freq_med * width
+
+# 7.1  PC salary table, 100 employees
+f71 = [8, 15, 20, 32, 18, 7]
+cum71, run = [], 0
+for x in f71:
+    run += x
+    cum71.append(run)
+chk("2 M7.1 N", sum(f71), 100)
+chk("2 M7.1 cum below median interval", cum71[2], 43)
+chk("2 M7.1 freq median", cum71[3] - cum71[2], 32)
+# median interval = first interval whose cumulative freq reaches N/2
+i71 = next(i for i, c in enumerate(cum71) if c >= sum(f71) / 2)
+chk("2 M7.1 median interval index", i71, 3)
+chk("2 M7.1 grouped median",
+    grouped_median(40000, sum(f71), cum71[2], f71[3], 10000), 42187.50, 1e-6)
+
+# 7.2  smaller table, N = 60
+f72 = [5, 8, 12, 20, 10, 5]
+chk("2 M7.2 N", sum(f72), 60)
+chk("2 M7.2 grouped median",
+    grouped_median(40, sum(f72), 5 + 8 + 12, f72[3], 10), 42.5, 1e-9)
+
+# 7.3  mode from mean and median
+chk("2 M7.3 mode approx", 3 * 55 - 2 * 60, 45)
+
+# 7.4  Han & Kamber Example 2.6 dataset
+d74 = [30, 36, 47, 50, 52, 52, 56, 60, 63, 70, 70, 110]
+n74 = len(d74)
+chk("2 M7.4 n", n74, 12)
+chk("2 M7.4 sum", sum(d74), 696)
+chk("2 M7.4 mean", sum(d74) / n74, 58.0, 1e-9)
+chk("2 M7.4 median", (d74[5] + d74[6]) / 2, 54.0, 1e-9)
+chk("2 M7.4 midrange", (min(d74) + max(d74)) / 2, 70.0, 1e-9)
+cnt74 = Counter(d74)
+top = max(cnt74.values())
+chks("2 M7.4 modes", [v for v, c in cnt74.items() if c == top], [52, 70])
+chk("2 M7.4 modality", top, 2)
+
+# positional convention (Han & Kamber): 3rd, 6th, 9th sorted values
+q1p, q2p, q3p = d74[2], d74[5], d74[8]
+chk("2 M7.4 Q1 positional", q1p, 47)
+chk("2 M7.4 Q3 positional", q3p, 63)
+chk("2 M7.4 IQR positional", q3p - q1p, 16)
+
+# interpolated convention: position of Qk = k(n+1)/4
+def quartile_interp(data, k):
+    pos = k * (len(data) + 1) / 4
+    lo = int(pos)
+    frac = pos - lo
+    return data[lo - 1] + frac * (data[lo] - data[lo - 1])
+
+q1i = quartile_interp(d74, 1)
+q2i = quartile_interp(d74, 2)
+q3i = quartile_interp(d74, 3)
+chk("2 M7.4 Q1 interp", q1i, 47.75, 1e-9)
+chk("2 M7.4 Q2 interp", q2i, 54.0, 1e-9)
+chk("2 M7.4 Q3 interp", q3i, 68.25, 1e-9)
+iqr_i = q3i - q1i
+chk("2 M7.4 IQR interp", iqr_i, 20.5, 1e-9)
+chk("2 M7.4 lower fence interp", q1i - 1.5 * iqr_i, 17.0, 1e-9)
+chk("2 M7.4 upper fence interp", q3i + 1.5 * iqr_i, 99.0, 1e-9)
+chks("2 M7.4 outliers interp",
+     [x for x in d74 if x < q1i - 1.5 * iqr_i or x > q3i + 1.5 * iqr_i], [110])
+# same verdict under the positional convention
+chks("2 M7.4 outliers positional",
+     [x for x in d74 if x < q1p - 1.5 * (q3p - q1p) or x > q3p + 1.5 * (q3p - q1p)], [110])
+chk("2 M7.4 upper fence positional", q3p + 1.5 * (q3p - q1p), 87.0, 1e-9)
+# five-number summary (interpolated)
+chks("2 M7.4 five-number", [min(d74), q1i, q2i, q3i, max(d74)], [30, 47.75, 54.0, 68.25, 110])
+# largest non-outlier, where the upper whisker stops
+chk("2 M7.4 upper whisker", max(x for x in d74 if x <= q3i + 1.5 * iqr_i), 70)
+
+# ---- chi-square test of independence, section 2.2(b) ----
+obs = [[20, 30], [30, 20]]
+rows = [sum(r) for r in obs]
+cols = [sum(c) for c in zip(*obs)]
+tot = sum(rows)
+exp = [[rows[i] * cols[j] / tot for j in range(2)] for i in range(2)]
+chk("2 chi2 grand total", tot, 100)
+chk("2 chi2 E11", exp[0][0], 25.0, 1e-9)
+chi2 = sum((obs[i][j] - exp[i][j]) ** 2 / exp[i][j] for i in range(2) for j in range(2))
+chk("2 chi2 statistic", chi2, 4.0, 1e-9)
+chk("2 chi2 df", (2 - 1) * (2 - 1), 1)
+chk("2 chi2 reject H0", chi2 > 3.841, True)
+
 # ===================== CH7 =====================
 inl={'A':['C'],'B':['A'],'C':['A','B','D'],'D':[]}
 C_={'A':2,'B':1,'C':1,'D':1}

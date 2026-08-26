@@ -1,0 +1,776 @@
+%=======================================================================
+%  CHAPTER 2 — CELLULAR MOBILE COMMUNICATION CONCEPT  (4 hrs)
+%=======================================================================
+\section{Cellular Mobile Communication Concept}
+
+{\color{sub}\footnotesize 4 hrs \gap$\cdot$\gap asked in \mk{20 of 22 papers}
+\gap$\cdot$\gap 5 syllabus sub-topics \gap$\cdot$\gap heavy numerical load
+$\rightarrow$ see the Ch 2 numerical companion.}
+
+\lead{Read this first:}
+\begin{itemize}
+  \item Two questions carry the chapter. \textbf{Handoff} \tS{8} and the
+        \textbf{proof $Q=\sqrt{3N}$} \tS{6}. Bank both and most papers are already covered.
+  \item Everything in this chapter hangs off \textbf{one trade-off}: small $N$ $\rightarrow$ more
+        capacity but worse SIR. Large $N$ $\rightarrow$ better SIR but less capacity. Say that
+        sentence in any answer here and it will fit.
+  \item The examiner reliably pairs a theory part with a numerical part
+        (\mk{prove $Q=\sqrt{3N}$, then find optimal $N$ for a given SIR}). Do not learn the proof
+        without the numerical.
+\end{itemize}
+
+\hr
+
+\T{2.1 The cellular concept}
+
+\Q{What is the cellular concept? What is a cell footprint? Explain interference tier}{\m{1+4}\m{5}}
+{\color{sub}\footnotesize \yr{80 Ch} \gap$\cdot$\gap background for every other question in the chapter}
+
+\sbs{%
+\lead{The problem it solved}
+\begin{itemize}
+  \item Early mobile radio $=$ \textbf{one high-power transmitter} on a tall tower.
+  \begin{itemize}
+    \item Large coverage, but the same frequencies could \textbf{never} be reused inside it.
+    \item Bell's New York system supported \mk{12 simultaneous calls over 1000 square miles}.
+  \end{itemize}
+  \item Spectrum is fixed by the regulator $\rightarrow$ capacity could not grow.
+\end{itemize}
+
+\lead{Advantages of going cellular}
+\begin{itemize}
+  \item Low transmit power $\rightarrow$ smaller batteries, cheaper hardware, less interference.
+  \item Frequency reuse $\rightarrow$ capacity grows w/o new spectrum.
+  \item Capacity can be grown later by splitting cells, w/o redesigning the system.
+\end{itemize}}{%
+\lead{The cellular idea (3 system-level ideas)}
+\begin{itemize}
+  \item Replace one high-power transmitter with \textbf{many low-power transmitters}, each
+        covering a small area called a \textbf{cell}.
+  \item Give \textbf{neighbouring cells different channel groups} $\rightarrow$ interference stays
+        low.
+  \item \textbf{Reuse the same channel set} at cells far enough apart.
+  \item Result: high capacity in a fixed spectrum, \mk{with no new technology}.
+\end{itemize}
+
+\lead{Why a hexagon +Fig}
+\begin{itemize}
+  \item The ideal contour is a \textbf{circle}, but circles either
+        \textbf{overlap} (double coverage) or leave \textbf{gaps} (no coverage).
+  \item Only 3 regular shapes tile a plane w/o gaps or overlap:
+        \textbf{triangle, square, hexagon}.
+  \item For the same distance from centre to the farthest edge, the
+        \textbf{hexagon covers the largest area} $\rightarrow$ \mk{fewest cells, fewest base
+        stations, lowest cost}.
+  \item Hexagon is also the closest of the three to a circle $\rightarrow$ best match to a real
+        omni-directional antenna pattern.
+  \item It has exactly \textbf{6 equidistant neighbours}, and centre-to-centre lines are separated
+        by multiples of $60^\circ$ $\rightarrow$ makes the reuse geometry solvable.
+\end{itemize}}
+
+\vspace{2pt}
+\sbsr{0.60}{%
+\lead{Terms}
+\begin{itemize}
+  \item \textbf{Cell} $=$ area covered by one cellular transmitter. The transmitter site itself
+        $=$ \textbf{cell site}.
+  \item \textbf{Cell footprint} $=$ the \textbf{actual} radio coverage of a cell.
+  \begin{itemize}
+    \item Real footprints are irregular (terrain, buildings).
+    \item Irregular footprints are tolerable at first, but as cells are added they
+          \mk{break the reuse plan} and cause co-channel interference.
+    \item So a \textbf{regular shape is assumed} for planning.
+  \end{itemize}
+  \item \textbf{Cluster} $=$ the $N$ cells that together use the complete channel set.
+  \item \textbf{Co-channel cells} $=$ cells using the same channel set as the target cell.
+  \item \textbf{Interference tier} $=$ a set of co-channel cells all at the \textbf{same distance}
+        from the reference cell.
+  \begin{itemize}
+    \item The nearest such set $=$ \textbf{first tier}.
+    \item \mk{In hexagonal geometry the first tier always has exactly 6 cells.}
+    \item Second and higher tiers are much further away, so their interference is
+          normally neglected.
+  \end{itemize}
+\end{itemize}}{%
+\figT{c2_interf_tier.png}
+\vspace{2pt}
+{\color{sub}\footnotesize First tier: 6 co-channel cells, all at distance $D$ from the
+reference cell.}}
+
+\hr
+
+\T{2.2 Frequency reuse and cluster size}
+
+\Q{Explain the frequency reuse concept and the co-channel reuse ratio}{\m{6}\m{4}\m{3}}
+{\color{sub}\footnotesize \tF{3} \yr{72 Ma, \textbf{74 Bh}, \textbf{76 Bh}} \gap$\cdot$\gap
+74 Bh words it as ``minimizing reuse distance maximizes spectral efficiency''}
+
+\sbsr{0.55}{%
+\lead{Frequency reuse / frequency planning}
+\begin{itemize}
+  \item Each BS gets a group of channels, used only inside its own cell.
+  \item Neighbouring cells get \textbf{different} groups.
+  \item Because coverage is confined to the cell, the \textbf{same group can be reused} at a cell
+        far enough away.
+  \item Design task $=$ choose the reuse pattern so interference stays tolerable.
+\end{itemize}
+
+\lead{Capacity arithmetic \mk{(learn this, it is the base of every numerical)}}
+\begin{itemize}
+  \item $S$ $=$ total duplex channels in the system.
+  \item $k$ $=$ channels per cell.
+  \item $N$ $=$ cells per cluster (cluster size).
+  \item $M$ $=$ number of times the cluster is replicated.
+  \item So $S = kN$, and system capacity
+        \[ C \;=\; MkN \;=\; MS \]
+  \item \textbf{Capacity is directly proportional to $M$}, the number of replications.
+  \item \textbf{Frequency reuse factor} $= 1/N$: each cell gets $1/N$ of the total channels.
+  \item Typical $N = 4, 7, 12$.
+  \item \mk{Small $N$ $\rightarrow$ cluster repeats more often $\rightarrow$ higher capacity},
+        but co-channel cells sit closer $\rightarrow$ worse interference.
+\end{itemize}
+
+\lead{Which $N$ are allowed}
+\begin{itemize}
+  \item Hexagons only tile for
+        \[ N \;=\; i^2 + ij + j^2 \qquad i,j = 0,1,2,\dots \]
+  \item Allowed $N$: 1, 3, 4, 7, 9, 12, 13, 16, 19, 21, \dots
+  \item Eg $i=1,j=1 \rightarrow N=3$. $i=2,j=1 \rightarrow N=7$. $i=3,j=2 \rightarrow N=19$.
+\end{itemize}}{%
+\figT{c2_reuse_layout.png}
+\vspace{2pt}
+{\color{sub}\footnotesize Cells with the same letter use the same channel set.}
+
+\lead{Locating the co-channel cells +Fig}
+\begin{itemize}
+  \item From the centre of any cell:
+  \begin{itemize}
+    \item move \textbf{$i$ cells} perpendicular to one of the 6 faces,
+    \item turn \textbf{$60^\circ$}, move \textbf{$j$ cells}.
+  \end{itemize}
+  \item That lands on a co-channel cell. Repeating for all 6 faces gives the whole first tier.
+  \item Clockwise and counter-clockwise turns give the two mirror routes.
+\end{itemize}}
+
+\creamq{Channel assignment strategies}{\pill{gdL}{gd}{syllabus, no PYQ yet}}
+
+\sbs{%
+\lead{Fixed channel assignment (FCA)}
+\begin{itemize}
+  \item Each cell gets a \textbf{predetermined} set of voice channels.
+  \item A new call can only use an unused channel \textbf{of that cell}.
+  \item If all of the cell's channels are busy, the call is \textbf{blocked}, even when a neighbour
+        is idle.
+  \item Simple, no signalling overhead, predictable.
+  \item \textbf{Borrowing} variation: a busy cell may borrow a channel from a neighbour, supervised
+        by the MSC, provided it does not break the reuse plan.
+\end{itemize}}{%
+\lead{Dynamic channel assignment (DCA)}
+\begin{itemize}
+  \item Channels are \textbf{not} owned by any cell. They sit in a central pool at the MSC.
+  \item On each request the MSC allocates a channel after checking
+        \begin{itemize}
+          \item the candidate channel is unused in that cell,
+          \item and no co-channel cell within the reuse distance is using it.
+        \end{itemize}
+  \item \mk{Lowers blocking probability, raises capacity} because it follows the traffic.
+  \item Cost: the MSC must collect occupancy and signal-strength data continuously
+        $\rightarrow$ heavy storage and computation load.
+\end{itemize}
+\vspace{2pt}
+\figC{c2_ij_locate.png}{0.62\linewidth}
+\vspace{-2pt}
+{\color{sub}\footnotesize\centering $i=4$, $j=2$: the 6 nearest co-channel A cells.\par}}
+
+\hr
+
+\T{2.3 Handoff}
+
+\Q{What is handoff? Explain the handover process and the types of handover with application}{\m{6}\m{4+4}\m{4}\m{2+4}\m{1+3}}
+{\color{sub}\footnotesize \tS{8} \yr{\textbf{72 Ash}, \textbf{73 Bh}, 73 Ma, 74 Ma, \textbf{76 Bh},
+\textbf{78 Ch}, \texttt{79 Bh}, \texttt{81 Ba}} \gap$\cdot$\gap
+\mk{most repeated question in the chapter}}
+
+\sbsr{0.52}{%
+\lead{Definition}
+\begin{itemize}
+  \item A mobile moves out of one cell into another \textbf{while a call is in progress}.
+  \item The MSC \textbf{transfers the call to a new channel} belonging to the new BS.
+  \item That transfer $=$ \textbf{handoff} (US) $=$ \textbf{handover} (Europe).
+  \item Must be \textbf{transparent}: the user should not notice it.
+\end{itemize}
+
+\lead{The handoff process, step by step}
+\begin{itemize}
+  \item Serving BS continuously measures the received signal strength on each
+        \textbf{reverse voice channel} $\rightarrow$ tells the MSC roughly where each mobile is.
+  \item Signal drops below the \textbf{handoff threshold} $P_{r,\text{handoff}}$.
+  \item MSC \textbf{identifies a candidate BS} whose signal is stronger.
+  \item MSC checks the candidate has a \textbf{free channel}.
+  \item MSC \textbf{re-allocates voice and control channels} to the new BS.
+  \item Call continues on the new channel, old channel returns to the pool.
+\end{itemize}
+
+\lead{Handoff threshold and handoff margin \mk{(75 Bh asks for the margin +Fig, \m{3})}}
+\begin{itemize}
+  \item $P_{r,\text{minimum usable}}$ $=$ weakest signal that still gives acceptable voice,
+        typically $-90$ to $-100$ dBm.
+  \item $P_{r,\text{handoff}}$ $=$ level at which handoff is started. Always set a little higher.
+  \item \textbf{Handoff margin}
+        \[ \Delta \;=\; P_{r,\text{handoff}} - P_{r,\text{minimum usable}} \]
+  \item \mk{$\Delta$ too large} $\rightarrow$ handoffs fire needlessly $\rightarrow$ MSC is
+        burdened.
+  \item \mk{$\Delta$ too small} $\rightarrow$ not enough time to finish the handoff
+        $\rightarrow$ call drops.
+  \item 1G analog: $\Delta \approx$ 6 to 12 dB, handoff takes about 10 s.
+  \item 2G (GSM): $\Delta \approx$ 0 to 6 dB, handoff takes 1 to 2 s.
+\end{itemize}}{%
+\figT{c2_handoff_proper.png}
+\vspace{2pt}
+{\color{sub}\footnotesize \textbf{Improper Vs proper handoff} \yr{(\textbf{76 Bh} \m{4},
+\texttt{81 Ba} \m{1+3})}. Top: the level is left to fall past the minimum usable value before
+handoff is attempted $\rightarrow$ \mk{call terminated at B}. Bottom: handoff is made while the
+signal is still usable $\rightarrow$ call transferred to BS 2.}
+
+\lead{Types of handoff}
+\begin{itemize}
+  \item \textbf{Hard handoff} $=$ ``\textbf{break before make}''.
+  \begin{itemize}
+    \item Old connection is released \textbf{before} the new one is set up.
+    \item Used in FDMA and TDMA systems (AMPS, GSM), where the two cells are on
+          different frequencies.
+    \item Risk: if the new channel fails, \mk{the call drops}.
+  \end{itemize}
+  \item \textbf{Soft handoff} $=$ ``\textbf{make before break}''.
+  \begin{itemize}
+    \item New connection is set up \textbf{before} the old one is released, so the mobile is
+          briefly served by two BSs at once.
+    \item Only possible in \textbf{CDMA}, where every cell uses the same frequency.
+    \item Gives \textbf{BS diversity} at the cell boundary $\rightarrow$ far fewer dropped calls.
+  \end{itemize}
+  \item \textbf{Intra-cell handoff}: same BS, different channel. Used to escape interference or a
+        deep fade.
+  \item \textbf{Inter-cell handoff}: between two cells of the same MSC.
+  \item \textbf{Intersystem handoff}: mobile leaves the coverage of one MSC and enters a system run
+        by \textbf{a different MSC}. Needs an inter-MSC link and a roaming agreement.
+\end{itemize}}
+
+\creamq{How the handoff decision is taken (handoff measurement)}{}
+\begin{itemize}
+  \item \textbf{1G analog}: the \textbf{BS} measures signal strength, the \textbf{MSC} decides.
+        A spare receiver, the \textbf{locator receiver}, scans neighbouring cells' mobiles.
+  \item \textbf{2G TDMA}: \textbf{mobile assisted handoff (MAHO)}.
+  \begin{itemize}
+    \item The \textbf{mobile} measures received power from surrounding BSs and reports
+          continuously to its serving BS.
+    \item Handoff triggers when a neighbour becomes appreciably stronger.
+    \item \mk{Much faster (1 to 2 s)} because the MSC no longer has to poll every BS.
+    \item GSM also weighs \textbf{co-channel and adjacent channel interference}, not just level.
+  \end{itemize}
+  \item \textbf{IS-95 CDMA}: all cells share the channel, so \mk{there is no physical channel
+        change at all}. The MSC simply picks the BS receiving the strongest signal.
+  \item In every case the decision must use a \textbf{running average} of signal strength, so that
+        \mk{a momentary fade is not mistaken for the mobile leaving the cell}.
+  \begin{itemize}
+    \item Averaging window depends on vehicle speed.
+    \item A steep short-term average $\rightarrow$ handoff must be made quickly.
+    \item Speed can be estimated from the statistics of the short-term fading at the BS.
+  \end{itemize}
+\end{itemize}
+
+\Q{Explain two schemes for prioritizing handoff}{\m{3}\m{2}}
+{\color{sub}\footnotesize \tP{1} \yr{\textbf{\texttt{82 Bh}}} \gap$\cdot$\gap also asked inside
+72 Ash \m{2}}
+
+\sbs{%
+\begin{itemize}
+  \item \mk{Why prioritize:} a \textbf{dropped call} is judged far more serious by the subscriber
+        than a \textbf{blocked call}. So handoff requests must beat new-call requests.
+  \item \textbf{Scheme 1: guard channels.}
+  \begin{itemize}
+    \item A fixed fraction of each cell's channels is \textbf{reserved exclusively} for handoff
+          requests.
+    \item Simple, immediate.
+    \item Cost: those channels sit idle for new calls $\rightarrow$ \mk{total carried traffic
+          falls}.
+    \item Fixed by using \textbf{dynamic channel assignment} for the reserved pool.
+  \end{itemize}
+\end{itemize}}{%
+\begin{itemize}
+  \item \textbf{Scheme 2: queuing of handoff requests.}
+  \begin{itemize}
+    \item A handoff request that finds no free channel is \textbf{put in a queue} instead of being
+          refused.
+    \item Works because there is a \textbf{finite window} between the signal dropping below the
+          handoff threshold and dropping below the minimum usable level.
+    \item That window leaves room to wait for a channel to free up.
+    \item Reduces the \mk{probability of forced termination}, but does not eliminate it.
+  \end{itemize}
+\end{itemize}}
+
+\Q{Practical handoff considerations}{\m{4}\m{4+4}}
+{\color{sub}\footnotesize \tF{4} \yr{\texttt{79 Bh}, 73 Ma, \textbf{78 Ch}, \textbf{72 Ash}}}
+
+\sbsr{0.56}{%
+\begin{itemize}
+  \item \textbf{Users move at wildly different speeds.}
+  \begin{itemize}
+    \item High-speed vehicle users need \textbf{frequent} handoffs.
+    \item Pedestrians may need \textbf{none at all} in a whole call.
+  \end{itemize}
+  \item \textbf{Microcells make it worse.} Small cells raise capacity, but the MSC is swamped when
+        fast users are handed between them every few seconds.
+  \item \textbf{Umbrella cell} is the standard fix +Fig.
+  \begin{itemize}
+    \item A large, high, high-power cell is \textbf{overlaid} on a group of microcells at the
+          same site.
+    \item \textbf{High-speed} traffic is put on the umbrella cell $\rightarrow$ few handoffs.
+    \item \textbf{Low-speed} traffic is put on the microcells $\rightarrow$ high capacity.
+    \item Speed is estimated from the rate of change of the short-term signal average.
+  \end{itemize}
+  \item \textbf{Cell dragging} \mk{(72 Ash, 73 Bh ask for this by name, \m{2})}.
+  \begin{itemize}
+    \item A \textbf{pedestrian} with a clear LOS to the BS keeps a \textbf{very strong} signal.
+    \item The level never falls to the handoff threshold, so no handoff is triggered.
+    \item The user \textbf{travels deep into a neighbouring cell} while still held by the old BS.
+    \item Result: \mk{severe interference in the neighbouring cell, and the reuse plan is broken}.
+    \item Fixed by tuning the handoff threshold and averaging window carefully.
+  \end{itemize}
+  \item \textbf{Handoff requests outrank new calls} so that GoS is preserved.
+\end{itemize}}{%
+\figT{c2_umbrella.png}
+\vspace{2pt}
+{\color{sub}\footnotesize Umbrella cell: one large cell for fast traffic sitting over the
+microcells that serve slow traffic.}
+
+\lead{Handoff strategy used in GSM \mk{(70 Ma, \m{8})}}
+\begin{itemize}
+  \item GSM uses \textbf{MAHO}, so the mobile does the measuring.
+  \item In every idle timeslot the mobile measures the \textbf{BCCH} power of up to
+        \textbf{16 neighbouring cells} and reports the best 6 to its BS twice per second.
+  \item Decision uses \textbf{RXLEV} (level) and \textbf{RXQUAL} (bit error rate), not level alone.
+  \item So GSM will hand a call off for \mk{poor quality even when the level is high}, which a
+        level-only 1G system cannot do.
+  \item Handoff is \textbf{hard} (break before make) and completes in 1 to 2 s.
+  \item Four cases: intra-cell, inter-cell within one BSC, between two BSCs of one MSC,
+        and between two MSCs.
+\end{itemize}}
+
+\hr
+
+\T{2.4 Interference and system capacity}
+
+\Q{Explain co-channel interference and adjacent channel interference}{\m{2.5+2.5}\m{3}\m{4}}
+{\color{sub}\footnotesize \yr{\textbf{80 Ch}, \textbf{70 Bh}, \textbf{\texttt{81 Bh}},
+\texttt{80 Ba}, \texttt{81 Ba}} \gap$\cdot$\gap 70 Bh and 81 Bh pair it with the $Q=\sqrt{3N}$
+proof}
+
+\lead{Sources of interference}
+\begin{itemize}
+  \item Another mobile \textbf{in the same cell}.
+  \item A call in progress in a \textbf{neighbouring cell}.
+  \item Other \textbf{base stations} operating in the same frequency band.
+  \item Any \textbf{non-cellular system} leaking energy into the cellular band.
+\end{itemize}
+\begin{itemize}
+  \item Interference is \mk{the limiting factor on capacity}, not noise.
+  \item On \textbf{voice} channels it causes cross-talk and audible noise.
+  \item On \textbf{control} channels it causes missed and blocked calls through signalling errors.
+\end{itemize}
+
+\vspace{3pt}
+\begin{tabularx}{\textwidth}{@{}L{3.3cm}XX@{}}
+\toprule
+\hrow & \thead{Co-channel interference (CCI)} & \thead{Adjacent channel interference (ACI)} \\
+\midrule
+Cause & Another cell using the \textbf{same} frequency & Signal in a \textbf{nearby} frequency
+       leaking through an imperfect receiver filter \\
+Comes from & Co-channel cells, one reuse distance away & Channels next to the wanted one,
+       often \textbf{inside the same cell} \\
+Depends on & $Q = D/R$ and cluster size $N$ & Filter sharpness and the near--far geometry \\
+Independent of & \mk{Transmit power} (raising all powers raises S and I equally) & \\
+Cured by & Increasing $D/R$, ie a larger $N$. Sectoring & Channel allocation w/ maximum frequency
+       separation. Sharp band-pass filters. Power control \\
+\bottomrule
+\end{tabularx}
+
+\creamq{Adjacent channel interference in detail}{}
+\sbsr{0.5}{%
+\begin{itemize}
+  \item Receiver filters are not ideal $\rightarrow$ energy from neighbouring frequencies
+        \textbf{leaks into the passband}.
+  \item \textbf{Near--far problem} is the worst case +Fig.
+  \begin{itemize}
+    \item A mobile \textbf{close} to the BS transmits on a channel adjacent to one used by a
+          mobile \textbf{far} from the BS.
+    \item The near mobile's signal arrives far stronger.
+    \item The BS then \mk{cannot hear the far mobile at all}.
+  \end{itemize}
+  \item Cures:
+  \begin{itemize}
+    \item \textbf{Channel allocation}: never give a cell channels that are adjacent in frequency.
+          Keep separation as large as possible.
+    \item \textbf{Careful filtering}: sharp band-pass filter at the receiver, plus modulation
+          w/ low out-of-band radiation.
+    \item \textbf{Separate multiplexing} for uplink and downlink.
+    \item \textbf{Power control} (below).
+  \end{itemize}
+\end{itemize}}{%
+\figT{c2_nearfar.png}
+\vspace{2pt}
+
+\lead{Power control \pill{gdL}{gd}{syllabus, no PYQ yet}}
+\begin{itemize}
+  \item Every mobile transmits \textbf{the smallest power} that still holds a good reverse link.
+  \item Benefits:
+  \begin{itemize}
+    \item \textbf{Solves the near--far problem}: the near mobile is turned down until the far
+          mobile is audible again.
+    \item \textbf{Longer battery life}.
+    \item \textbf{Raises reverse-link SIR} across the whole system.
+  \end{itemize}
+  \item \mk{Essential, not optional, in CDMA}, where every user in every cell shares one radio
+        channel, so one loud mobile can jam a whole cell.
+\end{itemize}}
+
+\Q{Prove that the co-channel reuse ratio $Q=\sqrt{3N}$, and derive S/I}{\m{4+4}\m{3+5}\m{4}\m{3+4+3}\m{3+3}}
+{\color{sub}\footnotesize \tS{6} \yr{\textbf{70 Bh}, \textbf{71 Bh}, 74 Ma, \texttt{79 Bh},
+\textbf{\texttt{80 Bh}}, \textbf{\texttt{81 Bh}}} \gap$\cdot$\gap
+\mk{almost always followed by ``find optimal $N$ for SIR $=$ 15 or 18 dB''}
+$\rightarrow$ Ch 2 numerical companion}
+
+\sbsr{0.53}{%
+\lead{Step 1: what $Q$ is}
+\begin{itemize}
+  \item $R$ $=$ cell radius (centre to vertex).
+  \item $D$ $=$ distance to the centre of the \textbf{nearest} co-channel cell.
+  \item \textbf{Co-channel reuse ratio} $Q = D/R$.
+  \item When all cells are about the same size, CCI is
+        \textbf{independent of transmit power} and depends only on $R$ and $D$.
+  \item \mk{Larger $Q$ $\rightarrow$ less interference but less capacity.} The whole design is
+        this trade-off.
+\end{itemize}
+
+\lead{Step 2: hexagonal geometry}
+\begin{itemize}
+  \item Put the cell centres on the axes $u,v$ separated by $60^\circ$.
+  \item Distance between two \textbf{adjacent} cell centres $= \sqrt{3}\,R$.
+  \item Move $i$ cells along $u$, then $j$ cells along $v$ at $60^\circ$.
+  \item By the cosine rule w/ the included angle $=60^\circ$,
+        \[ D^2 = \left(i\sqrt{3}R\right)^2 + \left(j\sqrt{3}R\right)^2
+                 - 2\left(i\sqrt{3}R\right)\left(j\sqrt{3}R\right)\cos 120^\circ \]
+        \[ D^2 = 3R^2\left(i^2+j^2+ij\right) \]
+  \item But $N = i^2+ij+j^2$, so $D^2 = 3NR^2$, giving
+        \[ \boxed{\;D = \sqrt{3N}\,R \quad\Longrightarrow\quad Q = \frac{D}{R} = \sqrt{3N}\;} \]
+\end{itemize}}{%
+\figT{c2_cochannel_geom.png}
+\vspace{2pt}
+{\color{sub}\footnotesize First tier for $N=7$. Worst case: the mobile sits at the cell boundary
+(point A), so its wanted signal is at its \mk{minimum} while the interferers are at their nearest.
+Exact distances are $D-R$, $D$, $D$, $D$, $D$, $D+R$, but the approximation $D_i = D$ is used for
+easy analysis.}
+
+\lead{Step 3: signal to interference ratio}
+\begin{itemize}
+  \item Received power falls as $P_r \propto d^{-n}$, path loss exponent $n = 2$ to $4$.
+  \item With $N_I$ interfering cells,
+        \[ \frac{S}{I} \;=\; \frac{S}{\sum_{i=1}^{N_I} I_i}
+           \;=\; \frac{R^{-n}}{\sum_{i=1}^{N_I} D_i^{-n}} \]
+  \item Take the \textbf{worst case}: mobile at the cell edge, first tier only, $N_I = 6$,
+        all $D_i = D$:
+        \[ \frac{S}{I} \;=\; \frac{R^{-n}}{6\,D^{-n}} \;=\; \frac{(D/R)^n}{6}
+           \;=\; \frac{Q^n}{6} \;=\; \frac{\left(\sqrt{3N}\right)^n}{6} \]
+  \item Inverting for design,
+        \[ \boxed{\;Q = \sqrt{3N} = \left(6\cdot \frac{S}{I}\right)^{1/n}
+                   \;\Longrightarrow\; N = \frac{Q^2}{3}\;} \]
+  \item Then \textbf{round $N$ up} to the next allowed $i^2+ij+j^2$.
+\end{itemize}}
+
+\creamq{Exact worst case for $N=7$, and what sectoring does to it}{}
+\sbsr{0.55}{%
+\begin{itemize}
+  \item Keeping the true distances instead of $D_i = D$, and $n = 4$:
+        \[ \frac{S}{I} = \frac{R^{-4}}{2(D-R)^{-4} + 2(D+R)^{-4} + 2D^{-4}} \]
+  \item For $N=7$, $Q = 4.6$:
+  \begin{itemize}
+    \item approximate result $\;\rightarrow\; 49.56 \;=\; 17\;\text{dB}$,
+    \item exact result $\;\rightarrow\; 17.8$ dB.
+  \end{itemize}
+  \item Both fall \textbf{just short of the 18 dB} that AMPS demands.
+  \item Going to the next size, $N = 12$ ($i=j=2$), fixes SIR but cuts spectrum utilisation from
+        $1/7$ to $1/12$ $\rightarrow$ \mk{not tolerable}.
+  \item So the answer is \textbf{sectoring}, not a bigger $N$.
+\end{itemize}}{%
+\begin{itemize}
+  \item With $120^\circ$ sectoring and 7-cell reuse, a mobile is hit by only
+        \textbf{2 of the 6} first-tier co-channel cells.
+  \item SIR rises from 17 dB to about \mk{24.2 dB}.
+  \item That margin is then \textbf{spent} on reducing $N$, which raises capacity.
+\end{itemize}
+\vspace{2pt}
+\figT{c2_sector_interf.png}
+\vspace{1pt}
+{\color{sub}\footnotesize $120^\circ$ sectoring: of the 6 first-tier co-channel cells, only 2 have
+antenna patterns radiating into the centre cell.}}
+
+\hr
+
+\T{2.5 Trunking and grade of service}
+
+\Q{Define grade of service. How is it measured in a blocked-calls-cleared trunking system?}{\m{3}\m{4}}
+{\color{sub}\footnotesize \tP{1} \yr{\textbf{\texttt{79 Bh}}} \gap$\cdot$\gap 82 Bh asks for GoS,
+traffic intensity, average holding time and blocked call as definitions \m{4}
+\gap$\cdot$\gap \mk{the numericals built on this are in the Ch 2 companion}}
+
+\sbsr{0.52}{%
+\lead{What trunking is}
+\begin{itemize}
+  \item A large user population shares a \textbf{small pool of channels}.
+  \item A channel is allocated \textbf{per call} and returned to the pool the moment the call ends.
+  \item Works because users do not all call at once: it exploits their \textbf{statistical}
+        behaviour.
+  \item If every channel is busy when a user calls, that user is \textbf{blocked}.
+  \item Trade-off: fewer channels $\rightarrow$ cheaper, but more blocking.
+\end{itemize}
+
+\lead{Definitions \mk{(82 Bh asks for exactly these)}}
+\begin{itemize}
+  \item \textbf{Set-up time}: time to allocate a trunked channel to a requesting user.
+  \item \textbf{Blocked call} (lost call): a call that cannot be completed at the time of request,
+        because of congestion.
+  \item \textbf{Holding time $H$}: average duration of a typical call, in seconds.
+  \item \textbf{Request rate $\lambda$}: average number of call requests per unit time.
+  \item \textbf{Traffic intensity $A$}: average channel occupancy, in \textbf{Erlangs}.
+        Dimensionless.
+  \item \textbf{Load}: traffic intensity across the whole system.
+  \item \textbf{1 Erlang} $=$ one channel occupied 100\,\% of the time (one call-hour per hour).
+        Eg a channel busy for 30 min in an hour carries 0.5 Erlang.
+\end{itemize}}{%
+\lead{Grade of service (GoS)}
+\begin{itemize}
+  \item GoS $=$ a measure of a user's ability to access the system \textbf{during the busy hour}.
+  \item \textbf{Busy hour} $=$ the busiest hour of a week, month or year. For cellular it is
+        typically 4 to 6 pm Thursday or Friday.
+  \item Stated either as
+  \begin{itemize}
+    \item \textbf{probability a call is blocked} (Erlang B), or
+    \item \textbf{probability a call is delayed} beyond a set queuing time (Erlang C).
+  \end{itemize}
+  \item AMPS is designed for \textbf{GoS $=$ 2\,\% blocking}: 2 calls in 100 are lost in the busy
+        hour.
+  \item The designer's job: estimate peak demand, then allocate enough channels to meet the GoS.
+\end{itemize}
+
+\lead{The three traffic equations}
+\begin{itemize}
+  \item Per user: $A_u = \lambda H$
+  \item Total offered, $U$ users: $A = U A_u$
+  \item Per channel, $C$ channels: $A_c = U A_u / C$
+  \item \mk{Offered traffic is not carried traffic.} Once offered traffic exceeds capacity, the
+        carried traffic saturates at $C$ Erlangs.
+\end{itemize}}
+
+\creamq{The two types of trunked system}{}
+
+\sbs{%
+\lead{Blocked calls cleared $\rightarrow$ Erlang B}
+\begin{itemize}
+  \item \textbf{No queue.} A user who finds no free channel is refused and is free to try again.
+  \item Assumptions: Poisson arrivals, infinite users, memoryless arrivals, exponentially
+        distributed holding time, finite channels. This is an \textbf{M/M/m/m} queue.
+  \item GoS $=$ probability of blocking:
+        \[ \Pr[\text{blocking}] \;=\; \frac{\dfrac{A^C}{C!}}
+             {\displaystyle\sum_{k=0}^{C} \dfrac{A^k}{k!}} \;=\; \text{GoS} \]
+  \item Gives a \textbf{conservative} (pessimistic) estimate, since a finite-user model always
+        predicts less blocking.
+  \item In the exam you are given an \textbf{Erlang B table or chart}, never asked to sum the
+        series.
+\end{itemize}}{%
+\lead{Blocked calls delayed $\rightarrow$ Erlang C}
+\begin{itemize}
+  \item \textbf{A queue holds blocked calls} until a channel frees up.
+  \item Probability a call is delayed at all:
+        \[ \Pr[\text{delay} > 0] \;=\; \frac{A^C}
+           {A^C + C!\left(1-\dfrac{A}{C}\right)\displaystyle\sum_{k=0}^{C-1}\dfrac{A^k}{k!}} \]
+  \item GoS $=$ probability the delay exceeds $t$ seconds:
+        \[ \Pr[\text{delay} > t] = \Pr[\text{delay}>0]\;\exp\!\left(-\frac{(C-A)t}{H}\right) \]
+  \item Average delay over \textbf{all} calls:
+        \[ D = \Pr[\text{delay}>0]\;\frac{H}{C-A} \]
+        where $H/(C-A)$ is the average delay of \emph{those} calls that were queued.
+\end{itemize}}
+
+\vspace{2pt}
+{\color{sub}\footnotesize \mk{Trunking efficiency:} a large trunked group carries far more traffic
+per channel than several small ones at the same GoS. This is why sectoring, which splits one
+channel pool into 3 or 6 smaller pools, always \textbf{loses} some trunking efficiency even though
+it improves SIR. \yr{(\texttt{81 Ba} asks for exactly this loss, \m{6})}}
+
+\hr
+
+\T{2.6 Improving coverage and capacity}
+
+\Q{What techniques enhance capacity and coverage in a cellular radio network?}{\m{8}\m{5}\m{4}}
+{\color{sub}\footnotesize \tP{1} \yr{71 Ma} \gap$\cdot$\gap the sectoring Vs cell splitting
+comparison is \tF{3} \yr{\textbf{73 Bh}, \textbf{75 Bh}, \textbf{\texttt{81 Bh}}}}
+
+\lead{Why it is needed}
+\begin{itemize}
+  \item A new system is deployed with few users, spread evenly $\rightarrow$ demand is low.
+  \item As subscribers grow, demand in \textbf{some} cells exceeds what those BSs can carry.
+  \item More spectrum is not available $\rightarrow$ capacity must come from \textbf{geometry}.
+\end{itemize}
+
+\vspace{3pt}
+\begin{tabularx}{\textwidth}{@{}L{2.7cm}XXX@{}}
+\toprule
+\hrow & \thead{Cell splitting} & \thead{Sectoring} & \thead{Microcell zone} \\
+\midrule
+Idea & Subdivide a congested cell into smaller cells & Replace the omni antenna w/ directional
+      antennas & Split a cell into zones fed by one BS \\
+$R$ & \textbf{Reduced} & Unchanged & Unchanged \\
+$D/R$ & Unchanged & \textbf{Reduced} (via smaller $N$) & Reduced \\
+Gains capacity by & More clusters per unit area & Allowing a smaller $N$ & Allowing a smaller $N$
+      w/o extra handoffs \\
+Handoffs & More (smaller cells) & \mk{Many more} (sector to sector) & \mk{None between zones} \\
+Cost & New BSs, towers, real estate & Loses trunking efficiency & Zone sites plus fibre or
+      microwave links \\
+\bottomrule
+\end{tabularx}
+
+\creamq{Cell splitting}{\m{5}}
+\sbsr{0.60}{%
+\begin{itemize}
+  \item \textbf{Subdivide} a congested cell into smaller cells, each w/ its \textbf{own BS} and
+        \textbf{reduced} antenna height and transmit power.
+  \item New smaller cells are called \textbf{microcells} and are dropped in between the existing
+        cells.
+  \item Halving $R$ needs \textbf{about 4 times as many cells} to cover the same area
+        (area $\propto R^2$).
+  \item More cells $\rightarrow$ more clusters $\rightarrow$ more channels per unit area
+        $\rightarrow$ higher capacity.
+  \item \mk{Cell splitting merely rescales the geometry}: $Q = D/R$ is unchanged, so the reuse plan
+        still works.
+\end{itemize}
+
+\lead{The power reduction \mk{(commonly examined)}}
+\begin{itemize}
+  \item Received power must be equal at the old and new cell edges, so the reuse plan behaves
+        the same:
+        \[ P_r[\text{old edge}] \propto P_{t1} R^{-n}, \qquad
+           P_r[\text{new edge}] \propto P_{t2} (R/2)^{-n} \]
+  \item Setting them equal w/ $n=4$:
+        \[ P_{t2} = \frac{P_{t1}}{16} \quad\Longrightarrow\quad
+           \boxed{\text{reduce transmit power by }12\text{ dB}} \]
+\end{itemize}
+
+\lead{Problems}
+\begin{itemize}
+  \item In practice \textbf{not all cells are split at once} $\rightarrow$ two cell sizes coexist.
+  \item Neither the old nor the new power works for both:
+  \begin{itemize}
+    \item all-high power $\rightarrow$ small cells break the co-channel separation,
+    \item all-low power $\rightarrow$ parts of the large cells go unserved.
+  \end{itemize}
+  \item So channels must be \textbf{split into two groups}, one per cell size. The large cell takes
+        high-speed traffic so it hands off less often.
+  \item Needs new towers and antennas, and \mk{lowers spectral efficiency} during the transition.
+\end{itemize}}{%
+\figT{c2_cell_splitting.png}
+\vspace{2pt}
+{\color{sub}\footnotesize Each original cell is surrounded by microcells of half the radius,
+placed so the reuse plan is preserved.}}
+
+\creamq{Sectoring}{\m{5}}
+\sbsr{0.56}{%
+\begin{itemize}
+  \item Keep $R$ fixed, and instead attack $D/R$.
+  \item Replace the single omni-directional BS antenna w/ \textbf{several directional antennas},
+        each radiating into one \textbf{sector}.
+  \item A cell is normally split into \textbf{three $120^\circ$} or \textbf{six $60^\circ$}
+        sectors.
+  \item Each sector gets its \textbf{own} channel sub-group, used only in that sector.
+  \item A given cell now transmits to, and receives interference from, only a \textbf{fraction} of
+        the co-channel cells.
+\end{itemize}
+
+\lead{The two-step gain \mk{(state it in this order)}}
+\begin{itemize}
+  \item \textbf{Step 1:} directional antennas cut the number of first-tier interferers.
+  \begin{itemize}
+    \item omni $\rightarrow$ \textbf{6} interferers,
+    \item $120^\circ$ $\rightarrow$ \textbf{2} interferers,
+    \item $60^\circ$ $\rightarrow$ \textbf{1} interferer.
+  \end{itemize}
+  \item SIR therefore \textbf{improves} (17 dB $\rightarrow$ about 24.2 dB for $120^\circ$).
+  \item \textbf{Step 2:} spend that margin. Reduce $N$ (eg $7 \rightarrow 4$ or 3), which raises
+        capacity, until SIR is back at the required value.
+  \item Note the transmit power is \textbf{not} reduced. Only the relative interference is.
+\end{itemize}
+
+\lead{Disadvantages}
+\begin{itemize}
+  \item The cell's channels are split into 3 or 6 smaller pools $\rightarrow$
+        \mk{trunking efficiency falls}, so carried traffic drops for the same channel count.
+  \item \textbf{Many more handoffs}, one per sector crossing, loading the MSC.
+  \item More antennas per site.
+\end{itemize}}{%
+\figT{c2_sector_shapes.png}
+\vspace{1pt}
+{\color{sub}\footnotesize Omni, $120^\circ$, $90^\circ$ and $60^\circ$ sectoring.}
+\vspace{4pt}
+\figT{c2_sectoring.png}
+\vspace{1pt}
+{\color{sub}\footnotesize Sector 0 receives interference only from sectors 4, 5 and 6, so the
+6 interfering cells drop to 3 (2 in the exact Rappaport treatment for $120^\circ$).}
+
+\lead{Repeaters for range extension \pill{gdL}{gd}{syllabus, no PYQ yet}}
+\begin{itemize}
+  \item Radio retransmitters used to cover \textbf{hard-to-reach places}: inside buildings,
+        valleys, tunnels.
+  \item \textbf{Bidirectional}: receives from the serving BS, amplifies, reradiates into the
+        target area, and does the same in reverse.
+  \item Works over the air $\rightarrow$ can be installed anywhere, repeats a whole band.
+  \item Often feeds a \textbf{distributed antenna system (DAS)} inside a building.
+  \item \mk{A repeater adds coverage, not capacity.} It only reradiates the BS signal.
+  \item It also reradiates the received \textbf{noise and interference}, so placement and gain
+        settings need care.
+\end{itemize}}
+
+\creamq{Microcell zone concept}{\m{3}\m{1+3}}
+{\color{sub}\footnotesize \tF{3} \yr{\texttt{80 Ba}, \texttt{81 Ba}, \textbf{79 Ch}}
+\gap$\cdot$\gap asked as ``\mk{why do we need it?}'', so lead with the problem}
+
+\sbsr{0.56}{%
+\lead{Why it is needed \mk{(the marked part)}}
+\begin{itemize}
+  \item Sectoring buys capacity but \textbf{multiplies handoffs}, one per sector boundary.
+  \item Every handoff loads the MSC and the control links.
+  \item Sectoring also \textbf{loses trunking efficiency} by splitting the channel pool.
+  \item The microcell zone concept buys the same capacity \mk{without either penalty}.
+\end{itemize}
+
+\lead{How it works}
+\begin{itemize}
+  \item A cell is divided into \textbf{3 or more zones}, each w/ a \textbf{zone site} (Tx/Rx)
+        placed at the \textbf{outer edge} of the cell.
+  \item All zone sites connect back to \textbf{one single BS}, by coaxial cable, fibre or
+        microwave link, and share its radio equipment.
+  \item Each zone uses a \textbf{directional antenna} radiating inward.
+  \item The mobile is served by \textbf{whichever zone is strongest}.
+  \item Any BS channel may be assigned to any zone.
+  \item As the mobile crosses from zone to zone it \textbf{keeps the same channel}.
+        \mk{The BS just switches which zone site radiates it, so no handoff reaches the MSC.}
+\end{itemize}
+
+\lead{Result}
+\begin{itemize}
+  \item A channel is live only in the zone the mobile is in $\rightarrow$ radiation is localised
+        $\rightarrow$ \textbf{interference falls}.
+  \item $D/R$ drops to about \textbf{3}, so $N$ can drop from \textbf{7 to 3}.
+  \item Capacity rises \mk{about 2.33 times} at the same 18 dB SIR requirement.
+  \item Particularly good along \textbf{highways and urban traffic corridors}.
+\end{itemize}}{%
+\figT{c2_microcell_zone.png}
+\vspace{2pt}
+{\color{sub}\footnotesize Three zone sites (Tx/Rx), one base station, joined by fibre or microwave.
+A mobile crossing between zones keeps its channel.}}

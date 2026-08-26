@@ -38,8 +38,29 @@ Han \& Kamber 3rd ed Examples 8.1--8.4, which use the same dataset the IOE paper
 \end{itemize}
 
 \creamq{Problem 1.1}{\m{10}}
-{\color{sub}\footnotesize \yr{79 Bh} \gap ``Draw decision tree for the given data using ID3 algorithm.''
-14 tuples, attributes Age / Income / Student / Credit\_Rating, class Buy's\_Computer.}
+\begin{asked}{2079 Bhadra \textperiodcentered{} Q3 \textperiodcentered{} [10]}
+Draw decision tree for the given data using ID3 algorithm.
+\par\vspace{2pt}
+\begin{tabularx}{0.80\textwidth}{@{}L{2.3cm}L{1.8cm}L{1.7cm}L{2.5cm}X@{}}
+\toprule
+\hrow \thead{Age} & \thead{Income} & \thead{Student} & \thead{Credit\_Rating} & \thead{Buy's\_Computer} \\
+Youth       & High   & No  & Fair      & No  \\
+Youth       & High   & No  & Excellent & No  \\
+Middle\_Aged & High   & No  & Fair      & Yes \\
+Senior      & Medium & No  & Fair      & Yes \\
+Senior      & Low    & Yes & Fair      & Yes \\
+Senior      & Low    & Yes & Excellent & No  \\
+Middle\_Aged & Low    & Yes & Excellent & Yes \\
+Youth       & Medium & No  & Fair      & No  \\
+Youth       & Low    & Yes & Fair      & Yes \\
+Senior      & Medium & Yes & Fair      & Yes \\
+Youth       & Medium & Yes & Excellent & Yes \\
+Middle\_Aged & Medium & No  & Excellent & Yes \\
+Middle\_Aged & High   & Yes & Fair      & Yes \\
+Senior      & Medium & No  & Excellent & No  \\
+\bottomrule
+\end{tabularx}
+\end{asked}
 
 \lead{Given} 14 tuples. Class counts: \textbf{Yes $=$ 9}, \textbf{No $=$ 5}.
 
@@ -105,9 +126,27 @@ $\tfrac{8}{14}(0.811)+\tfrac{6}{14}(1.0)=0.892$ & 0.048 \\
 independently computed gains match their Example 8.1 exactly.}}
 
 \creamq{Problem 1.2}{\m{8}}
-{\color{sub}\footnotesize \yr{78 Bh} \gap ``Construct a decision tree for the following data set using
-information gain. Predict the class label for $<$Female, 2, standard, high$>$.''
-10 tuples: Gender / Car ownership / Travel cost / Income level $\rightarrow$ Transport mode.}
+\begin{asked}{2078 Bhadra \textperiodcentered{} Q4 \textperiodcentered{} [8]}
+Construct a decision tree for the following data set using information gain.
+
+Predict the class label for a data point with values $<$Female, 2, standard, high$>$
+\par\vspace{2pt}
+\begin{tabularx}{0.86\textwidth}{@{}L{1.7cm}L{2.6cm}L{2.2cm}L{2.4cm}X@{}}
+\toprule
+\hrow \thead{Gender} & \thead{Car ownership} & \thead{Travel cost} & \thead{Income level} & \thead{Transport mode} \\
+Male   & 0 & Cheap     & Low    & Bus   \\
+Male   & 1 & Cheap     & Medium & Bus   \\
+Female & 0 & Cheap     & Low    & Bus   \\
+Male   & 1 & Cheap     & Medium & Bus   \\
+Female & 1 & Expensive & High   & Car   \\
+Male   & 2 & Expensive & Medium & Car   \\
+Female & 2 & Expensive & High   & Car   \\
+Female & 1 & Cheap     & Medium & Train \\
+Male   & 0 & Standard  & Medium & Train \\
+Female & 1 & Standard  & Medium & Train \\
+\bottomrule
+\end{tabularx}
+\end{asked}
 
 \lead{Given} Classes: Bus $=$ 4, Car $=$ 3, Train $=$ 3. \quad $n = 10$.
 \[ Info(D) = -\tfrac{4}{10}\log_2\tfrac{4}{10} - \tfrac{3}{10}\log_2\tfrac{3}{10}
@@ -151,7 +190,15 @@ information gain. Predict the class label for $<$Female, 2, standard, high$>$.''
 \end{itemize}
 
 \creamq{Worked example (same 14-tuple dataset)}{\m{6}}
-{\color{sub}\footnotesize \yr{75 Ch, 71 Ch} ask for Gini ``with suitable example'' --- use this. \added}
+\begin{asked}{2075 Chaitra \textperiodcentered{} Q3 \textperiodcentered{} [6+4]}
+Define Decision Tree Classifier with Gini-Index with suitable example. How can you handle
+overfitting in Decision Tree?
+\end{asked}
+\begin{asked}{2071 Chaitra \textperiodcentered{} Q3 \textperiodcentered{} [10]}
+What is a decision tree? Explain Gini Index with suitable example.
+\end{asked}
+{\color{sub}\footnotesize Neither paper prints a dataset --- the ``suitable example'' is yours to
+supply. The 14-tuple \emph{buys\_computer} set below is the safe one to reuse. \added}
 
 \begin{itemize}
   \item $Gini(D) = 1 - \left(\tfrac{9}{14}\right)^2 - \left(\tfrac{5}{14}\right)^2
@@ -193,8 +240,30 @@ information gain. Predict the class label for $<$Female, 2, standard, high$>$.''
 \end{itemize}
 
 \creamq{Problem 3.1}{\m{10}}
-{\color{sub}\footnotesize \yr{72 Ch} \gap Predict for
-$X =$ (age $=$ youth, income $=$ medium, student $=$ yes, credit-rating $=$ fair).}
+\begin{asked}{2072 Chaitra \textperiodcentered{} Q3 \textperiodcentered{} [10]}
+Predict Class label using naive Bayesian classifier for $X =$ (age $=$ youth, income $=$
+medium, student $=$ yes, credit-rating $=$ fair) using the following data set.
+\par\vspace{2pt}
+\begin{tabularx}{0.86\textwidth}{@{}L{0.9cm}L{2.3cm}L{1.7cm}L{1.6cm}L{2.4cm}X@{}}
+\toprule
+\hrow \thead{RID} & \thead{Age} & \thead{Income} & \thead{Student} & \thead{Credit-rating} & \thead{Class Buy computer} \\
+1  & Youth       & High   & No  & Fair      & No  \\
+2  & Youth       & High   & No  & Excellent & No  \\
+3  & Middle-age & High   & No  & Fair      & Yes \\
+4  & Senior      & Medium & No  & Fair      & Yes \\
+5  & Senior      & Low    & Yes & Fair      & Yes \\
+6  & Senior      & Low    & Yes & Excellent & No  \\
+7  & Middle-age & Low    & Yes & Excellent & Yes \\
+8  & Youth       & Medium & No  & Fair      & No  \\
+9  & Youth       & Low    & Yes & Fair      & Yes \\
+10 & Senior      & Medium & Yes & Fair      & Yes \\
+11 & Youth       & Medium & Yes & Excellent & Yes \\
+12 & Middle-age & Medium & No  & Excellent & Yes \\
+13 & Middle-age & High   & Yes & Fair      & Yes \\
+14 & Senior      & Medium & No  & Excellent & No  \\
+\bottomrule
+\end{tabularx}
+\end{asked}
 
 \lead{Given} 14 tuples. $P(\text{Yes}) = 9/14 = 0.643$, \ $P(\text{No}) = 5/14 = 0.357$.
 
@@ -223,9 +292,27 @@ $P(\text{credit}=\text{fair})$ & $6/9=0.667$ & $2/5=0.400$ \\
 \end{itemize}
 
 \creamq{Problem 3.2}{\m{6}}
-{\color{sub}\footnotesize \yr{79 Bh} \gap Classify
-$X =$ (Home Owner $=$ No, Marital Status $=$ Married, Annual Income $=$ \$120K).
-10 tuples, class $=$ Defaulted Borrower.}
+\begin{asked}{2079 Bhadra \textperiodcentered{} Q4 \textperiodcentered{} [6]}
+Suppose you have a test record ``$X =$ (Home Owner $=$ No, Material Status $=$ Married,
+Income $=$ \$120K)''. Your job is to classify this record using Naive Bayesian Classification.
+Use the following table for your calculations.
+\par\vspace{2pt}
+\begin{tabularx}{0.80\textwidth}{@{}L{0.9cm}L{2.3cm}L{2.6cm}L{2.6cm}X@{}}
+\toprule
+\hrow \thead{Tid} & \thead{Home Owner} & \thead{Marital Status} & \thead{Annual Income} & \thead{Defaulted Borrower} \\
+1  & Yes & Single   & 125K & No  \\
+2  & No  & Married  & 100K & No  \\
+3  & No  & Single   & 70K  & No  \\
+4  & Yes & Married  & 120K & No  \\
+5  & No  & Divorced & 95K  & Yes \\
+6  & No  & Married  & 60K  & No  \\
+7  & Yes & Divorced & 220K & No  \\
+8  & No  & Single   & 85K  & Yes \\
+9  & No  & Married  & 75K  & No  \\
+10 & No  & Single   & 90K  & Yes \\
+\bottomrule
+\end{tabularx}
+\end{asked}
 
 \lead{Given} Defaulted: \textbf{No $=$ 7}, \textbf{Yes $=$ 3}. $P(\text{No})=0.7$, $P(\text{Yes})=0.3$.
 
@@ -281,8 +368,26 @@ $X =$ (Home Owner $=$ No, Marital Status $=$ Married, Annual Income $=$ \$120K).
 \end{itemize}
 
 \creamq{Problem 4.1}{\m{6}}
-{\color{sub}\footnotesize \yr{80 Bh} \gap Classify the flower
-(SepalLength $=$ 7, SepalWidth $=$ 3.2, PetalLength $=$ 4.7, PetalWidth $=$ 1.4), $K=3$, Euclidean.}
+\begin{asked}{2080 Bhadra \textperiodcentered{} Q2 (b) \textperiodcentered{} [3+6]}
+When do we use classifier? You have the following information about the flower. Your job is
+to classify the given flower with SepalLength $=$ 7, SepalWidth $=$ 3.2, PetalLength $=$ 4.7,
+and PetalWidth $=$ 1.4. Use KNN algorithm for $K = 3$ with Euclidean distance matrix.
+\par\vspace{2pt}
+\begin{tabularx}{0.86\textwidth}{@{}L{0.9cm}L{2.3cm}L{2.1cm}L{2.2cm}L{2.2cm}X@{}}
+\toprule
+\hrow \thead{Id} & \thead{Sepal\_Lenth} & \thead{Spal\_Width} & \thead{Petal\_Lenth} & \thead{Petal\_Width} & \thead{Labal} \\
+1 & 5.1 & 3.5 & 1.4 & 0.2 & setosa \\
+2 & 4.9 & 3   & 1.4 & 0.2 & setosa \\
+3 & 4.7 & 3.2 & 1.3 & 0.2 & setosa \\
+4 & 6   & 2.2 & 4   & 1   & versicolor \\
+5 & 6.1 & 2.9 & 4.7 & 1.4 & versicolor \\
+6 & 5.6 & 2.9 & 3.6 & 1.3 & versicolor \\
+7 & 6.7 & 3.1 & 4.4 & 1.4 & versicolor \\
+\bottomrule
+\end{tabularx}
+\vspace{2pt}
+{\color{sub}Column names are the paper's own spellings.}
+\end{asked}
 
 \begin{tabularx}{\textwidth}{@{}L{0.9cm}L{4.6cm}XL{1.5cm}L{2.1cm}@{}}
 \toprule
@@ -335,8 +440,21 @@ Same numbers, different answers. \added
 \end{itemize}
 
 \creamq{Problem 5.1}{\m{5}}
-{\color{sub}\footnotesize \yr{74 Ch} \gap Rows $=$ \textbf{Actual}, columns $=$ Predicted.
-142 / 40 / 98 / 720.}
+\begin{asked}{2074 Chaitra \textperiodcentered{} Q3 \textperiodcentered{} [2+3+5]}
+Draw clear block diagram depicting different stages in classification. Explain the inverse
+relation between precision and recall. Given the confusion matrix, determine accuracy,
+sensitivity and precision of the classifier model.
+\par\vspace{2pt}
+\begin{tabularx}{0.60\textwidth}{@{}L{3.3cm}XX@{}}
+\toprule
+\hrow \thead{Actual $\backslash$ Predicted} & \thead{Positive} & \thead{Negative} \\
+Positve  & 142 & 40  \\
+Negative & 98  & 720 \\
+\bottomrule
+\end{tabularx}
+\vspace{2pt}
+{\color{sub}``Positve'' is the paper's own spelling.}
+\end{asked}
 \begin{itemize}
   \item $TP=142$, $FN=40$, $FP=98$, $TN=720$ $\rightarrow$ $P=182$, $N=818$, total $=1000$
   \item Accuracy $=\frac{142+720}{1000}= \mathbf{0.862}$
@@ -346,8 +464,20 @@ Same numbers, different answers. \added
 \end{itemize}
 
 \creamq{Problem 5.2}{\m{4}}
-{\color{sub}\footnotesize \yr{78 Bh} \gap \mk{Same four numbers as 5.1, but rows $=$ Predicted.}
-Calculate Accuracy, TPR, FPR, Precision.}
+\begin{asked}{2078 Bhadra \textperiodcentered{} Q6 \textperiodcentered{} [4]}
+Calculate: Accuracy, TPR, FPR and Precision for the given confusion matrix for a classifier.
+\par\vspace{2pt}
+\begin{tabularx}{0.62\textwidth}{@{}L{2.6cm}L{1.9cm}XX@{}}
+\toprule
+\hrow & & \multicolumn{2}{@{}l}{\thead{Actual Class}} \\
+\hrow & & \thead{Class 1} & \thead{Class 2} \\
+\midrule
+\textbf{Predicted Class} & Class 1 & 142 & 40 \\
+ & Class 2 & 98 & 720 \\
+\bottomrule
+\end{tabularx}
+\end{asked}
+{\color{sub}\footnotesize \mk{Same four numbers as 5.1, but the rows are Predicted here.}}
 \begin{itemize}
   \item Rows are predicted $\rightarrow$ $TP=142$, $FP=40$, $FN=98$, $TN=720$
   \item $P = 142+98 = 240$, \ $N = 40+720 = 760$
@@ -359,8 +489,40 @@ Calculate Accuracy, TPR, FPR, Precision.}
 \end{itemize}
 
 \creamq{Problems 5.3 and 5.4}{\m{10}}
-{\color{sub}\footnotesize \yr{75 Ash} (rows $=$ Actual) and \yr{72 Ch} (rows $=$ predicted).
-Both print 21 / 6 / 7 / 41.}
+\begin{asked}{2075 Ashwin \textperiodcentered{} Q4 \textperiodcentered{} [10]}
+The confusion matrix for a classifier is given as follows:
+\par\vspace{2pt}
+\begin{tabularx}{0.62\textwidth}{@{}L{2.6cm}L{1.9cm}XX@{}}
+\toprule
+\hrow & & \multicolumn{2}{@{}l}{\thead{Predicted Class}} \\
+\hrow & & \thead{Class 1} & \thead{Class 2} \\
+\midrule
+\textbf{Actual Class} & Class 1 & 21 & 6 \\
+ & Class 2 & 7 & 41 \\
+\bottomrule
+\end{tabularx}
+\vspace{2pt}
+
+Calculate: Accuracy, Sensitivity, Specificity and Precision.
+\end{asked}
+\begin{asked}{2072 Chaitra \textperiodcentered{} Q4 \textperiodcentered{} [10]}
+The confusion matrix for a classifier is given as follows:
+\par\vspace{2pt}
+\begin{tabularx}{0.62\textwidth}{@{}L{2.6cm}L{1.9cm}XX@{}}
+\toprule
+\hrow & & \multicolumn{2}{@{}l}{\thead{actual class}} \\
+\hrow & & \thead{class1} & \thead{class2} \\
+\midrule
+\textbf{predicted class} & class1 & 21 & 6 \\
+ & class2 & 7 & 41 \\
+\bottomrule
+\end{tabularx}
+\vspace{2pt}
+
+Calculate a.~accuracy \quad b.~sensitivity \quad c.~specificity \quad d.~precision \quad e.~recall
+\end{asked}
+{\color{sub}\footnotesize \mk{Same four numbers, opposite orientation} --- that is the whole point
+of solving them side by side.}
 
 \sbs{%
 \lead{75 Ash --- rows are Actual}
@@ -381,7 +543,22 @@ Both print 21 / 6 / 7 / 41.}
 \end{itemize}}
 
 \creamq{Problem 5.5}{\m{10}}
-{\color{sub}\footnotesize \yr{74 Ash} \gap Rows $=$ Actual. 25 / 9 / 4 / 31.}
+\begin{asked}{2074 Ashwin \textperiodcentered{} Q4 \textperiodcentered{} [10]}
+The confusion matrix for a classifier is given as follows:
+\par\vspace{2pt}
+\begin{tabularx}{0.62\textwidth}{@{}L{2.6cm}L{1.9cm}XX@{}}
+\toprule
+\hrow & & \multicolumn{2}{@{}l}{\thead{Predicted Class}} \\
+\hrow & & \thead{Class 1} & \thead{Class 2} \\
+\midrule
+\textbf{Actual Class} & Class 1 & 25 & 9 \\
+ & Class 2 & 4 & 31 \\
+\bottomrule
+\end{tabularx}
+\vspace{2pt}
+
+Calculate: \ a) Accuracy \quad b) Sensitivity \quad c) Specificity \quad d) Precision
+\end{asked}
 \begin{itemize}
   \item $TP=25$, $FN=9$, $FP=4$, $TN=31$; $P=34$, $N=35$, total $69$
   \item Accuracy $=\frac{56}{69}= \mathbf{0.812}$ \quad Sensitivity $=\frac{25}{34}= \mathbf{0.735}$
@@ -389,8 +566,21 @@ Both print 21 / 6 / 7 / 41.}
 \end{itemize}
 
 \creamq{Problem 5.6}{\m{3+5}}
-{\color{sub}\footnotesize \yr{80 Ba} \gap Rows $=$ Predicted, columns $=$ Actual. 1050 / 250 / 150 / 950.
-Calculate classification error, sensitivity, false alarm rate, specificity.}
+\begin{asked}{2080 Baishakh \textperiodcentered{} Q3 \textperiodcentered{} [3+5]}
+In what cases you cannot use Accuracy for performance measure, give some examples. Assume
+that you have the following confusion matrix. Calculate the Classification error, Sensitivity,
+False alarm rate Specificity.
+\par\vspace{2pt}
+\begin{tabularx}{0.62\textwidth}{@{}L{2.6cm}L{1.9cm}XX@{}}
+\toprule
+\hrow & & \multicolumn{2}{@{}l}{\thead{Actual Values}} \\
+\hrow & & \thead{True} & \thead{False} \\
+\midrule
+\textbf{Predicated Values} & True & 1050 & 250 \\
+ & False & 150 & 950 \\
+\bottomrule
+\end{tabularx}
+\end{asked}
 \begin{itemize}
   \item $TP=1050$, $FP=250$, $FN=150$, $TN=950$; $P=1200$, $N=1200$, total $2400$
   \item Classification error $=\frac{250+150}{2400}= \mathbf{0.167}$
@@ -400,8 +590,20 @@ Calculate classification error, sensitivity, false alarm rate, specificity.}
 \end{itemize}
 
 \creamq{Problem 5.7}{\m{3+6}}
-{\color{sub}\footnotesize \yr{73 Shr} \gap $2\times2$ table with A $=$ Yes, B $=$ No.
-20 / 5 / 10 / 40. Calculate TPR, FPR, precision.}
+\begin{asked}{2073 Shrawan \textperiodcentered{} Q4 \textperiodcentered{} [1+3+6]}
+Explain ROC. Using the following data, calculate TPR, FPR, precision for given confusion matrix.
+\par\vspace{2pt}
+\begin{tabularx}{0.40\textwidth}{@{}L{1.6cm}XX@{}}
+\toprule
+\hrow & \thead{A} & \thead{B} \\
+A & 20 & 5  \\
+B & 10 & 40 \\
+\bottomrule
+\end{tabularx}
+\vspace{2pt}
+
+Classify, A $=$ Yes, B $=$ No
+\end{asked}
 \begin{itemize}
   \item $TP=20$, $FN=5$, $FP=10$, $TN=40$; $P=25$, $N=50$
   \item TPR $=\frac{20}{25}= \mathbf{0.80}$ \quad FPR $=\frac{10}{50}= \mathbf{0.20}$
@@ -410,10 +612,17 @@ Calculate classification error, sensitivity, false alarm rate, specificity.}
 \end{itemize}
 
 \creamq{Problem 5.8}{\m{10}}
-{\color{sub}\footnotesize \yr{70 Ch} \gap Build the confusion matrix from sequences.
-Actual \code{A A B B B A A A B B}; X predicts the same; Y predicts \code{A A A A B B A A A B}.}
+\begin{asked}{2070 Chaitra \textperiodcentered{} Q3 \textperiodcentered{} [10]}
+An input sequence ``A A B B B A A A B B'' was used for classification. The Classifier `X'
+predicted the sequences as: ``A A B B B A A A B B'' where as the Classifier `Y' predicted the
+sequences as: ``A A A A B B A A A B''. Develop the corresponding confusion matrix for the
+classifiers and find their corresponding.
+\begin{enumerate}[label=\roman*), leftmargin=1.9em]
+  \item Accuracy \quad ii) Precision \quad iii) True Positive Rate \quad iv) False Positive Rate
+\end{enumerate}
+\end{asked}
 
-\lead{Step 1: tabulate Y position by position} (take A as the positive class)
+\lead{Step 1: tabulate Y position by position} (take A as the positive class)\par
 \begin{tabularx}{\textwidth}{@{}L{1.6cm}XXXXXXXXXX@{}}
 \toprule
 \hrow Position & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 \\
@@ -459,9 +668,24 @@ Category & TP & TP & FP & FP & TN & FN & TP & TP & FP & TN \\
 \end{itemize}
 
 \creamq{Problem 6.1}{\m{2+3+4}}
-{\color{sub}\footnotesize \yr{76 Ch} \gap 3 inputs $x_1,x_2,x_3$ $\rightarrow$ 2 hidden nodes
-$h_1,h_2$ $\rightarrow$ output $o$. Weight $x_i \rightarrow h_j$ is $w_{ji}$;
-weight $h_i \rightarrow o$ is $u_i$. Sigmoid activations, squared-error loss.}
+\begin{asked}{2076 Chaitra \textperiodcentered{} Q6 \textperiodcentered{} [2+3+4]}
+Consider the multi-layer feed-forward neural network shown in the following figure. This
+neural network has three inputs $x_1$, $x_2$ and $x_3$ connected to a hidden layer consisting
+of two nodes $h_1$ and $h_2$. The weight of the edge connecting $x_i$ to $h_j$ is $w_{ji}$.
+The two hidden nodes are connected to the output node $o$. The weight of the edge connecting
+the hidden node $h_i$ to the output node $o$ is $u_i$. The activation functions at hidden and
+output layers is set to sigmoid function defined as follows:
+\[ \sigma(\theta) = \frac{1}{1+\exp(-\theta)} \]
+Using the target output $t$, the squared error is used as the loss function at the output
+node, and is defined as:
+\[ E(o,t) = \tfrac{1}{2}(o-t)^2 \]
+\begin{center}\includegraphics[width=0.44\textwidth]{figs/pyq_ann_76ch}\end{center}
+\begin{enumerate}[label=\alph*), leftmargin=1.6em]
+  \item Using the symbols given above, compute the activation at $h_1$.
+  \item Compute the gradient of the loss with respect to the output $o$.
+  \item Compute the gradient of the loss with respect to the weight $w_{12}$.
+\end{enumerate}
+\end{asked}
 
 \lead{(a) Activation at $h_1$}
 \[ h_1 = \sigma\big(w_{11}x_1 + w_{12}x_2 + w_{13}x_3\big)

@@ -4,7 +4,7 @@
 \section*{\color{acc}Ch 2 --- Data Preprocessing --- Numerical Problems \& Solutions}
 \vspace{-4pt}{\color{acc}\rule{\textwidth}{1.1pt}}\vspace{4pt}
 
-{\color{sub}\footnotesize 6 distinct numerical methods $\cdot$ 8 PYQ instances solved $\cdot$
+{\color{sub}\footnotesize 7 distinct numerical methods $\cdot$ 8 PYQ instances solved $\cdot$
 2 extra practice problems. Every answer independently recomputed, not copied from the source notes.}
 
 \lead{Methods in this chapter}
@@ -15,6 +15,7 @@
   \item \textbf{M4} Cosine similarity \hfill \yr{80 Bh, 80 Ba, 76 Ch}
   \item \textbf{M5} Binary similarity: Jaccard, SMC, symmetric dissimilarity \hfill \yr{80 Ba, 76 Ch}
   \item \textbf{M6} Schema design + OLAP operation sequence \hfill \yr{78 Bh, 76 Ch}
+  \item \textbf{M7} Central tendency, quartiles, IQR and outliers \hfill \pillo{gd}{NEW}, no PYQ
 \end{itemize}
 
 \hr
@@ -40,8 +41,14 @@ $j$ must make the max \emph{strictly} less than 1, so $\max|v|=1000$ needs $j=4$
 \end{minipage}}\end{center}
 
 \creamq{Problem 1.1}{\m{2+2+2}}
-{\color{sub}\footnotesize \yr{78 Bh} \gap ``Use the following methods to normalize the data:
-200, 300, 400, 600 and 1000.'' \ (a) min-max with $min=0,max=1$ \ (b) z-score \ (c) decimal scaling.}
+\begin{asked}{2078 Bhadra \textperiodcentered{} Q3 \textperiodcentered{} [2+2+2]}
+Use the following methods to normalize the data: 200, 300, 400, 600 and 1000.
+\begin{enumerate}[label=\alph*), leftmargin=1.6em]
+  \item Min-max normalization by setting min$\,$=$\,$0 and max$\,$=$\,$1
+  \item Z-score normalization
+  \item Normalization by decimal scaling
+\end{enumerate}
+\end{asked}
 
 \lead{Given} $v = \{200, 300, 400, 600, 1000\}$, $n = 5$, $min_A = 200$, $max_A = 1000$.
 
@@ -133,11 +140,11 @@ $j$ must make the max \emph{strictly} less than 1, so $\max|v|=1000$ needs $j=4$
 \end{itemize}
 
 \creamq{Problem 2.1}{\m{4}}
-{\color{sub}\footnotesize \yr{76 Ch} \gap ``Find the principal components and the proportion of the
-total variance explained by each when the covariance matrix of $X_1, X_2, X_3$ is:''}
-
-\lead{Given}
+\begin{asked}{2076 Chaitra \textperiodcentered{} Q1 \textperiodcentered{} [4]}
+Find the principal components and the proportion of the total variance explained by each
+when the covariance matrix of the three random variables $X_1$, $X_2$ and $X_3$ is:
 \[ \Sigma = \begin{bmatrix} 1 & -2 & 0 \\ -2 & 5 & 0 \\ 0 & 0 & 2 \end{bmatrix} \]
+\end{asked}
 
 \lead{Step 1: characteristic equation}
 \begin{itemize}
@@ -217,7 +224,11 @@ Total & 8.0000 & 100\% \\
 \end{itemize}
 
 \creamq{Warm-up (Han \& Kamber Example 2.19--2.20)}{}
-{\color{sub}\footnotesize Smallest case that shows all three at once. Worth memorising as a check. \added}
+\begin{asked}[PROBLEM]{not a PYQ \textperiodcentered{} Han \& Kamber Example 2.19--2.20 \added}
+Given the two objects $x_1 = (1,2)$ and $x_2 = (3,5)$, compute the Euclidean, Manhattan and
+Supremum distances between them.
+\end{asked}
+{\color{sub}\footnotesize Smallest case that shows all three at once. Worth memorising as a check.}
 \begin{itemize}
   \item $x_1 = (1,2)$, $x_2 = (3,5)$. Differences: $2$ and $3$.
   \item Euclidean $=\sqrt{2^2+3^2} = \sqrt{13} = \mathbf{3.61}$
@@ -227,10 +238,19 @@ Total & 8.0000 & 100\% \\
 \end{itemize}
 
 \creamq{Problem 3.1}{\m{2}}
-{\color{sub}\footnotesize \yr{76 Ch} \gap ``Given the following points compute the distance matrix
-using the Manhattan and the Supremum distance.''}
-
-\lead{Given} $P_1(6,3)$, $P_2(2,2)$, $P_3(3,4)$.
+\begin{asked}{2076 Chaitra \textperiodcentered{} Q2 (a) \textperiodcentered{} [2]}
+Given the following points compute the distance matrix using the Manhattan and the
+Supremum distance.
+\par\vspace{2pt}
+\begin{tabularx}{0.40\textwidth}{@{}L{1.9cm}XX@{}}
+\toprule
+\hrow \thead{Points} & \thead{X} & \thead{Y} \\
+P1 & 6 & 3 \\
+P2 & 2 & 2 \\
+P3 & 3 & 4 \\
+\bottomrule
+\end{tabularx}
+\end{asked}
 
 \vspace{2pt}
 \sbs{%
@@ -269,9 +289,10 @@ $P_3$ & 3 & 2 & 0 \\
 \end{itemize}
 
 \creamq{Problem 3.2}{\m{3}}
-{\color{sub}\footnotesize \yr{80 Bh} \gap ``Calculate the Euclidean distance between object 1, 3 and object 1, 4.''}
-
-\lead{Given}
+\begin{asked}{2080 Bhadra \textperiodcentered{} Q1 (b) \textperiodcentered{} [3+3+3]}
+How do similarity / dissimilarity is calculated? Find the cosine similarity between Object-2
+and 4. Also calculate the Euclidean distance between object 1, 3 and object 1, 4.
+\par\vspace{2pt}
 \begin{tabularx}{0.72\textwidth}{@{}L{1.6cm}XXXX@{}}
 \toprule
 \hrow \thead{Object} & \thead{Size} & \thead{Weight} & \thead{Color\_Code} & \thead{Taste\_Score} \\
@@ -281,6 +302,8 @@ $P_3$ & 3 & 2 & 0 \\
 4 & 9 & 55 & 7 & 12 \\
 \bottomrule
 \end{tabularx}
+\end{asked}
+{\color{sub}\footnotesize The cosine-similarity part of this same question is Problem 4.1 below.}
 
 \lead{Step-by-step}
 \begin{itemize}
@@ -314,8 +337,21 @@ His final answer $0.3150$ is correct and only follows from $2.449$
 \end{minipage}}\end{center}
 
 \creamq{Problem 4.1}{\m{3}}
-{\color{sub}\footnotesize \yr{80 Bh} \gap ``Find the cosine similarity between Object-2 and 4.''
-Same table as Problem 3.2.}
+\begin{asked}{2080 Bhadra \textperiodcentered{} Q1 (b) \textperiodcentered{} [3+3+3]}
+How do similarity / dissimilarity is calculated? Find the cosine similarity between Object-2
+and 4. Also calculate the Euclidean distance between object 1, 3 and object 1, 4.
+\par\vspace{2pt}
+\begin{tabularx}{0.72\textwidth}{@{}L{1.6cm}XXXX@{}}
+\toprule
+\hrow \thead{Object} & \thead{Size} & \thead{Weight} & \thead{Color\_Code} & \thead{Taste\_Score} \\
+1 & 4 & 56 & 7 & 10 \\
+2 & 3 & 53 & 8 & 11 \\
+3 & 7 & 58 & 6 & 9 \\
+4 & 9 & 55 & 7 & 12 \\
+\bottomrule
+\end{tabularx}
+\end{asked}
+{\color{sub}\footnotesize The Euclidean-distance part of this same question is Problem 3.2 above.}
 
 \lead{Given} $O_2 = (3, 53, 8, 11)$, \quad $O_4 = (9, 55, 7, 12)$.
 
@@ -336,8 +372,11 @@ Same table as Problem 3.2.}
 \end{itemize}
 
 \creamq{Problem 4.2}{\m{1}}
-{\color{sub}\footnotesize \yr{80 Ba} \gap ``Find the Cosine similarity between documents
-$d_1 = (4,1,2,0,2,0,0)$ and $d_2 = (2,1,3,0,1,1,1)$.''}
+\begin{asked}{2080 Baishakh \textperiodcentered{} Q2 (b)(iv) \textperiodcentered{} [1]}
+Find the Cosine similarity between documents $d_1 = (4, 1, 2, 0, 2, 0, 0)$ and
+$d_2 = (2, 1, 3, 0, 1, 1, 1)$.
+\ {\color{sub}(the rest of Q2 b is Problem 5.2 below)}
+\end{asked}
 
 \begin{itemize}
   \item Dot: $8 + 1 + 6 + 0 + 2 + 0 + 0 = 17$
@@ -348,8 +387,10 @@ $d_1 = (4,1,2,0,2,0,0)$ and $d_2 = (2,1,3,0,1,1,1)$.''}
 \lead{Final answer} $\mathbf{0.8246}$
 
 \creamq{Problem 4.3}{\m{1}}
-{\color{sub}\footnotesize \yr{76 Ch} \gap ``Given the following two vectors compute the Cosine
-similarity: $D_1 = [4\ 0\ 2\ 0\ 1]$, $D_2 = [2\ 0\ 0\ 2\ 2]$.''}
+\begin{asked}{2076 Chaitra \textperiodcentered{} Q2 (b) \textperiodcentered{} [1]}
+Given the following two vectors compute the Cosine similarity between them.
+\[ D_1 = [4\ \ 0\ \ 2\ \ 0\ \ 1] \qquad D_2 = [2\ \ 0\ \ 0\ \ 2\ \ 2] \]
+\end{asked}
 
 \begin{itemize}
   \item Dot: $8 + 0 + 0 + 0 + 2 = 10$
@@ -381,8 +422,11 @@ similarity: $D_1 = [4\ 0\ 2\ 0\ 1]$, $D_2 = [2\ 0\ 0\ 2\ 2]$.''}
 \end{itemize}
 
 \creamq{Problem 5.1}{\m{2}}
-{\color{sub}\footnotesize \yr{76 Ch} \gap ``Given the following two binary vectors compute the
-Jaccard similarity and Simple Matching Coefficient. $P = [0\ 0\ 1\ 1\ 0\ 1]$, $Q = [1\ 1\ 1\ 1\ 0\ 1]$.''}
+\begin{asked}{2076 Chaitra \textperiodcentered{} Q2 (c) \textperiodcentered{} [2]}
+Given the following two binary vectors compute the Jaccard similarity and Simple Matching
+Coefficient.
+\[ P = [0\ \ 0\ \ 1\ \ 1\ \ 0\ \ 1] \qquad Q = [1\ \ 1\ \ 1\ \ 1\ \ 0\ \ 1] \]
+\end{asked}
 
 \lead{Step-by-step: tabulate position by position}
 \begin{tabularx}{0.78\textwidth}{@{}L{1.8cm}XXXXXX@{}}
@@ -403,10 +447,9 @@ Category & $M_{01}$ & $M_{01}$ & $M_{11}$ & $M_{11}$ & $M_{00}$ & $M_{11}$ \\
 SMC is higher because it credits the one 0-0 match that Jaccard discards.
 
 \creamq{Problem 5.2}{\m{2+2+2}}
-{\color{sub}\footnotesize \yr{80 Ba} \gap (i) Jaccard(Ram, Laxmi) for asymmetric binary attributes
-\ (ii) symmetric-binary dissimilarity $d$(Laxmi, Shyam) \ (iii) SMC(Ram, Shyam).}
-
-\lead{Given}
+\begin{asked}{2080 Baishakh \textperiodcentered{} Q2 (b) \textperiodcentered{} [2+2+2+1]}
+Consider the following table:
+\par\vspace{2pt}
 \begin{tabularx}{\textwidth}{@{}L{1.5cm}XXXXXXX@{}}
 \toprule
 \hrow \thead{Name} & \thead{Gender} & \thead{Eyecolor} & \thead{Haircolor} & \thead{Test-1} & \thead{Test-2} & \thead{Fever} & \thead{Cough} \\
@@ -415,6 +458,16 @@ Laxmi & F & Blue  & Black & P & P & N & N \\
 Shyam & M & Blue  & Gray  & N & P & N & P \\
 \bottomrule
 \end{tabularx}
+\vspace{3pt}
+\begin{enumerate}[label=\roman*), leftmargin=1.9em]
+  \item Calculated Jaccard Coefficient of $Sim_{jacard}$ (Ram, Laxmi) for asymmetric binary
+        attributes.
+  \item Dissimilarity of symmetric binary attributes $d$ (Laxmi, Shayam).
+  \item Find the Simple matching coefficients of SMC (Ram, Shyam).
+  \item Find the Cosine similarity between documents $d_1 = (4, 1, 2, 0, 2, 0, 0)$ and
+        $d_2 = (2, 1, 3, 0, 1, 1, 1)$ \ {\color{sub}--- solved as Problem 4.2 above}.
+\end{enumerate}
+\end{asked}
 
 \lead{Step 0: split the attributes \mk{(the whole question turns on this)}}
 \begin{itemize}
@@ -508,9 +561,18 @@ $(p-m)/p = (3-1)/3 = 2/3$. Same answer by both routes, so the encoding choice is
 \end{enumerate}
 
 \creamq{Problem 6.1}{\m{3+3}}
-{\color{sub}\footnotesize \yr{78 Bh} \gap DW with dimensions \emph{date, spectator, location, game}
-and measures \emph{count, charge}. (a) Draw a star schema. (b) From the base cuboid, which OLAP
-operations list the total charge paid by \emph{student} spectators at \emph{Dashrath Stadium} in \emph{2021}?}
+\begin{asked}{2078 Bhadra \textperiodcentered{} Q2 \textperiodcentered{} [3+3]}
+Suppose that a data warehouse consists of the four dimensions data, spectator, location, and
+game, and the two measures count and charge, where charge is the fare that a spectator pays
+when watching a game on a given date. Spectators may be students, adults or seniors, with
+each category having its own charge rate.
+\begin{enumerate}[label=\alph*), leftmargin=1.6em]
+  \item Draw a star schema diagram for the data warehouse.
+  \item Starting with the base cuboid [data, spectator, location, game], what specific OLAP
+        operations should you perform in order to list the total charge paid by student
+        spectators at Dashrath Stadium in 2021?
+\end{enumerate}
+\end{asked}
 
 \sbsr{0.55}{%
 \lead{(a) Star schema}
@@ -545,10 +607,18 @@ operations list the total charge paid by \emph{student} spectators at \emph{Dash
 \figT{star_schema}}
 
 \creamq{Problem 6.2}{\m{3+3}}
-{\color{sub}\footnotesize \yr{76 Ch} \gap DW with dimensions \emph{time, location, supplier, brand,
-product} and measures \emph{count, price}. (a) Draw a snowflake schema. (b) From the base cuboid,
-which OLAP operations list total \emph{count} for a certain \emph{brand}, for each \emph{state},
-per \emph{year}? \emph{location} has country/state/city; \emph{time} has year/month/day.}
+\begin{asked}{2076 Chaitra \textperiodcentered{} Q3 \textperiodcentered{} [3+3]}
+Suppose that a data warehouse for a sales company consists of five dimensions: \emph{time,
+location, supplier, brand,} and \emph{product}, and two measures: \emph{count} and \emph{price}.
+\begin{enumerate}[label=\alph*), leftmargin=1.6em]
+  \item Draw a \emph{snowflake schema} diagram for the data warehouse.
+  \item Starting with the base cuboid [\emph{time, location, supplier, brand, product}], what
+        specific OLAP operations should one perform in order to list the total \emph{count} for
+        a certain \emph{brand} for each \emph{state} per \emph{year} (assume \emph{location} has
+        three levels: \emph{country, state, city}; and assume \emph{time} has three levels:
+        \emph{year, month, day})?
+\end{enumerate}
+\end{asked}
 
 \sbsr{0.55}{%
 \lead{(a) Snowflake schema}
@@ -584,6 +654,123 @@ per \emph{year}? \emph{location} has country/state/city; \emph{time} has year/mo
 \hr
 
 %=======================================================================
+\T{M7. Central tendency, quartiles, IQR and outliers}
+
+{\color{sub}\footnotesize \pillo{gd}{NEW} \gap \textbf{Not in any of the 17 papers.} Added because
+\code{Notes by PC/unit 2 Numerical.docx} and \code{Untitled spreadsheet.xlsx} (2025--26) are built
+entirely around it. Theory in Ch 2, §2.5.}
+
+\lead{Method}
+\begin{itemize}
+  \item \textbf{Grouped median} $= L_1 + \left(\dfrac{N/2 - (\sum freq)_l}{freq_{median}}\right)\times width$.
+        Find the median interval first: the one where cumulative frequency first reaches $N/2$.
+  \item \textbf{Mode from mean and median} $\approx 3\,median - 2\,mean$ (unimodal, moderately skewed).
+  \item \textbf{Quartiles}, interpolated convention: position of $Q_k = \frac{k(n+1)}{4}$, then
+        interpolate between the neighbouring sorted values.
+  \item \textbf{Outlier fences}: below $Q_1 - 1.5\,IQR$ or above $Q_3 + 1.5\,IQR$.
+\end{itemize}
+
+\creamq{Problem 7.1 --- grouped median, 100 employees}{\m{4}}
+\begin{asked}[PROBLEM]{not a PYQ \textperiodcentered{} PC's notes \textperiodcentered{} [4]}
+Suppose the salaries of 100 employees of a company are grouped into \$10{,}000 intervals as
+shown in the table below. Find the median salary.
+\end{asked}
+
+\sbs{%
+\begin{tabularx}{\linewidth}{@{}L{2.6cm}L{1.5cm}X@{}}
+\toprule
+\hrow \thead{Salary (\$)} & \thead{Freq} & \thead{Cum freq} \\
+10{,}000--20{,}000 & 8  & 8 \\
+20{,}000--30{,}000 & 15 & 23 \\
+30{,}000--40{,}000 & 20 & 43 \\
+\textbf{40{,}000--50{,}000} & \textbf{32} & \textbf{75} \\
+50{,}000--60{,}000 & 18 & 93 \\
+60{,}000--70{,}000 & 7  & 100 \\
+\bottomrule
+\end{tabularx}}{%
+\lead{Solution}
+\begin{enumerate}
+  \item $N=100 \rightarrow N/2 = 50$. Need the 50th observation.
+  \item Cumulative frequency passes 50 inside \textbf{40k--50k} (43 before it, 75 after)
+        $\rightarrow$ that is the median interval.
+  \item $L_1 = 40{,}000$, \ $(\sum freq)_l = 43$, \ $freq_{median} = 75-43 = 32$, \ $width = 10{,}000$.
+  \item $median = 40{,}000 + \frac{50-43}{32}\times 10{,}000
+        = 40{,}000 + \frac{7}{32}\times 10{,}000$
+\end{enumerate}
+\lead{Answer} $median = \mathbf{\$42{,}187.50}$}
+
+\creamq{Problem 7.2 --- same method, smaller table}{\m{3}}
+\begin{asked}[PROBLEM]{not a PYQ \textperiodcentered{} PC's notes \textperiodcentered{} [3]}
+Salaries (in \$1000s) of 60 employees fall in the intervals 10--20, 20--30, 30--40, 40--50,
+50--60 and 60--70 with frequencies 5, 8, 12, 20, 10 and 5 respectively. Find the median salary.
+\end{asked}
+\begin{itemize}
+  \item $N = 5+8+12+20+10+5 = 60 \rightarrow N/2 = 30$.
+  \item Cumulative before 40--50 $= 5+8+12 = 25$; \ $freq_{median} = 20$, \ $L_1 = 40$, \ $width = 10$.
+  \item $median = 40 + \frac{30-25}{20}\times 10 = 40 + 2.5 = \mathbf{42.5}$ \ (i.e. \$42{,}500).
+\end{itemize}
+
+\creamq{Problem 7.3 --- mode from mean and median}{\m{2}}
+\begin{asked}[PROBLEM]{not a PYQ \textperiodcentered{} PC's notes \textperiodcentered{} [2]}
+For a unimodal, moderately skewed distribution the mean is 60 and the median is 55.
+Estimate the mode, and state what the result says about the skew.
+\end{asked}
+\begin{itemize}
+  \item $mean - mode \approx 3(mean - median) \Rightarrow mode \approx 3\,median - 2\,mean$.
+  \item $mode \approx 3(55) - 2(60) = 165 - 120 = \mathbf{45}$.
+  \item \mk{Sanity check}: $mode < median < mean \rightarrow$ positively skewed. Consistent.
+\end{itemize}
+
+\creamq{Problem 7.4 --- full descriptive summary of one dataset}{\m{2+2+2+2}}
+\begin{asked}[PROBLEM]{not a PYQ \textperiodcentered{} Han \& Kamber Example 2.6 \textperiodcentered{} [2+2+2+2]}
+Suppose that the data for analysis is the salaries (in \$1000s) of 12 employees, already
+sorted in increasing order:
+\[ 30,\ 36,\ 47,\ 50,\ 52,\ 52,\ 56,\ 60,\ 63,\ 70,\ 70,\ 110 \]
+Find (a) the mean, median and mode; (b) the quartiles $Q_1$ and $Q_3$ and the IQR;
+(c) the five-number summary; (d) any outliers using the $1.5\times IQR$ rule.
+\end{asked}
+
+\sbs{%
+\lead{(a) Central tendency}
+\begin{itemize}
+  \item $\sum x = 696 \rightarrow mean = \frac{696}{12} = \mathbf{58}$.
+  \item $n$ even $\rightarrow median = \frac{52+56}{2} = \mathbf{54}$.
+  \item 52 and 70 each occur twice $\rightarrow$ \textbf{bimodal}, modes $\mathbf{52}$ and $\mathbf{70}$.
+  \item $midrange = \frac{30+110}{2} = \mathbf{70}$.
+  \item $mode < median < mean$ is broken here by the bimodality; the single outlier 110 is what
+        pulls the mean above the median.
+\end{itemize}
+\lead{(b) Quartiles, positional convention \mk{(Han \& Kamber)}}
+\begin{itemize}
+  \item Take the 3rd, 6th, 9th sorted values $\rightarrow Q_1 = 47$, $Q_2 = 52$, $Q_3 = 63$.
+  \item $IQR = 63 - 47 = \mathbf{16}$.
+\end{itemize}}{%
+\lead{(c) Quartiles, interpolated convention \mk{(PC's class notes)}}
+\begin{itemize}
+  \item $Q_1$ at $\frac{1(13)}{4} = 3.25 \rightarrow 47 + 0.25(50-47) = \mathbf{47.75}$
+  \item $Q_2$ at $\frac{2(13)}{4} = 6.5 \ \rightarrow 52 + 0.5(56-52) = \mathbf{54}$
+  \item $Q_3$ at $\frac{3(13)}{4} = 9.75 \rightarrow 63 + 0.75(70-63) = \mathbf{68.25}$
+  \item $IQR = 68.25 - 47.75 = \mathbf{20.5}$
+\end{itemize}
+\lead{(d) Five-number summary and outliers}
+\begin{itemize}
+  \item Five-number summary (interpolated):
+        $\mathbf{30,\ 47.75,\ 54,\ 68.25,\ 110}$.
+  \item Fences: $47.75 - 1.5(20.5) = 17.0$ \ and \ $68.25 + 1.5(20.5) = 99.0$.
+  \item $110 > 99 \rightarrow \mathbf{110}$ is a suspected outlier. Nothing below 17.
+  \item \mk{Cross-check with the other convention}: fences $47 - 24 = 23$ and $63 + 24 = 87$.
+        \textbf{110 is still the only outlier} $\rightarrow$ the verdict does not depend on the
+        convention, so either is safe in the exam as long as you name it.
+\end{itemize}
+\lead{(e) Boxplot}
+\begin{itemize}
+  \item Box from $Q_1$ to $Q_3$, line at 54, whiskers to 30 and to the largest non-outlier (70),
+        and \textbf{110 plotted as a lone point}.
+\end{itemize}}
+
+\hr
+
+%=======================================================================
 \T{Extra practice (patterns not yet fully covered)}
 
 \creamq{Practice A --- binning for noise smoothing}{}
@@ -592,8 +779,12 @@ per \emph{year}? \emph{location} has country/state/city; \emph{time} has year/mo
 the likeliest form any future numerical would take. Answers below independently recomputed and they
 match his slide exactly.}
 
-\lead{Problem} Sorted price data: 4, 8, 9, 15, 21, 21, 24, 25, 26, 28, 29, 34.
-Partition into \textbf{equal-depth} bins of depth 4 and smooth by (i) bin means (ii) bin boundaries.
+\begin{asked}[PROBLEM]{not a PYQ \textperiodcentered{} DBK Lecture-1 worked example \added}
+The following price data has already been sorted:
+\[ 4,\ 8,\ 9,\ 15,\ 21,\ 21,\ 24,\ 25,\ 26,\ 28,\ 29,\ 34 \]
+Partition the data into \textbf{equal-depth} bins of depth 4, then smooth the noise by
+(i)~bin means and (ii)~bin boundaries.
+\end{asked}
 
 \lead{Solution}
 \begin{itemize}
@@ -623,8 +814,11 @@ Partition into \textbf{equal-depth} bins of depth 4 and smooth by (i) bin means 
 {\color{sub}\footnotesize Every PYQ so far uses $[0,1]$. The figures below are
 \textbf{Han \& Kamber 3rd ed Example 3.4}, so they are the canonical ones. \added}
 
-\lead{Problem} Income values 12{,}000 to 98{,}000. Normalise \textbf{73{,}600} to the range $[0,1]$,
-then to $[-1,1]$.
+\begin{asked}[PROBLEM]{not a PYQ \textperiodcentered{} Han \& Kamber 3rd ed Example 3.4 \added}
+Suppose that the minimum and maximum values for the attribute \emph{income} are \$12{,}000 and
+\$98{,}000 respectively. Normalise \textbf{\$73{,}600} by min-max normalization, first to the
+range $[0,1]$ and then to the range $[-1,1]$.
+\end{asked}
 
 \lead{Solution}
 \begin{itemize}

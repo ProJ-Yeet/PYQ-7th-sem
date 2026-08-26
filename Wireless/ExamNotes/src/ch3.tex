@@ -1,0 +1,911 @@
+%=======================================================================
+%  CHAPTER 3 — RADIO WAVE PROPAGATION IN THE MOBILE ENVIRONMENT  (12 hrs)
+%=======================================================================
+\section{Radio Wave Propagation in Mobile Network Environment}
+
+{\color{sub}\footnotesize 12 hrs, \mk{the largest chapter in the syllabus}
+\gap$\cdot$\gap asked in \textbf{22 of 22 papers} \gap$\cdot$\gap 7 syllabus sub-topics
+\gap$\cdot$\gap \mk{by far the heaviest numerical load} $\rightarrow$ Ch 3 numerical companion.}
+
+\lead{Read this first:}
+\begin{itemize}
+  \item The chapter splits cleanly in two, and the exam treats them separately.
+  \begin{itemize}
+    \item \textbf{Large-scale path loss}: how far the signal reaches, averaged over
+          hundreds of wavelengths. Free space, two-ray, Okumura, Hata, indoor.
+    \item \textbf{Small-scale fading}: how the signal flutters over a few wavelengths.
+          Delay spread, Doppler, coherence bandwidth, Rayleigh / Ricean.
+  \end{itemize}
+  \item Three questions are near-certain:
+        \textbf{small-scale fading types + factors} \tS{6},
+        \textbf{coherence bandwidth and coherence time} \tF{5}, and an
+        \textbf{Okumura or Hata numerical} \tF{4}.
+  \item Two derivations are worth memorising line by line, because they recur:
+        the \textbf{two-ray path difference and phase difference} \tF{4} and the
+        \textbf{Doppler shift} \tF{3}.
+  \item \mk{Nearly every question here has a numerical twin.} Learn the theory with the
+        companion open.
+\end{itemize}
+
+\hr
+
+\T{3.1 Free space propagation}
+
+\Q{Explain free space propagation. Relate radiated power to electric field}{\m{8}\m{2+2+2+2}\m{6}}
+{\color{sub}\footnotesize \tF{3} \yr{\texttt{80 Ba}, \texttt{81 Ba}, \textbf{78 Ch},
+\textbf{\texttt{80 Bh}}} \gap$\cdot$\gap \mk{almost always set as a numerical}
+$\rightarrow$ Ch 3 companion}
+
+\sbs{%
+\lead{When it applies}
+\begin{itemize}
+  \item Used to predict received signal strength when Tx and Rx have a
+        \textbf{clear, unobstructed LOS path}.
+  \item Eg satellite links, microwave LOS links.
+  \item \mk{Almost never true for a mobile in a city}, but every other model is built as a
+        correction to it.
+\end{itemize}
+
+\lead{Step 1: power flux density}
+\begin{itemize}
+  \item An \textbf{isotropic} source radiates $P_t$ uniformly over a sphere of area $4\pi d^2$.
+  \item \textbf{Power flux density} at distance $d$:
+        \[ P_d \;=\; \frac{P_t G_t}{4\pi d^2} \quad \text{W/m}^2 \]
+  \item \textbf{EIRP} $= P_t G_t$ watts: the power an isotropic antenna would need to give the
+        same reading in the main beam.
+  \item \textbf{ERP} uses a half-wave dipole as the reference instead:
+        $\text{ERP} = \text{EIRP} - 2.15$ dB.
+\end{itemize}
+
+\lead{Step 2: effective aperture}
+\begin{itemize}
+  \item \textbf{Effective aperture} $A_e$ $=$ ratio of power available at the antenna terminals to
+        the incident power per unit area.
+        \[ A_e \;=\; \frac{G_r \lambda^2}{4\pi}, \qquad \lambda = \frac{c}{f} \]
+\end{itemize}
+
+\lead{Step 3: the Friis equation}
+\begin{itemize}
+  \item $P_r = P_d \cdot A_e$, so
+        \[ \boxed{\;P_r(d) \;=\; \frac{P_t G_t G_r \lambda^2}{(4\pi)^2 d^2 L}\;} \]
+  \item $L \ge 1$ $=$ system loss (feeder attenuation, filters, mismatch). $L=1$ means
+        no hardware loss.
+  \item \mk{$P_r \propto 1/d^2$ and $\propto \lambda^2$}: doubling distance costs 6 dB,
+        doubling frequency costs 6 dB.
+\end{itemize}}{%
+\lead{Path loss}
+\begin{itemize}
+  \item \textbf{With} antenna gains:
+        \[ PL(\text{dB}) = 10\log\frac{P_t}{P_r}
+           = -10\log\!\left[\frac{G_t G_r \lambda^2}{(4\pi)^2 d^2}\right] \]
+  \item \textbf{Without} antenna gains ($G_t = G_r = 1$):
+        \[ PL(\text{dB}) = -10\log\!\left[\frac{\lambda^2}{(4\pi)^2 d^2}\right] \]
+  \item Useful dB form, $d$ in km and $f$ in MHz:
+        \[ PL_{\text{FS}} = 32.44 + 20\log f_{\text{MHz}} + 20\log d_{\text{km}} \]
+        \added
+  \item The minus sign on the gain term says that term is a \textbf{gain}. The
+        $(4\pi d/\lambda)^2$ term is the \textbf{free space loss} proper.
+  \item Raising $d$ raises the loss, which pushes designers to \textbf{lower frequencies} to keep
+        the link budget manageable.
+\end{itemize}}
+
+\vspace{2pt}
+\sbs{%
+\lead{Relating power to E-field \mk{(the 78 Ch / 80 Ba style numerical)}}
+\begin{itemize}
+  \item Power flux density in terms of the field:
+        \[ P_d \;=\; \frac{|E|^2}{\eta} \;=\; \frac{|E|^2}{120\pi}, \qquad
+           \eta = 377\;\Omega \text{ (free space)} \]
+  \item So $E$ falls as $1/d$ while power falls as $1/d^2$.
+  \item Received power through the aperture:
+        \[ P_r(d) \;=\; \frac{|E|^2}{120\pi}\cdot \frac{G_r\lambda^2}{4\pi} \]
+  \item \textbf{rms voltage} into a matched receiver of input resistance $R_{\text{ant}}$:
+        \[ P_r = \frac{V_{\text{rms}}^2}{R_{\text{ant}}} = \frac{(V_{\text{ant}}/2)^2}{R_{\text{ant}}}
+           \;\Longrightarrow\; V_{\text{ant}} = 2\sqrt{P_r R_{\text{ant}}} \]
+        \mk{The factor 2 is the matched-load voltage divider. Losing it is the standard mistake.}
+\end{itemize}}{%
+\lead{Far field (Fraunhofer region)}
+\begin{itemize}
+  \item Friis is valid only \textbf{beyond} the far-field distance
+        \[ d_f \;=\; \frac{2D^2}{\lambda} \]
+        where $D$ $=$ the largest physical linear dimension of the antenna.
+  \item Also needs $d_f \gg D$ and $d_f \gg \lambda$.
+  \item The equation blows up at $d = 0$, so a \textbf{close-in reference distance} $d_0$ is used:
+        \[ P_r(d) = P_r(d_0)\left(\frac{d_0}{d}\right)^2, \qquad d \ge d_0 \ge d_f \]
+  \item $d_0$ is typically \textbf{1 km} for large cells, \textbf{100 m} for microcells,
+        \textbf{1 m} indoors.
+\end{itemize}}
+
+\hr
+
+\T{3.2 The three propagation mechanisms}
+
+\Q{Explain the three basic radio wave propagation mechanisms. Large scale Vs small scale model}{\m{3+6}\m{3}\m{8}}
+{\color{sub}\footnotesize \tF{3} \yr{\textbf{72 Ash}, \textbf{73 Bh}, 72 Ma}}
+
+\sbsr{0.52}{%
+\begin{itemize}
+  \item Apart from the direct wave, the receiver gets \textbf{reflected}, \textbf{diffracted} and
+        \textbf{scattered} waves.
+  \item They add \textbf{vectorially}, so the resultant varies in strength in real time. That is
+        the physical origin of fading.
+\end{itemize}
+
+\lead{1. Reflection}
+\begin{itemize}
+  \item Wave hits an object \textbf{very large compared to the wavelength}.
+  \item Eg the earth's surface, buildings, walls.
+  \item Part reflects, part transmits into the object.
+  \item Strength set by the \textbf{reflection coefficient} $\Gamma$, which depends on
+        polarisation, angle of incidence and the material.
+  \item At grazing incidence $\Gamma \rightarrow -1$, ie \mk{full reflection with a
+        $180^\circ$ phase flip}. That is the assumption the two-ray model rests on.
+\end{itemize}
+
+\lead{2. Diffraction \mk{(79 Bh pairs this with a Fresnel derivation, \m{2+6})}}
+\begin{itemize}
+  \item Path is obstructed by a surface with \textbf{sharp edges}.
+  \item Secondary waves bend around the obstacle into the shadow region.
+  \item \mk{This is what lets a mobile work with no LOS at all} in urban and hilly terrain.
+  \item Explained by \textbf{Huygens' principle}: every point on a wavefront acts as a point
+        source of secondary wavelets, which add to form the new front.
+  \item Diffraction loss grows as the obstruction fills more of the first Fresnel zone.
+\end{itemize}
+
+\lead{3. Scattering}
+\begin{itemize}
+  \item Medium contains objects \textbf{small compared to the wavelength}, or rough surfaces.
+  \item Eg foliage, street signs, lamp posts, rain drops, snow.
+  \item Energy is \textbf{spread in many directions}.
+  \item Follows the same principles as diffraction.
+  \item \mk{Received signal is often stronger than reflection and diffraction alone predict},
+        because scattering fills in the gaps.
+\end{itemize}}{%
+\figT{c3_knife_edge.png}
+\vspace{1pt}
+{\color{sub}\footnotesize Knife-edge diffraction geometry. Effective obstruction height $h$,
+distances $d_1$ and $d_2$ from Tx and Rx.}}
+
+\vspace{3pt}
+\sbsr{0.55}{%
+\lead{Fresnel zones and the diffraction parameter}
+\begin{itemize}
+  \item A \textbf{Fresnel zone} is the ellipsoid of revolution over which secondary waves reach the
+        receiver with an excess path of $n\lambda/2$.
+  \item Numbered $F_1, F_2, F_3, \dots$. Odd zones add constructively, even zones destructively.
+  \item Size set by \textbf{frequency} and \textbf{Tx--Rx distance}.
+  \item \textbf{Fresnel--Kirchhoff diffraction parameter}
+        \[ v \;=\; h\sqrt{\frac{2(d_1+d_2)}{\lambda d_1 d_2}} \]
+  \item Radius of the $n$-th zone at distance $d_1$:
+        \[ r_n = \sqrt{\frac{n\lambda d_1 d_2}{d_1+d_2}} \]
+        \added
+  \item \mk{Rule of thumb: keep 55\,\% of the first Fresnel zone clear} and the link behaves as
+        free space.
+  \item Diffraction gain $G_d$ (dB) against $v$:
+  \begin{itemize}
+    \item $v \le -1$: $G_d = 0$
+    \item $-1 \le v \le 0$: $G_d = 20\log(0.5 - 0.62v)$
+    \item $0 \le v \le 1$: $G_d = 20\log(0.5\,e^{-0.95v})$
+    \item $v > 2.4$: $G_d = 20\log(0.225/v)$
+  \end{itemize}
+\end{itemize}}{%
+\figT{c3_fresnel.png}
+\vspace{1pt}
+{\color{sub}\footnotesize First and second Fresnel zones.}}
+
+\hr
+
+\T{3.3 Two-ray ground reflection model}
+
+\Q{Derive the path difference and phase difference in the two-ray model, and the path loss}{\m{8}\m{2+6}\m{2+8}\m{6}}
+{\color{sub}\footnotesize \tF{4} \yr{\textbf{71 Bh}, \textbf{74 Bh}, \textbf{76 Bh},
+\textbf{\texttt{81 Bh}}} \gap$\cdot$\gap 76 Bh asks first for the \mk{(+) over free space}, so
+open with that}
+
+\sbsr{0.55}{%
+\lead{Why it beats the free space model \mk{(the 2-mark opener)}}
+\begin{itemize}
+  \item Free space assumes \textbf{one} path. A real mobile link always has a
+        \textbf{ground-reflected} path as well.
+  \item The two-ray model adds that second path, so it predicts the
+        \mk{$1/d^4$ roll-off actually measured} over large distances, instead of $1/d^2$.
+  \item Found \textbf{reasonably accurate} for large-cell mobile systems over a few km.
+  \item Needs no measured data, unlike Okumura or Hata.
+\end{itemize}
+
+\lead{Assumptions}
+\begin{itemize}
+  \item $h_t, h_r \gg \lambda$ and $h_t, h_r \ll d$.
+  \item Reflected wave arrives at \textbf{grazing incidence}, so $\Gamma = -1$.
+  \item Flat earth, no curvature.
+\end{itemize}
+
+\lead{Step 1: path difference $\Delta$ (method of images)}
+\begin{itemize}
+  \item Replace the reflection by an \textbf{image transmitter} at $-h_t$.
+  \item LOS path and reflected path become two straight lines:
+        \[ d' = \sqrt{(h_t-h_r)^2 + d^2}, \qquad d'' = \sqrt{(h_t+h_r)^2 + d^2} \]
+  \item So
+        \[ \Delta = d''-d' = d\sqrt{1+\left(\tfrac{h_t+h_r}{d}\right)^2}
+                             - d\sqrt{1+\left(\tfrac{h_t-h_r}{d}\right)^2} \]
+  \item Expand each root binomially, valid since $d \gg h_t,h_r$:
+        \[ \Delta \approx d\left\{\left(1+\tfrac{1}{2}\left(\tfrac{h_t+h_r}{d}\right)^2\right)
+           -\left(1+\tfrac{1}{2}\left(\tfrac{h_t-h_r}{d}\right)^2\right)\right\} \]
+        \[ \boxed{\;\Delta \;\approx\; \frac{2 h_t h_r}{d}\;} \]
+\end{itemize}
+
+}{%
+\figT{c3_tworay_geom.png}
+\vspace{2pt}
+\figT{c3_tworay_images.png}
+\vspace{1pt}
+{\color{sub}\footnotesize Method of images: the ground-reflected ray is redrawn as a straight
+line from the image transmitter at $-h_t$.}}
+
+\vspace{3pt}
+\sbs{%
+\lead{Step 2: phase difference and time delay}
+\[ \boxed{\;\theta_\Delta = \frac{2\pi\Delta}{\lambda} = \frac{4\pi h_t h_r}{\lambda d}\;} \]
+\[ \tau_d = \frac{\Delta}{c} = \frac{\theta_\Delta}{2\pi f_c} \]
+
+\lead{Step 3: total E-field}
+\begin{itemize}
+  \item For large $d$, $|E_0 d_0 / d'| \approx |E_0 d_0 / d''| \approx |E_0 d_0 / d|$, so the two
+        rays differ \textbf{only in phase}:
+        \[ |E_{\text{tot}}(d)| = \frac{E_0 d_0}{d}\left|\cos\theta_\Delta - \cos 0\right| \]
+  \item Using $\cos\alpha - \cos\beta$ identity:
+        \[ |E_{\text{tot}}(d)| = 2\,\frac{E_0 d_0}{d}\,\sin\!\left(\frac{\theta_\Delta}{2}\right) \]
+  \item For $\theta_\Delta/2 < 0.3$ rad, $\sin x \approx x$:
+        \[ \boxed{\;|E_{\text{tot}}(d)| \approx \frac{2 E_0 d_0}{d}\cdot
+           \frac{2\pi h_t h_r}{\lambda d} = \frac{k}{d^2}\;} \]
+  \item \mk{The field now falls as $1/d^2$, so power falls as $1/d^4$.}
+\end{itemize}}{%
+\lead{Step 4: received power and path loss}
+\begin{itemize}
+  \item Using $P_r = |E_{\text{tot}}|^2 A_e / \eta$:
+        \[ \boxed{\;P_r \;=\; P_t G_t G_r \frac{h_t^2 h_r^2}{d^4}\;} \]
+  \item \mk{Note $\lambda$ has cancelled}: the two-ray result is
+        \textbf{independent of frequency}.
+  \item In dB:
+        \[ PL(\text{dB}) = 40\log d - \left(10\log G_t + 10\log G_r
+           + 20\log h_t + 20\log h_r\right) \]
+  \item Valid only beyond the \textbf{crossover distance} $d_c = 4\pi h_t h_r/\lambda$;
+        below it the model oscillates and free space is used instead. \added
+\end{itemize}}
+
+\hr
+
+\T{3.4 Practical link budget design}
+
+\Q{Explain the log-distance path loss model and log-normal shadowing}{\m{4}\m{2+4}}
+{\color{sub}\footnotesize \tP{1} \yr{\textbf{77 Ch}} \gap$\cdot$\gap the \mk{link budget
+numericals} built on it are 10 and 12 marks \yr{(\textbf{74 Bh}, \textbf{76 Bh})}
+$\rightarrow$ Ch 3 companion}
+
+\sbsr{0.53}{%
+\lead{Log-distance path loss model}
+\begin{itemize}
+  \item Both theory and measurement show received power falls
+        \textbf{logarithmically} with distance, indoors and outdoors.
+  \item Generalises free space by letting the exponent be $n$ instead of 2:
+        \[ \overline{PL}(d) \propto \left(\frac{d}{d_0}\right)^{n} \]
+        \[ \boxed{\;\overline{PL}(d)\,[\text{dB}] = \overline{PL}(d_0)
+           + 10\,n\log\!\left(\frac{d}{d_0}\right)\;} \]
+  \item $\overline{PL}(d_0)$ is computed by the \textbf{free space} formula, or measured.
+  \item Bars mean \textbf{ensemble average} over all possible paths at that distance.
+  \item \mk{One number, $n$, absorbs the whole environment.}
+\end{itemize}
+\vspace{2pt}
+\figT{c3_pathloss_exp.png}}{%
+\lead{Link budget design}
+\begin{itemize}
+  \item A link budget adds every gain and subtracts every loss between transmitter output and
+        receiver input, then compares against the receiver \textbf{sensitivity}.
+  \item Generic form, all terms in dB:
+        \[ P_r = P_t + G_t + G_r - L_{\text{cable,t}} - L_{\text{cable,r}}
+           - L_{\text{misc}} - PL(d) \]
+  \item Link closes if $P_r \ge$ sensitivity $+$ \textbf{link margin}.
+  \item \textbf{Two} budgets are needed, forward and reverse, and the
+        \mk{weaker one sets the cell radius}.
+\end{itemize}
+
+\lead{How to run the exam version}
+\begin{itemize}
+  \item Compute \textbf{maximum allowable path loss} on each link:
+        \[ PL_{\max} = P_t + G_t + G_r - L_{\text{cables}} - \text{sensitivity}
+           - \text{margin} \]
+  \item Put $PL_{\max}$ into the propagation model given (usually \textbf{Okumura}) and solve
+        for $d$.
+  \item Take the \textbf{smaller} of the forward and reverse distances.
+  \item Compare against the range asked for and state whether the link is feasible.
+\end{itemize}}
+
+\vspace{3pt}
+\sbs{%
+\lead{Log-normal shadowing}
+\begin{itemize}
+  \item Problem: two locations at the \textbf{same} $d$ can have wildly different surroundings,
+        so a single average is wrong for any one site.
+  \item Measurement shows $PL(d)$ at a given $d$ is \textbf{random}, and \textbf{log-normally}
+        distributed about the average.
+  \item Add a zero-mean Gaussian random variable $X_\sigma$ in dB, standard deviation $\sigma$ dB:
+        \[ \boxed{\;PL(d) = \overline{PL}(d_0) + 10 n \log\!\left(\frac{d}{d_0}\right)
+           + X_\sigma\;} \]
+        \[ P_r(d)\,[\text{dBm}] = P_t\,[\text{dBm}] - PL(d) \]
+  \item Called \textbf{shadowing}: the mobile is shadowed by clutter (buildings, hills, foliage).
+  \item $n$ and $\sigma$ are found from measured data by \textbf{linear regression}, minimising
+        mean square error.
+  \item \mk{Small $\sigma$ $=$ the model fits that environment well.}
+\end{itemize}}{%
+\lead{Two ways to build a propagation model}
+\begin{itemize}
+  \item \textbf{Empirical}: collect measurements, fit curves. Eg Okumura, Hata.
+  \begin{itemize}
+    \item Accurate in the environment measured, no guarantee elsewhere.
+  \end{itemize}
+  \item \textbf{Analytical}: model the physics, derive equations. Eg free space, two-ray.
+  \begin{itemize}
+    \item Purely analytical models are inaccurate because so many assumptions are needed to keep
+          the derivation tractable.
+  \end{itemize}
+  \item \mk{Practical models are hybrids}: an analytical core with measured correction factors.
+\end{itemize}}
+
+\hr
+
+\T{3.5 Outdoor propagation models}
+
+\Q{Explain any two outdoor propagation models. State the conditions for Okumura and Hata}{\m{3+3}\m{5}\m{2+2}\m{4}}
+{\color{sub}\footnotesize \tS{7} \yr{71 Ma, 73 Ma, \textbf{75 Bh}, \textbf{79 Ch},
+\textbf{80 Ch}, \textbf{\texttt{81 Bh}}, \textbf{\texttt{80 Bh}}} \gap$\cdot$\gap
+\mk{the numerical version appears in 13 of 22 papers} $\rightarrow$ Ch 3 companion}
+
+{\color{sub}\footnotesize Outdoor transmission runs over irregular terrain, so the
+\textbf{terrain profile}, trees, buildings and hills must all be accounted for. Purely analytical
+models cannot do this, so all the outdoor models below are \textbf{empirical}.}
+
+\creamq{Okumura model}{\m{4}}
+\sbsr{0.55}{%
+\begin{itemize}
+  \item \textbf{Wholly empirical.} Built from extensive drive-test measurements in and around
+        Tokyo, 1968.
+  \item \mk{The single most widely used model for signal prediction in urban areas.}
+  \item Okumura published a set of \textbf{curves} of median attenuation relative to free space,
+        $A_{mu}(f,d)$, for an urban area over quasi-smooth terrain, plus correction curves.
+  \item \textbf{Validity conditions \mk{(the 2-mark answer)}}
+  \begin{itemize}
+    \item Frequency \textbf{150 MHz to 1920 MHz} (extrapolated to 3 GHz).
+    \item Distance \textbf{1 km to 100 km}.
+    \item BS antenna height \textbf{30 m to 1000 m}.
+    \item Quasi-smooth terrain, urban reference.
+  \end{itemize}
+  \item \textbf{The formula}
+        \[ \boxed{\;L_{50}(\text{dB}) = L_F + A_{mu}(f,d) - G(h_{te}) - G(h_{re})
+           - G_{\text{AREA}}\;} \]
+  \begin{itemize}
+    \item $L_{50}$ $=$ median (50th percentile) path loss,
+    \item $L_F$ $=$ free space path loss,
+    \item $A_{mu}$ $=$ median attenuation relative to free space, read off the curve,
+    \item $G(h_{te}), G(h_{re})$ $=$ antenna height gain factors,
+    \item $G_{\text{AREA}}$ $=$ gain from the environment type.
+  \end{itemize}
+\end{itemize}}{%
+\figT{c3_okumura_amu.png}
+\vspace{1pt}
+{\color{sub}\footnotesize $A_{mu}(f,d)$ over a quasi-smooth urban area,
+$h_{te} = 200$ m, $h_{re} = 3$ m.}}
+
+\vspace{3pt}
+\sbsr{0.55}{%
+\begin{itemize}
+  \item \textbf{Height gain factors:}
+        \[ G(h_{te}) = 20\log\frac{h_{te}}{200}, \qquad 30\,\text{m} < h_{te} < 1000\,\text{m} \]
+        \[ G(h_{re}) = 10\log\frac{h_{re}}{3}, \qquad h_{re} \le 3\,\text{m} \]
+        \[ G(h_{re}) = 20\log\frac{h_{re}}{3}, \qquad 3\,\text{m} < h_{re} < 10\,\text{m} \]
+  \item \textbf{($+$)} simple, and \mk{the most accurate model available for mature cellular and
+        land-mobile systems in cluttered urban areas}.
+  \item \textbf{($-$)} slow response to rapid terrain change $\rightarrow$ good in cities, poorer
+        in rural areas. Deviation from measurement is 10 to 14 dB.
+  \item \textbf{($-$)} needs the curves, so it cannot be evaluated from formulas alone.
+\end{itemize}}{%
+\figT{c3_okumura_garea.png}
+\vspace{1pt}
+{\color{sub}\footnotesize $G_{\text{AREA}}$ for suburban, quasi-open and open areas.}}
+
+\creamq{Hata model}{\m{4}\m{6}\m{7}}
+\sbsr{0.60}{%
+\begin{itemize}
+  \item \mk{Hata is Okumura's curves turned into formulas}, so it can be worked by hand.
+  \item Same measured data, so the same physical assumptions.
+  \item \textbf{Validity conditions}
+  \begin{itemize}
+    \item Frequency \textbf{150 MHz to 1500 MHz}.
+    \item Distance \textbf{1 km to 20 km}.
+    \item BS antenna \textbf{30 m to 200 m}, MS antenna \textbf{1 m to 10 m}.
+    \item \textbf{No path-specific correction} is possible, unlike Okumura.
+  \end{itemize}
+  \item \textbf{Urban median path loss:}
+  \begin{align*}
+    L_{50}(\text{urban}) \;=\; & 69.55 + 26.16\log f_c - 13.82\log h_{te} \\
+       & - a(h_{re}) + \left(44.9 - 6.55\log h_{te}\right)\log d
+  \end{align*}
+  with $f_c$ in MHz, $h_{te}, h_{re}$ in m, $d$ in km.
+\end{itemize}}{%
+\lead{Okumura Vs Hata \mk{(81 Bh asks exactly this, \m{4})}}
+\begin{itemize}
+  \item \textbf{Form}: Okumura is \textbf{graphical}, Hata is \textbf{closed-form}.
+  \item \textbf{Frequency}: Okumura to 1920 MHz, Hata to 1500 MHz.
+  \item \textbf{Distance}: Okumura 1 to 100 km, Hata 1 to 20 km.
+  \item \textbf{BS height}: Okumura 30 to 1000 m, Hata 30 to 200 m.
+  \item \textbf{Path-specific corrections}: Okumura \checkmark, Hata \xmark
+  \item \textbf{Accuracy}: within \mk{1 dB of Okumura for $d > 1$ km}, so Hata is preferred for
+        large-cell work. Okumura is better for small cells and irregular terrain.
+  \item \textbf{Extension}: COST-231 extends Hata to \textbf{2 GHz} by changing the constants,
+        for PCS bands. \added
+\end{itemize}}
+
+\vspace{3pt}
+\sbs{%
+\begin{itemize}
+  \item \textbf{Mobile antenna correction $a(h_{re})$:}
+  \begin{itemize}
+    \item small / medium city:
+          $\;(1.1\log f_c - 0.7)h_{re} - (1.56\log f_c - 0.8)$ dB
+    \item large city, $f_c \le 300$ MHz: $\;8.29(\log 1.54 h_{re})^2 - 1.1$ dB
+    \item large city, $f_c > 300$ MHz: $\;3.2(\log 11.75 h_{re})^2 - 4.97$ dB
+  \end{itemize}
+  \item \textbf{Suburban:} $\;L_{50}(\text{urban}) - 2\left[\log(f_c/28)\right]^2 - 5.4$
+  \item \textbf{Open rural:}
+        $\;L_{50}(\text{urban}) - 4.78(\log f_c)^2 + 18.33\log f_c - 40.98$
+  \item Suburban and rural terms are just \textbf{reductions in fixed loss} for less cluttered
+        environments.
+\end{itemize}}{%
+\lead{Longley--Rice (ITS irregular terrain model)}
+\begin{itemize}
+  \item Point-to-point, \textbf{40 MHz to 100 GHz}, over irregular terrain.
+  \item Runs as a \textbf{computer program}. Inputs: frequency, path length, polarisation,
+        antenna heights, surface refractivity, ground conductivity and permittivity,
+        climate.
+  \item Two modes:
+  \begin{itemize}
+    \item \textbf{point-to-point}, using a detailed terrain profile,
+    \item \textbf{area}, using empirical estimates where no profile exists.
+  \end{itemize}
+  \item \mk{($-$) ignores multipath, buildings and foliage}, so it is a terrain model, not an
+        urban model.
+\end{itemize}}
+
+\vspace{3pt}
+\sbs{%
+\lead{Walfisch--Bertoni \pill{gdL}{gd}{syllabus, no PYQ yet}}
+\begin{itemize}
+  \item Models \textbf{rooftop diffraction} explicitly, so it fits dense urban areas where the
+        BS antenna is above the rooftops.
+  \item Path loss is the product of three factors:
+        \[ S = P_0 \, Q^2 \, P_1 \]
+  \begin{itemize}
+    \item $P_0$ $=$ free space loss between isotropic antennas,
+    \item $Q^2$ $=$ reduction from the \textbf{row of buildings} shadowing the street,
+    \item $P_1$ $=$ loss from the \textbf{final rooftop-to-street} diffraction.
+  \end{itemize}
+  \item Predicts an overall $\;\propto d^{-3.8}$ roll-off, matching urban measurement.
+  \item Adopted as part of \textbf{COST-231}.
+\end{itemize}}{%
+\lead{Ericsson multiple breakpoint model \mk{(80 Bh asks by name, \m{2})}}
+\begin{itemize}
+  \item Built from measurements in a multi-floor office building.
+  \item Uses a \textbf{uniform distribution} to generate path loss between a minimum and maximum
+        bound at each distance.
+  \item \textbf{4 breakpoints}, each carrying an upper and lower bound on path loss.
+  \item Assumes \textbf{30 dB attenuation at $d_0 = 1$ m}, accurate at 900 MHz w/ unity-gain
+        antennas.
+  \item Slope changes from \textbf{20 dB/decade} at the first breakpoint to
+        \textbf{60 dB/decade} in the final section.
+  \item \mk{Its value is that it gives a deterministic limit on the range of path loss}, not a
+        single number.
+\end{itemize}}
+
+\hr
+
+\T{3.6 Indoor propagation models}
+
+\Q{Explain indoor propagation models (any two). What factors influence them?}{\m{8}\m{5}}
+{\color{sub}\footnotesize \tP{2} \yr{\textbf{70 Bh}, \textbf{\texttt{82 Bh}}}}
+
+\sbsr{0.53}{%
+\lead{How indoor differs from outdoor \mk{(the ``factors'' answer)}}
+\begin{itemize}
+  \item Distances covered are \textbf{much smaller}.
+  \item Environment varies \textbf{far more} over a much smaller Tx--Rx separation.
+  \item Propagation is governed by the \textbf{same three mechanisms}, but conditions are far more
+        variable.
+  \item \textbf{Factors that influence it:}
+  \begin{itemize}
+    \item \textbf{Layout} of the building, room sizes, corridors.
+    \item \textbf{Construction materials}: concrete, metal, plaster, glass.
+    \item \textbf{Building type}: office, residential, factory.
+    \item Whether doors are \textbf{open or closed}.
+    \item Where the antenna is mounted: \textbf{desk height Vs ceiling}.
+    \item Number of \textbf{floors} between Tx and Rx.
+    \item Number of \textbf{windows} and whether they are tinted (metallised tint is a strong
+          reflector).
+    \item Movement of \textbf{people and furniture}.
+  \end{itemize}
+  \item \mk{Path loss exponents indoors range from 1.6 (LOS corridor, better than free space,
+        because of waveguiding) to 6 (obstructed).}
+\end{itemize}}{%
+\lead{Model 1: log-distance path loss (same form as outdoor)}
+\[ PL(d)\,[\text{dB}] = \overline{PL}(d_0) + 10n\log\!\left(\frac{d}{d_0}\right) + X_\sigma \]
+\begin{itemize}
+  \item $n$ and $\sigma$ are tabulated \textbf{per building type}.
+  \item Smaller $\sigma$ $\rightarrow$ better accuracy.
+  \item $d_0$ is typically \textbf{1 m} indoors.
+\end{itemize}
+
+\lead{Model 2: attenuation factor model}
+\[ PL(d)\,[\text{dB}] = \overline{PL}(d_0) + 10\,n_{SF}\log\!\left(\frac{d}{d_0}\right)
+   + \text{FAF} + \sum \text{PAF} \]
+\begin{itemize}
+  \item $n_{SF}$ $=$ path loss exponent measured on the \textbf{same floor}.
+  \item \textbf{FAF} $=$ floor attenuation factor, added once per floor penetrated.
+  \item \textbf{PAF} $=$ partition attenuation factor, summed over the partitions crossed.
+  \item \mk{Standard deviation drops to about 4 dB}, against 13 dB for the plain
+        log-distance model.
+\end{itemize}}
+
+\vspace{3pt}
+\sbs{%
+\lead{Partition losses}
+\begin{itemize}
+  \item \textbf{Hard partitions}: structural walls of a room. Fixed.
+  \item \textbf{Soft partitions}: movable dividers that do not reach the ceiling.
+  \item \textbf{Between floors}: FAF is \mk{not linear in floor count}. The first floor costs the
+        most (about 15 dB), each further floor adds only 6 to 10 dB, then it saturates.
+  \item Reason: signal also travels \textbf{out of and back into} the building via windows,
+        so the direct path stops dominating.
+\end{itemize}}{%
+\figT{c3_partition.png}
+\vspace{1pt}
+{\color{sub}\footnotesize Measured same-floor partition losses.}}
+
+\hr
+
+\T{3.7 Small-scale fading and multipath}
+
+\Q{What is small-scale fading? Give its types and the factors that influence it}{\m{2+4+4}\m{4+4}\m{3+6}\m{1+2+5}\m{2+2}}
+{\color{sub}\footnotesize \tS{6} \yr{72 Ma, 73 Ma, \textbf{75 Bh}, \textbf{78 Ch},
+\texttt{80 Ba}, \texttt{81 Ba}} \gap$\cdot$\gap
+\mk{the most repeated question in the chapter}}
+
+\sbsr{0.53}{%
+\lead{Definition}
+\begin{itemize}
+  \item \textbf{Small-scale fading} $=$ rapid fluctuation of the amplitude, phase and multipath
+        delay of a radio signal over a \textbf{short travel distance or short time interval}.
+  \item Caused by \textbf{interference between two or more copies} of the transmitted signal that
+        arrive at slightly different times.
+  \item The copies (multipath waves) add \textbf{vectorially} with random phases, so the sum
+        behaves like noise.
+  \item \mk{Received power can change by 30 to 40 dB when the receiver moves a fraction of a
+        wavelength.}
+  \item Large-scale path loss can be ignored over such a short distance.
+\end{itemize}
+
+\lead{The three effects it produces}
+\begin{itemize}
+  \item \textbf{Rapid changes in signal strength} over a small travel distance or time interval.
+  \item \textbf{Random frequency modulation} due to different \textbf{Doppler shifts} on
+        different multipath components.
+  \item \textbf{Time dispersion (echoes)} caused by multipath propagation delays
+        $\rightarrow$ \mk{ISI}.
+\end{itemize}}{%
+\lead{Time dispersion Vs frequency dispersion}
+\begin{itemize}
+  \item \textbf{Time dispersion}: received signal \textbf{lasts longer} than the transmitted one,
+        because paths have different delays. Measured by \textbf{delay spread}.
+  \item \textbf{Frequency dispersion}: received signal is \textbf{wider in frequency} than the
+        transmitted one, because paths have different Doppler shifts. Measured by
+        \textbf{Doppler spread}.
+  \item Both distort the received signal, and they are \textbf{independent} of each other.
+        \mk{That is why fading is classified twice over, once by each.}
+\end{itemize}
+
+\lead{Impulse response model of the multipath channel \pill{gdL}{gd}{syllabus, no PYQ yet}}
+\begin{itemize}
+  \item The channel is treated as a \textbf{linear filter with a time-varying impulse response}.
+  \item Feed it a unit impulse $\delta(t)$ and the output is
+        \[ h(t) \;=\; \sum_{n=1}^{N} A_n \exp(-j\phi_n)\,\delta(t-\tau_n) \]
+  \item $A_n$, $\tau_n$, $\phi_n$ $=$ amplitude, arrival delay and phase of the $n$-th path.
+  \item Time variation comes from motion, so it is really $h(t,\tau)$: $\tau$ indexes the
+        multipath delay, $t$ indexes the mobile's position.
+  \item \mk{This one model generates everything else in the chapter}: the PDP is
+        $|h(t,\tau)|^2$, and the delay-spread parameters are its moments.
+\end{itemize}}
+
+\vspace{3pt}
+\sbs{%
+\lead{Factors influencing small-scale fading \mk{(learn all 4)}}
+\begin{itemize}
+  \item \textbf{Multipath propagation.}
+  \begin{itemize}
+    \item Random amplitude and phase of each component $\rightarrow$ the sum fluctuates.
+    \item Also \textbf{lengthens} the time the baseband signal takes to arrive
+          $\rightarrow$ signal smearing $\rightarrow$ ISI.
+  \end{itemize}
+  \item \textbf{Speed of the mobile.}
+  \begin{itemize}
+    \item Relative motion causes a \textbf{Doppler shift} $f_d$ on each component.
+    \item Different components arrive from different angles $\rightarrow$ different shifts
+          $\rightarrow$ random FM.
+  \end{itemize}
+  \item \textbf{Speed of surrounding objects.}
+  \begin{itemize}
+    \item If nearby objects move \textbf{faster than the mobile}, they dominate the fading.
+    \item If they move slower, ignore them.
+  \end{itemize}
+  \item \textbf{Transmission bandwidth of the signal.}
+  \begin{itemize}
+    \item If signal bandwidth $>$ channel bandwidth, the received signal is
+          \textbf{distorted}, but its strength does not fade much over a local area.
+    \item If signal bandwidth $<$ channel bandwidth, amplitude \textbf{changes rapidly}
+          but the signal is not distorted in time.
+    \item \mk{A channel gives you distortion or fading, typically one or the other.}
+  \end{itemize}
+\end{itemize}}{%
+\lead{Multipath measurement techniques \pill{gdL}{gd}{syllabus, no PYQ yet}}
+\begin{itemize}
+  \item \textbf{Direct RF pulse sounding}: transmit a narrow pulse, display the received power
+        against delay on a scope. Simple, but a single pulse can be lost in a fade.
+  \item \textbf{Spread spectrum sliding correlator}: transmit a PN sequence, correlate at the
+        receiver w/ a slightly slower clock so the correlation peak slides through the delays.
+        Good dynamic range, rejects interference.
+  \item \textbf{Swept frequency (frequency domain) sounding}: sweep a network analyser across the
+        band, measure $S_{21}$, then inverse Fourier transform to get $h(\tau)$.
+        Needs a cabled link, so it suits indoor work only.
+\end{itemize}}
+
+\Q{Define Doppler shift and Doppler spread. Derive the expression for Doppler shift}{\m{2+4}\m{1+2+5}\m{2}}
+{\color{sub}\footnotesize \tF{4} \yr{\textbf{78 Ch}, \texttt{81 Ba}, \textbf{80 Ch},
+\textbf{\texttt{82 Bh}}} \gap$\cdot$\gap 82 Bh words it as
+``significance of frequency dispersion''}
+
+\sbsr{0.55}{%
+\lead{Derivation \mk{(reproduce these 5 lines exactly)}}
+\begin{itemize}
+  \item Mobile moves at constant velocity $v$ along a segment of length $d$ from $X$ to $Y$,
+        receiving from a \textbf{distant} source $S$.
+  \item Source is far away $\rightarrow$ the arrival angle $\theta$ is the same at $X$ and $Y$.
+  \item \textbf{Path length difference}
+        \[ \Delta l \;=\; d\cos\theta \;=\; v\,\Delta t\,\cos\theta \]
+  \item \textbf{Phase change} in the received signal
+        \[ \Delta\phi \;=\; \frac{2\pi \Delta l}{\lambda}
+           \;=\; \frac{2\pi v \Delta t}{\lambda}\cos\theta \]
+  \item \textbf{Apparent frequency change} is the rate of change of phase:
+        \[ f_d \;=\; \frac{1}{2\pi}\cdot\frac{\Delta\phi}{\Delta t}
+           \;\Longrightarrow\;
+           \boxed{\;f_d \;=\; \frac{v}{\lambda}\cos\theta\;} \]
+\end{itemize}}{%
+\figT{c3_doppler.png}
+\vspace{1pt}
+{\color{sub}\footnotesize Mobile moving from $X$ to $Y$ at velocity $v$; source $S$ is far away,
+so $\theta$ is unchanged.}}
+
+\vspace{3pt}
+\sbs{%
+\lead{Reading the result}
+\begin{itemize}
+  \item $\theta = 0^\circ$, moving \textbf{towards} the source: $f_d = +v/\lambda$, maximum
+        \textbf{positive} shift. Received frequency $f_c + f_d$.
+  \item $\theta = 180^\circ$, moving \textbf{away}: $f_d = -v/\lambda$, maximum negative shift.
+  \item $\theta = 90^\circ$, moving \textbf{perpendicular}: \mk{$f_d = 0$}, no shift at all.
+  \item \textbf{Maximum Doppler shift}
+        \[ f_m = \frac{v}{\lambda} = \frac{v f_c}{c} \]
+\end{itemize}
+
+\lead{Doppler spread $B_D$}
+\begin{itemize}
+  \item Measure of the \textbf{spectral broadening} caused by the time rate of change of the
+        channel.
+  \item Defined as the \textbf{maximum Doppler shift}: $B_D = f_m = v/\lambda$.
+  \item A pure tone at $f_c$ comes out spread over $f_c \pm f_m$.
+  \item Characterises the channel's \textbf{frequency dispersiveness}.
+\end{itemize}}{%
+\lead{Significance of frequency dispersion \mk{(82 Bh)}}
+\begin{itemize}
+  \item It makes the channel \textbf{time-varying}, so the receiver must keep re-estimating it.
+  \item If $B_D$ approaches the signal bandwidth, the channel changes \textbf{within one symbol}
+        $\rightarrow$ \mk{fast fading, and an irreducible BER floor that more transmit power
+        cannot cure}.
+  \item It sets how often an \textbf{adaptive equalizer must retrain} and how fast a
+        \textbf{carrier recovery loop} must track.
+  \item Different multipath components have different $f_d$, so the composite signal suffers
+        \textbf{random FM}, heard as noise on an analog system.
+\end{itemize}}
+
+\Q{Explain the parameters of the mobile multipath channel}{\m{7}\m{4}\m{2+4}}
+{\color{sub}\footnotesize \tF{3} \yr{71 Ma, \textbf{\texttt{80 Bh}}, 70 Ma}
+\gap$\cdot$\gap 80 Bh asks which parameters are used to \mk{classify the types of fading}
+\gap$\cdot$\gap \mk{numericals on this appear in 5 papers} $\rightarrow$ Ch 3 companion}
+
+\sbsr{0.55}{%
+\lead{Power delay profile (PDP)}
+\begin{itemize}
+  \item \textbf{PDP} $=$ received power against \textbf{excess delay}, ie the intensity of the
+        signal arriving through the multipath channel as a function of delay.
+  \item Obtained by \textbf{averaging many impulse response measurements} over a local area.
+  \item Every time-dispersion parameter below is a \textbf{moment of the PDP}.
+\end{itemize}}{%
+\figT{c3_pdp.png}
+\vspace{1pt}
+{\color{sub}\footnotesize A measured PDP w/ its mean excess delay, rms delay spread and 10 dB
+maximum excess delay marked. Note the $-20$ dB noise threshold.}}
+
+\vspace{3pt}
+\sbs{%
+\lead{Time dispersion parameters}
+\begin{itemize}
+  \item \textbf{First arrival delay $\tau_A$}: delay of the first signal to reach the receiver,
+        set by the shortest path. Used as the \textbf{reference}, so every other delay is an
+        \emph{excess} delay.
+  \item \textbf{Mean excess delay} $=$ first moment of the PDP:
+        \[ \bar{\tau} \;=\; \frac{\sum_k a_k^2 \tau_k}{\sum_k a_k^2}
+                       \;=\; \frac{\sum_k P(\tau_k)\,\tau_k}{\sum_k P(\tau_k)} \]
+  \item \textbf{rms delay spread} $=$ square root of the second central moment:
+        \[ \sigma_\tau = \sqrt{\overline{\tau^2} - (\bar{\tau})^2},
+           \qquad \overline{\tau^2} = \frac{\sum_k a_k^2 \tau_k^2}{\sum_k a_k^2} \]
+  \item \textbf{Maximum excess delay (X dB)} $=$ $\tau_X - \tau_0$, the delay over which multipath
+        energy stays within X dB of the strongest component.
+  \item \mk{$\sigma_\tau$ is the one that matters in practice}, because it, not $\tau_{\max}$,
+        predicts ISI.
+  \item These values \textbf{depend on the noise threshold} chosen. Set the threshold too low and
+        noise is counted as multipath, inflating every parameter.
+\end{itemize}}{%
+\lead{Coherence bandwidth $B_c$}
+\begin{itemize}
+  \item \textbf{Definition}: the range of frequencies over which the channel passes all spectral
+        components with \textbf{approximately equal gain and linear phase}, ie over which the
+        channel looks \textbf{flat}.
+  \item It is the \textbf{frequency-domain dual} of the rms delay spread. There is no exact
+        relationship, only rules of thumb:
+        \[ B_c \approx \frac{1}{50\,\sigma_\tau} \quad (\text{0.9 correlation, ``90\,\%''}) \]
+        \[ B_c \approx \frac{1}{5\,\sigma_\tau} \quad (\text{0.5 correlation, ``50\,\%''}) \]
+  \item Two sinusoids separated by \textbf{more} than $B_c$ are affected \textbf{differently} by
+        the channel.
+  \item \textbf{Significance:} compare $B_c$ against the signal bandwidth to decide whether the
+        channel is \mk{flat or frequency selective}. That single comparison decides whether an
+        equalizer is needed.
+\end{itemize}
+
+\vspace{2pt}
+\lead{Coherence time $T_c$}
+\begin{itemize}
+  \item \textbf{Definition}: the time over which the channel impulse response is essentially
+        \textbf{time-invariant}.
+  \item Dual of the Doppler spread:
+        \[ T_c \approx \frac{1}{f_m}, \qquad
+           T_c \approx \sqrt{\frac{9}{16\pi f_m^2}} = \frac{0.423}{f_m} \]
+        The second (geometric mean) form is the one normally used.
+  \item Two signals arriving more than $T_c$ apart are affected \textbf{differently}.
+  \item \textbf{Large $T_c$} $\rightarrow$ channel changes slowly.
+  \item \textbf{Significance:} compare $T_c$ against the symbol period to decide whether the
+        channel is \mk{slow or fast fading}. Also sets how often the equalizer must retrain.
+\end{itemize}}
+
+\Q{Explain the types of small-scale fading}{\m{4+4}\m{1+3}\m{2+7}\m{2+4}}
+{\color{sub}\footnotesize \tS{6} \yr{70 Ma, 74 Ma, \textbf{79 Ch}, \texttt{81 Ba},
+\textbf{80 Ch}, \textbf{\texttt{80 Bh}}} \gap$\cdot$\gap
+\mk{fading is classified twice over: once by delay spread, once by Doppler spread. Always give
+both tables.}}
+
+\sbs{%
+\lead{A. By multipath time delay spread}
+\vspace{2pt}
+\begin{tabularx}{\linewidth}{@{}L{2.05cm}XX@{}}
+\toprule
+\hrow & \thead{Flat fading} & \thead{Frequency selective} \\
+\midrule
+Bandwidth & $B_S \ll B_C$ & $B_S > B_C$ \\
+Delay spread & $\sigma_\tau \ll T_S$ & $\sigma_\tau > T_S$ \\
+Spectrum of the signal & \textbf{preserved} & \textbf{not preserved} \\
+Channel acts as & flat gain, linear phase & a filter \\
+ISI & none & \mk{severe} \\
+Cure & raise transmit power, use diversity & \mk{equalizer} \\
+\bottomrule
+\end{tabularx}
+\vspace{3pt}
+\begin{itemize}
+  \item \textbf{Flat fading} is the most common type.
+  \item Signal bandwidth is narrow, so the whole signal rides up and down together.
+  \item Causes \mk{deep fades}, so flat-fading channels are sometimes called
+        \textbf{amplitude varying} or \textbf{narrowband} channels.
+  \item \textbf{Frequency selective fading} occurs when the delayed copies overlap
+        \textbf{into the next symbol}.
+  \item \mk{Frequency selective fading is harder to model}, because the channel response depends
+        on the exact multipath structure.
+\end{itemize}}{%
+\lead{B. By Doppler spread}
+\vspace{2pt}
+\begin{tabularx}{\linewidth}{@{}L{2.05cm}XX@{}}
+\toprule
+\hrow & \thead{Fast fading} & \thead{Slow fading} \\
+\midrule
+Doppler spread & high, $B_S < B_D$ & low, $B_S \gg B_D$ \\
+Coherence time & $T_C < T_S$ & $T_C \gg T_S$ \\
+Channel changes & \textbf{within} a symbol & over \textbf{many} symbols \\
+Relative rates & channel varies \textbf{faster} than the baseband signal & channel varies
+  \textbf{slower} than the baseband signal \\
+\bottomrule
+\end{tabularx}
+\vspace{3pt}
+\begin{itemize}
+  \item Fast / slow says \textbf{nothing} about flat / selective. \mk{The four combinations are all
+        possible}: flat slow, flat fast, frequency selective slow, frequency selective fast.
+  \item \textbf{Fast fading} arises from motion, or from motion of the surroundings, not from
+        distance.
+  \item A fast fading channel produces an \mk{irreducible BER floor}: extra transmit power does
+        not help, because the channel has already changed by the time the symbol ends.
+  \item In practice fast fading only matters for \textbf{very low data rates}.
+\end{itemize}}
+
+\hr
+
+\T{3.8 Rayleigh and Ricean fading}
+
+\Q{Rayleigh fading channel Vs Ricean fading channel, with appropriate expressions}{\m{5}\m{2}\m{2+4}}
+{\color{sub}\footnotesize \tF{5} \yr{70 Ma, 71 Ma, \textbf{72 Ash}, \textbf{73 Bh},
+\textbf{80 Ch}}}
+
+\sbsr{0.53}{%
+\lead{What these distributions describe}
+\begin{itemize}
+  \item Not \emph{when} the signal fades, but \textbf{how the received envelope is statistically
+        distributed}.
+  \item Both apply to \textbf{flat fading} channels.
+\end{itemize}
+
+\lead{Rayleigh}
+\begin{itemize}
+  \item Applies when \textbf{all multipath components have roughly equal amplitude} and there is
+        \mk{no dominant LOS component}.
+  \item Physically: mobile deep in an urban area, far from the BS, no line of sight.
+  \item The in-phase and quadrature sums are each Gaussian, so the \textbf{envelope} is Rayleigh:
+        \[ p(r) = \begin{cases}
+           \dfrac{r}{\sigma^2}\exp\!\left(-\dfrac{r^2}{2\sigma^2}\right) & 0 \le r \le \infty \\[4pt]
+           0 & r < 0 \end{cases} \]
+  \item $\sigma$ $=$ rms value of the received voltage \textbf{before} envelope detection.
+  \item $\sigma^2$ $=$ time-average power before envelope detection.
+  \item \textbf{Phase} is uniformly distributed over $0$ to $2\pi$.
+  \item Key values:
+  \begin{itemize}
+    \item mean $\;r_{\text{mean}} = \sigma\sqrt{\pi/2} = 1.2533\,\sigma$
+    \item median $\;r_{\text{median}} = 1.177\,\sigma$
+    \item variance $\;\sigma_r^2 = 0.4292\,\sigma^2$
+  \end{itemize}
+  \item \mk{Mean and median differ by only 0.55 dB}, which is why the median is used in practice.
+\end{itemize}
+\vspace{2pt}
+\figT{c3_rayleigh_pdf.png}}{%
+\lead{Ricean}
+\begin{itemize}
+  \item Applies when there \textbf{is} a \textbf{stationary, non-fading, dominant} component,
+        normally a LOS path, on top of the random multipath.
+  \item Physically: microcell, indoor pico-cell, or a mobile with clear sight of the BS.
+  \item The random components add onto a fixed phasor, so:
+        \[ p(r) = \begin{cases}
+           \dfrac{r}{\sigma^2}\exp\!\left(-\dfrac{r^2+A^2}{2\sigma^2}\right)
+             I_0\!\left(\dfrac{Ar}{\sigma^2}\right) & A \ge 0,\; r \ge 0 \\[4pt]
+           0 & r < 0 \end{cases} \]
+  \item $A$ $=$ peak amplitude of the \textbf{dominant} signal.
+  \item $I_0(\cdot)$ $=$ modified Bessel function of the first kind, zeroth order.
+  \item \textbf{Ricean $K$-factor}
+        \[ K = \frac{A^2}{2\sigma^2}, \qquad K\,[\text{dB}] = 10\log\frac{A^2}{2\sigma^2} \]
+        $=$ ratio of \textbf{deterministic power to multipath power}.
+  \item \mk{$A \rightarrow 0$, ie $K \rightarrow -\infty$ dB: Ricean degenerates into Rayleigh.}
+  \item $K \gg 1$: the distribution tends to \textbf{Gaussian} about the mean, ie almost no
+        fading.
+\end{itemize}
+\vspace{2pt}
+\figT{c3_ricean_pdf.png}
+\vspace{1pt}
+{\color{sub}\footnotesize $K = -\infty$ dB is the Rayleigh case; $K = 6$ dB shows a dominant
+component pulling the distribution towards Gaussian.}}

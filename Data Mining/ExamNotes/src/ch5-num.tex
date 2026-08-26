@@ -35,10 +35,40 @@ around 60 marks across the archive.}
 \end{itemize}
 
 \creamq{Problems 1.1 and 1.2}{\m{2+6}\m{2+8}}
-{\color{sub}\footnotesize \yr{78 Bh} and \yr{74 Ash} print the \textbf{same 6 instances}
-(A/B vs X/Y column names only). $K=2$.}
-
-\lead{Given} $p_1(1,2)$, $p_2(2.5,1)$, $p_3(3.5,1.5)$, $p_4(4,1)$, $p_5(3.5,2.5)$, $p_6(5,3)$.
+\begin{asked}{2078 Bhadra \textperiodcentered{} Q8 \textperiodcentered{} [2+6]}
+Write K-means clustering algorithm. Generate two clusters from following dataset using K-means
+clustering.
+\par\vspace{2pt}
+\begin{tabularx}{0.34\textwidth}{@{}L{2.2cm}L{1.8cm}X@{}}
+\toprule
+\hrow \thead{Instance} & \thead{A} & \thead{B} \\
+1 & 1 & 2 \\
+2 & 2.5 & 1 \\
+3 & 3.5 & 1.5 \\
+4 & 4 & 1 \\
+5 & 3.5 & 2.5 \\
+6 & 5 & 3 \\
+\bottomrule
+\end{tabularx}
+\end{asked}
+\begin{asked}{2074 Ashwin \textperiodcentered{} Q7 \textperiodcentered{} [2+8]}
+Write K-means algorithm and find clusters for following data set.
+\par\vspace{2pt}
+\begin{tabularx}{0.34\textwidth}{@{}L{2.2cm}L{1.8cm}X@{}}
+\toprule
+\hrow \thead{Instance} & \thead{X} & \thead{Y} \\
+1 & 1.0 & 2.0 \\
+2 & 2.5 & 1.0 \\
+3 & 3.5 & 1.5 \\
+4 & 4.0 & 1.0 \\
+5 & 3.5 & 2.5 \\
+6 & 5.0 & 3.0 \\
+\bottomrule
+\end{tabularx}
+\par\vspace{2pt}
+(Take $K = 2$)
+\end{asked}
+{\color{sub}\footnotesize \mk{The same 6 instances}, only the column names differ.}
 
 \lead{Seeds} Take the two \textbf{most widely separated} points, $c_1 = p_1(1,2)$ and
 $c_2 = p_6(5,3)$. \ (A standard, defensible heuristic; state it.)
@@ -94,7 +124,22 @@ centroids / converges to a local optimum'' limitation. \added
 \end{minipage}}\end{center}
 
 \creamq{Problem 1.3}{\m{4+6}}
-{\color{sub}\footnotesize \yr{75 Ash} \gap 6 rows: (1,2), (2.5,4.5), (4,6), (3.5,4), (4,5.5), (3,6). $K=2$.}
+\begin{asked}{2075 Ashwin \textperiodcentered{} Q7 \textperiodcentered{} [4+6]}
+Explain K-means clustering with limitation. Generate two clusters from following dataset using
+K-means clustering.
+\par\vspace{2pt}
+\begin{tabularx}{0.22\textwidth}{@{}L{1.8cm}X@{}}
+\toprule
+\hrow \thead{A} & \thead{B} \\
+1 & 2 \\
+2.5 & 4.5 \\
+4 & 6 \\
+3.5 & 4 \\
+4 & 5.5 \\
+3 & 6 \\
+\bottomrule
+\end{tabularx}
+\end{asked}
 \begin{itemize}
   \item Seeds: $c_1 = (1,2)$ (clearly isolated), $c_2 = (4,6)$.
   \item \textbf{Iteration 1}: $(1,2)\rightarrow$C1. All of $(2.5,4.5)$, $(4,6)$, $(3.5,4)$,
@@ -115,7 +160,25 @@ centroids / converges to a local optimum'' limitation. \added
 \end{itemize}
 
 \creamq{Problem 1.4}{\m{10}}
-{\color{sub}\footnotesize \yr{71 Shr} \gap 7 rows: (1,1), (1.5,2), (3,4), (5,7), (3.5,5), (4.5,5), (3.5,4.5). $K=2$.}
+\begin{asked}{2071 Shrawan \textperiodcentered{} Q8 \textperiodcentered{} [10]}
+Explain K-means clustering with limitation Use k-means clustering to cluster the following
+dataset.
+\par\vspace{2pt}
+\begin{tabularx}{0.22\textwidth}{@{}L{1.8cm}X@{}}
+\toprule
+\hrow \thead{A} & \thead{B} \\
+1.0 & 1.0 \\
+1.5 & 2.0 \\
+3.0 & 4.0 \\
+5.0 & 7.0 \\
+3.5 & 5.0 \\
+4.5 & 5.0 \\
+3.5 & 4.5 \\
+\bottomrule
+\end{tabularx}
+\par\vspace{2pt}
+{\color{sub}The paper prints no $K$; take $K = 2$, the value its sister questions use.}
+\end{asked}
 \begin{itemize}
   \item Seeds $c_1=(1,1)$, $c_2=(5,7)$.
   \item \textbf{Iteration 1}: $(1,1)$ and $(1.5,2)$ $\rightarrow$ C1; the rest $\rightarrow$ C2.
@@ -131,12 +194,17 @@ centroids / converges to a local optimum'' limitation. \added
 C2 $=\{(3,4),(5,7),(3.5,5),(4.5,5),(3.5,4.5)\}$ centroid $(3.9,5.1)$.
 
 \creamq{Problem 1.5}{\m{8}}
-{\color{sub}\footnotesize \yr{76 Ch} \gap 10 points in matrix $X$, $K=3$, initial centres
-red $(6.2,3.2)$, green $(6.6,3.7)$, blue $(6.5,3.0)$. Give the final centres and comment on the
-number of iterations.}
-
-\lead{Given} $p_1(5.9,3.2)$ $p_2(4.6,2.9)$ $p_3(6.2,2.8)$ $p_4(4.7,3.2)$ $p_5(5.5,4.2)$
-$p_6(5.0,3.0)$ $p_7(4.9,3.1)$ $p_8(6.7,3.1)$ $p_9(5.1,3.8)$ $p_{10}(6.0,3.0)$
+\begin{asked}{2076 Chaitra \textperiodcentered{} Q9 \textperiodcentered{} [8]}
+Given the matrix $X$ whose rows represent different data points, perform a k-means clustering
+on this dataset using the Euclidean distance as the distance function. Here $K$ is chosen as 3.
+The center of the 3 clusters are initialized as red $(6.2, 3.2)$, green $(6.6, 3.7)$ and blue
+$(6.5, 3.0)$. Provide the final cluster centers and comment on the number of iterations required
+for the clusters to converge.
+\[ X = \begin{bmatrix}
+5.9 & 3.2 \\ 4.6 & 2.9 \\ 6.2 & 2.8 \\ 4.7 & 3.2 \\ 5.5 & 4.2 \\
+5.0 & 3.0 \\ 4.9 & 3.1 \\ 6.7 & 3.1 \\ 5.1 & 3.8 \\ 6.0 & 3.0
+\end{bmatrix} \]
+\end{asked}
 
 \lead{Iteration 1} (assign to nearest of the 3 given centres)
 \begin{itemize}
@@ -175,8 +243,12 @@ blue  & $p_1, p_3, p_8, p_{10}$ & $\mathbf{(6.20,\ 3.025)}$ \\
 \end{itemize}
 
 \creamq{Problem 1.6 --- the defective question}{\m{5+3}}
-{\color{sub}\footnotesize \yr{81 Ba} \gap ``Use K-means clustering to cluster the following given data
-for K $=$ 2 with Euclidean distance matrix. List down the demerits of this algorithm.''}
+\begin{asked}{2081 Baishakh \textperiodcentered{} Q4 (b) \textperiodcentered{} [5+3]}
+Use K-means clustering to cluster the following given data for K $=$ 2 with Euclidean distance
+matrix. List down the demerits of this algorithm.
+\par\vspace{2pt}
+{\color{sub}\emph{(nothing follows on the paper --- the next line is Q5)}}
+\end{asked}
 
 \begin{center}\fbox{\begin{minipage}{0.92\textwidth}\small
 \mk{The paper prints NO data table for this question} --- it jumps straight from the sentence to Q5.
@@ -206,8 +278,27 @@ Use \textbf{Problem 1.1's} 6 points --- it is the dataset this paper's sister qu
 \end{itemize}
 
 \creamq{Problem 2.1}{\m{2+7}}
-{\color{sub}\footnotesize \yr{80 Bh} \gap 6$\times$6 distance matrix for $p_1$--$p_6$; draw the
-dendrogram. Distances are given directly, so no coordinate work. Use \textbf{single link}.}
+\begin{asked}{2080 Bhadra \textperiodcentered{} Q4 (b) \textperiodcentered{} [2+7]}
+What is hierarchical clustering? Use this clustering approach to draw dendrogram for given
+data points.
+\par\vspace{2pt}
+\begin{tabularx}{0.72\textwidth}{@{}L{1.1cm}XXXXX@{}}
+\toprule
+\hrow & \thead{$p_1$} & \thead{$p_2$} & \thead{$p_3$} & \thead{$p_4$} & \thead{$p_5$} \\
+$p_1$ & 0.00 & 0.24 & 0.22 & 0.37 & 0.34 \\
+$p_2$ & 0.24 & 0.00 & 0.15 & 0.20 & 0.14 \\
+$p_3$ & 0.22 & 0.15 & 0.00 & 0.15 & 0.28 \\
+$p_4$ & 0.37 & 0.20 & 0.15 & 0.00 & 0.29 \\
+$p_5$ & 0.34 & 0.14 & 0.28 & 0.29 & 0.00 \\
+$p_6$ & 0.23 & 0.25 & 0.11 & 0.22 & 0.39 \\
+\bottomrule
+\end{tabularx}
+\par\vspace{2pt}
+{\color{sub}The paper prints the full symmetric $6\times6$; the $p_6$ column is
+0.23, 0.25, 0.11, 0.22, 0.39, 0.00.}
+\end{asked}
+{\color{sub}\footnotesize Distances are given directly, so no coordinate work.
+The paper does not name a linkage --- use \textbf{single link} and say so.}
 
 \lead{Merge sequence}
 \begin{tabularx}{0.94\textwidth}{@{}L{1.1cm}L{2.3cm}L{1.5cm}X@{}}
@@ -228,11 +319,25 @@ dendrogram. Distances are given directly, so no coordinate work. Use \textbf{sin
 \end{itemize}
 
 \creamq{Problem 2.2}{\m{8}}
-{\color{sub}\footnotesize \yr{80 Ba} \gap 6 points given as \emph{coordinates}; use
-\textbf{complete linkage} and draw the dendrogram.}
+\begin{asked}{2080 Baishakh \textperiodcentered{} Q7 \textperiodcentered{} [8]}
+Cluster the following samples based on complete-linkage algorithm and draw the dendrogram.
+Using Euclidean distance.
+\par\vspace{2pt}
+\begin{tabularx}{0.48\textwidth}{@{}L{1.8cm}L{3.0cm}X@{}}
+\toprule
+\hrow \thead{Point} & \thead{x Coordinate} & \thead{y Coordinate} \\
+p1 & 0.40 & 0.53 \\
+p2 & 0.22 & 0.38 \\
+p3 & 0.35 & 0.32 \\
+p4 & 0.26 & 0.19 \\
+p5 & 0.08 & 0.41 \\
+p6 & 0.45 & 0.30 \\
+\bottomrule
+\end{tabularx}
+\end{asked}
 
 \lead{Step 1: Euclidean distance matrix} $p_1(0.40,0.53)$ $p_2(0.22,0.38)$ $p_3(0.35,0.32)$
-$p_4(0.26,0.19)$ $p_5(0.08,0.41)$ $p_6(0.45,0.30)$
+$p_4(0.26,0.19)$ $p_5(0.08,0.41)$ $p_6(0.45,0.30)$\par
 \begin{tabularx}{0.80\textwidth}{@{}L{1.1cm}XXXXX@{}}
 \toprule
 \hrow & \thead{$p_1$} & \thead{$p_2$} & \thead{$p_3$} & \thead{$p_4$} & \thead{$p_5$} \\
@@ -259,9 +364,27 @@ $p_6$ & 0.235 & 0.244 & \textbf{0.102} & 0.219 & 0.386 \\
 $\{p_1,p_2,p_5\}$ and $\{p_3,p_4,p_6\}$.
 
 \creamq{Problem 2.3}{\m{4+4}}
-{\color{sub}\footnotesize \yr{76 Ch} \gap Same 6-object distance matrix (A--F), asked for
-\textbf{both} single-link and complete-link dendrograms. \mk{This is the ideal question for showing
-you understand the difference.}}
+\begin{asked}{2076 Chaitra \textperiodcentered{} Q10 \textperiodcentered{} [4+4]}
+The table below is a distance matrix for six objects:
+\par\vspace{2pt}
+\begin{tabularx}{0.70\textwidth}{@{}L{1.0cm}XXXXXX@{}}
+\toprule
+\hrow & \thead{A} & \thead{B} & \thead{C} & \thead{D} & \thead{E} & \thead{F} \\
+A & 0    &      &      &      &      &   \\
+B & 0.12 & 0    &      &      &      &   \\
+C & 0.51 & 0.25 & 0    &      &      &   \\
+D & 0.84 & 0.16 & 0.14 & 0    &      &   \\
+E & 0.28 & 0.77 & 0.70 & 0.45 & 0    &   \\
+F & 0.34 & 0.61 & 0.93 & 0.20 & 0.67 & 0 \\
+\bottomrule
+\end{tabularx}
+\begin{enumerate}[label=\alph*), leftmargin=1.6em]
+  \item Show the final result of hierarchical clustering with single-link by drawing a dendrogram.
+  \item Show the final result of hierarchical clustering with complete-link by drawing a dendrogram.
+\end{enumerate}
+\end{asked}
+{\color{sub}\footnotesize \mk{The ideal question for showing you understand the difference} ---
+one matrix, both linkages.}
 
 \sbs{%
 \lead{(a) Single link (MIN)}
@@ -318,13 +441,16 @@ while complete link produces two clean balanced groups. \\
 \end{enumerate}
 
 \creamq{Practice}{}
-{\color{sub}\footnotesize No PYQ sets a DBSCAN numerical, but the algorithm is asked in 8 papers and
-a worked classification makes the definitions concrete. \added}
+\begin{asked}[PROBLEM]{not a PYQ \textperiodcentered{} written to fill the gap \added}
+Classify each of the points $A(1,1)$, $B(1,2)$, $C(2,1)$, $D(8,8)$, $E(8,9)$, $F(25,25)$ as a
+\textbf{core}, \textbf{border} or \textbf{noise} point under DBSCAN with $\varepsilon = 2$ and
+MinPts $= 3$ (Euclidean distance, the point itself counted in its own neighbourhood). Then give
+the clusters DBSCAN produces.
+\end{asked}
+{\color{sub}\footnotesize No PYQ sets a DBSCAN numerical, but the algorithm is asked in 8 papers
+and a worked classification makes the definitions concrete. \added}
 
-\lead{Problem} Points $A(1,1)$, $B(1,2)$, $C(2,1)$, $D(8,8)$, $E(8,9)$, $F(25,25)$.
-Take $\varepsilon = 2$, MinPts $= 3$.
-
-\lead{Step 1: neighbourhood counts} (including the point itself)
+\lead{Step 1: neighbourhood counts} (including the point itself)\par
 \begin{tabularx}{0.86\textwidth}{@{}L{1.2cm}XL{1.6cm}L{2.2cm}@{}}
 \toprule
 \hrow \thead{Point} & \thead{Points within $\varepsilon=2$} & \thead{Count} & \thead{Type} \\

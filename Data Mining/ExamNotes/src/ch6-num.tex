@@ -33,9 +33,11 @@ plus 2 practice problems covering the patterns a future numerical would most lik
 \end{itemize}
 
 \creamq{Problem 1.1}{\m{3}}
-{\color{sub}\footnotesize \yr{76 Ch} \gap ``If the probability that a normal object is classified as
-an anomaly is 0.01 and the probability that an anomalous object is classified as anomalous is 0.99,
-then what is the false alarm rate and detection rate if 99\% of the objects are normal?''}
+\begin{asked}{2076 Chaitra \textperiodcentered{} Q11 (b) \textperiodcentered{} [3]}
+If the probability that a normal object is classified as an anomaly is 0.01 and the probability
+that an anomalous object is classified as anomalous is 0.99, then what is the false alarm rate
+and detection rate if 99\% of the objects are normal?
+\end{asked}
 
 \lead{Given}
 \begin{itemize}
@@ -88,8 +90,13 @@ Answer both readings: state the two rates, then compute $P(I|A)$ and name the fa
 \end{minipage}}\end{center}
 
 \creamq{Practice A --- rarer anomalies}{}
-{\color{sub}\footnotesize Same detector, but anomalies are 1 in 1,000 instead of 1 in 100.
-Shows how fast the Bayesian rate collapses. \added}
+\begin{asked}[PROBLEM]{not a PYQ \textperiodcentered{} same detector, rarer anomalies \added}
+The detector of Problem 1.1 is unchanged: a normal object is classified as an anomaly with
+probability 0.01, and an anomalous object is classified as anomalous with probability 0.99.
+Now only \textbf{1 object in 1{,}000} is anomalous instead of 1 in 100. Find the detection rate,
+the false alarm rate, and the probability that an object raising an alarm really is an anomaly.
+\end{asked}
+{\color{sub}\footnotesize Shows how fast the Bayesian rate collapses. \added}
 
 \begin{itemize}
   \item On 100,000 objects: 100 anomalous, 99,900 normal.
@@ -116,11 +123,13 @@ Shows how fast the Bayesian rate collapses. \added}
 \end{itemize}
 
 \creamq{Practice B}{}
+\begin{asked}[PROBLEM]{not a PYQ \textperiodcentered{} written to fill the gap \added}
+A dataset contains the points $P_1(1,1)$, $P_2(1,2)$, $P_3(2,1)$, $P_4(2,2)$ and $P_5(8,8)$.
+Taking $r = 2$ and $\pi = 0.4$, and using Euclidean distance, determine which points are
+DB$(2,\,0.4)$-outliers.
+\end{asked}
 {\color{sub}\footnotesize No PYQ has set this yet, but it is the only computable form of the
 distance-based question that is asked in 6 papers, so it is worth one run-through. \added}
-
-\lead{Problem} Points $P_1(1,1)$, $P_2(1,2)$, $P_3(2,1)$, $P_4(2,2)$, $P_5(8,8)$.
-Take $r = 2$, $\pi = 0.4$. Which points are DB$(2, 0.4)$-outliers? Use Euclidean distance.
 
 \lead{Step 1: distance matrix}
 \begin{tabularx}{0.72\textwidth}{@{}L{1.2cm}XXXXX@{}}

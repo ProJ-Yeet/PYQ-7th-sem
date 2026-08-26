@@ -6,20 +6,28 @@ New PYQ/
 Old Sorted PYQ/
 Prajit Notes/
 Data Mining/Notes/
+Wireless/Notes/
 BEI IV-I(1).pdf
 
 # Extracted full text of copyrighted textbooks and lecture slides.
 # Kept locally as a build input; never published.
 Data Mining/ocr/notes_text/
+Data Mining/ocr/pc_text/
+Wireless/ocr/notes_text/
+Wireless/ocr/rappaport/
 
 # Internal working notes, not for publication.
 handoff.txt
 handoff-current.txt
 Data Mining/NOTES-BUILD-PROGRESS.md
+Wireless/NOTES-BUILD-PROGRESS.md
 New Text Document.txt
 
 # Vendored binaries — fetch the toolchain instead of committing it.
 *.exe
+
+# Python bytecode cache.
+__pycache__/
 
 # LaTeX build artefacts
 *.aux
