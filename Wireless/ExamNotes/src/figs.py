@@ -30,6 +30,8 @@ SST = os.path.join(SRC, "Notes", "Notes by SST Sir")
 BOOK = os.path.join(SRC, "Books", [f for f in os.listdir(os.path.join(SRC, "Books"))
                                    if f.endswith(".pdf")][0])
 
+C1_SST = os.path.join(SST, "Chapter 1 Introduction (2).pdf")
+C1_AS = os.path.join(AS, "Chapter 1(b).pdf")
 C2_SST = os.path.join(SST, "Chapter 2 Cellular Systems--Cellular Concepts.pdf")
 C2_SSD = os.path.join(SSD, "Chapter 2 Cellular Systems--Cellular Concepts.pdf")
 C3_SST = os.path.join(SST, "Chapter 3 Radio Propagation.pdf")
@@ -53,6 +55,14 @@ def add(name, pdf, page, box=None, pick=0, dpi=300, pad=0.004):
     JOBS.append(dict(name=name, pdf=pdf, page=page, box=box, pick=pick,
                      dpi=dpi, pad=pad))
 
+
+# ------------------------------------------------------------------ chapter 1
+add("c1_std_evolution.png", C1_SST, 34)
+add("c1_fdd.png", C1_AS, 10)
+add("c1_tdd.png", C1_AS, 11)
+add("c1_basic_cellular.png", C1_AS, 12)
+# Rappaport 1e Fig 1.1 - market penetration of mobile telephony vs other inventions
+add("c1_market_growth.png", BOOK, 3, box=(0.10, 0.16, 0.93, 0.585))
 
 # ------------------------------------------------------------------ chapter 2
 add("c2_reuse_layout.png", C2_SST, 8)

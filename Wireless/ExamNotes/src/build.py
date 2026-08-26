@@ -21,6 +21,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.dirname(HERE)
 
 TARGETS = {
+    "ch1":     ("ch1-standalone", "Ch1 - Introduction.pdf"),
     "ch2":     ("ch2-standalone", "Ch2 - Cellular Mobile Communication Concepts.pdf"),
     "ch2-num": ("ch2-num-standalone",
                 "Ch2 - Cellular Mobile Communication Concepts - Numerical Problems & Solutions.pdf"),

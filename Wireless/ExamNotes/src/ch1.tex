@@ -1,0 +1,443 @@
+%=======================================================================
+%  CHAPTER 1 — INTRODUCTION  (2 hrs)
+%=======================================================================
+\section{Introduction}
+
+{\color{sub}\footnotesize 2 hrs \gap$\cdot$\gap asked in \mk{all 22 papers}
+\gap$\cdot$\gap 3 syllabus sub-topics \gap$\cdot$\gap no numerical component.}
+
+\lead{Read this first:}
+\begin{itemize}
+  \item Shortest chapter in the syllabus, but \mk{every single paper opens with it}, usually
+        as Q1 for 4 to 6 marks. Cheapest marks in the subject.
+  \item Only \textbf{two} questions are ever asked, in rotation:
+  \begin{itemize}
+    \item \textbf{Narrate} the evolution (1G $\rightarrow$ 5G) \tS{10},
+    \item \textbf{Compare} the generations in terms of technology advancement \tS{9}.
+  \end{itemize}
+  \item Both are answered from \textbf{one} table (\S1.3). Learn that table and the chapter
+        is finished.
+  \item Two small riders recur: \textbf{forward and reverse channel} \tF{4} and
+        \textbf{trends beyond 3G / 5G} \tF{4}. 2 marks each, one line each.
+  \item \mk{Do not write history as prose.} The examiner wants generation, access
+        technique, modulation, data rate, example system. Dates alone score badly.
+\end{itemize}
+
+\hr
+
+\T{1.1 Evolution of mobile radio communications}
+
+\Q{Briefly explain the evolution of wireless / mobile communications}{\m{4}\m{5}\m{6}}
+{\color{sub}\footnotesize \tS{10} \yr{70 Ma \m{6}, 72 Ma \m{6}, \textbf{71 Bh} \m{4},
+74 Ma \m{4}, \textbf{75 Bh} \m{4}, 71 Ma \m{4}, \textbf{73 Bh} \m{4}, \textbf{76 Bh} \m{6},
+\textbf{78 Ch} \m{4}, \textbf{\texttt{81 Bh}} \m{2+4}} \gap$\cdot$\gap
+\mk{wording changes, the answer does not}}
+
+\sbsr{0.56}{%
+\lead{Milestones, before cellular}
+\begin{itemize}
+  \item \textbf{1877}: first wire-line telephone in commercial use.
+  \item \textbf{1897}: Marconi demonstrates radio to a tug 18 miles at sea.
+  \item Until \textbf{1934}: mobile radio $=$ AM, used only by police and public bodies.
+  \item \textbf{1935}: Armstrong invents \textbf{FM} $\rightarrow$ becomes the mobile
+        standard for the next 40 years.
+  \item \textbf{1946}: first public mobile telephone service, 25 US cities.
+  \begin{itemize}
+    \item Single high-power transmitter, tall tower, range over 50 km.
+    \item Half-duplex push-to-talk, 120 kHz of RF for 3 kHz of speech.
+  \end{itemize}
+  \item \textbf{1950}: US regulator doubles the channels, no new spectrum. Bandwidth per channel
+        halved to 60 kHz, later 30 kHz.
+  \item \textbf{Late 1950s / 60s}: \textbf{IMTS} (Improved Mobile Telephone Service) adds
+        full duplex, auto-dial, auto-trunking.
+\end{itemize}}{%
+\lead{Milestones, cellular era}
+\begin{itemize}
+  \item \textbf{1960s}: AT\&T Bell Labs develop cellular radiotelephony theory.
+  \item \textbf{1968}: AT\&T proposes a cellular system to the US regulator.
+  \item \textbf{1979}: \textbf{NTT}, Japan. \mk{World's first commercial cellular
+        system.}
+  \item \textbf{1983}: \textbf{AMPS} starts in the USA. The regulator allocates 40 MHz in the
+        800 MHz band $=$ 666 duplex channels of 30 kHz each way.
+  \item \textbf{1990 onwards}: 2G digital systems, GSM and DCS 1800.
+  \item \textbf{1995}: 3G standardisation starts, IMT-2000 / UMTS.
+  \item \textbf{2000s}: 3G deployed, then 4G LTE.
+  \item \textbf{2020}: 5G commercial.
+\end{itemize}}
+
+\vspace{2pt}
+\sbsr{0.56}{%
+\lead{\mk{The bottleneck that forced the cellular idea}}
+\begin{itemize}
+  \item Bell Mobile Phone, New York, \textbf{1976}:
+  \begin{itemize}
+    \item market of 10{,}000{,}000 people, \textbf{12 channels}, \textbf{543 paying
+          customers}, waiting list over \textbf{3{,}700}.
+  \end{itemize}
+  \item Spectrum is fixed by the regulator $\rightarrow$ capacity could not grow by adding
+        transmitters.
+  \item \mk{Only fix left: reuse the same frequencies inside the same city.} That is
+        the cellular concept (Ch 2).
+\end{itemize}}{%
+\lead{Worldwide market penetration +Fig}
+\begin{itemize}
+  \item Mobile telephony was introduced in \textbf{1946} but sat below 0.1\,\% penetration
+        for \textbf{35 years}, until cellular arrived.
+  \item Once cellular started it grew \textbf{faster than any earlier consumer technology}:
+        US cellular users 25{,}000 (1984) $\rightarrow$ 16 million (1994), growth over
+        50\,\% per year.
+  \item \mk{This is the point of the figure}: the curve is flat while the technology is
+        pre-cellular, then turns almost vertical.
+\end{itemize}}
+
+\vspace{2pt}
+\sbsr{0.56}{%
+\figT{c1_market_growth.png}
+\vspace{1pt}
+{\color{sub}\footnotesize Growth of mobile telephony against other consumer technologies.
+Note the 35-year flat start. \yr{Rappaport Fig 1.1}}}{%
+\lead{Answer skeleton \m{4} \m{6}}
+\begin{enumerate}
+  \item \textbf{Pre-cellular era} (1946--1979): one high-power transmitter, no reuse,
+        a dozen channels per city $\rightarrow$ blocked calls, waiting lists.
+  \item \textbf{Cellular idea} (1968--1979): many low-power cells $+$ frequency reuse
+        $\rightarrow$ capacity grows w/o new spectrum.
+  \item \textbf{1G} (1983): analog, FDMA/FDD, AMPS.
+  \item \textbf{2G} (1990s): digital, TDMA or CDMA, GSM / IS-95.
+  \item \textbf{2.5G}: packet data bolted on, GPRS / EDGE.
+  \item \textbf{3G} (2000s): IP + broadband, W-CDMA / cdma2000.
+  \item \textbf{4G} (2010s): all-IP, OFDMA + MIMO, LTE.
+  \item \textbf{5G} (2020): mmWave, massive MIMO, IoT.
+\end{enumerate}
+{\color{sub}\footnotesize For a 6-mark answer add one line of \emph{why} each step
+happened. \mk{The examiner is looking for the driver, not just the date.}}}
+
+\hr
+
+\T{1.2 Simplex, duplex, FDD and TDD}
+
+\Q{Define forward and reverse channel}{\m{2}}
+{\color{sub}\footnotesize \tF{4} \yr{\textbf{\texttt{79 Bh}}, \textbf{79 Ch},
+\textbf{\texttt{80 Bh}}, \textbf{80 Ch}} \gap$\cdot$\gap
+always 2 marks, always paired with a 5G part}
+
+\Q{What do you mean by duplexing? Explain its different types}{\m{2+4}}
+{\color{sub}\footnotesize \tP{1} \yr{\texttt{81 Ba}}}
+
+\sbsr{0.54}{%
+\lead{Three transmission modes}
+\begin{itemize}
+  \item \textbf{Simplex}: one direction only. Eg paging, broadcast radio.
+  \item \textbf{Half duplex}: both directions, \textbf{not at once}. One radio channel,
+        push-to-talk. Eg walkie-talkie.
+  \item \textbf{Full duplex}: both directions \textbf{simultaneously}. Needs two channels,
+        or one channel split in time.
+\end{itemize}
+
+\lead{Duplexing $=$ how full duplex is achieved}
+\begin{itemize}
+  \item \textbf{FDD}, frequency division duplexing:
+  \begin{itemize}
+    \item Two \textbf{separate frequencies}, one per direction.
+    \item Separated by a \textbf{frequency gap} (guard band) so the handset's own
+          transmitter does not swamp its receiver.
+    \item Eg AMPS and GSM: forward and reverse bands 45 MHz apart.
+    \item Needs a \textbf{duplexer} (costly RF filter) in every handset.
+  \end{itemize}
+  \item \textbf{TDD}, time division duplexing:
+  \begin{itemize}
+    \item \textbf{One frequency}, shared in \textbf{time}. Part of each frame carries
+          BS $\rightarrow$ MS, the rest MS $\rightarrow$ BS.
+    \item No duplexer needed $\rightarrow$ cheaper, smaller handset.
+    \item \mk{Only possible with digital transmission}, and only over short ranges,
+          because propagation delay eats the guard time.
+    \item Sensitive to timing. Eg DECT cordless, WiMAX, 5G NR.
+  \end{itemize}
+\end{itemize}
+
+\lead{Forward and reverse channel \mk{(the 2-mark definition)}}
+\begin{itemize}
+  \item \textbf{Forward channel} $=$ \textbf{downlink} $=$ base station $\rightarrow$ mobile.
+  \item \textbf{Reverse channel} $=$ \textbf{uplink} $=$ mobile $\rightarrow$ base station.
+  \item The air interface defines \textbf{four} physical channels, not two:
+  \begin{itemize}
+    \item forward voice / data channel (FVC), reverse voice / data channel (RVC),
+    \item forward control channel (FCC), reverse control channel (RCC).
+  \end{itemize}
+  \item Control channels carry setup, paging and service requests. About \textbf{5\,\%}
+        of the total channels.
+  \item \mk{Reverse link is the harder one to design}: the handset has a small battery
+        and a poor antenna, so the reverse link limits cell radius (see the Ch 3 link
+        budget numericals).
+\end{itemize}}{%
+\figT{c1_fdd.png}
+\vspace{2pt}
+{\color{sub}\footnotesize \textbf{FDD}: two frequencies, permanent guard gap.}
+\vspace{4pt}
+\figT{c1_tdd.png}
+\vspace{2pt}
+{\color{sub}\footnotesize \textbf{TDD}: one frequency, direction toggled in time.}
+\vspace{4pt}
+\figT{c1_basic_cellular.png}
+\vspace{2pt}
+{\color{sub}\footnotesize A basic cellular system. Every BS reaches the MSC, and the MSC
+reaches the PSTN.}}
+
+\hr
+
+\T{1.3 Generations of cellular radio: 1G to 5G}
+
+\Q{Compare the generations of mobile communication standards in terms of technology
+advancement}{\m{4}\m{5}\m{6}}
+{\color{sub}\footnotesize \tS{9} \yr{\textbf{72 Ash} \m{4}, \textbf{75 Bh} \m{4},
+\textbf{74 Bh} \m{6}, \texttt{80 Ba}, \texttt{81 Ba} \m{4}, \textbf{\texttt{80 Bh}} \m{4},
+\textbf{70 Bh} \m{6}, \textbf{77 Ch} \m{5}, 73 Ma \m{4}} \gap$\cdot$\gap
+\mk{this one table answers every variant, 1G Vs 2G, 3G Vs 4G, 4G Vs 5G}}
+
+\vspace{2pt}
+\begin{tabularx}{\textwidth}{@{}L{1.5cm}L{1.9cm}L{2.4cm}L{2.3cm}L{2.4cm}X@{}}
+\toprule
+\hrow \thead{Gen} & \thead{Era} & \thead{Signal + access} & \thead{Modulation} &
+\thead{Peak data rate} & \thead{Example systems} \\
+\midrule
+\textbf{1G} & 1983 & Analog, FDMA / FDD & FM & voice only & AMPS, ETACS, NMT-450, NTT \\
+\textbf{2G} & 1991 & Digital, TDMA / FDD or CDMA / FDD & GMSK, QPSK &
+  9.6 to 14.4 kbps & GSM, IS-136 (D-AMPS), PDC, IS-95 (cdmaOne) \\
+\textbf{2.5G} & 1999 & Digital, packet data added & GMSK, 8-PSK &
+  57.6 to 384 kbps & HSCSD, GPRS, EDGE, IS-95B \\
+\textbf{3G} & 2001 & Digital, W-CDMA / CDMA & QPSK, 16-QAM &
+  144 kbps to 2 Mbps & UMTS (W-CDMA), cdma2000 1xRTT / 1xEV-DO \\
+\textbf{4G} & 2010 & All-IP, OFDMA $+$ MIMO & up to 64-QAM &
+  100 Mbps mobile, 1 Gbps fixed & LTE, LTE-A, WiMAX \\
+\textbf{5G} & 2020 & All-IP, OFDMA $+$ massive MIMO, mmWave & up to 256-QAM &
+  1 to 20 Gbps & 5G NR \\
+\bottomrule
+\end{tabularx}
+{\color{sub}\footnotesize 3G rates are the IMT-2000 targets: 144 kbps vehicular,
+384 kbps pedestrian, 2 Mbps indoor. 4G rates are the IMT-Advanced targets. \added}
+
+\vspace{3pt}
+\sbsr{0.44}{%
+\figT{c1_std_evolution.png}
+\vspace{2pt}
+{\color{sub}\footnotesize The two upgrade paths. \textbf{Top}: GSM $\rightarrow$ GPRS
+$\rightarrow$ EDGE $\rightarrow$ W-CDMA $\rightarrow$ HSPA $\rightarrow$ LTE.
+\textbf{Bottom}: IS-95A $\rightarrow$ IS-95B $\rightarrow$ cdma2000 1x $\rightarrow$
+EV-DO $\rightarrow$ LTE. \mk{Both converge on LTE}, which is why LTE won.}}{%
+\lead{2.5G protocols, with their rates}
+\begin{itemize}
+  \item \textbf{HSCSD} (TDMA path): 57.6 kbps. Still circuit switched, just more timeslots.
+  \item \textbf{GPRS} (TDMA path): 171.2 kbps. First packet-switched service.
+  \item \textbf{EDGE} (TDMA path): 384 kbps. Same slots, 8-PSK instead of GMSK.
+  \item \textbf{IS-95B} (CDMA path): 64 kbps.
+\end{itemize}
+
+\lead{3G family, with their rates}
+\begin{itemize}
+  \item \textbf{W-CDMA / UMTS}: 2.048 Mbps. Evolution of GSM, IS-136 and PDC.
+  \item \textbf{cdma2000 1xRTT}: 307 kbps. Evolution of IS-95.
+  \item \textbf{cdma2000 1xEV-DO}: over 2.4 Mbps, data optimised.
+  \item \textbf{cdma2000 1xEV-DV}: 144 kbps, data $+$ voice.
+\end{itemize}}
+
+\vspace{2pt}
+\sbs{%
+\lead{What actually changed: 1G to 3G \mk{(write this, not the dates)}}
+\begin{itemize}
+  \item \textbf{1G $\rightarrow$ 2G}: \textbf{analog $\rightarrow$ digital}.
+  \begin{itemize}
+    \item Digital speech coding $\rightarrow$ more users in the same band.
+    \item Error control coding $\rightarrow$ works at lower SIR $\rightarrow$ smaller $N$.
+    \item Encryption and authentication become possible. 1G had neither.
+    \item SMS and low-rate data appear.
+  \end{itemize}
+  \item \textbf{2G $\rightarrow$ 2.5G}: \textbf{circuit $\rightarrow$ packet}.
+  \begin{itemize}
+    \item 2G was designed before the web $\rightarrow$ data only over a modem, 9.6 kbps.
+    \item GPRS adds a packet core, user pays per byte not per minute.
+    \item \mk{No new radio spectrum is needed}, only new protocols $\rightarrow$ cheap
+          upgrade.
+  \end{itemize}
+  \item \textbf{2.5G $\rightarrow$ 3G}: \textbf{narrowband $\rightarrow$ wideband}.
+  \begin{itemize}
+    \item 5 MHz W-CDMA carrier instead of 200 kHz $\rightarrow$ Mbps rates.
+    \item Simultaneous voice $+$ data, video calling, multimedia.
+    \item Soft handoff and RAKE reception become standard (Ch 5).
+  \end{itemize}
+\end{itemize}}{%
+\lead{What actually changed: 3G to 5G}
+\begin{itemize}
+  \item \textbf{3G $\rightarrow$ 4G}: \textbf{all-IP and OFDM}.
+  \begin{itemize}
+    \item Circuit-switched core removed entirely, voice carried over IP.
+    \item OFDMA $\rightarrow$ immune to frequency-selective fading w/o a complex
+          equalizer (Ch 4, Ch 5).
+    \item MIMO $\rightarrow$ spatial multiplexing $\rightarrow$ capacity rises w/o
+          more spectrum.
+    \item Scalable bandwidth 1.4 to 20 MHz, and much lower latency.
+  \end{itemize}
+  \item \textbf{4G $\rightarrow$ 5G}: \textbf{one service $\rightarrow$ three}.
+  \begin{itemize}
+    \item eMBB (fast broadband), URLLC (1 ms latency), mMTC (a million devices per km$^2$).
+    \item mmWave spectrum, massive MIMO, beamforming, network slicing.
+  \end{itemize}
+\end{itemize}}
+
+\hr
+
+\T{1.4 Trends beyond 3G, and 5G}
+
+\Q{Discuss the basic trends in wireless communication beyond 3G, focusing on the key
+technological changes}{\m{4}}
+{\color{sub}\footnotesize \tF{4} \yr{\textbf{\texttt{82 Bh}} \m{4},
+\textbf{\texttt{79 Bh}} \m{2}, \textbf{79 Ch} \m{2}, \textbf{80 Ch} \m{2}}
+\gap$\cdot$\gap 79 Bh / 79 Ch / 80 Ch ask it as ``how is 5G different from 4G''}
+
+\sbs{%
+\lead{The four enabling technologies of 4G}
+\begin{itemize}
+  \item \textbf{OFDM / OFDMA}: splits a wideband channel into many narrow flat-fading
+        sub-carriers $\rightarrow$ \mk{removes the need for a complex time-domain
+        equalizer} (Ch 4).
+  \item \textbf{MIMO}: multiple antennas both ends $\rightarrow$ parallel spatial streams
+        $\rightarrow$ capacity multiplies w/o extra spectrum.
+  \item \textbf{Adaptive modulation and coding}: the modulation order follows the
+        instantaneous SNR $\rightarrow$ near-Shannon efficiency.
+  \item \textbf{All-IP flat architecture}: no circuit core, fewer nodes
+        $\rightarrow$ lower latency, cheaper backhaul.
+\end{itemize}}{%
+\lead{5G: what is genuinely new \added}
+\begin{itemize}
+  \item \textbf{Millimetre wave} (24 to 100 GHz): huge bandwidth available.
+  \begin{itemize}
+    \item Cost: severe path loss and blockage $\rightarrow$ forces very small cells.
+  \end{itemize}
+  \item \textbf{Massive MIMO}: 64 to 256 antenna elements at the BS.
+  \begin{itemize}
+    \item Narrow beams steered per user $\rightarrow$ interference falls, range recovers.
+  \end{itemize}
+  \item \textbf{NOMA}, non-orthogonal multiple access: several users share one resource
+        block at different power levels, separated by successive interference
+        cancellation (Ch 7).
+  \item \textbf{D2D}, device-to-device: handsets talk directly, bypassing the BS.
+  \item \textbf{Dense heterogeneous networks}: macro, micro, pico and femto cells
+        overlaid (Ch 2).
+  \item \textbf{C-RAN}, cloud radio access network: baseband processing centralised,
+        only the radio head stays at the mast.
+  \item \textbf{Network slicing}: one physical network, several virtual networks with
+        different latency and reliability guarantees.
+  \item \textbf{IoT} / mMTC: up to $10^6$ low-power devices per km$^2$.
+\end{itemize}}
+
+\vspace{2pt}
+\sbs{%
+\lead{Other 4G features worth listing}
+\begin{itemize}
+  \item Interactive multimedia, streaming video, VoIP.
+  \item Global roaming and service portability.
+  \item High capacity at \textbf{low cost per bit}.
+  \item Ad hoc and multi-hop relaying.
+  \item Better spectral efficiency (bps/Hz) than any earlier generation.
+\end{itemize}}{%
+\lead{The 3 service classes \mk{(the cleanest way to say 5G Vs 4G)}}
+\begin{itemize}
+  \item \textbf{eMBB}: enhanced mobile broadband, 1 to 20 Gbps.
+  \item \textbf{URLLC}: ultra-reliable low latency, 1 ms, for vehicles and industry.
+  \item \textbf{mMTC}: massive machine type communication, for IoT.
+  \item \mk{4G offered one pipe. 5G offers three, tuned differently.}
+\end{itemize}}
+
+\hr
+
+\T{1.5 Comparison of available wireless systems}
+
+\Q{Compare the available wireless systems and their application areas}{\m{4}}
+{\color{sub}\footnotesize \pill{gdL}{gd}{syllabus, no direct PYQ} \gap$\cdot$\gap
+supports the ``examples'' half of the syllabus, and the cordless / cellular contrast
+turns up inside handoff answers (Ch 2)}
+
+\vspace{2pt}
+\begin{tabularx}{\textwidth}{@{}L{2.5cm}L{2.0cm}L{1.9cm}L{2.0cm}L{2.0cm}X@{}}
+\toprule
+\hrow \thead{System} & \thead{Mobility} & \thead{Coverage} & \thead{TX power} &
+\thead{Handoff} & \thead{Examples} \\
+\midrule
+\textbf{Cordless phone} & very low & tens of m & mW & \mk{none} & CT2, DECT \\
+\textbf{Cellular} & high, vehicular & km & up to 2 W & \mk{yes, and roaming} &
+  AMPS, GSM, IS-95, LTE \\
+\textbf{Paging} & high & wide area & receive only & none & POCSAG, FLEX \\
+\textbf{Cordless / PCS hybrid} & pedestrian & 100s of m & low & limited & PHS, PACS \\
+\textbf{WLAN} & pedestrian, indoor & 30 to 100 m & 100 mW & within an ESS &
+  IEEE 802.11 (WiFi) \\
+\textbf{WMAN} & fixed to portable & km & high & yes & IEEE 802.16 (WiMAX) \\
+\textbf{Satellite} & global & continental & high & spot-beam handover & Iridium, VSAT \\
+\bottomrule
+\end{tabularx}
+
+\vspace{3pt}
+\sbs{%
+\lead{Cordless Vs cellular \mk{(the contrast that is examinable)}}
+\begin{itemize}
+  \item \textbf{Cordless}
+  \begin{itemize}
+    \item Low mobility, low range, low speed.
+    \item Low power $\rightarrow$ long battery life, cheap handset.
+    \item \mk{No handoff between base units}, and no roaming.
+    \item High circuit quality, because the link is short.
+  \end{itemize}
+  \item \textbf{Cellular}
+  \begin{itemize}
+    \item High mobility, wide area, vehicular speed.
+    \item Handoff and roaming supported $\rightarrow$ complex switching (MSC).
+    \item Higher transmit power ($\sim$2 W at the handset) $\rightarrow$ heavier battery.
+    \item Integrated with the PSTN.
+  \end{itemize}
+\end{itemize}}{%
+\lead{Personal wireless communication (PCS / PCN)}
+\begin{itemize}
+  \item \textbf{PCS} $=$ personal communication \emph{services}: the service concept,
+        one personal number reaching a user anywhere.
+  \item \textbf{PCN} $=$ personal communication \emph{network}: the network that
+        delivers PCS.
+  \item In the US, ``PCS'' also names the \textbf{1900 MHz} band auctioned in 1994.
+  \item Design aim: pocket handset, low power, small cells, indoor + outdoor coverage.
+  \item \mk{PCS is a marketing / regulatory term, not a radio technology.} Say that, then
+        describe whichever air interface the question names.
+\end{itemize}
+
+\lead{Where the spectrum sits \added}
+\begin{itemize}
+  \item \textbf{VLF / LF}: submarine, ground wave.
+  \item \textbf{MF / HF}: AM, short wave, ionospheric reflection.
+  \item \textbf{VHF / UHF}: FM radio, TV, \mk{all cellular}. Small antennas, reliable
+        mobile links.
+  \item \textbf{SHF}: microwave links 2 to 40 GHz, satellite C / Ku / Ka bands.
+  \item \textbf{EHF}: mmWave, 5G.
+  \item All of it is licensed and regulated to prevent interference (Ch 8).
+\end{itemize}}
+
+\hr
+
+\T{1.6 Last-minute recall for this chapter}
+
+\sbs{%
+\lead{Must memorise}
+\begin{itemize}
+  \item \textbf{1979 NTT} first cellular, \textbf{1983 AMPS} in the USA.
+  \item 1G analog FDMA/FDD FM, 2G digital TDMA or CDMA, 3G W-CDMA, 4G OFDMA + MIMO,
+        5G mmWave + massive MIMO.
+  \item \textbf{GPRS 171.2 kbps}, \textbf{EDGE 384 kbps}, \textbf{W-CDMA 2 Mbps},
+        \textbf{LTE 100 Mbps / 1 Gbps}.
+  \item Forward $=$ downlink $=$ BS $\rightarrow$ MS. Reverse $=$ uplink $=$ MS
+        $\rightarrow$ BS.
+  \item FDD $=$ two frequencies. TDD $=$ one frequency, two time slots.
+\end{itemize}}{%
+\lead{Most repeated, in order}
+\begin{enumerate}
+  \item Evolution 1G $\rightarrow$ 5G \tS{10}
+  \item Compare generations, technology advancement \tS{9}
+  \item Forward and reverse channel \tF{4}
+  \item Trends beyond 3G, 5G Vs 4G \tF{4}
+  \item Duplexing and its types \tP{1}
+\end{enumerate}
+{\color{sub}\footnotesize \mk{Q1 of the paper is almost always one of the first two.}}}
