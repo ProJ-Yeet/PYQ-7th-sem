@@ -425,15 +425,16 @@ def ch3():
         lam24 / (4 * math.pi) * 10 ** (lfmax / 20) / 1000, 3.71, tol=0.02)
 
     # --- P17.1  70 Ma PDP ---------------------------------------------
-    s, mean, m2, rms = pdp([-10, 0], [1, 2])
-    chk("c3 p17.1 sum P", s, 1.1)
+    # three rays: the scan's second arrowhead on the 0 dB tick is a tau=0 ray
+    s, mean, m2, rms = pdp([0, -10, 0], [0, 1, 2])
+    chk("c3 p17.1 sum P", s, 2.1)
     chk("c3 p17.1 sum Pt", mean * s, 2.1)
     chk("c3 p17.1 sum Pt2", m2 * s, 4.1)
-    chk("c3 p17.1 mean", mean, 1.909, tol=1e-3)
-    chk("c3 p17.1 m2", m2, 3.727, tol=1e-3)
-    chk("c3 p17.1 sigma", rms, 0.287, tol=1e-3)
-    chk("c3 p17.1 Bc90 kHz", 1 / (50 * rms * 1e-6) / 1e3, 69.6, tol=0.15)
-    chk("c3 p17.1 Bc50 kHz", 1 / (5 * rms * 1e-6) / 1e3, 695.7, tol=1.5)
+    chk("c3 p17.1 mean", mean, 1.000, tol=1e-3)
+    chk("c3 p17.1 m2", m2, 1.952, tol=1e-3)
+    chk("c3 p17.1 sigma", rms, 0.976, tol=1e-3)
+    chk("c3 p17.1 Bc90 kHz", 1 / (50 * rms * 1e-6) / 1e3, 20.5, tol=0.05)
+    chk("c3 p17.1 Bc50 kHz", 1 / (5 * rms * 1e-6) / 1e3, 204.9, tol=0.5)
 
     # --- P17.2  75 Bh PDP ---------------------------------------------
     s, mean, m2, rms = pdp([0, 0, -10, -20], [0, 50, 75, 100])
