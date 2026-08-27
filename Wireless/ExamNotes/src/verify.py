@@ -696,8 +696,192 @@ def ch6():
     chk("c6 p7 area factor", (10 ** (6 / 35)) ** 2, 2.2, tol=0.01)
 
 
+# =========================================================================
+#  CHAPTER 7 — MULTIPLE ACCESS
+# =========================================================================
+def ch7():
+    # --- P1  FDMA channel count, N = (Bt - 2 Bguard) / Bc ----------------------
+    def fdma(bt, bguard, bc):
+        return (bt - 2 * bguard) / bc
+
+    # 1.1  80 Ba : 25 MHz, 100 kHz guard, 200 kHz channel
+    chk("c7 p1.1 usable Hz", 25e6 - 2 * 100e3, 24.8e6)
+    chk("c7 p1.1 N", fdma(25e6, 100e3, 200e3), 124)
+    # 1.2  79 Ch / 77 Ch : 12.8 MHz, 10 kHz guard, 30 kHz channel
+    chk("c7 p1.2 usable kHz", 12800 - 2 * 10, 12780)
+    chk("c7 p1.2 N", fdma(12.8e6, 10e3, 30e3), 426)
+    # 1.3  78 Ch : 12.5 MHz, 10 kHz guard, 30 kHz channel  (Rappaport Ex 8.2)
+    chk("c7 p1.3 usable kHz", 12500 - 2 * 10, 12480)
+    chk("c7 p1.3 N", fdma(12.5e6, 10e3, 30e3), 416)
+    # 1.4  inverse: Bt from N. Must round-trip back to 1.3's input.
+    bt = 416 * 30e3 + 2 * 10e3
+    chk("c7 p1.4 channels term", 416 * 30e3, 12.48e6)
+    chk("c7 p1.4 guard term", 2 * 10e3, 20e3)
+    chk("c7 p1.4 Bt MHz", bt / 1e6, 12.5)
+    chk("c7 p1.4 round trip", fdma(bt, 10e3, 30e3), 416)
+
+    # --- P2  N-TDMA users per cluster, 80 Ch ----------------------------------
+    chk("c7 p2 usable kHz", 25000 - 2 * 20, 24960)
+    chk("c7 p2 Nu", fdma(25e6, 20e3, 30e3), 832)
+    # the guard bands cost well under 1 % of the allocation
+    chk("c7 p2 no-guard bound", 25000 / 30, 833.33, tol=0.01)
+
+    # --- P3  GSM TDMA frame efficiency, 70 Bh / 74 Ma -------------------------
+    slot = 6 + 8.25 + 26 + 2 * 58
+    chk("c7 p3 slot bits", slot, 156.25, tol=1e-9)
+    b_T = 8 * slot
+    chk("c7 p3 frame bits", b_T, 1250, tol=1e-9)
+    chk("c7 p3 tail total", 8 * 6, 48)
+    chk("c7 p3 guard total", 8 * 8.25, 66, tol=1e-9)
+    chk("c7 p3 train total", 8 * 26, 208)
+    b_OH = 8 * 6 + 8 * 8.25 + 8 * 26
+    chk("c7 p3 overhead bits", b_OH, 322, tol=1e-9)
+    chk("c7 p3 overhead frac", b_OH / b_T, 0.2576, tol=1e-6)
+    eta = (1 - b_OH / b_T) * 100
+    chk("c7 p3 efficiency %", eta, 74.24, tol=5e-3)
+    # cross-check via the payload: 8 slots x 116 data bits
+    chk("c7 p3 payload bits", 8 * 116, 928)
+    chk("c7 p3 payload frac %", 100 * 8 * 116 / b_T, 74.24, tol=5e-3)
+    # 3.3 timing, at 270.833 kbps
+    Tb = 1 / 270833.0
+    chk("c7 p3.3 Tb us", Tb * 1e6, 3.692, tol=1e-3)
+    Tslot = slot * Tb
+    chk("c7 p3.3 Tslot us", Tslot * 1e6, 576.9, tol=0.2)
+    chk("c7 p3.3 Tslot ms", Tslot * 1e3, 0.577, tol=1e-3)
+    Tf = 8 * Tslot
+    chk("c7 p3.3 Tframe ms", Tf * 1e3, 4.615, tol=5e-3)
+    chk("c7 p3.3 Tframe via bits ms", b_T * Tb * 1e3, 4.615, tol=5e-3)
+    chk("c7 p3.3 frame rate", 1 / Tf, 216.7, tol=0.2)
+    chk("c7 p3.3 frame rate via bits", 270833.0 / b_T, 216.7, tol=0.2)
+    # 3.3 simultaneous GSM users: 25 MHz / (200 kHz / 8)
+    chk("c7 p3.3 share kHz", 200 / 8, 25)
+    chk("c7 p3.3 users", 25e6 / (200e3 / 8), 1000)
+
+    # --- P4  Hadamard H8 ------------------------------------------------------
+    def sylvester(n):
+        H = [[1]]
+        while len(H) < n:
+            m = len(H)
+            H = ([H[i] + H[i] for i in range(m)] +
+                 [H[i] + [-v for v in H[i]] for i in range(m)])
+        return H
+
+    H2, H4, H8 = sylvester(2), sylvester(4), sylvester(8)
+    chk("c7 p4 H2 order", len(H2), 2)
+    chk("c7 p4 H4 order", len(H4), 4)
+    chk("c7 p4 H8 order", len(H8), 8)
+    # every entry is +-1
+    chk("c7 p4 entries pm1", sum(1 for r in H8 for v in r if v in (1, -1)), 64)
+    # the printed H8, row by row, exactly as it appears in ch7-num.tex
+    printed = [
+        [1,  1,  1,  1,  1,  1,  1,  1],
+        [1, -1,  1, -1,  1, -1,  1, -1],
+        [1,  1, -1, -1,  1,  1, -1, -1],
+        [1, -1, -1,  1,  1, -1, -1,  1],
+        [1,  1,  1,  1, -1, -1, -1, -1],
+        [1, -1,  1, -1, -1,  1, -1,  1],
+        [1,  1, -1, -1, -1, -1,  1,  1],
+        [1, -1, -1,  1, -1,  1,  1, -1],
+    ]
+    for i in range(8):
+        chk(f"c7 p4 H8 row {i+1}", sum(a * b for a, b in zip(H8[i], printed[i])), 8)
+    # H4 as printed
+    printed4 = [[1, 1, 1, 1], [1, -1, 1, -1], [1, 1, -1, -1], [1, -1, -1, 1]]
+    for i in range(4):
+        chk(f"c7 p4 H4 row {i+1}", sum(a * b for a, b in zip(H4[i], printed4[i])), 4)
+    # orthogonality of every distinct pair, and self-product = N
+    for i in range(8):
+        for j in range(8):
+            want = 8 if i == j else 0
+            chk(f"c7 p4 dot {i}{j}",
+                sum(a * b for a, b in zip(printed[i], printed[j])), want, tol=1e-9)
+    # the two checks printed in the notes
+    chk("c7 p4 row2.row3 printed", sum(a * b for a, b in zip(printed[1], printed[2])), 0,
+        tol=1e-9)
+    chk("c7 p4 row1.row5 printed", sum(a * b for a, b in zip(printed[0], printed[4])), 0,
+        tol=1e-9)
+    # binary Walsh mapping: +1 -> 0, -1 -> 1; every non-zero word has N/2 ones
+    walsh = [[0 if v == 1 else 1 for v in r] for r in printed]
+    chk("c7 p4 W0 ones", sum(walsh[0]), 0)
+    for i in range(1, 8):
+        chk(f"c7 p4 W{i} ones", sum(walsh[i]), 4)
+    chk("c7 p4 dmin", 8 // 2, 4)
+    chk("c7 p4 k bits", math.log2(8), 3, tol=1e-9)
+    # the printed binary strings
+    for i, want in enumerate(["00000000", "01010101", "00110011", "01100110",
+                              "00001111", "01011010", "00111100", "01101001"]):
+        chk(f"c7 p4 W{i} string", int("".join(map(str, walsh[i])), 2), int(want, 2))
+
+    # --- P5  CDMA encode / decode --------------------------------------------
+    def dot(a, b):
+        return sum(x * y for x, y in zip(a, b))
+
+    def add(seqs):
+        return [sum(col) for col in zip(*seqs)]
+
+    # 5.1  four stations, data 1,0,1,1
+    C = {1: [1, 1, 1, 1], 2: [1, -1, 1, -1], 3: [1, 1, -1, -1], 4: [1, -1, -1, 1]}
+    d = {1: 1, 2: -1, 3: 1, 4: 1}          # bit 1 -> +1, bit 0 -> -1
+    # the orthogonality spot checks printed in the notes
+    chk("c7 p5.1 C1.C2", dot(C[1], C[2]), 0, tol=1e-9)
+    chk("c7 p5.1 C3.C4", dot(C[3], C[4]), 0, tol=1e-9)
+    chk("c7 p5.1 C1.C1", dot(C[1], C[1]), 4)
+    # every encoded contribution, as printed
+    for k, want in {1: [1, 1, 1, 1], 2: [-1, 1, -1, 1],
+                    3: [1, 1, -1, -1], 4: [1, -1, -1, 1]}.items():
+        got = [d[k] * v for v in C[k]]
+        chk(f"c7 p5.1 d{k}C{k}", dot(got, want), 4)
+    S = add([[d[k] * v for v in C[k]] for k in C])
+    chk("c7 p5.1 S", dot(S, [2, 2, -2, 2]), 16)      # S == (+2,+2,-2,+2)
+    for k, s_want, bit in ((1, 4, 1), (2, -4, 0), (3, 4, 1), (4, 4, 1)):
+        chk(f"c7 p5.1 sum{k}", dot(S, C[k]), s_want, tol=1e-9)
+        chk(f"c7 p5.1 bit{k}", dot(S, C[k]) / 4, 1 if bit else -1, tol=1e-9)
+    # the element-wise products printed in the decode table
+    for k, want in {1: [2, 2, -2, 2], 2: [2, -2, -2, -2],
+                    3: [2, 2, 2, -2], 4: [2, -2, 2, 2]}.items():
+        got = [a * b for a, b in zip(S, C[k])]
+        chk(f"c7 p5.1 prod{k}", dot(got, want), dot(want, want))
+
+    # 5.2  three stations, B silent
+    CA, CB, CC = [1, -1, -1, 1], [1, 1, 1, 1], [1, -1, 1, -1]
+    S2 = add([[-1 * v for v in CA], [0 * v for v in CB], [1 * v for v in CC]])
+    chk("c7 p5.2 A enc", dot([-1 * v for v in CA], [-1, 1, 1, -1]), 4)
+    chk("c7 p5.2 B enc", sum(abs(v) for v in [0 * v for v in CB]), 0)
+    chk("c7 p5.2 C enc", dot([1 * v for v in CC], [1, -1, 1, -1]), 4)
+    chk("c7 p5.2 S", dot(S2, [0, 0, 2, -2]), 8)      # S2 == (0,0,+2,-2)
+    chk("c7 p5.2 S chip1", S2[0], 0)
+    chk("c7 p5.2 S chip2", S2[1], 0)
+    chk("c7 p5.2 S chip3", S2[2], 2)
+    chk("c7 p5.2 S chip4", S2[3], -2)
+    chk("c7 p5.2 decode A", dot(S2, CA), -4, tol=1e-9)
+    chk("c7 p5.2 decode B", dot(S2, CB), 0, tol=1e-9)
+    chk("c7 p5.2 decode C", dot(S2, CC), 4, tol=1e-9)
+    chk("c7 p5.2 A bit", dot(S2, CA) / 4, -1, tol=1e-9)
+    chk("c7 p5.2 B silent", dot(S2, CB) / 4, 0, tol=1e-9)
+    chk("c7 p5.2 C bit", dot(S2, CC) / 4, 1, tol=1e-9)
+    for lbl, code, want in (("A", CA, [0, 0, -2, -2]), ("B", CB, [0, 0, 2, -2]),
+                            ("C", CC, [0, 0, 2, 2])):
+        got = [a * b for a, b in zip(S2, code)]
+        chk(f"c7 p5.2 prod{lbl}", dot(got, want), dot(want, want))
+
+    # --- P6  IS-95 CDMA capacity ---------------------------------------------
+    W, R = 1.25e6, 9600.0
+    pg = W / R
+    chk("c7 p6 W/R", pg, 130.21, tol=0.01)
+    ebno = pg / (14 - 1)
+    chk("c7 p6 Eb/N0 linear", ebno, 10.02, tol=0.01)
+    chk("c7 p6 Eb/N0 dB", db(ebno), 10.01, tol=0.01)
+    alpha = 3 / 8
+    chk("c7 p6 1/alpha", 1 / alpha, 8 / 3, tol=1e-9)
+    chk("c7 p6 pg/ebno", pg / 10, 13.021, tol=1e-3)
+    n_sector = 1 + (1 / alpha) * (pg / 10)
+    chk("c7 p6 users/sector", n_sector, 35.72, tol=0.02)
+    chk("c7 p6 users/cell", 3 * n_sector, 107.2, tol=0.1)
+    chk("c7 p6 users/cell rounded", round(3 * n_sector), 107)
+
+
 def main():
-    for fn in (ch2, ch3, ch5, ch6):
+    for fn in (ch2, ch3, ch5, ch6, ch7):
         try:
             fn()
         except AssertionError as e:

@@ -36,6 +36,9 @@ TARGETS = {
     "ch6":     ("ch6-standalone", "Ch6 - Speech and Channel Coding Fundamentals.pdf"),
     "ch6-num": ("ch6-num-standalone",
                 "Ch6 - Speech and Channel Coding Fundamentals - Numerical Problems & Solutions.pdf"),
+    "ch7":     ("ch7-standalone", "Ch7 - Multiple Access in Wireless Communications.pdf"),
+    "ch7-num": ("ch7-num-standalone",
+                "Ch7 - Multiple Access in Wireless Communications - Numerical Problems & Solutions.pdf"),
 }
 
 

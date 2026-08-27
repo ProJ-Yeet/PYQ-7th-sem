@@ -16,9 +16,22 @@ Two ways to say where the figure is:
                                           scanned pages (whole page is one
                                           image).
 
+  add(name, pdf, page, flat=True, ...) -> rebuild the page from its embedded
+                                          images instead of letting PyMuPDF
+                                          render it. Needed for SSD Sir's decks:
+                                          its figures are 8-bit /Indexed images
+                                          over an ICCBased base, and PyMuPDF
+                                          drops the palette, so a normal render
+                                          gives a SOLID BLACK BOX. Decoding the
+                                          index stream through the lookup table
+                                          by hand recovers them exactly. `box`
+                                          still applies, in page fractions.
+
 Run from this folder:  python figs.py [name ...]
 """
-import fitz, os, sys
+import fitz, io, os, re, sys
+
+from PIL import Image
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 SRC = os.path.normpath(os.path.join(HERE, "..", "..", "Notes"))
@@ -51,13 +64,15 @@ C4_SST = os.path.join(SST, "Chapter 4 Modulation.pdf")
 C4_EX = os.path.join(SST, "Modulation_Extra Note.pdf")
 C4_SSD = os.path.join(SSD, "Chapter 4 Modulation.pdf")
 C4_OFDM = os.path.join(AS, "ofdm_new.pdf")
+C7_SST = os.path.join(SST, "Chapter 7 Multiple Access Techniques.pdf")
+C7_SSD = os.path.join(SSD, "Chapter 7 Multiple Access Techniques.pdf")
 
 JOBS = []
 
 
-def add(name, pdf, page, box=None, pick=0, dpi=300, pad=0.004):
+def add(name, pdf, page, box=None, pick=0, dpi=300, pad=0.004, flat=False):
     JOBS.append(dict(name=name, pdf=pdf, page=page, box=box, pick=pick,
-                     dpi=dpi, pad=pad))
+                     dpi=dpi, pad=pad, flat=flat))
 
 
 # ------------------------------------------------------------------ chapter 1
@@ -166,6 +181,30 @@ add("c4_ofdm_block.png", C4_OFDM, 20, box=(0.05, 0.15, 0.85, 0.95))
 add("c4_oqpsk_wave.png", BOOK, 295, box=(0.10, 0.128, 0.85, 0.448))
 add("c4_pi4_const.png", BOOK, 297, box=(0.15, 0.138, 0.85, 0.565))
 
+# ------------------------------------------------------------------ chapter 7
+# SST's Ch7 deck renders cleanly and carries the Rappaport figures (9.1-9.7).
+add("c7_narrow_wide.png", C7_SST, 3, pick=0)
+add("c7_fdd_tdd.png", C7_SST, 4, pick=0)
+add("c7_fdma_scheme.png", C7_SST, 5, pick=0)
+add("c7_tdma_scheme.png", C7_SST, 11, pick=0)
+add("c7_cdma_scheme.png", C7_SST, 23, pick=0)
+add("c7_nearfar.png", C7_SST, 27, pick=0)
+add("c7_cdma_fhma_grid.png", C7_SST, 38, pick=0)
+add("c7_spread_despread.png", C7_SST, 39, box=(0.03, 0.06, 0.98, 0.93))
+add("c7_fcdma_spectrum.png", C7_SST, 40, pick=0)
+add("c7_dsfh_spectrum.png", C7_SST, 41, pick=0)
+add("c7_sdma.png", C7_SST, 65, pick=0)
+# CDMA encode / decode worked example (Fig 12.32-12.35 of the source book)
+add("c7_cdma_idea.png", C7_SST, 32, box=(0.44, 0.11, 0.99, 0.60))
+add("c7_chip_seq.png", C7_SST, 33, box=(0.03, 0.26, 0.96, 0.39))
+add("c7_cdma_mux.png", C7_SST, 34, box=(0.255, 0.475, 0.90, 0.855))
+add("c7_cdma_demux.png", C7_SST, 35, box=(0.115, 0.205, 0.885, 0.625))
+# SSD Sir's Ch7 figures are /Indexed images: they render as solid black boxes
+# unless the palette is applied by hand, hence flat=True. See flat_page().
+add("c7_tdma_frame.png", C7_SSD, 15, flat=True, box=(0.11, 0.135, 0.86, 0.705))
+add("c7_fhma_tx.png", C7_SSD, 24, flat=True, box=(0.085, 0.10, 0.96, 0.63))
+add("c7_fhma_rx.png", C7_SSD, 25, flat=True, box=(0.02, 0.10, 0.94, 0.76))
+
 
 def rect_for(pg, job):
     r = pg.rect
@@ -186,6 +225,48 @@ def rect_for(pg, job):
                      min(r.x1, rr.x1 + p * r.width), min(r.y1, rr.y1 + p * r.height))
 
 
+_IDX = re.compile(r"/ColorSpace\[/Indexed \d+ 0 R (\d+) (\d+) 0 R\]")
+
+
+def _pil(doc, xref):
+    """One embedded image as RGB, applying an /Indexed palette by hand."""
+    obj = doc.xref_object(xref, compressed=True)
+    m = _IDX.search(obj)
+    if m:
+        w = int(re.search(r"/Width (\d+)", obj).group(1))
+        h = int(re.search(r"/Height (\d+)", obj).group(1))
+        idx = doc.xref_stream(xref)[:w * h].ljust(w * h, b"\x00")
+        im = Image.frombytes("P", (w, h), idx)
+        im.putpalette(doc.xref_stream(int(m.group(2))))
+        return im.convert("RGB")
+    return Image.open(io.BytesIO(doc.extract_image(xref)["image"])).convert("RGB")
+
+
+def flat_page(doc, pg, dpi):
+    """Rebuild a page from its embedded images, at their own page rects.
+
+    Only the images are drawn -- any vector overlay or text on the slide is
+    lost. That is fine for the decks this is needed for, where the figure IS
+    a single pasted bitmap.
+    """
+    r = pg.rect
+    s = dpi / 72.0
+    canvas = Image.new("RGB", (round(r.width * s), round(r.height * s)), "white")
+    for im in pg.get_images(full=True):
+        xref = im[0]
+        try:
+            src = _pil(doc, xref)
+        except Exception:
+            continue
+        for rr in pg.get_image_rects(xref):
+            w, h = round(rr.width * s), round(rr.height * s)
+            if w < 2 or h < 2:
+                continue
+            canvas.paste(src.resize((w, h), Image.LANCZOS),
+                         (round((rr.x0 - r.x0) * s), round((rr.y0 - r.y0) * s)))
+    return canvas
+
+
 def main():
     os.makedirs(FIGS, exist_ok=True)
     want = set(a.replace(".png", "") for a in sys.argv[1:])
@@ -195,9 +276,20 @@ def main():
         d = fitz.open(job["pdf"])
         pg = d[job["page"] - 1]
         clip = rect_for(pg, job)
-        pm = pg.get_pixmap(dpi=job["dpi"], clip=clip)
-        pm.save(os.path.join(FIGS, job["name"]))
-        print(f"{job['name']:30s} {pm.width:5d}x{pm.height:<5d} "
+        out = os.path.join(FIGS, job["name"])
+        if job["flat"]:
+            s = job["dpi"] / 72.0
+            r = pg.rect
+            img = flat_page(d, pg, job["dpi"]).crop(
+                (round((clip.x0 - r.x0) * s), round((clip.y0 - r.y0) * s),
+                 round((clip.x1 - r.x0) * s), round((clip.y1 - r.y0) * s)))
+            img.save(out)
+            w, h = img.size
+        else:
+            pm = pg.get_pixmap(dpi=job["dpi"], clip=clip)
+            pm.save(out)
+            w, h = pm.width, pm.height
+        print(f"{job['name']:30s} {w:5d}x{h:<5d} "
               f"<- {os.path.basename(job['pdf'])[:38]} p{job['page']}")
         d.close()
 

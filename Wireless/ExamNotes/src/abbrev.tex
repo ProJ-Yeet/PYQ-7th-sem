@@ -42,6 +42,17 @@ SBC     & sub-band coding                   & DCT     & discrete cosine transfor
 FEC     & forward error correction          & ARQ     & automatic repeat request \\
 BCH     & Bose--Chaudhuri--Hocquenghem code & RS      & Reed--Solomon code \\
 TCM     & trellis coded modulation          & PN      & pseudo-noise \\
+\bottomrule
+\end{tabularx}
+
+% tabularx cannot break across a page, so the chart is set as two tables with
+% a repeated header. Keep each half short enough to fit one page on its own:
+% adding rows to a single table silently ran it off the bottom margin.
+\par\vspace{4pt}
+\begin{tabularx}{\textwidth}{@{}L{1.75cm}X@{\hspace{8pt}}L{1.75cm}X@{}}
+\toprule
+\hrow \thead{Short} & \thead{Means} & \thead{Short} & \thead{Means} \\
+\midrule
 MIMO    & multiple input multiple output    & OFDMA   & orthogonal FDM access \\
 QAM     & quadrature amplitude modulation   & PSK     & phase shift keying \\
 GMSK    & Gaussian minimum shift keying     & IMT     & international mobile telecommunications \\
@@ -61,7 +72,18 @@ LPF, BPF & low pass, band pass filter       & ISM     & industrial, scientific, 
 SC-FDMA & single carrier FDMA               & $BT$    & GMSK filter bandwidth $\times$ symbol time \\
 PSTN    & public switched telephone network & VoIP    & voice over IP \\
 FVC, RVC & forward, reverse voice channel   & FCC, RCC & forward, reverse control channel \\
+SSMA    & spread spectrum multiple access   & SDMA    & space division multiple access \\
+FHMA    & frequency hopped multiple access  & DSMA    & direct sequence multiple access ($=$ CDMA) \\
+FCDMA   & hybrid FDMA/CDMA                  & DS/FHMA & hybrid direct sequence / frequency hopped \\
+TCDMA   & time division CDMA                & TDFH    & time division frequency hopping \\
+IM      & intermodulation (product)         & MU-MIMO & multi-user MIMO \\
 WLAN    & wireless local area network       & WMAN    & wireless metropolitan area network \\
+WPAN    & wireless personal area network    & AP      & access point \\
+BSS, IBSS & basic service set, independent (ad hoc) BSS & ESS & extended service set \\
+CSMA/CA & carrier sense multiple access with collision avoidance & CSMA/CD & \dots{} with collision detection \\
+DCF     & distributed coordination function & PCF     & point coordination function \\
+RTS/CTS & request to send / clear to send   & CCK     & complementary code keying \\
+WEP, WPA & wired equivalent privacy, WiFi protected access & U-NII & unlicensed national information infrastructure band \\
 IoT     & internet of things                & mmWave  & millimetre wave \\
 eMBB    & enhanced mobile broadband         & URLLC   & ultra-reliable low latency comm. \\
 mMTC    & massive machine type comm.        & NOMA    & non-orthogonal multiple access \\
@@ -97,6 +119,9 @@ $\rightarrow$ & leads to / therefore        & $+$     & and \\
 \textbf{WiMAX} IEEE 802.16 $\cdot$ \textbf{WiFi} IEEE 802.11 $\cdot$
 \textbf{DECT} digital enhanced cordless telecommunications $\cdot$
 \textbf{CT2} cordless telephone 2 $\cdot$ \textbf{PHS} personal handyphone system $\cdot$
+\textbf{USDC} US digital cellular (IS-136) $\cdot$
+\textbf{JDC} Japanese digital cellular (later PDC) $\cdot$
+\textbf{Bluetooth} IEEE 802.15.1 $\cdot$ \textbf{Zigbee} IEEE 802.15.4 $\cdot$
 \textbf{PACS} personal access communications system $\cdot$
 \textbf{POCSAG, FLEX} paging protocols $\cdot$
 \textbf{CDPD} cellular digital packet data $\cdot$
