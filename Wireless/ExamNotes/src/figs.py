@@ -47,6 +47,10 @@ C6_SST1 = os.path.join(SST, "Chapter 6_1 Channel Coding Introduction.pdf")
 C6_SST2 = os.path.join(SST, "Chapter 6_2 Speech and Channel Coding Fundamental.pdf")
 C6_SSD = os.path.join(SSD, "Chapter 6 Speech and channel coding fundamental.pdf")
 C6_AS = os.path.join(AS, "Chapter 6 Channel and Source Coding technique.pdf")
+C4_SST = os.path.join(SST, "Chapter 4 Modulation.pdf")
+C4_EX = os.path.join(SST, "Modulation_Extra Note.pdf")
+C4_SSD = os.path.join(SSD, "Chapter 4 Modulation.pdf")
+C4_OFDM = os.path.join(AS, "ofdm_new.pdf")
 
 JOBS = []
 
@@ -132,6 +136,35 @@ add("c6_code_tree.png", C6_SST1, 22, box=(0.130, 0.489, 0.699, 0.860))
 add("c6_trellis.png", C6_SST1, 23, box=(0.058, 0.585, 0.890, 0.989))
 add("c6_viterbi.png", C6_SST1, 25, box=(0.050, 0.078, 1.000, 0.905))
 add("c6_turbo.png", C6_SST, 17, box=(0.051, 0.290, 0.496, 0.762))
+
+# ------------------------------------------------------------------ chapter 4
+add("c4_dig_waveforms.png", C4_EX, 5)
+add("c4_dbpsk_gen.png", C4_EX, 25, box=(0.03, 0.495, 0.95, 0.97))
+add("c4_dpsk_table.png", C4_EX, 26)
+add("c4_dpsk_det.png", C4_EX, 27)
+add("c4_qpsk_const.png", C4_EX, 33, box=(0.52, 0.19, 0.88, 0.72))
+add("c4_qpsk_tx.png", C4_EX, 34)
+add("c4_qpsk_rx.png", C4_EX, 35)
+add("c4_gmsk_iq.png", C4_EX, 39, box=(0.10, 0.22, 0.90, 0.80))
+add("c4_gmsk_rx.png", C4_EX, 40, box=(0.13, 0.22, 0.90, 0.80))
+add("c4_qam_mod.png", C4_EX, 42, box=(0.10, 0.20, 0.95, 0.85))
+add("c4_msk_psd.png", C4_SST, 5, box=(0.553, 0.03, 0.99, 0.72))
+add("c4_gmsk_tx.png", C4_SST, 6, box=(0.02, 0.10, 0.56, 0.47))
+add("c4_qam16.png", C4_SST, 10, box=(0.295, 0.060, 0.715, 0.548))
+add("c4_16psk_qam.png", C4_SST, 11, box=(0.03, 0.14, 0.85, 0.49))
+add("c4_ss_model.png", C4_SST, 15)
+add("c4_pn_gen.png", C4_SST, 17)
+add("c4_dsss_block.png", C4_SST, 20)
+add("c4_dsss_wave.png", C4_SST, 21)
+add("c4_fhss_tx.png", C4_SST, 22, box=(0.05, 0.435, 0.98, 0.905))
+add("c4_fhss_sel.png", C4_SST, 24)
+add("c4_ofdm_fdm.png", C4_OFDM, 6, box=(0.10, 0.13, 0.95, 0.96))
+add("c4_ofdm_concept.png", C4_OFDM, 7, box=(0.02, 0.15, 1.00, 1.00))
+add("c4_cp.png", C4_OFDM, 16, box=(0.40, 0.635, 1.00, 0.975))
+add("c4_ofdm_block.png", C4_OFDM, 20, box=(0.05, 0.15, 0.85, 0.95))
+# Rappaport 1e scanned pages: whole page is one image, so manual boxes only
+add("c4_oqpsk_wave.png", BOOK, 295, box=(0.10, 0.128, 0.85, 0.448))
+add("c4_pi4_const.png", BOOK, 297, box=(0.15, 0.138, 0.85, 0.565))
 
 
 def rect_for(pg, job):

@@ -1,0 +1,1200 @@
+%=======================================================================
+%  CHAPTER 4 — MODULATION AND DEMODULATION METHODS  (4 hrs)
+%=======================================================================
+\section{Modulation--Demodulation Methods in Mobile Communications}
+
+{\color{sub}\footnotesize 4 hrs \gap$\cdot$\gap asked in \mk{20 of 22 papers}
+\gap$\cdot$\gap 5 syllabus sub-topics \gap$\cdot$\gap
+\mk{no paper has ever set a numerical here} (one worked example is given anyway, \S4.4).}
+
+\lead{Read this first:}
+\begin{itemize}
+  \item \mk{This is a drawing chapter.} Almost every question says +Fig, block diagram or
+        constellation diagram. Marks come from the \textbf{diagram}, not the prose.
+  \item Four blocks carry the chapter, in order of return:
+  \begin{itemize}
+    \item \textbf{OFDM} \tS{9} $\rightarrow$ transmitter + receiver block diagram, always 4 or 8 marks.
+    \item \textbf{Spread spectrum, DSSS and FHSS} \tS{7} $\rightarrow$ definition $+$ block diagram.
+    \item \textbf{MSK / GMSK} \tS{6} $\rightarrow$ why GSM picked GMSK.
+    \item \textbf{QPSK} \tF{4} $\rightarrow$ transmitter, receiver, constellation.
+  \end{itemize}
+  \item Everything else (BPSK, DPSK, OQPSK, $\pi/4$-QPSK, QAM) is a \textbf{one-paper}
+        question, but each was worth 6 to 8 marks when it came.
+  \item \mk{Learn 3 diagrams cold}: QPSK transmitter/receiver pair, OFDM transmitter/receiver
+        pair, DSSS + FHSS transmitter pair. They answer roughly 30 marks of the paper.
+  \item FHSS appears here as a \emph{modulation} and again in Ch 7 as \textbf{FHMA}, a
+        \emph{multiple access} method. Same block diagram, different framing. Draw it once,
+        label it for whichever chapter is asked.
+\end{itemize}
+
+\hr
+
+\T{4.1 Why modulate, why digital, and how schemes are judged}
+
+{\color{sub}\footnotesize Only one PYQ lives in this section, and it is worth 2 marks. Everything
+else here is \textbf{vocabulary the rest of the chapter assumes}: $\eta_p$, $\eta_B$, the
+trade-off between them, and what a constellation diagram actually plots. Skim it once, then
+never look at it again.}
+
+\Q{Advantages of digital modulation over analog}{\m{2}}
+{\color{sub}\footnotesize \yr{\textbf{\texttt{79 Bh}} \m{2}} \gap$\cdot$\gap
+\mk{always a rider on the GMSK question, never asked alone}}
+
+\sbs{%
+\lead{Modulation itself}
+\begin{itemize}
+  \item Process of impressing message on high-freq carrier suitable for transmission.
+  \item Translates baseband (modulating) signal $\rightarrow$ bandpass (modulated) signal.
+  \item \textbf{Why:} antenna size $\propto \lambda$, so baseband speech at 3 kHz needs
+        km-long antennas.
+  \item \textbf{Why:} shifting to different carriers lets many users share one medium
+        (multiple access).
+  \item \textbf{Why:} higher freq $\rightarrow$ longer range, smaller hardware.
+\end{itemize}}{%
+\lead{Digital over analog \m{2}}
+\begin{itemize}
+  \item Regenerable: noise does not accumulate, receiver rebuilds clean symbols.
+  \item Resistant to fading, noise, interference.
+  \item Voice $+$ data $+$ video multiplexed on one channel.
+  \item Encryption possible $\rightarrow$ security and privacy.
+  \item Error control coding detects and corrects errors (Ch 6).
+  \item Built in DSP software, not analog hardware $\rightarrow$ cheap, small, reprogrammable.
+  \item Equalization and diversity apply cleanly (Ch 5).
+  \item \mk{Cost:} needs more bandwidth per message and needs synchronisation.
+\end{itemize}}
+
+\vspace{2pt}
+\sbsr{0.50}{%
+\lead{Power efficiency $\eta_p$}
+\begin{itemize}
+  \item Ability to hold message quality at low power (low SNR).
+  \item $\eta_p = E_b/N_0$ at a stated BER, usually $10^{-5}$.
+  \item $E_b =$ energy per bit, $N_0 =$ noise power spectral density.
+  \item Trade-off: BER $\uparrow$ as $E_b/N_0 \downarrow$.
+  \item \textbf{Lower $E_b/N_0$ for the same BER $=$ more power efficient.}
+\end{itemize}}{%
+\lead{Bandwidth efficiency $\eta_B$}
+\begin{itemize}
+  \item Ability to carry data in a limited band.
+  \item $\eta_B = R/B$ bps/Hz, $R =$ data rate, $B =$ RF bandwidth.
+  \item Ceiling set by Shannon:
+        $\eta_{B(\max)} = C/B = \log_2(1 + S/N)$.
+  \item \mk{The fundamental trade-off:} improve $\eta_p$ and $\eta_B$ gets worse, and the
+        reverse. No scheme wins both.
+  \item M-ary buys $\eta_B$ by spending $\eta_p$.
+\end{itemize}}
+
+\vspace{2pt}
+\sbsr{0.52}{%
+\lead{Choosing a scheme for a mobile link}
+\begin{itemize}
+  \item Low BER at low SNR (handset battery is finite).
+  \item Resistance to interference (ACI, CCI) and multipath fading.
+  \item Minimum occupied bandwidth (spectrum is bought, not free).
+  \item Cheap, small, low-power to implement in the handset.
+  \item \mk{No scheme meets all four}, so every standard is a trade-off.
+\end{itemize}
+
+\lead{Constellation (signal space) diagram}
+\begin{itemize}
+  \item Graphical plot of the complex envelope of every possible symbol.
+  \item $x$ axis $=$ in-phase component, $y$ axis $=$ quadrature component.
+  \item Distance of a point from origin $=$ amplitude, so distance$^2$ $=$ symbol power.
+  \item \mk{Distance $d$ between the two nearest points sets noise immunity.}
+  \item $P_e \propto Q\!\left(\dfrac{d}{\sqrt{2N_0}}\right)$, so small $d$ $\rightarrow$ high BER.
+  \item Farthest point from origin $=$ peak power the amplifier must deliver.
+\end{itemize}}{%
+\figT{c4_dig_waveforms.png}
+\vspace{1pt}
+{\color{sub}\footnotesize The three binary keying waveforms against one data stream:
+(a) ASK, (b) BFSK, (c) BPSK. \yr{SST, Modulation extra note}}}
+
+\hr
+
+\T{4.2 Review: analog modulation and line coding \; \pillo{sub}{syllabus, no PYQ yet}}
+
+\sbs{%
+\lead{Amplitude family}
+\begin{itemize}
+  \item \textbf{AM (DSB-FC)}: $B = 2f_m$. Carrier carries no information, so at most
+        33\,\% of power is useful. Simple envelope detector.
+  \item \textbf{DSB-SC}: carrier suppressed, $B = 2f_m$. All power in sidebands, but needs
+        coherent detection.
+  \item \textbf{SSB}: one sideband only, $B = f_m$. \mk{Half the bandwidth, half the power},
+        but sharp filters and exact carrier recovery needed.
+  \item \textbf{VSB}: one full sideband $+$ vestige of the other, $B \approx 1.25 f_m$.
+        Compromise used for TV video where DC content forbids true SSB.
+\end{itemize}}{%
+\lead{Angle family}
+\begin{itemize}
+  \item \textbf{FM}: instantaneous freq varies with message. Carson's rule
+        $B = 2(\Delta f + f_m)$.
+  \item Constant envelope $\rightarrow$ non-linear class-C amplifier usable $\rightarrow$
+        power efficient.
+  \item \textbf{Capture effect}: stronger of two co-channel FM signals suppresses the weaker.
+  \item Wideband FM trades bandwidth for SNR $\rightarrow$ why \mk{every 1G system used FM}.
+  \item \textbf{PM}: phase varies with message. FM and PM are inter-convertible through an
+        integrator or differentiator.
+\end{itemize}}
+
+\vspace{2pt}
+\sbsr{0.50}{%
+\lead{Line coding: what it is for}
+\begin{itemize}
+  \item Maps bits onto baseband pulses before modulation.
+  \item Requirements: no DC content, self-clocking, spectrally compact, error detection
+        possible, transparent to any bit pattern.
+\end{itemize}}{%
+\lead{The four to know}
+\begin{itemize}
+  \item \textbf{NRZ}: 1 $=$ high for full bit, 0 $=$ low. Compact, but has DC and no clock in
+        long runs. \mk{GSM uses bipolar NRZ ahead of the GMSK filter.}
+  \item \textbf{RZ}: pulse returns to zero mid-bit. Self-clocking, costs twice the bandwidth.
+  \item \textbf{Manchester}: transition mid-bit, 1 $=$ hi$\rightarrow$lo, 0 $=$ lo$\rightarrow$hi.
+        No DC, always self-clocking, twice the bandwidth. Used in 10 Mbps Ethernet.
+  \item \textbf{AMI (bipolar)}: 0 $=$ zero level, 1 $=$ alternating $\pm$. No DC, and a run of
+        same-polarity ones flags an error.
+\end{itemize}}
+
+\hr
+
+\T{4.3 Linear modulation: BPSK, DPSK, QPSK, OQPSK, $\pi/4$-QPSK}
+
+{\color{sub}\footnotesize \textbf{Linear} means the transmitted amplitude follows the
+modulating signal linearly. Bandwidth efficient, but envelope varies $\rightarrow$
+\mk{needs a linear (backed-off, inefficient) power amplifier}. That is exactly why mobile
+handsets moved to the constant-envelope family in \S4.4.}
+
+\Q{QPSK: transmission and detection process +Fig, constellation diagram}{\m{6}\m{7}\m{8}}
+{\color{sub}\footnotesize \tF{4} \yr{\textbf{75 Bh} \m{6}, 72 Ma \m{8},
+\textbf{\texttt{81 Bh}} \m{8}, \textbf{73 Bh} \m{7}} \gap$\cdot$\gap
+\mk{answer $=$ two block diagrams $+$ one constellation $+$ six lines}}
+
+\sbsr{0.47}{%
+\lead{Idea}
+\begin{itemize}
+  \item M-ary PSK with $M = 4$, so \textbf{2 bits per symbol} (a dibit).
+  \item Carrier phase takes one of 4 equally spaced values
+        $\pi/4,\, 3\pi/4,\, 5\pi/4,\, 7\pi/4$.
+  \item $s_i(t) = \sqrt{\dfrac{2E_s}{T_s}}\cos\!\big(2\pi f_c t + (2i-1)\tfrac{\pi}{4}\big)$,
+        \; $i = 1,2,3,4$.
+  \item Symbol period $T_s = 2T_b$ $\rightarrow$ \mk{half the bandwidth of BPSK for the same
+        bit rate}.
+  \item Null-to-null RF bandwidth $= R_b$ (BPSK needs $2R_b$), so $\eta_B = 1$ bps/Hz.
+  \item \mk{BER identical to BPSK}: the dibit splits into two independent BPSK streams on
+        orthogonal carriers, $P_e = Q\!\left(\sqrt{2E_b/N_0}\right)$.
+  \item So QPSK gets double the bandwidth efficiency \textbf{for free}. That is the whole
+        selling point.
+  \item Symbols are \textbf{Gray coded} (00, 01, 11, 10 around the circle) so a wrong symbol
+        costs only 1 bit.
+\end{itemize}}{%
+\figT{c4_qpsk_const.png}
+\vspace{1pt}
+{\color{sub}\footnotesize QPSK constellation: 4 points, one per dibit, spaced $90^\circ$.
+Distance to origin $= \sqrt{E_s}$, distance between neighbours $= \sqrt{2E_s} = 2\sqrt{E_b}$.
+\yr{SST, Modulation extra note}}}
+
+\vspace{2pt}
+\sbsr{0.50}{%
+\figT{c4_qpsk_tx.png}
+\vspace{1pt}
+{\color{sub}\footnotesize \textbf{QPSK transmitter.} \yr{SST, Fig 3.2.3}}}{%
+\lead{Transmission process \m{4}}
+\begin{enumerate}
+  \item Binary stream at $f_b$ bps enters a \textbf{bipolar NRZ encoder} $\rightarrow$ $\pm 1$
+        levels.
+  \item \textbf{Serial-to-parallel converter} splits it: even-numbered bits $\rightarrow$
+        $I(t)$, odd-numbered bits $\rightarrow$ $Q(t)$, each at $f_b/2$ bps.
+  \item $I(t)$ multiplied by $\cos 2\pi f_c t$ in balance modulator 1.
+  \item $Q(t)$ multiplied by $\sin 2\pi f_c t$ (carrier through a $90^\circ$ shifter) in
+        balance modulator 2.
+  \item \textbf{Summer} adds the two $\rightarrow$ QPSK signal, one of 4 phases per dibit.
+  \item Output BPF limits the spectrum to the allocated channel.
+\end{enumerate}}
+
+\vspace{2pt}
+\sbsr{0.50}{%
+\figT{c4_qpsk_rx.png}
+\vspace{1pt}
+{\color{sub}\footnotesize \textbf{QPSK receiver}, a pair of coherent correlators.
+\yr{SST, Modulation extra note}}}{%
+\lead{Detection process \m{4}}
+\begin{enumerate}
+  \item Received QPSK splits into two arms (coherent detection, so carrier recovery circuit
+        supplies $\cos$ and $\sin$ references).
+  \item Upper arm: product modulator with $\cos 2\pi f_c t$, then
+        \textbf{integrate-and-dump} over $0$ to $T_b$ $\rightarrow$ output $x_1$.
+  \item Lower arm: product modulator with $\sin 2\pi f_c t$, then integrator $\rightarrow$
+        output $x_2$.
+  \item \textbf{Decision device}, threshold $0$ V:
+        $x_1 > 0 \rightarrow$ 1, $x_1 < 0 \rightarrow$ 0 on the I channel, same rule for
+        $x_2$ on the Q channel.
+  \item \textbf{Multiplexer} interleaves the two recovered streams $\rightarrow$ original
+        binary sequence.
+\end{enumerate}
+{\color{sub}\footnotesize \mk{Say ``coherent'' out loud.} QPSK cannot be envelope detected,
+the receiver needs the carrier phase.}}
+
+\vspace{2pt}
+\lead{The weakness that produced OQPSK and $\pi/4$-QPSK}
+\begin{itemize}
+  \item When \emph{both} bits of a dibit change, the phase jumps $180^\circ$ and the
+        \mk{envelope passes through zero}.
+  \item After the transmitter's band-limiting filter this zero crossing becomes a deep
+        amplitude dip.
+  \item A non-linear (efficient) amplifier hard-limits that dip $\rightarrow$ the filtered
+        sidelobes \textbf{grow back} $\rightarrow$ adjacent channel interference returns.
+  \item Fixing this without giving up bandwidth efficiency is the whole story of \S4.3 and
+        \S4.4.
+\end{itemize}
+
+\creamq{BPSK against QPSK}{\m{5}}
+{\color{sub}\footnotesize \yr{73 Ma \m{5}}}
+
+\vspace{1pt}
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}L{3.0cm}XX@{}}
+\toprule
+\hrow \thead{Parameter} & \thead{BPSK} & \thead{QPSK} \\
+\midrule
+Bits per symbol & 1 & 2 (dibit) \\
+Symbol period & $T_s = T_b$ & $T_s = 2T_b$ \\
+Constellation & 2 points, $180^\circ$ apart & 4 points, $90^\circ$ apart \\
+Null-to-null RF BW & $2R_b$ & $R_b$ \\
+$\eta_B$ & 0.5 bps/Hz & \textbf{1 bps/Hz} \\
+Bit error rate & $Q(\sqrt{2E_b/N_0})$ & $Q(\sqrt{2E_b/N_0})$, \textbf{the same} \\
+Phase jumps & $180^\circ$ only & $0^\circ$, $\pm 90^\circ$ or $180^\circ$ \\
+Circuit & one balance modulator & two, plus S/P and $90^\circ$ shifter \\
+\bottomrule
+\end{tabularx}
+\end{center}
+\vspace{1pt}
+{\color{sub}\footnotesize \mk{The one-line answer:} QPSK carries twice the data in the same
+band at the same BER and the same $E_b/N_0$, paying only in circuit complexity.}
+
+\Q{DPSK modulation: transmitter and receiver; PN sequence and why it is used}{\m{4+2+2}}
+{\color{sub}\footnotesize \tP{1} \yr{72 Ma \m{4+2+2}} \gap$\cdot$\gap
+\mk{the PN half of this question is really \S4.7 material, cross-refer it}}
+
+\sbsr{0.47}{%
+\lead{What DPSK is}
+\begin{itemize}
+  \item \textbf{Non-coherent form of PSK}: no synchronous carrier needed at the receiver.
+  \item Information sits in the \mk{difference between the phases of two successive symbols},
+        not in the absolute phase.
+  \item Encoding rule: symbol \textbf{1} $=$ \textbf{no} phase transition, symbol \textbf{0}
+        $=$ $180^\circ$ transition.
+  \item So the present bit is decoded by comparing against the previous bit.
+  \item $P_{e} = \tfrac{1}{2}e^{-E_b/N_0}$, about \textbf{3 dB worse} than coherent BPSK at
+        high SNR.
+\end{itemize}
+
+\lead{Transmitter \m{2}}
+\begin{enumerate}
+  \item Binary sequence $m_k$ enters a \textbf{logic (differential encoder)} circuit.
+  \item A \textbf{1-bit delay $T_b$} feeds the previous encoded bit $d_{k-1}$ back to it.
+  \item Encoder output $d_k$ toggles when $m_k = 0$ and holds when $m_k = 1$.
+  \item \textbf{Bipolar NRZ encoder} $\rightarrow$ $\pm 1$ levels.
+  \item \textbf{Balance modulator} multiplies by the carrier $\rightarrow$ DPSK out.
+\end{enumerate}}{%
+\figT{c4_dbpsk_gen.png}
+\vspace{1pt}
+{\color{sub}\footnotesize \textbf{DPSK transmitter}: encoder $+$ $T_b$ delay ahead of an
+ordinary BPSK modulator. \yr{SST, Modulation extra note}}}
+
+\vspace{2pt}
+\sbsr{0.50}{%
+\figT{c4_dpsk_det.png}
+\vspace{1pt}
+{\color{sub}\footnotesize \textbf{DPSK receiver}: the signal is its own phase reference.
+\yr{SST, Modulation extra note}}}{%
+\lead{Receiver \m{2}}
+\begin{enumerate}
+  \item \textbf{Bandpass filter} centred on $f_c$ removes out-of-band noise.
+  \item Signal is multiplied by \mk{its own $T_b$-delayed copy} in the correlator.
+  \item \textbf{Integrate and dump} over one bit gives an output proportional to
+        $\cos\phi$, where $\phi$ is the phase difference between the two.
+  \item $\phi = 0 \rightarrow$ output positive $\rightarrow$ decide \textbf{1}. \\
+        $\phi = \pi \rightarrow$ output negative $\rightarrow$ decide \textbf{0}.
+  \item \textbf{Decision device} at threshold $\lambda = 0$ V rebuilds the sequence.
+\end{enumerate}
+{\color{sub}\footnotesize \mk{No carrier recovery circuit anywhere in this diagram.} That is
+the mark the examiner is looking for.}}
+
+\vspace{2pt}
+\sbsr{0.56}{%
+\figT{c4_dpsk_table.png}
+\vspace{1pt}
+{\color{sub}\footnotesize Differential encoding worked through: the starred bit is the
+arbitrary reference. Row 2 is $d_k$, row 3 its phase, last row the recovered data.
+\yr{SST, Modulation extra note}}}{%
+\lead{DPSK against BPSK}
+\begin{itemize}
+  \item \textbf{Bandwidth} $f_b$ against $2 f_b$ $\rightarrow$ DPSK halves it.
+  \item \textbf{Carrier at demodulator}: not required against required.
+  \item \textbf{Error probability}: higher against low.
+  \item \textbf{Bit detection}: over two successive bit intervals against a single interval.
+  \item \textbf{Circuit}: simpler receiver, but the encoder adds transmitter complexity.
+\end{itemize}
+
+\lead{(+) and (-)}
+\begin{itemize}
+  \item (+) No carrier recovery $\rightarrow$ cheap, small, fast to acquire.
+  \item (+) Works where the channel rotates phase faster than a PLL can track.
+  \item (-) $P_e$ roughly 3 dB worse than coherent BPSK.
+  \item (-) \mk{Errors propagate in pairs}: one bad symbol corrupts the reference for the
+        next.
+\end{itemize}}
+
+\vspace{2pt}
+\lead{PN sequence and why it is used \m{2+2} \; \small(full treatment in \S4.7)}
+\begin{itemize}
+  \item \textbf{PN (pseudo-noise) sequence} $=$ a coded sequence of 1s and 0s that looks
+        random to anyone without the generator, but is \mk{completely deterministic and
+        repeatable}.
+  \item Generated by an $m$-stage shift register with XOR (parity) feedback; maximal-length
+        period $= 2^m - 1$ chips.
+  \item \textbf{Properties}: 1s and 0s roughly equiprobable; sharp autocorrelation peak and
+        near-zero elsewhere; low cross-correlation between different codes; adding a shifted
+        copy gives the same sequence in a new phase; easy to generate and synchronise.
+  \item \textbf{Why used:} spreads the spectrum, so the signal hides under the noise floor
+        (low probability of intercept) and shrugs off narrowband jamming.
+  \item \textbf{Why used:} nearly orthogonal codes let many users share one band at once
+        $\rightarrow$ CDMA.
+  \item \textbf{Why used:} gives the receiver a unique pattern to correlate against, which is
+        both the addressing scheme and the synchronisation reference.
+\end{itemize}
+
+\Q{OQPSK transmitter and receiver; why $\pi/4$-QPSK is preferred over OQPSK}{\m{5+2}}
+{\color{sub}\footnotesize \tP{1} \yr{\textbf{71 Bh} \m{5+2}}}
+
+\sbsr{0.53}{%
+\lead{Offset QPSK (OQPSK), also called staggered QPSK}
+\begin{itemize}
+  \item \mk{Same circuit as QPSK, with one change}: the $Q$ arm is delayed by
+        $T_b = T_s/2$ before its balance modulator.
+  \item Effect: the even and odd streams can no longer change at the same instant.
+  \item So \textbf{only one of I or Q switches at a time} $\rightarrow$ maximum phase change is
+        $\pm 90^\circ$, never $180^\circ$.
+  \item The envelope therefore \mk{never passes through zero}, and band-limiting produces
+        only shallow dips instead of nulls.
+  \item Hard-limiting or class-C amplification no longer regenerates the sidelobes, so OQPSK
+        keeps its spectral occupancy in a real transmitter.
+  \item Phase transitions happen every $T_b$ instead of every $T_s$, i.e. twice as often but
+        half as violent.
+  \item \textbf{PSD, BER and bandwidth are identical to QPSK.} The gain is purely in envelope
+        behaviour.
+\end{itemize}
+
+\lead{Transmitter \m{2.5}}
+\begin{enumerate}
+  \item NRZ $\rightarrow$ serial-to-parallel into $m_I(t)$ and $m_Q(t)$.
+  \item \mk{Insert a $T_b$ delay in the $Q$ branch.}
+  \item $m_I$ $\times \cos 2\pi f_c t$, delayed $m_Q$ $\times \sin 2\pi f_c t$.
+  \item Sum, then BPF $\rightarrow$ OQPSK out.
+\end{enumerate}
+
+\lead{Receiver \m{2.5}}
+\begin{enumerate}
+  \item Coherent, exactly the QPSK receiver: BPF, carrier recovery, two correlators,
+        two decision circuits.
+  \item \mk{The $T_b$ stagger is removed} by delaying the $I$ decision (or advancing $Q$)
+        before the multiplexer, so the dibits re-align.
+  \item Symbol timing recovery is taken from the transitions, which now occur every $T_b$.
+\end{enumerate}}{%
+\figT{c4_oqpsk_wave.png}
+\vspace{1pt}
+{\color{sub}\footnotesize \textbf{OQPSK time offset}: $m_I(t)$ changes at even multiples of
+$T$, $m_Q(t)$ at odd multiples. Note the half-symbol offset. \yr{Rappaport Fig 5.30}}
+
+\vspace{4pt}
+\figT{c4_pi4_const.png}
+\vspace{1pt}
+{\color{sub}\footnotesize \textbf{$\pi/4$-QPSK}: constellation (a) and constellation (b) are
+used on alternate symbols, giving the 8-state pattern below with all allowed transitions
+drawn. \yr{Rappaport Fig 5.31}}}
+
+\vspace{2pt}
+\sbsr{0.50}{%
+\lead{$\pi/4$-QPSK, the compromise}
+\begin{itemize}
+  \item Two QPSK constellations, offset from each other by $\pi/4$, used on
+        \textbf{alternate symbols}.
+  \item Signalling points therefore take \textbf{8} possible phase states, but only 4 are
+        available in any one symbol.
+  \item Maximum phase change is limited to $\pm 135^\circ$: worse than OQPSK's
+        $90^\circ$, much better than QPSK's $180^\circ$.
+  \item \mk{Every symbol carries a phase transition} (no $0^\circ$ option), which makes clock
+        recovery easy.
+  \item Usually sent \textbf{differentially encoded} as $\pi/4$-DQPSK.
+  \item Used in IS-136 (US digital cellular), PDC and PHS (Japan), TETRA.
+\end{itemize}}{%
+\lead{\mk{Why $\pi/4$-QPSK is preferred over OQPSK} \m{2}}
+\begin{enumerate}
+  \item \textbf{It can be detected non-coherently.} Because it is differentially encoded, a
+        differential or discriminator detector works. \mk{OQPSK must be detected coherently},
+        and the half-symbol offset makes differential detection impossible.
+  \item Non-coherent detection $\rightarrow$ \textbf{no carrier recovery circuit}
+        $\rightarrow$ far simpler, cheaper, faster-acquiring receiver.
+  \item \textbf{Better in multipath spread and fading}, where a coherent receiver cannot hold
+        a phase reference. This is the mobile channel exactly.
+  \item Guaranteed transition every symbol $\rightarrow$ reliable symbol timing recovery even
+        on long runs of identical dibits.
+  \item Cost accepted: envelope variation is larger than OQPSK's, so a mildly linear amplifier
+        is still needed. \added
+\end{enumerate}}
+
+\hr
+
+\T{4.4 Constant envelope modulation: BFSK, MSK, GMSK}
+
+{\color{sub}\footnotesize \textbf{Constant envelope} (also called non-linear) means carrier
+amplitude never changes, whatever the data. \mk{Why mobile radio loves it:} a class-C
+amplifier can be run into saturation at 60 to 70\,\% efficiency instead of a linear amplifier
+backed off to 20\,\%, which is the difference between a day and an afternoon of battery life.
+Also: very little out-of-band spillage, simpler receiver, and high immunity to random FM noise
+and Rayleigh fading.}
+
+\sbsr{0.50}{%
+\lead{BFSK, the starting point}
+\begin{itemize}
+  \item Two carrier frequencies $f_{c1}$ (mark) and $f_{c2}$ (space) carry 1 and 0.
+  \item $s_i(t) = \sqrt{2E_b/T_b}\,\cos(2\pi f_{ci} t)$, $i = 1, 2$.
+  \item Constant amplitude $\rightarrow$ constant envelope.
+  \item Detected \textbf{coherently} (two correlators, compare outputs) or
+        \textbf{non-coherently} (two BPFs $+$ envelope detectors $+$ comparator).
+  \item (+) simple, insensitive to amplitude fluctuation, low $P_e$.
+  \item (-) \mk{needs more bandwidth than ASK or PSK}.
+  \item (-) If the two oscillators are free-running the phase jumps at every transition
+        $\rightarrow$ spectral widening, large sidelobes.
+  \item Fix: \textbf{CPFSK}, one oscillator whose frequency is shifted, so phase stays
+        continuous.
+\end{itemize}}{%
+\lead{MSK $=$ the best CPFSK}
+\begin{itemize}
+  \item \mk{Definition 1 (as CPFSK):} a special case of CPFSK in which the peak frequency
+        deviation is exactly \textbf{one quarter of the bit rate},
+        $\Delta f = R_b/4$, giving modulation index $h = 2\Delta f\,T_b = 0.5$.
+  \item $h = 0.5$ is the \mk{smallest index for which the two tones are orthogonal},
+        $f_1 - f_2 = 1/(2T_b)$. Hence ``\textbf{minimum} shift''.
+  \item Orthogonal $\rightarrow$ uncorrelated $\rightarrow$ the receiver separates them
+        cleanly.
+  \item \mk{Definition 2 (as OQPSK):} MSK is OQPSK in which the rectangular data pulses are
+        replaced by \textbf{half-cycle sinusoidal} pulses.
+  \item That pulse shaping is what makes the phase change \emph{linear} and bounded to
+        $\pm \pi/2$ over a bit interval, so phase is continuous and smooth.
+  \item Also called \textbf{Fast FSK}: the frequency shift is only half that of ordinary FSK.
+  \item Good envelope, good spectral efficiency, good BER, no bandpass filter needed.
+\end{itemize}}
+
+\Q{MSK as a special type of CPFSK and of OQPSK; compare OQPSK, MSK and GMSK; which suits GSM}{\m{2}\m{4}\m{3+3+2}}
+{\color{sub}\footnotesize \tF{4} \yr{\texttt{80 Ba}, \texttt{81 Ba} \m{3+3+2},
+\textbf{80 Ch} \m{2}, \textbf{76 Bh} \m{4}} \gap$\cdot$\gap
+\mk{MSK and GMSK together are asked in 6 of 22 papers}}
+
+\vspace{1pt}
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}L{3.1cm}XXX@{}}
+\toprule
+\hrow \thead{} & \thead{OQPSK} & \thead{MSK} & \thead{GMSK} \\
+\midrule
+Family & linear & constant envelope & constant envelope \\
+Pulse shape & rectangular & half-cycle sine & Gaussian \\
+Null-to-null BW & $R_b$ & $1.5 R_b$ & below $R_b$ \\
+99\,\% power BW & narrowest of the three & $1.20 R_b$ & $0.86 R_b$ at $BT = 0.25$ \\
+Sidelobe roll-off & $f^{-2}$, slowest & $f^{-4}$ & fastest of the three \\
+Envelope & near-constant & \textbf{constant} & \textbf{constant} \\
+Power efficiency & $Q(\sqrt{2E_b/N_0})$ & the same & slight loss from ISI \\
+Amplifier needed & mildly linear & class C, saturated & class C, saturated \\
+Detection & coherent only & coherent or not & \textbf{FM discriminator works} \\
+\bottomrule
+\end{tabularx}
+\end{center}
+\vspace{2pt}
+{\color{sub}\footnotesize \mk{Read the table as a story}: OQPSK has the narrowest main lobe but
+the slowest-decaying tails, MSK trades a wider main lobe for tails that die four times faster,
+GMSK then squeezes the main lobe back down with a Gaussian filter and pays for it in ISI.}
+
+\vspace{2pt}
+\sbsr{0.50}{%
+\lead{\mk{Which is suitable for GSM, and why} \m{2}}
+\begin{itemize}
+  \item \textbf{GMSK with $BT = 0.3$.} Three reasons, in order of weight:
+  \begin{enumerate}
+    \item \textbf{Constant envelope} $\rightarrow$ the handset can use a saturated class-C
+          power amplifier $\rightarrow$ battery life and cheap RF.
+    \item \textbf{Compact spectrum} $\rightarrow$ fits the 200 kHz GSM carrier with acceptable
+          adjacent channel interference. MSK alone leaks too much.
+    \item \textbf{Detectable non-coherently} by a simple FM discriminator, so the receiver
+          stays cheap.
+  \end{enumerate}
+  \item $BT = 0.3$ is the chosen compromise: tight enough spectrum, ISI penalty still small
+        enough to be equalized out.
+\end{itemize}}{%
+\figT{c4_msk_psd.png}
+\vspace{1pt}
+{\color{sub}\footnotesize PSD of MSK against GMSK at three $BT$ values, plus the occupied RF
+bandwidth table in units of $R_b$. \mk{MSK's tails do not fall fast enough} to protect the
+adjacent channel, which is the entire reason GMSK exists. \yr{SST Ch 4}}}
+
+\Q{GMSK transmission and detection process, block diagram and constellation}{\m{6}\m{8}}
+{\color{sub}\footnotesize \tF{4} \yr{\textbf{\texttt{79 Bh}} \m{2+6},
+\texttt{81 Ba} \m{8}, \textbf{76 Bh} \m{4}, 70 Ma \m{8}} \gap$\cdot$\gap
+\mk{79 Bh pairs it with ``advantages of digital modulation'', see \S4.1}}
+
+\sbsr{0.50}{%
+\lead{What GMSK is}
+\begin{itemize}
+  \item MSK preceded by a \textbf{premodulation Gaussian low-pass filter}.
+  \item The Gaussian filter has \mk{no zero crossings and no overshoot}, so it smooths the
+        rectangular data into a shape that suppresses the high-frequency content responsible
+        for MSK's sidelobes.
+  \item Transfer function
+        $H(f) = \exp\!\left[-\dfrac{\ln 2}{2}\left(\dfrac{f}{B}\right)^{\!2}\right]$,
+        where $B$ is the \textbf{3 dB bandwidth} of the filter.
+  \item The filter is fully described by $B$ and the symbol duration $T$, so GMSK is named by
+        its \mk{$BT$ product}. $BT = \infty$ is plain MSK.
+  \item \textbf{Smaller $BT$}: tighter spectrum, sidelobes fall away faster, but the pulse
+        spreads over more symbols $\rightarrow$ more \mk{ISI} $\rightarrow$ higher BER.
+  \item GSM: $BT = 0.3$. CDPD and Mobitex also use GMSK.
+  \item Constellation: same 4 points as QPSK, but the trajectory between them
+        \mk{follows the unit circle} instead of cutting across it, which is the constant
+        envelope drawn.
+\end{itemize}}{%
+\figT{c4_gmsk_tx.png}
+\vspace{1pt}
+{\color{sub}\footnotesize \textbf{GMSK transmitter, FM route.} \yr{SST Ch 4}}
+\vspace{4pt}
+\figT{c4_gmsk_iq.png}
+\vspace{1pt}
+{\color{sub}\footnotesize \textbf{GMSK transmitter, I-Q route.} \yr{SST, Fig 3.2.17}}}
+
+\vspace{2pt}
+\sbsr{0.50}{%
+\figT{c4_gmsk_rx.png}
+\vspace{1pt}
+{\color{sub}\footnotesize \textbf{GMSK detector}, orthogonal coherent form. \yr{SST, Fig 3.2.18}}}{%
+\lead{Transmission process \m{3}}
+\begin{enumerate}
+  \item Data $\rightarrow$ \textbf{bipolar NRZ encoder} $\rightarrow$ $\pm 1$ rectangular
+        pulses.
+  \item $\rightarrow$ \textbf{Gaussian LPF} of bandwidth $B$, which rounds every pulse edge.
+  \item $\rightarrow$ \textbf{FM modulator} set to modulation index exactly 0.5, driven by the
+        carrier oscillator $\cos\omega_c t$.
+  \item Output is GMSK: constant amplitude, continuous smoothly varying phase.
+  \item \textbf{I-Q alternative} (right-hand figure above): the filtered signal is integrated,
+        split into in-phase and quadrature paths, each Gaussian-filtered and multiplied by
+        $\cos\omega_c t$ / $\sin\omega_c t$, then subtracted. \mk{Advantage: the index stays at
+        exactly 0.5 with no tuning or drift.}
+\end{enumerate}
+
+\lead{Detection process \m{3}}
+\begin{enumerate}
+  \item \textbf{Coherent (orthogonal) detector}, drawn left: GMSK splits into two arms.
+  \item Each arm has a \textbf{balance modulator} fed by $\cos\omega_c t$ or $\sin\omega_c t$,
+        then a \textbf{Gaussian filter} matched to the transmitter's.
+  \item Each arm's \textbf{decision device} compares against its own threshold, giving
+        $I(t)$ and $Q(t)$, which are recombined into the bit stream.
+  \item \textbf{Non-coherent alternative}: a simple \textbf{FM discriminator} followed by an
+        integrate-and-dump. Much cheaper, small BER penalty. This is what a GSM handset
+        actually does.
+\end{enumerate}}
+
+\vspace{2pt}
+\lead{Worked example: sizing the Gaussian filter \added \; \small(tutorial problem, never a PYQ)}
+\begin{asked}[PROBLEM]{SST tutorial \textperiodcentered{} not from any paper}
+Find the 3-dB bandwidth for a Gaussian low pass filter used to produce 0.25 GMSK with a
+channel data rate of $R_b = 270$ kbps. What is the 90\,\% power bandwidth in the RF channel?
+\end{asked}
+
+\sbsr{0.52}{%
+\lead{Step 1: symbol duration}
+\begin{itemize}
+  \item Binary GMSK, so one bit per symbol and
+        $T = 1/R_b = 1/270{,}000 = \mathbf{3.7\ \mu s}$.
+\end{itemize}
+
+\lead{Step 2: 3-dB bandwidth from the $BT$ product}
+\begin{itemize}
+  \item ``0.25 GMSK'' means $BT = 0.25$, so
+        $B = 0.25/T = 0.25/3.7\ \mu\text{s} = \mathbf{67.57\ kHz}$.
+\end{itemize}
+
+\lead{Step 3: 90\,\% power RF bandwidth from the table}
+\begin{itemize}
+  \item Read the occupied RF bandwidth table (\S4.4 figure): row $BT = 0.25$, column 90\,\%
+        gives $\mathbf{0.57 R_b}$.
+  \item RF BW $= 0.57 \times 270{,}000 = \mathbf{153.9\ kHz}$.
+\end{itemize}}{%
+\lead{Answer}
+\begin{itemize}
+  \item 3-dB filter bandwidth $B = \mathbf{67.57\ kHz}$.
+  \item 90\,\% power RF bandwidth $= \mathbf{153.9\ kHz}$.
+\end{itemize}
+
+\lead{Notes on this problem}
+\begin{itemize}
+  \item \mk{Real GSM uses $BT = 0.3$ and $R_b = 270.833$ kbps}, not the rounded values here.
+        Answer with whatever the paper prints.
+  \item The table is in units of $R_b$, so always multiply the tabulated figure by the bit
+        rate. Forgetting that is the standard slip.
+  \item Sanity check: 153.9 kHz sits inside GSM's 200 kHz carrier spacing, which is exactly
+        the design intent.
+\end{itemize}}
+
+\hr
+
+\T{4.5 M-ary modulation: MPSK, MFSK and QAM}
+
+\sbsr{0.50}{%
+\lead{The M-ary idea}
+\begin{itemize}
+  \item Send one of $M = 2^n$ distinct waveforms per signalling interval, carrying $n$ bits.
+  \item Symbol duration $T_s = n T_b$, so the symbol rate drops by $n$ for the same bit rate.
+  \item \mk{Bandwidth needed falls by a factor of $n$}, i.e. $\eta_B$ rises to $n$ bps/Hz
+        in principle.
+  \item Cost: the $M$ points crowd together, $d_{\min}$ shrinks, so \mk{more power is needed}
+        for the same BER. $\eta_p$ falls.
+  \item \textbf{MPSK}: all $M$ points on one circle of radius $\sqrt{E_s}$, differing only in
+        phase. Constant envelope, but $d_{\min} = 2\sqrt{E_s}\sin(\pi/M)$ collapses as $M$
+        grows.
+  \item \textbf{MFSK}: $M$ orthogonal frequencies. Here bandwidth \emph{grows} with $M$ while
+        power efficiency \emph{improves}: the opposite trade to MPSK.
+  \item \textbf{QAM}: vary amplitude \emph{and} phase, so points fill a 2-D grid instead of a
+        circle.
+  \item 3G and later lean on these: EV-DO adapts between QPSK, 8-PSK and 16-QAM by channel
+        quality.
+\end{itemize}}{%
+\figT{c4_qam16.png}
+\vspace{1pt}
+{\color{sub}\footnotesize \textbf{16-QAM}, a $4\times4$ grid, 4 bits per symbol.
+Nearest-neighbour distance is the same everywhere, which is why the grid beats the circle.
+\yr{SST Ch 4}}}
+
+\Q{Why do we need M-ary QAM? Compare 16-QAM and 16-PSK using constellation diagrams}{\m{2+6}}
+{\color{sub}\footnotesize \tP{1} \yr{\textbf{77 Ch} \m{2+6}}}
+
+\sbsr{0.46}{%
+\lead{Why M-ary QAM is needed \m{2}}
+\begin{itemize}
+  \item Spectrum is licensed and finite, data demand is not. Binary schemes cap out near
+        1 bps/Hz.
+  \item M-ary raises $\eta_B$ to $\log_2 M$ bps/Hz without extra bandwidth.
+  \item But \textbf{M-ary PSK alone fails at high $M$}: all points sit on one circle, so
+        $d_{\min}$ falls like $\sin(\pi/M)$ and the power cost explodes.
+  \item \mk{QAM uses the radial dimension too.} Spreading points over a 2-D grid gives a much
+        larger $d_{\min}$ for the same average power.
+  \item So M-ary QAM is the only practical way to reach 4, 6 or 8 bits per symbol on a
+        band-limited channel.
+\end{itemize}}{%
+\figT{c4_16psk_qam.png}
+\vspace{1pt}
+{\color{sub}\footnotesize \textbf{16-PSK} (left): 16 points on one circle, all at the same
+power, spacing $22.5^\circ$. \textbf{16-QAM} (right): 16 points on a $4\times4$ grid, three
+different amplitudes. Same 4 bits per symbol either way. \yr{SST Ch 4}}}
+
+\vspace{2pt}
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}L{4.4cm}XX@{}}
+\toprule
+\hrow \thead{Parameter} & \thead{16-PSK} & \thead{16-QAM} \\
+\midrule
+Bits per symbol & 4 & 4 \\
+Bandwidth & same & same (identical symbol rate) \\
+Constellation & 16 points, one circle & $4\times4$ grid, 3 amplitude levels \\
+Envelope & \textbf{constant} & varies \\
+Amplifier & non-linear, efficient & \textbf{linear, backed off} \\
+$d_{\min}$ at equal peak power & smaller & \textbf{larger} \\
+Power for the same $d_{\min}$ & \textbf{1.6 dB more peak power} & reference \\
+Power at equal $d_{\min}$ (average) & \textbf{4.19 dB more average power} \added & reference \\
+Noise immunity & equal, if $d_{\min}$ is equalised & equal, at less power \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\vspace{2pt}
+\sbs{%
+\lead{The number the examiner wants}
+\begin{itemize}
+  \item \mk{At the same minimum Euclidean distance (the same noise immunity), 16-QAM needs
+        1.6 dB less peak power than 16-PSK.}
+  \item Measured on \emph{average} power instead, the gap is \textbf{4.19 dB} \added.
+  \item Both figures describe the same fact: the grid packs 16 points more economically than
+        the circle.
+  \item \mk{Careful:} the lecture note's line ``noise immunity is same'' is only true when the
+        two are compared at equal $d_{\min}$. At equal transmit power 16-QAM is clearly better.
+\end{itemize}}{%
+\lead{So why is 16-PSK used at all}
+\begin{itemize}
+  \item Constant envelope $\rightarrow$ the transmitter can saturate its amplifier.
+  \item 16-QAM's amplitude variation forces a linear amplifier with 6 to 8 dB of back-off,
+        which \mk{gives back much of the 4.19 dB}.
+  \item Rule of thumb: QAM on the downlink (base station has mains power), constant envelope
+        on the uplink (handset does not).
+  \item Both need coherent detection and accurate gain control.
+\end{itemize}}
+
+\vspace{2pt}
+\sbsr{0.50}{%
+\figT{c4_qam_mod.png}
+\vspace{1pt}
+{\color{sub}\footnotesize \textbf{QAM modulator.} \yr{SST, Fig 3.2.21}}}{%
+\lead{QAM modulator, walked through}
+\begin{enumerate}
+  \item Binary stream at $f_b$ enters a \textbf{2-bit serial-to-parallel converter}
+        (4-bit for 16-QAM), clocked at the symbol rate $T_s$.
+  \item Each half feeds a \textbf{D/A converter} that turns the bit group into a multi-level
+        signal $d_1(t)$ and $d_2(t)$.
+  \item $d_1(t)$ multiplies $\cos 2\pi f_c t$, $d_2(t)$ multiplies $\sin 2\pi f_c t$ (carrier
+        through a $\pi/2$ shifter).
+  \item Summer adds the two $\rightarrow$ a signal whose amplitude \emph{and} phase both carry
+        data.
+  \item \textbf{Demodulator} is the QPSK receiver with A/D converters instead of 1-bit
+        decision devices, plus a carrier recovery circuit (raise to 4th power, BPF at $4f_c$,
+        divide by 4).
+\end{enumerate}}
+
+\hr
+
+\T{4.6 OFDM \; \small\mk{the single most examined topic in this chapter}}
+
+{\color{sub}\footnotesize \textbf{Orthogonal frequency division multiplexing.} One high-rate
+carrier replaced by many low-rate ones, spaced so they overlap without interfering. It is the
+air interface of WiFi, WiMAX, LTE and 5G, and it is asked in \mk{9 of the 22 papers} here,
+always with a block diagram attached.}
+
+\Q{OFDM operation, block diagram of transmitter and receiver}{\m{4}\m{8}}
+{\color{sub}\footnotesize \tS{9} \yr{\textbf{74 Bh} \m{8}, \textbf{\texttt{80 Bh}} \m{8},
+\textbf{78 Ch} \m{8}, 71 Ma \m{8}, \textbf{70 Bh} \m{4}, \textbf{79 Ch} \m{4} (Tx only),
+\textbf{80 Ch} \m{4} (Rx only), \textbf{\texttt{82 Bh}} \m{4+4}, 70 Ma \m{8}}
+\gap$\cdot$\gap \mk{9 of 22 papers. Nothing else in the chapter comes close.}}
+
+\sbsr{0.50}{%
+\lead{The problem OFDM solves}
+\begin{itemize}
+  \item Push the bit rate up on a \textbf{single carrier} and the symbol period $T_s$ shrinks.
+  \item Once $T_s$ approaches the channel's \textbf{delay spread} $\sigma_\tau$, echoes of
+        symbol $n$ land on top of symbol $n{+}1$ $\rightarrow$ severe \textbf{ISI} and
+        frequency-selective fading.
+  \item Fixing that in the time domain needs an equalizer with a great many taps, which is
+        expensive and must adapt continuously.
+  \item \mk{OFDM's answer: do not make the symbol shorter, make it longer, and send many of
+        them side by side.}
+\end{itemize}
+
+\lead{The principle \m{4}}
+\begin{itemize}
+  \item Split the high-rate stream into \textbf{$N$ parallel low-rate substreams}.
+  \item Each substream modulates its own \textbf{subcarrier}, using QPSK or QAM.
+  \item Each subcarrier's symbol period becomes $N T_s$, now \mk{much longer than the delay
+        spread} $\rightarrow$ each subchannel sees \textbf{flat} fading, not selective.
+  \item Flat fading $\rightarrow$ one complex multiply per subcarrier undoes the channel.
+        \mk{The many-tap equalizer disappears.}
+  \item Subcarrier spacing is set to $\Delta f = 1/T$, which makes them
+        \textbf{orthogonal}: each one's spectrum has a null exactly where every other one
+        peaks.
+  \item So the spectra may \mk{overlap without interfering}, and no guard bands are needed.
+        Against FDM that is roughly a \textbf{50\,\% bandwidth saving}.
+  \item The whole bank of $N$ modulators is computed as one \textbf{IFFT}, and the bank of
+        demodulators as one \textbf{FFT}. No oscillator bank, no filter bank.
+\end{itemize}}{%
+\figT{c4_ofdm_fdm.png}
+\vspace{1pt}
+{\color{sub}\footnotesize \mk{The figure that answers ``OFDM principle''.} FDM (top) wastes
+spectrum on guard bands. OFDM (bottom) overlaps orthogonal subcarriers and needs none.
+\yr{AS Sir, OFDM notes}}
+\vspace{4pt}
+\figT{c4_ofdm_concept.png}
+\vspace{1pt}
+{\color{sub}\footnotesize Data is coded in the \textbf{frequency} domain, IFFT turns it into a
+time waveform, the channel acts, FFT recovers each subcarrier separately.
+\yr{AS Sir, OFDM notes}}}
+
+\vspace{2pt}
+\sbsr{0.52}{%
+\figT{c4_ofdm_block.png}
+\vspace{1pt}
+{\color{sub}\footnotesize \textbf{Draw exactly this for the 8-mark question.} Transmitter on
+top, receiver below, channel and noise between them. \yr{AS Sir, OFDM notes}}}{%
+\lead{Transmitter chain \m{4}}
+\begin{enumerate}
+  \item \textbf{Modulation / symbol mapping}: bits $\rightarrow$ QPSK or QAM symbols (after
+        channel coding and interleaving).
+  \item \textbf{S/P}: serial symbol stream split into $N$ parallel subcarrier values, i.e. a
+        frequency-domain block.
+  \item \textbf{IFFT}: converts that block to $N$ time-domain samples. This \emph{is} the
+        modulation.
+  \item \textbf{P/S}: back to a serial sample stream.
+  \item \textbf{Insert CP}: cyclic prefix prepended (see below).
+  \item \textbf{D/A} $\rightarrow$ up-convert to RF $\rightarrow$ antenna.
+\end{enumerate}
+
+\lead{Receiver chain \m{4}}
+\begin{enumerate}
+  \item Down-convert $\rightarrow$ \textbf{A/D}.
+  \item \textbf{Synchronise}: packet detection, then carrier frequency offset correction.
+  \item \textbf{Remove CP}, discard the guard samples.
+  \item \textbf{S/P} $\rightarrow$ block of $N$ time samples.
+  \item \textbf{FFT} $\rightarrow$ back to the frequency domain, one value per subcarrier.
+  \item \textbf{Equalize}: divide each subcarrier by its estimated $H[k]$, one tap each.
+  \item \textbf{P/S} $\rightarrow$ \textbf{de-modulation / de-mapping} $\rightarrow$
+        deinterleave and decode $\rightarrow$ data out.
+\end{enumerate}
+{\color{sub}\footnotesize \mk{Receiver is the transmitter read right to left.} Say that and you
+have drawn half the answer.}}
+
+\vspace{2pt}
+\sbsr{0.50}{%
+\lead{Cyclic prefix, the detail that earns marks}
+\begin{itemize}
+  \item Even with long symbols, the tail of one OFDM symbol still smears into the next.
+  \item A blank guard interval would work, but the hardware must transmit continuously and
+        the exact delay spread is unknown.
+  \item \mk{Solution: copy the last $T_g$ of the symbol and glue it on the front.}
+  \item Two effects:
+  \begin{itemize}
+    \item Any echo arriving within $T_g$ falls inside the copied portion, so it corrupts only
+          the prefix, which is thrown away $\rightarrow$ \textbf{ISI removed}.
+    \item Linear convolution with the channel becomes \emph{circular} convolution, so after
+          the FFT each subcarrier is simply scaled: $Y[k] = H[k]X[k]$ $\rightarrow$
+          \textbf{one-tap equalization}.
+  \end{itemize}
+  \item Requirement: $T_g >$ maximum delay spread. In 802.11, CP\,:\,data $= 1:4$.
+  \item Side benefit: the packet still decodes even if detected a little late.
+  \item \mk{Cost: the CP is pure overhead}, up to 20 to 25\,\% of throughput.
+\end{itemize}}{%
+\figT{c4_cp.png}
+\vspace{1pt}
+{\color{sub}\footnotesize The tail of the symbol is copied to the front as an extension.
+\yr{AS Sir, OFDM notes}}
+
+\lead{Two more practical details}
+\begin{itemize}
+  \item \textbf{Virtual (null) subcarriers} at the band edges are left unused: edge bins are
+        the most vulnerable to frequency offset, and the gap suppresses out-of-band radiation.
+  \item \textbf{Pilot subcarriers} carry known symbols so the receiver can track residual
+        phase and estimate $H[k]$.
+  \item 802.11a splits its 64 bins as \textbf{48 data $+$ 4 pilot $+$ 12 null} \added.
+        The lecture note's ``48 of 64 occupied'' counts only the data bins.
+\end{itemize}}
+
+\creamq{OFDM: advantages and disadvantages}{\m{4}}
+{\color{sub}\footnotesize \tP{1} \yr{\textbf{\texttt{82 Bh}} \m{4+4}} \gap$\cdot$\gap
+\mk{asked together with ``draw the transmitting side'', so budget the time}}
+
+\sbs{%
+\lead{Advantages}
+\begin{itemize}
+  \item \textbf{High spectral efficiency}: overlapping orthogonal subcarriers, no guard bands,
+        roughly twice FDM's.
+  \item \textbf{Immune to ISI and frequency-selective fading}: long symbols plus the CP.
+  \item \textbf{Simple equalization}: one complex multiply per subcarrier, no adaptive
+        transversal filter.
+  \item \textbf{Efficient to build}: FFT/IFFT in DSP, cost grows as $N\log N$, not $N^2$.
+  \item \textbf{Robust to narrowband interference}: a jammer kills a few subcarriers, and
+        coding $+$ interleaving recovers them.
+  \item \textbf{Flexible}: power and modulation order can be set per subcarrier (adaptive bit
+        loading); extends naturally to OFDMA and MIMO.
+\end{itemize}}{%
+\lead{Disadvantages}
+\begin{itemize}
+  \item \mk{High PAPR (peak-to-average power ratio)}: $N$ subcarriers can add in phase, so the
+        amplifier needs heavy back-off $\rightarrow$ poor efficiency. \textbf{The main
+        drawback.} It is why LTE uses SC-FDMA, not OFDMA, on the uplink.
+  \item \textbf{Very sensitive to frequency offset and phase noise}: any error destroys
+        orthogonality $\rightarrow$ inter-carrier interference (ICI).
+  \item \textbf{Sensitive to Doppler}: a fast-moving mobile changes the channel within one
+        long symbol.
+  \item \textbf{CP overhead} wastes 20 to 25\,\% of both time and energy.
+  \item \textbf{Tight synchronisation} needed in both time and frequency.
+\end{itemize}
+{\color{sub}\footnotesize \textbf{Used in}: DAB, DVB-T, 802.11a/g/n/ac, WiMAX, LTE downlink,
+5G NR, ADSL.}}
+
+\hr
+
+\T{4.7 Spread spectrum: PN sequences, DSSS and FHSS}
+
+\Q{Define spread spectrum modulation; DSSS with transmitter and receiver block diagrams}{\m{5}\m{6}\m{2+6}}
+{\color{sub}\footnotesize \tF{4} \yr{\textbf{\texttt{82 Bh}} \m{2+6}, \texttt{81 Ba} \m{6},
+\textbf{80 Ch} \m{2+5}, 73 Ma \m{4}} \gap$\cdot$\gap
+\mk{spread spectrum overall: 7 of 22 papers}}
+
+\sbsr{0.52}{%
+\lead{Definition \m{2}}
+\begin{itemize}
+  \item A modulation in which the transmitted signal occupies a bandwidth \mk{far greater than
+        the minimum needed to send the message}.
+  \item Spreading is done by a \textbf{code independent of the data}, usually a PN sequence.
+  \item The receiver \textbf{de-spreads} using a synchronised copy of the same code.
+  \item \mk{Only a receiver holding the code can recover the message.} To anyone else the
+        signal looks like a rise in the noise floor.
+  \item \textbf{Processing gain}
+        $PG = \dfrac{B_{ss}}{B} = \dfrac{T_b}{T_c} = N$ chips per bit. This number \emph{is}
+        the jamming margin.
+\end{itemize}
+
+\lead{The two problems it answers}
+\begin{itemize}
+  \item How to secure information over a broadcast medium.
+  \item How to survive deliberate jamming and external interference.
+  \item (And, as a bonus, how to let many users share one band with no coordination.)
+\end{itemize}}{%
+\figT{c4_ss_model.png}
+\vspace{1pt}
+{\color{sub}\footnotesize \textbf{General model of a spread spectrum system.} Note the
+symmetry: the same pseudonoise generator appears at both ends, and it sits \emph{outside} the
+channel coding. \yr{SST Ch 4, Fig 7.1}}}
+
+\vspace{2pt}
+\sbsr{0.50}{%
+\figT{c4_pn_gen.png}
+\vspace{1pt}
+{\color{sub}\footnotesize \textbf{PN sequence generator}: $m$ D flip-flops in a shift register,
+XOR parity feedback into $D_0$. Maximal length $2^m - 1$. \yr{SST Ch 4, Fig 12.3}}}{%
+\lead{PN sequence properties \m{2}}
+\begin{itemize}
+  \item Coded sequence of 1s and 0s with \textbf{noise-like} statistics but deterministic
+        generation.
+  \item \textbf{Balance}: 1s and 0s occur with near-equal probability.
+  \item \textbf{Shift property}: adding a shifted copy of a PN sequence gives back the same
+        sequence in a different phase.
+  \item \textbf{High autocorrelation} at zero lag, near zero elsewhere $\rightarrow$ the
+        receiver can find the exact code phase.
+  \item \textbf{Low cross-correlation} with other codes $\rightarrow$ other users look like
+        noise.
+  \item Easy to generate and to synchronise, in hardware, at chip rate.
+\end{itemize}}
+
+\vspace{2pt}
+\sbsr{0.50}{%
+\lead{DSSS transmitter \m{3}}
+\begin{enumerate}
+  \item Original data bit stream at rate $R_b$, in $\pm 1$ form.
+  \item \textbf{Chip (PN) generator} produces a code at rate $R_c = N R_b$, i.e. $N$ chips per
+        data bit.
+  \item \textbf{Multiplier} multiplies data by chips. \mk{Each data bit is replaced by $N$
+        chips}, which is where the bandwidth expansion happens.
+  \item The wideband product PSK-modulates the carrier $\rightarrow$ transmitted DSSS signal.
+  \item Spectrum is now $N$ times wider and $N$ times lower in power density, so the signal
+        can sit \emph{beneath} the noise floor.
+\end{enumerate}
+
+\lead{DSSS receiver \m{3}}
+\begin{enumerate}
+  \item BPF and PSK demodulation give back the wideband chip stream.
+  \item A \textbf{local PN generator}, synchronised to the transmitter's, produces the same
+        code.
+  \item \textbf{Multiply again by the same code}: since $(\pm 1)^2 = +1$, the data collapses
+        back to its original narrow bandwidth (de-spreading).
+  \item \mk{Anything not multiplied by the matching code gets spread instead of de-spread},
+        so interference and other users are pushed down by the processing gain.
+  \item Narrowband filter $+$ integrate-and-dump $\rightarrow$ recovered data.
+\end{enumerate}}{%
+\figT{c4_dsss_block.png}
+\vspace{1pt}
+{\color{sub}\footnotesize \textbf{DSSS spreading.} \yr{SST Ch 4}}
+\vspace{4pt}
+\figT{c4_dsss_wave.png}
+\vspace{1pt}
+{\color{sub}\footnotesize \textbf{DSSS waveform example}: one data bit, an 11-chip code, and
+their product. Data 1 passes the code through, data 0 inverts it. \yr{SST Ch 4}}}
+
+\vspace{2pt}
+\sbs{%
+\lead{DSSS (+)}
+\begin{itemize}
+  \item Multiple access with no coordination $\rightarrow$ \textbf{CDMA}, IS-95 and 3G.
+  \item Narrowband jamming is suppressed by the full processing gain.
+  \item Multipath components arriving more than one chip apart are resolvable
+        $\rightarrow$ \textbf{RAKE} receiver turns them into diversity (Ch 5).
+  \item No frequency planning: every cell can use every frequency.
+\end{itemize}}{%
+\lead{DSSS (-)}
+\begin{itemize}
+  \item \mk{Near-far problem}: a close transmitter swamps a distant one, so tight and fast
+        power control is mandatory.
+  \item PN acquisition and tracking is slow and hardware-hungry.
+  \item \textbf{Self-jamming}: code cross-correlation is low but not zero, so users interfere
+        with each other as the load rises.
+\end{itemize}}
+
+\Q{FHSS operation with a neat block diagram}{\m{4}\m{5}}
+{\color{sub}\footnotesize \tF{3} \yr{\textbf{79 Ch} \m{2+5}, \textbf{73 Bh} \m{4}, 73 Ma \m{4}}
+\gap$\cdot$\gap \mk{as FHMA this is a TOP-tier Ch 7 question, see \S7.3}}
+
+\sbsr{0.50}{%
+\lead{Operation \m{4}}
+\begin{itemize}
+  \item FHSS uses \textbf{$M$ different carrier frequencies}, and the carrier hops among them
+        in a pseudo-random pattern.
+  \item Binary data is applied to an \textbf{M-ary FSK modulator}.
+  \item A \textbf{pseudorandom code generator} drives a \textbf{frequency synthesizer}, which
+        produces the whole range of hop frequencies from one reference.
+  \item The synthesizer output at any instant is the \textbf{frequency hop}, chosen by the
+        current $k$ code bits from a frequency table of $2^k$ entries.
+  \item A \textbf{mixer} combines each hop with the MFSK signal $\rightarrow$ transmitted
+        signal.
+  \item \mk{The spectrum is spread sequentially, not instantaneously}: at any one moment the
+        signal is narrowband, but over time it covers the whole band.
+  \item The receiver runs the same code and synthesizer, so its local oscillator hops in
+        lockstep and de-hops the signal back to a fixed IF.
+\end{itemize}
+
+\lead{Slow against fast hopping}
+\begin{itemize}
+  \item \textbf{Slow FHSS}: several symbols per hop ($R_h < R_s$). Cheaper synthesizer, used
+        by GSM and Bluetooth.
+  \item \textbf{Fast FHSS}: several hops per symbol ($R_h > R_s$). Each symbol gets frequency
+        diversity, so a bad hop cannot kill it. Costs a fast synthesizer.
+\end{itemize}}{%
+\figT{c4_fhss_tx.png}
+\vspace{1pt}
+{\color{sub}\footnotesize \textbf{FHSS transmitter.} Code generator $\rightarrow$ frequency
+table $\rightarrow$ synthesizer $\rightarrow$ modulator. \yr{SST Ch 4}}
+\vspace{4pt}
+\figT{c4_fhss_sel.png}
+\vspace{1pt}
+{\color{sub}\footnotesize \textbf{Frequency selection}: each 3-bit group of the PN stream
+indexes one row of the frequency table, which is the next hop. \yr{SST Ch 4}}}
+
+\vspace{2pt}
+\sbs{%
+\lead{FHSS (+)}
+\begin{itemize}
+  \item \mk{Immune to the near-far problem}: two users are almost never on the same frequency
+        at the same instant, so no tight power control is needed.
+  \item Resists partial-band jamming and frequency-selective fading, because the signal moves
+        out of the bad band on the next hop.
+  \item Synchronisation is easier and faster than DSSS's chip-level acquisition.
+  \item Longer range for the same power, since instantaneous bandwidth stays narrow.
+\end{itemize}}{%
+\lead{FHSS (-)}
+\begin{itemize}
+  \item Needs a fast, agile and expensive \textbf{frequency synthesizer}.
+  \item \textbf{Hits}: when two users pick the same hop, both symbols are lost, so error
+        control coding is mandatory.
+  \item Detection is usually non-coherent (the phase is lost at every hop), costing about
+        3 dB.
+  \item Total bandwidth is large, so it must be licensed or confined to an ISM band.
+\end{itemize}
+{\color{sub}\footnotesize \textbf{Bluetooth}: 79 hop channels, 1600 hops/s, 625 $\mu$s dwell.}}
+
+\creamq{Advantages and major disadvantages of spread spectrum}{\m{2}\m{4}}
+{\color{sub}\footnotesize \yr{\textbf{76 Bh} \m{4} (+), \textbf{77 Ch} \m{2} (-)}}
+
+\sbs{%
+\lead{Advantages \m{4}}
+\begin{itemize}
+  \item \textbf{Anti-jam}: a narrowband jammer is spread by $PG$ at the receiver, so its
+        effective power drops by the processing gain.
+  \item \textbf{Low probability of intercept}: the signal sits under the noise floor, so an
+        eavesdropper cannot even tell it is there.
+  \item \textbf{Privacy}: without the code the signal cannot be de-spread.
+  \item \textbf{Multiple access}: near-orthogonal codes let many users occupy one band at once
+        (CDMA).
+  \item \textbf{Multipath rejection}: delayed copies decorrelate with the code and are either
+        rejected or harvested by a RAKE receiver.
+  \item \textbf{Graceful degradation}: adding users raises the noise floor a little rather than
+        blocking calls outright.
+  \item Mitigates ISI, and \mk{bandwidth efficiency actually rises as simultaneous users
+        increase}.
+\end{itemize}}{%
+\lead{Major disadvantages \m{2}}
+\begin{itemize}
+  \item \mk{Large bandwidth} needed, many times the message bandwidth. Spectrum is expensive.
+  \item Complex and costly transmitter and receiver: PN generation, acquisition, tracking.
+  \item \textbf{Long acquisition time} before the first bit can be decoded.
+  \item \textbf{Near-far problem} in DSSS $\rightarrow$ fast closed-loop power control needed.
+  \item \textbf{Self-jamming} from non-zero code cross-correlation, which caps capacity.
+  \item Synchronisation of the two PN generators must be exact to within a fraction of a chip.
+\end{itemize}}
+
+\hr
+
+\T{4.8 Performance of modulation in fading channels \; \pillo{sub}{syllabus, no PYQ yet}}
+
+\sbs{%
+\lead{What the fading channel does to BER}
+\begin{itemize}
+  \item In \textbf{AWGN} the error probability falls \emph{exponentially} with $E_b/N_0$.
+  \item In \textbf{flat Rayleigh fading} it falls only \emph{inversely}:
+        $\bar{P_e} \approx 1/(4\,\overline{E_b/N_0})$ for coherent BPSK.
+  \item Consequence: reaching $10^{-3}$ BER needs about \mk{7 dB in AWGN and about 24 dB in
+        Rayleigh fading}. Tens of dB of extra power for the same quality. \added
+  \item Cause: the deep fades dominate the average, not the typical signal level.
+  \item Cure is \textbf{diversity}, not more power (Ch 5).
+\end{itemize}}{%
+\lead{The irreducible error floor}
+\begin{itemize}
+  \item In \textbf{frequency-selective} fading, ISI produces errors that
+        \mk{no amount of transmit power removes}.
+  \item The floor is set by the ratio $\sigma_\tau / T_s$, i.e. delay spread against symbol
+        period.
+  \item In \textbf{fast fading}, random FM from Doppler produces a second floor set by
+        $f_d T_s$.
+  \item Four ways out: equalization, spread spectrum $+$ RAKE, OFDM (long symbols), and
+        diversity.
+\end{itemize}}
+
+\vspace{2pt}
+\sbs{%
+\lead{Which scheme survives the mobile channel}
+\begin{itemize}
+  \item \textbf{Coherent} schemes suffer most: the receiver cannot track a phase reference
+        that is being randomised by the channel.
+  \item \textbf{Differential and non-coherent} schemes (DPSK, $\pi/4$-DQPSK, GMSK with a
+        discriminator) degrade far more gracefully.
+  \item \textbf{Constant envelope} schemes suit the handset, because the power amplifier can
+        saturate.
+  \item \textbf{Linear} schemes (QAM) need back-off and accurate gain control, so they belong
+        on the downlink or on a fixed link.
+\end{itemize}}{%
+\lead{The trade-off table in one line each}
+\begin{itemize}
+  \item \textbf{BPSK}: most power efficient binary scheme, poorest $\eta_B$.
+  \item \textbf{QPSK / OQPSK}: double $\eta_B$ at no BER cost, envelope problems.
+  \item \textbf{MSK / GMSK}: constant envelope, non-coherent detection, GSM's choice.
+  \item \textbf{M-QAM}: highest $\eta_B$, needs high SNR and a linear amplifier.
+  \item \textbf{DSSS}: trades a huge bandwidth for interference immunity and multiple access.
+  \item \textbf{OFDM}: turns a selective channel into many flat ones, pays in PAPR.
+\end{itemize}}
+
+\hr
+
+\T{4.9 Last-minute recall for this chapter}
+
+\sbs{%
+\lead{Must memorise}
+\begin{itemize}
+  \item QPSK: 2 bits/symbol, $T_s = 2T_b$, null-null BW $= R_b$, \mk{same BER as BPSK}.
+  \item MSK: CPFSK with $h = 0.5$, $\Delta f = R_b/4$, equals OQPSK with half-sine pulses.
+  \item GMSK: MSK $+$ Gaussian LPF, $H(f) = \exp[-\tfrac{\ln 2}{2}(f/B)^2]$,
+        \mk{GSM uses $BT = 0.3$}.
+  \item Smaller $BT$ $\rightarrow$ tighter spectrum, more ISI.
+  \item OFDM: $\Delta f = 1/T$, IFFT at the transmitter, FFT at the receiver, CP $>$ delay
+        spread, main drawback \mk{PAPR}.
+  \item Spread spectrum: $PG = B_{ss}/B = T_b/T_c = N$.
+  \item PN generator: $m$ stages, maximal length $2^m - 1$.
+  \item 16-QAM against 16-PSK: \mk{1.6 dB less peak power} at equal $d_{\min}$, 4.19 dB less
+        average power.
+  \item $\pi/4$-QPSK: max phase change $135^\circ$, differentially detectable, IS-136 and PDC.
+\end{itemize}}{%
+\lead{Most repeated, in order}
+\begin{enumerate}
+  \item OFDM transmitter and receiver +Fig \tS{9}
+  \item Spread spectrum, DSSS and FHSS +Fig \tS{7}
+  \item MSK and GMSK, and why GSM chose GMSK \tS{6}
+  \item QPSK transmission and detection +Fig \tF{4}
+  \item OFDM (+) and (-) \tP{1}
+  \item 16-QAM against 16-PSK \tP{1}
+  \item DPSK transmitter and receiver, PN sequence \tP{1}
+  \item OQPSK, and why $\pi/4$-QPSK beats it \tP{1}
+\end{enumerate}
+{\color{sub}\footnotesize \mk{Draw first, then annotate.} An unlabelled correct block diagram
+still scores; three paragraphs with no diagram do not.}}
+
+\vspace{2pt}
+{\color{sub}\footnotesize \mk{No paper in 2070--2082 has set a numerical from this chapter.}
+The one calculation worth holding is the Gaussian-filter sizing in \S4.4, which is a tutorial
+problem, not a PYQ. Everything examined here is descriptive, and the marks live in the figures.}

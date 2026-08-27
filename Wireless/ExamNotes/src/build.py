@@ -28,6 +28,8 @@ TARGETS = {
     "ch3":     ("ch3-standalone", "Ch3 - Radio Wave Propagation.pdf"),
     "ch3-num": ("ch3-num-standalone",
                 "Ch3 - Radio Wave Propagation - Numerical Problems & Solutions.pdf"),
+    "ch4":     ("ch4-standalone",
+                "Ch4 - Modulation and Demodulation Methods.pdf"),
     "ch5":     ("ch5-standalone", "Ch5 - Equalization and Diversity Techniques.pdf"),
     "ch5-num": ("ch5-num-standalone",
                 "Ch5 - Equalization and Diversity Techniques - Numerical Problems & Solutions.pdf"),
