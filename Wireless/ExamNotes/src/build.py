@@ -39,6 +39,7 @@ TARGETS = {
     "ch7":     ("ch7-standalone", "Ch7 - Multiple Access in Wireless Communications.pdf"),
     "ch7-num": ("ch7-num-standalone",
                 "Ch7 - Multiple Access in Wireless Communications - Numerical Problems & Solutions.pdf"),
+    "ch8":     ("ch8-standalone", "Ch8 - Wireless Systems and Standards.pdf"),
 }
 
 

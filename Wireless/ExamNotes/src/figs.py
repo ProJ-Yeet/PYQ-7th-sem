@@ -66,6 +66,11 @@ C4_SSD = os.path.join(SSD, "Chapter 4 Modulation.pdf")
 C4_OFDM = os.path.join(AS, "ofdm_new.pdf")
 C7_SST = os.path.join(SST, "Chapter 7 Multiple Access Techniques.pdf")
 C7_SSD = os.path.join(SSD, "Chapter 7 Multiple Access Techniques.pdf")
+C8_SST = os.path.join(SST, "Chapter 8.pdf")
+# despite the file name this SSD document is a CHAPTER 8 source: it is the
+# IS-95 forward and reverse channel write-up, one clean vector block diagram
+# per logical channel. It renders normally, no flat=True needed.
+C8_CDMA = os.path.join(SSD, "Chapter 7 CDMA Channels.pdf")
 
 JOBS = []
 
@@ -204,6 +209,40 @@ add("c7_cdma_demux.png", C7_SST, 35, box=(0.115, 0.205, 0.885, 0.625))
 add("c7_tdma_frame.png", C7_SSD, 15, flat=True, box=(0.11, 0.135, 0.86, 0.705))
 add("c7_fhma_tx.png", C7_SSD, 24, flat=True, box=(0.085, 0.10, 0.96, 0.63))
 add("c7_fhma_rx.png", C7_SSD, 25, flat=True, box=(0.02, 0.10, 0.94, 0.76))
+
+
+# ------------------------------------------------------------------ chapter 8
+# SST's Ch8 deck renders cleanly and carries the Rappaport Ch 10 / Ch 11
+# figures. Pages are 960x540, so a manual box is in 16:9 fractions.
+add("c8_arch.png", C8_SST, 4, box=(0.146, 0.213, 0.854, 0.907))     # vector
+add("c8_interfaces.png", C8_SST, 9)
+add("c8_gsm_specs.png", C8_SST, 10)
+add("c8_frame_hierarchy.png", C8_SST, 17)
+add("c8_speech_multiframe.png", C8_SST, 22)
+add("c8_control_multiframe.png", C8_SST, 23)
+add("c8_burst_formats.png", C8_SST, 31)
+# p32 is 720x540, not 960x540 like most of this deck; the auto rect is right.
+# A small pink smudge in the source bitmap's bottom-left corner cannot be
+# cropped out without losing the "guard space" label, so it stays.
+add("c8_slot_breakdown.png", C8_SST, 32)
+add("c8_location_update.png", C8_SST, 33)
+add("c8_logical_channels.png", C8_SST, 34)
+add("c8_signal_proc.png", C8_SST, 37)
+add("c8_channel_coding.png", C8_SST, 40)
+add("c8_walsh_gen.png", C8_SST, 43)
+add("c8_fwd_cdma.png", C8_SST, 45)
+add("c8_rev_cdma.png", C8_SST, 48)
+# per-channel IS-95 block diagrams, one per page of the SSD write-up
+add("c8_pilot_ch.png", C8_CDMA, 2)
+add("c8_sync_ch.png", C8_CDMA, 3)
+add("c8_paging_ch.png", C8_CDMA, 4, pad=0.0)
+add("c8_fwd_traffic_ch.png", C8_CDMA, 5)
+add("c8_access_ch.png", C8_CDMA, 7)
+add("c8_rev_traffic_ch.png", C8_CDMA, 8)
+# Rappaport 1e Ch 10 standard-summary tables (scanned pages, manual boxes)
+add("c8_analog_systems.png", BOOK, 595, box=(0.098, 0.437, 0.855, 0.833))
+add("c8_cordless_std.png", BOOK, 596, box=(0.095, 0.138, 0.860, 0.502))
+add("c8_2g_std.png", BOOK, 596, box=(0.093, 0.510, 0.860, 0.921))
 
 
 def rect_for(pg, job):

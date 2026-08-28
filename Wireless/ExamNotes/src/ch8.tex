@@ -1,0 +1,1271 @@
+%=======================================================================
+%  CHAPTER 8 — WIRELESS SYSTEMS AND STANDARDS  (6 hrs)
+%=======================================================================
+\section{Wireless Systems and Standards}
+
+{\color{sub}\footnotesize 6 hrs \gap$\cdot$\gap asked in \mk{21 of 22 papers}
+(only 72 Ma skips it) \gap$\cdot$\gap 5 syllabus sub-topics \gap$\cdot$\gap
+\mk{no numerical component}: the one calculation the syllabus touches, GSM frame
+efficiency, is worked in \textbf{Ch 7 companion \S3}.}
+
+\lead{Read this first:}
+\begin{itemize}
+  \item This chapter is \mk{always the last question on the paper}, and it is nearly always
+        a full 8 marks plus a 4 or 5 mark rider. Two of its topics are among the six most
+        repeated in the whole subject.
+  \item Five blocks carry the chapter, in order of return:
+  \begin{itemize}
+    \item \textbf{Regulatory issues} \tS{9} $\rightarrow$ pure recall, no diagram, no
+          formula. \mk{The cheapest 4 to 5 marks in the subject.}
+    \item \textbf{GSM traffic and control channels} \tS{8} $\rightarrow$ the BCH / CCCH /
+          DCCH tree, with what each channel does and which way it points.
+    \item \textbf{GSM system architecture} \tS{7} $\rightarrow$ one diagram plus one line
+          per block.
+    \item \textbf{IS-95 forward and reverse channels} \tS{6} $\rightarrow$ draw the
+          composite block diagram and name the four forward, two reverse channels.
+    \item \textbf{GSM frame structure and hierarchy} \tF{5} $\rightarrow$ hyperframe down
+          to time slot, with the four durations.
+  \end{itemize}
+  \item \mk{Learn 4 diagrams cold}: GSM architecture, GSM frame hierarchy, the forward
+        CDMA (IS-95) channel, and the GSM signal-processing chain. They answer about
+        30 marks.
+  \item \mk{Name clash to watch.} In this chapter \textbf{BCH $=$ broadcast channel} and
+        \textbf{SCH $=$ synchronisation channel}. In \textbf{Ch 6} BCH is the
+        Bose--Chaudhuri--Hocquenghem block code. Same letters, unrelated.
+  \item GSM's access scheme (TDMA/FDMA/FDD with slow hopping) is argued in \textbf{Ch 7};
+        the frame efficiency proof is in \textbf{Ch 7 companion \S3}. \mk{Do not re-derive
+        either here}, cross-refer and spend the words on the channels.
+  \item \textbf{WLAN and WiFi} are answered in \textbf{Ch 7 \S7.11}. \mk{WiMAX, LTE, UMTS
+        and EVDO belong here}, in \S8.13.
+\end{itemize}
+
+\hr
+
+\T{8.1 GSM: what it is, its services and its features}
+
+\Q{What is GSM? State its services and features. Give its specifications}{\m{5}}
+{\color{sub}\footnotesize \yr{\textbf{74 Bh} \m{5} (specifications of GSM)}
+\gap$\cdot$\gap never asked alone as a definition, but \mk{every GSM question opens with
+these three lines}, so they are worth two minutes}
+
+\sbsr{0.52}{%
+\lead{Definition and history}
+\begin{itemize}
+  \item \textbf{GSM} $=$ global system for mobile communications.
+  \item \mk{The first cellular system to specify digital modulation, network-level
+        architecture and services together}, not just an air interface.
+  \item \textbf{1982}: CEPT sets up \emph{Groupe Sp\'ecial Mobile} to build one
+        pan-European cellular system in the 900 MHz band.
+  \item \textbf{1990}: the same specification is applied at 1800 MHz as \textbf{DCS 1800},
+        a PCN deployment started in the UK.
+  \item \textbf{1992}: renamed \textbf{Global System for Mobile Communications}, for
+        marketing reasons. The acronym stayed.
+  \item Later carried into the USA at 1900 MHz as \textbf{PCS 1900}.
+\end{itemize}}{%
+\lead{Features worth naming \m{2}}
+\begin{itemize}
+  \item \textbf{Superior speech quality} against the analog systems it replaced.
+  \item \textbf{High security}: SIM-based authentication and over-the-air ciphering.
+  \item \textbf{International roaming}, because one standard covers many countries.
+  \item \textbf{Low-power hand-held terminals}, helped by discontinuous transmission.
+  \item \textbf{Open, published standard} $\rightarrow$ many vendors, low equipment cost.
+\end{itemize}}
+
+\vspace{2pt}
+\sbsr{0.52}{%
+\lead{Three categories of service}
+\begin{enumerate}
+  \item \textbf{Teleservices}: voice, emergency calling, \textbf{SMS}, fax.
+  \item \textbf{Bearer services}: data transport, \mk{300 to 9600 bps}.
+  \item \textbf{Supplementary services}: call forwarding, call barring, call waiting,
+        caller ID, conferencing.
+\end{enumerate}}{%
+\lead{The three frequency plans}
+\par\vspace{2pt}
+\begin{tabularx}{\linewidth}{@{}L{1.9cm}XX@{}}
+\toprule
+\hrow \thead{System} & \thead{Uplink (MS $\rightarrow$ BS)} & \thead{Downlink (BS $\rightarrow$ MS)} \\
+\midrule
+GSM 900  & 890--915 MHz   & 935--960 MHz \\
+DCS 1800 & 1710--1785 MHz & 1805--1880 MHz \\
+PCS 1900 & 1850--1910 MHz & 1930--1990 MHz \\
+\bottomrule
+\end{tabularx}
+\vspace{2pt}
+{\color{sub}\footnotesize All three are \textbf{FDD}. \mk{Uplink is always the lower band},
+because path loss is slightly lower there and the handset is the power-limited end.
+\yr{SST Ch 8}}}
+
+\T{8.2 GSM system architecture \; \small\mk{one of the two most repeated questions in this chapter}}
+
+\Q{Draw and explain the GSM architecture; explain the operation of each component}{\m{4}\m{5}\m{7}\m{8}\m{4+4}}
+{\color{sub}\footnotesize \tS{7} \yr{\textbf{\texttt{82 Bh}} \m{4} (NSS only),
+\texttt{80 Ba} \m{8}, \textbf{\texttt{79 Bh}} \m{8}, \textbf{73 Bh} \m{4} (NSS) $+$ \m{5},
+73 Ma \m{7}, 71 Ma \m{4+4}, 70 Ma \m{8}} \gap$\cdot$\gap
+\mk{four papers ask only for the NSS}, so learn that box in more detail than the rest}
+
+\sbsr{0.50}{%
+\figT{c8_arch.png}
+\vspace{1pt}
+{\color{sub}\footnotesize \textbf{Draw exactly this.} Three dashed boxes, three named
+interfaces, and the public networks hanging off the MSC. \yr{SST Ch 8}}
+
+\vspace{3pt}
+\lead{1. Base Station Subsystem (BSS), the radio subsystem}
+\begin{itemize}
+  \item \textbf{MS} $=$ mobile station $=$ \textbf{ME} (mobile equipment) $+$ \textbf{SIM}.
+  \begin{itemize}
+    \item ME carries the \textbf{IMEI}, the equipment's own identity.
+    \item SIM carries the \textbf{IMSI}, the subscriber's identity, plus the secret key.
+    \item \mk{Identity is in the card, not the handset} $\rightarrow$ personal mobility.
+  \end{itemize}
+  \item \textbf{BTS} $=$ base transceiver station. Houses the radio transceivers that
+        define one cell. Talks to the MS over the \textbf{Um} air interface.
+  \item \textbf{BSC} $=$ base station controller.
+  \begin{itemize}
+    \item Manages radio resources for one to several hundred BTSs.
+    \item Radio channel setup, frequency hopping, power control.
+    \item \mk{Performs handover between two BTSs under itself}; anything wider goes to
+          the MSC.
+    \item Connects to the BTS over the \textbf{Abis} interface.
+  \end{itemize}
+\end{itemize}}{%
+\lead{2. Network and Switching Subsystem (NSS) \m{4}}
+\begin{itemize}
+  \item Handles \textbf{switching of GSM calls between the BSCs and external networks},
+        and holds every subscriber database.
+  \item \textbf{MSC} $=$ mobile switching centre. The central unit: controls traffic among
+        BSCs, sets up and releases calls, handles inter-BSC handover, and gateways to
+        \textbf{PSTN, ISDN and data networks}. Reaches the BSC over the \textbf{A}
+        interface.
+  \item \textbf{HLR} $=$ home location register.
+  \begin{itemize}
+    \item Permanent record of every subscriber \textbf{homed} on this MSC: IMSI, number,
+          subscribed services.
+    \item Also holds the subscriber's \textbf{current location}, so an incoming call can be
+          routed to wherever the mobile now is.
+  \end{itemize}
+  \item \textbf{VLR} $=$ visitor location register.
+  \begin{itemize}
+    \item Temporarily stores the IMSI and customer data of every \textbf{roaming}
+          subscriber inside this MSC's area.
+    \item On log-in the MSC tells the visitor's \textbf{home} HLR where they are, so the
+          home HLR can route incoming calls over the PSTN.
+  \end{itemize}
+  \item \textbf{AuC} $=$ authentication centre. Strongly protected database of the
+        authentication and ciphering keys of every subscriber in the HLR and VLR.
+  \item \textbf{EIR} $=$ equipment identity register.
+  \begin{itemize}
+    \item Lists IMEIs as white (allowed), grey (tracked) or black (barred).
+    \item A stolen handset's IMEI (dial \code{*\#06\#} to read it) is blacklisted here, and
+          optionally in the \textbf{CEIR}, which bars it on every operator that subscribes.
+    \item \mk{EIR bars the handset, AuC authenticates the subscriber.} Different targets.
+  \end{itemize}
+\end{itemize}
+
+\lead{3. Operation Support Subsystem (OSS) \m{2}}
+\begin{itemize}
+  \item Built around one or more \textbf{OMC} $=$ operation and maintenance centres.
+  \item Lets engineers \textbf{monitor, diagnose and troubleshoot} every part of the
+        network: MS, BTS, BSC, MSC.
+  \item Maintains hardware and network performance records.
+  \item Handles \textbf{charging and billing}.
+\end{itemize}}
+
+\vspace{2pt}
+\sbsr{0.47}{%
+\figT{c8_interfaces.png}
+\vspace{1pt}
+{\color{sub}\footnotesize The three standardised interfaces. \mk{Naming them is usually
+worth a mark on its own}, and they are what makes multi-vendor GSM possible.
+\yr{SST Ch 8, Fig 11.6}}}{%
+\lead{The interfaces, and why they matter}
+\begin{itemize}
+  \item \textbf{Um} $=$ MS to BTS, the \textbf{air interface}. The only radio hop.
+  \item \textbf{Abis} $=$ BTS to BSC. Standardised, so a BTS and a BSC may come from
+        different vendors.
+  \item \textbf{A} $=$ BSC to MSC. Standardised.
+  \item \textbf{SS7} carries the signalling on from the MSC into the PSTN.
+  \item \mk{Because Abis and A are open, an operator can mix vendors.} That is the whole
+        commercial point of GSM being a \emph{network} standard and not only an air
+        interface.
+\end{itemize}
+
+\lead{Answer skeleton \m{8}}
+\begin{enumerate}
+  \item Draw the figure. Three subsystems boxed, interfaces labelled. \m{3}
+  \item BSS: MS, BTS, BSC, one line each. \m{2}
+  \item NSS: MSC, HLR, VLR, AuC, EIR, one line each. \m{2}
+  \item OSS: OMC, monitoring and billing. \m{1}
+\end{enumerate}}
+
+\T{8.3 GSM radio subsystem and specifications}
+
+\Q{Specifications of GSM; the radio subsystem and ARFCN}{\m{5}}
+{\color{sub}\footnotesize \yr{\textbf{74 Bh} \m{5}} \gap$\cdot$\gap
+\mk{these numbers also feed the frame-structure and frame-efficiency answers}, so they earn
+their place even though the question itself is rare}
+
+\sbsr{0.53}{%
+\lead{The radio plan}
+\begin{itemize}
+  \item Two \textbf{25 MHz} bands: \textbf{890--915 MHz reverse} (MS to BS),
+        \textbf{935--960 MHz forward} (BS to MS).
+  \item Multiple access is \textbf{FDD $+$ TDMA over FDMA}, with optional slow
+        \textbf{frequency hopping}. See \textbf{Ch 7 \S7.3}.
+  \item Each band is cut into \textbf{200 kHz} carriers called \textbf{ARFCN}s, absolute
+        radio frequency channel numbers.
+  \item \mk{One ARFCN names a forward and reverse pair 45 MHz apart}, so an ARFCN is a
+        duplex channel, not a single frequency.
+  \item $25\ \text{MHz} / 200\ \text{kHz} = 125$ carriers, but a \textbf{100 kHz guard band}
+        is left at each edge, so only \mk{124 duplex channels} are usable, ARFCN 1 to 124.
+  \item Each 200 kHz carrier is time shared by \textbf{8 users} using TDMA.
+  \item \textbf{Physical channel $=$ (ARFCN, time slot number)}. A \textbf{logical channel}
+        is then mapped onto a physical channel, see \S8.5.
+  \item DCS 1800 uses 1710--1785 / 1805--1880 MHz, three times the spectrum, giving
+        \textbf{374} duplex channels.
+\end{itemize}}{%
+\figT{c8_gsm_specs.png}
+\vspace{1pt}
+{\color{sub}\footnotesize \textbf{Reproduce this table for a \m{5} specifications question.}
+\yr{Rappaport Table 10.3, via SST Ch 8} \gap$\cdot$\gap
+\mk{one printed value to know about}: the table gives the voice coder at \textbf{13.4 kbps},
+while the RPE-LTP codec itself produces \textbf{260 bits per 20 ms $=$ 13.0 kbps} exactly
+(\S8.7). Quote 13 kbps if you are asked for the codec rate. \added}
+
+\vspace{3pt}
+\lead{Rates worth memorising}
+\begin{itemize}
+  \item Modulation \textbf{0.3 GMSK}, channel data rate \mk{270.833 kbps} per carrier.
+  \item Bandwidth efficiency $= 270.833 / 200 = \mathbf{1.354}$ bps/Hz.
+  \item Per-user channel rate $= 270.833 / 8 = \mathbf{33.854}$ kbps.
+  \item After all overhead, \mk{maximum user data rate 24.7 kbps}.
+  \item Bit period \mk{3.692 $\mu$s}, time slot \mk{576.9 $\mu$s}, frame \mk{4.615 ms}.
+\end{itemize}}
+
+\T{8.4 GSM frame structure and frame hierarchy}
+
+\Q{Draw and explain the GSM frame structure / channel structure / frame hierarchy}{\m{4}\m{5}\m{6}}
+{\color{sub}\footnotesize \tF{5} \yr{\textbf{\texttt{82 Bh}} \m{4} (frame hierarchy),
+\textbf{77 Ch} \m{4}, \textbf{76 Bh} \m{5}, 74 Ma \m{6} (channel structure),
+\textbf{70 Bh} \m{4}} \gap$\cdot$\gap
+74 Ma adds \mk{``show that TDMA frame efficiency cannot reach 100\,\% in GSM''} \m{2},
+\textbf{worked in full in Ch 7 companion \S3}}
+
+\sbsr{0.52}{%
+\figT{c8_frame_hierarchy.png}
+\vspace{1pt}
+{\color{sub}\footnotesize \textbf{Draw the hierarchy top down and label the four durations.}
+That is the whole answer to a \m{4} or \m{5} question. \yr{SST Ch 8}}}{%
+\lead{The five levels, bottom up}
+\begin{enumerate}
+  \item \textbf{Time slot} $=$ \mk{156.25 bits $=$ 576.92 $\mu$s}. One burst.
+  \item \textbf{TDMA frame} $=$ 8 slots $=$ 1250 bits $=$ \mk{4.615 ms} $\left(=120/26\
+        \text{ms}\right)$.
+  \item \textbf{Multiframe}, two kinds:
+  \begin{itemize}
+    \item \textbf{26-frame traffic multiframe} $=$ \mk{120 ms}. Carries TCH, SACCH, FACCH.
+    \item \textbf{51-frame control multiframe} $=$ \mk{235.4 ms}. Carries BCH and CCCH.
+  \end{itemize}
+  \item \textbf{Superframe} $=$ 51 traffic multiframes $=$ 26 control multiframes
+        $=$ 1326 TDMA frames $=$ \mk{6.12 s}.
+  \item \textbf{Hyperframe} $=$ 2048 superframes $=$ 2\,715\,648 TDMA frames
+        $=$ \mk{3 h 28 min 53.76 s}.
+\end{enumerate}
+\vspace{2pt}
+{\color{sub}\footnotesize \mk{Why a hyperframe at all}: the ciphering algorithm and the
+hopping sequence are both driven by the frame number, so the frame number must not repeat
+for a long time. \gap$\cdot$\gap \mk{Two multiframe sizes, one superframe}: $51 \times 26$
+either way $=$ 1326, which is exactly why 26 and 51 were chosen. \added
+\gap$\cdot$\gap The SST slide prints the hyperframe as 3 h 28 min \emph{52.76} s;
+$2048 \times 6.12 = 12533.76$ s recomputes to \mk{53.76 s}. \added}}
+
+\vspace{2pt}
+\sbsr{0.47}{%
+\figT{c8_slot_breakdown.png}
+\vspace{1pt}
+{\color{sub}\footnotesize One frame down to one normal burst. The \mk{546.5 $\mu$s} is the
+useful part, \mk{577 $\mu$s} is the whole slot including guard space. \yr{SST Ch 8}}}{%
+\lead{Inside a normal burst \m{3}}
+\begin{itemize}
+  \item \textbf{3 tail bits} $(0,0,0)$ $\rightarrow$ mark the start, let the equalizer
+        settle.
+  \item \textbf{57 encrypted data bits}.
+  \item \textbf{1 stealing flag} $\rightarrow$ says whether this half is user data or
+        \textbf{FACCH} signalling.
+  \item \textbf{26 training bits} $\rightarrow$ a known sequence the receiver correlates
+        against to \mk{build a channel model for the equalizer} (Ch 5).
+  \item \textbf{1 stealing flag}, \textbf{57 encrypted data bits}, \textbf{3 tail bits}.
+  \item \textbf{8.25 guard bits} $\rightarrow$ stop bursts from overlapping and give the
+        power amplifier ramp-up and ramp-down time.
+  \item Total $3+57+1+26+1+57+3 = \mathbf{148}$ useful $+\ 8.25$ guard $=$
+        \mk{156.25 bits}.
+\end{itemize}}
+
+\vspace{2pt}
+\sbsr{0.55}{%
+\figT{c8_burst_formats.png}
+\vspace{1pt}
+{\color{sub}\footnotesize \textbf{Five burst formats, all 156.25 bits.} \yr{Rappaport
+Fig 10.9, via SST Ch 8}}}{%
+\lead{Why five formats}
+\begin{itemize}
+  \item \textbf{Normal burst} $\rightarrow$ TCH and most control channels.
+  \item \textbf{FCCH burst} $\rightarrow$ 142 fixed bits, \mk{all zeros}. Under GMSK an
+        all-zero block becomes a pure tone, which is exactly what a mobile needs to pull its
+        local oscillator onto the base station.
+  \item \textbf{SCH burst} $\rightarrow$ a long \mk{64-bit training sequence}, because the
+        mobile has no channel estimate yet.
+  \item \textbf{RACH (access) burst} $\rightarrow$ 8 start bits and a \mk{68.25-bit extended
+        guard period}. The mobile does not yet know its timing advance, so the burst is kept
+        short to guarantee it cannot land on the next slot.
+  \item \textbf{Dummy burst} $\rightarrow$ mixed bits, no information. Sent on unused slots
+        of the BCH carrier so its \mk{power stays constant} and neighbouring mobiles can
+        measure it.
+\end{itemize}}
+
+\vspace{2pt}
+\sbs{%
+\figT{c8_speech_multiframe.png}
+\vspace{1pt}
+{\color{sub}\footnotesize \textbf{Traffic (speech) multiframe, 26 frames, 120 ms.}
+\yr{SST Ch 8, Fig 11.7}}
+
+\vspace{2pt}
+\lead{Traffic multiframe \m{2}}
+\begin{itemize}
+  \item TCH data runs in \textbf{consecutive frames}, but \mk{frames 13 and 26 are not TCH}.
+  \item \textbf{Frame 13} carries \textbf{SACCH}.
+  \item \textbf{Frame 26} carries \textbf{idle} bits for a full-rate TCH, and SACCH for a
+        half-rate TCH.
+  \item The idle frame is what gives the mobile time to \mk{measure neighbouring cells} for
+        MAHO (Ch 2).
+\end{itemize}}{%
+\figT{c8_control_multiframe.png}
+\vspace{1pt}
+{\color{sub}\footnotesize \textbf{Control multiframe, 51 frames, 235 ms.} (a) forward link
+on TS0, (b) reverse link on TS0. \yr{SST Ch 8, Fig 11.8}}
+
+\vspace{2pt}
+\lead{Control multiframe \m{2}}
+\begin{itemize}
+  \item \textbf{Forward}: F (FCCH) then S (SCH) repeat \mk{every 10 frames}; between them sit
+        B (BCCH) and C (PCH / AGCH) bursts, with one idle frame.
+  \item \textbf{Reverse}: all 51 frames are \textbf{R}, reverse RACH bursts. \mk{The uplink
+        control channel is pure random access}, so no structure is possible.
+  \item Both live in \textbf{TS0 of the BCH ARFCN}.
+\end{itemize}}
+
+\vspace{2pt}
+\lead{Frame efficiency, in one line \m{2}}
+\begin{itemize}
+  \item $\eta_f = \left(1 - \dfrac{b_{OH}}{b_T}\right)\times 100\,\%$, with
+        $b_T = 8 \times 156.25 = 1250$ bits and $b_{OH} = 8\,(6 + 8.25 + 26) = 322$ bits
+        $\rightarrow \eta_f = \mathbf{74.24\,\%}$.
+  \item \mk{It can never be 100\,\%}: tail, training and guard bits are needed for the
+        equalizer and for timing, and removing them breaks the link.
+  \item \textbf{Full working, with the 74 Ma and 70 Bh statements, is in Ch 7
+        companion \S3.} Do not redo it here.
+\end{itemize}
+
+\T{8.5 GSM logical channels: traffic and control \; \small\mk{the most repeated question in this chapter}}
+
+\Q{Explain the working of all traffic and control channels used in GSM}{\m{4}\m{5}\m{6}\m{8}\m{4+4}}
+{\color{sub}\footnotesize \tS{8} \yr{\textbf{\texttt{81 Bh}} \m{8} (control channels),
+\textbf{\texttt{80 Bh}} \m{4+4} (BCH $+$ CCCH), \textbf{79 Ch} \m{5} (BCCH only),
+\textbf{78 Ch} \m{8}, \textbf{77 Ch} \m{6}, \textbf{75 Bh} \m{8}, \textbf{72 Ash} \m{8},
+\textbf{70 Bh} \m{4}} \gap$\cdot$\gap
+\mk{80 Bh asks for BCH and CCCH only}, 79 Ch for BCCH only. Read which one is wanted}
+
+\sbsr{0.42}{%
+\figT{c8_logical_channels.png}
+\vspace{1pt}
+{\color{sub}\footnotesize \textbf{Draw this tree first, then write one line per leaf.}
+\yr{SST Ch 8}}
+
+\vspace{3pt}
+\lead{Physical against logical}
+\begin{itemize}
+  \item \textbf{Physical channel} $=$ one ARFCN $+$ one time slot number. Hardware.
+  \item \textbf{Logical channel} $=$ a stream of a particular kind, \mk{mapped onto} a
+        physical channel. Meaning.
+  \item Many logical channels time-share the same physical channel over the multiframe.
+\end{itemize}}{%
+\lead{Traffic channels (TCH) \m{2}}
+\begin{itemize}
+  \item Carry \textbf{digitally encoded user speech or user data}, both directions.
+  \item \textbf{Full rate TCH/FS}: a slot in \mk{every} frame $\rightarrow$ 22.8 kbps.
+  \item \textbf{Half rate TCH/HS}: a slot in \mk{every second} frame $\rightarrow$
+        11.4 kbps, doubling the users per carrier.
+  \item Data variants: TCH/F9.6, F4.8, F2.4 and TCH/H4.8, H2.4.
+\end{itemize}
+
+\lead{1. Broadcast channels (BCH) \; forward only, on TS0 of the BCH ARFCN \m{4}}
+\begin{itemize}
+  \item \textbf{BCCH}, broadcast control channel.
+  \begin{itemize}
+    \item Broadcasts \textbf{cell and network identity}, the list of channels in use, and the
+          access parameters.
+    \item \mk{This is what a nearby mobile reads to identify a cell and lock on to it.}
+  \end{itemize}
+  \item \textbf{FCCH}, frequency correction channel.
+  \begin{itemize}
+    \item Occupies TS0 of the first frame, \mk{repeated every 10th frame} of the control
+          multiframe.
+    \item Lets each subscriber unit \textbf{synchronise its local oscillator} to the base
+          station's exact frequency.
+  \end{itemize}
+  \item \textbf{SCH}, synchronisation channel.
+  \begin{itemize}
+    \item Broadcast in TS0 \textbf{immediately after an FCCH frame}.
+    \item Identifies the serving base station and gives \textbf{frame synchronisation}; the
+          base station also issues \textbf{timing advance} here.
+  \end{itemize}
+\end{itemize}}
+
+\vspace{2pt}
+\sbsr{0.46}{%
+\lead{2. Common control channels (CCCH) \; call establishment \m{4}}
+\begin{itemize}
+  \item Occupy TS0 of every control frame \textbf{not} used by the BCH or the idle frame.
+  \item \textbf{PCH}, paging channel, \emph{forward}: notifies a specific mobile of an
+        \textbf{incoming call}.
+  \item \textbf{RACH}, random access channel, \emph{reverse}: the mobile
+        \textbf{acknowledges a page} or \textbf{originates a call}. \mk{Contended, so
+        collisions are possible} and a random backoff is used.
+  \item \textbf{AGCH}, access grant channel, \emph{forward}: the base station's answer to a
+        RACH. Assigns a time slot, radio channel and dedicated control channel.
+        \mk{AGCH is the last CCCH message before the mobile leaves the control channel.}
+\end{itemize}}{%
+\lead{3. Dedicated control channels (DCCH) \; both directions \m{4}}
+\begin{itemize}
+  \item Bidirectional, same format and function each way. May sit in \textbf{any slot on
+        any ARFCN except TS0 of the BCH ARFCN}.
+  \item \textbf{SDCCH}, stand-alone dedicated control channel.
+  \begin{itemize}
+    \item Signalling during idle periods and \textbf{during call setup, before a TCH is
+          allocated}; released as soon as the TCH is assigned.
+    \item Carries authentication, ciphering setup, location update and SMS.
+    \item \mk{The intermediate channel that keeps mobile and base connected while resources
+          are being allocated.}
+  \end{itemize}
+  \item \textbf{SACCH}, slow associated control channel.
+  \begin{itemize}
+    \item \mk{Always paired with a TCH or an SDCCH}; occupies \textbf{every 13th frame} of
+          the traffic multiframe.
+    \item \emph{Forward}: power-level and timing-advance commands.
+    \item \emph{Reverse}: received signal strength and quality reports for the serving cell
+          \textbf{and its neighbours} $\rightarrow$ this is what feeds MAHO.
+  \end{itemize}
+  \item \textbf{FACCH}, fast associated control channel.
+  \begin{itemize}
+    \item Carries \textbf{urgent} signalling, above all \textbf{handover} commands.
+    \item Has no slots of its own: it \mk{steals a TCH burst}, flagged by the two stealing
+          bits in the normal burst.
+    \item \mk{Far faster than SACCH}, at the cost of 20 ms of speech, which the speech
+          decoder conceals.
+  \end{itemize}
+\end{itemize}}
+
+\T{8.6 Example of a GSM call, and location updating}
+
+\Q{GSM frame structure; how traffic and control channels are used while making a call}{\m{4+4}\m{4+6}}
+{\color{sub}\footnotesize \tF{2} \yr{\textbf{70 Bh} \m{4+4}, \textbf{77 Ch} \m{4+6}}
+\gap$\cdot$\gap \mk{the frame-structure half is \S8.4}; this band answers the second half
+\gap$\cdot$\gap the channel names must come out in the right \emph{order}, that is what is
+being marked}
+
+\sbsr{0.55}{%
+\lead{Mobile-originated call setup, in order}
+\begin{enumerate}
+  \item MS reads \textbf{FCCH} $\rightarrow$ pulls its oscillator onto the base station.
+  \item MS reads \textbf{SCH} $\rightarrow$ frame synchronisation and base station identity.
+  \item MS reads \textbf{BCCH} $\rightarrow$ cell and network parameters. It is now
+        \mk{camped on the correct BCH}.
+  \item To originate, MS sends a burst of \textbf{RACH} data on the \textbf{same ARFCN} it
+        is locked to.
+  \item Base station answers with an \textbf{AGCH} message on the CCCH, assigning an
+        \textbf{SDCCH}.
+\end{enumerate}
+\vspace{2pt}
+{\color{sub}\footnotesize \mk{Mobile-terminated differs in one step}: the network first pages
+the mobile on the \textbf{PCH}, the mobile answers on the \textbf{RACH}, and everything from
+step 6 is identical. \added}}{%
+\figT{c8_location_update.png}
+\vspace{1pt}
+{\color{sub}\footnotesize \textbf{Location updating, channel by channel}: which logical
+channel carries each step when a mobile is switched on in a new area. Note how much of it
+rides on the \textbf{SDCCH}. \yr{SST Ch 8, Table 2.1}}}
+
+\vspace{2pt}
+\sbs{%
+\begin{enumerate}
+  \setcounter{enumi}{5}
+  \item MS, which is monitoring \textbf{slot 0 of the BCH}, reads its ARFCN and slot
+        assignment from the AGCH and \textbf{retunes to the SDCCH}.
+  \item Over the SDCCH the MS receives \textbf{timing advance} and \textbf{power level}
+        commands. Only now can it send proper normal bursts.
+  \item SDCCH carries \textbf{authentication} messages both ways. Meanwhile the PSTN
+        connects the dialled party to the MSC, and the MSC switches the speech path to the
+        serving base station.
+  \item Base station commands the MS over the SDCCH to a \textbf{new ARFCN and slot for the
+        TCH}.
+  \item MS tunes to the \textbf{TCH}; speech flows both ways and the \mk{SDCCH is vacated}.
+\end{enumerate}}{%
+\lead{What each stage costs, and why it is built this way}
+\begin{itemize}
+  \item Steps 1--3 are \mk{listen only}. The mobile transmits nothing until it has read the
+        BCH, which is why a handset can be switched on inside a foreign network safely.
+  \item Step 4 is the \mk{only contended transmission} in the whole sequence, so it uses the
+        short RACH burst with its extended guard period (\S8.4).
+  \item Step 7 exists because the mobile does not yet know its distance from the base
+        station. \mk{Without timing advance its normal burst would overlap the next slot.}
+  \item The SDCCH does \mk{all the work of call setup} and is then thrown away. That is what
+        ``stand-alone dedicated'' means: dedicated to one mobile, standing alone from any
+        traffic channel.
+  \item Once on the TCH, further signalling has to \mk{steal bursts (FACCH)} or wait for the
+        13th frame (SACCH), because there is no spare capacity left.
+\end{itemize}}
+
+\T{8.7 Signal processing in GSM: speech in, radio out}
+
+\Q{Basic signal processing operations to convert speech to a radio signal and back}{\m{8}}
+{\color{sub}\footnotesize \tP{2} \yr{\textbf{71 Bh} \m{8}, \texttt{81 Ba} \m{8}}
+\gap$\cdot$\gap \mk{always the full 8 marks} \gap$\cdot$\gap
+speech coding itself is \textbf{Ch 6}, channel coding and interleaving are \textbf{Ch 6},
+equalization is \textbf{Ch 5}. \mk{Here you assemble them into one chain}}
+
+\sbsr{0.55}{%
+\figT{c8_signal_proc.png}
+\vspace{1pt}
+{\color{sub}\footnotesize \textbf{Draw the forward chain, then say the reverse is its mirror.}
+The radio channel sits between modulation and demodulation. \yr{Rappaport Fig 10.11, via
+SST Ch 8}}
+
+\vspace{3pt}
+\lead{The chain, block by block}
+\begin{enumerate}
+  \item \textbf{Digitizing and source coding}: RPE-LTP speech coder,
+        \mk{260 bits per 20 ms $=$ 13 kbps}.
+  \item \textbf{Channel coding}: adds redundancy, \mk{260 $\rightarrow$ 456 bits}
+        $=$ 22.8 kbps.
+  \item \textbf{Interleaving}: the 456 bits are cut into \mk{eight 57-bit sub-blocks} and
+        spread over \textbf{8 consecutive TCH slots}.
+  \item \textbf{Burst formatting}: adds tail, training, stealing and guard bits
+        $\rightarrow$ the 156.25-bit burst of \S8.4.
+  \item \textbf{Ciphering}: A5 stream cipher, keystream XORed with the data bits.
+  \item \textbf{Modulation}: \mk{0.3 GMSK at 270.833 kbps}.
+  \item Radio channel, then \textbf{demodulation, de-ciphering, burst formatting,
+        de-interleaving, channel decoding, source decoding} $\rightarrow$ speech.
+\end{enumerate}}{%
+\lead{Speech coding \m{2}}
+\begin{itemize}
+  \item Coder is a \textbf{RELP / RPE-LTP}: residually excited linear predictor with a long
+        term predictor. Full detail in \textbf{Ch 6}.
+  \item Output \mk{260 bits per 20 ms frame}. Half-rate codec runs at 6.5 kbps.
+  \item \textbf{VAD} $=$ voice activity detector. Speech is active only about \mk{40\,\%} of
+        the time, so \textbf{DTX} switches the transmitter off in the gaps.
+  \item \mk{DTX saves handset battery and cuts interference to other cells.} Comfort noise
+        is inserted at the far end so the line does not sound dead.
+\end{itemize}
+
+\lead{Channel coding \m{3}}
+\begin{itemize}
+  \item The 260 bits are \mk{sorted by how much they matter to speech quality}:
+  \begin{itemize}
+    \item \textbf{50 type Ia} bits, most important $\rightarrow$ \textbf{3 CRC parity} bits
+          added.
+    \item \textbf{132 type Ib} bits, next.
+    \item \textbf{78 type II} bits, least important $\rightarrow$ \mk{no protection at all}.
+  \end{itemize}
+  \item Types Ia and Ib $+$ parity $+$ \textbf{4 tail zeros} $= 189$ bits go through a
+        \mk{rate 1/2, constraint length $K=5$} convolutional encoder $\rightarrow$ 378 bits.
+  \item $378 + 78 = \mathbf{456}$ bits per 20 ms $= \mathbf{22.8}$ kbps.
+  \item \mk{Unequal error protection}: spending all the redundancy on the bits that would
+        wreck the speech is what makes 13 kbps survive a fading channel.
+\end{itemize}}
+
+\vspace{2pt}
+\sbsr{0.40}{%
+\figT{c8_channel_coding.png}
+\vspace{1pt}
+{\color{sub}\footnotesize \textbf{260 bits in, 456 bits out.} \yr{SST Ch 8}}}{%
+\lead{Interleaving, and why 8 slots}
+\begin{itemize}
+  \item A deep fade wipes out a \textbf{burst} of adjacent bits, which no convolutional code
+        handles well.
+  \item Spreading one speech frame over \mk{8 bursts in 8 different frames} turns one long
+        error burst into eight short ones, \mk{one per code frame}, which the decoder can
+        fix.
+  \item Cost: \mk{about 40 ms of extra delay}, which is why the specification table lists
+        interleaving depth as a delay figure.
+  \item \mk{This is why a GSM call survives a moving car.} The channel decorrelates between
+        bursts, so eight bursts are eight independent looks at the same speech frame, i.e.
+        \textbf{time diversity} (Ch 5).
+\end{itemize}}
+
+\T{8.8 CDMA standards: IS-95 frequency and channel specification}
+
+\Q{Frequency and channel specification of the IS-95 CDMA standard}{\m{2}\m{4}}
+{\color{sub}\footnotesize \mk{no paper asks this alone}, but every IS-95 channel question
+opens with it \gap$\cdot$\gap the CDMA \emph{principle}, near-far effect, encoding and
+decoding are all \textbf{Ch 7}; this chapter is only the \textbf{standard}}
+
+\sbsr{0.50}{%
+\lead{IS-95, also called cdmaOne}
+\begin{itemize}
+  \item A \textbf{US standard} built on Qualcomm's technology, the first commercial CDMA
+        cellular system.
+  \item \textbf{FDD}, using two \mk{1.25 MHz simplex channels 45 MHz apart}.
+  \begin{itemize}
+    \item Reverse (uplink) \textbf{824--849 MHz}.
+    \item Forward (downlink) \textbf{869--894 MHz}.
+  \end{itemize}
+  \item Chip rate \mk{1.2288 Mcps}, i.e. $128 \times 9.6$ kbps.
+  \item \mk{Users in a cell and users in adjacent cells share the same radio channel}, so
+        the frequency reuse factor is $N = 1$ and \textbf{no frequency planning is needed}.
+        This is the single biggest planning advantage over GSM.
+  \item $N=1$ is also what makes \textbf{soft handoff} possible: the mobile can be on the
+        same carrier with two base stations at once (Ch 2).
+  \item Variable-rate vocoder: \mk{9.6 / 4.8 / 2.4 / 1.2 kbps}. Later \textbf{EVRC} gives
+        13 kbps quality at the 8 kbps rate.
+\end{itemize}}{%
+\lead{The three code families \m{3}}
+\begin{itemize}
+  \item \textbf{Walsh codes}, 64 rows of a $64\times64$ Hadamard matrix.
+  \begin{itemize}
+    \item \emph{Forward link}: one Walsh code per \textbf{logical channel}, so they separate
+          \mk{channels}.
+    \item \emph{Reverse link}: 64-ary orthogonal modulation, so they separate
+          \mk{groups of six symbols}, not users. \mk{Learn this asymmetry, it is examinable.}
+  \end{itemize}
+  \item \textbf{Short PN codes}, a quadrature pair of period $2^{15}$ chips.
+  \begin{itemize}
+    \item Applied on the I and Q arms after Walsh spreading.
+    \item Each cell or sector uses one of \mk{512 phase offsets}, so the short code
+          \textbf{identifies the sector}.
+  \end{itemize}
+  \item \textbf{Long PN code}, period $2^{42}-1$, generated from a 42-bit mask.
+  \begin{itemize}
+    \item \emph{Forward}: scrambles and encrypts the traffic, mask derived from the user's
+          \textbf{ESN}.
+    \item \emph{Reverse}: \mk{it is the channelising code} $-$ each mobile is separated by
+          its own long-code phase.
+  \end{itemize}
+\end{itemize}
+
+\lead{Power control, because CDMA lives or dies by it \m{2}}
+\begin{itemize}
+  \item \textbf{Open loop}: the mobile measures the received \textbf{pilot} strength and
+        sets its own transmit power inversely.
+  \item \textbf{Closed loop}: the base station measures each mobile and sends
+        \textbf{power control bits} at \mk{800 Hz}, $\pm 1$ dB per bit.
+  \item Without it the \textbf{near-far problem} (Ch 7 \S7.6) destroys capacity.
+\end{itemize}}
+
+\T{8.9 Forward CDMA (IS-95) channel \; \small\mk{the standard 4 to 6 mark drawing}}
+
+\Q{Draw and explain the forward CDMA (IS-95) channel; what is a channelization code?}{\m{4}\m{6}}
+{\color{sub}\footnotesize \tS{6} \yr{\textbf{\texttt{80 Bh}} \m{4}, \textbf{80 Ch} \m{6},
+\textbf{78 Ch} \m{4}, 73 Ma \m{4} (channelization code $+$ forward channels),
+\textbf{73 Bh} \m{6} (pilot and sync channels only), \texttt{81 Ba} \m{4} (reverse, \S8.10)}
+\gap$\cdot$\gap \mk{73 Bh wants only the pilot and sync blocks}, drawn out in full}
+
+\sbsr{0.44}{%
+\figT{c8_walsh_gen.png}
+\vspace{1pt}
+{\color{sub}\footnotesize \textbf{Channelization code $=$ Walsh code} \m{2}, built by the
+Hadamard recursion. Row $n$ of the matrix is $W_n$. Worked as a numerical in \textbf{Ch 7
+companion \S4}. \yr{SST Ch 8}}
+
+\vspace{3pt}
+\lead{Why Walsh codes work here}
+\begin{itemize}
+  \item All 64 rows are \textbf{mutually orthogonal}: map $0 \rightarrow -1$,
+        $1 \rightarrow +1$ and the term-by-term product of any two rows sums to \textbf{0}.
+  \item So a receiver that correlates with $W_n$ recovers channel $n$ and sees \mk{exactly
+        zero} from the other 63, provided they arrive \textbf{in step}.
+  \item They stay in step on the forward link because \mk{one base station transmits them
+        all}. That is why the reverse link cannot use them for channelisation.
+\end{itemize}}{%
+\lead{The four forward logical channels \m{4}}
+\begin{enumerate}
+  \item \textbf{Pilot channel, $W_0$.}
+  \begin{itemize}
+    \item Carries \mk{no baseband information at all}: an all-zero stream, spread by $W_0$
+          which is itself all zeros, so what goes out \textbf{is the short PN pair itself}
+          at the sector's offset.
+    \item Transmitted \textbf{continuously}. Gives the mobile \textbf{timing acquisition and
+          a phase reference} for coherent detection.
+    \item Its $E_c/I_0$ is what the mobile measures to decide \mk{which sector is strongest},
+          i.e. it drives handoff.
+  \end{itemize}
+  \item \textbf{Sync channel, $W_{32}$.}
+  \begin{itemize}
+    \item \mk{1.2 kbps} of real baseband data, convolutionally coded and interleaved.
+    \item Carries the sync channel message: \textbf{system time, long-code state, the
+          sector's PN offset, and the paging channel rate} (PRAT).
+    \item Uses the \textbf{same PN offset as the pilot}, so once the pilot is acquired the
+          sync channel is readable at once.
+  \end{itemize}
+\end{enumerate}}
+
+\vspace{2pt}
+\sbsr{0.49}{%
+\begin{enumerate}
+  \setcounter{enumi}{2}
+  \item \textbf{Paging channels, $W_1$ to $W_7$}, up to seven.
+  \begin{itemize}
+    \item \mk{4.8 or 9.6 kbps}, the rate announced by the sync message.
+    \item Overhead messages, \textbf{pages}, and \textbf{traffic channel assignment} during
+          call setup.
+    \item A mobile monitors \textbf{one} paging channel, and ignores it once a traffic
+          channel is up.
+  \end{itemize}
+\end{enumerate}}{%
+\begin{enumerate}
+  \setcounter{enumi}{3}
+  \item \textbf{Forward traffic channels}, the remaining Walsh codes.
+  \begin{itemize}
+    \item User voice and data at \mk{1.2 / 2.4 / 4.8 / 9.6 kbps}.
+    \item Structure is the paging channel plus one addition: \mk{multiplexed power control
+          bits at 800 bps}, punctured into the stream.
+    \item Scrambled by the long code with that user's \textbf{ESN}-derived mask.
+  \end{itemize}
+\end{enumerate}}
+
+\vspace{2pt}
+\sbsr{0.63}{%
+\figT{c8_fwd_cdma.png}
+\vspace{1pt}
+{\color{sub}\footnotesize \textbf{Forward traffic channel, the block diagram to reproduce.}
+Rate 1/2 $K=9$ convolutional encoder $\rightarrow$ symbol repetition to 19.2 ksps
+$\rightarrow$ block interleaver $\rightarrow$ long-code scrambling $\rightarrow$ MUX with the
+800 bps power control bits $\rightarrow$ Walsh cover $W_i$ $\rightarrow$ I/Q short PN
+$\rightarrow$ QPSK. \yr{SST Ch 8}}}{%
+\lead{The modulator, and how the channels combine \m{2}}
+\begin{itemize}
+  \item Every logical channel first passes a \textbf{gain control} block, which sets how much
+        of the sector's power that channel gets.
+  \begin{itemize}
+    \item Traffic channel gains \mk{change continuously}, driven by forward power control.
+    \item Pilot gain is fixed and deliberately generous, typically 15 to 20\,\% of total
+          power, because everything else depends on it. \added
+  \end{itemize}
+  \item After gain setting all channels are \textbf{coherently added} into one composite
+        spread-spectrum signal.
+  \item The sum is split into \textbf{I and Q}, each spread by its short PN sequence,
+        up-converted on quadrature carriers and added $\rightarrow$ one \textbf{QPSK}
+        passband signal.
+  \item \mk{One 1.25 MHz carrier therefore carries all 64 code channels of the sector at
+        once.}
+\end{itemize}}
+
+\vspace{2pt}
+\sbs{%
+\figT{c8_pilot_ch.png}
+\vspace{1pt}
+{\color{sub}\footnotesize \textbf{Pilot channel} \m{3}. All zeros in, PN out. No encoder, no
+interleaver, nothing to decode. \yr{SSD, IS-95 channels}}}{%
+\figT{c8_sync_ch.png}
+\vspace{1pt}
+{\color{sub}\footnotesize \textbf{Sync channel} \m{3}. 1.2 kbps $\rightarrow$ rate 1/2
+$\rightarrow$ 2.4 ksps $\rightarrow$ repetition to 4.8 ksps $\rightarrow$ interleave
+$\rightarrow$ $W_{32}$ $\rightarrow$ I/Q PN. \yr{SSD, IS-95 channels}}}
+
+\vspace{2pt}
+\sbs{%
+\figT{c8_paging_ch.png}
+\vspace{1pt}
+{\color{sub}\footnotesize \textbf{Paging channel}. Same shape as the sync channel plus
+long-code scrambling through a decimator. \yr{SSD, IS-95 channels}}}{%
+\figT{c8_fwd_traffic_ch.png}
+\vspace{1pt}
+{\color{sub}\footnotesize \textbf{Forward traffic channel}. The paging channel plus the
+\mk{MUX that punctures in the 800 bps power control bits}. \yr{SSD, IS-95 channels}}}
+
+\T{8.10 Reverse CDMA (IS-95) channel}
+
+\Q{Draw the reverse CDMA (IS-95) channel}{\m{4}}
+{\color{sub}\footnotesize \yr{\texttt{81 Ba} \m{4}} \gap$\cdot$\gap
+\mk{counted inside the \tS{6} forward/reverse total of \S8.9} \gap$\cdot$\gap
+the marks are usually won on \mk{why the reverse link is built differently}, not on the
+drawing}
+
+\sbsr{0.50}{%
+\lead{Two channels only, and no pilot}
+\begin{itemize}
+  \item The reverse link supports \textbf{access channels} and \textbf{traffic channels}.
+        That is all.
+  \item \mk{There is no reverse pilot} in IS-95: it is impractical for every mobile to
+        broadcast its own pilot sequence.
+  \item No pilot $\rightarrow$ no phase reference $\rightarrow$ the reverse link is
+        \textbf{non-coherent}.
+  \item Non-coherent $\rightarrow$ \mk{Walsh functions cannot channelise}, because mobiles
+        cannot be held chip-aligned with each other.
+  \item Instead \textbf{each mobile is identified by its own long PN sequence}, set by a
+        mask derived from its \textbf{ESN}.
+  \item Walsh functions are still used, but for \mk{64-ary orthogonal modulation}: every six
+        code symbols are sent as \emph{one} of the 64 Walsh functions, and the base station
+        decides which one by correlating against all 64.
+  \item \mk{Forward: Walsh separates channels. Reverse: Walsh represents symbols.}
+\end{itemize}}{%
+\figT{c8_rev_cdma.png}
+\vspace{1pt}
+{\color{sub}\footnotesize \textbf{Reverse traffic and access channel generation.} Rate 1/3
+$K=9$ encoder $\rightarrow$ repetition to 28.8 ksps $\rightarrow$ interleaver
+$\rightarrow$ 64-ary orthogonal modulator, 307.2 kcps $\rightarrow$ data burst randomizer
+$\rightarrow$ long PN $\rightarrow$ I/Q short PN with a \mk{half-chip delay on Q}, giving
+OQPSK. \yr{SST Ch 8}}}
+
+\vspace{2pt}
+\sbs{%
+\lead{1. Access channel}
+\begin{itemize}
+  \item Used when the mobile \textbf{has no traffic channel assigned}: to register,
+        originate calls, respond to pages and orders, and send overhead messages.
+  \item Baseband rate is \textbf{fixed at 4.8 kbps}.
+  \item \mk{Rate 1/3 convolutional encoder}, not 1/2 as on the forward link. The reverse is
+        the weaker of the two links (a handset transmits under a watt), so it is given more
+        redundancy.
+  \item Symbol repetition doubles it to \mk{28.8 ksps}, then block interleaving, then the
+        64-ary orthogonal modulator.
+\end{itemize}}{%
+\lead{2. Reverse traffic channel}
+\begin{itemize}
+  \item Carries user voice, data and signalling at \mk{1.2 / 2.4 / 4.8 / 9.6 kbps}.
+  \item Structure is the access channel plus one block: the \textbf{data burst randomizer}.
+  \item \mk{The randomizer is the whole point.} When the vocoder drops to a lower rate the
+        repeated symbols are redundant, so the randomizer \textbf{gates them off} instead of
+        transmitting them.
+  \item Result: the handset transmits only in pseudo-random bursts $\rightarrow$ lower
+        average power, longer battery life and \mk{less interference into every other user},
+        which is capacity.
+  \item The forward link exploits the same voice activity differently: it \textbf{lowers the
+        energy per symbol} rather than gating off, since the base station must keep the
+        composite waveform continuous.
+\end{itemize}}
+
+\vspace{2pt}
+\sbs{%
+\figT{c8_access_ch.png}
+\vspace{1pt}
+{\color{sub}\footnotesize \textbf{Access channel} \m{2}. Note the fixed 4.8 kbps input and
+the absence of a data burst randomizer. \yr{SSD, IS-95 channels}}}{%
+\figT{c8_rev_traffic_ch.png}
+\vspace{1pt}
+{\color{sub}\footnotesize \textbf{Reverse traffic channel} \m{2}. The one added block is the
+\mk{data burst randomizer}. \yr{SSD, IS-95 channels}}}
+
+\T{8.11 GSM against CDMA, and CDMA against LTE}
+
+\Q{Compare GSM and CDMA standards}{\m{3}\m{4}}
+{\color{sub}\footnotesize \yr{\textbf{76 Bh} \m{3}, 71 Ma \m{4}} \gap$\cdot$\gap
+71 Ma phrases it as \mk{``what is GSM and CDMA standard''} before asking for the GSM
+architecture, so the comparison is the short half}
+
+\par\vspace{2pt}
+\begin{tabularx}{\textwidth}{@{}L{3.0cm}XX@{}}
+\toprule
+\hrow \thead{Point} & \thead{GSM} & \thead{CDMA (IS-95)} \\
+\midrule
+Multiple access & TDMA over FDMA & CDMA, direct sequence \\
+Duplexing & FDD & FDD \\
+Carrier bandwidth & 200 kHz & 1.25 MHz \\
+Users per carrier & 8 (16 at half rate) & about 55 to 61 code channels \\
+Frequency reuse & $N = 3, 4, 7, 9$; \mk{needs planning} & \mk{$N = 1$, no planning} \\
+Modulation & 0.3 GMSK & QPSK forward, OQPSK reverse \\
+Speech coder & RPE-LTP 13 kbps, fixed & variable rate 9.6 down to 1.2 kbps \\
+Handoff & \mk{hard} (break before make) & \mk{soft and softer} (make before break) \\
+Power control & slow, on SACCH & \mk{fast, 800 Hz closed loop}, essential \\
+Equalizer & \mk{required}, 26-bit training sequence & not needed; \mk{RAKE receiver} instead \\
+Capacity limit & hard: run out of slots & \mk{soft: interference limited}, degrades gently \\
+Subscriber identity & \mk{SIM card}, moves between handsets & tied to the handset ESN \\
+Security & A3/A5/A8 over the air & \mk{inherent} in the long PN code, plus ciphering \\
+\bottomrule
+\end{tabularx}
+
+\Q{Compare the system architecture of CDMA with LTE; mention the function of the entities}{\m{3+5}}
+{\color{sub}\footnotesize \tP{1} \yr{74 Ma \m{3+5}} \gap$\cdot$\gap \added \;
+\mk{no lecture deck covers LTE at all} \gap$\cdot$\gap 8 marks, so it is worth learning the
+seven LTE boxes by name}
+
+\sbs{%
+\lead{CDMA (IS-95 / cdma2000) architecture}
+\begin{itemize}
+  \item \textbf{MS} $\rightarrow$ \textbf{BTS} $\rightarrow$ \textbf{BSC} $\rightarrow$
+        \textbf{MSC} for voice, or \textbf{PDSN} for packet data.
+  \item \textbf{BTS}: radio, Walsh covering, power control commands.
+  \item \textbf{BSC}: radio resource control, \mk{soft handoff combining}, and the vocoders.
+  \item \textbf{MSC}: circuit switching to the PSTN.
+  \item \textbf{PCF} $+$ \textbf{PDSN}: the packet data path, bolted on later.
+  \item \textbf{HLR / VLR / AuC}: same roles as in GSM.
+  \item \mk{Hierarchical and circuit-first}: voice and data ride separate cores.
+\end{itemize}}{%
+\lead{LTE (EPS) architecture}
+\begin{itemize}
+  \item \textbf{UE} $\rightarrow$ \textbf{eNodeB} $\rightarrow$ \textbf{EPC}
+        (\textbf{MME}, \textbf{S-GW}, \textbf{P-GW}) $\rightarrow$ external IP networks.
+  \item \textbf{eNodeB}: radio plus \mk{all the radio resource control that a BSC used to
+        do}. There is no controller node. eNodeBs talk to each other directly over
+        \textbf{X2}.
+  \item \textbf{MME}, control plane only: attach, authentication, bearer setup, mobility and
+        paging.
+  \item \textbf{S-GW}: user-plane anchor, forwards packets during inter-eNodeB handover.
+  \item \textbf{P-GW}: IP anchor to the outside world, allocates the IP address, enforces
+        policy, does charging.
+  \item \textbf{HSS}: subscriber database, \mk{HLR $+$ AuC in one}.
+  \item \textbf{PCRF}: policy and charging rules.
+  \item \mk{Flat and all-IP}: two nodes from handset to internet, and no circuit domain at
+        all.
+\end{itemize}}
+
+\vspace{2pt}
+\lead{The three differences to write down \m{3}}
+\begin{itemize}
+  \item \textbf{Topology}: CDMA is BTS--BSC--MSC, three tiers. LTE is eNodeB--EPC, two tiers.
+        \mk{The BSC's job moved into the base station}, which cuts handover latency.
+  \item \textbf{Bearer}: CDMA is circuit-switched voice with packet data added later. LTE is
+        \mk{all-IP, packet only}; voice comes back as VoLTE over IMS.
+  \item \textbf{Air interface}: 1.25 MHz DS-CDMA against \mk{OFDMA down, SC-FDMA up, with
+        MIMO}, on a scalable 1.4 to 20 MHz carrier. Peak rate rises from about 3 Mbps to
+        100 Mbps and beyond.
+\end{itemize}
+
+\T{8.12 Evolution of wireless telephone systems \; \pillo{gd}{syllabus, no PYQ yet}}
+
+\Q{AMPS, CT2, DECT, PHS, PACS, IS-54 / IS-136, IS-94, IS-95: the standards named in the syllabus}{}
+{\color{sub}\footnotesize \pill{gdL}{gd}{syllabus, no PYQ yet} \gap$\cdot$\gap
+syllabus item \textbf{8(a)}, \mk{never examined in 22 papers} \gap$\cdot$\gap
+the \emph{generations} question (1G to 5G) is \textbf{Ch 1 \S1.3} and is asked every year;
+this band is the \emph{systems} behind those generations \gap$\cdot$\gap
+\mk{read the three tables, do not memorise them}}
+
+\sbs{%
+\lead{First generation, analog cellular}
+\begin{itemize}
+  \item All \textbf{FM voice with FSK signalling, FDMA/FDD}, one carrier per user for the
+        whole call.
+  \item \textbf{AMPS}, the Americas: 824--849 / 869--894 MHz, 30 kHz channels,
+        \mk{832 channels}.
+  \item \textbf{TACS / ETACS}, UK and Europe: 25 kHz channels, up to 1240 channels.
+  \item \textbf{NMT-450 / NMT-900}, the Nordic countries, 25 and 12.5 kHz.
+  \item \textbf{C-450} Germany, \textbf{RTMS} Italy, \textbf{Radiocom 2000} France,
+        \textbf{NTT} and \textbf{JTACS/NTACS} Japan.
+  \item \mk{Every country built its own}, which is exactly the fragmentation GSM was created
+        to end.
+\end{itemize}}{%
+\figT{c8_analog_systems.png}
+\vspace{1pt}
+{\color{sub}\footnotesize \yr{Rappaport Table 10.10}}}
+
+\vspace{2pt}
+\sbs{%
+\figT{c8_cordless_std.png}
+\vspace{1pt}
+{\color{sub}\footnotesize \textbf{Digital cordless standards.} \yr{Rappaport Table 10.11}}}{%
+\figT{c8_2g_std.png}
+\vspace{1pt}
+{\color{sub}\footnotesize \textbf{Second generation digital cellular.} \yr{Rappaport
+Table 10.12}}}
+
+\vspace{2pt}
+\sbs{%
+\lead{Cordless and PCS, the short-range family}
+\begin{itemize}
+  \item \textbf{CT2}, Europe and Canada, 864--868 MHz, \mk{TDD}, 100 kHz carriers,
+        \textbf{one channel per carrier}, 72 kbps GFSK, ADPCM speech.
+  \item \textbf{DECT}, Europe, 1880--1900 MHz, TDD, \mk{1728 kHz carriers with 12 channels
+        each}, 1152 kbps GFSK. The one that survived, as the office and home cordless phone.
+  \item \textbf{PHS}, Japan, 1895--1918 MHz, TDD, 300 kHz, 4 channels per carrier,
+        384 kbps $\pi/4$-DQPSK.
+  \item \textbf{PACS}, USA, \mk{FDD or TDD}, 300 kHz, 8 or 4 channels per carrier,
+        384 kbps $\pi/4$-QPSK. Designed for licensed PCS microcells.
+  \item \textbf{IS-94} is the odd one out: it is not cordless but the standard for
+        \mk{AMPS-based private and in-building microcell systems}, i.e. cellular hardware
+        reused as a premises system. \added
+  \item \mk{All of them are TDD, low power and short range}, which is what separates a
+        cordless standard from a cellular one.
+\end{itemize}}{%
+\lead{Second generation, digital cellular}
+\begin{itemize}
+  \item \textbf{GSM} (1990): TDMA/FDMA/FDD, 200 kHz, GMSK $BT = 0.3$, 270.833 kbps,
+        RPE-LTP at 13 kbps, \mk{1.35 bps/Hz}.
+  \item \textbf{IS-54}, later \textbf{IS-136}, also called \textbf{USDC} or D-AMPS (1991):
+        \mk{30 kHz channels, deliberately the same as AMPS} so the two could share a band,
+        3 users per carrier, $\pi/4$-DQPSK at 48.6 kbps, VSELP 7.95 kbps.
+  \item \textbf{PDC}, Japan (1993): 25 kHz, $\pi/4$-DQPSK at 42 kbps, VSELP 6.7 kbps,
+        \mk{1.68 bps/Hz}, the most spectrally efficient of the three.
+  \item \textbf{IS-95} (1993): the CDMA outlier, 1.25 MHz carriers, $N=1$. \S8.8.
+  \item \mk{Three of the four are TDMA.} CDMA was the minority choice in 2G and the majority
+        choice in 3G.
+\end{itemize}}
+
+\T{8.13 WiFi, WiMAX, UMTS, EVDO, UMB, LTE and recent trends \; \pillo{gd}{no lecture note covers this}}
+
+\Q{Write short notes on WiMAX / LTE}{\m{3}\m{4}\m{5}}
+{\color{sub}\footnotesize \tF{3} \yr{\textbf{78 Ch} \m{4} (WiMAX), 73 Ma \m{5} (WiMAX),
+\textbf{72 Ash} \m{3} (WiMAX) $+$ \m{3} (LTE)} \gap$\cdot$\gap \added \;
+\mk{absent from all three lecture decks} \gap$\cdot$\gap
+\textbf{WiFi and WLAN are answered in Ch 7 \S7.11}, not here}
+
+\sbs{%
+\lead{WiMAX \m{4}}
+\begin{itemize}
+  \item \textbf{WiMAX} $=$ worldwide interoperability for microwave access, the trade name
+        for \textbf{IEEE 802.16}. A \mk{WMAN}, one step above WiFi's WLAN.
+  \item Two versions worth naming:
+  \begin{itemize}
+    \item \textbf{802.16d} (2004), \textbf{fixed} WiMAX, OFDM.
+    \item \textbf{802.16e} (2005), \textbf{mobile} WiMAX, \mk{scalable OFDMA}, supports
+          handover at vehicular speed.
+  \end{itemize}
+  \item Bands: \mk{2--11 GHz for NLOS}, 10--66 GHz for LOS backhaul. Scalable channel
+        bandwidth 1.25 to 20 MHz.
+  \item Throughput about \mk{75 Mbps fixed}, 15 Mbps mobile; range 5--8 km NLOS, up to
+        50 km LOS.
+  \item \mk{The MAC is the real difference from WiFi}: connection-oriented and
+        \textbf{scheduled by the base station}, not contended. Every subscriber gets a
+        grant, so QoS classes (UGS, rtPS, nrtPS, best effort) are enforceable.
+  \item Topologies: point-to-multipoint, and mesh.
+  \item \textbf{Uses}: last-mile broadband where cable is uneconomic, backhaul for WiFi
+        hotspots and cell sites, rural and disaster-recovery connectivity.
+  \item \textbf{(-)}: needs licensed spectrum, expensive base stations, and it
+        \mk{lost the 4G market to LTE} because operators already owned 3GPP cores.
+\end{itemize}}{%
+\lead{LTE \m{3}}
+\begin{itemize}
+  \item \textbf{LTE} $=$ long term evolution, 3GPP Release 8 (2008). The 4G standard that
+        won.
+  \item \textbf{OFDMA} on the downlink, \textbf{SC-FDMA} on the uplink.
+        \mk{SC-FDMA is chosen purely for its low PAPR}, which is what a battery-powered
+        handset amplifier needs (Ch 4 \S4.6).
+  \item \textbf{MIMO} up to $4\times4$, scalable bandwidth
+        \mk{1.4 / 3 / 5 / 10 / 15 / 20 MHz}, both FDD and TDD.
+  \item Release 8 peaks at about \mk{300 Mbps down, 75 Mbps up}.
+  \item \textbf{Flat all-IP} architecture, \S8.11. \mk{No circuit-switched domain}: voice is
+        VoLTE over IMS.
+  \item \textbf{LTE-Advanced} (Rel 10) adds \textbf{carrier aggregation}, $8\times8$ MIMO,
+        relay nodes and CoMP, reaching \mk{1 Gbps}.
+\end{itemize}
+
+\lead{The other names on the syllabus \m{2}}
+\begin{itemize}
+  \item \textbf{UMTS}: 3GPP's 3G. \mk{W-CDMA, 5 MHz carriers, 3.84 Mcps}. Radio network is
+        NodeB $+$ RNC, reusing the GSM/GPRS core. HSPA later takes it to 14.4 Mbps.
+  \item \textbf{CDMA-EVDO}: cdma2000 \mk{1xEV-DO, ``evolution, data optimised''}. A
+        \emph{separate} 1.25 MHz data-only carrier with a time-multiplexed forward link and
+        rate adaptation. Rev 0 gives 2.4 Mbps, Rev A 3.1 Mbps down / 1.8 Mbps up.
+  \item \textbf{UMB}: ultra mobile broadband, 3GPP2's OFDMA answer to LTE.
+        \mk{Abandoned in 2008} when Qualcomm stopped development and the CDMA operators moved
+        to LTE. Worth one honest line: it is on the syllabus but was never deployed. \added
+\end{itemize}}
+
+\vspace{2pt}
+\sbsr{0.55}{%
+\lead{Recent trends \m{2}}
+\begin{itemize}
+  \item \textbf{5G NR}: sub-6 GHz plus \mk{mmWave}, massive MIMO and beamforming, network
+        slicing, three service classes \textbf{eMBB} / \textbf{URLLC} / \textbf{mMTC}.
+  \item \textbf{IoT}: NB-IoT and LTE-M, narrowband, low power, huge device counts.
+  \item \textbf{D2D} device-to-device, \textbf{C-RAN} centralised baseband, edge computing.
+  \item \mk{Cross-refer Ch 1 \S1.4}, which answers the ``trends beyond 3G'' question in
+        full. Do not repeat it here.
+\end{itemize}}{%
+\par\vspace{2pt}
+\begin{tabularx}{\linewidth}{@{}L{1.7cm}XXX@{}}
+\toprule
+\hrow \thead{} & \thead{WiFi} & \thead{WiMAX} & \thead{LTE} \\
+\midrule
+Standard & 802.11 & 802.16 & 3GPP Rel 8 \\
+Scale & WLAN, 100 m & WMAN, km & cellular WAN \\
+Spectrum & \mk{unlicensed} & licensed & licensed \\
+MAC & \mk{contended}, CSMA/CA & scheduled & scheduled \\
+QoS & weak & \mk{built in} & built in \\
+Mobility & nomadic & vehicular (802.16e) & \mk{full handover} \\
+\bottomrule
+\end{tabularx}
+\vspace{2pt}
+{\color{sub}\footnotesize \mk{If a question asks you to ``compare'', this table is the
+answer.} The row that actually decides all the others is \textbf{contended against
+scheduled}. \added}}
+
+\T{8.14 Regulatory issues \; \small\mk{the highest-frequency topic in this chapter}}
+
+\Q{Describe regulatory issues in wireless communication: spectrum allocation, pricing, licensing, tariffs, interconnection}{\m{4}\m{5}}
+{\color{sub}\footnotesize \tS{9} \yr{\textbf{\texttt{81 Bh}} \m{4} (licensing $+$ allocation),
+\texttt{80 Ba} \m{4}, \textbf{\texttt{79 Bh}} \m{4} (spectrum regulations),
+\textbf{76 Bh} \m{5}, \textbf{74 Bh} \m{5}, \textbf{73 Bh} \m{5} (spectral licensing),
+\textbf{80 Ch} \m{2+4}, \textbf{79 Ch} \m{2+3}, 70 Ma \m{4}} \gap$\cdot$\gap
+\mk{80 Ch and 79 Ch ask ``significance of spectrum management'' first} \m{2}, then the
+\textbf{functions of the regulator}}
+
+\sbsr{0.50}{%
+\lead{Why regulation exists at all \m{2}}
+\begin{itemize}
+  \item Radio spectrum is a \textbf{finite, non-storable, shared} natural resource.
+  \item Interference is \mk{non-excludable}: two users on the same frequency, in the same
+        place, at the same time both fail. Neither can protect itself.
+  \item So a government must decide \textbf{who may use which band, where, and on what
+        terms}. That is spectrum management.
+  \item \textbf{Significance of spectrum management} \m{2}:
+  \begin{itemize}
+    \item Interference-free coexistence of services.
+    \item \mk{Efficient use} of a scarce resource, and no hoarding.
+    \item \textbf{International harmonisation} $\rightarrow$ roaming, economies of scale in
+          handsets.
+    \item Protected bands for \textbf{aviation, defence, emergency and scientific} use.
+    \item Predictable rules $\rightarrow$ operators will invest.
+  \end{itemize}
+\end{itemize}
+
+\lead{1. Spectrum allocation}
+\begin{itemize}
+  \item \textbf{ITU-R} divides the world into \mk{three Regions} and allocates bands to
+        \emph{services} at the World Radiocommunication Conference.
+  \item The \textbf{national regulator} then assigns those bands to \emph{operators}:
+        \textbf{NTA} in Nepal, FCC in the USA, CEPT/ETSI in Europe.
+  \item Assignment methods: \textbf{administrative} (a ``beauty contest'' on merit),
+        \textbf{auction}, lottery, first-come first-served, or left
+        \mk{unlicensed as a commons} (the ISM bands WiFi and Bluetooth live in).
+\end{itemize}}
+
+\vspace{2pt}
+\sbs{%
+\lead{2. Spectrum pricing}
+\begin{itemize}
+  \item Charges an operator for holding spectrum: an \textbf{annual royalty} per MHz per head
+        of population, or the one-off \textbf{auction price}.
+  \item Aim: \mk{make idle spectrum expensive}, so it moves to whoever will use it best.
+  \item \textbf{Risk}: overpricing is passed straight to the subscriber as tariff, and slows
+        rural rollout. \mk{The regulator has to balance revenue against coverage.}
+\end{itemize}}{%
+\lead{3. Licensing}
+\begin{itemize}
+  \item Decides \textbf{who may operate}, over what area, for how long, and on renewal terms.
+  \item Attaches obligations: \textbf{coverage targets, quality of service, rural
+        rollout}, lawful interception.
+  \item \textbf{Spectrum caps} stop one operator cornering the band and keep the market
+        competitive.
+  \item \textbf{Type approval}: only equipment that meets emission limits may be connected.
+  \item Technology-neutral licences let an operator refarm a 2G band for LTE without a new
+        licence.
+\end{itemize}}
+
+\vspace{2pt}
+\sbs{%
+\lead{4. Tariff regulation}
+\begin{itemize}
+  \item Regulator \textbf{approves tariffs}, and classifies them as \mk{fixed, maximum, or
+        non-regulated}.
+  \item Price caps and floors protect subscribers from a dominant operator and rivals from
+        \textbf{predatory pricing}.
+  \item Tariffs are usually deregulated as competition arrives.
+\end{itemize}}{%
+\lead{5. Interconnection}
+\begin{itemize}
+  \item Every licensee must be able to \textbf{terminate calls on every other network},
+        otherwise the first operator to scale wins by default.
+  \item Regulator sets \mk{cost-oriented interconnection charges}, the points of
+        interconnection, and \textbf{number portability}.
+  \item It also \textbf{settles interconnection disputes}, which is why dispute resolution
+        appears in the list of functions below.
+\end{itemize}}
+
+\vspace{2pt}
+\sbsr{0.52}{%
+\lead{Functions of the regulator \m{4} \; \mk{the list 80 Ch and 79 Ch want}}
+\begin{enumerate}
+  \item \textbf{Inspection and investigation} of the affairs of telecom operators and
+        internet service providers.
+  \item \textbf{Settle disputes} between licensees, or between a licensee and a customer,
+        relating to telecommunications service.
+  \item \textbf{Determine the quality and standard} of the machinery, equipment and
+        facilities used, and of the service itself.
+  \item \textbf{Licensing} of telecom operators and internet service providers.
+  \item \textbf{Approval of tariffs}: fixed tariffs, maximum tariffs and non-regulated
+        tariffs.
+\end{enumerate}
+\vspace{2pt}
+{\color{sub}\footnotesize \yr{SST Ch 8, the NTA regulatory approach} \gap$\cdot$\gap
+\mk{write these five and the 4 marks are secure.} Add spectrum allocation and monitoring as
+a sixth if the question says ``spectrum management''.}}{%
+\lead{Nepal, if a local example is wanted \added}
+\begin{itemize}
+  \item \textbf{NTA} $=$ Nepal Telecommunications Authority, constituted under the
+        \textbf{Telecommunications Act 2053}.
+  \item Licence categories it issues include \textbf{basic telephony, cellular mobile,
+        internet service, VSAT and rural VSAT, network service providers, international
+        trunk telephone} and rural ISP.
+  \item \mk{Naming NTA and the Act is enough} for a Nepali paper. Do not attempt licence
+        counts, they change every year.
+\end{itemize}
+
+\lead{Answer skeleton \m{5}}
+\begin{enumerate}
+  \item One line: spectrum is finite and shared, so it must be regulated. \m{1}
+  \item Name the \textbf{five heads}: allocation, pricing, licensing, tariff, interconnection.
+        \m{1}
+  \item Two sentences on each head. \m{2.5}
+  \item Close with ITU-R above and the national regulator (NTA) below. \m{0.5}
+\end{enumerate}}
+
+\T{8.15 Last-minute recall for this chapter}
+
+\sbsr{0.52}{%
+\lead{Must memorise}
+\begin{itemize}
+  \item GSM 900: \textbf{890--915} up, \textbf{935--960} down, \mk{45 MHz} apart, 200 kHz
+        ARFCN, \mk{124} duplex channels, 8 users each.
+  \item \textbf{0.3 GMSK}, \mk{270.833 kbps} per carrier, 33.854 kbps per user, 24.7 kbps
+        max user data.
+  \item Slot \mk{156.25 bits, 576.9 $\mu$s}; frame \mk{8 slots, 4.615 ms}; bit
+        \mk{3.692 $\mu$s}.
+  \item Normal burst $3 + 57 + 1 + 26 + 1 + 57 + 3 + 8.25$.
+  \item Multiframe \mk{26 (traffic, 120 ms)} or \mk{51 (control, 235 ms)};
+        superframe \mk{1326 frames, 6.12 s}; hyperframe \mk{2048 superframes, 3 h 28 min}.
+  \item Frame efficiency \mk{74.24\,\%} $\rightarrow$ Ch 7 companion \S3.
+  \item Speech \mk{260 bits / 20 ms $=$ 13 kbps} $\rightarrow$ coded to
+        \mk{456 bits $=$ 22.8 kbps} $\rightarrow$ interleaved over \mk{8 slots}.
+  \item Channel coding split \mk{50 Ia $+$ 132 Ib $+$ 78 II}, rate 1/2, $K=5$.
+  \item Control channels: \mk{BCH $=$ BCCH, FCCH, SCH} $\cdot$
+        \mk{CCCH $=$ PCH, RACH, AGCH} $\cdot$ \mk{DCCH $=$ SDCCH, SACCH, FACCH}.
+        SACCH every \mk{13th} frame; FACCH \mk{steals} a TCH burst.
+  \item IS-95: \mk{1.25 MHz}, 824--849 / 869--894, chip rate \mk{1.2288 Mcps},
+        \mk{$N=1$}, power control at \mk{800 Hz}.
+  \item Forward channels: \mk{pilot $W_0$, sync $W_{32}$, paging $W_1$--$W_7$, traffic}.
+        Reverse: \mk{access and traffic only, no pilot}.
+  \item Forward encoder \mk{rate 1/2 $K=9$}; reverse \mk{rate 1/3 $K=9$} $+$ 64-ary
+        orthogonal modulation $+$ data burst randomizer.
+\end{itemize}}{%
+\lead{Most repeated, in order}
+\begin{enumerate}
+  \item Regulatory issues, or significance of spectrum management \tS{9}
+  \item GSM traffic and control channels \tS{8}
+  \item GSM system architecture, or the NSS alone \tS{7}
+  \item Forward and reverse CDMA (IS-95) channels \tS{6}
+  \item GSM frame structure and hierarchy \tF{5}
+  \item WiMAX short note \tF{3}
+  \item Signal processing in GSM \tP{2} \gap$\cdot$\gap
+        how channels are used while making a call \tF{2}
+  \item CDMA against LTE architecture \tP{1} \gap$\cdot$\gap
+        GSM against CDMA, specifications of GSM, LTE short note
+\end{enumerate}
+\vspace{2pt}
+{\color{sub}\footnotesize \mk{The best hour you can spend on this chapter} is the
+\textbf{control channel tree}: nine channels, one line each, plus which direction each one
+points. Eight of the twenty-two papers ask for it directly, and it also supplies most of the
+GSM-call answer in \S8.6.}
+
+\vspace{2pt}
+{\color{sub}\footnotesize \mk{No numerical companion for this chapter.} No paper from 2070 to
+2082 sets a calculation in Chapter 8. The one number the syllabus touches, \textbf{GSM frame
+efficiency}, is examined as a Chapter 7 multiple-access question and is worked in full in
+\textbf{Ch 7 $-$ Numerical Problems \& Solutions, \S3}, including the 74 Ma
+``cannot reach 100\,\%'' proof.}
+
+\vspace{2pt}
+{\color{sub}\footnotesize \mk{Two traps in this chapter}: \textbf{BCH} is the broadcast
+channel here and a block code in Ch 6; and \textbf{FCCH} (GSM frequency correction channel)
+is not \textbf{FCC} (forward control channel, Ch 2). Read the question's context before you
+expand either.}}

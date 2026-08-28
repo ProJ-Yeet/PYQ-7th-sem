@@ -99,6 +99,44 @@ $\rightarrow$ & leads to / therefore        & $+$     & and \\
 \bottomrule
 \end{tabularx}
 
+% Third block, added with Chapter 8: the GSM and IS-95 vocabulary. Kept as its
+% own tabularx for the same page-breaking reason as the second one.
+\par\vspace{4pt}
+\begin{tabularx}{\textwidth}{@{}L{1.75cm}X@{\hspace{8pt}}L{1.75cm}X@{}}
+\toprule
+\hrow \thead{Short} & \thead{Means} & \thead{Short} & \thead{Means} \\
+\midrule
+BSS     & base station subsystem            & NSS     & network and switching subsystem \\
+OSS     & operation support subsystem       & OMC     & operation and maintenance centre \\
+HLR     & home location register            & VLR     & visitor location register \\
+AuC     & authentication centre             & EIR     & equipment identity register \\
+CEIR    & central EIR                       & ME      & mobile equipment \\
+SIM     & subscriber identity module        & IMSI    & international mobile subscriber identity \\
+IMEI    & international mobile equipment identity & TMSI & temporary mobile subscriber identity \\
+Um, Abis, A & the three GSM interfaces      & SS7     & signalling system no.~7 \\
+ARFCN   & absolute radio frequency channel number & TN, TS & time slot number, time slot \\
+TCH     & traffic channel                   & TCH/FS, TCH/HS & full rate, half rate speech TCH \\
+CCH     & control channel                   & CCCH    & common control channel \\
+DCCH    & dedicated control channel         & SDCCH   & stand-alone dedicated control channel \\
+SACCH   & slow associated control channel   & FACCH   & fast associated control channel \\
+FCCH    & frequency correction channel      & SCH     & synchronisation channel \\
+PCH     & paging channel                    & RACH    & random access channel \\
+AGCH    & access grant channel              & TB, GP, SF & tail bits, guard period, stealing flag \\
+VAD     & voice activity detector           & DTX     & discontinuous transmission \\
+DCS 1800 & digital cellular system, the 1800 MHz GSM & CRC & cyclic redundancy check \\
+ESN     & electronic serial number          & PCB     & power control bit \\
+Mcps, Ksps & mega-chips, kilo-symbols per second & PRAT & paging channel rate field \\
+EVRC    & enhanced variable rate coder      & PDSN    & packet data serving node \\
+PCF (CDMA) & packet control function        & RNC     & radio network controller \\
+EPS, EPC & evolved packet system, core      & eNodeB  & LTE base station \\
+MME     & mobility management entity        & S-GW, P-GW & serving, packet data network gateway \\
+HSS     & home subscriber server            & PCRF    & policy and charging rules function \\
+IMS, VoLTE & IP multimedia subsystem, voice over LTE & CoMP & coordinated multipoint \\
+ITU-R   & ITU radiocommunication sector     & WRC     & world radiocommunication conference \\
+NTA     & Nepal Telecommunications Authority & UGS, rtPS, nrtPS & WiMAX QoS service classes \\
+\bottomrule
+\end{tabularx}
+
 \vspace{3pt}
 {\color{sub}\footnotesize
 \textbf{Standard and system names} (proper names, kept as printed):
@@ -131,8 +169,12 @@ $\rightarrow$ & leads to / therefore        & $+$     & and \\
 \textbf{DVB-T} digital video broadcasting, terrestrial $\cdot$
 \textbf{ADSL} asymmetric digital subscriber line $\cdot$
 \textbf{5G NR} 5G new radio. \\
-\mk{One clash to watch}: \textbf{FCC} is the \emph{forward control channel} throughout these
-notes. The US regulator is always written out as the Federal Communications Commission. \\
+\mk{Three clashes to watch}:
+\textbf{FCC} is the \emph{forward control channel} throughout these notes; the US regulator is
+always written out as the Federal Communications Commission, and \textbf{FCCH} is GSM's
+frequency correction channel, a different thing again. \textbf{BCH} is the
+Bose--Chaudhuri--Hocquenghem block code in \textbf{Ch 6} and GSM's \emph{broadcast channel} in
+\textbf{Ch 8}. \textbf{SCH} is GSM's synchronisation channel, never a sub-channel. \\
 \textbf{Exam-paper month codes} (used in the year tags):
 Ba $=$ Baishakh $\cdot$ Bh $=$ Bhadra $\cdot$ Ash $=$ Ashwin $\cdot$
 Ma $=$ Magh $\cdot$ Ch $=$ Chaitra. \\

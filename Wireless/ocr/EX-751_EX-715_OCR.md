@@ -105,6 +105,15 @@ documents quote these statements.
 6. **2076 Bhadra Q7** prints "near for effect" for "near-far effect"; the same
    typo recurs in 2075 Bhadra Q10.
 
+7. **2070 Magh Q10(c) was missing from this archive** until 2026-08-27. The
+   short-notes list is marked `[4×3]` but only two items had been transcribed.
+   Recovered from the text layer of
+   `Wireless/EX-751_70-80__EX-715_79-82.pdf` p23: the third item is
+   **"Viterbi decoding algorithm"**. It is now added above. Consequence for the
+   notes: **2070 Magh has no WiMAX question**, contrary to the tag in
+   `Wireless_Sorted_PYQ_Detailed_70-82.tex` (see the Chapter 8 defect note in
+   `NOTES-BUILD-PROGRESS.md`).
+
 ---
 
 ## p1 — 2082 Bhadra, Regular, BEI, EX 715, IV/I
@@ -587,4 +596,5 @@ Erlang B Traffic Table — Maximum Offered Load Versus B and N (B is in %)
 10. Write short notes on: [4×3]
     a) Rayleigh and Ricean fading distribution
     b) Regulatory issues in wireless systems
+    c) Viterbi decoding algorithm
     c) Viterbi decoding algorithm
