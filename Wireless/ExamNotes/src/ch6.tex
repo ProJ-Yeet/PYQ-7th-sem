@@ -47,11 +47,16 @@ the framing paragraph for every other question in this section}
         \textbf{algorithmic complexity}.
   \item A third axis matters in mobile: \textbf{robustness to channel errors}. A very low rate
         coder throws away so much that a single bit error is audible.
-\end{itemize}
+\end{itemize}}{%
+\figT{c6_hierarchy.png}
+\penalty0\vspace{1pt}
+{\color{sub}\footnotesize The hierarchy of speech coders. \mk{Draw this tree and the ``types of
+speech coder'' mark is banked.}}}
 
 \lead{The two families \mk{(state this split before naming any coder)}}
-\begin{itemize}
-  \item \textbf{Waveform coders}
+
+\sbs{%
+\textbf{Waveform coders}
   \begin{itemize}
     \item \textbf{No speech model is required.} Work on \textbf{any} input analog signal.
     \item Designed to be \textbf{source independent}, so they code music and tones equally well.
@@ -62,8 +67,8 @@ the framing paragraph for every other question in this section}
     \item \textbf{($-$)} Only \textbf{moderate} bit-rate economy, ie \mk{low compression ratio}.
     \item Eg \textbf{PCM, DPCM, ADPCM, delta modulation, CVSDM}, and the frequency-domain
           coders below.
-  \end{itemize}
-  \item \textbf{Source coders (vocoders)}
+  \end{itemize}}{%
+\textbf{Source coders (vocoders)}
   \begin{itemize}
     \item Use \textbf{a priori knowledge} of how speech is produced.
     \item Recreate the \textbf{spectral characteristics} of speech by modelling the vocal tract
@@ -73,14 +78,12 @@ the framing paragraph for every other question in this section}
     \item \textbf{($+$) Very high economy in bit rate}, down to 2.4 kbps.
     \item \textbf{($-$) High complexity}, and quality is low and \mk{mechanical sounding},
           though intelligible. Performance is also \textbf{talker dependent}.
-  \end{itemize}
+  \end{itemize}}
+
+\begin{itemize}
   \item \textbf{Hybrid coders} sit between the two and are what modern cellular actually uses.
         \added
-\end{itemize}}{%
-\figT{c6_hierarchy.png}
-\vspace{1pt}
-{\color{sub}\footnotesize The hierarchy of speech coders. \mk{Draw this tree and the ``types of
-speech coder'' mark is banked.}}}
+\end{itemize}
 
 \Q{Explain the characteristics of the speech signal, and how they are used in designing coders}{\m{8}\m{6}\m{4}\m{3}}
 {\color{sub}\footnotesize \tS{7} \yr{\textbf{72 Ash}, \textbf{77 Ch}, 73 Ma, \texttt{79 Bh},
@@ -92,7 +95,7 @@ designing efficient coders. Three are used most often. For each one, always say
 \textbf{what the property is} and then \textbf{which coder design it justifies}: that second half
 is where the marks are.}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \begin{tabularx}{\textwidth}{@{}L{3.5cm}XX@{}}
 \toprule
 \hrow \thead{Property} & \thead{What it says} & \thead{What it justifies} \\
@@ -123,7 +126,7 @@ is where the marks are.}
 \bottomrule
 \end{tabularx}
 
-\vspace{3pt}
+\penalty0\vspace{3pt}
 \sbs{%
 \lead{Two more properties worth a line}
 \begin{itemize}
@@ -140,7 +143,7 @@ is where the marks are.}
         \textbf{random noise}. Low energy, no pitch.
   \item \mk{Every vocoder must transmit a voiced / unvoiced decision plus the pitch period.}
 \end{itemize}
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \figT{c6_speech_wave.png}}
 
 \hr
@@ -163,7 +166,11 @@ is where the marks are.}
         bands.
   \item Two algorithms are examined: \textbf{sub-band coding} and \textbf{adaptive transform
         coding}.
-\end{itemize}
+\end{itemize}}{%
+\figT{c6_subband.png}
+\penalty0\vspace{1pt}
+{\color{sub}\footnotesize Sub-band coder and decoder. LP translator, decimator and encoder per
+band on the left, the inverse chain on the right.}}
 
 \lead{Sub-band coding (SBC)}
 \begin{itemize}
@@ -185,11 +192,7 @@ is where the marks are.}
         the original position, and \textbf{sum}.
   \item \textbf{($+$)} Good quality at moderate rates, and the split is easy to implement.
         \textbf{($-$)} Filter bank adds delay and complexity.
-\end{itemize}}{%
-\figT{c6_subband.png}
-\vspace{1pt}
-{\color{sub}\footnotesize Sub-band coder and decoder. LP translator, decimator and encoder per
-band on the left, the inverse chain on the right.}
+\end{itemize}
 
 \lead{Adaptive transform coding (ATC) \pill{gdL}{gd}{syllabus, no PYQ yet}}
 \begin{itemize}
@@ -206,7 +209,7 @@ band on the left, the inverse chain on the right.}
         with $g(0)=1$ and $g(k)=\sqrt{2}$ for $k = 1,\dots,N-1$.
   \item \mk{SBC splits with filters, ATC splits with a transform.} That one line answers
         ``compare them''.
-\end{itemize}}
+\end{itemize}
 
 \hr
 
@@ -231,9 +234,14 @@ band on the left, the inverse chain on the right.}
   \item \textbf{($+$) Very high economy in transmission bit rate.}
   \item \textbf{($-$)} Much more complex than a waveform coder, \textbf{less robust}, and
         performance is \mk{talker dependent}.
-\end{itemize}
+\end{itemize}}{%
+\figT{c6_speech_gen.png}
+\penalty0\vspace{1pt}
+{\color{sub}\footnotesize The traditional speech generation model, the basis of \emph{all}
+vocoding systems. Noise source and pulse source feed a vocal tract filter.}}
 
-\lead{The speech generation model +Fig \mk{(draw this first, always)}}
+\sbs{%
+\lead{The speech generation model \mk{(draw the figure above first, always)}}
 \begin{itemize}
   \item Sound is \textbf{generated} by an excitation source, then \textbf{modulated} as it passes
         through the vocal tract.
@@ -254,11 +262,6 @@ band on the left, the inverse chain on the right.}
   \item \mk{Every vocoder below is a different way of describing that filter.} Say that and the
         four types fall out naturally.
 \end{itemize}}{%
-\figT{c6_speech_gen.png}
-\vspace{1pt}
-{\color{sub}\footnotesize The traditional speech generation model, the basis of \emph{all}
-vocoding systems. Noise source and pulse source feed a vocal tract filter.}
-
 \lead{The four classical vocoders \mk{(plus LPC)}}
 \begin{itemize}
   \item \textbf{Channel vocoder} $=$ describes the filter by its \textbf{spectral envelope}, band
@@ -307,12 +310,12 @@ vocoding systems. Noise source and pulse source feed a vocal tract filter.}
   \item All bands are \textbf{summed} to give the output speech.
 \end{itemize}}{%
 \figT{c6_chvoc_ana.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize Channel vocoder \textbf{analyzer}. Bandpass filter $\rightarrow$
 rectifier $\rightarrow$ lowpass filter is the envelope detector.}
-\vspace{4pt}
+\penalty0\vspace{4pt}
 \figT{c6_chvoc_syn.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize Channel vocoder \textbf{synthesizer}. The switch picks pulse or noise
 excitation from the received voicing information.}}
 
@@ -342,17 +345,17 @@ excitation from the received voicing information.}}
         and for nasals, so quality suffers.
 \end{itemize}}{%
 \figT{c6_formants.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize Spectral envelope of an [i] spoken by a male speaker. $F_1$, $F_2$ and
-$F_3$ are the first three formants.}
-\vspace{3pt}
+$F_3$ are the first three formants.}}
+
+\sbs{%
 \figT{c6_formant_ana.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize Formant vocoder \textbf{analyzer}: extracts $F_1..F_3$, their bandwidths
-$B_1..B_3$, plus the voiced/unvoiced flag and pitch $F_0$.}
-\vspace{3pt}
+$B_1..B_3$, plus the voiced/unvoiced flag and pitch $F_0$.}}{%
 \figT{c6_formant_syn.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize Formant vocoder \textbf{synthesizer}: the excitation signal is shaped by
 three resonators and summed.}}
 
@@ -395,7 +398,7 @@ three resonators and summed.}}
 \end{itemize}
 
 \lead{Comparing the four}
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \begin{tabularx}{\linewidth}{@{}L{1.95cm}XL{1.6cm}@{}}
 \toprule
 \hrow \thead{Vocoder} & \thead{What it sends} & \thead{Domain} \\
@@ -425,8 +428,13 @@ LPC & Prediction coefficients, gain, pitch, voicing & \textbf{Time} \\
   \item \textbf{Computationally intensive}, but \mk{by far the most popular of the low bit rate
         vocoders}.
   \item Transmits \textbf{good quality voice at 4.8 kbps}, and intelligible speech at 2.4 kbps.
-\end{itemize}
+\end{itemize}}{%
+\figT{c6_lpc.png}
+\penalty0\vspace{1pt}
+{\color{sub}\footnotesize Block diagram of an LPC coding system. Three parallel paths: LPC filter
+coefficients, voiced/unvoiced decision, pitch. The synthesizer recombines them.}}
 
+\sbsr{0.52}{%
 \lead{The model}
 \begin{itemize}
   \item Models the vocal tract as an \textbf{all-pole linear filter}:
@@ -440,8 +448,7 @@ LPC & Prediction coefficients, gain, pitch, voicing & \textbf{Time} \\
         \textbf{predicted} and \textbf{actual} speech amplitude.
   \item That works because of the \textbf{ACF property}: adjacent speech samples are 0.85 to 0.9
         correlated, so a short-order predictor already explains most of the signal.
-\end{itemize}
-
+\end{itemize}}{%
 \lead{Operation}
 \begin{itemize}
   \item \textbf{Encoder}: buffer a frame $\rightarrow$ run \textbf{LP analysis} for the
@@ -451,11 +458,7 @@ LPC & Prediction coefficients, gain, pitch, voicing & \textbf{Time} \\
         transmitted.
   \item \textbf{Decoder}: pick pulse or noise excitation, scale by the gain, drive $H(z)$
         $\rightarrow$ \textbf{synthesized speech}.
-\end{itemize}}{%
-\figT{c6_lpc.png}
-\vspace{1pt}
-{\color{sub}\footnotesize Block diagram of an LPC coding system. Three parallel paths: LPC filter
-coefficients, voiced/unvoiced decision, pitch. The synthesizer recombines them.}
+\end{itemize}}
 
 \lead{Types of LPC \mk{(71 Ma asks for the types, \m{6})}}
 \begin{itemize}
@@ -474,7 +477,7 @@ coefficients, voiced/unvoiced decision, pitch. The synthesizer recombines them.}
     \item Only the \textbf{codebook index} is transmitted, which is why it is so efficient.
     \item Bit rate \textbf{4800 bps}.
   \end{itemize}
-\end{itemize}}
+\end{itemize}
 
 \sbsr{0.52}{%
 \lead{Residual excited LPC (RELP)}
@@ -494,7 +497,7 @@ coefficients, voiced/unvoiced decision, pitch. The synthesizer recombines them.}
         which is what lifts the quality above plain LPC.
 \end{itemize}}{%
 \figT{c6_relp.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize RELP encoder. The residual is formed by subtracting locally synthesized
 speech from the buffered input.}}
 
@@ -524,7 +527,7 @@ speech from the buffered input.}}
   \item \textbf{($-$) Relatively complex and power hungry.}
 \end{itemize}}{%
 \figT{c6_gsm_codec.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize GSM RPE-LTP speech encoder: pre-processing, short term prediction, long
 term prediction, regular pulse excitation, multiplexer.}}
 
@@ -548,8 +551,20 @@ other question in this section}
   \item \mk{Note the tension with Ch 6.1}: speech coding strips redundancy out, channel coding
         puts a different, engineered redundancy back in.
   \item Improves \textbf{small-scale link performance}: faded data can still be recovered.
-\end{itemize}
+\end{itemize}}{%
+\lead{Block codes}
+\begin{itemize}
+  \item A \textbf{block code} is a set of \textbf{fixed length} codewords. That fixed length is
+        the \textbf{block length} $n$.
+  \item A block code of size $M$ over a $q$-symbol alphabet is a set of $M$ $q$-ary sequences of
+        length $n$.
+  \item If $q = 2$ the symbols are \textbf{bits} and the code is \textbf{binary}.
+  \item Usually $M = q^k$, and we call it an \textbf{$(n,k)$ code}: $k$ information symbols in,
+        $n$ out, so \textbf{$n-k$ redundant symbols}.
+  \item Block codes are \textbf{forward error correction (FEC)} codes: no return channel is needed.
+\end{itemize}}
 
+\sbsr{0.53}{%
 \lead{Definitions \mk{(learn these five)}}
 \begin{itemize}
   \item A \textbf{word} is a sequence of symbols. A \textbf{code} is a set of vectors called
@@ -563,26 +578,7 @@ other question in this section}
         codewords, $d' = \min_{i \ne j} d(c_i,c_j)$.
   \item \textbf{Code rate} of an $(n,k)$ code $= k/n$. It is the fraction of the codeword that is
         actual information.
-\end{itemize}
-
-\lead{Error detection and correction capability}
-\begin{itemize}
-  \item To \textbf{detect} $t$ errors per block: \; $d' \ge t+1$
-  \item To \textbf{correct} $t$ errors per block: \; $d' \ge 2t+1$
-  \item \mk{So minimum distance is the single number that decides how strong a code is.}
 \end{itemize}}{%
-\lead{Block codes}
-\begin{itemize}
-  \item A \textbf{block code} is a set of \textbf{fixed length} codewords. That fixed length is
-        the \textbf{block length} $n$.
-  \item A block code of size $M$ over a $q$-symbol alphabet is a set of $M$ $q$-ary sequences of
-        length $n$.
-  \item If $q = 2$ the symbols are \textbf{bits} and the code is \textbf{binary}.
-  \item Usually $M = q^k$, and we call it an \textbf{$(n,k)$ code}: $k$ information symbols in,
-        $n$ out, so \textbf{$n-k$ redundant symbols}.
-  \item Block codes are \textbf{forward error correction (FEC)} codes: no return channel is needed.
-\end{itemize}
-
 \lead{Linear block codes (LBC)}
 \begin{itemize}
   \item A code is \textbf{linear} if:
@@ -598,8 +594,15 @@ other question in this section}
   \item \textbf{Matrix description}: a \textbf{generator matrix} $G$ ($k \times n$) encodes an
         information word $i$ of length $k$ into a codeword $c$ of length $n$:
         \[ c = i\,G \]
-\end{itemize}
+\end{itemize}}
 
+\sbs{%
+\lead{Error detection and correction capability}
+\begin{itemize}
+  \item To \textbf{detect} $t$ errors per block: \; $d' \ge t+1$
+  \item To \textbf{correct} $t$ errors per block: \; $d' \ge 2t+1$
+  \item \mk{So minimum distance is the single number that decides how strong a code is.}
+\end{itemize}}{%
 \lead{Cyclic codes}
 \begin{itemize}
   \item A code $C$ is \textbf{cyclic} if it is \textbf{linear} \emph{and} \textbf{any cyclic shift}
@@ -635,8 +638,10 @@ other question in this section}
   \item For $m = 3$: $n = 7$, $k = 4$. \mk{That is the ``7-bit Hamming code'' the paper asks for.}
   \item \textbf{($-$)} Offers \mk{little protection against burst errors}, since it corrects only
         one bit per block. Interleaving (Ch 5) is the standard fix.
-\end{itemize}
+\end{itemize}}{%
+\figT{c6_hamming_struct.png}}
 
+\sbs{%
 \lead{Structure}
 \begin{itemize}
   \item Parity bits are \textbf{inserted in between} the data bits, at positions
@@ -650,9 +655,6 @@ other question in this section}
     \item $P_4$ covers positions \textbf{4, 5, 6, 7}
   \end{itemize}
 \end{itemize}}{%
-\figT{c6_hamming_struct.png}
-\vspace{2pt}
-
 \lead{Worked example 1: encode 1011 with even parity}
 \begin{itemize}
   \item Data goes into positions 7, 6, 5, 3: \; $D_7{=}1,\;D_6{=}0,\;D_5{=}1,\;D_3{=}1$.
@@ -661,7 +663,7 @@ other question in this section}
   \item $P_2 = $ parity of positions 2,3,6,7 $= (P_2,1,0,1)$. Two ones, so \textbf{$P_2 = 0$}.
   \item $P_4 = $ parity of positions 4,5,6,7 $= (P_4,1,0,1)$. Two ones, so \textbf{$P_4 = 0$}.
   \item Transmitted codeword (bit 7 first): \; \mk{\textbf{1 0 1 0 1 0 1}}
-\end{itemize}
+\end{itemize}}
 
 \lead{Worked example 2: check the received word 1011011}
 \begin{itemize}
@@ -676,7 +678,7 @@ other question in this section}
         correct the word.
   \item \textbf{That is the whole elegance of the Hamming code}: the syndrome read as a binary
         number \textbf{is} the position of the faulty bit.
-\end{itemize}}
+\end{itemize}
 
 \creamq{Other block codes}{\pill{gdL}{gd}{syllabus, no PYQ yet}}
 
@@ -749,7 +751,11 @@ other question in this section}
         \[ X_1 = M + M_1 + M_2, \qquad X_2 = M + M_2 \]
   \item \mk{The tap pattern is the code.} Two encoders with the same $K$ but different taps are
         different codes with different performance.
-\end{itemize}
+\end{itemize}}{%
+\figT{c6_conv_enc.png}
+\penalty0\vspace{1pt}
+{\color{sub}\footnotesize Rate 1/2, $K=3$ convolutional encoder. Two mod-2 adders tap the shift
+register.}}
 
 \lead{Three ways to represent the same encoder}
 \begin{itemize}
@@ -761,19 +767,15 @@ other question in this section}
   \item \textbf{Trellis}: the state diagram \textbf{drawn against time}.
         \mk{A compact representation of the code tree}: the tree's repeating structure is folded
         back onto the same set of states at every step. This is what the decoder actually walks.
-\end{itemize}}{%
-\figT{c6_conv_enc.png}
-\vspace{1pt}
-{\color{sub}\footnotesize Rate 1/2, $K=3$ convolutional encoder. Two mod-2 adders tap the shift
-register.}
-\vspace{3pt}
+\end{itemize}
+
+\sbs{%
 \figT{c6_code_tree.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize Code tree for the message 110. States $a{=}00$, $b{=}01$, $c{=}10$,
-$d{=}11$.}
-\vspace{3pt}
+$d{=}11$.}}{%
 \figT{c6_trellis.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize Code trellis and the equivalent state diagram. Solid line $=$ input 0,
 dashed $=$ input 1.}}
 
@@ -800,7 +802,11 @@ dashed $=$ input 1.}}
         is exactly why the algorithm is tractable while an exhaustive tree search is not.
   \item At the end, trace back the survivor with the lowest total metric. Its branch labels give
         the decoded message.
-\end{itemize}
+\end{itemize}}{%
+\figT{c6_viterbi.png}
+\penalty0\vspace{1pt}
+{\color{sub}\footnotesize Decoding $Y = 11\;01\;10$. Path metrics accumulate along the trellis;
+at each node the larger metric is discarded.}}
 
 \lead{Why it is optimal}
 \begin{itemize}
@@ -809,11 +815,7 @@ dashed $=$ input 1.}}
         later.
   \item Complexity is \textbf{linear in the message length} but \textbf{exponential in the
         constraint length $K$}, which is why practical $K$ stays around 7 to 9.
-\end{itemize}}{%
-\figT{c6_viterbi.png}
-\vspace{1pt}
-{\color{sub}\footnotesize Decoding $Y = 11\;01\;10$. Path metrics accumulate along the trellis;
-at each node the larger metric is discarded.}}
+\end{itemize}
 
 \Q{Define turbo coding}{\m{2}\m{5}}
 {\color{sub}\footnotesize \tP{2} \yr{\textbf{\texttt{82 Bh}}, 74 Ma}}
@@ -836,6 +838,13 @@ at each node the larger metric is discarded.}}
           \textbf{directly at the output} $x_k$ alongside the parity streams $y_{1k}$ and
           $y_{2k}$.
   \end{itemize}
+\end{itemize}}{%
+\figT{c6_turbo.png}
+\penalty0\vspace{1pt}
+{\color{sub}\footnotesize Turbo encoder. Two systematic convolutional encoders $C_1$ and $C_2$;
+the interleaver ahead of $C_2$ makes the two see different bit orders.}}
+
+\begin{itemize}
   \item \textbf{Decoding} is \textbf{iterative}: two soft-input soft-output decoders exchange
         \textbf{extrinsic information} and refine each other's estimates over
         $n_1$ and $n_2$ iterations. The name comes from this feedback, by analogy with a
@@ -847,6 +856,7 @@ at each node the larger metric is discarded.}}
         it suits data far better than real-time voice.
 \end{itemize}
 
+\sbs{%
 \lead{Coding gain \pill{gdL}{gd}{syllabus, no PYQ yet}}
 \begin{itemize}
   \item For a given modulation and target BER, \textbf{coding gain} $=$ the ratio of the
@@ -856,8 +866,7 @@ at each node the larger metric is discarded.}}
   \item Ie \mk{how much transmit power the code saves you}.
   \item Every error control code has its own coding gain, depending on the code, the decoder
         implementation and the channel BER.
-\end{itemize}
-
+\end{itemize}}{%
 \lead{Trellis coded modulation (TCM) \pill{gdL}{gd}{syllabus, no PYQ yet}}
 \begin{itemize}
   \item Traditionally coding and modulation are designed \textbf{separately}, even though both
@@ -870,8 +879,4 @@ at each node the larger metric is discarded.}}
   \item Decoded by a \textbf{soft decision maximum likelihood sequence decoder}, ie Viterbi again.
   \item Gains as large as \textbf{6 dB} with \textbf{no bandwidth expansion and no reduction in
         information rate}.
-\end{itemize}}{%
-\figT{c6_turbo.png}
-\vspace{1pt}
-{\color{sub}\footnotesize Turbo encoder. Two systematic convolutional encoders $C_1$ and $C_2$;
-the interleaver ahead of $C_2$ makes the two see different bit orders.}}
+\end{itemize}}

@@ -30,6 +30,12 @@
 \parindent 0pt
 \setlength{\parskip}{2pt}
 \linespread{1.05}
+% no orphans and no widows anywhere: a heading's year-tag line and the
+% opening lines of an answer must not be cut off from each other
+\clubpenalty=10000
+\widowpenalty=10000
+\displaywidowpenalty=10000
+\brokenpenalty=10000
 
 % ---------------------------------------------------------------- palette
 \definecolor{ink}{HTML}{16202A}   % body text
@@ -118,23 +124,95 @@
 \newcommand{\holdspace}[1]{%
   \ifbandopen \nobreak \bandoff \else \Needspace{#1\baselineskip}\fi}
 
+% Third instalment of the same problem, 2026-08-30: the reserve is a
+% guess (9 or 12 lines) and the answer under the heading is usually a \sbs
+% pair three or four times that tall, so the reserve was satisfied, the
+% band + heading + year-tag line were set, and then the unbreakable pair
+% would not fit and went overleaf -- heading at the foot of one page, its
+% whole answer on the next.
+%
+% Guessing a bigger reserve only trades the split for wasted paper. What
+% actually fixes it is removing every legal breakpoint between the band and
+% the first block of the answer, so the page builder has to fall back to the
+% breakpoint BEFORE the band and move the topic whole. \nobreak (penalty
+% 10000) is the only value that works: an underfull page costs 100000
+% whatever penalty sits there, so 9999 would still be taken, and ties go to
+% the later breakpoint.
+%
+% The junctions are: band|heading (already \nobreak), heading|rule,
+% rule|tag, inside the tag paragraph, and tag|answer. The tag line is plain
+% source text rather than a macro, so the last three are closed by \qhold
+% below, which is where all the awkwardness lives.
+%
+% There is no escape hatch, because TeX will not give one: \unpenalty is
+% illegal on the main vertical list, so the glue cannot be taken back once
+% laid down, and any finite penalty loses to a later breakpoint (an underfull
+% page costs 100000 whatever the penalty, and ties go to the later one). A
+% pair too tall to fit under its own heading on a fresh page therefore has
+% nowhere to break and would print past the bottom margin. \sbsr measures
+% itself and shouts @SBS-TOO-TALL at build time instead; build.py fails on
+% it. The fix for one is always the same and always in the content: split it
+% into two pairs at a \lead boundary.
+\makeatletter
+\newcommand{\qhold}{%
+  \nobreak
+  % the tag line must not break in the middle either, and \clubpenalty
+  % alone cannot say that for a three-line one
+  \global\interlinepenalty10000
+  % ... and it must not come away from the answer under it. There is no
+  % LaTeX hook for "after the next paragraph": para/after would do it, but
+  % switching the paragraph hooks on inserts its own node ahead of \parskip
+  % and hands the page builder back the very breakpoint being closed. So
+  % \par is borrowed for exactly one paragraph and put back on first use.
+  \global\let\qhsavedpar\par
+  \gdef\par{\qhsavedpar\global\let\par\qhsavedpar
+            \global\interlinepenalty0 \nobreak}%
+  % Last junction, and the one that cost the most to find: a tag line is
+  % written {\color{sub}\footnotesize ...}, and \color in vertical mode puts
+  % a whatsit on the list. A whatsit is not discardable, so the \parskip glue
+  % that follows it becomes a legal breakpoint again and the \nobreak above
+  % is wasted -- the heading would keep its rule and lose its tag. Starting
+  % the paragraph here instead means \color runs in horizontal mode and
+  % \parskip lands directly behind the \nobreak. Only do it when a group
+  % really does come next, or a following \sbsr or list would be handed an
+  % empty paragraph and an extra baseline of white.
+  \qh@peek}
+% The lookahead has to step over a blank line first: \T is normally followed
+% by one, and that \par would otherwise both fail the group test and burn the
+% one-shot hook above. Swallowing it is safe because a band always ends in
+% vertical mode, so the \par would have been a no-op anyway.
+\newcommand{\qh@peek}{%
+  \@ifnextchar\par{\qh@eatpar}{\@ifnextchar\bgroup{\leavevmode}{}}}
+\long\def\qh@eatpar#1{\qh@peek}
+\makeatother
+
 % Q = exam question heading. #1 text, #2 mark chips
 \newcommand{\Q}[2]{%
-  \par\vspace{7pt}\holdspace{9}\noindent
-  {\large\bfseries\color{ink}#1}\hspace{0.45em}#2\par
-  \vspace{1pt}{\color{ruleL}\rule{\textwidth}{0.7pt}}\vspace{1.5pt}\par}
+  \par\vspace{7pt}\holdspace{9}%
+  \begingroup\interlinepenalty10000 \noindent
+  {\large\bfseries\color{ink}#1}\hspace{0.45em}#2\par\endgroup
+  \nobreak\vspace{1pt}%
+  \nobreak\noindent{\color{ruleL}\rule{\textwidth}{0.7pt}}\par
+  \nobreak\vspace{1.5pt}\qhold}
 
 % T = topic band (tinted full-width bar). The reserve has to cover the band,
 % the question heading under it, the year-tag line and a few lines of answer.
+% \qhold at the end covers the case where the band is followed by prose
+% rather than by a \Q: without it the band strands at the foot of the page
+% with its intro line, or with nothing at all. When a \Q does follow,
+% \qhold's lookahead sees a control sequence rather than a group, so it
+% leaves the paragraph unstarted and \ifbandopen survives for \Q to answer.
 \newcommand{\T}[1]{%
   \par\vspace{7pt}\Needspace{12\baselineskip}\noindent
   \colorbox{accL}{\makebox[\dimexpr\textwidth-2\fboxsep][l]{%
-    \textcolor{acc}{\bfseries #1}}}\par\nobreak\vspace{3pt}\bandon}
+    \textcolor{acc}{\bfseries #1}}}\par\nobreak\vspace{3pt}\bandon\qhold}
 
 % small question sub-heading inside PYQ lists
 \newcommand{\creamq}[2]{%
   \par\vspace{4pt}\holdspace{6}%
-  {\bfseries\color{acc}#1}\hspace{0.4em}#2\par\vspace{1pt}}
+  \begingroup\interlinepenalty10000
+  {\bfseries\color{acc}#1}\hspace{0.4em}#2\par\endgroup
+  \nobreak\vspace{1pt}\qhold}
 \let\qq\creamq
 
 % ---------------------------------------------------------------- question box
@@ -177,12 +255,26 @@
 % when a pair does not fit; that trade was made deliberately -- keeping a
 % topic whole beats filling the page. Do NOT "fix" this with paracol or
 % multicol: both split the pair and were reverted for exactly that reason.
+% The pair is built into a box first so it can be measured. A pair taller
+% than \sbsmax cannot fit under its own heading on any page, so the \nobreak
+% that \qhold laid down between the tag line and this pair is taken back off
+% the vertical list -- otherwise the topic would have no legal breakpoint at
+% all and would print past the bottom margin. Anything over \sbsmax is a
+% content bug: split it into two pairs at a \lead boundary.
+\newlength{\sbsmax}\setlength{\sbsmax}{0.78\textheight}
+\newsavebox{\sbsbox}
 \newcommand{\sbsr}[3]{%
-  \par\noindent
+  \par
+  \setbox\sbsbox=\hbox to\textwidth{%
   \begin{minipage}[t]{#1\textwidth}\vspace{0pt}\raggedright #2\end{minipage}%
   \hfill
   \begin{minipage}[t]{\dimexpr 0.97\textwidth - #1\textwidth\relax}%
-    \vspace{0pt}\raggedright #3\end{minipage}\par}
+    \vspace{0pt}\raggedright #3\end{minipage}}%
+  \typeout{@SBS \the\dimexpr\ht\sbsbox+\dp\sbsbox\relax\space of \the\textheight}%
+  \ifdim\dimexpr\ht\sbsbox+\dp\sbsbox\relax>\sbsmax
+    \typeout{@SBS-TOO-TALL \the\dimexpr\ht\sbsbox+\dp\sbsbox\relax}%
+  \fi
+  \noindent\usebox{\sbsbox}\par}
 \newcommand{\sbs}[2]{\sbsr{0.485}{#1}{#2}}
 
 % ---------------------------------------------------------------- tables

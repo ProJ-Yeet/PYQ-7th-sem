@@ -70,19 +70,19 @@
   \item \textbf{SDMA} $=$ space division multiple access. Spot beams reuse the same channel in
         different directions.
 \end{enumerate}
-\vspace{2pt}
+\penalty0\vspace{2pt}
 {\color{sub}\footnotesize \mk{Write these four in this order} and the examiner has the
 structure of your answer before reading it.}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \sbsr{0.47}{%
 \figT{c7_fdd_tdd.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize \textbf{Duplexing, the choice made before the access scheme.}
 (a) FDD gives two simplex channels at the same time. (b) TDD gives two simplex time slots on
 the same frequency. Full answer in \textbf{Ch 1 \S1.2}. \yr{SST Ch 7, Fig 9.1}}
 
-\vspace{4pt}
+\penalty0\vspace{4pt}
 \lead{Multiple access against multiplexing}
 \begin{itemize}
   \item \textbf{Multiple access}: users share a \emph{remote} channel (satellite, radio) and
@@ -105,7 +105,7 @@ the same frequency. Full answer in \textbf{Ch 1 \S1.2}. \yr{SST Ch 7, Fig 9.1}}
         DECT is \textbf{FDMA/TDD}, IS-95 is \textbf{CDMA/FDD}.
 \end{itemize}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \sbsr{0.52}{%
 \lead{Narrowband against wideband systems}
 \begin{itemize}
@@ -124,12 +124,12 @@ the same frequency. Full answer in \textbf{Ch 1 \S1.2}. \yr{SST Ch 7, Fig 9.1}}
   \item \mk{This one distinction explains most of the (+) and (-) in the rest of the chapter.}
 \end{itemize}}{%
 \figT{c7_narrow_wide.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize A narrowband channel sits \emph{inside} the coherence bandwidth, so
 the whole signal fades together. A wideband signal spans several coherence bandwidths, so only
 part of it fades at a time. \yr{SST Ch 7}}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \lead{Which real system uses which scheme \m{2} \added}
 \par\vspace{2pt}
 \begin{tabularx}{\textwidth}{@{}L{5.2cm}L{2.6cm}XL{2.6cm}@{}}
@@ -172,12 +172,12 @@ a \tF{4} numerical (companion \S1)}
   \item Transmission is \textbf{continuous}, so no framing or slot synchronisation is needed.
 \end{itemize}}{%
 \figT{c7_fdma_scheme.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize \textbf{FDMA: different channels get different frequency bands.}
 Every channel runs the full length of the time axis, which is exactly the wasted resource
 described below. \yr{SST Ch 7, Fig 9.2}}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \sbs{%
 \lead{Features and (+)}
 \begin{itemize}
@@ -205,7 +205,7 @@ described below. \yr{SST Ch 7, Fig 9.2}}}
   \item Suffers \textbf{non-linear effects} at the base station, next.
 \end{itemize}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \lead{Number of channels supported \; \tF{4}}
 \begin{itemize}
   \item \[ N \;=\; \frac{B_t - 2 B_{\text{guard}}}{B_c} \]
@@ -217,7 +217,7 @@ described below. \yr{SST Ch 7, Fig 9.2}}}
         \textbf{companion \S1}.
 \end{itemize}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \Q{Explain the non-linear effect in FDMA}{\m{3}}
 {\color{sub}\footnotesize \tP{1} \yr{\texttt{80 Ba} \m{3+2}} \gap$\cdot$\gap
 \mk{no lecture note covers this} \gap$\cdot$\gap \added \; sourced from Rappaport \S8.2.1}
@@ -247,7 +247,7 @@ described below. \yr{SST Ch 7, Fig 9.2}}}
         \mk{closest to the wanted carriers}, so no filter can remove them.
 \end{itemize}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \sbs{%
 \lead{Worked shape of the IM answer \added}
 \begin{itemize}
@@ -296,15 +296,15 @@ also the whole of \textbf{78 Ch} \m{4} and \texttt{81 Ba} \m{4} ``compare TDMA a
   \item Under TDD, half the slots in the frame go forward and half go reverse.
 \end{itemize}}{%
 \figT{c7_tdma_scheme.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize \textbf{TDMA: each channel occupies a cyclically repeating time
 slot.} Compare with Fig 9.2: the slices are now cut along time, not frequency.
 \yr{SST Ch 7, Fig 9.3}}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \sbsr{0.42}{%
 \figT{c7_tdma_frame.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize \textbf{TDMA frame structure.} Learn the three levels: frame $=$
 preamble $+$ information message $+$ trail bits; message $=$ slot 1 $\dots$ slot $N$;
 slot $=$ trail $+$ sync $+$ information data $+$ guard bits.
@@ -324,7 +324,7 @@ slot $=$ trail $+$ sync $+$ information data $+$ guard bits.
         frame-efficiency numerical measures.
 \end{itemize}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \sbs{%
 \lead{Features and (+) over FDMA \m{4}}
 \begin{itemize}
@@ -351,7 +351,7 @@ slot $=$ trail $+$ sync $+$ information data $+$ guard bits.
   \item Frame efficiency is \mk{never 100\,\%} and in GSM is only about 74\,\%.
 \end{itemize}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \sbs{%
 \lead{Number of channels}
 \begin{itemize}
@@ -414,7 +414,7 @@ slot $=$ trail $+$ sync $+$ information data $+$ guard bits.
         CDMA in IS-95, CDMA2000 and WCDMA (3G).
 \end{itemize}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \sbsr{0.55}{%
 \lead{Why spreading gives multiple access at all}
 \begin{itemize}
@@ -428,7 +428,7 @@ slot $=$ trail $+$ sync $+$ information data $+$ guard bits.
   \item This is why CDMA capacity is soft: each new user raises the floor a little.
 \end{itemize}}{%
 \figT{c7_spread_despread.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize \textbf{Top:} two narrowband sources are spread by their own codes
 into overlapping wideband signals. \textbf{Bottom:} de-spreading with code 1 recovers source 1
 as a narrow peak and leaves source 2 spread out as noise, and the reverse with code 2.
@@ -462,16 +462,16 @@ as a narrow peak and leaves source 2 spread out as noise, and the reverse with c
         Error control coding repairs the hit.
 \end{itemize}}{%
 \figT{c7_fhma_tx.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize \textbf{FHMA transmitter.} Data modulates a fixed carrier from the
 oscillator, then a mixer translates it to whichever frequency the synthesizer is on. The
 \textbf{PN code generator}, clocked by the code clock, drives the synthesizer.
 \yr{SSD Ch 7}}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \sbsr{0.46}{%
 \figT{c7_fhma_rx.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize \textbf{FHMA receiver.} A wideband filter passes the whole hopping
 band, the mixer de-hops using a locally generated copy of the same sequence, a bandpass filter
 picks out the fixed IF, and the demodulator recovers data. The \textbf{synchronization system}
@@ -502,7 +502,7 @@ keeps the local PN generator in step. \yr{SSD Ch 7}}}{%
         two sequences aligned in time.
 \end{enumerate}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \sbs{%
 \lead{Types of FHMA \m{2}}
 \begin{itemize}
@@ -563,13 +563,13 @@ keeps the local PN generator in step. \yr{SSD Ch 7}}}{%
   \item Either FDD or TDD may be used on top.
 \end{itemize}}{%
 \figT{c7_cdma_scheme.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize \textbf{CDMA.} The forward link is one composite signal transmitted to
 all mobiles at once; each mobile pulls out its own stream using its own code. In the
 frequency--time--code cube every channel is a layer along the \emph{code} axis, using all of
 the frequency and all of the time. \yr{SST Ch 7}}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \sbsr{0.55}{%
 \lead{Characteristics and features \m{6}}
 \begin{itemize}
@@ -591,12 +591,12 @@ the frequency and all of the time. \yr{SST Ch 7}}}
         user simply stops contributing to the noise floor.
 \end{itemize}}{%
 \figT{c7_cdma_fhma_grid.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize \textbf{CDMA against FHMA in the same axes.} CDMA users fill the whole
 frequency--time plane and are stacked along the code axis. FHMA users take one frequency each
 per time slot and swap around. \yr{SST Ch 7}}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \Q{CDMA design considerations: self-jamming and the near-far problem}{\m{2}\m{4}\m{4+5}}
 {\color{sub}\footnotesize \tS{9} \yr{\texttt{80 Ba} \m{4}, \textbf{72 Ash} \m{2},
 \textbf{76 Bh} \m{5+4}, 71 Ma \m{3+4} and \m{2+2}}
@@ -615,8 +615,14 @@ per time slot and swap around. \yr{SST Ch 7}}}
         held orthogonal. On the forward link all channels leave one base station in step, so
         Walsh codes stay orthogonal.
   \item Cure: longer codes (higher $PG$), tight power control, and error control coding.
-\end{itemize}
+\end{itemize}}{%
+\figT{c7_nearfar.png}
+\penalty0\vspace{1pt}
+{\color{sub}\footnotesize \textbf{Near-far scenario.} Mobile A is close in, mobile B is far out.
+The detected power from A swamps that from B at the base station receiver.
+\yr{SST Ch 7}}}
 
+\sbsr{0.55}{%
 \lead{Near-far problem \m{2}}
 \begin{itemize}
   \item Occurs when \mk{an undesired user is detected at much higher power than the desired
@@ -628,12 +634,6 @@ per time slot and swap around. \yr{SST Ch 7}}}
   \item It is \textbf{specific to CDMA}, because everyone shares one frequency at one time.
         FDMA, TDMA and FHMA separate users before power ever matters.
 \end{itemize}}{%
-\figT{c7_nearfar.png}
-\vspace{1pt}
-{\color{sub}\footnotesize \textbf{Near-far scenario.} Mobile A is close in, mobile B is far out.
-The detected power from A swamps that from B at the base station receiver.
-\yr{SST Ch 7}}
-\vspace{3pt}
 \lead{All possible mitigation techniques \m{4}}
 \begin{enumerate}
   \item \textbf{Power control} (the main answer). Every base station commands each mobile in its
@@ -653,7 +653,7 @@ The detected power from A swamps that from B at the base station receiver.
   \item \textbf{Sectoring and smart antennas} (SDMA), which separate the two users in space.
 \end{enumerate}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \sbs{%
 \lead{(+) of CDMA, including over TDMA \m{4}}
 \begin{itemize}
@@ -724,16 +724,16 @@ The detected power from A swamps that from B at the base station receiver.
   \item $+1 \rightarrow$ bit 1, $-1 \rightarrow$ bit 0, $0 \rightarrow$ that station was silent.
 \end{enumerate}}{%
 \figT{c7_cdma_idea.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize \textbf{The idea of CDMA.} Four stations each put $C_i D_i$ onto one
 common channel, which carries the \emph{sum}. \yr{SST Ch 7, Fig 12.32}}
-\vspace{3pt}
+\penalty0\vspace{3pt}
 \figT{c7_chip_seq.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize \textbf{A set of four orthogonal chip sequences}, one per station.
 \yr{SST Ch 7, Fig 12.33}}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \sbsr{0.42}{%
 \lead{The worked example to reproduce \m{4}}
 \begin{itemize}
@@ -753,19 +753,19 @@ common channel, which carries the \emph{sum}. \yr{SST Ch 7, Fig 12.32}}
         orthogonal, and it is where the last mark sits.
 \end{itemize}}{%
 \figT{c7_cdma_mux.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize \textbf{CDMA multiplexer (encoder).} A sends bit 0 ($-1$), B is
 silent (0), C sends bit 1 ($+1$). The adder puts $(0,0,+2,-2)$ on the channel.
 \yr{SST Ch 7, Fig 12.34}}
-\vspace{4pt}
+\penalty0\vspace{4pt}
 \figT{c7_cdma_demux.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize \textbf{CDMA demultiplexer (decoder).} The one multiplexed sequence
 $(0,0,+2,-2)$ enters three correlator branches. Each multiplies by its own code, adds all the
 bits, and divides by 4 to recover $-1$, $0$ and $+1$.
 \yr{SST Ch 7, Fig 12.35}}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \Q{Steps to satisfy the condition for a Hadamard code; construct the 8 by 8 Hadamard code}{\m{3}\m{4}\m{3+5}}
 {\color{sub}\footnotesize \tF{3} \yr{\textbf{\texttt{82 Bh}} \m{2+3},
 \textbf{\texttt{80 Bh}} \m{4}, \textbf{79 Ch} \m{3+5}} \gap$\cdot$\gap
@@ -793,7 +793,7 @@ bits, and divides by 4 to recover $-1$, $0$ and $+1$.
   \item For CDMA use, map $+1 \rightarrow 0$ and $-1 \rightarrow 1$ to get the binary
         \textbf{Walsh codes}.
 \end{enumerate}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize \mk{Where it is used:} the rows of $H_{64}$ are the 64 Walsh functions
 that separate the forward channels of IS-95 CDMA. See also Ch 6, block codes.}}
 
@@ -826,12 +826,12 @@ near-far answer comes free}
   \item \xmark \mk{Does not solve near-far}, since inside a sub-channel it is still CDMA.
 \end{itemize}}{%
 \figT{c7_fcdma_spectrum.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize \textbf{FCDMA.} One wideband CDMA spectrum (top) against the same
 allocation split into several narrowband CDMA sub-spectra (bottom).
 \yr{SST Ch 7, Fig 9.6}}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \sbsr{0.53}{%
 \lead{2. Hybrid direct sequence / frequency hopped (DS/FHMA)}
 \begin{itemize}
@@ -848,12 +848,12 @@ allocation split into several narrowband CDMA sub-spectra (bottom).
   \item \xmark Most complex of the four to build and to synchronise.
 \end{itemize}}{%
 \figT{c7_dsfh_spectrum.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize \textbf{Hybrid FH/DS spectrum.} Each arch is one direct-sequence
 burst; the filled arch is the channel in use for this hop and the rest are available to other
 bursts. \yr{SST Ch 7, Fig 9.7}}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \sbs{%
 \lead{3. Time division CDMA (TCDMA)}
 \begin{itemize}
@@ -885,7 +885,7 @@ bursts. \yr{SST Ch 7, Fig 9.7}}}
   \item \xmark Hopping sequences must be planned across cells to stop repeated collisions.
 \end{itemize}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 {\color{sub}\footnotesize \mk{If the question says ``which mitigate the near-far problem'',
 the answer is DS/FHMA and TCDMA} \yr{(\textbf{75 Bh}, \textbf{74 Bh}, 71 Ma)}. FCDMA and TDFH do
 not: FCDMA is still CDMA inside each sub-band, and TDFH is a TDMA system that never had the
@@ -915,12 +915,12 @@ problem. Say so explicitly, it is worth a mark.}
         channels in the same band. Adding antennas adds channels.
 \end{itemize}}{%
 \figT{c7_sdma.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize \textbf{SDMA.} One base station forms several spot beams, each serving
 a different user in a different direction on the same channel.
 \yr{SST Ch 7}}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \sbs{%
 \lead{(+)}
 \begin{itemize}
@@ -975,7 +975,7 @@ Example system & AMPS & GSM, IS-136 & IS-95, WCDMA \\
 \bottomrule
 \end{tabularx}
 
-\vspace{3pt}
+\penalty0\vspace{3pt}
 \sbs{%
 \lead{FDMA in two lines}
 \begin{itemize}
@@ -1041,7 +1041,7 @@ decks} \gap$\cdot$\gap WiMAX and LTE belong to \textbf{Ch 8}, do not answer them
   \item Security: WEP (broken), then WPA, WPA2 (AES-CCMP), WPA3.
 \end{itemize}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \lead{The 802.11 standards worth naming \m{2} \added}
 \par\vspace{2pt}
 \begin{tabularx}{\textwidth}{@{}L{2.3cm}L{1.5cm}L{2.2cm}L{2.5cm}X@{}}
@@ -1062,7 +1062,7 @@ decks} \gap$\cdot$\gap WiMAX and LTE belong to \textbf{Ch 8}, do not answer them
 \textbf{802.15.1} Bluetooth (WPAN, FHMA over 79 channels), \textbf{802.15.4} Zigbee,
 \textbf{802.16} WiMAX (WMAN, answered in Ch 8).}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \sbs{%
 \lead{WLAN (+)}
 \begin{itemize}
@@ -1116,13 +1116,13 @@ decks} \gap$\cdot$\gap WiMAX and LTE belong to \textbf{Ch 8}, do not answer them
   \item SDMA \tP{2} \gap$\cdot$\gap WLAN and WiFi \tP{2}
   \item TDMA numericals: N-TDMA users, GSM frame efficiency \tP{2}
 \end{enumerate}
-\vspace{2pt}
+\penalty0\vspace{2pt}
 {\color{sub}\footnotesize \mk{The single highest-value hour} you can spend on this subject is
 drawing the FHMA transmitter and receiver until they come out from memory. Ten of the
 twenty-two papers pay for it, usually at 4 to 7 marks, and the hybrid-SSMA question that
 follows it is worth another 4 to 6.}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 {\color{sub}\footnotesize \mk{Five numericals live here}, all worked in the companion PDF:
 FDMA channel count (3 variants), N-TDMA users per cluster, GSM frame efficiency, the $H_8$
 construction, and CDMA encode/decode.}}

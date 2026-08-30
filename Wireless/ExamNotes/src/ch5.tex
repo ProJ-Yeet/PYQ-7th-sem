@@ -46,8 +46,14 @@ the chapter}}
         whenever the channel is \textbf{frequency selective}.
   \item ISI is \mk{the single largest bottleneck on high-rate data over a mobile channel}, and
         raising transmit power does not help: it raises the interference too.
-\end{itemize}
+\end{itemize}}{%
+\figT{c5_eq_block.png}
+\penalty0\vspace{1pt}
+{\color{sub}\footnotesize A communication system w/ an adaptive equalizer at the receiver.
+$f(t)$ is the \textbf{combined} impulse response of transmitter, radio channel and receiver
+RF/IF stages. The equalizer inverts all three at once.}}
 
+\sbs{%
 \lead{Definition}
 \begin{itemize}
   \item \textbf{Equalization} $=$ \textbf{any signal processing operation that minimizes ISI}.
@@ -60,12 +66,6 @@ the chapter}}
   \item \mk{The mobile channel is random and time varying}, so a fixed filter cannot work. The
         equalizer must track the channel $\rightarrow$ it must be \textbf{adaptive}.
 \end{itemize}}{%
-\figT{c5_eq_block.png}
-\vspace{1pt}
-{\color{sub}\footnotesize A communication system w/ an adaptive equalizer at the receiver.
-$f(t)$ is the \textbf{combined} impulse response of transmitter, radio channel and receiver
-RF/IF stages. The equalizer inverts all three at once.}
-
 \lead{The error-driven loop}
 \begin{itemize}
   \item Equalizer output $\hat{d}(t)$ is compared against a desired signal $d(t)$.
@@ -129,8 +129,13 @@ companion}
         radio channel and on the noise.
   \item Weights are updated continuously by the \textbf{adaptive algorithm}, which is driven by
         the error signal $e_k$.
-\end{itemize}
+\end{itemize}}{%
+\figT{c5_adaptive_eq.png}
+\penalty0\vspace{1pt}
+{\color{sub}\footnotesize Basic linear equalizer during training. $d_k$ is the known training
+symbol, $e_k$ the error that drives the adaptive algorithm.}}
 
+\sbs{%
 \lead{Setting up the cost function}
 \begin{itemize}
   \item Input vector and weight vector:
@@ -153,11 +158,6 @@ companion}
            \mathbf{p} = E\!\left[x_k \mathbf{y}_k\right]
            \text{ (cross correlation)} \end{gathered} \]
 \end{itemize}}{%
-\figT{c5_adaptive_eq.png}
-\vspace{1pt}
-{\color{sub}\footnotesize Basic linear equalizer during training. $d_k$ is the known training
-symbol, $e_k$ the error that drives the adaptive algorithm.}
-
 \lead{Minimising it}
 \begin{itemize}
   \item $\xi$ is a \textbf{quadratic} function of the weights, so its surface is a
@@ -201,7 +201,7 @@ symbol, $e_k$ the error that drives the adaptive algorithm.}
 
 \sbsr{0.42}{%
 \figT{c5_eq_class.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize The full classification: two \textbf{types}, four \textbf{structures},
 and the \textbf{algorithms} that drive each one. Reproduce this tree and most of the marks are
 already earned.}}{%
@@ -228,14 +228,14 @@ already earned.}}{%
         That limitation is the whole reason nonlinear equalizers exist.
 \end{itemize}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \sbs{%
 \figT{c5_lte.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize Basic linear transversal equalizer: a tapped delay line clocked at the
 symbol period $T_s$.}}{%
 \figT{c5_ff_fb_taps.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize Tapped delay line filter with \emph{both} feedforward and feedback taps.}}
 
 \creamq{Nonlinear equalizers}{\m{4}}
@@ -272,12 +272,12 @@ symbol period $T_s$.}}{%
         \textbf{RLS} algorithm gives it fast convergence.
 \end{itemize}}{%
 \figT{c5_dfe.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize Decision feedback equalizer: feedforward filter on the received signal,
 feedback filter driven by detected symbols.}
-\vspace{4pt}
+\penalty0\vspace{4pt}
 \figT{c5_lattice.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize Lattice equalizer structure.}}
 
 \creamq{Maximum likelihood sequence estimation (MLSE)}{\m{6}\m{4}}
@@ -310,14 +310,14 @@ feedback filter driven by detected symbols.}
         number of symbols. GSM is exactly that case.
 \end{itemize}}{%
 \figT{c5_mlse.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize MLSE with an adaptive matched filter and a channel estimator in the
 loop.}}
 
 \Q{Explain any two adaptive equalization algorithms}{\m{4}\m{5}}
 {\color{sub}\footnotesize \yr{73 Ma, 74 Ma} \gap$\cdot$\gap \mk{name all three, then detail two}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \begin{tabularx}{\textwidth}{@{}L{2.6cm}XXX@{}}
 \toprule
 \hrow & \thead{Zero forcing (ZF)} & \thead{Least mean square (LMS)} & \thead{Recursive least
@@ -338,7 +338,7 @@ Use it when & The channel is benign and simple hardware matters & Convergence sp
 \bottomrule
 \end{tabularx}
 
-\vspace{3pt}
+\penalty0\vspace{3pt}
 \begin{itemize}
   \item \textbf{Zero forcing in more detail:} it is the \textbf{inverse filter} of the channel,
         $H_{eq}(f) = 1/H_{ch}(f)$. It removes ISI completely \mk{in a noise-free channel}.
@@ -359,7 +359,7 @@ Use it when & The channel is benign and simple hardware matters & Convergence sp
 \textbf{74 Bh}, 74 Ma, \textbf{76 Bh}, \textbf{78 Ch}, \texttt{80 Ba}, \textbf{\texttt{80 Bh}},
 \texttt{81 Ba}} \gap$\cdot$\gap \mk{second most repeated question in the chapter}}
 
-\sbsr{0.53}{%
+\sbsr{0.62}{%
 \lead{The concept \mk{(the ``why'' marks live here)}}
 \begin{itemize}
   \item \textbf{Objective}: combine multiple copies of the signal so as to
@@ -374,8 +374,14 @@ Use it when & The channel is benign and simple hardware matters & Convergence sp
         transmitter.
   \item \mk{Equalization fixes ISI. Diversity fixes fading. They solve different problems and are
         often used together.}
-\end{itemize}
+\end{itemize}}{%
+\figT{c5_snr_div.png}
+\penalty0\vspace{1pt}
+{\color{sub}\footnotesize Probability distribution of SNR threshold for $M$-branch selection
+diversity. $\Gamma$ is the mean SNR on each branch. \mk{Each extra branch pushes the low-SNR
+tail sharply to the right, which is the diversity gain.}}}
 
+\sbs{%
 \lead{Microscopic Vs macroscopic diversity}
 \begin{itemize}
   \item \textbf{Microscopic diversity} counters \textbf{small-scale} fading.
@@ -389,14 +395,6 @@ Use it when & The channel is benign and simple hardware matters & Convergence sp
     \item Eg CDMA soft handoff, where two BSs serve one mobile.
   \end{itemize}
 \end{itemize}}{%
-\figT{c5_snr_div.png}
-\vspace{1pt}
-{\color{sub}\footnotesize Probability distribution of SNR threshold for $M$-branch selection
-diversity. $\Gamma$ is the mean SNR on each branch. \mk{Each extra branch pushes the low-SNR
-tail sharply to the right, which is the diversity gain.}}}
-
-\vspace{2pt}
-\sbs{%
 \lead{Types of diversity \mk{(name all five)}}
 \begin{itemize}
   \item \textbf{Space (antenna) diversity}
@@ -419,7 +417,9 @@ tail sharply to the right, which is the diversity gain.}}}
     \item \textbf{($-$)} Only 2 branches are possible, and each port gets about
           \textbf{3 dB less power} than a single co-polarized antenna.
   \end{itemize}
-\end{itemize}}{%
+\end{itemize}}
+
+\sbs{%
 \begin{itemize}
   \item \textbf{Frequency diversity}
   \begin{itemize}
@@ -428,6 +428,8 @@ tail sharply to the right, which is the diversity gain.}}}
     \item \textbf{($-$)} Costs extra spectrum and an extra transmitter chain.
     \item Used on microwave LOS links, where it doubles as equipment redundancy.
   \end{itemize}
+\end{itemize}}{%
+\begin{itemize}
   \item \textbf{Time diversity}
   \begin{itemize}
     \item Repeatedly transmit the information at time spacings \textbf{exceeding the coherence
@@ -452,14 +454,14 @@ tail sharply to the right, which is the diversity gain.}}}
 
 \sbsr{0.42}{%
 \figT{c5_space_div.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize Generalized block diagram for space diversity: $m$ antennas, variable
 gains, then switching logic or a demodulator.}}{%
 {\color{sub}\footnotesize Space diversity reception falls into \textbf{four} categories. They
 differ only in \textbf{how the $m$ branches are weighted and combined}, so answer them as one
 family. The general model has $m$ branches whose gains are adjusted to give the same average SNR
 per branch.}
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \begin{tabularx}{\linewidth}{@{}L{2.35cm}XL{1.85cm}@{}}
 \toprule
 \hrow \thead{Method} & \thead{How it works} & \thead{Cost} \\
@@ -476,7 +478,7 @@ per branch.}
 \bottomrule
 \end{tabularx}}
 
-\vspace{3pt}
+\penalty0\vspace{3pt}
 \sbsr{0.55}{%
 \lead{Selection diversity}
 \begin{itemize}
@@ -502,13 +504,13 @@ per branch.}
         three, because the branch in use is merely acceptable, not best.
 \end{itemize}}{%
 \figT{c5_selection.png}
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \figT{c5_scanning.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize Top: selection diversity, monitor SNR then select highest. Bottom:
 scanning diversity, one receiver plus a comparator against a preset threshold.}}
 
-\vspace{3pt}
+\penalty0\vspace{3pt}
 \sbsr{0.55}{%
 \lead{Maximal ratio combining (MRC) \mk{(80 Bh asks for this alone, \m{2})}}
 \begin{itemize}
@@ -523,8 +525,12 @@ scanning diversity, one receiver plus a comparator against a preset threshold.}}
   \item \textbf{($+$) Gives the best statistical reduction of fading} of any linear combiner.
   \item \textbf{($-$)} Needs an \textbf{accurate estimate of each branch's amplitude gain}, so the
         receiver is the most complex of the four.
-\end{itemize}
+\end{itemize}}{%
+\figT{c5_mrc.png}
+\penalty0\vspace{1pt}
+{\color{sub}\footnotesize Maximal ratio combiner: weight, co-phase, sum, then detect.}}
 
+\sbsr{0.55}{%
 \lead{Equal gain combining (EGC)}
 \begin{itemize}
   \item Used when it is \textbf{not convenient} to provide the variable weighting MRC needs.
@@ -533,18 +539,13 @@ scanning diversity, one receiver plus a comparator against a preset threshold.}}
   \item \mk{Performance is only marginally inferior to MRC, and superior to selection diversity},
         for far less hardware. That trade is why EGC is common in practice.
 \end{itemize}}{%
-\figT{c5_mrc.png}
-\vspace{1pt}
-{\color{sub}\footnotesize Maximal ratio combiner: weight, co-phase, sum, then detect.}
-\vspace{3pt}
 \figT{c5_egc.png}
-\vspace{1pt}
-{\color{sub}\footnotesize Equal gain combining: unity weights, co-phasing and summing only.}
-\vspace{3pt}
-\figT{c5_polarization.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
+{\color{sub}\footnotesize Equal gain combining: unity weights, co-phasing and summing only.}}
+
+\figC{c5_polarization.png}{0.46\textwidth}
 {\color{sub}\footnotesize Theoretical model for base station polarization diversity: two
-orthogonal receive ports at $\pm\alpha$ in the $x$--$y$ plane.}}
+orthogonal receive ports at $\pm\alpha$ in the $x$--$y$ plane.}
 
 \hr
 
@@ -588,7 +589,7 @@ orthogonal receive ports at $\pm\alpha$ in the $x$--$y$ plane.}}
         which no other diversity scheme manages.
 \end{itemize}}{%
 \figT{c5_rake.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize An $M$-branch ($M$-finger) RAKE. Each correlator detects one time-shifted
 version of the CDMA transmission, delayed by at least one chip from the others.}
 
@@ -624,9 +625,14 @@ version of the CDMA transmission, delayed by at least one chip from the others.}
   \item Speech coders make this worse: several \textbf{``important'' bits} occur in succession, so
         without interleaving one fade can destroy an entire speech frame.
   \item \mk{Interleaving is time diversity implemented in the digital domain.}
-\end{itemize}
+\end{itemize}}{%
+\figT{c5_interleaver.png}
+\penalty0\vspace{1pt}
+{\color{sub}\footnotesize Block interleaver: coded bits are read \textbf{in} by column and read
+\textbf{out} to the modulator one row at a time.}}
 
-\lead{Block interleaver +Fig}
+\sbsr{0.55}{%
+\lead{Block interleaver \mk{(the figure above)}}
 \begin{itemize}
   \item Formats the encoded data into a rectangular array of \textbf{$m$ rows} and
         \textbf{$n$ columns}, interleaving $nm$ bits at a time.
@@ -641,8 +647,7 @@ version of the CDMA transmission, delayed by at least one chip from the others.}
   \item So an $(n,k)$ code that can handle a burst of $b < (n-k)/2$ can be combined w/ an
         interleaver of degree $m$ to make an $(mn, mk)$ block code that handles bursts of
         \textbf{$mb$} bits.
-\end{itemize}
-
+\end{itemize}}{%
 \lead{Convolutional interleaver}
 \begin{itemize}
   \item Same job, but built as a bank of shift registers of increasing length rather than a
@@ -651,15 +656,11 @@ version of the CDMA transmission, delayed by at least one chip from the others.}
         with convolutional codes}.
   \item \textbf{($+$)} Roughly \mk{half the delay and half the memory} of a block interleaver of
         the same effective depth. \added
-\end{itemize}
+\end{itemize}}
 
 \lead{The cost}
 \begin{itemize}
   \item \textbf{Delay}, and the delay grows with interleaver depth.
   \item \mk{Human speech tolerates delays below about 40 ms}, which caps the depth a voice system
         can use. Data services can interleave far more deeply.
-\end{itemize}}{%
-\figT{c5_interleaver.png}
-\vspace{1pt}
-{\color{sub}\footnotesize Block interleaver: coded bits are read \textbf{in} by column and read
-\textbf{out} to the modulator one row at a time.}}
+\end{itemize}

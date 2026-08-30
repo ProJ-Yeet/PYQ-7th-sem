@@ -63,7 +63,7 @@ never look at it again.}
   \item \mk{Cost:} needs more bandwidth per message and needs synchronisation.
 \end{itemize}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \sbsr{0.50}{%
 \lead{Power efficiency $\eta_p$}
 \begin{itemize}
@@ -84,7 +84,7 @@ never look at it again.}
   \item M-ary buys $\eta_B$ by spending $\eta_p$.
 \end{itemize}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \sbsr{0.52}{%
 \lead{Choosing a scheme for a mobile link}
 \begin{itemize}
@@ -105,7 +105,7 @@ never look at it again.}
   \item Farthest point from origin $=$ peak power the amplifier must deliver.
 \end{itemize}}{%
 \figT{c4_dig_waveforms.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize The three binary keying waveforms against one data stream:
 (a) ASK, (b) BFSK, (c) BPSK. \yr{SST, Modulation extra note}}}
 
@@ -137,7 +137,7 @@ never look at it again.}
         integrator or differentiator.
 \end{itemize}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \sbsr{0.50}{%
 \lead{Line coding: what it is for}
 \begin{itemize}
@@ -189,15 +189,15 @@ handsets moved to the constant-envelope family in \S4.4.}
         costs only 1 bit.
 \end{itemize}}{%
 \figT{c4_qpsk_const.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize QPSK constellation: 4 points, one per dibit, spaced $90^\circ$.
 Distance to origin $= \sqrt{E_s}$, distance between neighbours $= \sqrt{2E_s} = 2\sqrt{E_b}$.
 \yr{SST, Modulation extra note}}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \sbsr{0.50}{%
 \figT{c4_qpsk_tx.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize \textbf{QPSK transmitter.} \yr{SST, Fig 3.2.3}}}{%
 \lead{Transmission process \m{4}}
 \begin{enumerate}
@@ -212,10 +212,10 @@ Distance to origin $= \sqrt{E_s}$, distance between neighbours $= \sqrt{2E_s} = 
   \item Output BPF limits the spectrum to the allocated channel.
 \end{enumerate}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \sbsr{0.50}{%
 \figT{c4_qpsk_rx.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize \textbf{QPSK receiver}, a pair of coherent correlators.
 \yr{SST, Modulation extra note}}}{%
 \lead{Detection process \m{4}}
@@ -235,7 +235,7 @@ Distance to origin $= \sqrt{E_s}$, distance between neighbours $= \sqrt{2E_s} = 
 {\color{sub}\footnotesize \mk{Say ``coherent'' out loud.} QPSK cannot be envelope detected,
 the receiver needs the carrier phase.}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \lead{The weakness that produced OQPSK and $\pi/4$-QPSK}
 \begin{itemize}
   \item When \emph{both} bits of a dibit change, the phase jumps $180^\circ$ and the
@@ -251,7 +251,7 @@ the receiver needs the carrier phase.}}
 \creamq{BPSK against QPSK}{\m{5}}
 {\color{sub}\footnotesize \yr{73 Ma \m{5}}}
 
-\vspace{1pt}
+\penalty0\vspace{1pt}
 \begin{center}\small
 \begin{tabularx}{\textwidth}{@{}L{3.0cm}XX@{}}
 \toprule
@@ -268,7 +268,7 @@ Circuit & one balance modulator & two, plus S/P and $90^\circ$ shifter \\
 \bottomrule
 \end{tabularx}
 \end{center}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize \mk{The one-line answer:} QPSK carries twice the data in the same
 band at the same BER and the same $E_b/N_0$, paying only in circuit complexity.}
 
@@ -298,14 +298,14 @@ band at the same BER and the same $E_b/N_0$, paying only in circuit complexity.}
   \item \textbf{Balance modulator} multiplies by the carrier $\rightarrow$ DPSK out.
 \end{enumerate}}{%
 \figT{c4_dbpsk_gen.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize \textbf{DPSK transmitter}: encoder $+$ $T_b$ delay ahead of an
 ordinary BPSK modulator. \yr{SST, Modulation extra note}}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \sbsr{0.50}{%
 \figT{c4_dpsk_det.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize \textbf{DPSK receiver}: the signal is its own phase reference.
 \yr{SST, Modulation extra note}}}{%
 \lead{Receiver \m{2}}
@@ -321,10 +321,10 @@ ordinary BPSK modulator. \yr{SST, Modulation extra note}}}
 {\color{sub}\footnotesize \mk{No carrier recovery circuit anywhere in this diagram.} That is
 the mark the examiner is looking for.}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \sbsr{0.56}{%
 \figT{c4_dpsk_table.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize Differential encoding worked through: the starred bit is the
 arbitrary reference. Row 2 is $d_k$, row 3 its phase, last row the recovered data.
 \yr{SST, Modulation extra note}}}{%
@@ -346,7 +346,7 @@ arbitrary reference. Row 2 is $d_k$, row 3 its phase, last row the recovered dat
         next.
 \end{itemize}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \lead{PN sequence and why it is used \m{2+2} \; \small(full treatment in \S4.7)}
 \begin{itemize}
   \item \textbf{PN (pseudo-noise) sequence} $=$ a coded sequence of 1s and 0s that looks
@@ -384,8 +384,13 @@ arbitrary reference. Row 2 is $d_k$, row 3 its phase, last row the recovered dat
         half as violent.
   \item \textbf{PSD, BER and bandwidth are identical to QPSK.} The gain is purely in envelope
         behaviour.
-\end{itemize}
+\end{itemize}}{%
+\figT{c4_oqpsk_wave.png}
+\penalty0\vspace{1pt}
+{\color{sub}\footnotesize \textbf{OQPSK time offset}: $m_I(t)$ changes at even multiples of
+$T$, $m_Q(t)$ at odd multiples. Note the half-symbol offset. \yr{Rappaport Fig 5.30}}}
 
+\sbsr{0.53}{%
 \lead{Transmitter \m{2.5}}
 \begin{enumerate}
   \item NRZ $\rightarrow$ serial-to-parallel into $m_I(t)$ and $m_Q(t)$.
@@ -402,19 +407,13 @@ arbitrary reference. Row 2 is $d_k$, row 3 its phase, last row the recovered dat
         before the multiplexer, so the dibits re-align.
   \item Symbol timing recovery is taken from the transitions, which now occur every $T_b$.
 \end{enumerate}}{%
-\figT{c4_oqpsk_wave.png}
-\vspace{1pt}
-{\color{sub}\footnotesize \textbf{OQPSK time offset}: $m_I(t)$ changes at even multiples of
-$T$, $m_Q(t)$ at odd multiples. Note the half-symbol offset. \yr{Rappaport Fig 5.30}}
-
-\vspace{4pt}
 \figT{c4_pi4_const.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize \textbf{$\pi/4$-QPSK}: constellation (a) and constellation (b) are
 used on alternate symbols, giving the 8-state pattern below with all allowed transitions
 drawn. \yr{Rappaport Fig 5.31}}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \sbsr{0.50}{%
 \lead{$\pi/4$-QPSK, the compromise}
 \begin{itemize}
@@ -492,7 +491,7 @@ and Rayleigh fading.}
 \textbf{80 Ch} \m{2}, \textbf{76 Bh} \m{4}} \gap$\cdot$\gap
 \mk{MSK and GMSK together are asked in 6 of 22 papers}}
 
-\vspace{1pt}
+\penalty0\vspace{1pt}
 \begin{center}\small
 \begin{tabularx}{\textwidth}{@{}L{3.1cm}XXX@{}}
 \toprule
@@ -510,12 +509,12 @@ Detection & coherent only & coherent or not & \textbf{FM discriminator works} \\
 \bottomrule
 \end{tabularx}
 \end{center}
-\vspace{2pt}
+\penalty0\vspace{2pt}
 {\color{sub}\footnotesize \mk{Read the table as a story}: OQPSK has the narrowest main lobe but
 the slowest-decaying tails, MSK trades a wider main lobe for tails that die four times faster,
 GMSK then squeezes the main lobe back down with a Gaussian filter and pays for it in ISI.}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \sbsr{0.50}{%
 \lead{\mk{Which is suitable for GSM, and why} \m{2}}
 \begin{itemize}
@@ -532,7 +531,7 @@ GMSK then squeezes the main lobe back down with a Gaussian filter and pays for i
         enough to be equalized out.
 \end{itemize}}{%
 \figT{c4_msk_psd.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize PSD of MSK against GMSK at three $BT$ values, plus the occupied RF
 bandwidth table in units of $R_b$. \mk{MSK's tails do not fall fast enough} to protect the
 adjacent channel, which is the entire reason GMSK exists. \yr{SST Ch 4}}}
@@ -562,17 +561,17 @@ adjacent channel, which is the entire reason GMSK exists. \yr{SST Ch 4}}}
         envelope drawn.
 \end{itemize}}{%
 \figT{c4_gmsk_tx.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize \textbf{GMSK transmitter, FM route.} \yr{SST Ch 4}}
-\vspace{4pt}
+\penalty0\vspace{4pt}
 \figT{c4_gmsk_iq.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize \textbf{GMSK transmitter, I-Q route.} \yr{SST, Fig 3.2.17}}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \sbsr{0.50}{%
 \figT{c4_gmsk_rx.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize \textbf{GMSK detector}, orthogonal coherent form. \yr{SST, Fig 3.2.18}}}{%
 \lead{Transmission process \m{3}}
 \begin{enumerate}
@@ -600,7 +599,7 @@ adjacent channel, which is the entire reason GMSK exists. \yr{SST Ch 4}}}
         actually does.
 \end{enumerate}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \lead{Worked example: sizing the Gaussian filter \added \; \small(tutorial problem, never a PYQ)}
 \begin{asked}[PROBLEM]{SST tutorial \textperiodcentered{} not from any paper}
 Find the 3-dB bandwidth for a Gaussian low pass filter used to produce 0.25 GMSK with a
@@ -666,7 +665,7 @@ channel data rate of $R_b = 270$ kbps. What is the 90\,\% power bandwidth in the
         quality.
 \end{itemize}}{%
 \figT{c4_qam16.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize \textbf{16-QAM}, a $4\times4$ grid, 4 bits per symbol.
 Nearest-neighbour distance is the same everywhere, which is why the grid beats the circle.
 \yr{SST Ch 4}}}
@@ -688,12 +687,12 @@ Nearest-neighbour distance is the same everywhere, which is why the grid beats t
         band-limited channel.
 \end{itemize}}{%
 \figT{c4_16psk_qam.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize \textbf{16-PSK} (left): 16 points on one circle, all at the same
 power, spacing $22.5^\circ$. \textbf{16-QAM} (right): 16 points on a $4\times4$ grid, three
 different amplitudes. Same 4 bits per symbol either way. \yr{SST Ch 4}}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \begin{center}\small
 \begin{tabularx}{\textwidth}{@{}L{4.4cm}XX@{}}
 \toprule
@@ -712,7 +711,7 @@ Noise immunity & equal, if $d_{\min}$ is equalised & equal, at less power \\
 \end{tabularx}
 \end{center}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \sbs{%
 \lead{The number the examiner wants}
 \begin{itemize}
@@ -734,10 +733,10 @@ Noise immunity & equal, if $d_{\min}$ is equalised & equal, at less power \\
   \item Both need coherent detection and accurate gain control.
 \end{itemize}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \sbsr{0.50}{%
 \figT{c4_qam_mod.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize \textbf{QAM modulator.} \yr{SST, Fig 3.2.21}}}{%
 \lead{QAM modulator, walked through}
 \begin{enumerate}
@@ -780,8 +779,14 @@ always with a block diagram attached.}
         expensive and must adapt continuously.
   \item \mk{OFDM's answer: do not make the symbol shorter, make it longer, and send many of
         them side by side.}
-\end{itemize}
+\end{itemize}}{%
+\figT{c4_ofdm_fdm.png}
+\penalty0\vspace{1pt}
+{\color{sub}\footnotesize \mk{The figure that answers ``OFDM principle''.} FDM (top) wastes
+spectrum on guard bands. OFDM (bottom) overlaps orthogonal subcarriers and needs none.
+\yr{AS Sir, OFDM notes}}}
 
+\sbsr{0.50}{%
 \lead{The principle \m{4}}
 \begin{itemize}
   \item Split the high-rate stream into \textbf{$N$ parallel low-rate substreams}.
@@ -798,22 +803,16 @@ always with a block diagram attached.}
   \item The whole bank of $N$ modulators is computed as one \textbf{IFFT}, and the bank of
         demodulators as one \textbf{FFT}. No oscillator bank, no filter bank.
 \end{itemize}}{%
-\figT{c4_ofdm_fdm.png}
-\vspace{1pt}
-{\color{sub}\footnotesize \mk{The figure that answers ``OFDM principle''.} FDM (top) wastes
-spectrum on guard bands. OFDM (bottom) overlaps orthogonal subcarriers and needs none.
-\yr{AS Sir, OFDM notes}}
-\vspace{4pt}
 \figT{c4_ofdm_concept.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize Data is coded in the \textbf{frequency} domain, IFFT turns it into a
 time waveform, the channel acts, FFT recovers each subcarrier separately.
 \yr{AS Sir, OFDM notes}}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \sbsr{0.52}{%
 \figT{c4_ofdm_block.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize \textbf{Draw exactly this for the 8-mark question.} Transmitter on
 top, receiver below, channel and noise between them. \yr{AS Sir, OFDM notes}}}{%
 \lead{Transmitter chain \m{4}}
@@ -843,7 +842,7 @@ top, receiver below, channel and noise between them. \yr{AS Sir, OFDM notes}}}{%
 {\color{sub}\footnotesize \mk{Receiver is the transmitter read right to left.} Say that and you
 have drawn half the answer.}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \sbsr{0.50}{%
 \lead{Cyclic prefix, the detail that earns marks}
 \begin{itemize}
@@ -864,7 +863,7 @@ have drawn half the answer.}}
   \item \mk{Cost: the CP is pure overhead}, up to 20 to 25\,\% of throughput.
 \end{itemize}}{%
 \figT{c4_cp.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize The tail of the symbol is copied to the front as an extension.
 \yr{AS Sir, OFDM notes}}
 
@@ -941,15 +940,15 @@ have drawn half the answer.}}
   \item (And, as a bonus, how to let many users share one band with no coordination.)
 \end{itemize}}{%
 \figT{c4_ss_model.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize \textbf{General model of a spread spectrum system.} Note the
 symmetry: the same pseudonoise generator appears at both ends, and it sits \emph{outside} the
 channel coding. \yr{SST Ch 4, Fig 7.1}}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \sbsr{0.50}{%
 \figT{c4_pn_gen.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize \textbf{PN sequence generator}: $m$ D flip-flops in a shift register,
 XOR parity feedback into $D_0$. Maximal length $2^m - 1$. \yr{SST Ch 4, Fig 12.3}}}{%
 \lead{PN sequence properties \m{2}}
@@ -966,7 +965,7 @@ XOR parity feedback into $D_0$. Maximal length $2^m - 1$. \yr{SST Ch 4, Fig 12.3
   \item Easy to generate and to synchronise, in hardware, at chip rate.
 \end{itemize}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \sbsr{0.50}{%
 \lead{DSSS transmitter \m{3}}
 \begin{enumerate}
@@ -992,15 +991,15 @@ XOR parity feedback into $D_0$. Maximal length $2^m - 1$. \yr{SST Ch 4, Fig 12.3
   \item Narrowband filter $+$ integrate-and-dump $\rightarrow$ recovered data.
 \end{enumerate}}{%
 \figT{c4_dsss_block.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize \textbf{DSSS spreading.} \yr{SST Ch 4}}
-\vspace{4pt}
+\penalty0\vspace{4pt}
 \figT{c4_dsss_wave.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize \textbf{DSSS waveform example}: one data bit, an 11-chip code, and
 their product. Data 1 passes the code through, data 0 inverts it. \yr{SST Ch 4}}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \sbs{%
 \lead{DSSS (+)}
 \begin{itemize}
@@ -1049,16 +1048,16 @@ their product. Data 1 passes the code through, data 0 inverts it. \yr{SST Ch 4}}
         diversity, so a bad hop cannot kill it. Costs a fast synthesizer.
 \end{itemize}}{%
 \figT{c4_fhss_tx.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize \textbf{FHSS transmitter.} Code generator $\rightarrow$ frequency
 table $\rightarrow$ synthesizer $\rightarrow$ modulator. \yr{SST Ch 4}}
-\vspace{4pt}
+\penalty0\vspace{4pt}
 \figT{c4_fhss_sel.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize \textbf{Frequency selection}: each 3-bit group of the PN stream
 indexes one row of the frequency table, which is the next hop. \yr{SST Ch 4}}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \sbs{%
 \lead{FHSS (+)}
 \begin{itemize}
@@ -1137,7 +1136,7 @@ indexes one row of the frequency table, which is the next hop. \yr{SST Ch 4}}}
         diversity.
 \end{itemize}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \sbs{%
 \lead{Which scheme survives the mobile channel}
 \begin{itemize}
@@ -1194,7 +1193,7 @@ indexes one row of the frequency table, which is the next hop. \yr{SST Ch 4}}}
 {\color{sub}\footnotesize \mk{Draw first, then annotate.} An unlabelled correct block diagram
 still scores; three paragraphs with no diagram do not.}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 {\color{sub}\footnotesize \mk{No paper in 2070--2082 has set a numerical from this chapter.}
 The one calculation worth holding is the Gaussian-filter sizing in \S4.4, which is a tutorial
 problem, not a PYQ. Everything examined here is descriptive, and the marks live in the figures.}

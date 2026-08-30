@@ -68,7 +68,7 @@ $\rightarrow$ see the Ch 2 numerical companion.}
         by multiples of $60^\circ$ $\rightarrow$ makes the reuse geometry solvable.
 \end{itemize}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \sbsr{0.60}{%
 \lead{Terms}
 \begin{itemize}
@@ -93,7 +93,7 @@ $\rightarrow$ see the Ch 2 numerical companion.}
   \end{itemize}
 \end{itemize}}{%
 \figT{c2_interf_tier.png}
-\vspace{2pt}
+\penalty0\vspace{2pt}
 {\color{sub}\footnotesize First tier: 6 co-channel cells, all at distance $D$ from the
 reference cell.}}
 
@@ -128,8 +128,12 @@ reference cell.}}
   \item Typical $N = 4, 7, 12$.
   \item \mk{Small $N$ $\rightarrow$ cluster repeats more often $\rightarrow$ higher capacity},
         but co-channel cells sit closer $\rightarrow$ worse interference.
-\end{itemize}
+\end{itemize}}{%
+\figT{c2_reuse_layout.png}
+\penalty0\vspace{2pt}
+{\color{sub}\footnotesize Cells with the same letter use the same channel set.}}
 
+\sbs{%
 \lead{Which $N$ are allowed}
 \begin{itemize}
   \item Hexagons only tile for
@@ -137,11 +141,7 @@ reference cell.}}
   \item Allowed $N$: 1, 3, 4, 7, 9, 12, 13, 16, 19, 21, \dots
   \item Eg $i=1,j=1 \rightarrow N=3$. $i=2,j=1 \rightarrow N=7$. $i=3,j=2 \rightarrow N=19$.
 \end{itemize}}{%
-\figT{c2_reuse_layout.png}
-\vspace{2pt}
-{\color{sub}\footnotesize Cells with the same letter use the same channel set.}
-
-\lead{Locating the co-channel cells +Fig}
+\lead{Locating the co-channel cells \mk{(use the figure above)}}
 \begin{itemize}
   \item From the centre of any cell:
   \begin{itemize}
@@ -177,7 +177,7 @@ reference cell.}}
   \item Cost: the MSC must collect occupancy and signal-strength data continuously
         $\rightarrow$ heavy storage and computation load.
 \end{itemize}
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \figC{c2_ij_locate.png}{0.62\linewidth}
 \vspace{-2pt}
 {\color{sub}\footnotesize\centering $i=4$, $j=2$: the 6 nearest co-channel A cells.\par}}
@@ -209,8 +209,15 @@ reference cell.}}
   \item MSC checks the candidate has a \textbf{free channel}.
   \item MSC \textbf{re-allocates voice and control channels} to the new BS.
   \item Call continues on the new channel, old channel returns to the pool.
-\end{itemize}
+\end{itemize}}{%
+\figT{c2_handoff_proper.png}
+\penalty0\vspace{2pt}
+{\color{sub}\footnotesize \textbf{Improper Vs proper handoff} \yr{(\textbf{76 Bh} \m{4},
+\texttt{81 Ba} \m{1+3})}. Top: the level is left to fall past the minimum usable value before
+handoff is attempted $\rightarrow$ \mk{call terminated at B}. Bottom: handoff is made while the
+signal is still usable $\rightarrow$ call transferred to BS 2.}}
 
+\sbsr{0.52}{%
 \lead{Handoff threshold and handoff margin \mk{(75 Bh asks for the margin +Fig, \m{3})}}
 \begin{itemize}
   \item $P_{r,\text{minimum usable}}$ $=$ weakest signal that still gives acceptable voice,
@@ -225,13 +232,6 @@ reference cell.}}
   \item 1G analog: $\Delta \approx$ 6 to 12 dB, handoff takes about 10 s.
   \item 2G (GSM): $\Delta \approx$ 0 to 6 dB, handoff takes 1 to 2 s.
 \end{itemize}}{%
-\figT{c2_handoff_proper.png}
-\vspace{2pt}
-{\color{sub}\footnotesize \textbf{Improper Vs proper handoff} \yr{(\textbf{76 Bh} \m{4},
-\texttt{81 Ba} \m{1+3})}. Top: the level is left to fall past the minimum usable value before
-handoff is attempted $\rightarrow$ \mk{call terminated at B}. Bottom: handoff is made while the
-signal is still usable $\rightarrow$ call transferred to BS 2.}
-
 \lead{Types of handoff}
 \begin{itemize}
   \item \textbf{Hard handoff} $=$ ``\textbf{break before make}''.
@@ -328,6 +328,14 @@ signal is still usable $\rightarrow$ call transferred to BS 2.}
     \item \textbf{Low-speed} traffic is put on the microcells $\rightarrow$ high capacity.
     \item Speed is estimated from the rate of change of the short-term signal average.
   \end{itemize}
+\end{itemize}}{%
+\figT{c2_umbrella.png}
+\penalty0\vspace{2pt}
+{\color{sub}\footnotesize Umbrella cell: one large cell for fast traffic sitting over the
+microcells that serve slow traffic.}}
+
+\sbsr{0.56}{%
+\begin{itemize}
   \item \textbf{Cell dragging} \mk{(72 Ash, 73 Bh ask for this by name, \m{2})}.
   \begin{itemize}
     \item A \textbf{pedestrian} with a clear LOS to the BS keeps a \textbf{very strong} signal.
@@ -338,11 +346,6 @@ signal is still usable $\rightarrow$ call transferred to BS 2.}
   \end{itemize}
   \item \textbf{Handoff requests outrank new calls} so that GoS is preserved.
 \end{itemize}}{%
-\figT{c2_umbrella.png}
-\vspace{2pt}
-{\color{sub}\footnotesize Umbrella cell: one large cell for fast traffic sitting over the
-microcells that serve slow traffic.}
-
 \lead{Handoff strategy used in GSM \mk{(70 Ma, \m{8})}}
 \begin{itemize}
   \item GSM uses \textbf{MAHO}, so the mobile does the measuring.
@@ -378,7 +381,7 @@ proof}
   \item On \textbf{control} channels it causes missed and blocked calls through signalling errors.
 \end{itemize}
 
-\vspace{3pt}
+\penalty0\vspace{3pt}
 \begin{tabularx}{\textwidth}{@{}L{3.3cm}XX@{}}
 \toprule
 \hrow & \thead{Co-channel interference (CCI)} & \thead{Adjacent channel interference (ACI)} \\
@@ -417,7 +420,7 @@ Cured by & Increasing $D/R$, ie a larger $N$. Sectoring & Channel allocation w/ 
   \end{itemize}
 \end{itemize}}{%
 \figT{c2_nearfar.png}
-\vspace{2pt}
+\penalty0\vspace{2pt}
 
 \lead{Power control \pill{gdL}{gd}{syllabus, no PYQ yet}}
 \begin{itemize}
@@ -449,8 +452,15 @@ $\rightarrow$ Ch 2 numerical companion}
         \textbf{independent of transmit power} and depends only on $R$ and $D$.
   \item \mk{Larger $Q$ $\rightarrow$ less interference but less capacity.} The whole design is
         this trade-off.
-\end{itemize}
+\end{itemize}}{%
+\figT{c2_cochannel_geom.png}
+\penalty0\vspace{2pt}
+{\color{sub}\footnotesize First tier for $N=7$. Worst case: the mobile sits at the cell boundary
+(point A), so its wanted signal is at its \mk{minimum} while the interferers are at their nearest.
+Exact distances are $D-R$, $D$, $D$, $D$, $D$, $D+R$, but the approximation $D_i = D$ is used for
+easy analysis.}}
 
+\sbs{%
 \lead{Step 2: hexagonal geometry}
 \begin{itemize}
   \item Put the cell centres on the axes $u,v$ separated by $60^\circ$.
@@ -463,13 +473,6 @@ $\rightarrow$ Ch 2 numerical companion}
   \item But $N = i^2+ij+j^2$, so $D^2 = 3NR^2$, giving
         \[ \boxed{\;D = \sqrt{3N}\,R \quad\Longrightarrow\quad Q = \frac{D}{R} = \sqrt{3N}\;} \]
 \end{itemize}}{%
-\figT{c2_cochannel_geom.png}
-\vspace{2pt}
-{\color{sub}\footnotesize First tier for $N=7$. Worst case: the mobile sits at the cell boundary
-(point A), so its wanted signal is at its \mk{minimum} while the interferers are at their nearest.
-Exact distances are $D-R$, $D$, $D$, $D$, $D$, $D+R$, but the approximation $D_i = D$ is used for
-easy analysis.}
-
 \lead{Step 3: signal to interference ratio}
 \begin{itemize}
   \item Received power falls as $P_r \propto d^{-n}$, path loss exponent $n = 2$ to $4$.
@@ -507,9 +510,9 @@ easy analysis.}
   \item SIR rises from 17 dB to about \mk{24.2 dB}.
   \item That margin is then \textbf{spent} on reducing $N$, which raises capacity.
 \end{itemize}
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \figT{c2_sector_interf.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize $120^\circ$ sectoring: of the 6 first-tier co-channel cells, only 2 have
 antenna patterns radiating into the centre cell.}}
 
@@ -531,20 +534,6 @@ traffic intensity, average holding time and blocked call as definitions \m{4}
         behaviour.
   \item If every channel is busy when a user calls, that user is \textbf{blocked}.
   \item Trade-off: fewer channels $\rightarrow$ cheaper, but more blocking.
-\end{itemize}
-
-\lead{Definitions \mk{(82 Bh asks for exactly these)}}
-\begin{itemize}
-  \item \textbf{Set-up time}: time to allocate a trunked channel to a requesting user.
-  \item \textbf{Blocked call} (lost call): a call that cannot be completed at the time of request,
-        because of congestion.
-  \item \textbf{Holding time $H$}: average duration of a typical call, in seconds.
-  \item \textbf{Request rate $\lambda$}: average number of call requests per unit time.
-  \item \textbf{Traffic intensity $A$}: average channel occupancy, in \textbf{Erlangs}.
-        Dimensionless.
-  \item \textbf{Load}: traffic intensity across the whole system.
-  \item \textbf{1 Erlang} $=$ one channel occupied 100\,\% of the time (one call-hour per hour).
-        Eg a channel busy for 30 min in an hour carries 0.5 Erlang.
 \end{itemize}}{%
 \lead{Grade of service (GoS)}
 \begin{itemize}
@@ -559,8 +548,22 @@ traffic intensity, average holding time and blocked call as definitions \m{4}
   \item AMPS is designed for \textbf{GoS $=$ 2\,\% blocking}: 2 calls in 100 are lost in the busy
         hour.
   \item The designer's job: estimate peak demand, then allocate enough channels to meet the GoS.
-\end{itemize}
+\end{itemize}}
 
+\sbsr{0.52}{%
+\lead{Definitions \mk{(82 Bh asks for exactly these)}}
+\begin{itemize}
+  \item \textbf{Set-up time}: time to allocate a trunked channel to a requesting user.
+  \item \textbf{Blocked call} (lost call): a call that cannot be completed at the time of request,
+        because of congestion.
+  \item \textbf{Holding time $H$}: average duration of a typical call, in seconds.
+  \item \textbf{Request rate $\lambda$}: average number of call requests per unit time.
+  \item \textbf{Traffic intensity $A$}: average channel occupancy, in \textbf{Erlangs}.
+        Dimensionless.
+  \item \textbf{Load}: traffic intensity across the whole system.
+  \item \textbf{1 Erlang} $=$ one channel occupied 100\,\% of the time (one call-hour per hour).
+        Eg a channel busy for 30 min in an hour carries 0.5 Erlang.
+\end{itemize}}{%
 \lead{The three traffic equations}
 \begin{itemize}
   \item Per user: $A_u = \lambda H$
@@ -599,7 +602,7 @@ traffic intensity, average holding time and blocked call as definitions \m{4}
         where $H/(C-A)$ is the average delay of \emph{those} calls that were queued.
 \end{itemize}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 {\color{sub}\footnotesize \mk{Trunking efficiency:} a large trunked group carries far more traffic
 per channel than several small ones at the same GoS. This is why sectoring, which splits one
 channel pool into 3 or 6 smaller pools, always \textbf{loses} some trunking efficiency even though
@@ -620,7 +623,7 @@ comparison is \tF{3} \yr{\textbf{73 Bh}, \textbf{75 Bh}, \textbf{\texttt{81 Bh}}
   \item More spectrum is not available $\rightarrow$ capacity must come from \textbf{geometry}.
 \end{itemize}
 
-\vspace{3pt}
+\penalty0\vspace{3pt}
 \begin{tabularx}{\textwidth}{@{}L{2.7cm}XXX@{}}
 \toprule
 \hrow & \thead{Cell splitting} & \thead{Sectoring} & \thead{Microcell zone} \\
@@ -676,7 +679,7 @@ Cost & New BSs, towers, real estate & Loses trunking efficiency & Zone sites plu
   \item Needs new towers and antennas, and \mk{lowers spectral efficiency} during the transition.
 \end{itemize}}{%
 \figT{c2_cell_splitting.png}
-\vspace{2pt}
+\penalty0\vspace{2pt}
 {\color{sub}\footnotesize Each original cell is surrounded by microcells of half the radius,
 placed so the reuse plan is preserved.}}
 
@@ -691,8 +694,12 @@ placed so the reuse plan is preserved.}}
   \item Each sector gets its \textbf{own} channel sub-group, used only in that sector.
   \item A given cell now transmits to, and receives interference from, only a \textbf{fraction} of
         the co-channel cells.
-\end{itemize}
+\end{itemize}}{%
+\figT{c2_sector_shapes.png}
+\penalty0\vspace{1pt}
+{\color{sub}\footnotesize Omni, $120^\circ$, $90^\circ$ and $60^\circ$ sectoring.}}
 
+\sbsr{0.56}{%
 \lead{The two-step gain \mk{(state it in this order)}}
 \begin{itemize}
   \item \textbf{Step 1:} directional antennas cut the number of first-tier interferers.
@@ -705,8 +712,13 @@ placed so the reuse plan is preserved.}}
   \item \textbf{Step 2:} spend that margin. Reduce $N$ (eg $7 \rightarrow 4$ or 3), which raises
         capacity, until SIR is back at the required value.
   \item Note the transmit power is \textbf{not} reduced. Only the relative interference is.
-\end{itemize}
+\end{itemize}}{%
+\figT{c2_sectoring.png}
+\penalty0\vspace{1pt}
+{\color{sub}\footnotesize Sector 0 receives interference only from sectors 4, 5 and 6, so the
+6 interfering cells drop to 3 (2 in the exact Rappaport treatment for $120^\circ$).}}
 
+\sbs{%
 \lead{Disadvantages}
 \begin{itemize}
   \item The cell's channels are split into 3 or 6 smaller pools $\rightarrow$
@@ -714,15 +726,6 @@ placed so the reuse plan is preserved.}}
   \item \textbf{Many more handoffs}, one per sector crossing, loading the MSC.
   \item More antennas per site.
 \end{itemize}}{%
-\figT{c2_sector_shapes.png}
-\vspace{1pt}
-{\color{sub}\footnotesize Omni, $120^\circ$, $90^\circ$ and $60^\circ$ sectoring.}
-\vspace{4pt}
-\figT{c2_sectoring.png}
-\vspace{1pt}
-{\color{sub}\footnotesize Sector 0 receives interference only from sectors 4, 5 and 6, so the
-6 interfering cells drop to 3 (2 in the exact Rappaport treatment for $120^\circ$).}
-
 \lead{Repeaters for range extension \pill{gdL}{gd}{syllabus, no PYQ yet}}
 \begin{itemize}
   \item Radio retransmitters used to cover \textbf{hard-to-reach places}: inside buildings,
@@ -747,8 +750,13 @@ placed so the reuse plan is preserved.}}
   \item Every handoff loads the MSC and the control links.
   \item Sectoring also \textbf{loses trunking efficiency} by splitting the channel pool.
   \item The microcell zone concept buys the same capacity \mk{without either penalty}.
-\end{itemize}
+\end{itemize}}{%
+\figT{c2_microcell_zone.png}
+\penalty0\vspace{2pt}
+{\color{sub}\footnotesize Three zone sites (Tx/Rx), one base station, joined by fibre or microwave.
+A mobile crossing between zones keeps its channel.}}
 
+\sbs{%
 \lead{How it works}
 \begin{itemize}
   \item A cell is divided into \textbf{3 or more zones}, each w/ a \textbf{zone site} (Tx/Rx)
@@ -760,8 +768,7 @@ placed so the reuse plan is preserved.}}
   \item Any BS channel may be assigned to any zone.
   \item As the mobile crosses from zone to zone it \textbf{keeps the same channel}.
         \mk{The BS just switches which zone site radiates it, so no handoff reaches the MSC.}
-\end{itemize}
-
+\end{itemize}}{%
 \lead{Result}
 \begin{itemize}
   \item A channel is live only in the zone the mobile is in $\rightarrow$ radiation is localised
@@ -769,8 +776,4 @@ placed so the reuse plan is preserved.}}
   \item $D/R$ drops to about \textbf{3}, so $N$ can drop from \textbf{7 to 3}.
   \item Capacity rises \mk{about 2.33 times} at the same 18 dB SIR requirement.
   \item Particularly good along \textbf{highways and urban traffic corridors}.
-\end{itemize}}{%
-\figT{c2_microcell_zone.png}
-\vspace{2pt}
-{\color{sub}\footnotesize Three zone sites (Tx/Rx), one base station, joined by fibre or microwave.
-A mobile crossing between zones keeps its channel.}}
+\end{itemize}}

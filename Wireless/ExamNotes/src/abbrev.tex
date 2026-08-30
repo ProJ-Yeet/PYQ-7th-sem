@@ -27,6 +27,14 @@ PCS     & personal communication system     & DAS     & distributed antenna syst
 BCCH    & broadcast control channel         & EIRP    & effective isotropic radiated power \\
 ERP     & effective radiated power          & RF      & radio frequency \\
 Tx, TX  & transmitter                       & Rx, RX  & receiver \\
+\bottomrule
+\end{tabularx}
+\par\penalty0
+\vspace{4pt}
+\begin{tabularx}{\textwidth}{@{}L{1.75cm}X@{\hspace{8pt}}L{1.75cm}X@{}}
+\toprule
+\hrow \thead{Short} & \thead{Means} & \thead{Short} & \thead{Means} \\
+\midrule
 ISI     & intersymbol interference          & PDP     & power delay profile \\
 DFE     & decision feedback equalizer       & MLSE    & maximum likelihood sequence estimation \\
 LMS     & least mean square                 & RLS     & recursive least squares \\
@@ -42,18 +50,15 @@ SBC     & sub-band coding                   & DCT     & discrete cosine transfor
 FEC     & forward error correction          & ARQ     & automatic repeat request \\
 BCH     & Bose--Chaudhuri--Hocquenghem code & RS      & Reed--Solomon code \\
 TCM     & trellis coded modulation          & PN      & pseudo-noise \\
+MIMO    & multiple input multiple output    & OFDMA   & orthogonal FDM access \\
 \bottomrule
 \end{tabularx}
-
-% tabularx cannot break across a page, so the chart is set as two tables with
-% a repeated header. Keep each half short enough to fit one page on its own:
-% adding rows to a single table silently ran it off the bottom margin.
-\par\vspace{4pt}
+\par\penalty0
+\vspace{4pt}
 \begin{tabularx}{\textwidth}{@{}L{1.75cm}X@{\hspace{8pt}}L{1.75cm}X@{}}
 \toprule
 \hrow \thead{Short} & \thead{Means} & \thead{Short} & \thead{Means} \\
 \midrule
-MIMO    & multiple input multiple output    & OFDMA   & orthogonal FDM access \\
 QAM     & quadrature amplitude modulation   & PSK     & phase shift keying \\
 GMSK    & Gaussian minimum shift keying     & IMT     & international mobile telecommunications \\
 ASK     & amplitude shift keying            & FSK     & frequency shift keying \\
@@ -70,6 +75,14 @@ AM, FM, PM & amplitude, frequency, phase modulation & DSB, SSB, VSB & double, si
 S/P, P/S & serial-parallel converter        & D/A, A/D & digital-analog converter \\
 LPF, BPF & low pass, band pass filter       & ISM     & industrial, scientific, medical band \\
 SC-FDMA & single carrier FDMA               & $BT$    & GMSK filter bandwidth $\times$ symbol time \\
+\bottomrule
+\end{tabularx}
+\par\penalty0
+\vspace{4pt}
+\begin{tabularx}{\textwidth}{@{}L{1.75cm}X@{\hspace{8pt}}L{1.75cm}X@{}}
+\toprule
+\hrow \thead{Short} & \thead{Means} & \thead{Short} & \thead{Means} \\
+\midrule
 PSTN    & public switched telephone network & VoIP    & voice over IP \\
 FVC, RVC & forward, reverse voice channel   & FCC, RCC & forward, reverse control channel \\
 SSMA    & spread spectrum multiple access   & SDMA    & space division multiple access \\
@@ -86,6 +99,14 @@ RTS/CTS & request to send / clear to send   & CCK     & complementary code keyin
 WEP, WPA & wired equivalent privacy, WiFi protected access & U-NII & unlicensed national information infrastructure band \\
 IoT     & internet of things                & mmWave  & millimetre wave \\
 eMBB    & enhanced mobile broadband         & URLLC   & ultra-reliable low latency comm. \\
+\bottomrule
+\end{tabularx}
+\par\penalty0
+\vspace{4pt}
+\begin{tabularx}{\textwidth}{@{}L{1.75cm}X@{\hspace{8pt}}L{1.75cm}X@{}}
+\toprule
+\hrow \thead{Short} & \thead{Means} & \thead{Short} & \thead{Means} \\
+\midrule
 mMTC    & massive machine type comm.        & NOMA    & non-orthogonal multiple access \\
 D2D     & device to device                  & C-RAN   & cloud radio access network \\
 PCN     & personal communication network    & SMS     & short message service \\
@@ -96,22 +117,20 @@ rm      & remove                            & vs, Vs  & versus \\
 w/, w/o & with, without                     & Eg      & example / for example \\
 +Fig    & draw a figure                     & (I)     & importance / need / significance \\
 $\rightarrow$ & leads to / therefore        & $+$     & and \\
-\bottomrule
-\end{tabularx}
-
-% Third block, added with Chapter 8: the GSM and IS-95 vocabulary. Kept as its
-% own tabularx for the same page-breaking reason as the second one.
-\par\vspace{4pt}
-\begin{tabularx}{\textwidth}{@{}L{1.75cm}X@{\hspace{8pt}}L{1.75cm}X@{}}
-\toprule
-\hrow \thead{Short} & \thead{Means} & \thead{Short} & \thead{Means} \\
-\midrule
 BSS     & base station subsystem            & NSS     & network and switching subsystem \\
 OSS     & operation support subsystem       & OMC     & operation and maintenance centre \\
 HLR     & home location register            & VLR     & visitor location register \\
 AuC     & authentication centre             & EIR     & equipment identity register \\
 CEIR    & central EIR                       & ME      & mobile equipment \\
 SIM     & subscriber identity module        & IMSI    & international mobile subscriber identity \\
+\bottomrule
+\end{tabularx}
+\par\penalty0
+\vspace{4pt}
+\begin{tabularx}{\textwidth}{@{}L{1.75cm}X@{\hspace{8pt}}L{1.75cm}X@{}}
+\toprule
+\hrow \thead{Short} & \thead{Means} & \thead{Short} & \thead{Means} \\
+\midrule
 IMEI    & international mobile equipment identity & TMSI & temporary mobile subscriber identity \\
 Um, Abis, A & the three GSM interfaces      & SS7     & signalling system no.~7 \\
 ARFCN   & absolute radio frequency channel number & TN, TS & time slot number, time slot \\
@@ -128,6 +147,14 @@ ESN     & electronic serial number          & PCB     & power control bit \\
 Mcps, Ksps & mega-chips, kilo-symbols per second & PRAT & paging channel rate field \\
 EVRC    & enhanced variable rate coder      & PDSN    & packet data serving node \\
 PCF (CDMA) & packet control function        & RNC     & radio network controller \\
+\bottomrule
+\end{tabularx}
+\par\penalty0
+\vspace{4pt}
+\begin{tabularx}{\textwidth}{@{}L{1.75cm}X@{\hspace{8pt}}L{1.75cm}X@{}}
+\toprule
+\hrow \thead{Short} & \thead{Means} & \thead{Short} & \thead{Means} \\
+\midrule
 EPS, EPC & evolved packet system, core      & eNodeB  & LTE base station \\
 MME     & mobility management entity        & S-GW, P-GW & serving, packet data network gateway \\
 HSS     & home subscriber server            & PCRF    & policy and charging rules function \\

@@ -55,8 +55,7 @@ $\rightarrow$ Ch 3 companion}
         same reading in the main beam.
   \item \textbf{ERP} uses a half-wave dipole as the reference instead:
         $\text{ERP} = \text{EIRP} - 2.15$ dB.
-\end{itemize}
-
+\end{itemize}}{%
 \lead{Step 2: effective aperture}
 \begin{itemize}
   \item \textbf{Effective aperture} $A_e$ $=$ ratio of power available at the antenna terminals to
@@ -72,7 +71,8 @@ $\rightarrow$ Ch 3 companion}
         no hardware loss.
   \item \mk{$P_r \propto 1/d^2$ and $\propto \lambda^2$}: doubling distance costs 6 dB,
         doubling frequency costs 6 dB.
-\end{itemize}}{%
+\end{itemize}}
+
 \lead{Path loss}
 \begin{itemize}
   \item \textbf{With} antenna gains:
@@ -87,9 +87,9 @@ $\rightarrow$ Ch 3 companion}
         $(4\pi d/\lambda)^2$ term is the \textbf{free space loss} proper.
   \item Raising $d$ raises the loss, which pushes designers to \textbf{lower frequencies} to keep
         the link budget manageable.
-\end{itemize}}
+\end{itemize}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \sbs{%
 \lead{Relating power to E-field \mk{(the 78 Ch / 80 Ba style numerical)}}
 \begin{itemize}
@@ -140,8 +140,13 @@ $\rightarrow$ Ch 3 companion}
         polarisation, angle of incidence and the material.
   \item At grazing incidence $\Gamma \rightarrow -1$, ie \mk{full reflection with a
         $180^\circ$ phase flip}. That is the assumption the two-ray model rests on.
-\end{itemize}
+\end{itemize}}{%
+\figT{c3_knife_edge.png}
+\penalty0\vspace{1pt}
+{\color{sub}\footnotesize Knife-edge diffraction geometry. Effective obstruction height $h$,
+distances $d_1$ and $d_2$ from Tx and Rx.}}
 
+\sbs{%
 \lead{2. Diffraction \mk{(79 Bh pairs this with a Fresnel derivation, \m{2+6})}}
 \begin{itemize}
   \item Path is obstructed by a surface with \textbf{sharp edges}.
@@ -150,8 +155,7 @@ $\rightarrow$ Ch 3 companion}
   \item Explained by \textbf{Huygens' principle}: every point on a wavefront acts as a point
         source of secondary wavelets, which add to form the new front.
   \item Diffraction loss grows as the obstruction fills more of the first Fresnel zone.
-\end{itemize}
-
+\end{itemize}}{%
 \lead{3. Scattering}
 \begin{itemize}
   \item Medium contains objects \textbf{small compared to the wavelength}, or rough surfaces.
@@ -160,13 +164,9 @@ $\rightarrow$ Ch 3 companion}
   \item Follows the same principles as diffraction.
   \item \mk{Received signal is often stronger than reflection and diffraction alone predict},
         because scattering fills in the gaps.
-\end{itemize}}{%
-\figT{c3_knife_edge.png}
-\vspace{1pt}
-{\color{sub}\footnotesize Knife-edge diffraction geometry. Effective obstruction height $h$,
-distances $d_1$ and $d_2$ from Tx and Rx.}}
+\end{itemize}}
 
-\vspace{3pt}
+\penalty0\vspace{3pt}
 \sbsr{0.55}{%
 \lead{Fresnel zones and the diffraction parameter}
 \begin{itemize}
@@ -190,7 +190,7 @@ distances $d_1$ and $d_2$ from Tx and Rx.}}
   \end{itemize}
 \end{itemize}}{%
 \figT{c3_fresnel.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize First and second Fresnel zones.}}
 
 \hr
@@ -236,13 +236,13 @@ open with that}
 
 }{%
 \figT{c3_tworay_geom.png}
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \figT{c3_tworay_images.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize Method of images: the ground-reflected ray is redrawn as a straight
 line from the image transmitter at $-h_t$.}}
 
-\vspace{3pt}
+\penalty0\vspace{3pt}
 \sbs{%
 \lead{Step 2: phase difference and time delay}
 \[ \boxed{\;\theta_\Delta = \frac{2\pi\Delta}{\lambda} = \frac{4\pi h_t h_r}{\lambda d}\;} \]
@@ -296,7 +296,7 @@ $\rightarrow$ Ch 3 companion}
   \item Bars mean \textbf{ensemble average} over all possible paths at that distance.
   \item \mk{One number, $n$, absorbs the whole environment.}
 \end{itemize}
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \figT{c3_pathloss_exp.png}}{%
 \lead{Link budget design}
 \begin{itemize}
@@ -321,7 +321,7 @@ $\rightarrow$ Ch 3 companion}
   \item Compare against the range asked for and state whether the link is feasible.
 \end{itemize}}
 
-\vspace{3pt}
+\penalty0\vspace{3pt}
 \sbs{%
 \lead{Log-normal shadowing}
 \begin{itemize}
@@ -392,11 +392,11 @@ models cannot do this, so all the outdoor models below are \textbf{empirical}.}
   \end{itemize}
 \end{itemize}}{%
 \figT{c3_okumura_amu.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize $A_{mu}(f,d)$ over a quasi-smooth urban area,
 $h_{te} = 200$ m, $h_{re} = 3$ m.}}
 
-\vspace{3pt}
+\penalty0\vspace{3pt}
 \sbsr{0.55}{%
 \begin{itemize}
   \item \textbf{Height gain factors:}
@@ -410,7 +410,7 @@ $h_{te} = 200$ m, $h_{re} = 3$ m.}}
   \item \textbf{($-$)} needs the curves, so it cannot be evaluated from formulas alone.
 \end{itemize}}{%
 \figT{c3_okumura_garea.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize $G_{\text{AREA}}$ for suburban, quasi-open and open areas.}}
 
 \creamq{Hata model}{\m{4}\m{6}\m{7}}
@@ -445,7 +445,7 @@ $h_{te} = 200$ m, $h_{re} = 3$ m.}}
         for PCS bands. \added
 \end{itemize}}
 
-\vspace{3pt}
+\penalty0\vspace{3pt}
 \sbs{%
 \begin{itemize}
   \item \textbf{Mobile antenna correction $a(h_{re})$:}
@@ -476,7 +476,7 @@ $h_{te} = 200$ m, $h_{re} = 3$ m.}}
         urban model.
 \end{itemize}}
 
-\vspace{3pt}
+\penalty0\vspace{3pt}
 \sbs{%
 \lead{Walfisch--Bertoni \pill{gdL}{gd}{syllabus, no PYQ yet}}
 \begin{itemize}
@@ -555,7 +555,7 @@ $h_{te} = 200$ m, $h_{re} = 3$ m.}}
         log-distance model.
 \end{itemize}}
 
-\vspace{3pt}
+\penalty0\vspace{3pt}
 \sbs{%
 \lead{Partition losses}
 \begin{itemize}
@@ -567,7 +567,7 @@ $h_{te} = 200$ m, $h_{re} = 3$ m.}}
         so the direct path stops dominating.
 \end{itemize}}{%
 \figT{c3_partition.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize Measured same-floor partition losses.}}
 
 \hr
@@ -624,7 +624,7 @@ $h_{te} = 200$ m, $h_{re} = 3$ m.}}
         $|h(t,\tau)|^2$, and the delay-spread parameters are its moments.
 \end{itemize}}
 
-\vspace{3pt}
+\penalty0\vspace{3pt}
 \sbs{%
 \lead{Factors influencing small-scale fading \mk{(learn all 4)}}
 \begin{itemize}
@@ -688,11 +688,11 @@ $h_{te} = 200$ m, $h_{re} = 3$ m.}}
            \boxed{\;f_d \;=\; \frac{v}{\lambda}\cos\theta\;} \]
 \end{itemize}}{%
 \figT{c3_doppler.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize Mobile moving from $X$ to $Y$ at velocity $v$; source $S$ is far away,
 so $\theta$ is unchanged.}}
 
-\vspace{3pt}
+\penalty0\vspace{3pt}
 \sbs{%
 \lead{Reading the result}
 \begin{itemize}
@@ -738,11 +738,11 @@ so $\theta$ is unchanged.}}
   \item Every time-dispersion parameter below is a \textbf{moment of the PDP}.
 \end{itemize}}{%
 \figT{c3_pdp.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize A measured PDP w/ its mean excess delay, rms delay spread and 10 dB
 maximum excess delay marked. Note the $-20$ dB noise threshold.}}
 
-\vspace{3pt}
+\penalty0\vspace{3pt}
 \sbs{%
 \lead{Time dispersion parameters}
 \begin{itemize}
@@ -776,9 +776,9 @@ maximum excess delay marked. Note the $-20$ dB noise threshold.}}
   \item \textbf{Significance:} compare $B_c$ against the signal bandwidth to decide whether the
         channel is \mk{flat or frequency selective}. That single comparison decides whether an
         equalizer is needed.
-\end{itemize}
+\end{itemize}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \lead{Coherence time $T_c$}
 \begin{itemize}
   \item \textbf{Definition}: the time over which the channel impulse response is essentially
@@ -791,7 +791,7 @@ maximum excess delay marked. Note the $-20$ dB noise threshold.}}
   \item \textbf{Large $T_c$} $\rightarrow$ channel changes slowly.
   \item \textbf{Significance:} compare $T_c$ against the symbol period to decide whether the
         channel is \mk{slow or fast fading}. Also sets how often the equalizer must retrain.
-\end{itemize}}
+\end{itemize}
 
 \Q{Explain the types of small-scale fading}{\m{4+4}\m{1+3}\m{2+7}\m{2+4}}
 {\color{sub}\footnotesize \tS{6} \yr{70 Ma, 74 Ma, \textbf{79 Ch}, \texttt{81 Ba},
@@ -801,7 +801,7 @@ both tables.}}
 
 \sbs{%
 \lead{A. By multipath time delay spread}
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \begin{tabularx}{\linewidth}{@{}L{2.05cm}XX@{}}
 \toprule
 \hrow & \thead{Flat fading} & \thead{Frequency selective} \\
@@ -814,7 +814,7 @@ ISI & none & \mk{severe} \\
 Cure & raise transmit power, use diversity & \mk{equalizer} \\
 \bottomrule
 \end{tabularx}
-\vspace{3pt}
+\penalty0\vspace{3pt}
 \begin{itemize}
   \item \textbf{Flat fading} is the most common type.
   \item Signal bandwidth is narrow, so the whole signal rides up and down together.
@@ -826,7 +826,7 @@ Cure & raise transmit power, use diversity & \mk{equalizer} \\
         on the exact multipath structure.
 \end{itemize}}{%
 \lead{B. By Doppler spread}
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \begin{tabularx}{\linewidth}{@{}L{2.05cm}XX@{}}
 \toprule
 \hrow & \thead{Fast fading} & \thead{Slow fading} \\
@@ -838,7 +838,7 @@ Relative rates & channel varies \textbf{faster} than the baseband signal & chann
   \textbf{slower} than the baseband signal \\
 \bottomrule
 \end{tabularx}
-\vspace{3pt}
+\penalty0\vspace{3pt}
 \begin{itemize}
   \item Fast / slow says \textbf{nothing} about flat / selective. \mk{The four combinations are all
         possible}: flat slow, flat fast, frequency selective slow, frequency selective fast.
@@ -857,7 +857,6 @@ Relative rates & channel varies \textbf{faster} than the baseband signal & chann
 {\color{sub}\footnotesize \tF{5} \yr{70 Ma, 71 Ma, \textbf{72 Ash}, \textbf{73 Bh},
 \textbf{80 Ch}}}
 
-\sbsr{0.53}{%
 \lead{What these distributions describe}
 \begin{itemize}
   \item Not \emph{when} the signal fades, but \textbf{how the received envelope is statistically
@@ -865,6 +864,7 @@ Relative rates & channel varies \textbf{faster} than the baseband signal & chann
   \item Both apply to \textbf{flat fading} channels.
 \end{itemize}
 
+\sbs{%
 \lead{Rayleigh}
 \begin{itemize}
   \item Applies when \textbf{all multipath components have roughly equal amplitude} and there is
@@ -884,9 +884,7 @@ Relative rates & channel varies \textbf{faster} than the baseband signal & chann
     \item variance $\;\sigma_r^2 = 0.4292\,\sigma^2$
   \end{itemize}
   \item \mk{Mean and median differ by only 0.55 dB}, which is why the median is used in practice.
-\end{itemize}
-\vspace{2pt}
-\figT{c3_rayleigh_pdf.png}}{%
+\end{itemize}}{%
 \lead{Ricean}
 \begin{itemize}
   \item Applies when there \textbf{is} a \textbf{stationary, non-fading, dominant} component,
@@ -905,9 +903,13 @@ Relative rates & channel varies \textbf{faster} than the baseband signal & chann
   \item \mk{$A \rightarrow 0$, ie $K \rightarrow -\infty$ dB: Ricean degenerates into Rayleigh.}
   \item $K \gg 1$: the distribution tends to \textbf{Gaussian} about the mean, ie almost no
         fading.
-\end{itemize}
-\vspace{2pt}
+\end{itemize}}
+
+\sbs{%
+\figT{c3_rayleigh_pdf.png}
+\penalty0\vspace{1pt}
+{\color{sub}\footnotesize Rayleigh envelope pdf.}}{%
 \figT{c3_ricean_pdf.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize $K = -\infty$ dB is the Rayleigh case; $K = 6$ dB shows a dominant
 component pulling the distribution towards Gaussian.}}

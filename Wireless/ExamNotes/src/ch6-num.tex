@@ -53,7 +53,7 @@ locates the faulty bit: that is the ``relevant example'' the 5 marks are for. \a
   \item Each parity bit checks the positions whose binary index contains its own bit:
 \end{itemize}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \begin{center}\small
 \begin{tabular}{@{}llll@{}}
 \toprule
@@ -67,7 +67,7 @@ $P_4$ & 4, 5, 6, 7 & 100, 101, 110, 111 & all have bit 2 set \\
 \end{tabular}
 \end{center}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 {\color{sub}\footnotesize \mk{This is the whole trick.} Because the groups are built on the binary
 indices, the three parity checks read together \textbf{are} the binary address of the faulty bit.}
 
@@ -80,7 +80,7 @@ indices, the three parity checks read together \textbf{are} the binary address o
         ones.
 \end{itemize}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \begin{center}\small
 \begin{tabular}{@{}lllr@{}}
 \toprule
@@ -97,7 +97,7 @@ $P_4$ & $(P_4,\,D_5,\,D_6,\,D_7) = (P_4,1,0,1)$ & 2 (even) & $\mathbf{0}$ \\
   \item \textbf{Step 3: assemble the codeword}, bit 7 first:
 \end{itemize}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \begin{center}\small
 \begin{tabular}{@{}rccccccc@{}}
 \toprule
@@ -118,7 +118,7 @@ Contents & $D_7$ & $D_6$ & $D_5$ & $P_4$ & $D_3$ & $P_2$ & $P_1$ \\
   \item \textbf{Step 1: lay out the received bits.}
 \end{itemize}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \begin{center}\small
 \begin{tabular}{@{}rccccccc@{}}
 \toprule
@@ -133,7 +133,7 @@ Contents & $D_7$ & $D_6$ & $D_5$ & $P_4$ & $D_3$ & $P_2$ & $P_1$ \\
   \item \textbf{Step 2: recheck each parity group}, still assuming even parity.
 \end{itemize}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \begin{center}\small
 \begin{tabular}{@{}llllr@{}}
 \toprule
@@ -165,7 +165,7 @@ $P_4$ & 4, 5, 6, 7 & $1,1,0,1$ & \mk{ODD} $\rightarrow$ error & $\mathbf{1}$ \\
 \end{itemize}
 
 \lead{Hamming code parameters for other $m$}
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \begin{center}\small
 \begin{tabular}{@{}rrrrr@{}}
 \toprule
@@ -210,7 +210,7 @@ trellis and the surviving path metrics.
   \item Two flush (tail) bits are appended so the encoder returns to state $a$.
 \end{itemize}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \begin{center}\small
 \begin{tabular}{@{}rccccc@{}}
 \toprule
@@ -244,7 +244,7 @@ trellis and the surviving path metrics.
         discard the other.
 \end{itemize}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \begin{center}\small
 \begin{tabular}{@{}lllll@{}}
 \toprule
@@ -300,7 +300,7 @@ its band-pass Nyquist rate. Find the total encoding bit rate, and compare it wit
 full band at the same resolution.
 \end{asked}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \begin{center}\small
 \begin{tabular}{@{}rrrrrr@{}}
 \toprule
@@ -450,7 +450,7 @@ questions}}
 {\color{sub}\footnotesize Reference figures. \mk{Quoting one correct rate is often worth a mark}
 in an otherwise descriptive answer.}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \begin{center}\small
 \begin{tabular}{@{}llll@{}}
 \toprule

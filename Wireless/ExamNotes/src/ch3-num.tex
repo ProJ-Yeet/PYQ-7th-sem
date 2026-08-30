@@ -179,7 +179,7 @@ the receiver, assuming free-space propagation.
   \item \textbf{Step 4: assemble the budget.} Every gain adds, every loss subtracts.
 \end{itemize}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \begin{center}\small
 \begin{tabular}{@{}lrl@{}}
 \toprule
@@ -198,7 +198,7 @@ Receiver mismatch loss  & $-0.20$ dB   & 50 $\Omega$ system \\
 \end{tabular}
 \end{center}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \[ P_r = 40.00 - 0.60 + 9.00 - 108.36 + 4.00 - 0.20 = \boxed{-56.16\ \text{dBm}} \]
 \[ = 10^{-56.16/10}\ \text{mW} = 2.42\times10^{-6}\ \text{mW} = \boxed{2.42\ \text{nW}} \]
 
@@ -491,7 +491,7 @@ mobile station is 5 m. Compute free space pathloss and compare it with Hata path
   \item \textbf{Step 2: the four Hata terms.} $\log_{10}(45) = 1.6532$, $\log_{10}(10) = 1$.
 \end{itemize}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \begin{center}\small
 \begin{tabular}{@{}llr@{}}
 \toprule
@@ -593,7 +593,7 @@ $f_c > 300$ MHz.}
         $\log_{10}(4) = 0.6021$.
 \end{itemize}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \begin{center}\small
 \begin{tabular}{@{}llr@{}}
 \toprule
@@ -679,7 +679,7 @@ $h_{re} = 10$m and $h_{te} = 100$m. (Link margin (reverse link) $=$ 10 dB).
   \item \textbf{Step 2: maximum allowable path loss on the reverse link.}
 \end{itemize}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \begin{center}\small
 \begin{tabular}{@{}lrl@{}}
 \toprule
@@ -803,8 +803,13 @@ Estimate the 90\% and 50\% coherence bandwidth of the channel.
 0 dB at $\tau = 0$, $-10$ dB at $\tau = 1\ \mu$s and 0 dB at $\tau = 2\ \mu$s.
 \mk{The $\tau=0$ ray is the second arrowhead sitting on the 0 dB tick, drawn over the vertical
 axis. Miss it and every answer below is wrong.}}
-\end{asked}
-\vspace{2pt}
+\end{asked}}{%
+\figT{c3_pdp_70ma.png}
+\penalty0\vspace{1pt}
+{\color{sub}\footnotesize The profile as printed on the 70 Ma paper. \mk{Two arrowheads on the
+vertical line: upper one is the axis, the one at 0 dB is the $\tau=0$ ray.}}}
+
+\sbsr{0.36}{%
 \begin{center}\small
 \begin{tabular}{@{}rrrrr@{}}
 \toprule
@@ -817,7 +822,7 @@ axis. Miss it and every answer below is wrong.}}
 \textbf{sum} & & \textbf{2.1} & \textbf{2.1} & \textbf{4.1} \\
 \bottomrule
 \end{tabular}
-\end{center}
+\end{center}}{%
 \begin{itemize}
   \item \[ \bar{\tau} = \frac{2.1}{2.1} = \boxed{1.000\ \mu\text{s}} \]
   \item \[ \overline{\tau^2} = \frac{4.1}{2.1} = 1.952\ \mu\text{s}^2 \]
@@ -830,11 +835,7 @@ axis. Miss it and every answer below is wrong.}}
   \item \mk{Sanity check:} $\bar{\tau}$ falls on exactly 1 $\mu$s because the two equal 0 dB rays
         at 0 and 2 $\mu$s balance about the centre. A clean number is the sign you read the plot
         right.
-\end{itemize}}{%
-\figT{c3_pdp_70ma.png}
-\vspace{1pt}
-{\color{sub}\footnotesize The profile as printed on the 70 Ma paper. \mk{Two arrowheads on the
-vertical line: upper one is the axis, the one at 0 dB is the $\tau=0$ ray.}}}
+\end{itemize}}
 
 \lead{17.2 \; The 75 Bh profile: greatest symbol rate without an equalizer \yr{(\m{8})}}
 \begin{asked}{2075 Bhadra \textperiodcentered{} Q5 \textperiodcentered{} [8]}
@@ -851,7 +852,7 @@ through RF channel with given power delay profile without using an equalizer.
 Modulation provides suitable BER performance whenever $\sigma_\tau / T_S \le 0.1$.
 \end{asked}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \begin{center}\small
 \begin{tabular}{@{}rrrrr@{}}
 \toprule
@@ -902,7 +903,7 @@ channel. Is this channel flat fading or frequency selective fading for:
 \end{enumerate}
 \end{asked}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \begin{center}\small
 \begin{tabular}{@{}rrrrr@{}}
 \toprule
@@ -946,7 +947,7 @@ $-10$dB, 0dB) for $\tau = (0, 1, 2, 5)$ second. Also estimate 50\% coherence ban
 $\mu$s and say so.}
 \end{asked}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \begin{center}\small
 \begin{tabular}{@{}rrrrr@{}}
 \toprule

@@ -71,7 +71,7 @@ these three lines}, so they are worth two minutes}
   \item \textbf{Open, published standard} $\rightarrow$ many vendors, low equipment cost.
 \end{itemize}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \sbsr{0.52}{%
 \lead{Three categories of service}
 \begin{enumerate}
@@ -91,7 +91,7 @@ DCS 1800 & 1710--1785 MHz & 1805--1880 MHz \\
 PCS 1900 & 1850--1910 MHz & 1930--1990 MHz \\
 \bottomrule
 \end{tabularx}
-\vspace{2pt}
+\penalty0\vspace{2pt}
 {\color{sub}\footnotesize All three are \textbf{FDD}. \mk{Uplink is always the lower band},
 because path loss is slightly lower there and the handset is the power-limited end.
 \yr{SST Ch 8}}}
@@ -106,11 +106,11 @@ because path loss is slightly lower there and the handset is the power-limited e
 
 \sbsr{0.50}{%
 \figT{c8_arch.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize \textbf{Draw exactly this.} Three dashed boxes, three named
 interfaces, and the public networks hanging off the MSC. \yr{SST Ch 8}}
 
-\vspace{3pt}
+\penalty0\vspace{3pt}
 \lead{1. Base Station Subsystem (BSS), the radio subsystem}
 \begin{itemize}
   \item \textbf{MS} $=$ mobile station $=$ \textbf{ME} (mobile equipment) $+$ \textbf{SIM}.
@@ -161,7 +161,7 @@ interfaces, and the public networks hanging off the MSC. \yr{SST Ch 8}}
           optionally in the \textbf{CEIR}, which bars it on every operator that subscribes.
     \item \mk{EIR bars the handset, AuC authenticates the subscriber.} Different targets.
   \end{itemize}
-\end{itemize}
+\end{itemize}}
 
 \lead{3. Operation Support Subsystem (OSS) \m{2}}
 \begin{itemize}
@@ -170,12 +170,12 @@ interfaces, and the public networks hanging off the MSC. \yr{SST Ch 8}}
         network: MS, BTS, BSC, MSC.
   \item Maintains hardware and network performance records.
   \item Handles \textbf{charging and billing}.
-\end{itemize}}
+\end{itemize}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \sbsr{0.47}{%
 \figT{c8_interfaces.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize The three standardised interfaces. \mk{Naming them is usually
 worth a mark on its own}, and they are what makes multi-vendor GSM possible.
 \yr{SST Ch 8, Fig 11.6}}}{%
@@ -226,14 +226,14 @@ their place even though the question itself is rare}
         \textbf{374} duplex channels.
 \end{itemize}}{%
 \figT{c8_gsm_specs.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize \textbf{Reproduce this table for a \m{5} specifications question.}
 \yr{Rappaport Table 10.3, via SST Ch 8} \gap$\cdot$\gap
 \mk{one printed value to know about}: the table gives the voice coder at \textbf{13.4 kbps},
 while the RPE-LTP codec itself produces \textbf{260 bits per 20 ms $=$ 13.0 kbps} exactly
 (\S8.7). Quote 13 kbps if you are asked for the codec rate. \added}
 
-\vspace{3pt}
+\penalty0\vspace{3pt}
 \lead{Rates worth memorising}
 \begin{itemize}
   \item Modulation \textbf{0.3 GMSK}, channel data rate \mk{270.833 kbps} per carrier.
@@ -254,7 +254,7 @@ while the RPE-LTP codec itself produces \textbf{260 bits per 20 ms $=$ 13.0 kbps
 
 \sbsr{0.52}{%
 \figT{c8_frame_hierarchy.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize \textbf{Draw the hierarchy top down and label the four durations.}
 That is the whole answer to a \m{4} or \m{5} question. \yr{SST Ch 8}}}{%
 \lead{The five levels, bottom up}
@@ -272,7 +272,7 @@ That is the whole answer to a \m{4} or \m{5} question. \yr{SST Ch 8}}}{%
   \item \textbf{Hyperframe} $=$ 2048 superframes $=$ 2\,715\,648 TDMA frames
         $=$ \mk{3 h 28 min 53.76 s}.
 \end{enumerate}
-\vspace{2pt}
+\penalty0\vspace{2pt}
 {\color{sub}\footnotesize \mk{Why a hyperframe at all}: the ciphering algorithm and the
 hopping sequence are both driven by the frame number, so the frame number must not repeat
 for a long time. \gap$\cdot$\gap \mk{Two multiframe sizes, one superframe}: $51 \times 26$
@@ -280,10 +280,10 @@ either way $=$ 1326, which is exactly why 26 and 51 were chosen. \added
 \gap$\cdot$\gap The SST slide prints the hyperframe as 3 h 28 min \emph{52.76} s;
 $2048 \times 6.12 = 12533.76$ s recomputes to \mk{53.76 s}. \added}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \sbsr{0.47}{%
 \figT{c8_slot_breakdown.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize One frame down to one normal burst. The \mk{546.5 $\mu$s} is the
 useful part, \mk{577 $\mu$s} is the whole slot including guard space. \yr{SST Ch 8}}}{%
 \lead{Inside a normal burst \m{3}}
@@ -302,10 +302,10 @@ useful part, \mk{577 $\mu$s} is the whole slot including guard space. \yr{SST Ch
         \mk{156.25 bits}.
 \end{itemize}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \sbsr{0.55}{%
 \figT{c8_burst_formats.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize \textbf{Five burst formats, all 156.25 bits.} \yr{Rappaport
 Fig 10.9, via SST Ch 8}}}{%
 \lead{Why five formats}
@@ -324,14 +324,14 @@ Fig 10.9, via SST Ch 8}}}{%
         measure it.
 \end{itemize}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \sbs{%
 \figT{c8_speech_multiframe.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize \textbf{Traffic (speech) multiframe, 26 frames, 120 ms.}
 \yr{SST Ch 8, Fig 11.7}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \lead{Traffic multiframe \m{2}}
 \begin{itemize}
   \item TCH data runs in \textbf{consecutive frames}, but \mk{frames 13 and 26 are not TCH}.
@@ -342,11 +342,11 @@ Fig 10.9, via SST Ch 8}}}{%
         MAHO (Ch 2).
 \end{itemize}}{%
 \figT{c8_control_multiframe.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize \textbf{Control multiframe, 51 frames, 235 ms.} (a) forward link
 on TS0, (b) reverse link on TS0. \yr{SST Ch 8, Fig 11.8}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \lead{Control multiframe \m{2}}
 \begin{itemize}
   \item \textbf{Forward}: F (FCCH) then S (SCH) repeat \mk{every 10 frames}; between them sit
@@ -356,7 +356,7 @@ on TS0, (b) reverse link on TS0. \yr{SST Ch 8, Fig 11.8}}
   \item Both live in \textbf{TS0 of the BCH ARFCN}.
 \end{itemize}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \lead{Frame efficiency, in one line \m{2}}
 \begin{itemize}
   \item $\eta_f = \left(1 - \dfrac{b_{OH}}{b_T}\right)\times 100\,\%$, with
@@ -379,11 +379,11 @@ on TS0, (b) reverse link on TS0. \yr{SST Ch 8, Fig 11.8}}
 
 \sbsr{0.42}{%
 \figT{c8_logical_channels.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize \textbf{Draw this tree first, then write one line per leaf.}
 \yr{SST Ch 8}}
 
-\vspace{3pt}
+\penalty0\vspace{3pt}
 \lead{Physical against logical}
 \begin{itemize}
   \item \textbf{Physical channel} $=$ one ARFCN $+$ one time slot number. Hardware.
@@ -423,7 +423,7 @@ on TS0, (b) reverse link on TS0. \yr{SST Ch 8, Fig 11.8}}
   \end{itemize}
 \end{itemize}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \sbsr{0.46}{%
 \lead{2. Common control channels (CCCH) \; call establishment \m{4}}
 \begin{itemize}
@@ -487,17 +487,17 @@ being marked}
   \item Base station answers with an \textbf{AGCH} message on the CCCH, assigning an
         \textbf{SDCCH}.
 \end{enumerate}
-\vspace{2pt}
+\penalty0\vspace{2pt}
 {\color{sub}\footnotesize \mk{Mobile-terminated differs in one step}: the network first pages
 the mobile on the \textbf{PCH}, the mobile answers on the \textbf{RACH}, and everything from
 step 6 is identical. \added}}{%
 \figT{c8_location_update.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize \textbf{Location updating, channel by channel}: which logical
 channel carries each step when a mobile is switched on in a new area. Note how much of it
 rides on the \textbf{SDCCH}. \yr{SST Ch 8, Table 2.1}}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \sbs{%
 \begin{enumerate}
   \setcounter{enumi}{5}
@@ -537,12 +537,12 @@ equalization is \textbf{Ch 5}. \mk{Here you assemble them into one chain}}
 
 \sbsr{0.55}{%
 \figT{c8_signal_proc.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize \textbf{Draw the forward chain, then say the reverse is its mirror.}
 The radio channel sits between modulation and demodulation. \yr{Rappaport Fig 10.11, via
 SST Ch 8}}
 
-\vspace{3pt}
+\penalty0\vspace{3pt}
 \lead{The chain, block by block}
 \begin{enumerate}
   \item \textbf{Digitizing and source coding}: RPE-LTP speech coder,
@@ -585,10 +585,10 @@ SST Ch 8}}
         wreck the speech is what makes 13 kbps survive a fading channel.
 \end{itemize}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \sbsr{0.40}{%
 \figT{c8_channel_coding.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize \textbf{260 bits in, 456 bits out.} \yr{SST Ch 8}}}{%
 \lead{Interleaving, and why 8 slots}
 \begin{itemize}
@@ -673,12 +673,12 @@ decoding are all \textbf{Ch 7}; this chapter is only the \textbf{standard}}
 
 \sbsr{0.44}{%
 \figT{c8_walsh_gen.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize \textbf{Channelization code $=$ Walsh code} \m{2}, built by the
 Hadamard recursion. Row $n$ of the matrix is $W_n$. Worked as a numerical in \textbf{Ch 7
 companion \S4}. \yr{SST Ch 8}}
 
-\vspace{3pt}
+\penalty0\vspace{3pt}
 \lead{Why Walsh codes work here}
 \begin{itemize}
   \item All 64 rows are \textbf{mutually orthogonal}: map $0 \rightarrow -1$,
@@ -710,7 +710,7 @@ companion \S4}. \yr{SST Ch 8}}
   \end{itemize}
 \end{enumerate}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \sbsr{0.49}{%
 \begin{enumerate}
   \setcounter{enumi}{2}
@@ -734,10 +734,10 @@ companion \S4}. \yr{SST Ch 8}}
   \end{itemize}
 \end{enumerate}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \sbsr{0.63}{%
 \figT{c8_fwd_cdma.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize \textbf{Forward traffic channel, the block diagram to reproduce.}
 Rate 1/2 $K=9$ convolutional encoder $\rightarrow$ symbol repetition to 19.2 ksps
 $\rightarrow$ block interleaver $\rightarrow$ long-code scrambling $\rightarrow$ MUX with the
@@ -761,26 +761,26 @@ $\rightarrow$ QPSK. \yr{SST Ch 8}}}{%
         once.}
 \end{itemize}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \sbs{%
 \figT{c8_pilot_ch.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize \textbf{Pilot channel} \m{3}. All zeros in, PN out. No encoder, no
 interleaver, nothing to decode. \yr{SSD, IS-95 channels}}}{%
 \figT{c8_sync_ch.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize \textbf{Sync channel} \m{3}. 1.2 kbps $\rightarrow$ rate 1/2
 $\rightarrow$ 2.4 ksps $\rightarrow$ repetition to 4.8 ksps $\rightarrow$ interleave
 $\rightarrow$ $W_{32}$ $\rightarrow$ I/Q PN. \yr{SSD, IS-95 channels}}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \sbs{%
 \figT{c8_paging_ch.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize \textbf{Paging channel}. Same shape as the sync channel plus
 long-code scrambling through a decimator. \yr{SSD, IS-95 channels}}}{%
 \figT{c8_fwd_traffic_ch.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize \textbf{Forward traffic channel}. The paging channel plus the
 \mk{MUX that punctures in the 800 bps power control bits}. \yr{SSD, IS-95 channels}}}
 
@@ -811,14 +811,14 @@ drawing}
   \item \mk{Forward: Walsh separates channels. Reverse: Walsh represents symbols.}
 \end{itemize}}{%
 \figT{c8_rev_cdma.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize \textbf{Reverse traffic and access channel generation.} Rate 1/3
 $K=9$ encoder $\rightarrow$ repetition to 28.8 ksps $\rightarrow$ interleaver
 $\rightarrow$ 64-ary orthogonal modulator, 307.2 kcps $\rightarrow$ data burst randomizer
 $\rightarrow$ long PN $\rightarrow$ I/Q short PN with a \mk{half-chip delay on Q}, giving
 OQPSK. \yr{SST Ch 8}}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \sbs{%
 \lead{1. Access channel}
 \begin{itemize}
@@ -846,14 +846,14 @@ OQPSK. \yr{SST Ch 8}}}
         composite waveform continuous.
 \end{itemize}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \sbs{%
 \figT{c8_access_ch.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize \textbf{Access channel} \m{2}. Note the fixed 4.8 kbps input and
 the absence of a data burst randomizer. \yr{SSD, IS-95 channels}}}{%
 \figT{c8_rev_traffic_ch.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize \textbf{Reverse traffic channel} \m{2}. The one added block is the
 \mk{data burst randomizer}. \yr{SSD, IS-95 channels}}}
 
@@ -920,7 +920,7 @@ seven LTE boxes by name}
         all.
 \end{itemize}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \lead{The three differences to write down \m{3}}
 \begin{itemize}
   \item \textbf{Topology}: CDMA is BTS--BSC--MSC, three tiers. LTE is eNodeB--EPC, two tiers.
@@ -956,20 +956,20 @@ this band is the \emph{systems} behind those generations \gap$\cdot$\gap
         to end.
 \end{itemize}}{%
 \figT{c8_analog_systems.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize \yr{Rappaport Table 10.10}}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \sbs{%
 \figT{c8_cordless_std.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize \textbf{Digital cordless standards.} \yr{Rappaport Table 10.11}}}{%
 \figT{c8_2g_std.png}
-\vspace{1pt}
+\penalty0\vspace{1pt}
 {\color{sub}\footnotesize \textbf{Second generation digital cellular.} \yr{Rappaport
 Table 10.12}}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \sbs{%
 \lead{Cordless and PCS, the short-range family}
 \begin{itemize}
@@ -1061,7 +1061,7 @@ Table 10.12}}}
         to LTE. Worth one honest line: it is on the syllabus but was never deployed. \added
 \end{itemize}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \sbsr{0.55}{%
 \lead{Recent trends \m{2}}
 \begin{itemize}
@@ -1085,7 +1085,7 @@ QoS & weak & \mk{built in} & built in \\
 Mobility & nomadic & vehicular (802.16e) & \mk{full handover} \\
 \bottomrule
 \end{tabularx}
-\vspace{2pt}
+\penalty0\vspace{2pt}
 {\color{sub}\footnotesize \mk{If a question asks you to ``compare'', this table is the
 answer.} The row that actually decides all the others is \textbf{contended against
 scheduled}. \added}}
@@ -1130,7 +1130,7 @@ scheduled}. \added}}
         \mk{unlicensed as a commons} (the ISM bands WiFi and Bluetooth live in).
 \end{itemize}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \sbs{%
 \lead{2. Spectrum pricing}
 \begin{itemize}
@@ -1152,7 +1152,7 @@ scheduled}. \added}}
         licence.
 \end{itemize}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \sbs{%
 \lead{4. Tariff regulation}
 \begin{itemize}
@@ -1172,7 +1172,7 @@ scheduled}. \added}}
         appears in the list of functions below.
 \end{itemize}}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \sbsr{0.52}{%
 \lead{Functions of the regulator \m{4} \; \mk{the list 80 Ch and 79 Ch want}}
 \begin{enumerate}
@@ -1186,7 +1186,7 @@ scheduled}. \added}}
   \item \textbf{Approval of tariffs}: fixed tariffs, maximum tariffs and non-regulated
         tariffs.
 \end{enumerate}
-\vspace{2pt}
+\penalty0\vspace{2pt}
 {\color{sub}\footnotesize \yr{SST Ch 8, the NTA regulatory approach} \gap$\cdot$\gap
 \mk{write these five and the 4 marks are secure.} Add spectrum allocation and monitoring as
 a sixth if the question says ``spectrum management''.}}{%
@@ -1251,20 +1251,20 @@ a sixth if the question says ``spectrum management''.}}{%
   \item CDMA against LTE architecture \tP{1} \gap$\cdot$\gap
         GSM against CDMA, specifications of GSM, LTE short note
 \end{enumerate}
-\vspace{2pt}
+\penalty0\vspace{2pt}
 {\color{sub}\footnotesize \mk{The best hour you can spend on this chapter} is the
 \textbf{control channel tree}: nine channels, one line each, plus which direction each one
 points. Eight of the twenty-two papers ask for it directly, and it also supplies most of the
 GSM-call answer in \S8.6.}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 {\color{sub}\footnotesize \mk{No numerical companion for this chapter.} No paper from 2070 to
 2082 sets a calculation in Chapter 8. The one number the syllabus touches, \textbf{GSM frame
 efficiency}, is examined as a Chapter 7 multiple-access question and is worked in full in
 \textbf{Ch 7 $-$ Numerical Problems \& Solutions, \S3}, including the 74 Ma
 ``cannot reach 100\,\%'' proof.}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 {\color{sub}\footnotesize \mk{Two traps in this chapter}: \textbf{BCH} is the broadcast
 channel here and a block code in Ch 6; and \textbf{FCCH} (GSM frequency correction channel)
 is not \textbf{FCC} (forward control channel, Ch 2). Read the question's context before you

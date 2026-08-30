@@ -72,13 +72,22 @@ def main():
             continue
         stem, pretty = TARGETS[n]
         print(f"--- building {n}")
-        r = subprocess.run([tex, stem + ".tex"], cwd=HERE,
+        r = subprocess.run([tex, "--print", stem + ".tex"], cwd=HERE,
                            capture_output=True, text=True)
-        err = [l for l in (r.stderr or "").splitlines()
-               if l.lower().startswith("error")]
+        out = (r.stdout or "") + (r.stderr or "")
+        err = [l for l in out.splitlines() if l.lower().startswith("error")]
         if err:
             print("\n".join(err))
             sys.exit(f"{n} FAILED")
+        # a \sbs pair taller than \sbsmax cannot fit under its own heading on
+        # any page. \Q glues the two together, so such a pair has nowhere to
+        # break and prints past the bottom margin. Split it into two pairs at
+        # a \lead boundary. See the keeping-a-topic-whole note in preamble.tex.
+        tall = sorted(set(l for l in out.splitlines()
+                          if l.startswith("@SBS-TOO-TALL")))
+        if tall:
+            print("\n".join("   " + t for t in tall))
+            sys.exit(f"{n}: over-tall \\sbs pair, split it at a \\lead boundary")
         src = os.path.join(HERE, stem + ".pdf")
         dst = os.path.join(OUT, pretty)
         try:
