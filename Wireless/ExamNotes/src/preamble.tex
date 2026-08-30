@@ -89,29 +89,51 @@
   [\vspace{-7pt}{\color{acc}\rule{\textwidth}{1.1pt}}]
 \titlespacing*{\section}{0pt}{6pt}{7pt}
 
+% ------------------------------------------------------- keeping a topic whole
+% Lower-case \needspace reserves space by injecting stretchable glue in FRONT
+% of a -100 penalty, so the reserve doubles as the width of a window in which
+% TeX finds that penalty cheap: it breaks there whenever the free space is
+% under roughly 4.6x the reserve, which is where the half-empty pages came
+% from (at 11\baselineskip the window ran to ~640pt). Capital \Needspace, from
+% the same package, instead compares \pagegoal-\pagetotal against the reserve
+% and breaks only when the page really is that short. No window, so the
+% reserve can be honest. Every heading below uses it.
+%
+% Second half of the same problem: a topic band was being stranded at the foot
+% of a page with its question on the next one, and the culprit was the
+% FOLLOWING heading's own reserve, which put a breakpoint between the two. \T
+% raises \ifbandopen and \Q / \creamq answer it with \nobreak instead of a
+% reserve of their own, so band, heading and the opening lines of the answer
+% can only travel together.
+% The flag has to be global (a band is often followed by a tag line wrapped in
+% a group) and it has to expire on its own, or a band followed by prose rather
+% than a heading would rob the NEXT question of its reserve. So the first
+% paragraph started after a band clears it through \everypar and puts \everypar
+% back the way it found it.
+\newif\ifbandopen
+\newcommand{\bandon}{\global\let\ifbandopen\iftrue
+  \global\everypar{\bandoff\global\everypar{}}}
+\newcommand{\bandoff}{\global\let\ifbandopen\iffalse}
+\bandoff
+\newcommand{\holdspace}[1]{%
+  \ifbandopen \nobreak \bandoff \else \Needspace{#1\baselineskip}\fi}
+
 % Q = exam question heading. #1 text, #2 mark chips
-% \needspace stops a heading being orphaned at the foot of a page with its
-% content on the next one.
 \newcommand{\Q}[2]{%
-  \par\vspace{7pt}\needspace{7\baselineskip}\noindent
+  \par\vspace{7pt}\holdspace{9}\noindent
   {\large\bfseries\color{ink}#1}\hspace{0.45em}#2\par
   \vspace{1pt}{\color{ruleL}\rule{\textwidth}{0.7pt}}\vspace{1.5pt}\par}
 
-% T = topic band (tinted full-width bar)
-% \needspace reserves space by injecting stretchable glue before a -100
-% penalty, so the reserved length is also the width of the window in which
-% TeX finds that penalty CHEAP: it will happily break there whenever the
-% free space is under about 4.6x the reserve. At 11\baselineskip that window
-% ran to ~640pt and half-empty pages were the result once the question
-% statements were added. 6 lines still keeps a band off the foot of a page.
+% T = topic band (tinted full-width bar). The reserve has to cover the band,
+% the question heading under it, the year-tag line and a few lines of answer.
 \newcommand{\T}[1]{%
-  \par\vspace{7pt}\needspace{6\baselineskip}\noindent
+  \par\vspace{7pt}\Needspace{12\baselineskip}\noindent
   \colorbox{accL}{\makebox[\dimexpr\textwidth-2\fboxsep][l]{%
-    \textcolor{acc}{\bfseries #1}}}\par\vspace{3pt}}
+    \textcolor{acc}{\bfseries #1}}}\par\nobreak\vspace{3pt}\bandon}
 
 % small question sub-heading inside PYQ lists
 \newcommand{\creamq}[2]{%
-  \par\vspace{4pt}\needspace{5\baselineskip}%
+  \par\vspace{4pt}\holdspace{6}%
   {\bfseries\color{acc}#1}\hspace{0.4em}#2\par\vspace{1pt}}
 \let\qq\creamq
 
@@ -123,7 +145,7 @@
 %   Breakable across pages on purpose (a list, not a minipage): several
 %   statements carry a full data table and will not fit in the space left.
 \newenvironment{asked}[2][QUESTION AS PRINTED]%
-  {\par\vspace{4pt}\needspace{3\baselineskip}\noindent
+  {\par\vspace{4pt}\Needspace{4\baselineskip}\noindent
    \colorbox{rowL}{\makebox[\dimexpr\textwidth-2\fboxsep][l]{%
      \textcolor{acc}{\bfseries\scriptsize #1}\hspace{0.7em}%
      \textcolor{sub}{\footnotesize #2}}}\par\nobreak\vspace{2pt}%

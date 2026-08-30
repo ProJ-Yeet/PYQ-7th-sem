@@ -109,7 +109,7 @@ is where the marks are.}
   Speech amplitude has a \textbf{highly non-uniform} pdf: very high probability of
   \textbf{near-zero} amplitudes, small but significant probability of very high amplitudes, and a
   \textbf{monotonically decreasing} function in between.
-  \[ p(x) = \frac{1}{\sqrt{2}\,\sigma_x}\exp\!\left(\frac{-\sqrt{2}\,|x|}{\sigma_x}\right) \] &
+  \[ p(x) = \frac{1}{\sqrt{2}\,\sigma_x}\,e^{-\sqrt{2}\,|x|/\sigma_x} \] &
   \textbf{Non-uniform quantizers} and \textbf{vector quantizers}: put \mk{more quantization levels
   where the probability is high} and fewer where it is low. This is why $\mu$-law and A-law
   companding exist. \\
@@ -198,8 +198,9 @@ band on the left, the inverse chain on the right.}
         number of bits \textbf{proportional to its perceptual significance}.
   \item \textbf{Bit rate range: 9.6 kbps to 20 kbps.}
   \item Most common transform: the \textbf{discrete cosine transform (DCT)}
-        \[ X_c(k) = \sum_{n=0}^{N-1} x(n)\,g(k)\,
-           \cos\!\left[\frac{(2n+1)k\pi}{2N}\right], \quad k = 0,1,\dots,N-1 \]
+        \[ \begin{gathered} X_c(k) = \sum_{n=0}^{N-1} x(n)\,g(k)\,
+           \cos\!\left[\frac{(2n+1)k\pi}{2N}\right], \\
+           k = 0,1,\dots,N-1 \end{gathered} \]
         \[ x(n) = \frac{1}{N}\sum_{k=0}^{N-1} X_c(k)\,g(k)\,
            \cos\!\left[\frac{(2n+1)k\pi}{2N}\right] \]
         with $g(0)=1$ and $g(k)=\sqrt{2}$ for $k = 1,\dots,N-1$.

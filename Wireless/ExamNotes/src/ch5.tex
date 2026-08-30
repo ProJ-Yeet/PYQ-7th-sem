@@ -147,10 +147,11 @@ companion}
             = E[x_k^2] + \boldsymbol{\omega}^T \mathbf{R}\, \boldsymbol{\omega}
               - 2\,\mathbf{p}^T \boldsymbol{\omega} \]
         where
-        \[ \mathbf{R} = E\!\left[\mathbf{y}_k \mathbf{y}_k^T\right]
-           \text{ (input correlation matrix)}, \qquad
+        \[ \begin{gathered}
+           \mathbf{R} = E\!\left[\mathbf{y}_k \mathbf{y}_k^T\right]
+           \text{ (input correlation matrix)}, \\
            \mathbf{p} = E\!\left[x_k \mathbf{y}_k\right]
-           \text{ (cross correlation)} \]
+           \text{ (cross correlation)} \end{gathered} \]
 \end{itemize}}{%
 \figT{c5_adaptive_eq.png}
 \vspace{1pt}
@@ -181,8 +182,9 @@ symbol, $e_k$ the error that drives the adaptive algorithm.}
 \lead{The iterative form}
 \begin{itemize}
   \item Direct matrix inversion is expensive, so in practice the weights are stepped:
-        \[ \text{new weights} = \text{previous weights} + \mu \times
-           (\text{previous error}) \times (\text{current input vector}) \]
+        \[ \begin{gathered} \text{new weights} = \text{previous weights} \\
+           + \mu \times (\text{previous error}) \times (\text{current input})
+           \end{gathered} \]
   \item $\mu$ is a \textbf{step size} adjusted to control how far the weights move per iteration.
   \item Repeated rapidly in a loop until \textbf{convergence}, at which point the weights are
         frozen until the next training sequence.
@@ -211,7 +213,7 @@ already earned.}}{%
   \item If the taps are analog, the output is \textbf{sampled at the symbol rate} before the
         decision device.
   \item \textbf{Linear transversal equalizer (LTE)} +Fig: a tapped delay line, delay $T_s$ per
-        element, transfer function a function of $z^{-1}$ (or $\exp(-j\omega T_s)$).
+        element, transfer function a function of $z^{-1}$ (or $e^{-j\omega T_s}$).
   \item The simple LTE uses \textbf{feedforward taps only}. A version w/ both feedforward and
         feedback taps exists but is \mk{unstable and rarely used}.
   \item \textbf{Lattice equalizer}: same job, but built as a lattice filter.

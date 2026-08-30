@@ -267,8 +267,9 @@ line from the image transmitter at $-h_t$.}}
   \item \mk{Note $\lambda$ has cancelled}: the two-ray result is
         \textbf{independent of frequency}.
   \item In dB:
-        \[ PL(\text{dB}) = 40\log d - \left(10\log G_t + 10\log G_r
-           + 20\log h_t + 20\log h_r\right) \]
+        \[ \begin{gathered} PL(\text{dB}) = 40\log d \\
+           -\left(10\log G_t + 10\log G_r + 20\log h_t + 20\log h_r\right)
+           \end{gathered} \]
   \item Valid only beyond the \textbf{crossover distance} $d_c = 4\pi h_t h_r/\lambda$;
         below it the model oscillates and free space is used instead. \added
 \end{itemize}}
@@ -543,8 +544,9 @@ $h_{te} = 200$ m, $h_{re} = 3$ m.}}
 \end{itemize}
 
 \lead{Model 2: attenuation factor model}
-\[ PL(d)\,[\text{dB}] = \overline{PL}(d_0) + 10\,n_{SF}\log\!\left(\frac{d}{d_0}\right)
-   + \text{FAF} + \sum \text{PAF} \]
+\[ \begin{gathered} PL(d)\,[\text{dB}] = \overline{PL}(d_0)
+   + 10\,n_{SF}\log\!\left(\frac{d}{d_0}\right) \\
+   + \text{FAF} + \sum \text{PAF} \end{gathered} \]
 \begin{itemize}
   \item $n_{SF}$ $=$ path loss exponent measured on the \textbf{same floor}.
   \item \textbf{FAF} $=$ floor attenuation factor, added once per floor penetrated.
@@ -614,7 +616,7 @@ $h_{te} = 200$ m, $h_{re} = 3$ m.}}
 \begin{itemize}
   \item The channel is treated as a \textbf{linear filter with a time-varying impulse response}.
   \item Feed it a unit impulse $\delta(t)$ and the output is
-        \[ h(t) \;=\; \sum_{n=1}^{N} A_n \exp(-j\phi_n)\,\delta(t-\tau_n) \]
+        \[ h(t) \;=\; \sum_{n=1}^{N} A_n\, e^{-j\phi_n}\,\delta(t-\tau_n) \]
   \item $A_n$, $\tau_n$, $\phi_n$ $=$ amplitude, arrival delay and phase of the $n$-th path.
   \item Time variation comes from motion, so it is really $h(t,\tau)$: $\tau$ indexes the
         multipath delay, $t$ indexes the mobile's position.
@@ -870,7 +872,7 @@ Relative rates & channel varies \textbf{faster} than the baseband signal & chann
   \item Physically: mobile deep in an urban area, far from the BS, no line of sight.
   \item The in-phase and quadrature sums are each Gaussian, so the \textbf{envelope} is Rayleigh:
         \[ p(r) = \begin{cases}
-           \dfrac{r}{\sigma^2}\exp\!\left(-\dfrac{r^2}{2\sigma^2}\right) & 0 \le r \le \infty \\[4pt]
+           \dfrac{r}{\sigma^2}\,e^{-r^2/2\sigma^2} & 0 \le r \le \infty \\[4pt]
            0 & r < 0 \end{cases} \]
   \item $\sigma$ $=$ rms value of the received voltage \textbf{before} envelope detection.
   \item $\sigma^2$ $=$ time-average power before envelope detection.
@@ -892,7 +894,7 @@ Relative rates & channel varies \textbf{faster} than the baseband signal & chann
   \item Physically: microcell, indoor pico-cell, or a mobile with clear sight of the BS.
   \item The random components add onto a fixed phasor, so:
         \[ p(r) = \begin{cases}
-           \dfrac{r}{\sigma^2}\exp\!\left(-\dfrac{r^2+A^2}{2\sigma^2}\right)
+           \dfrac{r}{\sigma^2}\,e^{-(r^2+A^2)/2\sigma^2}\,
              I_0\!\left(\dfrac{Ar}{\sigma^2}\right) & A \ge 0,\; r \ge 0 \\[4pt]
            0 & r < 0 \end{cases} \]
   \item $A$ $=$ peak amplitude of the \textbf{dominant} signal.

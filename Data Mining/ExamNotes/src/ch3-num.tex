@@ -675,7 +675,7 @@ of two nodes $h_1$ and $h_2$. The weight of the edge connecting $x_i$ to $h_j$ i
 The two hidden nodes are connected to the output node $o$. The weight of the edge connecting
 the hidden node $h_i$ to the output node $o$ is $u_i$. The activation functions at hidden and
 output layers is set to sigmoid function defined as follows:
-\[ \sigma(\theta) = \frac{1}{1+\exp(-\theta)} \]
+\[ \sigma(\theta) = \frac{1}{1+e^{-\theta}} \]
 Using the target output $t$, the squared error is used as the loss function at the output
 node, and is defined as:
 \[ E(o,t) = \tfrac{1}{2}(o-t)^2 \]
@@ -689,7 +689,7 @@ node, and is defined as:
 
 \lead{(a) Activation at $h_1$}
 \[ h_1 = \sigma\big(w_{11}x_1 + w_{12}x_2 + w_{13}x_3\big)
-       = \frac{1}{1+\exp\!\big(-(w_{11}x_1+w_{12}x_2+w_{13}x_3)\big)} \]
+       = \frac{1}{1+e^{-(w_{11}x_1+w_{12}x_2+w_{13}x_3)}} \]
 
 \lead{(b) Gradient of the loss w.r.t.\ the output $o$}
 \[ E(o,t)=\tfrac{1}{2}(o-t)^2 \quad\Rightarrow\quad

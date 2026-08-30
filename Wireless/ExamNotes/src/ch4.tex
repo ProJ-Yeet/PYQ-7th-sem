@@ -550,7 +550,7 @@ adjacent channel, which is the entire reason GMSK exists. \yr{SST Ch 4}}}
         rectangular data into a shape that suppresses the high-frequency content responsible
         for MSK's sidelobes.
   \item Transfer function
-        $H(f) = \exp\!\left[-\dfrac{\ln 2}{2}\left(\dfrac{f}{B}\right)^{\!2}\right]$,
+        $H(f) = e^{-\frac{\ln 2}{2}\left(f/B\right)^{2}}$,
         where $B$ is the \textbf{3 dB bandwidth} of the filter.
   \item The filter is fully described by $B$ and the symbol duration $T$, so GMSK is named by
         its \mk{$BT$ product}. $BT = \infty$ is plain MSK.
@@ -1169,7 +1169,7 @@ indexes one row of the frequency table, which is the next hop. \yr{SST Ch 4}}}
 \begin{itemize}
   \item QPSK: 2 bits/symbol, $T_s = 2T_b$, null-null BW $= R_b$, \mk{same BER as BPSK}.
   \item MSK: CPFSK with $h = 0.5$, $\Delta f = R_b/4$, equals OQPSK with half-sine pulses.
-  \item GMSK: MSK $+$ Gaussian LPF, $H(f) = \exp[-\tfrac{\ln 2}{2}(f/B)^2]$,
+  \item GMSK: MSK $+$ Gaussian LPF, $H(f) = e^{-\frac{\ln 2}{2}(f/B)^2}$,
         \mk{GSM uses $BT = 0.3$}.
   \item Smaller $BT$ $\rightarrow$ tighter spectrum, more ISI.
   \item OFDM: $\Delta f = 1/T$, IFFT at the transmitter, FFT at the receiver, CP $>$ delay

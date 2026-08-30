@@ -593,7 +593,7 @@ traffic intensity, average holding time and blocked call as definitions \m{4}
         \[ \Pr[\text{delay} > 0] \;=\; \frac{A^C}
            {A^C + C!\left(1-\dfrac{A}{C}\right)\displaystyle\sum_{k=0}^{C-1}\dfrac{A^k}{k!}} \]
   \item GoS $=$ probability the delay exceeds $t$ seconds:
-        \[ \Pr[\text{delay} > t] = \Pr[\text{delay}>0]\;\exp\!\left(-\frac{(C-A)t}{H}\right) \]
+        \[ \Pr[\text{delay} > t] = \Pr[\text{delay}>0]\;e^{-(C-A)t/H} \]
   \item Average delay over \textbf{all} calls:
         \[ D = \Pr[\text{delay}>0]\;\frac{H}{C-A} \]
         where $H/(C-A)$ is the average delay of \emph{those} calls that were queued.
