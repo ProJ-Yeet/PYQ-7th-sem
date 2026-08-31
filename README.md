@@ -23,7 +23,12 @@ Each subject folder contains:
 
 Once a subject has been extended with newer papers, its filenames carry the year span they cover, e.g. `DSAP_Sorted_PYQ_Detailed_66-82.pdf`, `Wireless_Sorted_PYQ_Detailed_70-82.pdf`.
 
-`Data Mining/ExamNotes/` additionally has a full set of syllabus-order exam notes (7 chapters + numerical-problem companions), with LaTeX sources under `src/`.
+Two subjects additionally carry a full set of syllabus-order exam notes, with LaTeX sources under `src/`:
+
+- `Data Mining/ExamNotes/` — 7 chapters + numerical-problem companions
+- `Wireless/ExamNotes/` — 8 chapters + 5 numerical-problem companions, 13 PDFs in all
+
+The notes are written to be answered from directly: every topic carries the years it was asked and a tier badge counted over that subject's whole paper set, every numerical reproduces the exam question verbatim before working it, and figures are copied from the lecture sources rather than redrawn. In `src/`, `build.py` compiles and deploys, `verify.py` recomputes every published numerical answer independently and asserts it against the printed value, `audit.py` checks that no topic heading is left stranded at the foot of a page, and `figs.py` re-crops the figures from their sources.
 
 ## Notes
 
