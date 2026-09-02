@@ -47,7 +47,7 @@ The notes are written to be answered from directly: every topic carries the year
 | Artificial Intelligence | 17 | 2069–2081 |
 | DSAP (CT704) | 27 | 2066–2082 |
 | DSAP (EX753) | 17 | 2069–2081 |
-| Organization and Management | 21 | 2069–2081 |
+| Organization and Management | 29 | 2065–2082 |
 | RF and Microwave | 14 | 2069–2081 |
 | Wireless Communication (EX751) | 16 | 2070–2080 |
 | Wireless Communication (EX715) | 6 | 2079–2082 |

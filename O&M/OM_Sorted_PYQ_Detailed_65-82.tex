@@ -1,0 +1,477 @@
+\documentclass[12pt]{article}
+\usepackage{hyperref}
+\usepackage{amsmath, amssymb, amsfonts}
+\usepackage[margin=1.2cm]{geometry}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\parindent 0pt
+\newcommand{\lb}{\\$\left|\rightarrow\right.$}
+\newcommand{\enter}{\\\textcolor{white}{1}}
+\ExplSyntaxOn
+\NewDocumentCommand{\bo}{m}
+ {
+   \bold_commas:n { #1 }
+ }
+\cs_new:Npn \bold_commas:n #1
+ {
+   \seq_set_split:Nnn \l_tmpa_seq { , } { #1 }
+   \seq_map_indexed_function:NN \l_tmpa_seq \__bold_commas_aux:nn
+ }
+\cs_new:Npn \__bold_commas_aux:nn #1 #2
+ {
+   \textbf{#2}
+   \int_compare:nNnTF { #1 } < { \seq_count:N \l_tmpa_seq }
+     { , }
+     { }
+ }
+\ExplSyntaxOff
+
+\title{Organization and Management (ME708)\\[0.4em]\large Detailed PYQ}
+\author{}
+\date{\today}
+
+\begin{document}
+\maketitle
+\vspace{6cm}
+\textbf{Notes}
+\begin{itemize}[noitemsep]
+  \item Questions from Tribhuvan University, IOE (2065--2082 BS), 29 papers, sorted by the ME708 syllabus.
+  \item One common paper serves every programme --- BEL, BEX, BCT, and BEI from 2079 Bhadra onward --- so this subject has \emph{no} second course code and no monospace axis.
+  \item Regular exam = \bo{bold}, Back exam = regular font. A header printing ``Regular / Back'' in one box counts as Regular, so \bo{75 Ch} and the whole 2065--2068 block are bold.
+  \item Months: Ba = Baishakh, Asa = Ashad, Shr = Shrawan, Bh = Bhadra, Ash = Ashwin, Ka = Kartik, Po = Poush, Ma = Magh, Ch = Chaitra.
+  \item \textbf{Ash and Asa are different months.} The previous edition of this document tagged the 2070 Ashad paper ``70 Ash''; it is \bo{}70 Asa. 2067 Ashadh is 67 Asa.
+  \item 2065--2068 papers set six questions and ask for any five, so their parts carry 16 marks between them. The ten-question, attempt-all format begins at 2069 Chaitra. 2070 Ashad sets twelve and asks for any ten, and prints its marks in round brackets.
+  \item 2072 Kartik prints no marks --- its rubric says all questions carry equal marks, so each is 8. 2075 Ashwin prints no marks against Q5 alone.
+  \item Keywords: (I) = Importance/Need/Significance, (+) = Advantage, (-) = Disadvantage, +Fig = Figure/Diagram, +Eg = Example, Vs = Compare/Differentiate.
+\end{itemize}
+\pagebreak
+\tableofcontents
+\pagebreak
+
+%=======================================================================
+\section{Introduction}
+\begin{center}(20 Hours)\end{center}
+
+  \subsection{Organization (system approach, necessity, principles, formal/informal)}
+    \begin{enumerate}[topsep=0pt, noitemsep]
+      \item How would you define organization? How can you describe principles of organization? Elaborate the importance of organization. \hfill [1+4+3] (\bo{80 Bh})
+        \lb Define organization and explain the principle of organization. \hfill [8] (72 Ka)
+        \lb Why do we need organizations? Describe the principles of an organization. \hfill [4+4] (\bo{72 Ch})
+        \lb Why is an organization necessary? Explain the principles of an organization. \hfill [4+4] (\bo{71 Ch})
+        \lb What are the principles of organization? Explain formal and informal organization. \hfill [4+4] (71 Shr)
+        \lb What are the principles of Organization? Explain the Informal Organization. \hfill (4+4) (70 Asa)
+        \lb Define Formal and Informal organization. Discuss on principles of organization. \hfill [2+6] (\bo{74 Ch})
+        \lb Define organization and management. What are the principles of organization? \hfill [2+6] (76 Ash)
+        \lb What is the importance of setting the goals for an organization? Describe the principles of organization with relevant examples. \hfill [3+5] (\bo{82 Bh})
+
+      \item Define organization as a system. Describe the concepts of organization in this respect. Is it possible to have an informal organization within the same family? \hfill [2+2+4] (79 Ba)
+        \lb Describe why organization is considered as an open system. Explain the importance of organization. \hfill [4+4] (\bo{70 Ch})
+        \lb Define organization as a social system. What role does an organization play in the professional growth of an employee? What is the need of an informal organization? \hfill [2+4+2] (\bo{81 Bh})
+        \lb Define organization. What are the roles of an organization for professional growth and development of an employee? Do we need informal organization indeed? \hfill [2+4+2] (\bo{75 Ch})
+        \lb Define organization. Why do we need organization? Can we sustain without organization? \hfill [2+3+3] (75 Ash)
+
+      \item Explain the historical development of the organization. Distinguish between formal and informal organizations. \hfill [3+5] (\bo{79 Bh})
+        \lb Explain the term organization. Explain the difference between Formal and Informal organization. \hfill [3+5] (73 Shr)
+
+      \item Explain the importance of organization in the society. Define the term informal Organization. \hfill [5+3] (\bo{76 Ch})
+        \lb Define Organization. Explain the importance of Organization in society. \hfill [3+5] (\bo{69 Ch})
+        \lb What do you mean by organization? Explain the importance of organization in society. Discuss the concept of scientific management theory. \hfill [3+5+8] (\bo{65 Shr})
+        \lb Describe the role of organizations for human civilizations? What are the characteristics of an organization for business operations? \hfill [4+4] (\bo{73 Ch})
+        \lb Define the term organization. What impact do different organizations have over our society? \hfill [3+5] (74 Ash)
+
+      \item What is meaning of organization? Explain organization behavior as a multidisciplinary field. Explain the Scientific Management theory. \hfill [4+4+8] (\bo{68 Ba})
+        \lb How can organization behavior be affected by management? Explain all the elements of an organization. \hfill [4+4] (\bo{68 Ch})
+    \end{enumerate}
+
+  \subsection{Management (functions, levels, managerial skills, importance, models)}
+    \begin{enumerate}[topsep=0pt, noitemsep]
+      \item What are the functions of management? Explain different levels of management. What are the qualities of good manager? \hfill [3+2+3] (\bo{78 Bh}, 75 Ash)
+        \lb Explain different functions of management. List out the major skill desired for successful manager. \hfill [4+4] (81 Ba)
+        \lb Define the term management and explain the function of management. \hfill [3+5] (73 Shr)
+        \lb What do you mean by management? Explain the function of management. \hfill [8] (72 Ka)
+        \lb Define the term Management and explain different levels of Management. \hfill [3+5] (\bo{69 Ch})
+        \lb State and explain the different levels of Management. What are the basic skills required for Management? \hfill [4+4] (\bo{72 Ch})
+        \lb What are the managerial skills? Explain the importance of management. \hfill [4+4] (71 Shr)
+        \lb Explain the importance of Management and discuss the different function of Management. \hfill (3+5) (70 Asa)
+        \lb State and define various levels of management. What are the various skills necessary to be an efficient manager? \hfill [4+4] (\bo{73 Ch})
+
+      \item Why is there a need for different levels of managements? List out the different models of management and write down short note on any two with proper example you are aware of. \hfill [4+4] (\bo{80 Bh})
+        \lb Why do we have different levels of management in an organization? Describe the functions of management at each level. \hfill [2+6] (\bo{82 Bh})
+        \lb Why is there a need for different levels of management? What are the managerial skill a modern manager needs to be equipped with? \hfill [4+4] (\bo{74 Ch})
+        \lb Name the different models of management. Explain any three of them in detail. \hfill [3+5] (\bo{70 Ch})
+        \lb Describe various roles for a manager to play in an organization. Briefly mention the different models of management. \hfill [4+4] (76 Ash)
+
+      \item What are the different types of managerial skills? Explain with illustrations the degree of managerial skills needed for various levels of management. Write down the characteristics of formal and informal organization. \hfill [1+4+3] (82 Ba)
+        \lb Define organization. ``Management is both a science and an art''. Discuss this statement, giving suitable examples. What are the managerial skill a modern manager needs to be equipped with? \hfill [1+3+4] (\bo{78 Bh})
+
+      \item What are the differences between the terms organization and management? Why do you need scientific approach of management to an organization? \hfill [2+2+4] (\bo{71 Ch})
+        \lb Describe any two principal functions of a manager. Why do you think that these two functions are most important functions in an organization? What is the difference between organization and management? \hfill [4+2+2] (79 Ba)
+
+      \item What are the basic functions of management? In your opinion which management theory is the most practical and fruitful in today's business scenario? \hfill [4+4] (80 Ba)
+        \lb Which Management theory is best suited for the organizations in Nepal? \hfill [8] (74 Ash)
+    \end{enumerate}
+
+  \subsection{Theory of Management (Scientific, Administrative, Behavioral, Modern)}
+    \begin{enumerate}[topsep=0pt, noitemsep]
+      \item Explain the different experiments that support the scientific management approach and administrative management approach. \hfill [4+4] (\bo{82 Bh})
+        \lb Explain Scientific Management theory with proper examples. Is it still applicable in modern-day management practices? \hfill [5+3] (\bo{80 Bh})
+        \lb Explain the scientific management theory with its historical development. What are the major differences between the scientific management theory and behavioral mangement theory? \hfill [4+4] (81 Ba)
+        \lb What are the function of Management? Briefly explain the features of scientific management theory. \hfill [4+4] (\bo{75 Ch})
+        \lb What is the difference between Scientific Management and Management Science? How do Taylor's principles illustrate importance of Scientific Management for production processes? \hfill [3+5] (\bo{72 Ch})
+
+      \item How do scientific management approach differ from behavioral management approach? Describe their contributions and limitations. State Maslow's need theory with examples. \hfill [5+3] (\bo{81 Bh})
+        \lb Explain the difference between administrative management approach and behavioral management approach. \hfill [8] (80 Ba)
+        \lb What is difference between Administrative Management Approach and Behavioral Management Approach? What is the rationale for Scientific Management Approach? \hfill [4+4] (79 Ba, 75 Ash)
+        \lb What do you understand by behavioral management approach? Explain administrative management approach. \hfill [4+4] (71 Shr)
+        \lb What is the significance of Human Resource Manager in modern organization? Elaborate how HR manager would implement Scientific Management Approach? \hfill [4+4] (\bo{75 Ch})
+
+      \item What advantage does behavioral management theory has over scientific management theory? Explain in brief. \hfill [8] (\bo{78 Bh}, 73 Shr)
+        \lb What advantages does behavioral management theory have over modern management theory? Explain in brief. \hfill [8] (82 Ba)
+        \lb Explain behavioral management approach theory. What are the basic skills and function required for management? \hfill [3+5] (\bo{76 Ch})
+        \lb What do you mean by organization behaviour? Explain the functions of management. Discuss the behavioural management theory. \hfill [4+4+8] (\bo{66 Bh})
+
+      \item State and describe H. Fayol's administrative management theory. \hfill [8] (\bo{70 Ch})
+        \lb Explain Administrative Management Theory. \hfill (8) (70 Asa)
+        \lb Are Fayol's principles of management applicable in today's organization? How? \hfill [8] (\bo{79 Bh})
+        \lb Explain Henry Fayol's $14^{\text{th}}$ principle of management. \hfill [8] (72 Ka)
+
+      \item Define management. Explain contingency and system approach of management. \hfill [3+5] (\bo{68 Ch})
+    \end{enumerate}
+
+  \subsection{Forms of Ownership (Single, Partnership, Joint Stock Company, Public Corporation, Co-operatives)}
+    \begin{enumerate}[topsep=0pt, noitemsep]
+      \item What are the differences between single ownership and organization joint stock company? \hfill [8] (\bo{80 Bh})
+        \lb What are the forms of ownership? Explain advantages and disadvantages of single ownership organization. \hfill [4+4] (71 Shr)
+        \lb List out different forms of ownership with a brief explanation of each. Explain the advantages and disadvantages of line and staff organization. \hfill [4+4] (82 Ba)
+        \lb An organization may change its form of ownership. Explain this with some examples. \hfill [4+4] (73 Shr)
+
+      \item How would you clarify the characteristics of Joint Stock Company? What are the major differences between Joint Stock Company and Public Corporation? \hfill [4+4] (81 Ba)
+        \lb What is the process of formation of a joint-stock company in Nepal? What are the advantages and disadvantages of a joint-stock company? \hfill [4+4] (80 Ba)
+        \lb What is meant by `Joint Stock Company'? Describe the procedure for forming `Joint Stock Company'. \hfill [3+5] (\bo{70 Ch})
+        \lb What do you mean by Joint Stock Company? Explain the advantages and limitations of a Joint Stock Company. \hfill [2+6] (\bo{69 Ch})
+        \lb Why joint stock company is better than partnership firm? Discuss the process of a private company registration in Nepal, including the types of documents required. \hfill [3+5] (79 Ba)
+        \lb What advantages does joint stock organization has over partnership organization? Explain the features of line organization. \hfill [4+4] (\bo{76 Ch}, 76 Ash)
+        \lb Discuss on different steps for formation of Joint Stock Company. Explain the merits and demerits of Committee organization. \hfill [4+4] (75 Ash)
+        \lb Differentiate between private limited and public limited company. Explain organization behaviour as a multidisciplinary field. What are the importance of contingency theory of management? \hfill [5+4+7] (\bo{67 Asa})
+
+      \item What are the advantages of Partnership Organization? Explain different types of Co-Operatives. \hfill [3+5] (\bo{81 Bh})
+        \lb Explain the features of Partnership Organization. What difficulties can a Partnership Organization possibly face? \hfill [3+5] (74 Ash)
+
+      \item Explain various types of co-operatives organization. Also explain the features of functional organization. \hfill [5+3] (\bo{82 Bh})
+        \lb What do you mean by co-operative societies and describe different types of co-operatives. \hfill [8] (\bo{79 Bh})
+        \lb What do you mean by co-operative societies? Explain different types of co-operatives. \hfill [8] (72 Ka)
+
+      \item Suppose you are chief executive officer (CEO) of a software company. Which type of ownership would you prefer? And why? Suggest suitable organizational structure for it with figure. \hfill [4+4] (\bo{74 Ch})
+    \end{enumerate}
+
+  \subsection{Organizational Structure (Line, Functional, Line \& Staff, Committee)}
+    \begin{enumerate}[topsep=0pt, noitemsep]
+      \item What are advantages of line and staff organization over line organization and functional organization? Explain committee organization and its types. \hfill [4+4] (\bo{74 Ch})
+        \lb Explain the advantages of line and staff organization over line and function organization and describe the committee and its types. \hfill [4+4] (\bo{79 Bh})
+
+      \item What do you mean by organizational structure? How is it defined for a particular enterprise? Write advantages and disadvantage of line organization. \hfill [2+2+4] (\bo{71 Ch})
+        \lb What do you mean by organization structure? Explain Line Organization. \hfill (4+4) (70 Asa)
+        \lb What is organization structure? Differentiate between responsibility and authority. Explain functional organization with sketch. \hfill [2+3+3] (\bo{68 Ch})
+        \lb What do you understand by policy and executive groups in an organization? Explain functional organization. What is responsibility and authority? Explain matrix organization chart. \hfill [4+4+3+5] (\bo{68 Ba})
+        \lb How are Policy group and Executive groups different in an organization? Differentiates between marketing and purchasing. \hfill [4+4] (\bo{68 Ch})
+
+      \item Which type of organizational structure is best suited for a temporary engineering project? Present your logic. \hfill [8] (\bo{73 Ch})
+        \lb Which organization structure is more suitable to engineering project? Discuss with your logic. \hfill [8] (\bo{72 Ch})
+
+      \item Explain different activities of production development. What do you mean by purchasing? Define the term responsibility and authority. What do you mean by span of control? \hfill [5+3+5+3] (\bo{65 Shr})
+        \lb What do you mean by purchasing and marketing concept? Explain the manufacturing methods in industrial organization. What do you mean by span of control in a line organization? \hfill [5+6+5] (\bo{67 Asa})
+        \lb Discuss the activities of production development. What do you mean by industrial relation? Define the term line and staff organization. \hfill [5+6+5] (\bo{66 Bh})
+    \end{enumerate}
+
+  \subsection{Purchasing and Marketing Management}
+    \begin{enumerate}[topsep=0pt, noitemsep]
+      \item How important is marketing in business? What are the different methods of purchasing? \hfill [4+4] (79 Ba, 74 Ash)
+        \lb What are the major function of marketing? Explain the importance of marketing in this modern digital era. \hfill [4+4] (81 Ba)
+        \lb What are the methods of purchasing? Explain the various functions of marketing. \hfill [4+4] (71 Shr)
+        \lb Explain the role of purchasing and marketing department in the organization. \hfill [8] (\bo{76 Ch}); [4] as a short note (\bo{82 Bh})
+        \lb Draw an outline of purchasing process for an organization. What are the challenges for marketing of software products in Nepal? \hfill [4+4] (76 Ash)
+        \lb What are the functions of purchasing department? Elucidate the purchasing procedure. Highlight the importance of marketing. \hfill [3+2+3] (\bo{81 Bh})
+
+      \item Define the term marketing. Explain why marketing is so important and fundamental in an organization. \hfill [3+5] (82 Ba)
+        \lb Define the term Marketing. Explain the importance of Marketing in an Organization. \hfill [3+5] (\bo{75 Ch})
+        \lb Define the term marketing and why marketing is important in an organization? \hfill [8] (\bo{73 Ch})
+        \lb Explain the importance of marketing in modern business. Salesmanship is an important ingredient of marketing. Do you agree with this statement? \hfill [4+4] (73 Shr)
+
+      \item Define advertising and importance of marketing. Explain the Principle of purchasing. \hfill [1+3+4] (\bo{78 Bh})
+        \lb Define marketing, advertising. Explain the function of purchasing in detail. \hfill [3+5] (\bo{70 Ch})
+        \lb Explain the different methods of Purchasing. Why is advertising one of the best form of Marketing? \hfill [5+3] (\bo{72 Ch})
+        \lb What do you mean by purchasing? Explain different function of purchasing department. \hfill [8] (72 Ka)
+        \lb Define the term purchasing. Explain different function of Purchasing department. \hfill (3+5) (70 Asa)
+        \lb What do you mean by purchasing and procurement? Explain the functions of marketing. \hfill [3+5] (\bo{71 Ch})
+    \end{enumerate}
+
+\pagebreak
+%=======================================================================
+\section{Personnel Management}
+\begin{center}(8 Hours)\end{center}
+
+  \subsection{Introduction, functions and personnel policy}
+    \begin{enumerate}[topsep=0pt, noitemsep]
+      \item What is personal management? Elaborate the various factors of wage and salary structure with proper examples. \hfill [4+4] (\bo{80 Bh})
+        \lb Define personal management and explain the function of personal management. \hfill [8] (80 Ba, 72 Ka)
+        \lb Define the term personnel management. Explain the function of personal management. \hfill [3+5] (\bo{70 Ch})
+        \lb Define the term Personnel management and explain its functions. \hfill (8) (70 Asa)
+        \lb What are the functions of personal management? How wages are calculated? \hfill [5+3] (\bo{75 Ch})
+        \lb What is the main idea of personal management? Explain steps of the HR planning process. What are the methods of scientific selection of manpower in organization? \hfill [1+4+3] (81 Ba)
+        \lb Explain the term Human Recourse Planning. What are the different methods of Job Analysis process? \hfill [3+5] (\bo{81 Bh})
+        \lb Explain the role of Personnel Management in the organization. Why do we need manpower planning in the organization? \hfill [4+4] (\bo{76 Ch}, 76 Ash)
+        \lb Explain the motive behind personnel management? Describe various functions of personnel management. How does Human Resources Management System differ from personnel management? \hfill [2+4+2] (\bo{71 Ch})
+
+      \item Describe necessary terms included in a development of personnel policy. What role does human resource management play in the development of an organization? \hfill [4+4] (\bo{82 Bh})
+        \lb What is personnel management? What must a good personal policy include? \hfill (75 Ash --- the paper prints no marks against this question)
+        \lb Explain the policies of personnel mangement. How can you identify the training needs of manpower in an organization? \hfill [5+3] (\bo{79 Bh})
+        \lb Explain about the personal policy and describe about the importance of manpower planning in an organization. \hfill [4+4] (80 Ba)
+        \lb Define Manpower Planning. Why is it important to discuss Personnel Policy with the employees at Hiring? \hfill [3+5] (\bo{79 Bh})
+        \lb What is the importance of Personnel Policy in an organization? Discuss pros and cons of referral approach for manpower recruitment this competitive world. \hfill [4+4] (\bo{74 Ch})
+        \lb Why is personnel Policy necessary to be discussed? Discuss the importance of Manpower Planning. \hfill [5+3] (73 Shr)
+        \lb Define Personnel Management. How important is discussing Personnel Policy/Employee Handbook to newly hired employee? \hfill [3+5] (74 Ash)
+        \lb Define the term personnel management. Explain the different factors of wage and salary structure. What are the methods of performance appraisals? \hfill [4+8+4] (\bo{68 Ba})
+        \lb What do you mean by personal management? Define the term job analysis. Discuss deferent steps of hiring and selecting staff. What do you mean by collective bargaining? \hfill [3+5+5+3] (\bo{65 Shr})
+    \end{enumerate}
+
+  \subsection{Recruitment, selection and training of manpower}
+    \begin{enumerate}[topsep=0pt, noitemsep]
+      \item Define the term outsourcing. Explain the process of recruitment and selection of manpower in an organization. \hfill [3+5] (\bo{80 Bh})
+        \lb Explain the process of recruitment and selection of man power in an organization. What do you mean by outsourcing in this context? \hfill [6+2] (\bo{69 Ch})
+        \lb What is personnel management? Explain recruitment and selection of staff. \hfill [3+5] (71 Shr)
+        \lb What kind of salary and benefits will you expect when you join an organization? Briefly explain the recruitment process. \hfill [3+5] (82 Ba)
+        \lb What is the difference between recruitment and hiring? Why do we need incentives in an organization? \hfill [4+4] (\bo{72 Ch})
+        \lb Explain recruitment and selection process in detail. \hfill [8] (\bo{68 Ch})
+        \lb What do you mean by job analysis? Discuss the different steps of hiring and selecting staff. Explain the methods of performance appraisal. \hfill [6+5+5] (\bo{66 Bh})
+        \lb Explain the term job description. What are the processes of collective bargaining? Discuss the different steps of hiring and selecting staff. \hfill [4+6+6] (\bo{67 Asa})
+        \lb What do you understand by personnel management? Explain job description. \hfill [4+4] (\bo{68 Ch})
+
+      \item What role does trainings play in the growth and development of the new employees? Explain the modern performance appraisal methods. \hfill [4+4] (82 Ba)
+        \lb Why are trainings and merit rating necessary in the organization? Describe different types of trainings with their benefits. List out the things to be included in the job description and job specification. \hfill [3+2+3] (\bo{81 Bh})
+        \lb What do you mean by Training and Development of Human resources? Explain various incentives used in organization. \hfill [5+3] (71 Shr)
+
+      \item How would HR Manager tackle with the problem of talent poaching in the modern industries? Elaborate how HR manager would implement employee development program with short term plans. \hfill [4+4] (79 Ba)
+        \lb What is difference between appropriate and inappropriate human resources? List out some idea to elaborate them concerning with ``Human Resources Management''. \hfill [8] (73 Shr)
+    \end{enumerate}
+
+  \subsection{Job analysis, job evaluation and merit rating}
+    \begin{enumerate}[topsep=0pt, noitemsep]
+      \item How can you compare Job evaluation with Merit Rating? How would you generate Job description and job specification of Lecture post in engineering college? \hfill [3+5] (81 Ba)
+        \lb Explain the following: (a) Job analysis (b) Job evaluation (c) Merit rating (d) Recruitment \hfill [$4\times2$] (\bo{79 Bh})
+        \lb Define merit rating. State and describe the various methods of merit rating. \hfill [2+6] (\bo{70 Ch})
+        \lb Define term wages and merit ranking. Differentiate between recruitment and selection. Explain the scientific selection of manpower and methods of job analysis. \hfill [2+3+3] (\bo{78 Bh})
+        \lb Define the term job analysis and explain scientific selections of manpower. \hfill [5+3] (\bo{71 Ch})
+
+      \item In your opinion, which job analysis process is the more suitable in organizations operating in Nepal? What are the different factors that affect wage/salary structure? \hfill [5+3] (\bo{82 Bh})
+        \lb What is the role of interview in manpower hiring process? What is difference between wage and salary? What is an incentive and why is it needed? \hfill [3+3+2] (\bo{73 Ch})
+        \lb What kind of salary and benefits do you expect when you join an organization? Explain interviewing process. \hfill [5+3] (\bo{75 Ch})
+    \end{enumerate}
+
+  \subsection{Wages and incentives}
+    \begin{enumerate}[topsep=0pt, noitemsep]
+      \item What do you mean by incentives. Explain the different factors affecting the wage/salary structure. \hfill [4+4] (\bo{76 Ch}); [3+5] (\bo{78 Bh}, 74 Ash); (3+5) (70 Asa)
+        \lb What do you mean by incentive? Explain different factors of salary structure. \hfill [8] (72 Ka)
+        \lb What are the different factors that affect wage / salary structure? Explain different methods of Training Manpower. \hfill [4+4] (\bo{72 Ch})
+    \end{enumerate}
+
+\pagebreak
+%=======================================================================
+\section{Motivation, Leadership and Entrepreneurship}
+\begin{center}(10 Hours)\end{center}
+
+  \subsection{Motivation (human needs, Maslow, types, techniques)}
+    \begin{enumerate}[topsep=0pt, noitemsep]
+      \item What do you mean by human need? How is a need used for motivation? Explain Herz Berg's Hygine theory of motivation. \hfill [2+2+4] (\bo{71 Ch})
+        \lb What do you mean by human need? How is need used for motivation? Explain the Herzberg's hygiene theory of motivation. \hfill [2+2+4] (\bo{74 Ch})
+        \lb Define the term motivation and explain different technique of motivation. \hfill [4+4] (\bo{76 Ch}); (3+5) (70 Asa); [8] (72 Ka)
+        \lb What are the different techniques of Motivation? Explain Mcgregor's Theory X and Theory Y. \hfill [3+5] (\bo{81 Bh})
+        \lb What are the techniques of motivation? Compare Alderfer's ERG Theory and Herzberg's hygiene maintenance theory with Maslow's need theory. \hfill [2+6] (82 Ba)
+        \lb Explain different Techniques of Motivation. \hfill [4] (\bo{69 Ch})
+        \lb Differentiate between attitude, group and executive motivation. List the techniques of motivation. \hfill [8] (75 Ash)
+
+      \item Discuss the existing theories of motivation in an organization. Also provide a synopsis to Maslow's hierarchy of need and relate it with motivation. \hfill [4+4] (\bo{82 Bh})
+        \lb What do you mean by motivation? Why is the theory proposed by Maslow on hierarchy of human needs called satisfaction progression process? Explain with examples. \hfill [3+5] (\bo{75 Ch})
+        \lb What do you mean by human needs? Describe A. Maslow's hierarchy of needs theory in detail. \hfill [3+5] (\bo{70 Ch})
+        \lb Define Motivation. Explain the features of Maslow's hierarchy of needs. \hfill [3+5] (76 Ash)
+        \lb Define the term Motivation and explain Maslow's theory of motivation. \hfill [3+5] (74 Ash)
+        \lb What do you mean by motivation? Describe Maslow's hierarchy of needs briefly. Can Maslow's theory explain tireless quest of Laxmi Prasad Devkota for excellent literary works? \hfill [2+3+3] (\bo{69 Ch})
+        \lb What is motivation? Explain the difference between Maslow's Heirarchical need theory and Alderfer's ERG theory. \hfill [3+5] (71 Shr)
+        \lb What is motivation? Write differences between Maslow's hierarchical need and Alderfer's ERG theory of motivation. \hfill [3+5] (\bo{68 Ch})
+        \lb What do you mean by hierarchy of needs? Define the term information architecture. Discuss the term information system for planning process. Explain the database information system. \hfill [$4\times4$] (\bo{65 Shr})
+        \lb Discuss the hierarchy of information needs. What are the role of information system for decision making process? Explain database information system. \hfill [5+6+5] (\bo{66 Bh})
+
+      \item While ascending up the Maslow's pyramid some people fall from the grace (ie. they end up in cases like fraud, crime, rape, suicide, murder, jail terms, etc.) Describe this irony form your own perspective. \hfill [8] (\bo{78 Bh})
+    \end{enumerate}
+
+  \subsection{Motivation theories (Theory X-Y, ERG, Herzberg, Vroom, fear and punishment)}
+    \begin{enumerate}[topsep=0pt, noitemsep]
+      \item What role does management play in motivating their employees? Explain McGregor's Theory X and Theory Y. \hfill [3+5] (81 Ba)
+        \lb Discuss the role of management in Motivation. Explain McGregor's theory X and theory Y. \hfill [3+5] (73 Shr)
+        \lb Define Intrinsic Motivation. Explain McGregor's Theory X and Theory Y of Motivation. \hfill [2+6] (79 Ba)
+        \lb What is the difference between theory `X' and theory `Y'? Explain on the basis of different theory of motivation. \hfill [8] (\bo{72 Ch})
+        \lb Define the term theory `X' and theory `Y' in the motivation theory. Justify job design improve work efficiency. What do you mean by trait approach in leadership? Discuss the importance of participative management in organization. \hfill [5+3+4+4] (\bo{65 Shr})
+
+      \item According to Herzberg's motivation-hygiene theory, where does motivation at work come from? Vroom's Valency theory is known as type of process theory, justify it. \hfill [4+4] (\bo{80 Bh})
+        \lb Describe about the motivational theory and explain about the Herzberg's hygiene maintenance theory. \hfill [4+4] (\bo{79 Bh})
+        \lb What do you understand by the term Motivation? Explain Herzberg's Hygiene Maintenance Theory. \hfill [3+5] (\bo{73 Ch})
+        \lb Explain briefly about comparison of Alderfer and Herzberg's Theories. Explain the Vroom's expectancy of motivation theory. \hfill [3+5] (\bo{78 Bh})
+        \lb Explain the two factors theory of motivation. How can you determine the most effective leadership style? Define the term informal organization. \hfill [5+7+4] (\bo{68 Ba})
+        \lb Discuss the Herzberg's theory of motivation. How will you determine the most effective leader in the business organization? Define the term informal organization. \hfill [6+6+4] (\bo{67 Asa})
+        \lb What are the motivational theory of Herzberg's hygiene factors and motivational factors? Discuss the behavioural approach of leadership. Define the term authority and power. \hfill [6+5+5] (\bo{66 Bh})
+
+      \item Explain the vroom's expectancy theory of motivation. \hfill [8] (80 Ba)
+        \lb Explain the Vroom's Expectancy theory of Motivation. \hfill (5) (70 Asa)
+        \lb Explain how Vroom insists on importance of reward through his VIE theory for motivation. \hfill [8] (\bo{74 Ch}); [4] as a short note (\bo{82 Bh})
+        \lb Describe Trait Approach of Leadership. Explain the Vroom's Expectancy theory of motivation. \hfill [4+4] (\bo{76 Ch})
+
+      \item Fear and punishment theory. \hfill [4] as a short note (\bo{82 Bh})
+    \end{enumerate}
+
+  \subsection{Leadership}
+    \begin{enumerate}[topsep=0pt, noitemsep]
+      \item State and explain Blakes and Mouton's managerial grid. Why does government need to promote entrepreneurship? Justify. \hfill [4+4] (\bo{82 Bh})
+        \lb What characteristics differentiate a Leader from regular employees? Explain Blakes and Mouton's Managerial Grid with proper examples. \hfill [4+4] (\bo{80 Bh})
+        \lb Explain Blake's and Mounton's managerial grid. Describe different leadership approach. \hfill [4+4] (79 Ba)
+        \lb Explain Blake's and Mouton's managerial grid? Describe different leadership approach? \hfill [8] (75 Ash)
+        \lb How do you see the significance of Blake and Mouton's managerial grid for organization's growth? Explain. \hfill [8] (76 Ash)
+        \lb Define leadership and explain by Blakes and Mouton's Management Grid. \hfill [3+5] (\bo{70 Ch})
+
+      \item What are the qualities of good leader? Why we need to promote entrepreneurship in the context of Nepal? \hfill [4+4] (81 Ba)
+        \lb Discuss good qualities of leader. Explain the steps for establishing a small scale unit of entrepreneurship. \hfill [3+5] (\bo{81 Bh})
+        \lb What are the qualities of a good leader? Explain the term entrepreneurship. \hfill [5+3] (\bo{76 Ch})
+        \lb Describe how you envision yourself as a leader in the future professional career. What are the qualities of a good leader? \hfill [4+4] (75 Ash)
+        \lb Define leadership and explain different qualities of good leader. \hfill [8] (72 Ka)
+        \lb Define the term leadership and Explain the different qualities of good leader. \hfill (3+5) (70 Asa)
+        \lb Define the term leadership. Which leadership style is appropriate in the modern engineering project. Explain in brief. \hfill [3+5] (\bo{78 Bh})
+        \lb Define the term leadership. Which leadership style is appropriate in the engineering project? Comment. \hfill [3+5] (74 Ash)
+
+      \item Define autocratic leadership style. In your opinion, which leadership approach best suits the current situation in Nepalese start-ups and why? \hfill [2+6] (82 Ba)
+        \lb Describe Autocratic Leadership Style. Explain the different characteristics of Entrepreneur. \hfill [3+5] (\bo{72 Ch})
+        \lb Which style you recommend as most effective leader in industrial organization? \hfill [8] (80 Ba)
+        \lb What is Leadership? In your opinion, which type of leadership is most efficient in Nepal? Present your views and logic. \hfill [3+5] (\bo{73 Ch})
+        \lb Describe Democratic Leadership style. Explain Behavioral approach of leadership. \hfill [4+4] (\bo{75 Ch})
+        \lb Why is leadership necessary in an organization? Explain various leadership styles. \hfill [3+5] (\bo{68 Ch})
+
+      \item What is the difference between a leader and manager? How do you want to pursue your career in future? What are the challenges for a good leader in modern times? \hfill [4+2+2] (\bo{75 Ch})
+        \lb Differentiate between a Boss and Leader in terms of various Leadership styles you have studied. \hfill [8] (\bo{73 Ch})
+        \lb A reader is leader. Elaborate it in terms of leadership styles. What are the differences between a leader and a manager? \hfill [5+3] (\bo{71 Ch})
+        \lb Define term contingency approach of Leadership. \hfill [4] (\bo{69 Ch})
+    \end{enumerate}
+
+  \subsection{Entrepreneurship}
+    \begin{enumerate}[topsep=0pt, noitemsep]
+      \item Define the term Entrepreneurship and write the steps for establishing a small scale unit of Entrepreneurship. \hfill [3+5] (71 Shr)
+        \lb Explain about the entrepreneurship and describe the steps for establishing a small scale unit of entrepreneurship. \hfill [4+4] (\bo{79 Bh})
+        \lb Define the term Entrepreneurship. \hfill (3) (70 Asa)
+        \lb Define the term Entrepreneurship. Explain entrepreneurship characteristic. \hfill [3+5] (74 Ash)
+        \lb Define the term Entrepreneurship and explain the characteristics of Entrepreneurship. \hfill [3+5] (\bo{69 Ch})
+        \lb What is entrepreneurship? Why is there need for promotion of entrepreneurship in developing nation? \hfill [8] (75 Ash)
+
+      \item ``Entrepreneurship plays a vital role in the economic development of a country.'' Elaborate this statement with your logic. \hfill [8] (82 Ba)
+        \lb Entrepreneurship is not only the creativity of entrepreneur but also strongly need the conductive environment for entrepreneurship. Elaborate with your own logic. \hfill [8] (79 Ba, 73 Shr)
+        \lb Describe the role of entrepreneurship in the development of IT sector in Nepal. What are the risks and challenges for an aspiring entrepreneur in Nepalese IT sector? \hfill [5+3] (76 Ash)
+        \lb Describe why you would / or would not undertake a startup after graduation. What are the risks and challenges for an aspiring entrepreneur in Nepal society? \hfill [5+3] (\bo{74 Ch})
+        \lb What is the importance of entrepreneurship for national economy in Nepali context? What is the significance of law enforcement for entrepreneurship? \hfill [4+4] (\bo{73 Ch})
+        \lb Silicon Valley is the best example of successful entrepreneurship. Elaborate with your thoughts. \hfill [8] (\bo{69 Ch})
+    \end{enumerate}
+
+\pagebreak
+%=======================================================================
+\section{Case Studies}
+\begin{center}(2 Hours)\end{center}
+    \begin{enumerate}[topsep=0pt, noitemsep]
+      \item Discuss the major steps of case study with relevant examples related to your field of study. \hfill [8] (\bo{80 Bh})
+        \lb What is case study? Explain the steps involves in case study. \hfill [8] (\bo{79 Bh})
+        \lb Case study and its phases. \hfill [4] as a short note (\bo{82 Bh})
+        \lb Phases and steps involved in Case Study. \hfill [4] as a short note (\bo{81 Bh})
+
+      \item What are the major objectives of case study? Discuss the different steps of conducting case study. \hfill [3+5] (81 Ba)
+        \lb Explain about the case study and explain about the objectives of case study in detail. \hfill [4+4] (80 Ba)
+        \lb What are case studies? Why are case studies conducted? What are the different types of case studies? \hfill [4+2+2] (80 Ba)
+        \lb What do you mean by Case study? Explain the objective of case study. \hfill (4+4) (70 Asa)
+        \lb What are the Objectives of Case study? Explain the needs, function and importance of MIS in organizations of today's modern world. \hfill [4+4] (\bo{73 Ch})
+        \lb What are the objectives of a case-study? Explain the needs, functions and importance of MIS. \hfill [3+5] (\bo{71 Ch})
+        \lb Objective of Case Study. \hfill [4] as a short note (71 Shr)
+        \lb Objectives of case study. \hfill [4] as a short note (\bo{69 Ch})
+        \lb Value of Case Study. \hfill [4] as a short note (\bo{66 Bh})
+
+      \item If you are asked to prepare the case study considering the planning horizon, leadership, motivation and human resource development for either Nepal Electricity Authority or Nepal Telecom to improve the existing performance of these institution. How do you prepare case study following its structure? \hfill [8] (\bo{72 Ch})
+        \lb Having spent more than 3 years in a particular college/campus of yours, what are the recommendations you wish to propose to the college management for the future improvement that would it turn boost up overall academic performance and image of the college? \hfill [8] (\bo{74 Ch})
+    \end{enumerate}
+
+\pagebreak
+%=======================================================================
+\section{Management Information System (MIS)}
+\begin{center}(5 Hours)\end{center}
+
+  \subsection{Data, information, need and importance of MIS}
+    \begin{enumerate}[topsep=0pt, noitemsep]
+      \item What are the differences between data, information, knowledge and wisdom? Explain the importance of MIS in organization with relevant example. \hfill [4+4] (82 Ba)
+        \lb Describe how data and information are used in an officer. What is the difference between Decision Support System (DSS) and Management Information System (MIS)? \hfill [4+4] (\bo{78 Bh}, 75 Ash)
+        \lb Define Decision Support System (DSS). Elaborate how production managers take use of DSS in addition to MIS. \hfill [2+6] (\bo{82 Bh})
+        \lb Why do we need MIS in addition to various softwares for specific tasks in an organization? What is the significance of Executive Information System (EIS) for top level managers? \hfill [4+4] (79 Ba)
+
+      \item What is the importance of MIS? Explain database information system with suitable example. \hfill [3+5] (81 Ba)
+        \lb Define the term MIS. Explain the value of MIS in the planning process. \hfill [3+5] (\bo{76 Ch}, 76 Ash)
+        \lb Why is MIS necessary for management? Explain computer and MIS. What is information Architecture? Explain database information system. \hfill [4+4+3+5] (\bo{68 Ba})
+        \lb What is MIS? Why is hierarchy of information system necessary in an organization? Write in brief. \hfill [3+5] (\bo{68 Ch})
+        \lb Explain the importance of management information system. Discuss the role of information in the planning process. What do you mean by network information system? \hfill [5+6+5] (\bo{67 Asa})
+        \lb Needs for MIS. \hfill [4] as a short note (\bo{68 Ch})
+        \lb Needs for Management Information System (MIS). \hfill [4] as a short note (\bo{66 Bh})
+        \lb Needs of MIS. \hfill [4] as a short note (\bo{65 Shr})
+    \end{enumerate}
+
+  \subsection{Classification of information systems and information support}
+    \begin{enumerate}[topsep=0pt, noitemsep]
+      \item What are the role of MIS in any organization? Explain the four types of information systems. \hfill [3+5] (\bo{80 Bh})
+        \lb Define Management Information System (MIS). Describe briefly about different types of Information System and their support to managers in decision making. \hfill [5+3] (\bo{71 Ch})
+        \lb Define Management Information System. Describe briefly various types of Management Information System. \hfill [2+6] (\bo{69 Ch})
+
+      \item Explain the importance of Management Information System (MIS). Explain information support for functional areas of Management. \hfill [4+4] (73 Shr)
+        \lb Define Management Information System. Explain information support for functional areas of management. \hfill [2+6] (\bo{70 Ch})
+        \lb Define term MIS. How information support for functional areas of management? \hfill (3+5) (70 Asa)
+        \lb How information system support for functional area of management. \hfill [8] (72 Ka)
+        \lb Briefly describe about the information support required in different functional areas of management. \hfill [8] (\bo{74 Ch})
+        \lb Explain how the management information system is used in different levels of management within an organization. \hfill [8] (80 Ba)
+        \lb Justify that information system is vital for planning and control process in an organization. \hfill [8] (\bo{68 Ch})
+        \lb Information system for planning process. \hfill [4] as a short note (\bo{68 Ba})
+
+      \item What is the relationship between computers and management information system? Explain how information systems can be organized properly. \hfill [2+6] (\bo{81 Bh}, 76 Ash)
+        \lb Define the term MIS. What do you mean by website? Explain the role of computer for management information system. \hfill [2+2+4] (74 Ash)
+        \lb Computer aided Advertising. \hfill [4] as a short note (\bo{69 Ch})
+        \lb Organizing Information systems. \hfill [4] as a short note (71 Shr)
+        \lb Database information system. \hfill [4] as a short note (\bo{68 Ba})
+        \lb Networking information system. \hfill [4] as a short note (\bo{65 Shr})
+    \end{enumerate}
+
+\pagebreak
+%=======================================================================
+\section{Extra}
+\begin{center}(topics set only by the 2065--2068 papers, outside the current ME708 syllabus)\end{center}
+    \begin{enumerate}[topsep=0pt, noitemsep]
+      \item Industrial relation. \hfill [4] as a short note (\bo{67 Asa, 65 Shr})
+      \item Job design and work efficiency. \hfill [4] as a short note (\bo{67 Asa})
+      \item Computer integrated manufacturing plants. \hfill [4] as a short note (\bo{67 Asa})
+      \item Collective bargaining. \hfill [4] as a short note (\bo{68 Ch})
+      \item Management by objective. \hfill [4] as a short note (\bo{68 Ch})
+      \item Span of control. \hfill [4] as a short note (\bo{68 Ch})
+      \item Scientific Management. \hfill [4] as a short note (\bo{68 Ch})
+      \item Contingency Management Theory. \hfill [4] as a short note (\bo{66 Bh})
+      \item Contingency Approach of Leadership. \hfill [4] as a short note (\bo{66 Bh})
+      \item Incentive programs. \hfill [4] as a short note (\bo{68 Ba, 66 Bh})
+      \item Marketing concept. \hfill [4] as a short note (\bo{68 Ba})
+      \item Leadership style. \hfill [4] as a short note (\bo{68 Ba})
+      \item Partnership organization. \hfill [4] as a short note (\bo{67 Asa})
+      \item Functional organization. \hfill [4] as a short note (\bo{67 Asa})
+      \item Single ownership organization. \hfill [4] as a short note (\bo{65 Shr})
+      \item Informal organization. \hfill [4] as a short note (\bo{65 Shr})
+      \item Team Effort Management Model. \hfill [4] as a short note (\bo{81 Bh})
+      \item Managerial Skills. \hfill [4] as a short note (\bo{81 Bh})
+      \item Manpower planning. \hfill [4] as a short note (\bo{75 Ch})
+      \item Organizational structure. \hfill [4] as a short note (\bo{75 Ch}, 71 Shr)
+      \item Satisfaction progression Vs Frustration Regression Process. \hfill [4] as a short note (\bo{75 Ch, 69 Ch})
+      \item Organization Structure, Marketing, Entrepreneurial characteristics. \hfill [$2\times4$] as short notes (\bo{79 Bh})
+    \end{enumerate}
+
+\end{document}
