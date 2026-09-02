@@ -41,3 +41,7 @@ __pycache__/
 
 # Loose scratch images in the project root; images/ folders are tracked.
 /*.png
+
+# Raw RapidOCR drafts from tools/ocr_page.py. Intermediate only - the
+# verbatim transcription lands in <Subject>/ocr/*_OCR.md, which IS tracked.
+ocr_raw/
