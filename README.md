@@ -23,6 +23,8 @@ Each subject folder contains:
 
 Once a subject has been extended with newer papers, its filenames carry the year span they cover, e.g. `DSAP_Sorted_PYQ_Detailed_66-82.pdf`, `Wireless_Sorted_PYQ_Detailed_70-82.pdf`.
 
+Where a subject has two scans and neither contains the other, both are kept and `ocr/` holds one archive per scan. Data Mining is the clearest case: `CT-72502_69-82.pdf` is the only source for six papers and `Data-Mining.pdf` the only source for two others.
+
 Two subjects additionally carry a full set of syllabus-order exam notes, with LaTeX sources under `src/`:
 
 - `Data Mining/ExamNotes/` — 7 chapters + numerical-problem companions
@@ -54,4 +56,4 @@ The notes are written to be answered from directly: every topic carries the year
 | RF and Microwave | 24 | 2069–2082 |
 | Wireless Communication (EX751) | 16 | 2070–2080 |
 | Wireless Communication (EX715) | 6 | 2079–2082 |
-| Data Mining | 17 | 2070–2081 |
+| Data Mining | 23 | 2069–2082 |

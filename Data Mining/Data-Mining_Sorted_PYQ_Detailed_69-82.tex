@@ -27,7 +27,7 @@
  }
 \ExplSyntaxOff
 
-\title{Data Mining (CT72502 / CT725)\\[0.4em]\large Detailed PYQ}
+\title{Data Mining (CT72502 / CT725)\\[0.4em]\large Detailed PYQ 69--82}
 \author{}
 \date{\today}
 
@@ -36,14 +36,16 @@
 \vspace{6cm}
 \textbf{Notes}
 \begin{itemize}[noitemsep]
-  \item Questions from Tribhuvan University, IOE (2070--2081 BS), sorted by the CT72502 syllabus.
+  \item Questions from Tribhuvan University, IOE (2069--2082 BS), sorted by the CT72502 syllabus.
   \item Regular exam = \bo{bold}, Back / New Back exam = regular font.
   \item Data Mining is a \emph{single common paper} for both BEX and BCT (Elective I / Elective II), so there is no separate programme axis --- no \texttt{monospace} style is used in this document.
   \item So: \bo{80 Bh} = Regular, 81 Ba = Back.
-  \item Months: Ba = Baishakh, Shr = Shrawan, Bh = Bhadra, Ash = Ashwin, Ka = Kartik, Ch = Chaitra.
+  \item Months: Ba = Baishakh, Asa = Ashad, Shr = Shrawan, Bh = Bhadra, Ash = Ashwin, Ka = Kartik, Ch = Chaitra. Note \textbf{Asa (Ashad) and Ash (Ashwin) are different months}: 70 Asa and 70 Ch are the two 2070 papers.
   \item Keywords: (I) = Importance/Need/Significance, (+) = Advantage, (-) = Disadvantage, +Fig = Figure/Diagram, +Eg = Example, Vs = Compare/Differentiate.
-  \item Papers covered (17): \bo{80 Bh}, 81 Ba, 80 Ba, \bo{79 Bh}, \bo{78 Bh}, \bo{76 Ch}, 76 Ash, \bo{75 Ch}, 75 Ash, \bo{74 Ch}, 74 Ash, 73 Shr, \bo{72 Ch}, 72 Ka, \bo{71 Ch}, 71 Shr, \bo{70 Ch}. There was no exam in 2077; 2073 Ch, 2070 Ash and 2069 are absent from the source compilation.
+  \item Papers covered (23): \bo{82 Bh}, \bo{81 Bh}, 81 Ba, \bo{80 Bh}, 80 Ba, \bo{79 Bh}, 79 Ba, \bo{78 Bh}, \bo{76 Ch}, 76 Ash, \bo{75 Ch}, 75 Ash, \bo{74 Ch}, 74 Ash, \bo{73 Ch}, 73 Shr, \bo{72 Ch}, 72 Ka, \bo{71 Ch}, 71 Shr, 70 Asa, \bo{70 Ch}, \bo{69 Ch}. There was no exam in 2077, and no 2082 Baishakh paper.
   \item \bo{71 Ch} and 71 Shr print no per-question marks (``All questions carry equal marks'', 80 marks total).
+  \item Course code by year: \bo{69 Ch} prints \emph{no} course code (just ``Data Mining (Elective I)''), \bo{70 Ch} prints CT725, and every other paper prints CT72502.
+  \item Programme by year: BEX/BCT throughout, except \bo{82 Bh}, which prints \textbf{BCT, BEI}, and \bo{81 Bh}, which misprints \textbf{BCT, BCT}.
 \end{itemize}
 \pagebreak
 \tableofcontents
@@ -61,8 +63,11 @@
         \lb What is Data mining? Explain the steps of KDD process briefly. \hfill [2+5] (81 Ba)
         \lb What is a data mining? Explain general steps in brief. \hfill [4] (72 Ka)
         \lb What is a Data Mining? Explain its application. \hfill [10] (\bo{71 Ch})
+        \lb What is data mining? Describe the steps involved in data mining. \hfill [2+6] (\bo{82 Bh})
+        \lb Describe the process of knowledge discovery in databases. Explain the specific challenges that motivated the development of data mining. \hfill [3+3] (79 Ba)
 
       \item ``The world is data rich but information is poor''. Justify with your own words. \hfill [8] (73 Shr)
+        \lb ``Data mining turns a large collection of data into knowledge''. Justify your answer with suitable example. \hfill [6] (\bo{81 Bh})
     \end{enumerate}
 
   \subsection{Data Mining \& Data Warehousing basics}
@@ -73,12 +78,15 @@
 
       \item What are the fundamental differences between Data Mining and Data Warehousing? Describe the steps of KDD for data mining. \hfill [3+7] (76 Ash)
         \lb How is data warehouse different from a database? How are they similar? \hfill [2+2] (75 Ash)
+        \lb How is data warehouse different from RDBMS? Also list the similarities. \hfill [2+2] (\bo{73 Ch})
 
       \item Explain how data mining system can be integrated with database/data warehouse system. Explain Data mining process with diagram. \hfill [4+2] (\bo{78 Bh})
 
       \item What is data warehouse and data mart? Describe Snowflake scheme with example. \hfill [2+4] (\bo{74 Ch})
 
       \item Write short notes on: Data ware house and Data mart. \hfill [15] (\bo{70 Ch}) [--] (71 Shr)
+        \lb Write short notes on: Data ware house. \hfill [5] (70 Asa)
+        \lb Write short notes on: Datamart. \hfill [5] (\bo{69 Ch})
     \end{enumerate}
 
 \pagebreak
@@ -89,6 +97,11 @@
   \subsection{Data Types and Attributes}
     \begin{enumerate}[topsep=0pt, noitemsep]
       \item What is data mining? Explain different data types of attributes in a dataset. \hfill [10] (71 Shr)
+        \lb What are the different data types? Explain with examples. \hfill [5] (\bo{69 Ch})
+
+      \item What are nominal and ordinal attributes? Discuss how to handle missing data and noisy data during data cleaning process. \hfill [6] (79 Ba)
+
+      \item How data in most real application becomes Asymmetric. Explain the difference between symmetric and asymmetric data. \hfill [5] (\bo{73 Ch})
     \end{enumerate}
 
   \subsection{Data Pre-processing}
@@ -96,6 +109,8 @@
       \item What is Data Pre-Processing? Briefly explain the major tasks performed in data pre-processing. \hfill [2+7] (81 Ba)
         \lb Why data preprocessing is necessary? Explain the methods for data preprocessing to maintain data quality. \hfill [4+4] (\bo{75 Ch})
         \lb Why data preprocessing is required in the data mining? Explain some of approaches of data clearing. \hfill [5+5] (72 Ka)
+        \lb What is performed during data preprocessing? Discuss various techniques to handle missing values. \hfill [4+4] (\bo{82 Bh})
+        \lb What is data pre-processing? Explain data sampling and dimensionality reduction in data pre-processing with suitable example. \hfill [2+4+4] (\bo{73 Ch})
 
       \item What are the measuring elements of data Quality? Explain different data transformation by normalization methods with an example. \hfill [2+6] (73 Shr)
 
@@ -106,12 +121,23 @@
           \item Normalization by decimal scaling
         \end{enumerate}
 
+      \item Suppose that the data for analysis include the attribute the frequency of stop words in documents. The values are given in increasing order: 13, 15, 16, 16, 19, 20, 20, 21, 22, 22, 25, 25, 25, 25, 30, 33, 33, 35, 35, 35, 35, 36, 40, 45, 46, 52, 70. \hfill [6] (79 Ba)
+        \begin{enumerate}[label=\alph*),topsep=2pt,noitemsep]
+          \item Use smoothing by bin means with a depth of 3.
+          \item Use min-max normalization to transform the value 35 into the range from 0.0 to 1.0.
+          \item Use z-score normalization to transform the value 35 where the standard deviation of the above frequency is 12.94.
+          \item Use normalization by decimal scaling to transform the value 35.
+        \end{enumerate}
+
       \item In real-world data, tuples with missing values for same attributes are a common occurrence. Describe various methods for handling this problem. \hfill [5] (74 Ash)
         \lb What are the approaches to handle missing data? (asked together with OLAP --- full statement in 2.3) \hfill [2] (\bo{74 Ch})
 
       \item Discuss issues to consider during Data Integration. (asked together with OLAP --- full statement in 2.3) \hfill [5] (75 Ash)
 
       \item What is ``curve of Dimensionality''? How can it be avoided? \hfill [5] (\bo{70 Ch})
+        \lb What do you understand by curse of dimensionality in Data Mining? Explain. \hfill [6] (\bo{81 Bh})
+
+      \item What is dimensionality reduction? Why is it important in data mining? \hfill [5] (70 Asa)
 
       \item Discuss the impact of noisy data in data mining? \hfill [5] (\bo{70 Ch})
 
@@ -125,6 +151,8 @@
       \item Write short notes on: Data Normalization. \hfill [4] (\bo{75 Ch})
 
       \item Write short notes on: Data transformation. \hfill [4] (73 Shr) [3] (72 Ka)
+
+      \item Write short notes on: Dimensionality Reduction. \hfill [4] (\bo{81 Bh})
     \end{enumerate}
 
   \subsection{OLAP \& Multidimensional Data Analysis}
@@ -151,6 +179,8 @@
       \item Write short notes on: OLAP Operations. \hfill [4] (74 Ash) [4] (73 Shr)
 
       \item Write short notes on: OLAP and OLTP. \hfill [4] (\bo{75 Ch})
+
+      \item Write short notes on: OLAP cubes. \hfill [5] (70 Asa)
     \end{enumerate}
 
   \subsection{Various Similarity Measures}
@@ -168,6 +198,7 @@
         \normalsize
 
       \item List down the different types of similarity measures by highlighting their application areas. \hfill [3] (80 Ba)
+        \lb Why similarity measures are important in data mining? Discuss about the different similarity measures with examples. \hfill [2+6] (\bo{81 Bh})
 
       \item Consider the following table: \hfill [2+2+2+1] (80 Ba)\\
         \small
@@ -204,6 +235,7 @@
         \end{itemize}
 
       \item Explain the properties that a Distance Metric needs to support with respect to Minkowski's distance. \hfill [10] (\bo{71 Ch})
+        \lb What are the properties of a distance metric? How is distance metric used in instance based classifier? \hfill [10] (70 Asa)
 
       \item Write short notes on: Minkowski Distance. \hfill [4] (\bo{78 Bh})
 
@@ -256,6 +288,46 @@
         \end{tabular}
         \normalsize
 
+      \item When do we use decision tree? Construct a complete decision tree using ID-3 algorithm for following dataset. How do you evaluate the performance of this model? \hfill [2+9+3] (\bo{82 Bh})\\
+        \small
+        \begin{tabular}{|c|l|l|l|l|l|}
+          \hline
+          SN & Credit history & Debt & Collateral & Income & Credit Risk \\ \hline
+          1 & bad & high & none & \$0 to \$15K & high \\ \hline
+          2 & unknown & high & none & \$15 to \$35K & high \\ \hline
+          3 & unknown & low & none & \$15 to \$35K & moderate \\ \hline
+          4 & unknown & low & none & \$0 to \$15K & high \\ \hline
+          5 & unknown & low & none & over \$35K & low \\ \hline
+          6 & unknown & low & adequate & over \$35K & low \\ \hline
+          7 & bad & low & none & \$0 to \$15K & high \\ \hline
+          8 & bad & low & adequate & over \$35K & moderate \\ \hline
+          9 & good & low & none & over \$35K & low \\ \hline
+          10 & good & high & adequate & over \$35K & low \\ \hline
+          11 & good & high & none & \$0 to \$15K & high \\ \hline
+          12 & good & high & none & \$15 to \$35K & moderate \\ \hline
+          13 & good & high & none & over \$35K & low \\ \hline
+          14 & bad & high & none & \$15 to \$35K & high \\ \hline
+        \end{tabular}
+        \normalsize
+
+      \item State an algorithm for constructing a decision tree. Using ID3 identify the root node for the following data set. \hfill [2+8] (\bo{81 Bh})\\
+        \small
+        \begin{tabular}{|l|c|l|l|l|}
+          \hline
+          Gender & Car Ownership & Travel Cost & Income Level & Transport Mode (Target class) \\ \hline
+          Male & 0 & Cheap & Low & Bus \\ \hline
+          Male & 1 & Cheap & Medium & Bus \\ \hline
+          Female & 1 & Cheap & Medium & Train \\ \hline
+          Female & 0 & Cheap & Low & Bus \\ \hline
+          Male & 1 & Cheap & Medium & Bus \\ \hline
+          Male & 0 & Standard & High & Train \\ \hline
+          Female & 1 & Standard & Medium & Train \\ \hline
+          Female & 1 & Expensive & High & Car \\ \hline
+          Male & 2 & Expensive & Medium & Car \\ \hline
+          Female & 2 & Expensive & High & Car \\ \hline
+        \end{tabular}
+        \normalsize
+
       \item Construct a decision tree for the following data set using information gain. Predict the class label for a data point with values $<$Female, 2, standard, high$>$. \hfill [8] (\bo{78 Bh})\\
         \small
         \begin{tabular}{|l|c|l|l|l|}
@@ -302,6 +374,9 @@
 
       \item Define Decision Tree Classifier with Gini-Index with suitable example. How can you handle overfitting in Decision Tree? \hfill [6+4] (\bo{75 Ch})
         \lb What is a decision tree? Explain Gini Index with suitable example. \hfill [10] (\bo{71 Ch})
+        \lb What is the importance of homogeneousness measure in decision tree classifier? Explain GINI index? \hfill [8] (70 Asa)
+
+      \item What is ID3 algorithm? (asked with the TPR / FPR / Accuracy numerical --- full statement in 3.7) \hfill [2] (\bo{73 Ch})
 
       \item Write about Hunt's Algorithm for Decision Tree induction. Explain the test conditions that can be used for different attribute types. \hfill [10] (72 Ka)
 
@@ -316,6 +391,8 @@
       \item Explain rule based classifier? How can CN2 Algorithm be used for rule based classification? Define ``Accuracy'' and ``Laplace'' measures used for rule evaluation. \hfill [9] (\bo{70 Ch})
 
       \item Why is a conflict resolution strategy often necessary for rule-based classifiers? Describe the common conflict resolution strategies for rule-based classifiers. \hfill [2+4] (\bo{76 Ch})
+
+      \item How is decision tree classifier different than rule based classifier? \hfill [8] (\bo{69 Ch})
     \end{enumerate}
 
   \subsection{Nearest Neighbor Classifier}
@@ -336,6 +413,9 @@
         \normalsize
 
       \item What is Nearest Neighbor Classifier? What are the main issues with this classifier? Propose another classifier that solves the issues. \hfill [1+3+4] (80 Ba)
+        \lb What is nearest neighbor classifier? When do we use this classifier? Explain with an example by stating it's algorithm. \hfill [2+4] (\bo{81 Bh})
+
+      \item How is distance metric used in instance based classifier? (asked with the distance-metric properties --- full statement in 2.4) \hfill [--] (70 Asa)
     \end{enumerate}
 
   \subsection{Bayesian Classifier}
@@ -383,6 +463,8 @@
         \end{tabular}
         \normalsize
 
+      \item Explain Baye's Theorem. How can it be used for classification? Explain how Naive Baye's simplifier the computational complexity of Baye's classification algorithm. \hfill [12] (\bo{69 Ch})
+
       \item What are prior and posterior probabilities? Explain the algorithmic steps of Bayesian classifier and write its strengths. \hfill [3+7] (76 Ash)
 
       \item Explain a Bayes classifier. In what cases can Naive Bayes and Bayesian Belief Network be used? \hfill [10] (\bo{71 Ch})
@@ -412,11 +494,35 @@
           \item Compute the gradient of the loss with respect to the weight $(w_{12})$.
         \end{enumerate}
 
-      \item Write short notes on: Neural Network Classifier. \hfill [5] (80 Ba)
+      \item Write short notes on: Neural Network Classifier. \hfill [5] (80 Ba) [5] (\bo{82 Bh})
     \end{enumerate}
 
   \subsection{Issues: Overfitting, Validation, Model Comparison}
     \begin{enumerate}[topsep=0pt, noitemsep]
+      \item Describe the working mechanism as well as the merits and demerits of the holdout method, random sampling, k-cross validation and bootstrap approaches in evaluating the performance of a classifier. \hfill [8] (79 Ba)
+
+      \item Given the following confusion matrix, determine Accuracy, Error rate, Sensitivity, Specificity, Precision, Recall of the classifier model. \hfill [4] (79 Ba)\\
+        \small
+        \begin{tabular}{|c|c|c|c|}
+          \hline
+          $n = 165$ & Predicted: NO & Predicted: YES & \\ \hline
+          Actual: NO & TN = 50 & FP = 10 & 60 \\ \hline
+          Actual: YES & FN = 5 & TP = 100 & 105 \\ \hline
+           & 55 & 110 & \\ \hline
+        \end{tabular}
+        \normalsize
+
+      \item What is ID3 algorithm? Calculate TPR, FPR and Accuracy for given confusion matrix. \hfill [2+6] (\bo{73 Ch})\\
+        \small
+        \begin{tabular}{|c|c|c|}
+          \hline
+           & Predicted + & Predicted -- \\ \hline
+          Predicted + & 100 & 40 \\ \hline
+          Predicted -- & 60 & 300 \\ \hline
+        \end{tabular}
+        \normalsize\\
+        (The paper labels \emph{both} axes ``Predicted''; the row stubs should read ``Actual''. Reproduced as printed.)
+
       \item In what cases you cannot use Accuracy for performance measure, give some examples. Assume that you have the following confusion matrix. Calculate the Classification error, Sensitivity, False alarm rate Specificity. \hfill [3+5] (80 Ba)\\
         \small
         \begin{tabular}{|c|c|c|c|}
@@ -491,6 +597,7 @@
         \end{enumerate}
 
       \item Write short notes on: Overfitting problem in classification. \hfill [4] (\bo{78 Bh})
+        \lb Write short notes on: Overfitting and ROC. \hfill [4] (\bo{73 Ch})
     \end{enumerate}
 
 \pagebreak
@@ -503,10 +610,12 @@
       \item What is an association analysis? Explain its importance in market-basket analysis. \hfill [2+5] (72 Ka)
         \lb What is the use of Apriori Algorithm in market basket analysis? Explain with suitable example. \hfill [10] (\bo{72 Ch})
         \lb Where is association analysis applicable and beneficial for us? Elaborate FP Growth Method Algorithm with examples. \hfill [2+6] (80 Ba)
+        \lb What are association rules? Explain its importance with example. \hfill [6] (70 Asa)
 
       \item Why association analysis is required in data mining? Explain Apriori principle with example. \hfill [2+6] (75 Ash) [2+6] (\bo{74 Ch})
 
       \item What is the importance of SUPPORT and COFIDENCE during association analysis? Explain FP-Growth method with example. \hfill [10] (\bo{72 Ch})
+        \lb Explain the term support and confidence in association analysis. (asked with the Apriori numerical --- full statement in 4.2) \hfill [2] (\bo{82 Bh})
 
       \item Why is pattern evaluation important in association rule mining? Explain with example the statistical based measures used for measuring interestingness of association rules. \hfill [8] (\bo{70 Ch})
 
@@ -529,6 +638,62 @@
           T104 & L, A, F, C, E, P, M, N, V \\ \hline
           T105 & I, B, A, P, S, M \\ \hline
           T106 & F, A, C, I, B, A, P \\ \hline
+        \end{tabular}
+        \normalsize
+
+      \item Explain the term support and confidence in association analysis. Derive association rule for following transaction considering minimum support = 60\% and confidence = 80\% using Apriori Algorithm. \hfill [2+8] (\bo{82 Bh})\\
+        \small
+        \begin{tabular}{|c|l|}
+          \hline
+          TID & Transaction \\ \hline
+          T1 & A, B, C, D, E, F \\ \hline
+          T2 & B, C, D, E, F, G \\ \hline
+          T3 & A, D, E, H \\ \hline
+          T4 & A, D, F, I, J \\ \hline
+          T5 & B, D, E, K \\ \hline
+        \end{tabular}
+        \normalsize
+
+      \item For the transaction given below, consider Confidence = 65\% and minimum support = 50\%. Identify frequent itemsets with possible association rules using Apriori Algorithm. \hfill [2+6] (\bo{81 Bh})\\
+        \small
+        \begin{tabular}{|c|l|}
+          \hline
+          TID & Items \\ \hline
+          1 & MILK, BREAD, CAKE \\ \hline
+          2 & BUTTER, BREAD, EGG \\ \hline
+          3 & MILK, BUTTER, BREAD, EGG \\ \hline
+          4 & BUTTER, EGG \\ \hline
+        \end{tabular}
+        \normalsize
+
+      \item (a) Write Apriori algorithm and using the algorithm find all the frequent itemset for the following database. (min\_sup = 20\%). \hfill [5+3] (79 Ba)\\
+        \small
+        \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+          \hline
+          TID & A1 & A2 & A3 & A4 & A5 & A6 & A7 & A8 & A9 \\ \hline
+          T2 & 0 & 1 & 0 & 1 & 0 & 0 & 0 & 1 & 0 \\ \hline
+          T3 & 0 & 0 & 0 & 1 & 1 & 0 & 1 & 0 & 0 \\ \hline
+          T4 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 \\ \hline
+          T5 & 0 & 0 & 0 & 0 & 1 & 1 & 1 & 0 & 0 \\ \hline
+          T6 & 0 & 1 & 1 & 1 & 0 & 0 & 0 & 0 & 0 \\ \hline
+          T7 & 0 & 1 & 0 & 0 & 0 & 1 & 1 & 0 & 1 \\ \hline
+          T8 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 \\ \hline
+        \end{tabular}
+        \normalsize\\
+        (The table as printed starts at T2 --- there is no T1 row --- and heads its eighth column ``AB'', a broken ``A8''.)
+        \begin{itemize}[topsep=2pt,noitemsep,label={}]
+          \item (b) Is it possible to generate any rules out of the frequent items, considering any value of confidence threshold?
+        \end{itemize}
+
+      \item Explain Apriori algorithm in market basket analysis? Derive association rule from the following market basket transactions with 50\% of minimum support and confidence respectively. \hfill [3+7] (\bo{73 Ch})\\
+        \small
+        \begin{tabular}{|c|l|}
+          \hline
+          Transaction & Itemsets \\ \hline
+          1 & A, B, C \\ \hline
+          2 & A, C \\ \hline
+          3 & A, D \\ \hline
+          4 & B, E, F \\ \hline
         \end{tabular}
         \normalsize
 
@@ -624,8 +789,10 @@
         \normalsize
 
       \item How does Apriori Algorithm optimize the brute force approach for frequent item set generation? \hfill [10] (\bo{71 Ch})
+        \lb What is frequent item set mining? How do Apriori and FP-growth algorithm optimize the brute force approach for finding frequent item sets? \hfill [15] (\bo{69 Ch})
 
       \item What are association rules? How can spriori algorithm be used to generate association rules. \hfill [10] (71 Shr)
+        \lb How can Apriori Algorithm be used for finding association rules out of a frequent item set? \hfill [7] (\bo{69 Ch})
     \end{enumerate}
 
   \subsection{FP-Growth, FP-Tree}
@@ -636,6 +803,10 @@
         \lb What are the advantages of FP growth method? Explain FP growth algorithm. \hfill [2+6] (75 Ash)
         \lb What is a Frequent item set? Explain FP growth method with example. \hfill [1+8] (72 Ka)
         \lb When do we use Association analysis? Explain FP-Tree with an example. \hfill [2+5] (81 Ba)
+        \lb What are the advantages of FP-Growth Algorithm over Apriori Algorithm? Explain FP-Growth Algorithm for finding frequent patterns with suitable example. \hfill [2+6] (\bo{81 Bh})
+        \lb How does FP growth approach generate frequent item sets without generating candidate item sets? Explain with an example. \hfill [6] (79 Ba)
+        \lb What is the use of FP-Growth method in market basket analysis? Explain FP-Growth method with a suitable example. \hfill [10] (\bo{73 Ch})
+        \lb Explain FP growth algorithm in detail with example. \hfill [12] (70 Asa)
         \lb What do you mean by frequent Pattern growth, draw FP-tree with given tabular data. \hfill [4+4] (\bo{75 Ch})\\
         \small
         \begin{tabular}{|c|l|}
@@ -715,6 +886,7 @@
         \normalsize
 
       \item Write short notes on: FP-Tree. \hfill [5] (\bo{79 Bh})
+        \lb Write short notes on: FP Growth Algorithm. \hfill [5] (\bo{82 Bh})
     \end{enumerate}
 
   \subsection{Handling Categorical Attributes}
@@ -734,6 +906,8 @@
 
       \item What are subgraph pattern? \hfill [2] (\bo{79 Bh})
 
+      \item Explain Sequential Pattern and Sub-graph Pattern with suitable example. \hfill [4+4] (\bo{73 Ch})
+
       \item Write short notes on: AprioriALL: Sequential pattern mining algorithm. \hfill [3] (76 Ash)
 
       \item Write short notes on: Sequential pattern. \hfill [3] (72 Ka)
@@ -751,6 +925,7 @@
         \lb What is the application of clustering in data mining? Explain K-means clustering with example. \hfill [2+6] (\bo{75 Ch})
         \lb What is the application of clustering in data mining? Explain the k-means algorithm with example. \hfill [8] (73 Shr)
         \lb When do we use clustering? How do you evaluate the cluster generated? \hfill [3+4] (\bo{80 Bh})
+        \lb How clustering differ from classification? (asked with the 1-D K-means / SSE numerical --- full statement in 5.2) \hfill [4] (\bo{73 Ch})
 
       \item Why is a clustering an unsupervised learning? How can hierarchical clusters be generated using Bisecting K-means algorithm? \hfill [10] (\bo{71 Ch})
 
@@ -765,9 +940,34 @@
   \subsection{K-means Clustering}
     \begin{enumerate}[topsep=0pt, noitemsep]
       \item Describe K-means algorithm for clustering and discuss strategy in determining the optimal value of K. \hfill [4+4] (80 Ba)
+        \lb Explain K-means clustering algorithm with examples. \hfill [10] (\bo{69 Ch})
 
       \item Use K-means clustering to cluster the following given data for K = 2 with Euclidean distance matrix. List down the demerits of this algorithm. \hfill [5+3] (81 Ba)\\
         (The paper prints no data table for this question.)
+
+      \item Describe the K-means clustering algorithm. Generate two clusters from following dataset using K-means clustering. \hfill [2+8] (\bo{82 Bh})\\
+        \small
+        \begin{tabular}{|c|c|c|}
+          \hline
+          Instance & A & B \\ \hline
+          1 & 1 & 2 \\ \hline
+          2 & 1.5 & 1 \\ \hline
+          3 & 3.5 & 1.5 \\ \hline
+          4 & 4 & 3 \\ \hline
+          5 & 3.5 & 2.5 \\ \hline
+          6 & 6 & 4 \\ \hline
+        \end{tabular}
+        \normalsize
+
+      \item Consider the data points $\{(2,3), (3,3), (6,8), (8,8), (7,5)\}$ with initial centroid (2,3). Apply K-means algorithm to choose the next centroid and cluster these data points into k = 2. Discuss the problems that arise with K-means clustering algorithm and ways to solve it. \hfill [5+3] (\bo{81 Bh})
+
+      \item Define clustering. Given the matrix whose column represent different data points, perform a K-means clustering on this dataset using the Manhattan as the distance function. The center of the 3 clusters are initiated as A(6.2, 3.2), B(6.6, 3.7) and C(6.5, 3.0). Provide the final cluster centers after 3 iteration. \hfill [8] (79 Ba)
+        \[ \begin{bmatrix}
+          5.9 & 4.6 & 6.2 & 4.7 & 5.5 & 5.0 & 4.9 & 6.7 & 5.1 & 6.0 \\
+          3.2 & 2.9 & 2.8 & 3.2 & 4.2 & 3.0 & 3.1 & 3.1 & 3.8 & 3.0
+        \end{bmatrix} \]
+
+      \item How clustering differ from classification? Given the one-dimensional points $\{5, 12, 18, 24, 30, 42, 48\}$ with initial centroids $\{5, 12, 18\}$, create three clusters by K-Means algorithm and calculate SSE for this clustering result. \hfill [4+8] (\bo{73 Ch})
 
       \item Write K-means clustering algorithm. Generate two clusters from following dataset using K-means clustering. \hfill [2+6] (\bo{78 Bh})\\
         \small
@@ -884,6 +1084,8 @@
         \end{enumerate}
 
       \item What is Hierarchical Clustering? Differentiate between agglomerative and divisive approach of hierarchical clustering. Augment your answer with appropriate illustrative examples. \hfill [10] (\bo{70 Ch})
+
+      \item Explain hierarchical clustering method with an example of Dendogram plot. \hfill [6] (79 Ba)
     \end{enumerate}
 
   \subsection{DBSCAN Clustering}
@@ -892,6 +1094,8 @@
         \lb How DBSCAN clustering is used for handling noise in data? \hfill [8] (\bo{75 Ch})
         \lb How DBSCAN algorithm works? How do we avoid the issues of DBSCAN? \hfill [8+2] (76 Ash)
         \lb Explain a DBSCAN algorithm with example. \hfill [7] (72 Ka)
+
+      \item What are core, border and noise points? Consider the following points (2, 10), (2, 5), (8, 4), (5, 8), (7, 5), (6, 4), (1, 2), (4, 9). Use DBSCAN algorithm to find cluster with e = 2 and minPts = 2. \hfill [3+5] (\bo{82 Bh})
 
       \item Provide answers to the following with regard to the DBSCAN clustering approach: \hfill [2+2+2] (\bo{78 Bh})
         \begin{enumerate}[label=\alph*),topsep=2pt,noitemsep]
@@ -902,13 +1106,18 @@
 
       \item What is a density based cluster. Explain an algorithm that can be used to generate density based clusters. \hfill [8] (\bo{70 Ch})
         \lb What are outliers? Explain an algorithm that can be used to generate density based clusters. \hfill [8] (75 Ash)
+        \lb What are density based clusters? Explain DBSCAN clustering algorithm with example. \hfill [10] (70 Asa)
 
       \item Write short notes on: Density reachable and Density Connected. \hfill [4] (74 Ash)
+
+      \item Write short notes on: DBSCAN Clustering. \hfill [4] (\bo{81 Bh}) [4] (79 Ba)
     \end{enumerate}
 
   \subsection{Issues: Evaluation, Scalability, Comparison}
     \begin{enumerate}[topsep=0pt, noitemsep]
       \item Explain the different measures of cluster validity. \hfill [10] (\bo{71 Ch})
+        \lb Explain different measures that can be used to compare two clusters. \hfill [6] (70 Asa)
+        \lb Explain the issues regarding cluster validation. \hfill [6] (\bo{69 Ch})
 
       \item How do you evaluate the cluster generated? (asked with ``When do we use clustering?'' --- see 5.1) \hfill [4] (\bo{80 Bh})
 
@@ -929,19 +1138,27 @@
         \lb What do you mean by anomaly detection and why is it important? Describe distance based approaches for anomaly detection. \hfill [4+3] (\bo{74 Ch})
         \lb What is an Anomaly Detection? Explain few distance based approaches that can be used for Anomaly Detection. \hfill [10] (\bo{71 Ch})
         \lb What is outlier? Explain the distance base approaches for the anomaly detection. \hfill [5] (\bo{75 Ch})
+        \lb What is anomaly detection? Explain distance-based method for anomaly detection. \hfill [2+5] (\bo{82 Bh})
 
       \item What is Anomaly Detection? Why is Anomaly Detection important? Briefly explain different types of anomaly detection schemes. \hfill [2+2+4] (81 Ba)
         \lb What do you mean by anomaly detection? Why is it important and where is it applicable? \hfill [3+3] (\bo{79 Bh})
         \lb What is an Anomaly detection? Discuss its importance in security. \hfill [5] (72 Ka)
+        \lb What do you mean by Anomaly Detection? Explain different approaches for Anomaly Detection. \hfill [2+6] (\bo{81 Bh})
+
+      \item What is anomaly desertion? Explain likelihood approach for anomaly detection. \hfill [8] (70 Asa)
 
       \item Explain different types of outlier with suitable examples. How density based outlier detection works? \hfill [5+3] (\bo{80 Bh})
 
       \item Compare and contrast among three difference methods of anomaly detection. \hfill [6] (\bo{78 Bh})
+        \lb Describe the strengths and weaknesses of the statistical, proximity-based, density-based and cluster-based approaches of anomaly detection. \hfill [6] (79 Ba)
 
       \item (a) Discuss the issues related to anomaly detection. \hfill [2] (\bo{76 Ch})\\
         (b) If the probability that a normal object is classified as an anomaly is 0.01 and the probability that an anomalous object is classified as anomalous is 0.99, then what is the false alarm rate and detection rate if 99\% of the objects are normal? \hfill [3] (\bo{76 Ch})
+        \lb What is anomaly detection? Explain the issues associated with anomaly detection. \hfill [2+3] (\bo{73 Ch})
 
       \item How can Nearest-Neighbor algorithm be used for anomaly defection? \hfill [10] (71 Shr)
+
+      \item What is Base Rate Fallacy? Explain with example. \hfill [7] (\bo{69 Ch})
 
       \item Write short notes on: Clustering and its application in anomaly detection. \hfill [3] (76 Ash)
 
@@ -964,6 +1181,7 @@
       \item Write short notes on: Multimedia mining. \hfill [3] (\bo{74 Ch})
 
       \item Write short notes on: Visual Data Mining. \hfill [4] (\bo{75 Ch})
+        \lb Write short notes on: Data visualization. \hfill [4] (79 Ba)
     \end{enumerate}
 
   \subsection{Web-mining}
@@ -979,10 +1197,12 @@
         \includegraphics[width=3.2in]{images/dm_76ch_pagerank.png}
 
       \item Write short notes on: Page Rank algorithm. \hfill [5] (\bo{79 Bh})
+        \lb Write short notes on: Page Rank. \hfill [5] (\bo{69 Ch})
 
       \item Write short notes on: Page rank algorithm in Web mining. \hfill [4] (\bo{78 Bh})
 
-      \item Write short notes on: Web mining. \hfill [4] (73 Shr) [3] (\bo{74 Ch}) [--] (\bo{70 Ch})
+      \item Write short notes on: Web mining. \hfill [4] (73 Shr) [3] (\bo{74 Ch}) [--] (\bo{70 Ch}) [4] (79 Ba)
+        \lb Write short notes on: www mining. \hfill [4] (\bo{73 Ch})
     \end{enumerate}
 
   \subsection{Time-series data mining}
@@ -991,7 +1211,9 @@
 
       \item What are the challenges of web mining? Explain about time series data mining with an example. \hfill [5] (\bo{75 Ch})
 
-      \item Write short notes on: Time Series Data Mining. \hfill [5] (80 Ba) [3] (\bo{74 Ch}) [4] (\bo{72 Ch}) [--] (71 Shr)
+      \item Explain seasonality in time series data. \hfill [5] (70 Asa)
+
+      \item Write short notes on: Time Series Data Mining. \hfill [5] (80 Ba) [3] (\bo{74 Ch}) [4] (\bo{72 Ch}) [--] (71 Shr) [5] (\bo{82 Bh}) [4] (\bo{81 Bh}) [4] (79 Ba) [4] (\bo{73 Ch})
     \end{enumerate}
 
 \end{document}
