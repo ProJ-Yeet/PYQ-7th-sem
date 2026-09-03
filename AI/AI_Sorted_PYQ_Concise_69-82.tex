@@ -1,0 +1,156 @@
+\documentclass[10pt]{article}
+\usepackage{hyperref}
+\usepackage{amsmath, amssymb, amsfonts}
+\usepackage[margin=0.9cm]{geometry}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{multicol}
+\usepackage{titlesec}
+\parindent 0pt
+\setlength{\columnsep}{14pt}
+\setlist{noitemsep, topsep=0pt, leftmargin=1.1em}
+\titlespacing*{\section}{0pt}{2pt}{0pt}
+\titleformat{\section}{\normalfont\large\bfseries}{\thesection.}{0.5em}{}
+
+\begin{document}
+\begin{center}
+  {\Large\bfseries Artificial Intelligence (CT653 / CT710 / CT78506)}\\[0.2em]
+  {\large Concise PYQ, 2069--2082}
+\end{center}
+\vspace{2pt}
+\small
+\textbf{Notes:} TU IOE PYQ 2069--2082, 41 papers. Regular = \textbf{bold}, Back = normal. Three course codes: CT653 (BCT, III/II) = normal, \texttt{CT710} (BEI, IV/I) = \texttt{mono}, \textit{CT78506} (``AI Elective III'', BEX, IV/II) = \textit{italic}. Marks in (), unique values only.
+Keys: (I)=Importance/Need, (+)=Advantage, (-)=Disadvantage, +Fig=Figure, +Eg=Example, Vs=Compare/Differentiate.
+\vspace{2pt}
+\hrule
+\vspace{4pt}
+
+\begin{multicols}{2}
+\footnotesize
+
+\section*{1. Introduction}
+\begin{itemize}
+  \item Define AI; AI Vs Natural (human) intelligence; can AI replace humans; subfields; think/act rationally \hfill (7)(6)(1+3+4)(8)(3+5)
+  \item Turing test (I); measure machine intelligence; total Turing test; Reverse Turing test; can machine think; passed $\Rightarrow$ intelligent \hfill (7)(2+5)(4+3)(2+4)
+  \item Intelligent / rational agent; types +Eg; agent--environment; learning agent \hfill (1+6)(2+6)(8)
+  \item PEAS --- medical diagnosis, taxi driver, factory robot, self-driving car, medicine-delivery drone \hfill (2+3)(1+5)(2+2+3)(4+4)
+  \item History of AI +chronological; ``AI research failure'' period \hfill (2+5)(2+6)(7)
+  \item Applications of AI / fields in daily life / AI as problem-solving tool; growth areas; (-) of AI \hfill (7)(6)(2+4)
+  \item Knowledge Vs learning; acting humanly; belief Vs hypothesis Vs knowledge \hfill (2+5+1)(4+4)
+    \begin{itemize}
+      \item Learning essential for agents +role; +Supervised Vs Unsupervised \hfill (4+4)(2+2+2+4)
+    \end{itemize}
+\end{itemize}
+
+\section*{2. Problem Solving}
+\begin{itemize}
+  \item Well-defined problem +characteristics; problem space; state, successor fn, goal test, path cost; problem-solving steps \hfill (3+4)(8)(3+5)(2)
+  \item Water jug --- 3/5/9 gal (get 7), 4/3 gal (get 2), 5/2 litre (get 1) +production rules +search tree \hfill (2+1+2+3)(2+2+4)(4)
+  \item Farmer goat/wolf/cabbage --- formulate + solve +tree \hfill (8)
+  \item CSP +constraints; crypto-arithmetic \hfill (7)(1+6)(2+6)(3+5)(5+3)(8)
+    \begin{itemize}
+      \item LOGIC+LOGIC=PROLOG; RIGHT+RIGHT=WRONG
+      \item WRONG+WRONG=RIGHT; ONE+ONE+TWO=FOUR
+      \item TWO+TWO=FOUR; SEND+MORE=MONEY
+      \item SWIM+WEAR=RELAX; BASE+BALL=GAMES
+      \item LOVE+LOVE=HATE; EAT+THAT=APPLE
+      \item TEN+TEN+FORTY=SIXTY; FORTY+TEN+TEN=SIXTY
+      \item CROSS+ROADS=DANGER; AB+CD=AAA (values of B)
+    \end{itemize}
+  \item Production system +essential steps +Eg; why searching needed \hfill (2+6)(4)(2)
+  \item Game playing --- Tic-Tac-Toe state space, data structures, goal \hfill (7)
+\end{itemize}
+
+\section*{3. Search Techniques}
+\begin{itemize}
+  \item Necessity of searching +justify; evaluation criteria for search algorithms \hfill (2+7)(4+4)(2)
+  \item BFS Vs DFS +performance; why blind; depth-limit search (+) \hfill (9)(4+4)(4+5)(1+7)(7)(8)
+  \item Informed Vs uninformed / blind search +Eg \hfill (8)(4+4)(3+6)
+  \item Hill climbing +problems +solutions; simulated annealing; local maxima \hfill (9)(6+2)(3+5)(4+4)
+  \item A* path+heuristic +Eg; greedy drawbacks Vs A*; admissibility \& optimality \hfill (8)(2+7)(2+6)(4+5)
+    \begin{itemize}
+      \item +Fig S$\to$G cost graph, heuristic table --- compare A* Vs greedy \hfill (8)(3+4+3)
+      \item Best First Search --- open list / closed list / path at each step +Fig \hfill (5)
+    \end{itemize}
+  \item Minimax (-) +alpha-beta pruning +Fig(tree) \hfill (2+6)(2+4+3)(4+4)(6)
+  \item Short notes: A* search; uninformed search; adversarial search \hfill (3)(4)
+\end{itemize}
+
+\section*{4. Knowledge Rep., Inference \& Reasoning}
+\begin{itemize}
+  \item CNF need + conversion steps +Eg; FOL$\to$CNF steps \hfill (10)(8)(2+6)(5)
+    \begin{itemize}
+      \item Transform: P$\vee$($\neg$P$\wedge$Q$\wedge$R); P$\rightarrow$((Q$\wedge\neg$R)$\rightarrow$S); P$\rightarrow$((Q$\wedge\neg$R)$\leftrightarrow$S); $\neg$(P$\wedge$Q)$\vee$(P$\vee$S)$\rightarrow$R
+      \item ``Everyone who loves all animals is loved by someone'' $\to$ FOPL $\to$ CNF
+    \end{itemize}
+  \item FOPL need + rules of inference; horn clause; skolemization +Eg; WFF +tautology; FOL conversion \hfill (2+3+3)(1+7)(2)(4+4)
+  \item Resolution refutation proofs \hfill (6)(7)(8)(9)(10)
+    \begin{itemize}
+      \item American/weapons--criminal (John, Donald, Col.\ West, Gorge, Mr.\ A); oversmart--Ram; block-world supports; pompeian--Caesar
+      \item likes-food chains: John/Ram/Sita/Bhogendra--peanuts, mushroom, chicken; Charlie--horse/mammal; Kali/Taarey--cow
+      \item Mary/John--study; Sneha--happy; Santa/Rudolph--Scrooge; ``Did Curiosity kill the cat''; hounds/direwolves--light sleeper--mice; Steve--BK301; exciting life
+    \end{itemize}
+  \item Forward Vs backward chaining +Eg; rule-based reasoning; knowledge-based agent \hfill (4+4)(7)(2+5)(2+3+2)
+  \item Bayes / causal / belief network reasoning +Eg; prior Vs posterior; uncertainty measures \hfill (2+5)(2+6)(7)(3+5)(8)(5+3)
+    \begin{itemize}
+      \item meningitis/stiff-neck (50\%, 80\%); flu/measles rash; county 51\%/cigar; mammogram; genetic defect 1\%/90\%/10\%; 3 factories/defective bulbs; university 6-feet/60\% female; rare disease 99\% test
+      \item BBN +Fig: cloudy/sprinkler/rain/wet grass; smoker$\to$cancer$\to$test
+    \end{itemize}
+\end{itemize}
+
+\section*{5. Structured Knowledge Representation}
+\begin{itemize}
+  \item KR models / approaches / issues / properties; how KR evaluated; 4 KR schemes \hfill (7)(2+5)(3+5)(2+6)(4+2+2)(8)
+  \item Semantic net +Eg; convert sentences $\to$ net \hfill (8)(7)(2+6)(1+6)
+    \begin{itemize}
+      \item Tom the cat (Ram / Sudeep); Pee-wee-Reese / Rohit Paudel batting average; Sakti Gauchan / Sandeep Lamichane; Tweety \& Sweety; Figo the dog; employee/supervisor; cat--mammal--fish; Ram--Jhilke
+    \end{itemize}
+  \item Frames +Eg +significance; frame Vs semantic net (+)(-); convert net$\to$frame \hfill (7)(4+4)(3+5)(6+2)(8)
+  \item Conceptual dependency + primitives; scripts \hfill (2+5)(3+5)
+\end{itemize}
+
+\section*{6. Machine Learning}
+\begin{itemize}
+  \item Methods / ways of learning; learning framework +Fig; supervised Vs unsupervised Vs reinforcement; clustering \hfill (3+5)(2+6)(2+4)(8)
+  \item Learning by analogy; inductive learning / ID3 +Eg; induction Vs deduction \hfill (1+7)(2+6)(3)
+    \begin{itemize}
+      \item Decision tree root attribute --- Play golf table; Play cricket table; mushroom (edible) table \hfill (8)(1+7)(2+7)
+    \end{itemize}
+  \item Genetic algorithm --- steps / operators +Fig +Eg; selection, crossover, mutation (I); applications \hfill (10)(2+8)(8)(2+6)(2+6+2)(3+5)(7)
+    \begin{itemize}
+      \item Swarm intelligence; fitness f(x)=(a+b)-(c+d)+(e+f)-(g+h) \hfill (2+8)
+    \end{itemize}
+  \item Fuzzy logic Vs binary logic; fuzzy learning / inference (Mamdani) +Fig +Eg; membership; FIS architecture \hfill (4)(2+6)(3+7)(8)(2+5)
+  \item Boltzmann machine +algo \hfill (1+7)(2+8)
+\end{itemize}
+
+\section*{7. Applications of AI}
+\textbf{Neural Networks}
+\begin{itemize}
+  \item Backprop algo; math model + train NN; ANN non-linearity; activation function role \hfill (4+4)(2+4+4)(3+5)(2+2+4)(1+7)
+  \item McCulloch--Pitts model +Fig; AND (not XOR); choosing activation function \hfill (8)(10)(3+4)(4+3)
+  \item Perceptron / MLP as AND, OR, XOR gate; linear classifier; perceptron algorithm \hfill (2+7)(1+7)(2+6)(1+8)(6)
+  \item Forward propagation numerical +Fig (weights a--f, ReLU then sigmoid, update a, b) \hfill (8)
+  \item Hebbian network (AND) +is it supervised \hfill (3+7)(6+3)(1+7)
+  \item Hopfield --- steps +Eg, features, active/passive units, store 3 patterns of length 4, Vs feed-forward \hfill (8)(6)(3+5)
+  \item SOM / Kohonen +steps +Eg; Hopfield Vs Kohonen; learning rate \hfill (2+5)(3)(4)
+\end{itemize}
+\textbf{Expert System}
+\begin{itemize}
+  \item Development steps +Fig block; scenario (disease diagnosis, disaster) \hfill (8)(4+4)(2+6)(6)
+  \item Architecture +components; characteristics; inference; ES shells \hfill (2+4)(2+5)(3+5)(1+7)(2+2+3)
+  \item Declarative Vs procedural knowledge + architecture \hfill (2+6)(3+6)(6)
+  \item (+)(-) and limitations of ES; ES Vs human expert; knowledge acquisition +Eg \hfill (8)(4+3)(2+6)(2+5)
+\end{itemize}
+\textbf{NLP \& Machine Vision}
+\begin{itemize}
+  \item NLP steps +Fig +Eg; NLU/NLG; why NLP is hard \hfill (6)(8)(2+4)(3+5)(2+7)(5+2)
+  \item Machine translation +challenges; NLP issues / ambiguity \hfill (1+7)(2+6)(2+5)
+  \item Levels of analysis --- phonetic / syntactic / semantic / pragmatic / morphological; parse tree \hfill (2+2+2+2)(8)(5+4)
+  \item Nepali NLP --- challenges +mitigation; Nepali chatbot +Fig \hfill (8)(2+6)
+  \item Machine / computer vision (I) +steps +Eg +applications \hfill (3+5)(2+5)(1+5+2)
+\end{itemize}
+
+\end{multicols}
+\end{document}

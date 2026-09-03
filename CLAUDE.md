@@ -15,8 +15,10 @@ expensive.
 
 1. **Never read a source scan as a page image when `<Subject>/ocr/*_OCR.md` already covers
    it.** The archives are complete and verbatim for O&M (29 papers), RF-Microwave (24),
-   DSAP (44), Wireless (22), AI (17, CT653/CT710 only) and Data Mining (17). Re-render a
-   page only to crop a figure, or when the archive itself flags a line as uncertain.
+   DSAP (44), Wireless (22), AI (41, all three of CT653/CT710/CT78506 — two files, the
+   older one holding the 17 papers the newer one cross-references) and Data Mining (17).
+   Re-render a page only to crop a figure, or when the archive itself flags a line as
+   uncertain.
 
 2. **To transcribe a page that is not yet in an archive, run the OCR tool first — do not
    look at the page image.**
@@ -50,8 +52,10 @@ expensive.
 5. **The page index lies.** Confirm every paper from its own printed header, never from its
    position in the file. Real cases in this repo: a page where the 2073 Bhadra Wireless
    paper belonged was a DSP paper; one paper prints `BEI` on what is the BEX sheet;
-   O&M tagged 2070 **Ashad** as `70 Ash` (Ashwin) for two years. When a subject has two
-   scans, diff them page by page — each usually holds a paper the other lacks.
+   O&M tagged 2070 **Ashad** as `70 Ash` (Ashwin) for two years; AI's 2072 Magh names two
+   different papers, both printing programme BCT, separated only by course code. When a
+   subject has two scans, diff them page by page — each usually holds a paper the other
+   lacks, though AI's new scan turned out to be a strict superset.
 
 6. **No truncation in a Detailed document.** `grep` for `\dots`, `\ldots`, `\cdots` and a
    literal `...` before shipping; it must return nothing. Data tables get typeset as
@@ -59,9 +63,13 @@ expensive.
 
 7. **Count questions per paper before calling a subject done.** `check.py` compares each
    paper's question count in the archive against how many times its year code appears in
-   the `.tex`. This has caught real omissions three times: DSAP 2067 Mangsir Q8, twelve
-   short O&M papers, and two whole RF papers (2072 Magh, 2074 Magh) that were in both scans
-   but in neither document.
+   the `.tex`. This has caught real omissions four times: DSAP 2067 Mangsir Q8, twelve
+   short O&M papers, two whole RF papers (2072 Magh, 2074 Magh) that were in both scans but
+   in neither document, and two AI questions (2072 Ashwin Q10, 2071 Magh Q10) that the old
+   document had dropped along with two mis-tagged 2070 Magh questions.
+   A year code alone is not a key when a subject has more than two course codes: AI needed
+   `tools/ai_qcount.py`, which keys on (code, year, month) because `77 Ch` and
+   `\textit{77 Ch}` are different papers.
 
 8. **Bash heredocs on Windows mangle backslashes.** Any file containing LaTeX or a regex
    must be written with the Write tool, never piped through a heredoc. This has silently

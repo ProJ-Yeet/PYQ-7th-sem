@@ -4,8 +4,15 @@ Source file: `AI/CT-653_69-75_79_CT-710_70-81.pdf` (17 pages, 1 paper per page, 
 Transcribed: 2026-08-06, by reading each rendered page image. Verbatim, including the papers' own typos
 (e.g. "Caesor", "misallies", "NIP", "bakpropagation"). Marks are shown as printed, in [square brackets].
 
+**THAT SCAN WAS REMOVED ON 2026-09-03.** The current source is
+`AI/CT-653_69-82__CT-710_79-82__CT-78506_71-77.pdf` (48 pp), a strict superset: every one of
+the 17 papers below reappears in it, checked page by page with `tools/ai_dupcheck.py`. The
+mapping from this file's page numbers to the new scan's is in the companion archive
+`CT-653_CT-710_CT-78506_NewScan_OCR.md`. **This file is still the transcription of record for
+these 17 papers** — the new archive cross-references it rather than repeating them.
+
 **USE THIS FILE INSTEAD OF RE-RENDERING THE PDF.** Every question statement in the sorted documents can be
-reconstructed from here; only figures (e.g. the 2079 Chaitra min-max tree) still need the PDF.
+reconstructed from here; only figures (e.g. the 2079 Chaitra min-max tree) still need the scan.
 
 Physical page order → paper (verified against each page header):
 

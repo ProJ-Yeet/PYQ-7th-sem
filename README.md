@@ -5,7 +5,7 @@ This is a collection of **Past Year Questions (PYQ)** of the Institute of Engine
 
 The subjects covered are from the Electronics/Computer 7th semester:
 
-1. Artificial Intelligence [CT653 / CT710]
+1. Artificial Intelligence [CT653 / CT710 / CT78506]
 2. Digital Signal Analysis and Processing [CT704] + Digital Signal Processing [EX753]
 3. Organization and Management [ME708]
 4. RF and Microwave Engineering [EX752 / EX716]
@@ -35,7 +35,8 @@ The notes are written to be answered from directly: every topic carries the year
 - Questions are grouped by syllabus subsection, not by year.
 - **Bold** = Regular exam, plain = Back exam. `monospace` marks the second programme where a subject has two.
 - Programme and exam type are independent axes, so all four combinations occur: **`80 Bh`** is a Regular paper of the monospace programme, `81 Ba` a Back paper of it.
-- Which programme gets the monospace differs by subject, so read each document's own Notes block. AI, RF-Microwave and Wireless mark the *newer* code that way (CT710 vs CT653). DSAP is the exception: there the current paper (CT704, BEI/BCT) is plain and the older BEX paper (EX753) is monospace.
+- Which programme gets the monospace differs by subject, so read each document's own Notes block. RF-Microwave and Wireless mark the *newer* code that way. DSAP is the exception: there the current paper (CT704, BEI/BCT) is plain and the older BEX paper (EX753) is monospace.
+- AI is the only subject with **three** codes and so a third axis: CT653 (BCT) plain, `CT710` (BEI) monospace, *CT78506* ("AI Elective III", BEX) italic. Its year codes collide across codes — **77 Ch** and ***77 Ch*** are different papers — so only the font tells them apart.
 - Month abbreviations: Ba = Baishakh, Jth = Jestha, Asa = Ashad, Shr = Shrawan, Bh = Bhadra, Ash = Ashwin, Ka = Kartik, Mng = Mangsir, Po = Poush, Ma = Magh, Ch = Chaitra.
 - Where a source paper is itself defective — a missing data table, a reversed inequality, seven entries listed for an eight-point DFT — the document records it as printed and says so, rather than silently correcting it.
 - Built with [Tectonic](https://tectonic-typesetting.github.io/).
@@ -44,7 +45,9 @@ The notes are written to be answered from directly: every topic carries the year
 
 | Subject | Papers | Span |
 |---|---|---|
-| Artificial Intelligence | 17 | 2069–2081 |
+| Artificial Intelligence (CT653) | 26 | 2069–2082 |
+| Artificial Intelligence (CT710) | 7 | 2079–2082 |
+| Artificial Intelligence (CT78506) | 8 | 2071–2077 |
 | DSAP (CT704) | 27 | 2066–2082 |
 | DSAP (EX753) | 17 | 2069–2081 |
 | Organization and Management | 29 | 2065–2082 |
