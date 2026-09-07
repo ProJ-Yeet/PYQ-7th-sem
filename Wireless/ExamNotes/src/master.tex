@@ -1,0 +1,94 @@
+%=======================================================================
+%  Wireless Communication — Complete Exam Notes (combined master)
+%  All eight chapters in syllabus order, then Last-Minute Revision and
+%  the abbreviation chart. The five numerical companions stay separate,
+%  exactly as Data Mining does.
+%=======================================================================
+\documentclass[10pt]{article}
+\input{preamble}
+\usepackage{bookmark}
+
+\begin{document}
+
+% ------------------------------------------------ title page
+\thispagestyle{empty}
+\vspace*{2.0cm}
+\begin{center}
+  {\Huge\bfseries\color{acc} Wireless Communication}\\[6pt]
+  {\LARGE\bfseries Complete Exam Notes}\\[14pt]
+  {\large\color{sub} EX 715 (BEI) \quad$\cdot$\quad EX 751 (BEX)}\\[3pt]
+  {\color{sub} Year IV Part I}\\[3pt]
+  {\color{sub} Institute of Engineering, Tribhuvan University}\\[20pt]
+  \begin{minipage}{0.78\textwidth}
+    \color{sub}\small
+    Built from the syllabus, three lecturers' notes and \textbf{all 22 past papers
+    (2070--2082 BS)}. Every topic carries a frequency tier counted from those papers,
+    and every formula is checked against Rappaport, \emph{Wireless Communications:
+    Principles and Practice}.\\[8pt]
+    Numerical solutions live in the \textbf{five per-chapter numerical companions}
+    (chapters 2, 3, 5, 6 and 7); each chapter points at its own.
+    \textbf{Chapters 4 and 8 set no numericals} --- no paper from 2070 to 2082 asks for
+    one.\\[8pt]
+    \textbf{Short on time?} Go straight to \textbf{\S9, Last-Minute Revision}.
+  \end{minipage}
+\end{center}
+
+\vfill
+\begin{center}
+\begin{tabularx}{0.86\textwidth}{@{}L{1.1cm}XL{1.6cm}L{1.9cm}L{2.0cm}@{}}
+\toprule
+\hrow \thead{Ch} & \thead{Topic} & \thead{Hours} & \thead{Papers} & \thead{Numericals} \\
+1 & Introduction & 2 & \textbf{22/22} & --- \\
+2 & Cellular Mobile Communication Concept & 4 & 20/22 & 10 problems \\
+3 & Radio Wave Propagation & 12 & \textbf{22/22} & 18 problems \\
+4 & Modulation and Demodulation Methods & 4 & 20/22 & --- \\
+5 & Equalization and Diversity Techniques & 4 & 21/22 & 5 problems \\
+6 & Speech and Channel Coding Fundamentals & 4 & \textbf{22/22} & 7 problems \\
+7 & Multiple Access in Wireless Communications & 9 & \textbf{22/22} & 6 problems \\
+8 & Wireless Systems and Standards & 6 & 21/22 & --- \\
+\midrule
+& \textbf{Total} & \textbf{45} & & \textbf{46 problems} \\
+\bottomrule
+\end{tabularx}
+\end{center}
+\vspace{1.2cm}
+
+% ------------------------------------------------ contents
+\cleardoublepage
+\pagestyle{fancy}
+{\Large\bfseries\color{acc} Contents}
+\vspace{-6pt}{\color{acc}\rule{\textwidth}{1.1pt}}\vspace{4pt}
+\begingroup
+\renewcommand{\contentsname}{}
+\setcounter{tocdepth}{1}
+\vspace{-24pt}
+\tableofcontents
+\endgroup
+
+% ------------------------------------------------ chapters
+\cleardoublepage
+\input{ch1}
+\cleardoublepage
+\input{ch2}
+\cleardoublepage
+\input{ch3}
+\cleardoublepage
+\input{ch4}
+\cleardoublepage
+\input{ch5}
+\cleardoublepage
+\input{ch6}
+\cleardoublepage
+\input{ch7}
+\cleardoublepage
+\input{ch8}
+
+% ------------------------------------------------ revision + abbreviations
+\input{revision}
+
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{section}{Abbreviations}
+\input{abbrev}
+
+\end{document}

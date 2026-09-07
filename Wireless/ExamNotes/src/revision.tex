@@ -1,0 +1,335 @@
+%=======================================================================
+%  LAST-MINUTE REVISION
+%  Master-only. Every count here is the one the chapter itself prints,
+%  which was taken from Wireless\ocr\*_OCR.md rather than from the PYQ
+%  document (see NOTES-BUILD-PROGRESS.md, "Defects found in the PYQ
+%  document"). Nothing in this section is new material.
+%=======================================================================
+\cleardoublepage
+\section{Last-Minute Revision}
+
+{\color{sub}\footnotesize Built from the frequency analysis of all 22 papers (2070--2082 BS).
+Nothing here is new material: every line points back into a chapter.}
+
+\hr
+
+\T{R.1 Must Know \mk{(every TOP-tier topic --- these carry the paper)}}
+
+{\color{sub}\footnotesize A topic is TOP tier when \textbf{6 or more} of the 22 papers ask it.
+There are 27 of them, so no chapter is safe to skip.}
+
+\vspace{2pt}
+\begin{tabularx}{\textwidth}{@{}L{0.8cm}L{5.6cm}L{1.35cm}X@{}}
+\toprule
+\hrow \thead{Ch} & \thead{Topic} & \thead{Papers} & \thead{The one thing to be able to do} \\
+5 & \textbf{Diversity: why, and the types} & \textbf{11/22} & Space, frequency, time, polarization, angle --- one line each \\
+1 & \textbf{Evolution 1G $\rightarrow$ 5G} & 10/22 & The generation table, not dates as prose \\
+6 & \textbf{Vocoders} & 10/22 & Block diagram $+$ channel, formant, cepstrum, LPC \\
+7 & \textbf{FHMA} & 10/22 & Draw transmitter \emph{and} receiver; fast Vs slow hopping \\
+1 & Compare the generations & 9/22 & Access technique, modulation, data rate, example system \\
+4 & \textbf{OFDM} & 9/22 & IFFT/FFT block diagram $+$ orthogonality $+$ PAPR \\
+7 & Hybrid SSMA, and which fix near-far & 9/22 & Pick two of FCDMA, DS/FHMA, TDCDMA; give (+) and (-) \\
+7 & CDMA features, (+) and limitations & 9/22 & Soft capacity, soft handoff, self-jamming, near-far \\
+7 & Define multiple access $+$ compare & 9/22 & FDMA/TDMA/CDMA/SDMA in one table \\
+7 & CDMA design: self-jamming, near-far & 9/22 & Name the cure: \mk{power control} at 800 Hz \\
+7 & Compare FDMA, TDMA and CDMA & 9/22 & Same table again --- learn it once, use it thrice \\
+8 & Regulatory issues, spectrum management & 9/22 & Allocation, pricing, licensing, tariffs, interconnection \\
+\bottomrule
+\end{tabularx}
+
+\par\penalty0\vspace{4pt}
+\begin{tabularx}{\textwidth}{@{}L{0.8cm}L{5.6cm}L{1.35cm}X@{}}
+\toprule
+\hrow \thead{Ch} & \thead{Topic} & \thead{Papers} & \thead{The one thing to be able to do} \\
+2 & \textbf{Handoff} & 8/22 & Process, hard Vs soft, MCHO/NCHO/MAHO, the margin $\Delta$ \\
+6 & \textbf{Linear predictive coder (LPC)} & 8/22 & Block diagram $+$ the all-pole synthesis filter \\
+8 & \textbf{GSM traffic and control channels} & 8/22 & The BCH / CCCH / DCCH tree, direction of each \\
+3 & Outdoor models: Okumura and Hata & 7/22 & State the validity conditions, then compare the two \\
+4 & Spread spectrum, DSSS and FHSS & 7/22 & Both block diagrams $+$ $PG = B_{ss}/B$ \\
+5 & Combining methods for space diversity & 7/22 & Selection, feedback, maximal ratio, equal gain \\
+6 & Characteristics of the speech signal & 7/22 & Which characteristic each coder family exploits \\
+8 & GSM system architecture & 7/22 & Draw MS--BSS--NSS--OSS; 4 papers want the NSS alone \\
+2 & Prove $Q=\sqrt{3N}$, then derive $S/I$ & 6/22 & Cosine rule $\rightarrow$ $Q$ $\rightarrow$ $S/I = Q^n/6$ \\
+3 & Small-scale fading: what, and the factors & 6/22 & Multipath, speed, speed of surroundings, signal BW \\
+3 & The four types of small-scale fading & 6/22 & Flat/frequency-selective from $B_c$; fast/slow from $T_c$ \\
+4 & MSK and GMSK, and why GSM chose GMSK & 6/22 & $h=0.5$, $\Delta f = R_b/4$, Gaussian LPF, $BT=0.3$ \\
+5 & Why equalization, and the MSE solution & 6/22 & $\hat{\boldsymbol{\omega}} = \mathbf{R}^{-1}\mathbf{p}$, training then tracking \\
+5 & Linear transversal, DFE and MLSE & 6/22 & Three structures, one diagram each \\
+5 & RAKE receiver & 6/22 & $M$ correlators $+$ weights $\alpha_m$; resolves multipath \\
+8 & Forward and reverse IS-95 channels & 6/22 & Pilot $W_0$, sync $W_{32}$, paging $W_1$--$W_7$; \mk{reverse has no pilot} \\
+\bottomrule
+\end{tabularx}
+
+\hr
+
+\T{R.2 Must Memorize \mk{(the numbers and formulas you cannot derive in the hall)}}
+
+\sbs{%
+\lead{Ch 2 --- cellular concept}
+\begin{itemize}
+  \item Capacity $C = MkN = MS$; \ $N = i^2+ij+j^2$, so $N = 1,3,4,7,12,13,\dots$
+  \item $D = \sqrt{3N}\,R$, \ $Q = D/R = \sqrt{3N}$ \ \mk{the single most examined proof}
+  \item $\dfrac{S}{I} = \dfrac{Q^n}{6} = \dfrac{(\sqrt{3N})^n}{6}$,
+        \ $N = \dfrac{Q^2}{3} = \dfrac{(6\,S/I)^{2/n}}{3}$
+  \item Worst case, $n=4$: $\dfrac{S}{I} = \dfrac{R^{-4}}{2(D-R)^{-4}+2(D+R)^{-4}+2D^{-4}}$
+  \item Erlang: $A_u = \lambda H$ per user, $A = U A_u$, $A_c = A/C$
+  \item Erlang B (blocked calls cleared) $=$ GoS
+        $= \dfrac{A^C/C!}{\sum_{k=0}^{C} A^k/k!}$
+  \item Cell splitting to $R/2$: $P_{t2} = P_{t1}/16$, i.e.\ \mk{12 dB down}
+  \item $60^\circ$ sectoring: 6 sectors, $N_I = 1$; $120^\circ$: 3 sectors, $N_I = 2$
+\end{itemize}}{%
+\lead{Ch 3 --- propagation}
+\begin{itemize}
+  \item Friis: $P_r(d) = \dfrac{P_t G_t G_r \lambda^2}{(4\pi)^2 d^2 L}$,
+        \ $\lambda = c/f$, \ $A_e = G_r\lambda^2/4\pi$
+  \item $PL_{\text{FS}} = 32.44 + 20\log f_{\text{MHz}} + 20\log d_{\text{km}}$
+        \ \mk{32.44 is for MHz and km}
+  \item $P_d = |E|^2/120\pi$; \ $V_{\text{ant}} = 2\sqrt{P_r R_{\text{ant}}}$
+  \item Far field $d_f = 2D^2/\lambda$ \ \mk{$D$ is the antenna size, not the distance}
+  \item Two-ray: $\Delta \approx \dfrac{2h_t h_r}{d}$, \
+        $\theta_\Delta = \dfrac{4\pi h_t h_r}{\lambda d}$, \
+        $P_r = P_t G_t G_r \dfrac{h_t^2 h_r^2}{d^4}$ \ \mk{$d^4$, and $\lambda$ drops out}
+  \item Log-distance $\overline{PL}(d) = \overline{PL}(d_0) + 10n\log(d/d_0)$; shadowing adds $X_\sigma$
+  \item Okumura $L_{50} = L_F + A_{mu} - G(h_{te}) - G(h_{re}) - G_{\text{AREA}}$
+  \item Hata urban $= 69.55 + 26.16\log f_c - 13.82\log h_{te} - a(h_{re})
+        + (44.9 - 6.55\log h_{te})\log d$
+  \item $\bar\tau$, $\sigma_\tau = \sqrt{\overline{\tau^2}-\bar\tau^2}$, \
+        $B_c \approx 1/(50\sigma_\tau)$ at 0.9, $1/(5\sigma_\tau)$ at 0.5
+  \item $f_d = \dfrac{v}{\lambda}\cos\theta$, \ $T_c \approx 0.423/f_m$
+\end{itemize}}
+
+\penalty0\vspace{3pt}
+\sbs{%
+\lead{Ch 4 --- modulation}
+\begin{itemize}
+  \item QPSK: 2 bits/symbol, $T_s = 2T_b$, null-null BW $= R_b$, \mk{same BER as BPSK}
+  \item MSK: CPFSK with $h=0.5$, $\Delta f = R_b/4$; $=$ OQPSK with half-sine pulses
+  \item GMSK: $H(f) = e^{-\frac{\ln 2}{2}(f/B)^2}$, \mk{GSM uses $BT = 0.3$};
+        smaller $BT$ $\rightarrow$ tighter spectrum, more ISI
+  \item OFDM: $\Delta f = 1/T$, IFFT at Tx, FFT at Rx, CP $>$ delay spread,
+        drawback \mk{PAPR}
+  \item $PG = B_{ss}/B = T_b/T_c = N$; PN with $m$ stages has period $2^m-1$
+  \item 16-QAM against 16-PSK: \mk{1.6 dB} less peak, 4.19 dB less average power
+  \item $\pi/4$-QPSK: max phase change $135^\circ$, differentially detectable
+\end{itemize}
+\lead{Ch 5 --- equalization and diversity}
+\begin{itemize}
+  \item Zero forcing: $f(t)*h_{eq}(t) = \delta(t)$ \ \mk{enhances noise}
+  \item MSE optimum $\hat{\boldsymbol{\omega}} = \mathbf{R}^{-1}\mathbf{p}$,
+        \ $\xi_{\min} = E[x_k^2] - \mathbf{p}^T\mathbf{R}^{-1}\mathbf{p}$
+  \item LMS update: new $=$ old $+\ \mu\times$ error $\times$ input
+  \item Selection diversity: $\Pr[\text{SNR}\le\gamma] = (1-e^{-\gamma/\Gamma})^M$
+  \item Mean gain $\bar\gamma_M/\Gamma = \sum_{k=1}^{M} 1/k$ \ \mk{diminishing returns}
+  \item Maximal ratio: $\gamma_M = \sum \gamma_i$ \ \mk{the best combiner}
+  \item RAKE weights $\alpha_m = Z_m^2 / \sum Z_m^2$
+  \item Equalizer needed when \mk{$\sigma_\tau > 0.1 T_s$}; interleaving is time diversity for free
+\end{itemize}}{%
+\lead{Ch 6 --- speech and channel coding}
+\begin{itemize}
+  \item Speech 300--3400 Hz, sampled 8 kHz, PCM 64 kbps; formants \mk{one per 1000 Hz}
+  \item Waveform coders: high rate, robust, coder-independent.
+        Vocoders: \mk{much lower rate}, mechanical, talker dependent
+  \item LPC synthesis $H(z) = \dfrac{G}{1+\sum_{k=1}^{M} b_k z^{-k}}$ \ \mk{all-pole}
+  \item GSM RPE-LTP: \mk{260 bits / 20 ms $=$ 13 kbps} (Rappaport's table prints 13.4)
+  \item Hamming: $2^r \ge m+r+1$; $(7,4)$ code, $d_{\min}=3$, corrects 1 error
+  \item Detect $s$ errors: $d_{\min} \ge s+1$. Correct $t$: $d_{\min} \ge 2t+1$
+  \item Convolutional $(n,k,K)$: rate $k/n$, constraint length $K$;
+        Viterbi keeps the \mk{single most likely sequence}
+  \item Coding gain $G$(dB) $= (E_b/N_0)_{\text{uncoded}} - (E_b/N_0)_{\text{coded}}$
+  \item Interleaver depth $m$: burst of $m$ becomes $m$ single errors,
+        \mk{voice tolerates about 40 ms of delay}
+\end{itemize}}
+
+\penalty0\vspace{3pt}
+\sbs{%
+\lead{Ch 7 --- multiple access}
+\begin{itemize}
+  \item FDMA channels $N = \dfrac{B_t - 2B_{\text{guard}}}{B_c}$ \ \mk{the 2 is not optional}
+  \item TDMA channels $N = \dfrac{m(B_t - 2B_{\text{guard}})}{B_c}$
+  \item Frame efficiency $\eta_f = \left(1-\dfrac{b_{OH}}{b_T}\right)\times 100\,\%$,
+        \mk{GSM $=$ 74.24 \%}
+  \item GSM slot $= 6+8.25+26+2(58) = \mathbf{156.25}$ bits;
+        frame $= 8\times156.25 = \mathbf{1250}$ bits
+  \item Hadamard $H_{2N} = \begin{bmatrix} H_N & H_N \\ H_N & -H_N\end{bmatrix}$,
+        order 1, 2 or a multiple of 4, $d_{\min} = N/2$
+  \item CDMA: map $1\rightarrow+1$, $0\rightarrow-1$, silent $\rightarrow 0$;
+        decode by multiply, sum, \mk{divide by $N$}
+  \item Fast hopping: hop rate $\ge$ symbol rate. Slow hopping: hop rate $\le$ symbol rate
+  \item Pairings: AMPS FDMA/FDD, GSM TDMA/FDD, DECT FDMA/TDD, IS-95 CDMA/FDD
+\end{itemize}}{%
+\lead{Ch 8 --- GSM and IS-95}
+\begin{itemize}
+  \item GSM 900: \textbf{890--915} up, \textbf{935--960} down, \mk{45 MHz} apart,
+        200 kHz ARFCN, \mk{124} duplex channels, 8 users each
+  \item 0.3 GMSK, \mk{270.833 kbps} per carrier, 33.854 kbps per user
+  \item Slot \mk{156.25 bits, 576.9 $\mu$s}; frame \mk{4.615 ms}; bit \mk{3.692 $\mu$s}
+  \item Multiframe \mk{26 (traffic, 120 ms)} or \mk{51 (control, 235 ms)};
+        superframe \mk{6.12 s}; hyperframe \mk{3 h 28 min}
+  \item Speech \mk{260 bits/20 ms} $\rightarrow$ coded \mk{456 bits $=$ 22.8 kbps}
+        $\rightarrow$ interleaved over \mk{8 slots}; split \mk{50 Ia $+$ 132 Ib $+$ 78 II}
+  \item Control tree: \mk{BCH $=$ BCCH, FCCH, SCH} $\cdot$
+        \mk{CCCH $=$ PCH, RACH, AGCH} $\cdot$ \mk{DCCH $=$ SDCCH, SACCH, FACCH}
+  \item IS-95: \mk{1.25 MHz}, 824--849 / 869--894, \mk{1.2288 Mcps},
+        $N=1$, power control \mk{800 Hz}
+  \item Forward encoder \mk{rate 1/2, $K=9$}; reverse \mk{rate 1/3, $K=9$}
+        $+$ 64-ary orthogonal modulation
+\end{itemize}
+\lead{Ch 1 --- the generation table}
+\begin{itemize}
+  \item 1979 NTT first cellular, 1983 AMPS in the USA
+  \item 1G analog FDMA/FM $\cdot$ 2G digital TDMA or CDMA $\cdot$ 3G W-CDMA
+        $\cdot$ 4G OFDMA $+$ MIMO $\cdot$ 5G mmWave $+$ massive MIMO
+  \item GPRS \textbf{171.2 kbps}, EDGE \textbf{384 kbps}, W-CDMA \textbf{2 Mbps},
+        LTE \textbf{100 Mbps / 1 Gbps}
+  \item Forward $=$ downlink $=$ BS $\rightarrow$ MS; reverse $=$ uplink
+  \item FDD $=$ two frequencies; TDD $=$ one frequency, two time slots
+\end{itemize}}
+
+\hr
+
+\T{R.3 Must Practice \mk{(numericals, ranked by how many papers set them)}}
+
+{\color{sub}\footnotesize Every one of these is worked in full in the numerical companion for
+its chapter. \mk{Chapters 4 and 8 set no numericals at all} in 2070--2082, so they have no
+companion.}
+
+\vspace{2pt}
+\begin{tabularx}{\textwidth}{@{}L{0.8cm}L{5.4cm}L{1.2cm}X@{}}
+\toprule
+\hrow \thead{Ch} & \thead{Numerical} & \thead{Papers} & \thead{Trap that costs the marks} \\
+3 & \textbf{Free space $+$ full link budget} & \textbf{9} & Keep dB and linear apart; \mk{$L$ and cable loss divide, they do not add} \\
+3 & \textbf{Okumura and Hata} & 8 & Hata wants $f_c$ in \mk{MHz} and $d$ in \mk{km}; check the validity range first \\
+2 & Spectrum $\rightarrow$ channels, users, area & 5 & Divide by 2 for \mk{duplex}, then subtract control channels \\
+6 & \textbf{Convolutional encoding $+$ Viterbi} & 5 & Draw the trellis; a state diagram alone is not a decode \\
+3 & Power delay profile: $\sigma_\tau$, $B_c$ & 4 & Convert dB to \mk{linear power} before averaging \\
+7 & \textbf{FDMA channel count} & 4 & \mk{$2B_{\text{guard}}$}, both edges, then divide by 2 if simplex channels are asked \\
+7 & Hadamard $H_8$ construction & 3 & Build $H_2 \rightarrow H_4 \rightarrow H_8$; state the orthogonality check \\
+7 & CDMA encode and decode & 3 & \mk{Divide the correlation by $N$}; silent station is 0, not $-1$ \\
+\bottomrule
+\end{tabularx}
+
+\par\penalty0\vspace{4pt}
+\begin{tabularx}{\textwidth}{@{}L{0.8cm}L{5.4cm}L{1.2cm}X@{}}
+\toprule
+\hrow \thead{Ch} & \thead{Numerical} & \thead{Papers} & \thead{Trap that costs the marks} \\
+2 & Prove $Q=\sqrt{3N}$, then $S/I$ & 2 & The proof is the marks; \mk{$N$ must come out of $i^2+ij+j^2$} \\
+2 & Trunking, Erlang B, GoS & 2 & $A$ is per \emph{system}, $A_u$ per user; read the table at the right $C$ \\
+2 & Cell splitting: power reduction & 2 & $R/2$ gives $P/16$, which is \mk{12 dB}, not 6 \\
+3 & Two-ray ground reflection & 2 & $d^4$ law, and \mk{$\lambda$ cancels} in the far-field form \\
+7 & GSM frame efficiency & 2 & Overhead is per \emph{frame}, tail and guard bits included \\
+3 & Far-field (Fraunhofer) distance & 1 & $D$ is the largest antenna dimension \\
+5 & Optimum tap weights (MSE) & 1 & Invert $\mathbf{R}$, do not solve by inspection \\
+5 & Interleaver design & 1 & Depth from the burst length, span from the tolerable delay \\
+5 & Choosing the equalizer algorithm & 1 & Compare $\sigma_\tau$ against $T_s$ before naming one \\
+5 & Diversity SNR gain at the cell edge & 1 & Gain is in dB of \emph{mean} SNR, not instantaneous \\
+6 & 7-bit Hamming: encode and detect & 1 & Parity positions are 1, 2, 4; syndrome reads as a binary index \\
+6 & Sub-band coder bit rate & 1 & Sum the sub-band rates; each band has its own allocation \\
+7 & N-TDMA users per cluster & 1 & Multiply by $m$ slots \emph{and} divide by the cluster size \\
+\bottomrule
+\end{tabularx}
+
+\hr
+
+\T{R.4 Most Repeated PYQs \mk{(if you only revise 15 questions, revise these)}}
+
+\begin{enumerate}
+  \item \textbf{Why is diversity needed? Explain the types of diversity technique.}
+        \hfill \m{2+6}\m{4+6}\m{3+3+2} \yr{11 papers}
+  \item \textbf{Explain the operation of FHMA with transmitter and receiver block diagrams.}
+        \hfill \m{4}\m{6}\m{7} \yr{10 papers}
+  \item \textbf{What is a vocoder? Explain its operation with a block diagram, and its kinds.}
+        \hfill \m{2+6}\m{3+5}\m{6} \yr{10 papers}
+  \item \textbf{Briefly explain the evolution of mobile communications, 1G to 5G.}
+        \hfill \m{4}\m{5}\m{6} \yr{10 papers}
+  \item \textbf{Compare the generations in terms of technology advancement.}
+        \hfill \m{4}\m{5}\m{6} \yr{9 papers}
+  \item \textbf{Explain OFDM: block diagram of transmitter and receiver.}
+        \hfill \m{4}\m{8} \yr{9 papers}
+  \item \textbf{Explain any two hybrid SSMA techniques; which of them mitigate near-far?}
+        \hfill \m{4}\m{6}\m{7} \yr{9 papers}
+  \item \textbf{What is CDMA? Its characteristics, features, advantages and limitations.}
+        \hfill \m{4}\m{6}\m{2+6} \yr{9 papers}
+  \item \textbf{Define multiple access; explain TDMA, CDMA and SDMA; compare them.}
+        \hfill \m{2+4}\m{2+6}\m{7} \yr{9 papers}
+  \item \textbf{Compare FDMA, TDMA and CDMA; state the (+) and (-) of each.}
+        \hfill \m{4}\m{4+4} \yr{9 papers}
+  \item \textbf{CDMA design considerations: self-jamming and the near-far problem.}
+        \hfill \m{4}\m{4+5} \yr{9 papers}
+  \item \textbf{Describe regulatory issues in wireless communication / spectrum management.}
+        \hfill \m{4}\m{5} \yr{9 papers}
+  \item \textbf{What is handoff? Explain the process and the types of handover.}
+        \hfill \m{4+4}\m{2+4}\m{6} \yr{8 papers}
+  \item \textbf{Explain the linear predictive coder (LPC) with a neat block diagram.}
+        \hfill \m{2+6}\m{3+5}\m{6} \yr{8 papers}
+  \item \textbf{Explain the working of all traffic and control channels used in GSM.}
+        \hfill \m{4+4}\m{6}\m{8} \yr{8 papers}
+\end{enumerate}
+
+\penalty0\vspace{4pt}
+\begin{center}\fbox{\begin{minipage}{0.94\textwidth}\small
+\mk{Marks arithmetic.} Chapters 3 and 7 alone are \textbf{21 of the 45 syllabus hours} and
+supply almost every numerical. But chapters 1, 5 and 6 are only \textbf{10 hours combined} and
+appear in \textbf{21 or 22 of the 22 papers}, carrying \textbf{ten} TOP-tier topics between
+them. \mk{Do not skip the small chapters} --- they are the cheapest marks in the paper, and
+chapter 6 is the only one asked in every single paper.
+\end{minipage}}\end{center}
+
+\hr
+
+\T{R.5 One-Day Revision Checklist}
+
+\sbs{%
+\lead{Morning --- diagrams first (about 4 hrs)}
+\begin{itemize}
+  \item[$\square$] \textbf{Ch 7} (60 min): \mk{the highest-value hour in this subject.}
+        Draw the FHMA transmitter and receiver until they come from memory, then the
+        hybrid-SSMA pair and the FDMA/TDMA/CDMA comparison table
+  \item[$\square$] \textbf{Ch 8} (45 min): the \mk{control channel tree} (BCH, CCCH, DCCH,
+        nine channels, direction of each) $\cdot$ GSM architecture $\cdot$ forward and
+        reverse IS-95 channels
+  \item[$\square$] \textbf{Ch 5} (40 min): diversity types $+$ the four combining methods
+        $\cdot$ linear transversal, DFE, MLSE $\cdot$ RAKE receiver
+  \item[$\square$] \textbf{Ch 6} (40 min): vocoder block diagram $\cdot$ LPC $\cdot$ speech
+        characteristics $\cdot$ block Vs convolutional coding
+  \item[$\square$] \textbf{Ch 4} (35 min): OFDM Tx and Rx $\cdot$ DSSS and FHSS $\cdot$
+        GMSK modulator $\cdot$ QPSK constellation
+  \item[$\square$] \textbf{Ch 2} (30 min): handoff types $+$ the margin $\Delta$ $\cdot$
+        the $Q=\sqrt{3N}$ geometry $\cdot$ cell splitting and sectoring
+  \item[$\square$] \textbf{Ch 3} (20 min): the three mechanisms $\cdot$ the four fading types
+        $\cdot$ Rayleigh Vs Ricean
+  \item[$\square$] \textbf{Ch 1} (15 min): one table, 1G to 5G. \mk{Q1 is almost always this}
+\end{itemize}}{%
+\lead{Afternoon --- numericals (about 4 hrs)}
+\begin{itemize}
+  \item[$\square$] \textbf{Ch 3 link budget} (60 min): companion problems 1--4, 6, 7, 16.
+        \mk{Nine papers pay for this hour}
+  \item[$\square$] \textbf{Okumura and Hata} (50 min): problems 9--13 and 15, both
+        forwards and backwards
+  \item[$\square$] \textbf{Ch 2 system design} (40 min): problems 2, 3, 4, 6, 7, then
+        trunking 5 and 8
+  \item[$\square$] \textbf{Ch 7 access} (45 min): FDMA channel count in all three variants,
+        then $H_8$ and CDMA encode/decode
+  \item[$\square$] \textbf{Ch 6 coding} (30 min): the 7-bit Hamming both ways, then
+        convolutional encode $+$ Viterbi decode
+  \item[$\square$] \textbf{Ch 3 multipath} (20 min): problem 17, delay spread and $B_c$
+  \item[$\square$] \textbf{Ch 5 quick set} (15 min): tap weights, interleaver depth,
+        diversity gain
+\end{itemize}
+\lead{Evening --- consolidation (about 1 hr)}
+\begin{itemize}
+  \item[$\square$] Re-read \textbf{R.2 Must Memorize} twice. Write the GSM numbers and the
+        Hata formula from memory once
+  \item[$\square$] Re-read every \mk{orange} line in the chapters --- they are the traps
+  \item[$\square$] Skim each chapter's \textbf{Last-minute recall} band
+  \item[$\square$] Check the \textbf{abbreviation chart}, especially the three clashes:
+        \mk{FCC / FCCH}, \mk{BCH} and \mk{SCH}
+\end{itemize}
+\lead{In the hall}
+\begin{itemize}
+  \item[$\square$] \mk{Draw first, then annotate.} An unlabelled correct block diagram still
+        scores; three paragraphs with no diagram do not
+  \item[$\square$] Path loss $\rightarrow$ \mk{check the units the model wants}
+  \item[$\square$] CDMA decode $\rightarrow$ \mk{divide by $N$}
+  \item[$\square$] FDMA count $\rightarrow$ \mk{subtract both guard bands}
+  \item[$\square$] Every numerical $\rightarrow$ write the formula before substituting
+\end{itemize}}
