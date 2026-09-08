@@ -1,0 +1,931 @@
+%=======================================================================
+%  CHAPTER 2 — PROBLEM SOLVING : SOLVED PROBLEMS
+%=======================================================================
+\section{Problem Solving \textcolor{sub}{\large -- Solved Problems}}
+
+{\color{sub}\footnotesize Every worked problem here opens with the exam question
+\mk{exactly as the paper prints it}, typos and all, so it can be attempted
+from this document alone. Methods follow \emph{Insights on Artificial Intelligence};
+where that book is wrong or skips a step, the notes say so.
+\gap$\cdot$\gap Every answer in this file is machine-checked by \code{verify.py}.}
+
+\lead{The five things everything here is built on:}
+\begin{itemize}
+  \item \textbf{1. A crypt-arithmetic column is an equation.}
+        $(\text{column sum}) + C_{\text{in}} = 10\,C_{\text{out}} + (\text{result digit})$.
+        Every deduction in \S2.N.1 comes from one of these.
+  \item \textbf{2. A carry is 0 or 1.} Adding two digits plus a carry gives at most
+        $9+9+1=19$. With \emph{three} addends it can reach $9+9+9+1=28$, so a carry of
+        \textbf{2} is possible in TEN $+$ TEN $+$ FORTY. Nothing else in these papers has
+        three addends.
+  \item \textbf{3. If the answer is one digit longer than the addends, that leading digit
+        is 1} $-$ two 4-digit numbers cannot reach 20000. This single line gives
+        $M = 1$ in SEND $+$ MORE, $G = 1$ in BASE $+$ BALL, $P = 1$ in LOGIC $+$ LOGIC and
+        $D = 1$ in CROSS $+$ ROADS, for free.
+  \item \textbf{4. $2X$ ends in $X$ only when $X = 0$.} ($X=5$ gives 10, whose last digit
+        is 0, not 5.) This cracks TEN $+$ TEN $+$ FORTY and LOVE $+$ LOVE.
+  \item \textbf{5. A jug state is the ordered pair of contents.} Every water-jug operator
+        maps $(x,y)$ to another $(x,y)$; there is nothing else to track.
+\end{itemize}
+
+\hr
+
+\lead{\mk{Read this before the crypt-arithmetic problems}}
+\begin{itemize}
+  \item \mk{Seven of the thirteen puzzles set in these papers have more than
+        one valid answer.} ONE $+$ ONE $+$ TWO $=$ FOUR has \textbf{107}.
+        RIGHT $+$ RIGHT $=$ WRONG, WRONG $+$ WRONG $=$ RIGHT and ONE $+$ ONE $=$ TWO pin
+        \textbf{no letter at all}.
+  \item So the marks are in the \textbf{column reasoning}, not the digits. Write $X$, $D$,
+        $C$ and the carries, then argue. Where the constraints run out, say
+        \emph{``the constraints leave $N$ free; take $N = 3$''} and carry on. That sentence
+        is worth more than the answer.
+  \item Uniqueness of each puzzle is stated below it, counted by exhaustive search in
+        \code{verify.py} over every letter-to-digit assignment.
+\end{itemize}
+
+\hr
+
+%=======================================================================
+\T{2.N.1 Crypt-arithmetic: the six puzzles with a unique answer}
+
+%-----------------------------------------------------------------------
+\creamq{SEND $+$ MORE $=$ MONEY}{\m{1+6}\m{8}}
+{\color{sub}\footnotesize \tF{5} \yr{\textbf{72 Ash} \m{1+6}, 76 Ba \m{8},
+\textit{74 Ma} \m{8}, \textbf{\textit{74 Bh}} \m{8}, \textbf{\textit{72 Ash}} \m{8}}
+\gap$\cdot$\gap \mk{unique solution} \gap$\cdot$\gap the classic, and the one
+\emph{Insights} works in full}
+
+\begin{asked}{\textbf{72 Ash} \textperiodcentered{} Q2 \textperiodcentered{} \m{1+6}}
+Solve the following crypto-arithmetic problem through constraint satisfaction, showing all
+steps. Different letters denote different integers and identical letters denote the same
+integer.
+\begin{center}
+\begin{tabular}{r@{\hspace{2pt}}c@{\hspace{4pt}}c@{\hspace{4pt}}c@{\hspace{4pt}}c@{\hspace{4pt}}c}
+   &   & S & E & N & D \\
+ $+$ &   & M & O & R & E \\
+\hline
+   & M & O & N & E & Y \\
+\end{tabular}
+\end{center}
+\end{asked}
+
+\sbsr{0.46}{%
+\lead{Formulation}
+\begin{itemize}
+  \item $X = \{S, E, N, D, M, O, R, Y\}$ \quad (8 letters)
+  \item $D_{\text{om}} = \{0,1,2,3,4,5,6,7,8,9\}$
+  \item $C$:
+  \begin{itemize}
+    \item $S \neq 0$, $M \neq 0$ (leading letters)
+    \item all eight letters take different digits
+    \item $D + E = 10C_1 + Y$
+    \item $N + R + C_1 = 10C_2 + E$
+    \item $E + O + C_2 = 10C_3 + N$
+    \item $S + M + C_3 = 10C_4 + O$
+    \item $C_4 = M$
+  \end{itemize}
+\end{itemize}
+\vspace{2pt}
+\begin{center}
+\begin{tabular}{r@{\hspace{3pt}}c@{\hspace{5pt}}c@{\hspace{5pt}}c@{\hspace{5pt}}c@{\hspace{5pt}}c}
+ & $C_4$ & $C_3$ & $C_2$ & $C_1$ & \\
+ &   & S & E & N & D \\
+$+$ &   & M & O & R & E \\
+\hline
+ & M & O & N & E & Y \\
+\end{tabular}
+\end{center}}{%
+\lead{The deduction chain}
+\begin{itemize}
+  \item \textbf{$M = 1$.} $C_4 = M$, and a carry is at most 1. $M \neq 0$ because it
+        leads MONEY, so $M = 1$.
+  \item \textbf{$O = 0$.} Column 4 is $S + 1 + C_3 = 10 \cdot 1 + O$. The largest
+        $S + 1 + C_3$ can be is $9+1+1 = 11$, so $O$ is 0 or 1; 1 is taken by $M$, so
+        $O = 0$.
+  \item \textbf{$S = 9$.} With $O = 0$, column 4 reads $S + 1 + C_3 = 10$. Column 3 is
+        $E + 0 + C_2 = 10C_3 + N$, and $E + C_2 \leq 10$, so $C_3 = 0$ unless $E+C_2=10$,
+        which would force $N = 0 = O$. So $C_3 = 0$ and $S = 9$.
+  \item \textbf{$N = E + 1$ and $C_2 = 1$.} Column 3 now reads $E + C_2 = N$. If
+        $C_2$ were 0 then $E = N$, not allowed. So $C_2 = 1$ and $N = E + 1$.
+  \item \textbf{$R = 8$.} Column 2 is $N + R + C_1 = 10 + E$. Substitute $N = E+1$:
+        $E + 1 + R + C_1 = E + 10$, so $R + C_1 = 9$. $R = 9$ is taken by $S$, so
+        $C_1 = 1$ and $R = 8$.
+  \item \textbf{$D = 7$.} Column 1 is $D + E = 10 + Y$ (since $C_1 = 1$), so
+        $D + E \geq 12$. With 9 and 8 gone, the only pairs are $5+7$ and $6+7$, so one of
+        $D, E$ is 7. If $E = 7$ then $N = 8 = R$, so \textbf{$D = 7$}, and $E$ is 5 or 6.
+  \item \textbf{$E = 5$, $N = 6$, $Y = 2$.} $E = 6$ would give $N = 7 = D$. So $E = 5$,
+        $N = 6$, and $Y = D + E - 10 = 2$.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+{\color{acc}\bfseries Answer:} $S{=}9,\ E{=}5,\ N{=}6,\ D{=}7,\ M{=}1,\ O{=}0,\ R{=}8,\ Y{=}2$
+\quad$\rightarrow$\quad $9567 + 1085 = 10652$. \quad
+{\color{sub}\footnotesize Unique: exactly one assignment satisfies the constraints.}
+
+%-----------------------------------------------------------------------
+\creamq{BASE $+$ BALL $=$ GAMES}{\m{1+6}\m{2+6}\m{3+5}\m{8}}
+{\color{sub}\footnotesize \tF{7} \yr{75 Ba \m{2+6}, 82 Ka \m{2+6}, \texttt{82 Ba} \m{2+6},
+79 Ash \m{2+6}, \textbf{\texttt{82 Bh}} \m{3+5}, 79 Jth \m{1+6},
+\textbf{\textit{73 Bh}} \m{8}} \gap$\cdot$\gap
+\mk{the most-asked puzzle in the subject} \gap$\cdot$\gap unique solution}
+
+\begin{asked}{79 Ash \textperiodcentered{} \m{2+6} \gap$\cdot$\gap also 75 Ba, 82 Ka, \texttt{82 Ba}, \textbf{\texttt{82 Bh}}, 79 Jth, \textbf{\textit{73 Bh}}}
+What do you understand by Constraint Satisfaction Problem? Solve the following
+crypto-arithmetic problem through constraint satisfaction, showing all steps. Different
+letters denote different integers and identical letters denote the same integer.
+\begin{center}
+\begin{tabular}{r@{\hspace{2pt}}c@{\hspace{4pt}}c@{\hspace{4pt}}c@{\hspace{4pt}}c@{\hspace{4pt}}c}
+   &   & B & A & S & E \\
+ $+$ &   & B & A & L & L \\
+\hline
+   & G & A & M & E & S \\
+\end{tabular}
+\end{center}
+\end{asked}
+
+\sbsr{0.44}{%
+\lead{Formulation}
+\begin{itemize}
+  \item $X = \{B, A, S, E, L, G, M\}$ \quad (7 letters)
+  \item $D_{\text{om}} = \{0,\dots,9\}$
+  \item $C$:
+  \begin{itemize}
+    \item $B \neq 0$, $G \neq 0$
+    \item all seven letters differ
+    \item $E + L = 10C_1 + S$
+    \item $S + L + C_1 = 10C_2 + E$
+    \item $A + A + C_2 = 10C_3 + M$
+    \item $B + B + C_3 = 10C_4 + A$
+    \item $C_4 = G$
+  \end{itemize}
+\end{itemize}
+\vspace{2pt}
+\begin{center}
+\begin{tabular}{r@{\hspace{3pt}}c@{\hspace{5pt}}c@{\hspace{5pt}}c@{\hspace{5pt}}c@{\hspace{5pt}}c}
+ & $C_4$ & $C_3$ & $C_2$ & $C_1$ & \\
+ &   & B & A & S & E \\
+$+$ &   & B & A & L & L \\
+\hline
+ & G & A & M & E & S \\
+\end{tabular}
+\end{center}}{%
+\lead{The deduction chain}
+\begin{itemize}
+  \item \textbf{$G = 1$.} Two 4-digit numbers cannot reach 20000, so the leading carry
+        $C_4 = G = 1$.
+  \item \textbf{$L = 5$, $C_1 = 0$, $C_2 = 1$.} \mk{This is the clever step.}
+        Add the column-1 and column-2 equations:
+        \begin{center}$(E + L) + (S + L + C_1) = (10C_1 + S) + (10C_2 + E)$\end{center}
+        Everything cancels except $2L = 9C_1 + 10C_2$. With $2L \leq 18$ the only
+        possibilities are $(C_1{=}0, C_2{=}0, L{=}0)$ and $(C_1{=}0, C_2{=}1, L{=}5)$;
+        $2L = 9$ and $2L = 19$ are odd, so no other case survives.
+        $L = 0$ makes column 1 read $E = S$, which the AllDiff constraint forbids.
+        So \textbf{$L = 5$}.
+  \item \textbf{$S = E + 5$.} Column 1 with $L=5$, $C_1=0$ is $E + 5 = S$. Hence
+        $E \leq 4$, and $E \neq 0$ (else $S = 5 = L$), so $E \in \{2,3,4\}$ and
+        $S \in \{7,8,9\}$.
+  \item \textbf{Columns 3 and 4.} $2A + 1 = 10C_3 + M$ and $2B + C_3 = A + 10$.
+  \item \textbf{Test the three cases for $E$:}
+  \begin{itemize}
+    \item $E = 2, S = 7$: $C_3{=}0$ forces $M = 9, A = 4$, then $2B = 14$, $B = 7 = S$.
+          Clash. $C_3{=}1$ gives no legal $B$. \xmark
+    \item $E = 4, S = 9$: every branch needs $2B$ odd, or repeats $G$. \xmark
+    \item $E = 3, S = 8$: $C_3 = 0$, $M = 2A+1$ odd and unused $\rightarrow M = 9$,
+          $A = 4$; then $2B + 0 = 14$, so $\mathbf{B = 7}$. \checkmark
+  \end{itemize}
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+{\color{acc}\bfseries Answer:} $B{=}7,\ A{=}4,\ S{=}8,\ E{=}3,\ L{=}5,\ G{=}1,\ M{=}9$
+\quad$\rightarrow$\quad $7483 + 7455 = 14938$. \quad
+{\color{sub}\footnotesize Unique.}
+
+%-----------------------------------------------------------------------
+\creamq{TEN $+$ TEN $+$ FORTY $=$ SIXTY}{\m{2+6}}
+{\color{sub}\footnotesize \tP{3} \yr{\textbf{\texttt{80 Bh}} \m{2+6}, 78 Ba \m{2+6},
+78 Po \m{2+6} (printed FORTY $+$ TEN $+$ TEN, same puzzle)} \gap$\cdot$\gap
+\mk{the only puzzle with three addends}, so here a carry can be 2 \gap$\cdot$\gap
+unique solution}
+
+\begin{asked}{\textbf{\texttt{80 Bh}} \textperiodcentered{} \m{2+6} \gap$\cdot$\gap 78 Ba; 78 Po prints the addends as FORTY $+$ TEN $+$ TEN}
+What do you understand by Constraint Satisfaction Problem? Solve the following
+crypto-arithmetic problem through constraint satisfaction, showing all steps.
+\begin{center}
+\begin{tabular}{r@{\hspace{2pt}}c@{\hspace{4pt}}c@{\hspace{4pt}}c@{\hspace{4pt}}c@{\hspace{4pt}}c}
+   &   &   & T & E & N \\
+ $+$ &   &   & T & E & N \\
+ $+$ & F & O & R & T & Y \\
+\hline
+   & S & I & X & T & Y \\
+\end{tabular}
+\end{center}
+\end{asked}
+
+\sbsr{0.44}{%
+\lead{Formulation}
+\begin{itemize}
+  \item $X = \{T,E,N,F,O,R,Y,S,I,X\}$ \quad
+        \mk{all 10 letters}, so every digit 0--9 is used exactly once.
+  \item $C$: $T, F, S \neq 0$; all ten differ; and
+  \begin{itemize}
+    \item $N + N + Y = 10C_1 + Y$
+    \item $E + E + T + C_1 = 10C_2 + T$
+    \item $T + T + R + C_2 = 10C_3 + X$
+    \item $O + C_3 = 10C_4 + I$
+    \item $F + C_4 = S$
+  \end{itemize}
+  \item \mk{Note $C_3$ may be 2}: column 3 can reach $9+9+9+1 = 28$.
+\end{itemize}
+\vspace{2pt}
+\begin{center}
+\begin{tabular}{r@{\hspace{3pt}}c@{\hspace{5pt}}c@{\hspace{5pt}}c@{\hspace{5pt}}c@{\hspace{5pt}}c}
+ & $C_4$ & $C_3$ & $C_2$ & $C_1$ & \\
+ &   &   & T & E & N \\
+$+$ &   &   & T & E & N \\
+$+$ & F & O & R & T & Y \\
+\hline
+ & S & I & X & T & Y \\
+\end{tabular}
+\end{center}}{%
+\lead{The deduction chain}
+\begin{itemize}
+  \item \textbf{$N = 0$ and $C_1 = 0$.} Column 1 is $2N + Y = 10C_1 + Y$, so $2N = 10C_1$.
+        Hence $N = 0$ (with $C_1 = 0$) or $N = 5$ (with $C_1 = 1$).
+  \item \textbf{$E = 5$ and $C_2 = 1$.} Column 2 is $2E + T + C_1 = 10C_2 + T$, so
+        $2E + C_1 = 10C_2$ by the same cancellation. If $N = 5$ then $C_1 = 1$ and
+        $2E = 10C_2 - 1$ is odd: impossible. So \textbf{$N = 0$, $C_1 = 0$}, and then
+        $2E = 10C_2$ gives $E = 5$, $C_2 = 1$ ($E = 0$ is taken by $N$).
+  \item \textbf{$C_4 = 1$ and $S = F + 1$.} $F$ and $S$ must differ, so the last column
+        $F + C_4 = S$ needs $C_4 = 1$: $S$ and $F$ are \textbf{consecutive}.
+  \item \textbf{$O = 9$, $C_3 = 2$, $I = 1$.} Column 4 is $O + C_3 = 10 + I$ (since
+        $C_4 = 1$), so $O + C_3 \geq 10$ and $O$ is large. $O = 8$ with $C_3 = 2$ gives
+        $I = 0 = N$; $O = 9$ with $C_3 = 1$ gives $I = 0 = N$. So \textbf{$O = 9$,
+        $C_3 = 2$, $I = 1$}.
+  \item \textbf{$T = 8$, $R = 7$, $X = 4$.} Column 3 is $2T + R + 1 = 20 + X$. Digits
+        $0,1,5,9$ are used, leaving $\{2,3,4,6,7,8\}$ for $T,R,X,F,S,Y$. $2T + R = 19 + X$
+        needs $T$ large: $T = 8$ gives $R = X + 3$, and $(R,X) = (7,4)$ is the only pair
+        left in the set.
+  \item \textbf{$F = 2$, $S = 3$, $Y = 6$.} $\{2,3,6\}$ remain. $S = F + 1$ forces
+        $F = 2$, $S = 3$, leaving $Y = 6$.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+{\color{acc}\bfseries Answer:} $T{=}8,\ E{=}5,\ N{=}0,\ F{=}2,\ O{=}9,\ R{=}7,\ Y{=}6,\ S{=}3,\ I{=}1,\ X{=}4$
+\quad$\rightarrow$\quad $850 + 850 + 29786 = 31486$. \quad
+{\color{sub}\footnotesize Unique.}
+
+{\color{sub}\footnotesize \mk{Where \emph{Insights} is loose here}: it writes
+``Let us take $R = 7$, then $X = 4$'' as though it were a free choice, and produces $T = 8$
+without saying where it came from. The set $\{2,3,4,6,7,8\}$ and the equation
+$2T + R = 19 + X$ actually force all three; the step above supplies the missing argument.}
+
+%-----------------------------------------------------------------------
+\creamq{LOGIC $+$ LOGIC $=$ PROLOG}{\m{3+4}\m{3+5}\m{7}}
+{\color{sub}\footnotesize \tP{3} \yr{\textbf{69 Bh} \m{7}, 72 Ma \m{3+4},
+\textbf{79 Ch} \m{3+5}} \gap$\cdot$\gap unique solution}
+
+\begin{asked}{\textbf{79 Ch} \textperiodcentered{} \m{3+5} \gap$\cdot$\gap also \textbf{69 Bh} \m{7}, 72 Ma \m{3+4}}
+Solve the following crypto-arithmetic problem through constraint satisfaction, showing all
+steps. Different letters denote different integers and identical letters denote the same
+integer.
+\begin{center}
+\begin{tabular}{r@{\hspace{2pt}}c@{\hspace{4pt}}c@{\hspace{4pt}}c@{\hspace{4pt}}c@{\hspace{4pt}}c@{\hspace{4pt}}c}
+   &   & L & O & G & I & C \\
+ $+$ &   & L & O & G & I & C \\
+\hline
+   & P & R & O & L & O & G \\
+\end{tabular}
+\end{center}
+\end{asked}
+
+\sbsr{0.44}{%
+\lead{Formulation}
+\begin{itemize}
+  \item $X = \{L,O,G,I,C,P,R\}$; $L, P \neq 0$; all seven differ.
+  \item The sum is $2 \times \text{LOGIC} = \text{PROLOG}$, columns right to left:
+  \begin{itemize}
+    \item $2C = 10a_1 + G$
+    \item $2I + a_1 = 10a_2 + O$
+    \item $2G + a_2 = 10a_3 + L$
+    \item $2O + a_3 = 10a_4 + O$
+    \item $2L + a_4 = 10a_5 + R$
+    \item $a_5 = P$
+  \end{itemize}
+\end{itemize}
+\vspace{2pt}
+\begin{center}
+\begin{tabular}{r@{\hspace{3pt}}c@{\hspace{4pt}}c@{\hspace{4pt}}c@{\hspace{4pt}}c@{\hspace{4pt}}c@{\hspace{4pt}}c}
+ & $a_5$ & $a_4$ & $a_3$ & $a_2$ & $a_1$ & \\
+ &  & L & O & G & I & C \\
+$+$ &  & L & O & G & I & C \\
+\hline
+ & P & R & O & L & O & G \\
+\end{tabular}
+\end{center}}{%
+\lead{The deduction chain}
+\begin{itemize}
+  \item \textbf{$P = 1$.} $2 \times$ a 5-digit number is under 200000, so the leading
+        carry $a_5 = P = 1$.
+  \item \textbf{$O = 0$, $a_3 = a_4 = 0$.} Column 4 is $2O + a_3 = 10a_4 + O$, i.e.\
+        $O + a_3 = 10a_4$. Either $a_4 = 0$, forcing $O = a_3 = 0$; or $a_4 = 1$ with
+        $O = 9, a_3 = 1$. \mk{Take the first branch and check the second at
+        the end} $-$ the second dies below.
+  \item \textbf{$I = 5$, $a_1 = 0$, $a_2 = 1$.} Column 2 is $2I + a_1 = 10a_2 + O = 10a_2$.
+        $a_2 = 0$ would give $I = 0 = O$, so $a_2 = 1$ and $2I + a_1 = 10$; $a_1$ must be
+        even, so $a_1 = 0$ and $I = 5$.
+  \item \textbf{$G = 2C$ and $L = 2G + 1$.} Column 1 with $a_1 = 0$ gives $G = 2C$.
+        Column 3 with $a_3 = 0$ gives $L = 2G + a_2 = 2G + 1 = 4C + 1$.
+  \item \textbf{$R = 8C - 8$.} Column 5 with $a_4 = 0$, $a_5 = 1$ gives $2L = 10 + R$, so
+        $R = 2L - 10 = 8C - 8$.
+  \item \textbf{$C = 2$.} $L = 4C + 1 \leq 9$ forces $C \leq 2$. $C = 0$ clashes with
+        $O$; $C = 1$ gives $L = 5 = I$. So \textbf{$C = 2$}, hence $G = 4$, $L = 9$,
+        $R = 8$.
+  \item \textbf{The other branch dies.} With $O = 9, a_3 = 1$: column 2 forces $I = 4$,
+        $a_1 = 1$; column 1 then gives $G = 2C - 10$ and column 3 gives $L = 2G - 10 =
+        4C - 30$, needing $C \geq 8$. $C = 8$ makes $R = 2L + 1 - 10 < 0$ and $C = 9$
+        clashes with $O$. \xmark
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+{\color{acc}\bfseries Answer:} $L{=}9,\ O{=}0,\ G{=}4,\ I{=}5,\ C{=}2,\ P{=}1,\ R{=}8$
+\quad$\rightarrow$\quad $90452 + 90452 = 180904$. \quad
+{\color{sub}\footnotesize Unique.}
+
+%-----------------------------------------------------------------------
+\creamq{EAT $+$ THAT $=$ APPLE}{\m{2+5}\m{2+6}}
+{\color{sub}\footnotesize \tP{2} \yr{\texttt{80 Ba} \m{2+6}, \textbf{80 Ch} \m{2+5}}
+\gap$\cdot$\gap \mk{the only puzzle whose addends differ in length}
+\gap$\cdot$\gap unique solution}
+
+\begin{asked}{\texttt{80 Ba} \textperiodcentered{} \m{2+6} \gap$\cdot$\gap also \textbf{80 Ch} \m{2+5}}
+What do you understand by Constraint Satisfaction Problem? Solve the following
+crypto-arithmetic problem through constraint satisfaction, showing all steps.
+\begin{center}
+\begin{tabular}{r@{\hspace{2pt}}c@{\hspace{4pt}}c@{\hspace{4pt}}c@{\hspace{4pt}}c@{\hspace{4pt}}c}
+   &   &   & E & A & T \\
+ $+$ &   & T & H & A & T \\
+\hline
+   & A & P & P & L & E \\
+\end{tabular}
+\end{center}
+\end{asked}
+
+\sbsr{0.44}{%
+\lead{Formulation}
+\begin{itemize}
+  \item $X = \{E,A,T,H,P,L\}$; $E, T, A \neq 0$; all six differ.
+  \item Columns right to left:
+  \begin{itemize}
+    \item $T + T = 10C_1 + E$
+    \item $A + A + C_1 = 10C_2 + L$
+    \item $E + H + C_2 = 10C_3 + P$
+    \item $T + C_3 = 10C_4 + P$
+    \item $C_4 = A$
+  \end{itemize}
+\end{itemize}
+\vspace{2pt}
+\begin{center}
+\begin{tabular}{r@{\hspace{3pt}}c@{\hspace{5pt}}c@{\hspace{5pt}}c@{\hspace{5pt}}c@{\hspace{5pt}}c}
+ & $C_4$ & $C_3$ & $C_2$ & $C_1$ & \\
+ &  &  & E & A & T \\
+$+$ &  & T & H & A & T \\
+\hline
+ & A & P & P & L & E \\
+\end{tabular}
+\end{center}}{%
+\lead{The deduction chain}
+\begin{itemize}
+  \item \textbf{$A = 1$.} A 3-digit plus a 4-digit number is at most
+        $999 + 9999 = 10998$, so the 5-digit answer begins with 1.
+  \item \textbf{$T = 9$.} The sum is at least 10000, so
+        $\text{THAT} \geq 10000 - 999 = 9001$, forcing $T = 9$.
+  \item \textbf{$E = 8$, $C_1 = 1$.} Column 1 is $9 + 9 = 18$, so $E = 8$ with a carry
+        of 1.
+  \item \textbf{$L = 3$, $C_2 = 0$.} Column 2 is $1 + 1 + 1 = 3$, so $L = 3$, no carry.
+  \item \textbf{$P = 0$, $C_3 = 1$.} Column 4 is $T + C_3 = 10C_4 + P$ with $C_4 = A = 1$,
+        i.e.\ $9 + C_3 = 10 + P$, so $P = C_3 - 1$. A carry is 0 or 1, so $C_3 = 1$ and
+        \textbf{$P = 0$}.
+  \item \textbf{$H = 2$.} Column 3 is $E + H + C_2 = 10C_3 + P$, i.e.\
+        $8 + H + 0 = 10 + 0$, so $H = 2$.
+  \item \mk{Every letter fell out of the two length observations.} No
+        case-splitting was needed at all, which is why this puzzle is worth doing first if
+        you are short of time.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+{\color{acc}\bfseries Answer:} $E{=}8,\ A{=}1,\ T{=}9,\ H{=}2,\ P{=}0,\ L{=}3$
+\quad$\rightarrow$\quad $819 + 9219 = 10038$. \quad
+{\color{sub}\footnotesize Unique.}
+
+%-----------------------------------------------------------------------
+\creamq{CROSS $+$ ROADS $=$ DANGER}{\m{2+6}}
+{\color{sub}\footnotesize \tP{1} \yr{\textbf{\texttt{81 Bh}} \m{2+6}} \gap$\cdot$\gap
+unique solution}
+
+\begin{asked}{\textbf{\texttt{81 Bh}} \textperiodcentered{} \m{2+6}}
+What do you understand by Constraint Satisfaction Problem? Discuss it, and list all the
+constraints. Solve the following crypto-arithmetic problem through constraint
+satisfaction, showing all steps.
+\begin{center}
+\begin{tabular}{r@{\hspace{2pt}}c@{\hspace{4pt}}c@{\hspace{4pt}}c@{\hspace{4pt}}c@{\hspace{4pt}}c@{\hspace{4pt}}c}
+   &   & C & R & O & S & S \\
+ $+$ &   & R & O & A & D & S \\
+\hline
+   & D & A & N & G & E & R \\
+\end{tabular}
+\end{center}
+\end{asked}
+
+\sbsr{0.44}{%
+\lead{Formulation}
+\begin{itemize}
+  \item $X = \{C,R,O,S,A,D,N,G,E\}$ \quad (9 letters, so one digit goes unused)
+  \item $C, R, D \neq 0$; all nine differ.
+  \item Columns right to left:
+  \begin{itemize}
+    \item $S + S = 10a_1 + R$
+    \item $S + D + a_1 = 10a_2 + E$
+    \item $O + A + a_2 = 10a_3 + G$
+    \item $R + O + a_3 = 10a_4 + N$
+    \item $C + R + a_4 = 10a_5 + A$
+    \item $a_5 = D$
+  \end{itemize}
+\end{itemize}}{%
+\lead{The deduction chain}
+\begin{itemize}
+  \item \textbf{$D = 1$.} Two 5-digit numbers cannot reach 200000, so the leading carry
+        $a_5 = D = 1$.
+  \item \textbf{$R$ is even.} $R$ is the last digit of $2S$, and $2S$ is even.
+  \item \textbf{$C + R + a_4 = A + 10$}, from the leftmost column with $a_5 = 1$. Since
+        $C, R \leq 9$, this needs $C$ and $R$ both large.
+  \item These three plus AllDiff leave a small search. Propagating them column by column
+        (the constraint-propagation loop of \S2.5) terminates on exactly one assignment,
+        below.
+  \item \mk{The column check, which is the part that earns the marks:}
+  \begin{itemize}
+    \item col 1: $3 + 3 = 6 = R$, \quad $a_1 = 0$ \checkmark
+    \item col 2: $3 + 1 + 0 = 4 = E$, \quad $a_2 = 0$ \checkmark
+    \item col 3: $2 + 5 + 0 = 7 = G$, \quad $a_3 = 0$ \checkmark
+    \item col 4: $6 + 2 + 0 = 8 = N$, \quad $a_4 = 0$ \checkmark
+    \item col 5: $9 + 6 + 0 = 15 = A + 10 = 5 + 10$, \quad $a_5 = 1 = D$ \checkmark
+  \end{itemize}
+  \item Digit 0 is the one left unused.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+{\color{acc}\bfseries Answer:} $C{=}9,\ R{=}6,\ O{=}2,\ S{=}3,\ A{=}5,\ D{=}1,\ N{=}8,\ G{=}7,\ E{=}4$
+\quad$\rightarrow$\quad $96233 + 62513 = 158746$. \quad
+{\color{sub}\footnotesize Unique.}
+
+%=======================================================================
+\T{2.N.2 Crypt-arithmetic: the seven puzzles with more than one answer}
+
+{\color{sub}\footnotesize These are set just as often as the unique ones, and a marker
+cannot be expecting a particular set of digits. \mk{Show the forced letters,
+name the free ones, choose values, and verify.} The counts below are from exhaustive
+search in \code{verify.py}.}
+
+\vspace{3pt}
+\begin{tabularx}{\textwidth}{@{}L{3.75cm}L{1.4cm}L{2.9cm}X@{}}
+\toprule
+\hrow \thead{Puzzle} & \thead{Answers} & \thead{Forced by the constraints} & \thead{A valid assignment, and why the rest is free} \\
+\midrule
+ONE $+$ ONE $+$ TWO $=$ FOUR
+  \newline {\footnotesize\color{sub}71 Ma, \textbf{73 Bh}, 80 Ash}
+  & \mk{107} & $F = 1$ only
+  & $O{=}6, N{=}4, E{=}2, T{=}3, W{=}8, F{=}1, U{=}7, R{=}0$: $642+642+386=1670$.
+    Eight letters, but only the leading-carry constraint bites. \\
+LOVE $+$ LOVE $=$ HATE
+  \newline {\footnotesize\color{sub}\texttt{81 Ba}}
+  & 42 & $E = 0$ only
+  & $L{=}3, O{=}5, V{=}6, E{=}0, H{=}7, A{=}1, T{=}2$: $3560+3560=7120$.
+    $E = 0$ because $2E$ must end in $E$ (rule 4). \\
+WRONG $+$ WRONG $=$ RIGHT
+  \newline {\footnotesize\color{sub}\textbf{70 Bh}, \textbf{77 Ch}}
+  & 21 & \mk{nothing}
+  & $W{=}3, R{=}7, O{=}0, N{=}8, G{=}1, I{=}4, H{=}6, T{=}2$: $37081+37081=74162$. \\
+SWIM $+$ WEAR $=$ RELAX
+  \newline {\footnotesize\color{sub}\textbf{74 Bh}, \textbf{81 Ch}}
+  & 16 & $R = 1$, $I = 0$
+  & $S{=}9, W{=}4, I{=}0, M{=}5, E{=}3, A{=}2, R{=}1, L{=}7, X{=}6$: $9405+4321=13726$.
+    $R=1$ is the leading carry. \\
+ONE $+$ ONE $=$ TWO
+  \newline {\footnotesize\color{sub}\emph{Insights} \S2.3}
+  & 16 & \mk{nothing}
+  & $O{=}2, N{=}3, E{=}1, T{=}4, W{=}6$: $231+231=462$. This is the book's own worked
+    example, and it presents its answer as though it were the only one. \\
+RIGHT $+$ RIGHT $=$ WRONG
+  \newline {\footnotesize\color{sub}69 Po}
+  & 11 & \mk{nothing}
+  & $R{=}4, I{=}2, G{=}0, H{=}6, T{=}5, W{=}8, O{=}1, N{=}3$: $42065+42065=84130$. \\
+TWO $+$ TWO $=$ FOUR
+  \newline {\footnotesize\color{sub}\textbf{78 Ch}}
+  & 7 & $F = 1$ only
+  & $T{=}7, W{=}3, O{=}4, F{=}1, U{=}6, R{=}8$: $734+734=1468$. \\
+\bottomrule
+\end{tabularx}
+
+\penalty0\vspace{3pt}
+\sbs{%
+\lead{How to write one of these up for full marks}
+\begin{itemize}
+  \item \textbf{1.} Give $X$, $D$ and $C$ with the carry equations, exactly as for a unique
+        puzzle. \mk{This is most of the mark scheme.}
+  \item \textbf{2.} Derive whatever \emph{is} forced. There is always something: a leading
+        carry, or a $2X$ ending in $X$.
+  \item \textbf{3.} Say plainly that the constraints do not determine the rest, then pick
+        values that satisfy every column and the AllDiff rule.
+  \item \textbf{4.} \textbf{Verify by doing the addition.} One line, and it converts a
+        guess into a demonstrated answer.
+\end{itemize}}{%
+\lead{Worked example of step 2: LOVE $+$ LOVE $=$ HATE}
+\begin{itemize}
+  \item Column 1: $E + E = 10C_1 + E \Rightarrow E = 10C_1$. A digit, so
+        \textbf{$E = 0$, $C_1 = 0$}.
+  \item Column 2: $2V + 0 = 10C_2 + T$, so $T$ is even.
+  \item Column 3: $2O + C_2 = 10C_3 + A$.
+  \item Column 4: $2L + C_3 = H$, and $H \leq 9$ forces $\mathbf{L \leq 4}$.
+  \item That is everything the constraints give. $L \in \{1,2,3,4\}$ and the rest follows
+        the choice. Take $L = 3, O = 5, V = 6$: then $T = 2$, $A = 1$, $H = 7$, and
+        $3560 + 3560 = 7120$ \checkmark
+\end{itemize}}
+
+%-----------------------------------------------------------------------
+\creamq{AB $+$ CD $=$ AAA: what values can B take?}{\m{4}}
+{\color{sub}\footnotesize \yr{\textbf{\textit{76 Bh}} \m{4}} \gap$\cdot$\gap
+\mk{not a solve-it question}: it asks what is \emph{possible}, so the answer
+is a set and a justification}
+
+\begin{asked}{\textbf{\textit{76 Bh}} \textperiodcentered{} \m{4}}
+In a correctly worked out crypt-arithmetic problem AB $+$ CD $=$ AAA, what could be the
+possible values of B? Justify your answer.
+\end{asked}
+
+\sbs{%
+\lead{Reasoning}
+\begin{itemize}
+  \item \textbf{$A = 1$.} Two 2-digit numbers sum to at most $99 + 99 = 198$. The only
+        3-digit repdigit AAA in range is \textbf{111}, so $A = 1$.
+  \item So $\text{AB} = 10 + B$ and $\text{CD} = 111 - (10 + B) = \mathbf{101 - B}$.
+  \item \textbf{$B \geq 3$.} CD must be a 2-digit number, so $101 - B \leq 99$, giving
+        $B \geq 2$. And $B = 2$ makes $\text{CD} = 99$, i.e.\ $C = D = 9$, which the
+        AllDiff rule forbids. So $B \geq 3$.
+  \item \textbf{$B \leq 8$.} For $B$ from 3 to 9, $\text{CD} = 101 - B$ runs
+        $98, 97, \dots, 92$, so $C = 9$ throughout. $B = 9$ would make $B = C = 9$.
+        \mk{This is the case that is easy to miss}, and it is the whole
+        difficulty of the question.
+  \item $B = 1$ is out because $A = 1$, and $B = 0$ would need $\text{CD} = 101$.
+\end{itemize}}{%
+\lead{\mk{Answer: $B \in \{3, 4, 5, 6, 7, 8\}$}, six values}
+\vspace{-1pt}
+\begin{tabularx}{\linewidth}{@{}L{0.9cm}L{1.2cm}L{1.2cm}X@{}}
+\toprule
+\hrow \thead{B} & \thead{AB} & \thead{CD} & \thead{Check} \\
+\midrule
+3 & 13 & 98 & $13 + 98 = 111$ \checkmark \\
+4 & 14 & 97 & $14 + 97 = 111$ \checkmark \\
+5 & 15 & 96 & $15 + 96 = 111$ \checkmark \\
+6 & 16 & 95 & $16 + 95 = 111$ \checkmark \\
+7 & 17 & 94 & $17 + 94 = 111$ \checkmark \\
+8 & 18 & 93 & $18 + 93 = 111$ \checkmark \\
+\midrule
+2 & 12 & 99 & \xmark\ $C = D = 9$ \\
+9 & 19 & 92 & \xmark\ $B = C = 9$ \\
+\bottomrule
+\end{tabularx}
+\vspace{2pt}
+\begin{itemize}
+  \item In every case $A = 1$ and $C = 9$; only $B$ and $D$ move, and they move together
+        since $D = 8 - (B - 3)$.
+\end{itemize}}
+
+%=======================================================================
+\T{2.N.3 The water jug problem}
+
+\sbsr{0.55}{%
+\lead{The eight production rules, state $(x, y)$}
+{\color{sub}\footnotesize $x$ is the contents of the larger jug, $y$ of the smaller.
+Written here for the 4-gallon and 3-gallon pair; swap the capacities for any other
+version. This is the rule set \emph{Insights} and the lecture decks both use, and it is
+what ``write down the production rules'' means.}
+\vspace{2pt}
+\begin{tabularx}{\linewidth}{@{}L{0.7cm}L{3.5cm}L{2.0cm}X@{}}
+\toprule
+\hrow \thead{\#} & \thead{Condition} & \thead{Result} & \thead{Meaning} \\
+\midrule
+1 & $(x,y)$ and $x < 4$ & $(4, y)$ & Fill the 4-gallon jug \\
+2 & $(x,y)$ and $y < 3$ & $(x, 3)$ & Fill the 3-gallon jug \\
+3 & $(x,y)$ and $x > 0$ & $(0, y)$ & Empty the 4-gallon jug on the ground \\
+4 & $(x,y)$ and $y > 0$ & $(x, 0)$ & Empty the 3-gallon jug on the ground \\
+5 & $(x,y)$ and $x + y \geq 4$ and $y > 0$ & $(4,\ y - (4 - x))$ & Pour from the 3 into the 4 until the 4 is full \\
+6 & $(x,y)$ and $x + y \geq 3$ and $x > 0$ & $(x - (3 - y),\ 3)$ & Pour from the 4 into the 3 until the 3 is full \\
+7 & $(x,y)$ and $x + y \leq 4$ and $y > 0$ & $(x + y,\ 0)$ & Pour all of the 3 into the 4 \\
+8 & $(x,y)$ and $x + y \leq 3$ and $x > 0$ & $(0,\ x + y)$ & Pour all of the 4 into the 3 \\
+\bottomrule
+\end{tabularx}}{%
+\lead{Formulating it as a state space}
+\begin{itemize}
+  \item \textbf{State}: the ordered pair $(x, y)$, $0 \leq x \leq 4$, $0 \leq y \leq 3$.
+        \textbf{20 states} in all.
+  \item \textbf{Initial state}: $(0, 0)$, both jugs empty.
+  \item \textbf{Goal state}: $(2, y)$ for any $y$ $-$ the question asks only for 2 gallons
+        \emph{in the 4-gallon jug}, so $y$ is unconstrained.
+  \item \textbf{Operators}: the eight rules alongside.
+  \item \textbf{Path cost}: 1 per rule application.
+  \item \mk{Why the state is just a pair}: the jugs have no markings, so
+        nothing about \emph{how} the water got there can matter. This is the whole point of
+        the exercise and it is worth one sentence in the answer.
+  \item \textbf{Problem type}: \textbf{ignorable} (\S2.3) $-$ a wrong move can simply be
+        emptied out, so no backtracking machinery is needed.
+\end{itemize}}
+
+%-----------------------------------------------------------------------
+\creamq{2 gallons in the 4-gallon jug, from a 4 and a 3}{\m{4}\m{2+2+4}}
+{\color{sub}\footnotesize \tP{2} \yr{\textbf{\textit{77 Ch}} \m{2+2+4},
+\textbf{\textit{71 Bh}} \m{4}} \gap$\cdot$\gap the classic; \emph{Insights} \S2.2.1
+works this one}
+
+\begin{asked}{\textbf{\textit{77 Ch}} \textperiodcentered{} \m{2+2+4}}
+Assume you are given two jugs, a 4-gallon one and a 3-gallon one, and a pump which has
+unlimited water. How can you get exactly 2 gallons of water in the 4-gallon jug? Formalize
+the problem, write down Production Rules and draw the Search Tree for the water jug
+problem.
+\end{asked}
+
+\sbs{%
+\lead{Solution, following \emph{Insights}: rules 2, 7, 2, 5, 3, 7}
+\vspace{-1pt}
+\begin{tabularx}{\linewidth}{@{}L{1.1cm}L{1.5cm}L{0.9cm}X@{}}
+\toprule
+\hrow \thead{Step} & \thead{State $(x,y)$} & \thead{Rule} & \thead{Action} \\
+\midrule
+start & $(0, 0)$ & $-$ & both jugs empty \\
+1 & $(0, 3)$ & 2 & fill the 3-gallon jug \\
+2 & $(3, 0)$ & 7 & pour all of it into the 4-gallon jug \\
+3 & $(3, 3)$ & 2 & fill the 3-gallon jug again \\
+4 & $(4, 2)$ & 5 & pour into the 4 until it is full; the 4 takes 1, leaving \textbf{2} \\
+5 & $(0, 2)$ & 3 & empty the 4-gallon jug \\
+6 & $\mathbf{(2, 0)}$ & 7 & pour the 2 gallons into the 4-gallon jug \\
+\bottomrule
+\end{tabularx}
+\vspace{2pt}
+\begin{itemize}
+  \item \textbf{6 rule applications}, and breadth-first search confirms no shorter path
+        exists.
+\end{itemize}}{%
+\lead{Search tree}
+\begin{itemize}
+  \item From $(0,0)$ only two rules apply, 1 and 2, so the tree has \textbf{two branches
+        at the root}. The 6-step path above is the left branch; the right branch (fill the
+        4 first) reaches $(2,3)$ in 6 steps too.
+  \item \mk{Draw it as this, not as a bush} $-$ show the two root
+        branches and expand the one that succeeds:
+\end{itemize}
+\vspace{2pt}
+{\footnotesize
+$(0,0)$ \\
+\hspace*{0.6em}$\rightarrow$ [rule 1] $(4,0) \rightarrow (1,3) \rightarrow (1,0)
+\rightarrow (0,1) \rightarrow (4,1) \rightarrow \mathbf{(2,3)}$ \\
+\hspace*{0.6em}$\rightarrow$ [rule 2] $(0,3) \rightarrow (3,0) \rightarrow (3,3)
+\rightarrow (4,2) \rightarrow (0,2) \rightarrow \mathbf{(2,0)}$
+}
+\vspace{2pt}
+\begin{itemize}
+  \item \mk{Both are correct and both are 6 moves.} Either scores full
+        marks; say which you are drawing.
+  \item {\color{sub}\footnotesize \emph{Insights} draws this tree with a self-loop child
+        at each level, labelled $(x,y) \rightarrow (x{+}0, y{+}0)$. That is not a legal
+        successor $-$ no rule leaves the state unchanged $-$ and it should be left out.}
+\end{itemize}}
+
+%-----------------------------------------------------------------------
+\creamq{7 gallons in the 9-gallon jug, from a 3, a 5 and a 9}{\m{2+1+2+3}}
+{\color{sub}\footnotesize \tP{1} \yr{\textbf{\texttt{79 Bh}} \m{2+1+2+3}} \gap$\cdot$\gap
+\mk{the hard variant}: three jugs, and the pump may fill only the smallest}
+
+\begin{asked}{\textbf{\texttt{79 Bh}} \textperiodcentered{} \m{2+1+2+3}}
+What are the steps of Problem solving? You are given three empty jugs: a 3-gallon, a
+5-gallon and a 9-gallon, and a pump can fill water only in the 3-gallon jug. How do you get
+exactly 7 gallons in the 9-gallon jug? Formalize the problem, write production rules and
+draw the search tree.
+\end{asked}
+
+\sbs{%
+\lead{What makes this one different}
+\begin{itemize}
+  \item \mk{Only the 3-gallon jug may be filled from the pump.} So rule 1
+        applies to jug A alone; there is no ``fill the 5'' and no ``fill the 9''.
+  \item Every gallon that reaches the 9-gallon jug arrives in multiples of 3, \emph{unless}
+        the 5-gallon jug is used to strand a remainder. $9 = 3 \times 3$, so a direct
+        route gives only 3, 6 or 9 gallons: \textbf{the 5-gallon jug is not optional, it
+        is the whole trick}.
+  \item \textbf{State}: the triple $(a, b, c)$ for the 3, 5 and 9-gallon jugs.
+        \textbf{Initial} $(0,0,0)$, \textbf{goal} $(a, b, 7)$.
+  \item \textbf{Operators}: fill A from the pump; empty any jug; pour $i$ into $j$ until
+        $i$ is empty or $j$ is full.
+\end{itemize}}{%
+\lead{Solution, 9 moves (shortest)}
+\vspace{-1pt}
+\begin{tabularx}{\linewidth}{@{}L{0.7cm}L{2.1cm}X@{}}
+\toprule
+\hrow \thead{\#} & \thead{$(a,b,c)$} & \thead{Action} \\
+\midrule
+ & $(0,0,0)$ & start \\
+1 & $(3,0,0)$ & fill A from the pump \\
+2 & $(0,3,0)$ & pour A into B \\
+3 & $(3,3,0)$ & fill A \\
+4 & $(1,5,0)$ & pour A into B; B takes 2 and is full, \mk{leaving 1 in A} \\
+5 & $(0,5,1)$ & pour A into C \\
+6 & $(3,5,1)$ & fill A \\
+7 & $(0,5,4)$ & pour A into C \\
+8 & $(3,5,4)$ & fill A \\
+9 & $(0,5,\mathbf{7})$ & pour A into C \\
+\bottomrule
+\end{tabularx}
+\vspace{2pt}
+\begin{itemize}
+  \item \mk{The whole idea is step 4}: fill B to strand exactly 1 gallon in
+        A, tip that 1 into C, then add $3 + 3$ on top. $1 + 3 + 3 = 7$.
+  \item B is never emptied after step 4; it has done its job.
+\end{itemize}}
+
+%-----------------------------------------------------------------------
+\creamq{1 litre, from a 5-litre and a 2-litre jug}{\m{8}}
+{\color{sub}\footnotesize \tP{1} \yr{81 Ash \m{8}} \gap$\cdot$\gap
+this paper asks \mk{three things at once}: is it well defined, list the
+attributes for designing an intelligent agent, and solve it. Answer all three}
+
+\begin{asked}{81 Ash \textperiodcentered{} \m{8}}
+You are given two jugs, a 5-litre one and a 2-litre one. Neither has any measuring markers
+on it. There is a pump that can be used to fill the jugs with water. You are required to
+measure exactly 1 litre of water. Is this a well-defined problem? Justify your argument and
+list all the attributes to design an intelligent agent. Solve this problem by specifying
+states and the operations used.
+\end{asked}
+
+\sbsr{0.46}{%
+\lead{Part 1: is it well defined? \mk{Yes}}
+\begin{itemize}
+  \item \textbf{Initial state} given: both jugs empty, $(0,0)$.
+  \item \textbf{Operators} given: fill from the pump, empty on the ground, pour one into
+        the other.
+  \item \textbf{Goal test} given and mechanical: does either jug hold exactly 1 litre?
+  \item \textbf{Path cost}: 1 per operation.
+  \item Every clause of \S2.2 is satisfied, so it is well defined. It is also
+        \textbf{solvable}, since $\gcd(5,2) = 1$ divides 1.
+\end{itemize}
+\lead{Part 2: attributes for designing an intelligent agent}
+\begin{itemize}
+  \item This is asking for \textbf{PEAS} plus the environment properties (Ch\,1):
+  \begin{itemize}
+    \item \textbf{P}: measure exactly 1 litre, in the fewest operations, spilling least.
+    \item \textbf{E}: the two jugs, the pump, the ground.
+    \item \textbf{A}: fill, empty, pour.
+    \item \textbf{S}: whether a jug is full, empty, or neither.
+  \end{itemize}
+  \item Environment: \textbf{fully observable, deterministic, sequential, static, discrete,
+        single agent.} A \textbf{goal-based agent} is the right type, because the answer
+        needs a \emph{sequence} planned ahead, not a reflex.
+\end{itemize}}{%
+\lead{Part 3: solution, 4 moves (shortest)}
+\vspace{-1pt}
+\begin{tabularx}{\linewidth}{@{}L{0.7cm}L{1.7cm}L{0.8cm}X@{}}
+\toprule
+\hrow \thead{\#} & \thead{$(x,y)$} & \thead{Rule} & \thead{Action} \\
+\midrule
+ & $(0,0)$ & $-$ & start \\
+1 & $(5,0)$ & 1 & fill the 5-litre jug \\
+2 & $(3,2)$ & 6 & pour into the 2-litre jug until full \\
+3 & $(3,0)$ & 4 & empty the 2-litre jug \\
+4 & $\mathbf{(1,2)}$ & 6 & pour again; the 2 takes 2 more, \mk{leaving 1 in the 5} \\
+\bottomrule
+\end{tabularx}
+\vspace{2pt}
+\begin{itemize}
+  \item \textbf{The 1 litre ends up in the 5-litre jug}, which is what the question asks
+        for: it says ``measure exactly 1 litre'', not ``in the 2-litre jug''.
+  \item State space: $6 \times 3 = 18$ states.
+  \item \mk{The general rule worth one extra mark}: with jugs of capacity
+        $m$ and $n$, exactly the multiples of $\gcd(m,n)$ up to $\max(m,n)$ are
+        measurable. Here $\gcd(5,2) = 1$, so \emph{every} whole number of litres from 0 to
+        5 can be measured.
+\end{itemize}}
+
+%=======================================================================
+\T{2.N.4 Farmer, wolf, goat and cabbage}
+
+\creamq{Formulate the river crossing as search and solve it}{\m{8}}
+{\color{sub}\footnotesize \tP{1} \yr{73 Ma \m{8}} \gap$\cdot$\gap
+the standard example of a problem whose interest is entirely in the
+\mk{safety precondition}}
+
+\begin{asked}{73 Ma \textperiodcentered{} \m{8}}
+A farmer has a goat, a wolf and a cabbage on the west side of a river and wants to move
+everything to the east side. The boat holds the farmer and one other thing. The wolf eats
+the goat and the goat eats the cabbage if left alone. Formulate this puzzle as search and
+solve it (any method); draw the search tree and final solution.
+\end{asked}
+
+\sbs{%
+\lead{Formulation}
+\begin{itemize}
+  \item \textbf{State}: the 4-tuple $(F, W, G, C)$ giving which bank the Farmer, Wolf,
+        Goat and Cabbage are on. Write $0$ for west, $1$ for east.
+  \item \textbf{Initial state} $(0,0,0,0)$; \textbf{goal state} $(1,1,1,1)$.
+  \item \textbf{Operators}: the farmer crosses, taking nothing or exactly one item that is
+        currently on his own bank. \textbf{Four operators.}
+  \item \textbf{Safety constraint} (this is what makes it a puzzle): a state is illegal if
+  \begin{itemize}
+    \item the goat and the wolf are together without the farmer, or
+    \item the goat and the cabbage are together without the farmer.
+  \end{itemize}
+  \item \textbf{Path cost}: 1 per crossing.
+  \item \textbf{State space}: $2^4 = 16$ states in total, of which
+        \mk{only 10 are safe and reachable}. Six are pruned by the
+        constraint, and that pruning is the answer to ``how does a constraint reduce the
+        search''.
+\end{itemize}}{%
+\lead{Solution: 7 crossings}
+\vspace{-1pt}
+\begin{tabularx}{\linewidth}{@{}L{0.7cm}L{3.2cm}X@{}}
+\toprule
+\hrow \thead{\#} & \thead{$(F,W,G,C)$} & \thead{Crossing} \\
+\midrule
+ & W W W W & start, everything on the west \\
+1 & E W E W & take the \textbf{goat} across \\
+2 & W W E W & return \textbf{alone} \\
+3 & E E E W & take the \textbf{wolf} across \\
+4 & W E W W & \mk{bring the goat back} \\
+5 & E E W E & take the \textbf{cabbage} across \\
+6 & W E W E & return \textbf{alone} \\
+7 & \textbf{E E E E} & take the \textbf{goat} across \\
+\bottomrule
+\end{tabularx}
+\vspace{2pt}
+\begin{itemize}
+  \item \mk{Step 4 is the step everyone misses.} Nothing else works: after
+        the wolf is delivered, the goat cannot stay with it, so it must come back and wait
+        while the cabbage goes over.
+  \item The goat is the only item that is dangerous \emph{in both directions}, which is
+        why it moves first, and why it is the one that gets brought back.
+  \item \textbf{7 is the minimum.} There is a mirror-image solution that takes the cabbage
+        third instead of the wolf; it is also 7 crossings and equally correct.
+\end{itemize}}
+
+%=======================================================================
+\T{2.N.5 Tic-tac-toe as a state space}
+
+\creamq{Describe tic-tac-toe in terms of state space, data structure and goal}{\m{7}}
+{\color{sub}\footnotesize \tP{1} \yr{\textit{72 Ma} \m{7}} \gap$\cdot$\gap
+the paper asks for \mk{complete state space, efficient data structures and
+goal}, i.e.\ three named parts. Answer in three parts}
+
+\begin{asked}{\textit{72 Ma} \textperiodcentered{} \m{7}}
+Consider a Tic-Tac-Toe game playing as a problem. Prepare a brief description of your
+problem in terms of complete state-space, efficient data structures and goal, which are to
+be used for a machine to play that game.
+\end{asked}
+
+\sbs{%
+\lead{1. Complete state space}
+\begin{itemize}
+  \item A state is an assignment of \textbf{blank}, \textbf{X} or \textbf{O} to each of
+        the 9 squares, plus whose turn it is.
+  \item \textbf{Naive count}: $3^9 = \mathbf{19{,}683}$ boards. \mk{Most are
+        not reachable} $-$ they have five O's and no X's, or two completed lines.
+  \item \textbf{Reachable, legal count}: $\mathbf{5{,}478}$ states, counting every board
+        that can arise in a real game with X moving first and play stopping at a win.
+  \item \textbf{Branching factor} 9 at the root, falling by one each ply; at most
+        $9! = 362{,}880$ complete play sequences, which is small enough to search
+        \textbf{exhaustively}. That is the point worth making: tic-tac-toe is one of the
+        few games where minimax can see to the end of the game.
+  \item \textbf{Initial state}: the empty board. \textbf{Operators}: place your mark on
+        any blank square. \textbf{Problem type}: \textbf{irrecoverable} (\S2.3) $-$ a
+        placed mark cannot be lifted, so the machine must plan before moving.
+\end{itemize}}{%
+\lead{2. Efficient data structure}
+\begin{itemize}
+  \item \textbf{A 9-element vector} indexed 1--9, holding 0 for blank, 1 for X, 2 for O.
+        Simple, and a move is one array write.
+  \item \mk{The efficient version}: two \textbf{9-bit masks}, one for X and
+        one for O. Then
+  \begin{itemize}
+    \item a legal-move test is a bitwise AND against the union,
+    \item a win test is \code{mask \& line == line} over the \textbf{8 winning lines}
+          (3 rows, 3 columns, 2 diagonals), which is 8 AND operations and no loops,
+    \item the whole board fits in one integer, so states can be hashed and cached.
+  \end{itemize}
+  \item A move-indexed \textbf{lookup table} of best replies is the fastest of all, but it
+        is the table-driven agent of Ch\,1: correct, and impractical to build by hand.
+\end{itemize}
+\lead{3. Goal}
+\begin{itemize}
+  \item \textbf{Goal test}: any of the 8 lines is filled with one player's mark, or all 9
+        squares are taken (a draw).
+  \item \textbf{Utility}: $+1$ win, $0$ draw, $-1$ loss, which is what minimax (\S3.4)
+        needs.
+  \item \mk{The honest closing line}: with both players optimal, tic-tac-toe
+        is a \textbf{forced draw}. The machine's real goal is therefore \emph{never to
+        lose}, and to win only when the opponent errs.
+\end{itemize}}

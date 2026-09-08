@@ -74,8 +74,14 @@ def main():
             continue
         stem, pretty = TARGETS[n]
         print(f"--- building {n}")
+        # errors="replace" on purpose: tectonic emits bytes the Windows ANSI
+        # codepage cannot decode, and without this the reader thread dies with
+        # a UnicodeDecodeError. The build still produced a PDF, but the error
+        # and @SBS-TOO-TALL scans below then ran on truncated output and passed
+        # silently -- a failing build that reports success.
         r = subprocess.run([tex, "--print", stem + ".tex"], cwd=HERE,
-                           capture_output=True, text=True)
+                           capture_output=True, text=True,
+                           encoding="utf-8", errors="replace")
         out = (r.stdout or "") + (r.stderr or "")
         err = [l for l in out.splitlines() if l.lower().startswith("error")]
         if err:

@@ -108,7 +108,12 @@ def main():
         if not fn.lower().endswith(".pdf"):
             continue
         for kind, gap, pg, n, top in audit(os.path.join(OUT, fn), cut):
+            # "Ch2 - ... - Solved Problems.pdf" and "Ch2 - ....pdf" both start
+            # "Ch2", so without the suffix the report cannot say which file a
+            # page belongs to.
             name = fn.split(" - ")[0]
+            if "Solved Problems" in fn:
+                name += "-num"
             (stranded if kind else gaps).append((gap, name, pg, n, kind, top))
 
     if stranded:

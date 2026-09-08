@@ -1,0 +1,469 @@
+%=======================================================================
+%  CHAPTER 2 — PROBLEM SOLVING  (7 hrs)
+%=======================================================================
+\section{Problem Solving}
+
+{\color{sub}\footnotesize 7 hrs \gap$\cdot$\gap asked in \mk{all 41 papers}
+\gap$\cdot$\gap 4 syllabus sub-topics \gap$\cdot$\gap 366 marks, 10.8\,\% of every mark
+ever set \gap$\cdot$\gap \mk{heavy solved-problem chapter}: see
+\emph{Ch2 -- Problem Solving -- Solved Problems}.}
+
+\lead{Read this first:}
+\begin{itemize}
+  \item \mk{One question dominates this chapter and the whole subject:}
+        \textbf{solve a crypt-arithmetic puzzle by constraint satisfaction} \tS{31}.
+        \textbf{31 of the 41 papers} set it, for 6 to 8 marks, and it is almost always
+        preceded by a 1 or 2 mark \emph{``what is a CSP''} \tS{12}. Together that is
+        \textbf{8 to 9 marks in nearly every paper}, from one technique.
+  \item Thirteen different puzzles have been set. They are all worked in the companion
+        file. \textbf{BASE $+$ BALL $=$ GAMES} (8 papers) and \textbf{SEND $+$ MORE $=$
+        MONEY} (6) lead.
+  \item \mk{Seven of the thirteen puzzles have more than one valid answer};
+        ONE $+$ ONE $+$ TWO $=$ FOUR has \textbf{107}. So the marks are in
+        \textbf{the column-by-column constraint reasoning}, not in the digits. Write the
+        variables, the domains, the constraints and the carries, then reason. An answer
+        with no working scores badly even when the arithmetic is right.
+  \item The rest of the chapter is four small, reliable topics:
+        \textbf{well-defined problem} \tF{7}, \textbf{state space and the steps of problem
+        solving} \tF{5}, \textbf{production system} \tF{5}, and the
+        \textbf{water-jug} formulation \tF{4}.
+  \item Pairs the examiner reliably asks together: \textbf{well-defined problem $+$ a
+        water-jug or crypt-arithmetic instance}, and \textbf{``what is a CSP'' $+$ the
+        puzzle}. Almost nothing here is ever asked alone.
+  \item \mk{Game playing is set up here and answered in Ch\,3.} This chapter
+        owes you only the \emph{definition} of a game as a search problem; minimax and
+        alpha-beta belong to \S3.4.
+\end{itemize}
+
+\hr
+
+%-----------------------------------------------------------------------
+\T{2.1 Problem solving and the state space}
+
+\Q{Discuss the steps of problem solving. What is state space, successor function, goal test, path cost?}{\m{2}\m{3}}
+{\color{sub}\footnotesize \tF{5} \yr{\textbf{\texttt{82 Bh}} \m{3}, \texttt{82 Ba} \m{2},
+82 Ka \m{2}, \textbf{81 Ch} \m{3}, \textbf{\textit{76 Bh}} \m{3}} \gap$\cdot$\gap
+\mk{a 2 or 3 mark opener}, never more. Four steps, five terms, done}
+
+\sbs{%
+\lead{The four steps of problem solving}
+\begin{itemize}
+  \item \textbf{1. Goal formulation} $-$ decide which world states count as success.
+        Without it the agent has no way to prefer one action over another.
+  \item \textbf{2. Problem formulation} $-$ decide what states and actions to consider:
+        the initial state, the successor function, the goal test and the path cost.
+  \item \textbf{3. Searching} $-$ find a sequence of actions leading from the initial
+        state to a goal state, and choose the best such sequence. This is Ch\,3.
+  \item \textbf{4. Execution} $-$ carry out the returned solution.
+  \item \mk{Order matters and is often the mark}: goal before formulation,
+        and the whole search happens \emph{before} any action is executed.
+\end{itemize}
+\lead{State space representation}
+\begin{itemize}
+  \item A \textbf{state space} is a set of \textbf{nodes}, one per state of the problem,
+        joined by \textbf{arcs} representing the legal moves from one state to another,
+        with a designated \textbf{initial state} and \textbf{goal state}.
+  \item When a problem is defined with \emph{all} its states, it is a
+        \textbf{complete state space}.
+  \item A state space is drawn as a \textbf{directed graph}, or a \textbf{tree} when no
+        state repeats. Nodes are search states, arcs are the operators.
+\end{itemize}}{%
+\lead{The five terms, with the 8-puzzle as the example}
+\vspace{-1pt}
+\begin{tabularx}{\linewidth}{@{}L{2.15cm}X@{}}
+\toprule
+\hrow \thead{Term} & \thead{Means, and for the 8-puzzle} \\
+\midrule
+\textbf{State} & A configuration of the world the agent may be in. \emph{The positions of the eight tiles and the blank.} \\
+\textbf{Initial state} & Where the agent starts. \emph{The given starting board.} \\
+\textbf{Successor function} & Given a state, returns the set of $\langle$action, resulting state$\rangle$ pairs reachable in one step. \emph{Move the blank left, right, up or down.} \\
+\textbf{Goal test} & Decides whether a state is a goal. \emph{Does the board match the given goal board?} \\
+\textbf{Path cost} & The sum of the step costs along a path. \emph{1 per move, so the cost is the number of moves.} \\
+\bottomrule
+\end{tabularx}
+\vspace{2pt}
+\begin{itemize}
+  \item A \textbf{solution} is a sequence of actions from the initial state to a goal
+        state. An \textbf{optimal solution} is one of lowest path cost.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+\sbs{%
+\lead{Why enumerating rules by hand does not work}
+\begin{itemize}
+  \item \textbf{The chess example} \yr{(\emph{Insights} \S2.1.1)}. A knight at
+        $(4,4)$ can move to $(2,3)$, $(2,5)$, $(3,2)$, $(3,6)$, $(5,2)$, $(5,6)$, $(6,3)$
+        and $(6,5)$.
+  \item Writing that out as a rule for \emph{every} square gives an enormous rule set, and
+        a chess position has around $10^{120}$ complete game paths.
+  \item \mk{The fix, and the point of the example}: describe the move as a
+        \textbf{pattern} rather than a list, i.e.\ current position $\pm$ (2 vertical $+$
+        1 horizontal) or (1 vertical $+$ 2 horizontal). One rule replaces sixty-four.
+  \item This is exactly why the next section exists: a \textbf{production system}
+        is a set of patterns, not a table of cases.
+\end{itemize}}{%
+\lead{Problem space, and how to answer ``define a problem''}
+\begin{itemize}
+  \item \textbf{Problem space} $=$ every state reachable, plus every action that can be
+        taken, for a given goal. \emph{Eg} the highways and cities of Nepal, when the
+        problem is ``get from Kathmandu to Dharan''.
+  \item \mk{The four-line answer that scores full marks} for
+        \emph{``what are the criteria for defining a problem''} \yr{(82 Ka \m{2})}:
+  \begin{itemize}
+    \item define the \textbf{state space} the problem lives in,
+    \item specify the \textbf{initial state},
+    \item specify the \textbf{goal state} or a goal test,
+    \item specify the \textbf{operators}, with their preconditions and effects.
+  \end{itemize}
+  \item Add \textbf{path cost} if the question mentions optimality or ``best''.
+\end{itemize}}
+
+%-----------------------------------------------------------------------
+\T{2.2 Well-defined problems}
+
+\Q{What makes a problem well defined? List the characteristics}{\m{2}\m{3}\m{4}\m{8}}
+{\color{sub}\footnotesize \tF{7} \yr{\textbf{71 Bh} \m{3+4}, 75 Ba \m{2}, 80 Ash \m{2},
+\textbf{78 Ch} \m{2}, \texttt{81 Ba} \m{2}, \textbf{75 Bh} \m{2}, 81 Ash \m{8}}
+\gap$\cdot$\gap \mk{almost always a 2-mark opener} to a water-jug or
+crypt-arithmetic question, so answer it in four bullets and move on. Only 81 Ash makes it
+the whole 8-mark question}
+
+\sbs{%
+\lead{Definition}
+\begin{itemize}
+  \item A problem is \textbf{well defined} when the agent knows, before it starts,
+        exactly what the problem consists of. Formally, it is composed of:
+  \begin{itemize}
+    \item an \textbf{initial state},
+    \item the \textbf{actions}, given by a successor function,
+    \item a \textbf{goal test}, and
+    \item a \textbf{path cost} function.
+  \end{itemize}
+  \item Equivalently: the starting position, the allowable operations and the goal state
+        are all clearly specified.
+\end{itemize}
+\lead{Characteristics \yr{(81 Ash asks for these by name, \m{8})}}
+\begin{itemize}
+  \item \textbf{Unambiguous}: one reading of what is being asked.
+  \item \textbf{Complete}: everything needed to solve it is stated; nothing has to be
+        assumed.
+  \item \textbf{Verifiable}: the goal test can decide, mechanically, whether a state is a
+        solution.
+  \item \textbf{Finite and discrete} state space, so the states can be enumerated.
+  \item \textbf{Deterministic operators} with known preconditions and effects.
+  \item \textbf{Solvable in principle}: at least one action sequence reaches the goal.
+\end{itemize}}{%
+\lead{Well defined Vs ill defined, with examples}
+\vspace{-1pt}
+\begin{tabularx}{\linewidth}{@{}L{1.5cm}XX@{}}
+\toprule
+\hrow & \thead{Well defined} & \thead{Ill defined} \\
+\midrule
+Goal & Stated exactly & Vague or subjective \\
+States & Enumerable & Open-ended \\
+Operators & Fixed and known & Not fully known \\
+Test & Mechanical & Needs judgement \\
+Example & Water jug, 8-puzzle, chess, crypt-arithmetic & ``Write a good poem'', ``design a beautiful building'', medical diagnosis from an unclear history \\
+\bottomrule
+\end{tabularx}
+\vspace{2pt}
+\begin{itemize}
+  \item \mk{The 5-litre / 2-litre trap} \yr{(81 Ash)}: the paper asks
+        \emph{``is this a well-defined problem? Justify.''} The answer is \textbf{yes} $-$
+        the jugs, the pump, the operators and the target are all given, so every clause
+        above is satisfied. Say that, then solve it. The companion works the solution.
+\end{itemize}}
+
+%-----------------------------------------------------------------------
+\T{2.3 Problem types and classification}
+
+\Q{Problem types and how a problem is classified}{\m{2}\m{3}}
+{\color{sub}\footnotesize
+\pill{gdL}{gd}{syllabus, no PYQ yet} as a question of its own \gap$\cdot$\gap
+but ``problem types'' is a printed syllabus line, and the \emph{ignorable / recoverable /
+irrecoverable} split is worth knowing because it explains why the water jug is easy and
+tic-tac-toe is not}
+
+\sbs{%
+\lead{By whether a move can be undone \yr{(\emph{Insights} \S2.2.1)}}
+\begin{itemize}
+  \item \textbf{Ignorable} $-$ intermediate steps can simply be ignored; a wrong move
+        costs nothing. \emph{Eg} theorem proving, the \textbf{water jug}.
+  \begin{itemize}
+    \item Solvable with a simple control strategy, no backtracking needed.
+  \end{itemize}
+  \item \textbf{Recoverable} $-$ steps can be undone to get back to an earlier state.
+        \emph{Eg} the \textbf{8-puzzle}.
+  \begin{itemize}
+    \item Needs backtracking, so the control strategy must keep a history.
+  \end{itemize}
+  \item \textbf{Irrecoverable} $-$ steps cannot be undone. \emph{Eg}
+        \textbf{tic-tac-toe}, chess.
+  \begin{itemize}
+    \item Needs \textbf{planning}: consider the consequences before moving, because there
+          is no second chance. This is why games need adversarial search (Ch\,3).
+  \end{itemize}
+  \item \textbf{Decomposable} $-$ the problem breaks into independent sub-problems whose
+        answers combine. \emph{Eg} symbolic integration, word puzzles.
+\end{itemize}}{%
+\lead{By what the agent can see and predict}
+\begin{itemize}
+  \item \textbf{Single-state problem} $-$ deterministic and fully accessible. The agent
+        always knows exactly which state it is in. \emph{Eg} chess with the board in view.
+  \item \textbf{Multiple-state problem} $-$ deterministic but inaccessible. The agent
+        knows the rules but not its exact state, so it reasons over a \emph{set} of
+        possible states. \emph{Eg} walking across a dark room. It may have no sensors at
+        all.
+  \item \textbf{Contingency problem} $-$ non-deterministic and inaccessible. The
+        environment is partially observable or the actions are uncertain, so the agent
+        \textbf{must sense during execution} and cannot plan the whole path in advance.
+  \item \textbf{Exploration problem} $-$ the state space itself is unknown. The agent
+        discovers states and operators as it acts. \emph{Eg} a robot in an unmapped maze.
+        \mk{The hardest of the four}, and the one that needs learning.
+\end{itemize}}
+
+%-----------------------------------------------------------------------
+\T{2.4 Production systems}
+
+\Q{Define a production system. What are its essential terms? Explain its role with an example}{\m{2}\m{4}\m{6}}
+{\color{sub}\footnotesize \tF{5} \yr{70 Ma \m{2+6}, \textbf{\textit{71 Bh}} \m{4},
+82 Ka \m{2}, \textbf{77 Ch} \m{2}, \textbf{75 Bh} \m{2+6}} \gap$\cdot$\gap
+70 Ma pairs it with \emph{why is searching necessary in AI}; \textbf{75 Bh} pairs it with
+\emph{well-defined problems}. It is the machinery behind the water-jug rules, so answer it
+with those rules as the example}
+
+\sbsr{0.54}{%
+\lead{Definition and the four components}
+\begin{itemize}
+  \item A \textbf{production system} is a set of \textbf{rules}, each of the form
+        $C_i \rightarrow A_i$:
+  \begin{itemize}
+    \item \textbf{LHS} $C_i$, the \textbf{pattern} or condition, which decides whether the
+          rule applies;
+    \item \textbf{RHS} $A_i$, the \textbf{action} to perform if it is applied.
+  \end{itemize}
+  \item The right-hand side is read as an \textbf{action recommendation}, not as a logical
+        conclusion. That is what separates a production rule from an implication.
+  \item \textbf{The four components}, and the answer to ``essential terms'':
+  \begin{itemize}
+    \item \textbf{Rule base} (production rules / rule memory) $-$ the rules themselves.
+    \item \textbf{Working memory} (database) $-$ the current state of the world, updated
+          as rules fire.
+    \item \textbf{Control strategy} (inference engine) $-$ decides which applicable rule
+          to fire when several match, and when to stop.
+    \item \textbf{Rule applier} $-$ carries out the chosen action.
+  \end{itemize}
+  \item \textbf{The recognise-act cycle}: \textbf{match} the rules against working memory
+        $\rightarrow$ \textbf{conflict resolution} picks one from the matching set
+        $\rightarrow$ \textbf{act}, i.e.\ fire it and update working memory
+        $\rightarrow$ repeat until the goal test passes or nothing matches.
+\end{itemize}}{%
+\lead{\mk{Two requirements of a good control strategy}}
+\begin{itemize}
+  \item \textbf{It must cause motion.} A strategy that can pick the same rule forever
+        never leaves the initial state.
+  \item \textbf{It must be systematic.} Choosing at random causes motion but wanders, and
+        may revisit states endlessly.
+  \item Both are one-line answers and both are asked.
+\end{itemize}
+\lead{Example: the vacuum world}
+\vspace{-1pt}
+\begin{tabularx}{\linewidth}{@{}L{2.4cm}X@{}}
+\toprule
+\hrow \thead{Pattern (LHS)} & \thead{Action (RHS)} \\
+\midrule
+$[A,\ \text{clean}]$ & move Right \\
+$[A,\ \text{dirty}]$ & Suck \\
+$[B,\ \text{clean}]$ & move Left \\
+$[B,\ \text{dirty}]$ & Suck \\
+\bottomrule
+\end{tabularx}
+\vspace{2pt}
+\begin{itemize}
+  \item \mk{The example that earns the marks} is the \textbf{water jug},
+        whose eight production rules are in the companion. A question asking for a
+        production system with an example almost always means that one.
+  \item \textbf{Practical uses}: expert systems (Ch\,7), autonomous robots, and cognitive
+        architectures modelling human reasoning such as ACT and SOAR.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+\creamq{Problems solvable by production rules}{\m{6}}
+{\color{sub}\footnotesize \yr{\textbf{75 Bh} \m{2+6}} \gap$\cdot$\gap
+asked as ``explain about problems that can be solved using production rules with an
+example''}
+
+\sbs{%
+\lead{Which problems suit a production system}
+\begin{itemize}
+  \item The state can be written down \textbf{compactly} $-$ the water jug's whole state
+        is the pair $(x,y)$.
+  \item The legal moves are \textbf{few, uniform and pattern-like}, so a handful of rules
+        covers every case.
+  \item Progress is made by \textbf{repeatedly rewriting the state}, not by evaluating a
+        formula.
+  \item The goal is a \textbf{recognisable pattern}, so the goal test is a match.
+\end{itemize}}{%
+\lead{The standard examples, and what each shows}
+\begin{itemize}
+  \item \textbf{Water jug} $-$ 8 rules, state $(x,y)$. The canonical answer.
+  \item \textbf{8-puzzle} $-$ 4 rules (move the blank up, down, left, right), state $=$ the
+        board. Shows a recoverable problem needing backtracking.
+  \item \textbf{Missionaries and cannibals}, \textbf{farmer/wolf/goat/cabbage} $-$ rules
+        with a \textbf{safety precondition}, which is what makes them interesting.
+  \item \textbf{Tower of Hanoi} $-$ shows a decomposable problem.
+  \item \textbf{Tic-tac-toe} $-$ shows an irrecoverable one, where rules alone are not
+        enough and search over an opponent is needed.
+\end{itemize}}
+
+%-----------------------------------------------------------------------
+\T{2.5 Constraint satisfaction problems}
+
+\Q{What is a Constraint Satisfaction Problem? Discuss it and list its constraints}{\m{1}\m{2}\m{3}}
+{\color{sub}\footnotesize \tS{12} \yr{\textbf{\texttt{81 Bh}}, \textbf{\texttt{80 Bh}},
+\texttt{80 Ba}, 78 Ba, \textbf{80 Ch}, \textbf{\textit{74 Bh}} \m{2}, 79 Jth \m{1},
+\textbf{79 Ch} \m{3}, \textit{74 Ma}, \textbf{\textit{72 Ash}}, 78 Po, \textbf{70 Bh}}
+\gap$\cdot$\gap \mk{never asked alone}: it is the 1--3 mark preamble to a
+crypt-arithmetic puzzle in every one of these papers, so keep it short and get to the
+puzzle}
+
+\sbsr{0.52}{%
+\lead{Definition}
+\begin{itemize}
+  \item A \textbf{constraint satisfaction problem} is a search procedure that
+        \textbf{operates in a space of constraints} rather than a space of states.
+  \item States are defined by the \textbf{values assigned to variables}, and the goal test
+        is a set of \textbf{constraints those values must obey}.
+  \item Formally, a CSP is the triple:
+  \begin{itemize}
+    \item \textbf{Variables} $X = \{X_1, X_2, \dots, X_n\}$, the unknowns to be assigned.
+    \item \textbf{Domains} $D = \{D_1, D_2, \dots, D_n\}$, the set of values each variable
+          may take.
+    \item \textbf{Constraints} $C = \{C_1, C_2, \dots, C_m\}$, the restrictions on which
+          combinations of values are allowed.
+  \end{itemize}
+  \item \textbf{Solution}: an assignment of one domain value to every variable that
+        violates no constraint. \mk{Write these three lines first in any
+        crypt-arithmetic answer} $-$ they are worth marks on their own.
+\end{itemize}
+\lead{How it is solved: constraint propagation}
+\begin{itemize}
+  \item Constraints are \textbf{discovered and propagated as far as possible} through the
+        system. Where propagation stalls, a \textbf{guess} is made and added as a new
+        constraint, and propagation resumes.
+  \item If the guess leads to a contradiction, \textbf{backtrack} and guess otherwise.
+\end{itemize}}{%
+\lead{\mk{The two termination conditions}}
+\begin{itemize}
+  \item \textbf{A contradiction is detected} $-$ no solution is consistent with the
+        constraints now known.
+  \item \textbf{Propagation has run out of steam} $-$ no further change can be made from
+        current knowledge. Either a solution has been found, or a guess must be made.
+  \item Both are asked as a pair. Two lines, two marks.
+\end{itemize}
+\lead{Types of constraint}
+\begin{itemize}
+  \item \textbf{Unary} $-$ restricts one variable. \emph{Eg} a leading letter is not 0.
+  \item \textbf{Binary} $-$ relates two. \emph{Eg} two regions differ in colour.
+  \item \textbf{Higher-order} $-$ relates three or more. \emph{Eg} a crypt-arithmetic
+        column, $D + E = 10C_1 + Y$.
+  \item \textbf{Global / AllDiff} $-$ all variables take different values. Every
+        crypt-arithmetic puzzle carries this one.
+\end{itemize}
+\lead{Other standard CSP examples}
+\begin{itemize}
+  \item \textbf{Map colouring} $-$ no two adjacent regions share a colour.
+  \item \textbf{$n$-queens} $-$ no queen attacks another.
+  \item \textbf{Class scheduling}, \textbf{VLSI layout}, \textbf{Sudoku}.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+\creamq{The crypt-arithmetic rules, and how to set the answer out}{\m{6}\m{7}\m{8}}
+{\color{sub}\footnotesize \tS{31} \gap$\cdot$\gap
+\mk{the highest-value single technique in the subject} \gap$\cdot$\gap
+every puzzle is worked in \emph{Ch2 -- Problem Solving -- Solved Problems}}
+
+\sbs{%
+\lead{The rules, as every paper states them}
+\begin{itemize}
+  \item \textbf{Different letters denote different digits}, and identical letters denote
+        the same digit. This is the AllDiff constraint.
+  \item \textbf{No leading letter may be 0.}
+  \item Digits come from $D = \{0,1,2,\dots,9\}$, so a puzzle with more than
+        \textbf{10 distinct letters has no solution at all}.
+  \item Any extra restriction the question prints overrides these.
+\end{itemize}
+\lead{\mk{The five-step method}} \yr{(\emph{Insights} \S2.3)}
+\begin{itemize}
+  \item \textbf{1.} Write the sum in columns with a \textbf{carry variable}
+        $C_1, C_2, \dots$ above each column boundary.
+  \item \textbf{2.} List $X$, the set of variables.
+  \item \textbf{3.} List $D$, the domain.
+  \item \textbf{4.} List $C$: the leading-letter constraints, the AllDiff constraint, and
+        \textbf{one equation per column},
+        $\text{(column sum)} + C_{\text{in}} = 10\,C_{\text{out}} + \text{(result digit)}$.
+  \item \textbf{5.} Reason column by column, redrawing the sum with the digits filled in
+        after each deduction, until every letter is fixed. Close with the arithmetic
+        check.
+\end{itemize}}{%
+\lead{The three deductions that crack most puzzles}
+\begin{itemize}
+  \item \textbf{A carry out of the leftmost column can only be 1.} If the answer is one
+        digit longer than the addends, that leading digit \textbf{is} 1. This is what
+        gives $M = 1$ in SEND $+$ MORE $=$ MONEY immediately.
+  \item \textbf{A letter added to itself.} $2N$ ends in the same letter only when that
+        letter is 0 or 5, which is how TEN $+$ TEN $+$ FORTY $=$ SIXTY is cracked.
+  \item \textbf{A column where a letter repeats.} If $E + O + C_2 = N$ and also
+        $N + R + C_1 = E + 10$, substitute one into the other; the unknowns cancel.
+\end{itemize}
+\lead{\mk{Two things that lose marks}}
+\begin{itemize}
+  \item \textbf{Giving only the digits.} Most of these puzzles have many solutions, so an
+        unjustified assignment cannot be marked. Show the columns.
+  \item \textbf{Forgetting the AllDiff check at the end.} It is the single commonest way a
+        nearly-right answer fails, and it is what rules out $B = 9$ in the
+        $AB + CD = AAA$ question \yr{(\textbf{\textit{76 Bh}})}.
+\end{itemize}}
+
+%-----------------------------------------------------------------------
+\T{2.6 Game playing}
+
+\Q{Formulate a game as a search problem}{\m{2}\m{7}}
+{\color{sub}\footnotesize \tP{1} \yr{\textit{72 Ma} \m{7}, tic-tac-toe state space}
+\gap$\cdot$\gap \mk{the algorithms live in \S3.4}, not here. This section only
+owes you the formulation; minimax and alpha-beta are Ch\,3, where they are asked 14 times}
+
+\sbs{%
+\lead{A game, defined as a search problem}
+\begin{itemize}
+  \item \textbf{Initial state} $-$ the board as set up, plus whose turn it is.
+  \item \textbf{Operators} $-$ the legal moves.
+  \item \textbf{Terminal test} $-$ says when the game is over.
+  \item \textbf{Utility / payoff function} $-$ a number on each terminal state saying who
+        won and by how much. \emph{Eg} $+1$ win, $0$ draw, $-1$ loss.
+  \item \mk{What makes it different from ordinary search}: there is an
+        \textbf{opponent}, choosing to make things as bad as possible for you. So a plan
+        cannot be a fixed sequence of moves; it must be a \textbf{strategy}, an answer for
+        every reply.
+  \item Two-player, perfect information, zero-sum games are solved by
+        \textbf{minimax} \yr{(\S3.4)}, made efficient by \textbf{alpha-beta pruning}.
+\end{itemize}}{%
+\lead{Why games were chosen as an AI testbed}
+\begin{itemize}
+  \item Rules are \textbf{simple and unambiguous}, so no knowledge acquisition problem
+        gets in the way.
+  \item The state is \textbf{fully observable}, so no perception problem either.
+  \item Yet the \textbf{search space is enormous}, so brute force fails and real technique
+        is needed. That combination is rare and useful.
+  \item Performance is \textbf{measurable} against human players.
+\end{itemize}
+\lead{Production systems Vs game playing}
+\begin{itemize}
+  \item A production system fires rules against \textbf{its own} working memory.
+  \item A game must additionally model \textbf{another agent choosing against it}, which
+        no rule set alone can express. That is precisely why Ch\,3 needs a separate family
+        of algorithms.
+\end{itemize}}
