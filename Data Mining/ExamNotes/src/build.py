@@ -15,6 +15,8 @@ OUT = os.path.dirname(HERE)
 
 TARGETS = {
     "master":  ("master", "Data Mining - Complete Exam Notes.pdf"),
+    "master-num": ("master-num",
+                "Data Mining - Complete Numerical Problems & Solutions.pdf"),
     "ch1":     ("ch1-standalone",     "Ch1 - Introduction.pdf"),
     "ch2":     ("ch2-standalone",     "Ch2 - Data Preprocessing.pdf"),
     "ch2-num": ("ch2-num-standalone",

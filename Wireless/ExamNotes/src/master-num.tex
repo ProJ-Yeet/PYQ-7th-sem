@@ -1,0 +1,99 @@
+%=======================================================================
+%  Wireless Communication — Complete Numerical Problems & Solutions
+%  The five numerical companions (ch 2, 3, 5, 6, 7) in syllabus order,
+%  then the abbreviation chart. Companion volume to master.tex; the
+%  per-chapter standalones stay exactly as they are.
+%=======================================================================
+\documentclass[10pt]{article}
+\input{preamble}
+\usepackage{bookmark}
+
+\begin{document}
+
+% ------------------------------------------------ title page
+\thispagestyle{empty}
+\vspace*{2.0cm}
+\begin{center}
+  {\Huge\bfseries\color{acc} Wireless Communication}\\[6pt]
+  {\LARGE\bfseries Complete Numerical Problems \& Solutions}\\[14pt]
+  {\large\color{sub} EX 715 (BEI) \quad$\cdot$\quad EX 751 (BEX)}\\[3pt]
+  {\color{sub} Year IV Part I}\\[3pt]
+  {\color{sub} Institute of Engineering, Tribhuvan University}\\[20pt]
+  \begin{minipage}{0.78\textwidth}
+    \color{sub}\small
+    All \textbf{46 numerical problems} from the five numerical chapters, in one volume.
+    Every problem is a real PYQ drawn from \textbf{all 22 past papers (2070--2082 BS)}
+    and opens with the \textbf{question exactly as the paper prints it}, so it can be
+    attempted from this PDF alone. Solutions are worked in full --- what was calculated,
+    why, and from which formula.\\[8pt]
+    \textbf{Chapters 1, 4 and 8 set no numericals} --- no paper from 2070 to 2082 asks
+    for one --- so they do not appear here.\\[8pt]
+    Theory lives in the companion volume,
+    \textbf{Wireless Communication --- Complete Exam Notes}.
+  \end{minipage}
+\end{center}
+
+\vfill
+\begin{center}
+\begin{tabularx}{0.86\textwidth}{@{}L{1.1cm}XL{2.0cm}L{2.2cm}@{}}
+\toprule
+\hrow \thead{Ch} & \thead{Topic} & \thead{Problems} & \thead{PYQ blocks} \\
+2 & Cellular Mobile Communication Concept & 10 & 14 \\
+3 & Radio Wave Propagation & \textbf{18} & \textbf{25} \\
+5 & Equalization and Diversity Techniques & 5 & 9 \\
+6 & Speech and Channel Coding Fundamentals & 7 & 8 \\
+7 & Multiple Access in Wireless Communications & 6 & 12 \\
+\midrule
+& \textbf{Total} & \textbf{46} & \textbf{68} \\
+\bottomrule
+\end{tabularx}
+\end{center}
+\vspace{1.2cm}
+
+% ------------------------------------------------ contents
+\cleardoublepage
+\pagestyle{fancy}
+{\Large\bfseries\color{acc} Contents}
+\vspace{-6pt}{\color{acc}\rule{\textwidth}{1.1pt}}\vspace{4pt}
+\begingroup
+\renewcommand{\contentsname}{}
+\setcounter{tocdepth}{1}
+\vspace{-24pt}
+\tableofcontents
+\endgroup
+
+% ------------------------------------------------ chapters
+% the companions head themselves with \section*, so the TOC entry and the
+% PDF bookmark are added here rather than by touching the chapter files.
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{section}{Ch 2 \textperiodcentered{} Cellular Concepts}
+\input{ch2-num}
+
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{section}{Ch 3 \textperiodcentered{} Radio Wave Propagation}
+\input{ch3-num}
+
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{section}{Ch 5 \textperiodcentered{} Equalization and Diversity}
+\input{ch5-num}
+
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{section}{Ch 6 \textperiodcentered{} Speech and Channel Coding}
+\input{ch6-num}
+
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{section}{Ch 7 \textperiodcentered{} Multiple Access}
+\input{ch7-num}
+
+% ------------------------------------------------ abbreviations
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{section}{Abbreviations}
+\input{abbrev}
+
+\end{document}

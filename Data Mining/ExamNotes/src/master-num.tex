@@ -1,0 +1,106 @@
+%=======================================================================
+%  Data Mining — Complete Numerical Problems & Solutions
+%  The six numerical companions (ch 2-7) in syllabus order, then the
+%  abbreviation chart. Companion volume to master.tex; the per-chapter
+%  standalones stay exactly as they are.
+%=======================================================================
+\documentclass[10pt]{article}
+\input{preamble}
+\usepackage{pifont}
+\usepackage{bookmark}
+
+\begin{document}
+
+% ------------------------------------------------ title page
+\thispagestyle{empty}
+\vspace*{2.2cm}
+\begin{center}
+  {\Huge\bfseries\color{acc} Data Mining}\\[6pt]
+  {\LARGE\bfseries Complete Numerical Problems \& Solutions}\\[14pt]
+  {\large\color{sub} CT 72502 (Elective I)}\\[3pt]
+  {\color{sub} BEI / BEX $\cdot$ Year IV Part I}\\[3pt]
+  {\color{sub} Institute of Engineering, Tribhuvan University}\\[22pt]
+  \begin{minipage}{0.76\textwidth}
+    \color{sub}\small
+    Every numerical the course sets, in one volume: \textbf{24 distinct methods} and
+    \textbf{47 PYQ instances} drawn from \textbf{all 17 past papers (2070--2081 BS)},
+    plus a few extra practice problems where a likely pattern has no paper behind it
+    yet. Each method is explained once, then every paper that used it is solved under
+    the \textbf{question exactly as printed}, so a problem can be attempted from this
+    PDF alone. \mk{Every answer was independently recomputed, not copied from the
+    source notes.}\\[8pt]
+    Theory lives in the companion volume,
+    \textbf{Data Mining --- Complete Exam Notes}.
+  \end{minipage}
+\end{center}
+
+\vfill
+\begin{center}
+\begin{tabularx}{0.82\textwidth}{@{}L{1.1cm}XL{1.9cm}L{2.4cm}@{}}
+\toprule
+\hrow \thead{Ch} & \thead{Topic} & \thead{Methods} & \thead{PYQ solved} \\
+2 & Data Preprocessing & 7 & 8 \\
+3 & Classification & 6 & 12 \\
+4 & Association Analysis & 5 & \textbf{14} \\
+5 & Cluster Analysis & 3 & 11 \\
+6 & Anomaly / Fraud Detection & 2 & 1 \\
+7 & Advanced Applications & 1 & 1 \\
+\midrule
+& \textbf{Total} & \textbf{24} & \textbf{47} \\
+\bottomrule
+\end{tabularx}
+\end{center}
+\vspace{1.4cm}
+
+% ------------------------------------------------ contents
+\cleardoublepage
+\pagestyle{fancy}
+{\Large\bfseries\color{acc} Contents}
+\vspace{-6pt}{\color{acc}\rule{\textwidth}{1.1pt}}\vspace{4pt}
+\begingroup
+\renewcommand{\contentsname}{}
+\setcounter{tocdepth}{1}
+\vspace{-24pt}
+\tableofcontents
+\endgroup
+
+% ------------------------------------------------ chapters
+% the companions head themselves with \section*, so the TOC entry and the
+% PDF bookmark are added here rather than by touching the chapter files.
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{section}{Ch 2 --- Data Preprocessing}
+\input{ch2-num}
+
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{section}{Ch 3 --- Classification}
+\input{ch3-num}
+
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{section}{Ch 4 --- Association Analysis}
+\input{ch4-num}
+
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{section}{Ch 5 --- Cluster Analysis}
+\input{ch5-num}
+
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{section}{Ch 6 --- Anomaly / Fraud Detection}
+\input{ch6-num}
+
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{section}{Ch 7 --- Advanced Applications}
+\input{ch7-num}
+
+% ------------------------------------------------ abbreviations
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{section}{Abbreviations}
+\input{abbrev}
+
+\end{document}
