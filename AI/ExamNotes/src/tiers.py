@@ -99,6 +99,12 @@ def check(path):
         para = src.find("\n\n", m.end())
         if para > 0:
             stops.append(para)
+        # ... and at the next list item. A Read-this-first bullet cites a chip
+        # with no year tags of its own, and without this bound the search runs
+        # into a LATER bullet's \yr{} and charges this chip with those papers.
+        item = src.find(B + "item", m.end())
+        if item > 0:
+            stops.append(item)
         window = src[m.end():min(stops)]
         found = papers(first_yr(window)) if (B + "yr{") in window else None
         # the heading above the chip may carry mark chips; the tier rule needs them

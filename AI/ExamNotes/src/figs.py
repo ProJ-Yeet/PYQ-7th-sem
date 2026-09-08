@@ -121,6 +121,26 @@ add("c1_vacuum_world.png", BJ1, 55)
 ins("c1_agent_utility.png", 27, (0.06, 0.04, 0.97, 0.36))
 
 
+# ------------------------------------------------------------------ chapter 3
+BA3 = os.path.join(BA, "CH-03 AI.pdf")
+# The objective-function-vs-state-space landscape: global maximum, local
+# maximum, shoulder, plateau, flat local maximum, ridge, all labelled on one
+# curve. It is the answer to "problems associated with hill climbing" (6
+# papers) in a single picture. BA Sir's deck is 4 slides to a page, so this is
+# a manual box inside the top-left quadrant.
+add("c3_hill_landscape.png", BA3, 10, box=(0.268, 0.329, 0.480, 0.459))
+add("c3_hill_contour.png", BA3, 10, box=(0.325, 0.148, 0.425, 0.245))
+
+# The five question figures the papers print. These were cropped out of the
+# scanned papers for the Sorted PYQ document and are reused here so each
+# `asked` block shows the graph or tree the student is actually given.
+for _n in ("ai_81ch_astar", "ai_80ch_astar", "ai_76bh_bfs",
+           "ai_79ch_minmax", "ai_76ba_minmax"):
+    JOBS.append(dict(name="c3_" + _n[3:] + ".png", pdf=None, page=None,
+                     box=None, pick=0, dpi=0, pad=0, flat=False,
+                     copy=os.path.join(HERE, "..", "..", "images", _n + ".png")))
+
+
 def rect_for(pg, job):
     r = pg.rect
     if job["box"]:
@@ -205,6 +225,17 @@ def main():
     want = set(a.replace(".png", "") for a in sys.argv[1:])
     for job in JOBS:
         if want and job["name"].replace(".png", "") not in want:
+            continue
+        # a figure already cropped for the Sorted PYQ document: take it as is,
+        # through the same size cap so the whole folder obeys one policy
+        if job.get("copy"):
+            out = os.path.join(FIGS, job["name"])
+            img = shrink(Image.open(job["copy"]).convert("RGB"))
+            img.save(out, optimize=True)
+            print("%-30s %5dx%-5d %7.0f kB <- images/%s"
+                  % (job["name"], img.size[0], img.size[1],
+                     os.path.getsize(out) / 1024.0,
+                     os.path.basename(job["copy"])))
             continue
         d = fitz.open(job["pdf"])
         pg = d[job["page"] - 1]

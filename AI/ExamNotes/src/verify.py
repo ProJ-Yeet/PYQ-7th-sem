@@ -304,6 +304,220 @@ def ch2():
     chk("tic-tac-toe reachable legal states", len(reach), 5478)
 
 
+# =====================================================================
+#  Chapter 3 -- Search Techniques
+# =====================================================================
+# 2081 Chaitra and 2080 Chaitra print the SAME graph with DIFFERENT
+# heuristics; 2080 Chaitra puts its heuristics in a separate table and asks
+# for greedy as well. Edge list read off images/ai_81ch_astar.png and
+# images/ai_80ch_astar.png.
+C3_EDGES = {
+    ("S", "A"): 6, ("S", "B"): 5, ("S", "C"): 10,
+    ("A", "E"): 6, ("B", "E"): 6, ("B", "D"): 7, ("C", "D"): 6,
+    ("E", "F"): 4, ("D", "F"): 6, ("F", "G"): 3,
+}
+
+
+def _adj(edges):
+    adj = {}
+    for (a, b), w in edges.items():
+        adj.setdefault(a, []).append((b, w))
+        adj.setdefault(b, []).append((a, w))
+    for k in adj:
+        adj[k].sort()
+    return adj
+
+
+def astar(h, edges=None, start="S", goal="G"):
+    """Tree-search A*: no closed list, so a later cheaper path is always taken.
+
+    That matters here. Both papers' heuristics are admissible but NOT
+    consistent, so a graph-search A* with a strict closed list would close E
+    at g=12 by way of A and never revise it to g=11 by way of B, returning 19
+    instead of the true optimum 18.
+    """
+    import heapq
+    import itertools
+    adj = _adj(edges or C3_EDGES)
+    cnt = itertools.count()
+    pq = [(h[start], 0, next(cnt), start, [start])]
+    order = []
+    while pq:
+        f, g, _, n, path = heapq.heappop(pq)
+        order.append((n, g, f))
+        if n == goal:
+            return g, path, order
+        for m, w in adj[n]:
+            if m in path:
+                continue
+            heapq.heappush(pq, (g + w + h[m], g + w, next(cnt), m, path + [m]))
+    return None, None, order
+
+
+def greedy(h, edges=None, start="S", goal="G"):
+    """Greedy best-first: order on h alone, ignore the cost already paid."""
+    import heapq
+    import itertools
+    adj = _adj(edges or C3_EDGES)
+    cnt = itertools.count()
+    pq = [(h[start], next(cnt), start, [start], 0)]
+    order = []
+    while pq:
+        _, _, n, path, g = heapq.heappop(pq)
+        order.append((n, g))
+        if n == goal:
+            return g, path, order
+        for m, w in adj[n]:
+            if m in path:
+                continue
+            heapq.heappush(pq, (h[m], next(cnt), m, path + [m], g + w))
+    return None, None, order
+
+
+def cost_to_go(edges=None, goal="G"):
+    import heapq
+    adj = _adj(edges or C3_EDGES)
+    dist = {goal: 0}
+    pq = [(0, goal)]
+    while pq:
+        d, n = heapq.heappop(pq)
+        if d > dist.get(n, float("inf")):
+            continue
+        for m, w in adj[n]:
+            if d + w < dist.get(m, float("inf")):
+                dist[m] = d + w
+                heapq.heappush(pq, (d + w, m))
+    return dist
+
+
+def h_properties(h, edges=None):
+    """(admissible, consistent) for a heuristic on this graph."""
+    edges = edges or C3_EDGES
+    t = cost_to_go(edges)
+    adm = all(h[n] <= t[n] for n in h)
+    con = True
+    for (a, b), w in edges.items():
+        if h[a] > w + h[b] or h[b] > w + h[a]:
+            con = False
+    return adm, con
+
+
+def _leaves(x):
+    if isinstance(x, int):
+        return [x]
+    out = []
+    for c in x:
+        out.extend(_leaves(c))
+    return out
+
+
+def minimax(node, maximizing):
+    if isinstance(node, int):
+        return node
+    vals = [minimax(c, not maximizing) for c in node]
+    return max(vals) if maximizing else min(vals)
+
+
+def alphabeta(node, maximizing, a, b, seen, cut):
+    """Standard left-to-right alpha-beta. `seen` collects the leaves actually
+    evaluated, `cut` the ones skipped, so the notes can name them."""
+    if isinstance(node, int):
+        seen.append(node)
+        return node
+    if maximizing:
+        v = float("-inf")
+        for i, c in enumerate(node):
+            v = max(v, alphabeta(c, False, a, b, seen, cut))
+            a = max(a, v)
+            if v >= b:
+                cut.extend(_leaves(node[i + 1:]))
+                break
+        return v
+    v = float("inf")
+    for i, c in enumerate(node):
+        v = min(v, alphabeta(c, True, a, b, seen, cut))
+        b = min(b, v)
+        if v <= a:
+            cut.extend(_leaves(node[i + 1:]))
+            break
+    return v
+
+
+def ch3():
+    # --- 2081 Chaitra: A* on the graph -------------------------------
+    h81 = dict(S=17, A=10, B=13, C=4, D=2, E=4, F=1, G=0)
+    g, path, order = astar(h81)
+    chk("c3 81Ch A* cost", g, 18)
+    chk("c3 81Ch A* path", "-".join(path), "S-B-E-F-G")
+    chk("c3 81Ch first node expanded after S", order[1][0], "C")
+    adm, con = h_properties(h81)
+    chk("c3 81Ch h admissible", adm, True)
+    chk("c3 81Ch h consistent", con, False)
+    # the trap the notes call out: the naive S-A-E-F-G route costs 19
+    chk("c3 81Ch S-A-E-F-G cost", 6 + 6 + 4 + 3, 19)
+
+    # --- 2080 Chaitra: same graph, different h, A* Vs greedy ---------
+    h80 = dict(S=15, A=10, B=12, C=5, D=4, E=2, F=1, G=0)
+    g, path, _ = astar(h80)
+    chk("c3 80Ch A* cost", g, 18)
+    chk("c3 80Ch A* path", "-".join(path), "S-B-E-F-G")
+    g2, path2, _ = greedy(h80)
+    chk("c3 80Ch greedy cost", g2, 25)
+    chk("c3 80Ch greedy path", "-".join(path2), "S-C-D-F-G")
+    adm, con = h_properties(h80)
+    chk("c3 80Ch h admissible", adm, True)
+    chk("c3 80Ch h consistent", con, False)
+    # greedy lands on the WORST of the four S-to-G routes
+    routes = {"S-A-E-F-G": 19, "S-B-E-F-G": 18, "S-B-D-F-G": 21,
+              "S-C-D-F-G": 25}
+    chk("c3 80Ch greedy took the worst route", max(routes.values()), 25)
+    chk("c3 80Ch optimum", min(routes.values()), 18)
+
+    # --- 2076 Bhadra: best-first on the given tree, goal I -----------
+    tree = {"A": ["B", "C", "D"], "B": ["E", "F"], "D": ["G", "H"],
+            "G": ["I", "J"], "C": [], "E": [], "F": [], "H": [], "I": [],
+            "J": []}
+    hbf = dict(A=0, B=3, C=6, D=1, E=6, F=5, G=4, H=6, I=1, J=2)
+    openl, closed, parent = [("A", 0)], [], {}
+    while openl:
+        openl.sort(key=lambda t: t[1])
+        n, _ = openl.pop(0)
+        closed.append(n)
+        if n == "I":
+            break
+        for c in tree[n]:
+            parent[c] = n
+            openl.append((c, hbf[c]))
+    chk("c3 76Bh best-first closed list", closed, ["A", "D", "B", "G", "I"])
+    p = ["I"]
+    while p[-1] in parent:
+        p.append(parent[p[-1]])
+    chk("c3 76Bh best-first path", "-".join(reversed(p)), "A-D-G-I")
+    chk("c3 76Bh best-first cost", hbf["D"] + hbf["G"] + hbf["I"], 6)
+
+    # --- 2079 Chaitra: minimax + alpha-beta on the given tree --------
+    # Max root / Min / Max / Min / leaves. Three of the Min nodes have a
+    # single child; that is how the paper draws it.
+    t79 = [[[[3, 9], [2, 7]], [[2], [5, 0]]],
+           [[[2, 5], [8]], [[3, 14]]]]
+    chk("c3 79Ch leaf count", len(_leaves(t79)), 12)
+    chk("c3 79Ch minimax value", minimax(t79, True), 3)
+    seen, cut = [], []
+    chk("c3 79Ch alpha-beta value", alphabeta(t79, True, float("-inf"),
+                                              float("inf"), seen, cut), 3)
+    chk("c3 79Ch leaves pruned", cut, [7, 5])
+    chk("c3 79Ch leaves examined", len(seen), 10)
+
+    # --- 2076 Baishakh: alpha-beta on the 3x3 tree -------------------
+    t76 = [[3, 5, 10], [2, 8, 19], [2, 7, 3]]
+    chk("c3 76Ba minimax value", minimax(t76, True), 3)
+    seen, cut = [], []
+    chk("c3 76Ba alpha-beta value", alphabeta(t76, True, float("-inf"),
+                                              float("inf"), seen, cut), 3)
+    chk("c3 76Ba leaves pruned", cut, [8, 19, 7, 3])
+    chk("c3 76Ba leaves examined", seen, [3, 5, 10, 2, 2])
+
+
 def _ttt_win(b):
     lines = [(0, 1, 2), (3, 4, 5), (6, 7, 8), (0, 3, 6), (1, 4, 7),
              (2, 5, 8), (0, 4, 8), (2, 4, 6)]
@@ -311,7 +525,7 @@ def _ttt_win(b):
 
 
 def main():
-    for fn in (ch2,):
+    for fn in (ch2, ch3):
         try:
             fn()
         except AssertionError as e:

@@ -102,6 +102,15 @@ def audit(path, cut):
 
 
 def main():
+    # the page snippets printed below are lifted straight out of the PDFs, so
+    # they carry whatever the font produced -- U+2010 non-breaking hyphens and
+    # en dashes among them. Without this the report dies mid-way on the
+    # Windows ANSI codepage, after saying "no stranded headings" but before
+    # listing a single gap.
+    try:
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
     cut = float(sys.argv[1]) if len(sys.argv) > 1 else 0.33
     stranded, gaps = [], []
     for fn in sorted(os.listdir(OUT)):

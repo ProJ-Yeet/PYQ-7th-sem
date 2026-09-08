@@ -1,0 +1,513 @@
+%=======================================================================
+%  CHAPTER 3 — SEARCH TECHNIQUES  (9 hrs)
+%=======================================================================
+\section{Search Techniques}
+
+{\color{sub}\footnotesize 9 hrs \gap$\cdot$\gap asked in \mk{all 41 papers}
+\gap$\cdot$\gap 3 syllabus sub-topics \gap$\cdot$\gap 392 marks, 11.6\,\% of every mark
+ever set \gap$\cdot$\gap worked traces in \emph{Ch3 -- Search Techniques -- Solved
+Problems}.}
+
+\lead{Read this first:}
+\begin{itemize}
+  \item \mk{The chapter is three comparisons and one algorithm.} Learn
+        \textbf{BFS Vs DFS} \tS{10}, \textbf{informed Vs uninformed} \tF{4},
+        \textbf{A* Vs greedy} \tF{7}, and the \textbf{A* algorithm} itself, and you have
+        answered most of what this chapter has ever asked.
+  \item \mk{One table carries the whole of \S3.2.} Completeness, optimality,
+        time, space, for BFS and DFS. It is asked in \textbf{10 of the 41 papers} and it
+        is four rows. Nothing else in the subject pays as well per line learnt.
+  \item The other three reliable topics: \textbf{hill climbing's three problems and their
+        cures} \tF{6}, \textbf{minimax $+$ alpha-beta} \tF{6}, and
+        \textbf{why searching is necessary in AI} \tF{5}, which is a 2-mark opener
+        bolted onto a bigger question five times.
+  \item \mk{Simulated annealing is asked four times and is not a syllabus
+        line.} It only ever appears as \emph{``how does simulated annealing overcome the
+        problems of hill climbing''}, so learn it as hill climbing's cure, not as a topic.
+  \item Five papers print a \textbf{figure} and ask you to run an algorithm on it: A* on a
+        graph (\yr{\textbf{81 Ch}}, \yr{\textbf{80 Ch}}), best-first on a tree
+        (\yr{\textbf{\textit{76 Bh}}}), minimax with alpha-beta on a tree
+        (\yr{\textbf{79 Ch}}, \yr{76 Ba}). All five are worked in the companion.
+        \mk{Two of those papers print the same graph} with different
+        heuristics.
+  \item Pairs the examiner reliably asks together: \textbf{why search $+$ BFS Vs DFS},
+        \textbf{informed Vs uninformed $+$ hill climbing}, and
+        \textbf{greedy's drawback $+$ how A* fixes it}.
+\end{itemize}
+
+\hr
+
+%-----------------------------------------------------------------------
+\T{3.1 Why search, and how a search algorithm is judged}
+
+\Q{Why is searching necessary in AI? On what basis are search algorithms evaluated?}{\m{2}\m{3}\m{4}}
+{\color{sub}\footnotesize \tF{5} \yr{72 Ma \m{2}, \textbf{74 Bh} \m{2},
+\textbf{78 Ch} \m{2}, 80 Ash \m{2}, 82 Ka \m{3}} \gap$\cdot$\gap
+evaluation criteria alone in 3 papers, \yr{79 Ash \m{4}, \textbf{75 Bh} \m{4},
+81 Ash \m{2}}, none over 4 marks so no tier chip \gap$\cdot$\gap
+\mk{always the 2-mark opener} to a BFS/DFS or hill-climbing question}
+
+\sbs{%
+\lead{Why searching is necessary}
+\begin{itemize}
+  \item Most AI problems have \textbf{no formula} that computes the answer. There is only
+        a start state, a set of legal moves and a test for the goal, so the answer has to
+        be \textbf{found} rather than calculated.
+  \item Once a problem is written as a state space (Ch\,2), \mk{solving it
+        \emph{is} searching that space} for a path from initial state to goal.
+  \item The space is far too large to enumerate: chess has around $10^{120}$ game paths,
+        the 24-puzzle around $10^{25}$ states. \textbf{Brute force is not an option}, so
+        the search must be directed.
+  \item Search is the mechanism behind almost every other topic on this syllabus: game
+        playing (\S3.4), resolution refutation (Ch\,4), rule chaining, planning, and the
+        learning algorithms of Ch\,6.
+  \item \mk{The one-line answer}: searching is how an agent converts
+        knowledge of the rules into a sequence of actions, when it has no direct way to
+        compute one.
+\end{itemize}}{%
+\lead{\mk{The four evaluation criteria}}
+\begin{itemize}
+  \item \textbf{Completeness} $-$ is the algorithm guaranteed to find a solution when one
+        exists?
+  \item \textbf{Optimality} $-$ when it finds one, is it guaranteed to be the
+        \emph{least-cost} solution?
+  \item \textbf{Time complexity} $-$ how many nodes are generated?
+  \item \textbf{Space complexity} $-$ how many nodes must be held in memory at once?
+  \item \mk{Say what the symbols mean} or the complexities score nothing:
+  \begin{itemize}
+    \item $b$ $=$ \textbf{branching factor}, the maximum successors of any node;
+    \item $d$ $=$ \textbf{depth of the shallowest goal};
+    \item $m$ $=$ \textbf{maximum depth} of the search tree, possibly infinite;
+    \item $\ell$ $=$ the \textbf{depth limit}, for depth-limited search.
+  \end{itemize}
+  \item Some papers add \textbf{admissibility} (does it find the optimal path when one
+        exists) and \textbf{dominance} (does one heuristic expand fewer nodes than
+        another). Mention both in a 4-mark answer.
+\end{itemize}}
+
+%-----------------------------------------------------------------------
+\T{3.2 Uninformed (blind) search}
+
+\Q{Explain BFS and DFS and compare their performance criteria}{\m{4}\m{7}\m{8}\m{9}}
+{\color{sub}\footnotesize \tS{10} \yr{\textbf{72 Ash} \m{9}, 69 Po \m{9},
+\textbf{70 Bh} \m{4+4}, 70 Ma \m{1+7}, \textbf{73 Bh} \m{4+5},
+\textbf{\texttt{79 Bh}} \m{7}, 79 Jth \m{7}, \textbf{\textit{74 Bh}} \m{8},
+\textbf{\textit{71 Bh}} \m{8}, \textit{72 Ma} \m{7}} \gap$\cdot$\gap
+\mk{the single most-asked question in the chapter} \gap$\cdot$\gap
+\yr{\textbf{\textit{71 Bh}}} and \yr{\textit{72 Ma}} additionally ask
+\emph{why} these are called blind}
+
+\sbsr{0.44}{%
+\lead{What ``uninformed'' means}
+\begin{itemize}
+  \item The algorithm is given \textbf{nothing beyond the problem definition}: it can
+        generate successors and test for the goal, and that is all.
+  \item It has \mk{no estimate of how close a state is to the goal}, so it
+        cannot prefer one frontier node over another on merit. Hence \textbf{blind
+        search}. That is the answer to ``why are BFS and DFS called blind even though they
+        search systematically'': systematic is not the same as informed.
+\end{itemize}
+\lead{Breadth first search}
+\begin{itemize}
+  \item Expand \textbf{all nodes at depth $k$ before any at depth $k+1$}.
+        \textbf{FIFO queue.}
+  \item \checkmark Complete, and \checkmark optimal \emph{when every step costs the same}.
+  \item \xmark Memory is the killer: it must hold the whole frontier,
+        $O(b^d)$ nodes.
+\end{itemize}
+\lead{Depth first search}
+\begin{itemize}
+  \item Expand the \textbf{deepest} unexpanded node; go back only when stuck.
+        \textbf{LIFO stack}, or plain recursion.
+  \item \checkmark Memory is linear, $O(bm)$: only the current path and its siblings.
+  \item \xmark Not complete (it can run down an infinite branch or loop), and
+        \xmark not optimal (it returns the first goal found, however deep).
+\end{itemize}}{%
+\lead{\mk{The comparison table. Learn this.}}
+\vspace{-1pt}
+\begin{tabularx}{\linewidth}{@{}L{1.75cm}L{2.0cm}L{2.0cm}X@{}}
+\toprule
+\hrow & \thead{BFS} & \thead{DFS} & \thead{Why} \\
+\midrule
+Data structure & FIFO queue & LIFO stack & shallowest Vs deepest first \\
+Complete & \checkmark yes & \xmark no & DFS can descend forever \\
+Optimal & \checkmark yes\newline{\footnotesize (unit step cost)} & \xmark no & BFS meets the shallowest goal first \\
+Time & $O(b^d)$ & $O(b^m)$ & $m \geq d$, so DFS can be far worse \\
+Space & $O(b^d)$ & $O(bm)$ & \mk{the real difference} \\
+Good when & the goal is shallow, memory is plentiful & the tree is deep, memory is tight, solutions are dense & \\
+\bottomrule
+\end{tabularx}
+\vspace{2pt}
+\begin{itemize}
+  \item \mk{The sentence that earns the last mark}: BFS trades
+        \emph{memory} for a guarantee; DFS trades the \emph{guarantee} for memory.
+  \item With $b = 10$ and $d = 12$, BFS needs about $10^{12}$ nodes in memory and DFS
+        about 120. That is the whole argument in one number.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+\sbs{%
+\lead{Depth limited search (DLS) \yr{(\textbf{71 Bh} \m{4+4}, 79 Ash \m{4})}}
+\begin{itemize}
+  \item DFS with a hard cut-off at depth $\ell$: treat any node at depth $\ell$ as having
+        no successors.
+  \item \textbf{The advantage}, which is what the paper asks: it \mk{fixes
+        DFS's infinite-branch failure} while keeping DFS's $O(b\ell)$ memory.
+  \item \xmark Still not optimal, and \xmark incomplete in a new way: if
+        $\ell < d$ it reports failure even though a solution exists. If $\ell > d$ it is
+        not optimal either.
+  \item Choosing $\ell$ needs knowledge of the problem. \emph{Eg} for a route between 20
+        cities, no path needs more than 19 steps, so $\ell = 19$.
+\end{itemize}
+\lead{Iterative deepening (IDS) \added}
+\begin{itemize}
+  \item Run DLS with $\ell = 0, 1, 2, \dots$ until a goal is found.
+  \item \mk{Gets BFS's guarantees at DFS's memory cost}: complete, optimal
+        for unit steps, $O(b^d)$ time, $O(bd)$ space.
+  \item The repeated work is negligible: re-expanding the top of the tree costs a constant
+        factor, because the bottom level has more nodes than all the levels above it
+        combined.
+  \item \textbf{The preferred blind search} when the depth is unknown. Worth one line
+        whenever a paper asks for a comparison of blind strategies.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+\creamq{Informed Vs uninformed search}{\m{3}\m{4}\m{8}}
+{\color{sub}\footnotesize \tF{4} \yr{\textit{74 Ma} \m{8}, \texttt{81 Ba} \m{4+4},
+\textbf{\texttt{81 Bh}} \m{3+6}, \textbf{\textit{72 Ash}} \m{8}} \gap$\cdot$\gap
+in all four papers it is the \mk{first half of a hill-climbing question}, so
+answer it in a table and spend the time on the second half}
+
+\vspace{2pt}
+\begin{tabularx}{\textwidth}{@{}L{2.4cm}XX@{}}
+\toprule
+\hrow & \thead{Uninformed (blind)} & \thead{Informed (heuristic)} \\
+\midrule
+Extra knowledge & None beyond the problem definition & A \textbf{heuristic} $h(n)$ estimating the cost from $n$ to the goal \\
+Chooses by & Position in the queue or stack & The value of an evaluation function \\
+Efficiency & Explores blindly, generates many useless nodes & Explores towards the goal, generates far fewer \\
+Completeness & BFS, UCS, IDS yes; DFS no & A* yes; greedy and hill climbing no \\
+Optimality & BFS and IDS for unit cost, UCS always & A* with an admissible $h$; greedy never \\
+Cost & Cheap per node & Needs a heuristic, which costs domain knowledge to design and time to evaluate \\
+Examples & BFS, DFS, DLS, IDS, uniform cost & Best first, greedy, A*, hill climbing, simulated annealing \\
+\bottomrule
+\end{tabularx}
+\par\penalty0
+\vspace{3pt}
+
+\begin{itemize}
+  \item \mk{The line that makes the difference concrete}: on the same
+        problem an uninformed search may generate millions of nodes where an informed one
+        generates hundreds. The heuristic is not a different algorithm, it is
+        \textbf{knowledge added to the same algorithm}.
+\end{itemize}
+
+%-----------------------------------------------------------------------
+\T{3.3 Informed search: best first, greedy and A*}
+
+\Q{Explain A* search. How does it overcome the drawback of greedy best-first search?}{\m{2}\m{4}\m{6}\m{8}}
+{\color{sub}\footnotesize \tF{7} \yr{73 Ma \m{8}, \textbf{\textit{77 Ch}} \m{8},
+78 Po \m{8}, \textbf{\textit{73 Bh}} \m{8}, \texttt{82 Ba} \m{2+6}, 78 Ba \m{6},
+\textbf{\texttt{82 Bh}} \m{4+5}} \gap$\cdot$\gap
+short note on A* alone at \tF{5} \yr{\textit{72 Ma}, 79 Jth, \textbf{\texttt{81 Bh}} \m{4},
+\texttt{80 Ba}, 76 Ba \m{3}} \gap$\cdot$\gap
+\mk{always phrased as a comparison}, so never explain A* without saying what
+greedy gets wrong}
+
+\sbsr{0.5}{%
+\lead{The three evaluation functions}
+\begin{itemize}
+  \item $g(n)$ $=$ the cost \textbf{already paid} to reach $n$ from the start.
+  \item $h(n)$ $=$ the \textbf{estimated} cost from $n$ to the goal, the heuristic.
+  \item \textbf{Best first} search is the family: keep an \textbf{OPEN} list of generated
+        but unexpanded nodes and a \textbf{CLOSED} list of expanded ones, and always
+        expand the OPEN node with the best evaluation.
+  \begin{itemize}
+    \item \textbf{Greedy best first}: $f(n) = h(n)$. Ignores what has already been spent.
+    \item \textbf{Uniform cost}: $f(n) = g(n)$. Ignores the goal. This is blind search.
+    \item \textbf{A*}: $f(n) = g(n) + h(n)$. \mk{Uses both.}
+  \end{itemize}
+\end{itemize}
+\lead{The A* algorithm, as it should be written}
+\begin{itemize}
+  \item \textbf{1.} Put the start node on OPEN with $g = 0$, $f = h(\text{start})$.
+  \item \textbf{2.} If OPEN is empty, fail.
+  \item \textbf{3.} Remove the node of \textbf{lowest $f$} from OPEN, call it $n$, and put
+        it on CLOSED.
+  \item \textbf{4.} If $n$ is the goal, stop; trace the parent pointers back for the path.
+  \item \textbf{5.} Expand $n$. For each successor $m$: compute
+        $g(m) = g(n) + \text{cost}(n,m)$ and $f(m) = g(m) + h(m)$; record $n$ as its
+        parent; and if $m$ is already on OPEN or CLOSED with a \emph{larger} $g$,
+        \mk{replace the old entry and reopen it}.
+  \item \textbf{6.} Re-order OPEN by $f$ and go to 2.
+\end{itemize}}{%
+\lead{\mk{Greedy's drawback, and A*'s fix}}
+\begin{itemize}
+  \item Greedy asks only \emph{``which node looks nearest to the goal?''}. It therefore
+        \textbf{walks into whatever the heuristic flatters}, and a long detour that starts
+        with a promising-looking step will be taken in full.
+  \item \xmark Greedy is \textbf{not optimal} and \textbf{not complete}: it can loop
+        between two nodes that each look good from the other.
+  \item A* adds $g(n)$, so \mk{a node is judged on the whole journey, not
+        the remainder}. A cheap-looking node that cost a fortune to reach is
+        ranked accordingly.
+  \item \textbf{The worked case in the companion}: on the \yr{\textbf{80 Ch}} graph,
+        greedy takes $S \rightarrow C \rightarrow D \rightarrow F \rightarrow G$ at cost
+        \mk{25}, which is the \emph{worst} of the four routes, because
+        $h(C) = 5$ looks closest. A* takes $S \rightarrow B \rightarrow E \rightarrow F
+        \rightarrow G$ at cost \mk{18}, the optimum.
+\end{itemize}
+\lead{Comparison in one line each}
+\begin{itemize}
+  \item \textbf{Greedy}: fast, small memory, no guarantees.
+  \item \textbf{A*}: optimal and complete with an admissible $h$, but stores every
+        generated node, so \textbf{memory is its limit}.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+\creamq{Admissibility and optimality of A*}{\m{4+5}}
+{\color{sub}\footnotesize \tP{1} \yr{\textbf{\texttt{82 Bh}} \m{4+5}} \gap$\cdot$\gap
+asked as \emph{``define admissibility and optimality; under what conditions is A*
+guaranteed to be both''}, so the two \mk{conditions} are the answer}
+
+\sbs{%
+\lead{The two properties of a heuristic}
+\begin{itemize}
+  \item \textbf{Admissible}: $h(n) \leq h^{*}(n)$ for every $n$, where $h^{*}$ is the true
+        cost to the goal. The heuristic \mk{never overestimates}; it is
+        optimistic.
+  \begin{itemize}
+    \item Guarantees A* is optimal in \textbf{tree search}.
+  \end{itemize}
+  \item \textbf{Consistent} (monotone): $h(n) \leq \text{cost}(n,m) + h(m)$ for every edge,
+        and $h(\text{goal}) = 0$. A triangle inequality on the heuristic.
+  \begin{itemize}
+    \item Guarantees A* is optimal in \textbf{graph search}, i.e.\ with a CLOSED list that
+          is never revisited. Consistency implies admissibility; the converse is false.
+  \end{itemize}
+  \item \textbf{Conditions for A* to be admissible and optimal}: $h$ admissible, every
+        step cost $> 0$, and the branching factor finite. Add \emph{consistent} if a
+        closed list is used.
+\end{itemize}}{%
+\lead{\mk{Why this is not a pedantic point}}
+\begin{itemize}
+  \item Both graphs printed in these papers carry heuristics that are
+        \textbf{admissible but not consistent}. In \yr{\textbf{81 Ch}},
+        $h(B) = 13$ while $\text{cost}(B,E) + h(E) = 6 + 4 = 10$.
+  \item The consequence is visible in the trace: A* first reaches $E$ at $g = 12$ through
+        $A$, and later finds $E$ at $g = 11$ through $B$. \mk{An
+        implementation that refuses to reopen a closed node returns 19 instead of the
+        optimal 18.}
+  \item So step 5 of the algorithm above, the \emph{replace and reopen} clause, is not
+        decoration. Write it, and the trace comes out right.
+  \item \textbf{Dominance}: if $h_2(n) \geq h_1(n)$ for all $n$ and both are admissible,
+        $h_2$ \emph{dominates} $h_1$ and A* with $h_2$ expands no more nodes. A better
+        heuristic is one that is larger while staying under $h^{*}$.
+\end{itemize}}
+
+%-----------------------------------------------------------------------
+\T{3.4 Hill climbing and simulated annealing}
+
+\Q{Discuss hill climbing, the problems associated with it, and their solutions}{\m{3}\m{4}\m{6}\m{9}}
+{\color{sub}\footnotesize \tF{6} \yr{\textbf{69 Bh} \m{9}, 75 Ba \m{6+2},
+\texttt{80 Ba} \m{3+5}, \textbf{75 Bh} \m{4}, \textbf{77 Ch} \m{4},
+\textbf{\texttt{79 Bh}} \m{4}} \gap$\cdot$\gap
+\mk{three problems, three cures}, and the marks are split evenly between
+them. Four of these six papers then ask how \textbf{simulated annealing} fixes it}
+
+\sbsr{0.47}{%
+\lead{The algorithm}
+\begin{itemize}
+  \item A \textbf{local search}: keep only the current state, and move to a neighbour that
+        improves the objective function. No frontier, no backtracking, no memory of where
+        it has been.
+  \item \textbf{1.} Evaluate the initial state; if it is the goal, stop.
+        \textbf{2.} Generate a neighbour. \textbf{3.} If the neighbour is better, make it
+        the current state. \textbf{4.} Repeat until no neighbour is better.
+  \item \textbf{Variants}: \emph{simple} hill climbing takes the first better neighbour;
+        \emph{steepest ascent} evaluates all neighbours and takes the best;
+        \emph{stochastic} picks randomly among the better ones.
+  \item \checkmark Almost no memory, and very fast.
+        \xmark \mk{Not complete and not optimal}: it finds a
+        \emph{local} optimum and stops.
+\end{itemize}
+\figT{c3_hill_landscape.png}
+{\color{sub}\footnotesize The whole answer in one picture: climbing from the current
+state reaches the local maximum, not the global one.}}{%
+\lead{\mk{The three problems, and their cures}}
+\vspace{-1pt}
+\begin{tabularx}{\linewidth}{@{}L{1.9cm}XX@{}}
+\toprule
+\hrow \thead{Problem} & \thead{What happens} & \thead{Cure} \\
+\midrule
+\textbf{Local maximum} & A peak higher than all its neighbours but lower than the global maximum. Every move looks worse, so the search stops on a suboptimal answer. & \textbf{Backtrack} to an earlier node and try a different direction. Or restart from a new random state (random-restart hill climbing). \\
+\textbf{Plateau} & A flat region where all neighbours score the same, so the search has no gradient to follow and wanders at random. & \textbf{Make a big jump} in some direction, to reach a new region of the space. A single step is not enough to get off it. \\
+\textbf{Ridge} & A sequence of local maxima along a slope where the ascent runs \emph{across} the ridge rather than along it, so every single-step move goes down. & \textbf{Apply two or more rules at once} before testing, i.e.\ move in several directions at a time. Bidirectional search also helps. \\
+\bottomrule
+\end{tabularx}
+\vspace{2pt}
+\begin{itemize}
+  \item \mk{Name all three and pair each with its own cure.} A generic
+        ``use random restarts'' for all three loses half the marks.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+\creamq{Simulated annealing}{\m{4}\m{5}\m{6}}
+{\color{sub}\footnotesize \tF{4} \yr{75 Ba \m{2}, \texttt{80 Ba} \m{5},
+\texttt{81 Ba} \m{4}, \textbf{\texttt{81 Bh}} \m{6}} \gap$\cdot$\gap
+\mk{not a syllabus line}, but asked four times and always as
+\emph{``how does it overcome the demerits of hill climbing''}}
+
+\sbs{%
+\lead{The idea}
+\begin{itemize}
+  \item Named after \textbf{annealing} in metallurgy: heat a metal, then cool it slowly so
+        its atoms settle into a low-energy crystal instead of freezing into a flawed one.
+  \item Hill climbing accepts \emph{only} improving moves, which is exactly why it gets
+        stuck. \mk{Simulated annealing sometimes accepts a worse move}, and
+        does so less and less as the search proceeds.
+  \item A move is picked at random:
+  \begin{itemize}
+    \item if it \textbf{improves} the state, accept it always;
+    \item if it \textbf{worsens} the state by $\Delta E$, accept it with probability
+          $P = e^{-\Delta E / T}$.
+  \end{itemize}
+  \item $T$ is the \textbf{temperature}, lowered on a fixed \textbf{annealing schedule}.
+\end{itemize}}{%
+\lead{\mk{Why that fixes hill climbing}}
+\begin{itemize}
+  \item An accepted downhill move is exactly what \textbf{escapes a local maximum}: the
+        search can go down one side of the small peak and up the big one.
+  \item It also \textbf{crosses a plateau}, since a sideways or slightly worse move costs
+        almost nothing in probability.
+  \item \textbf{The role of $T$}, which is where the marks are:
+  \begin{itemize}
+    \item \textbf{High $T$} $\rightarrow$ $P$ near 1, most bad moves accepted, the search
+          explores wildly. Nearly a random walk.
+    \item \textbf{Low $T$} $\rightarrow$ $P$ near 0, bad moves refused, the search becomes
+          \textbf{ordinary hill climbing}.
+    \item Starting hot and cooling slowly explores first and refines later.
+  \end{itemize}
+  \item Note the shape of $e^{-\Delta E/T}$: a \emph{slightly} worse move is much likelier
+        to be accepted than a much worse one, at any temperature.
+  \item \mk{The theoretical guarantee worth quoting}: if $T$ is lowered
+        slowly enough, simulated annealing finds the global optimum with probability
+        approaching 1.
+\end{itemize}}
+
+%-----------------------------------------------------------------------
+\T{3.5 Adversarial search: minimax and alpha-beta}
+
+\Q{Explain the min-max algorithm. What are its drawbacks, and how does alpha-beta pruning solve them?}{\m{2}\m{3}\m{4}\m{6}}
+{\color{sub}\footnotesize \tF{6} \yr{71 Ma \m{2+4+3}, \textbf{77 Ch} \m{2+6},
+82 Ka \m{6}, 81 Ash \m{6}, \textbf{\textit{76 Bh}} \m{4},
+\textbf{\texttt{80 Bh}} \m{2+6}} \gap$\cdot$\gap
+short notes on the same at \tF{6} \yr{78 Ba, \textbf{\textit{74 Bh}}, \textit{74 Ma},
+\textbf{\textit{72 Ash}}, 78 Po \m{4}, \texttt{82 Ba} \m{3}} \gap$\cdot$\gap
+\mk{12 papers between them}, which makes this the second-biggest topic in
+the chapter}
+
+\sbs{%
+\lead{Minimax}
+\begin{itemize}
+  \item For a \textbf{two-player, zero-sum, perfect-information} game. One player
+        (\textbf{MAX}) maximises the score, the other (\textbf{MIN}) minimises it.
+  \item Build the game tree to the terminal states, score each with the utility function,
+        then \mk{propagate values upward}:
+  \begin{itemize}
+    \item at a \textbf{MAX} node, take the \textbf{largest} child value;
+    \item at a \textbf{MIN} node, take the \textbf{smallest}.
+  \end{itemize}
+  \item The root's value is the best MAX can force \textbf{against an opponent playing
+        perfectly}, and the move to play is the child that achieves it.
+  \item Implemented as a \textbf{depth-first} traversal, so space is $O(bm)$; time is
+        $O(b^m)$.
+\end{itemize}}{%
+\lead{\mk{The drawbacks} (the part the papers ask for)}
+\begin{itemize}
+  \item \textbf{Exponential time}, $O(b^m)$. Chess has $b \approx 35$ and $m \approx 100$,
+        so the complete tree can never be built. \mk{This is the drawback};
+        everything else is a consequence.
+  \item It \textbf{examines every leaf}, including branches whose outcome cannot possibly
+        change the root value.
+  \item It assumes a \textbf{perfect opponent}, so it can play too cautiously against a
+        weak one.
+  \item In practice the tree must be \textbf{cut off at a fixed depth} and the cut-off
+        nodes scored by an \textbf{evaluation function}, which makes the answer
+        approximate.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+\sbs{%
+\lead{Alpha-beta pruning}
+\begin{itemize}
+  \item \mk{Same answer, fewer leaves.} It returns exactly the minimax
+        value; it only skips work that cannot affect it.
+  \item Carry two bounds down the tree:
+  \begin{itemize}
+    \item $\alpha$ $=$ the best value \textbf{MAX} can already guarantee. It only rises.
+    \item $\beta$ $=$ the best value \textbf{MIN} can already guarantee. It only falls.
+  \end{itemize}
+  \item \textbf{The two cut rules}:
+  \begin{itemize}
+    \item at a \textbf{MIN} node, if its value $\leq \alpha$, \textbf{stop} $-$ MAX will
+          never choose this branch (\emph{alpha cut-off});
+    \item at a \textbf{MAX} node, if its value $\geq \beta$, \textbf{stop} $-$ MIN will
+          never allow it (\emph{beta cut-off}).
+  \end{itemize}
+\end{itemize}}{%
+\lead{What pruning buys, and what it does not}
+\begin{itemize}
+  \item \textbf{Effect}: with a \emph{perfect} move ordering the time complexity falls
+        from $O(b^m)$ to $O(b^{m/2})$, i.e.\ \mk{the same time searches twice
+        as deep}, or an effective branching factor of $\sqrt{b}$. With random
+        ordering it is about $O(b^{3m/4})$.
+  \item \xmark It does \textbf{not} change the value returned.
+  \item \xmark It does \textbf{not} help in the worst case: with the best move examined
+        last everywhere, nothing is pruned and the cost is exactly minimax's.
+  \item So it depends entirely on \textbf{move ordering}, which is why real game programs
+        invest in ordering heuristics before they invest in searching deeper.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+\sbs{%
+\lead{How to run alpha-beta in an exam, without losing the thread}
+\begin{itemize}
+  \item \textbf{Go strictly left to right, depth first.} The examiner's expected answer
+        depends on that order.
+  \item Write $(\alpha, \beta)$ beside every internal node as you enter it, starting
+        $(-\infty, +\infty)$ at the root.
+  \item A child \textbf{inherits} its parent's current $\alpha$ and $\beta$.
+  \item After each child returns, update the node's own value, then update $\alpha$ (at a
+        MAX node) or $\beta$ (at a MIN node).
+  \item Test the cut rule \textbf{immediately after each child}, not at the end. Cross out
+        the skipped leaves so the pruning is visible.
+  \item \mk{State how many leaves were pruned} at the end. It is usually
+        worth a mark and it proves the trace was actually run.
+\end{itemize}}{%
+\lead{Worked in the companion}
+\begin{itemize}
+  \item \yr{\textbf{79 Ch}}: a 12-leaf, 5-level tree. Minimax value \textbf{3};
+        alpha-beta prunes \textbf{2 of the 12 leaves}.
+  \item \yr{76 Ba}: a 9-leaf, 2-level tree. Minimax value \textbf{3}; alpha-beta
+        prunes \textbf{4 of the 9}, because the first branch returns 3 and sets a high
+        $\alpha$ straight away.
+  \item \mk{The contrast between the two is the lesson}: the second tree
+        prunes twice as large a fraction, purely because its best branch happened to come
+        first.
+\end{itemize}
+\lead{Other adversarial ideas worth a line}
+\begin{itemize}
+  \item \textbf{Horizon effect}: a fixed-depth cut-off can hide a disaster just beyond the
+        last ply, so the agent plays a move that merely postpones it.
+  \item \textbf{Quiescence search}: keep searching past the cut-off while the position is
+        still volatile.
+  \item \textbf{Expectiminimax}: for games with chance, add a \emph{chance} node whose
+        value is the expected value over its children.
+\end{itemize}}

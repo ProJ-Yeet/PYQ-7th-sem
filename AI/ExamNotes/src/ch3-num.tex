@@ -1,0 +1,463 @@
+%=======================================================================
+%  CHAPTER 3 — SEARCH TECHNIQUES : SOLVED PROBLEMS
+%=======================================================================
+\section{Search Techniques \textcolor{sub}{\large -- Solved Problems}}
+
+{\color{sub}\footnotesize Every problem opens with the exam question and the figure
+\mk{exactly as the paper prints them}. The OPEN / CLOSED table format is
+the one \emph{Insights} \S3.4.2 uses. \gap$\cdot$\gap Every path, cost and minimax value
+in this file is recomputed independently by \code{verify.py}.}
+
+\lead{The four things everything here is built on:}
+\begin{itemize}
+  \item \textbf{1.} $f(n) = g(n) + h(n)$. \textbf{Greedy} orders on $h$ alone,
+        \textbf{uniform cost} on $g$ alone, \textbf{A*} on the sum. Every trace below is
+        the same loop with a different $f$.
+  \item \textbf{2. The loop}: take the best node off OPEN $\rightarrow$ put it on CLOSED
+        $\rightarrow$ generate its successors onto OPEN $\rightarrow$ \textbf{re-order
+        OPEN} $\rightarrow$ repeat. Stop when the node taken off OPEN is the goal, not
+        when the goal is first \emph{generated}.
+  \item \textbf{3. If a successor is already known with a larger $g$, replace it} and put
+        it back on OPEN. Skipping this returns the wrong answer on both A* graphs in these
+        papers, because both heuristics are admissible but \mk{not
+        consistent}.
+  \item \textbf{4. Alpha-beta}: $\alpha$ only rises, $\beta$ only falls, a child inherits
+        both, and you test the cut rule after \emph{every} child. MIN cuts when its value
+        $\leq \alpha$; MAX cuts when its value $\geq \beta$.
+\end{itemize}
+
+\hr
+
+%=======================================================================
+\T{3.N.1 A* on the 2081 Chaitra graph}
+
+\creamq{Explain the A* algorithm on the given figure}{\m{8}}
+{\color{sub}\footnotesize \tP{1} \yr{\textbf{81 Ch} \m{8}} \gap$\cdot$\gap
+the number \mk{above} each node is $h(n)$, the number on each link is the
+step cost}
+
+\begin{asked}{\textbf{81 Ch} \textperiodcentered{} \m{8}}
+Explain the A* algorithm on the following figure, where the starting node is S and the
+destination is G. (Information in the node represents the cost required to reach the goal
+and information in the connecting link represents the cost from one node to the other.)
+\figC{c3_81ch_astar.png}{5.3in}
+\end{asked}
+
+\sbs{%
+\lead{Reading the figure}
+\begin{itemize}
+  \item $h$: $S{=}17$, $A{=}10$, $B{=}13$, $C{=}4$, $D{=}2$, $E{=}4$, $F{=}1$, $G{=}0$.
+  \item Edges: $S$--$A$ 6, $S$--$B$ 5, $S$--$C$ 10, $A$--$E$ 6, $B$--$E$ 6, $B$--$D$ 7,
+        $C$--$D$ 6, $E$--$F$ 4, $D$--$F$ 6, $F$--$G$ 3.
+  \item There are only four routes from $S$ to $G$, which is worth writing down first as a
+        check on the answer:
+  \begin{itemize}
+    \item $S$-$A$-$E$-$F$-$G$ $= 6{+}6{+}4{+}3 = 19$
+    \item $\mathbf{S\text{-}B\text{-}E\text{-}F\text{-}G} = 5{+}6{+}4{+}3 = \mathbf{18}$
+    \item $S$-$B$-$D$-$F$-$G$ $= 5{+}7{+}6{+}3 = 21$
+    \item $S$-$C$-$D$-$F$-$G$ $= 10{+}6{+}6{+}3 = 25$
+  \end{itemize}
+  \item \mk{So the answer must come out 18.} If your trace ends at 19 you
+        have skipped the reopening step.
+\end{itemize}}{%
+\lead{Step 1. Start with S on OPEN}
+\vspace{-1pt}
+\begin{tabularx}{\linewidth}{@{}L{1.1cm}L{0.8cm}L{0.8cm}L{0.8cm}L{1.1cm}X@{}}
+\toprule
+\hrow \multicolumn{4}{@{}l}{\thead{OPEN}} & \multicolumn{2}{l@{}}{\thead{CLOSED}} \\
+\hrow \thead{Node} & \thead{$g$} & \thead{$h$} & \thead{$f$} & \thead{Node} & \thead{Parent} \\
+\midrule
+S & 0 & 17 & 17 & & \\
+\bottomrule
+\end{tabularx}
+\vspace{3pt}
+\lead{Step 2. Expand S}
+\vspace{-1pt}
+\begin{tabularx}{\linewidth}{@{}L{1.1cm}L{0.8cm}L{0.8cm}L{0.8cm}L{1.1cm}X@{}}
+\toprule
+\hrow \multicolumn{4}{@{}l}{\thead{OPEN, re-ordered by $f$}} & \multicolumn{2}{l@{}}{\thead{CLOSED}} \\
+\hrow \thead{Node} & \thead{$g$} & \thead{$h$} & \thead{$f$} & \thead{Node} & \thead{Parent} \\
+\midrule
+C & 10 & 4 & \textbf{14} & S & $-$ \\
+A & 6 & 10 & 16 & & \\
+B & 5 & 13 & 18 & & \\
+\bottomrule
+\end{tabularx}
+\vspace{2pt}
+\begin{itemize}
+  \item \mk{Note what has already gone wrong for greedy}: $C$ is chosen
+        first because $h(C) = 4$ is tiny, yet $C$ lies on the worst route. A* will recover;
+        greedy would not.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+\sbs{%
+\lead{Steps 3--6. Expand C, A, E, F}
+\vspace{-1pt}
+\begin{tabularx}{\linewidth}{@{}L{1.5cm}L{4.6cm}X@{}}
+\toprule
+\hrow \thead{Expand} & \thead{Generates} & \thead{OPEN after re-ordering (node/$f$)} \\
+\midrule
+C \,($f$ 14) & D: $g{=}16$, $f{=}18$ & A/16, B/18, D/18 \\
+A \,($f$ 16) & E: $g{=}12$, $f{=}16$ & E/16, B/18, D/18 \\
+E \,($f$ 16) & F: $g{=}16$, $f{=}17$ & F/17, B/18, D/18 \\
+F \,($f$ 17) & G: $g{=}19$, $f{=}19$ \newline D via F: $g{=}22$, worse, discard & B/18, D/18, G/19 \\
+\bottomrule
+\end{tabularx}
+\vspace{2pt}
+\begin{itemize}
+  \item $G$ is now \textbf{generated} at cost 19, but it is \mk{not
+        expanded}, because $B$ and $D$ both have $f = 18 < 19$. This is exactly
+        why the algorithm stops on \emph{removal} from OPEN, not on generation.
+\end{itemize}}{%
+\lead{\mk{Steps 7--10. Expanding B revises everything}}
+\vspace{-1pt}
+\begin{tabularx}{\linewidth}{@{}L{1.5cm}L{5.0cm}X@{}}
+\toprule
+\hrow \thead{Expand} & \thead{Generates} & \thead{OPEN after re-ordering} \\
+\midrule
+B \,($f$ 18) & E: $g{=}11 < 12$, \textbf{replace}, $f{=}15$ \newline D: $g{=}12 < 16$, \textbf{replace}, $f{=}14$ & D/14, E/15, G/19 \\
+D \,($f$ 14) & F via D: $g{=}18 > 15$, discard & E/15, G/19 \\
+E \,($f$ 15) & F: $g{=}15 < 16$, \textbf{replace}, $f{=}16$ & F/16, G/19 \\
+F \,($f$ 16) & G: $g{=}18 < 19$, \textbf{replace}, $f{=}18$ & G/18 \\
+G \,($f$ 18) & \mk{goal removed from OPEN, stop} & \\
+\bottomrule
+\end{tabularx}
+\vspace{2pt}
+\begin{itemize}
+  \item \textbf{Three replacements}, all through $B$. $B$ looked unpromising ($f = 18$,
+        last in the queue) but is on the optimal route.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+{\color{acc}\bfseries Answer:} path $\mathbf{S \rightarrow B \rightarrow E \rightarrow F
+\rightarrow G}$, total cost $\mathbf{18}$. Nodes expanded in the order
+S, C, A, E, F, B, D, E, F, G.
+
+\vspace{2pt}
+{\color{sub}\footnotesize \mk{Why this graph is worth understanding rather
+than memorising}: $h$ here is \textbf{admissible} (it never exceeds the true
+remaining cost) but \textbf{not consistent} $-$ $h(B) = 13$ while
+$\text{cost}(B,E) + h(E) = 6 + 4 = 10$. With an inconsistent heuristic a node can be
+reached more cheaply after it has been closed, which is why $E$ and $F$ each get expanded
+twice. An implementation with a strict closed list and no reopening returns
+$S$-$A$-$E$-$F$-$G$ at cost 19, and that is the commonest wrong answer to this question.}
+
+%=======================================================================
+\T{3.N.2 A* Vs greedy on the 2080 Chaitra graph}
+
+\creamq{How does A* overcome the problem with greedy best-first search?}{\m{3+4+3}}
+{\color{sub}\footnotesize \tP{1} \yr{\textbf{80 Ch} \m{3+4+3}} \gap$\cdot$\gap
+\mk{the same graph as \S3.N.1 with different heuristics}, given in a table
+rather than on the nodes. Check which you have been given before starting}
+
+\begin{asked}{\textbf{80 Ch} \textperiodcentered{} \m{3+4+3}}
+How does A* search overcome the problem associated with Greedy Best First Search? Using the
+following figure and table, where the starting node is S and the destination is G, compare
+the result of the A* algorithm with greedy search. (The table gives the cost required to
+reach the goal; the connecting link gives the cost from one node to the other.)
+\figC{c3_80ch_astar.png}{4.3in}
+\vspace{2pt}
+\begin{center}
+\begin{tabular}{|l|c|c|c|c|c|c|c|c|}
+\hline
+From & S & A & B & C & D & E & F & G \\ \hline
+Cost & 15 & 10 & 12 & 5 & 4 & 2 & 1 & 0 \\ \hline
+\end{tabular}
+\end{center}
+\end{asked}
+
+\sbs{%
+\lead{Greedy best first: order on $h$ alone}
+\vspace{-1pt}
+\begin{tabularx}{\linewidth}{@{}L{1.2cm}L{3.4cm}X@{}}
+\toprule
+\hrow \thead{Expand} & \thead{OPEN after ($h$)} & \thead{CLOSED} \\
+\midrule
+S & C/5, A/10, B/12 & S \\
+C & D/4, A/10, B/12 & S, C \\
+D & F/1, A/10, B/12 & S, C, D \\
+F & G/0, A/10, B/12 & S, C, D, F \\
+G & \mk{goal} & S, C, D, F, G \\
+\bottomrule
+\end{tabularx}
+\vspace{2pt}
+\begin{itemize}
+  \item \textbf{Path} $S \rightarrow C \rightarrow D \rightarrow F \rightarrow G$,
+        \textbf{cost} $10 + 6 + 6 + 3 = \mathbf{25}$.
+  \item \mk{That is the worst of the four routes.} Greedy went straight to
+        $C$ because $h(C) = 5$ is the smallest number in sight, never noticing that
+        \emph{getting} to $C$ costs 10, twice what $B$ costs.
+  \item Only 5 nodes expanded, so it is fast. It is fast and wrong.
+\end{itemize}}{%
+\lead{A*: order on $f = g + h$}
+\vspace{-1pt}
+\begin{tabularx}{\linewidth}{@{}L{1.2cm}L{1.5cm}X@{}}
+\toprule
+\hrow \thead{Expand} & \thead{$g$, $h$, $f$} & \thead{OPEN after re-ordering} \\
+\midrule
+S & 0, 15, 15 & C/15, A/16, B/17 \\
+C & 10, 5, 15 & A/16, B/17, D/20 \\
+A & 6, 10, 16 & E/14, B/17, D/20 \\
+E & 12, 2, 14 & F/17, B/17, D/20 \\
+B & 5, 12, 17 & \textbf{E}/13, \textbf{D}/16, F/17, G/19 \\
+E & 11, 2, 13 & D/16, F/16, G/19 \\
+D & 12, 4, 16 & F/16, G/19 \\
+F & 15, 1, 16 & G/18 \\
+G & 18, 0, 18 & \mk{goal, stop} \\
+\bottomrule
+\end{tabularx}
+\vspace{2pt}
+\begin{itemize}
+  \item \textbf{Path} $S \rightarrow B \rightarrow E \rightarrow F \rightarrow G$,
+        \textbf{cost} $\mathbf{18}$, the optimum.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+\sbs{%
+\lead{The comparison, which is what the 3 marks are for}
+\vspace{-1pt}
+\begin{tabularx}{\linewidth}{@{}L{2.0cm}L{3.1cm}X@{}}
+\toprule
+\hrow & \thead{Greedy best first} & \thead{A*} \\
+\midrule
+$f(n)$ & $h(n)$ & $g(n) + h(n)$ \\
+Path found & $S$-$C$-$D$-$F$-$G$ & $S$-$B$-$E$-$F$-$G$ \\
+Cost & \mk{25}, the worst route & \mk{18}, the optimum \\
+Nodes expanded & 5 & 9 \\
+Optimal & \xmark no & \checkmark yes, $h$ is admissible \\
+Complete & \xmark no & \checkmark yes \\
+\bottomrule
+\end{tabularx}
+\vspace{2pt}
+\begin{itemize}
+  \item \mk{The trade in one line}: A* expanded almost twice as many nodes
+        and returned a path 28\,\% cheaper. Greedy buys speed with correctness.
+\end{itemize}}{%
+\lead{Where greedy went wrong, precisely}
+\begin{itemize}
+  \item At the very first step both algorithms rank $C$ best, but for different reasons.
+        Greedy sees $h(C) = 5$ and \textbf{commits}; A* sees $f(C) = 10 + 5 = 15$, ties
+        with nothing better, expands it, and then \mk{keeps $B$ on the
+        table}.
+  \item Once greedy has moved to $C$ it never reconsiders. It has \textbf{no memory of
+        cost paid}, so nothing can ever make $C$ look like a mistake.
+  \item \textbf{The general statement to close with}: a heuristic estimates the
+        \emph{remaining} journey. Judging a node on that alone is judging a route by how
+        it ends, ignoring how much it cost to get there. Adding $g(n)$ restores the whole
+        journey to the comparison, and that is the entire difference between the two
+        algorithms.
+\end{itemize}}
+
+%=======================================================================
+\T{3.N.3 Best first search on the 2076 Bhadra tree}
+
+\creamq{Show the open list, closed list and path at each step}{\m{5}}
+{\color{sub}\footnotesize \yr{\textbf{\textit{76 Bh}} \m{5}} \gap$\cdot$\gap
+1 paper, 5 marks, so no tier chip \gap$\cdot$\gap
+the question names the \mk{three things it wants tabulated}, so tabulate
+exactly those three}
+
+\begin{asked}{\textbf{\textit{76 Bh}} \textperiodcentered{} \m{5}}
+Consider a search tree for a path-finding problem as shown. Assuming node A to be the root
+node and node I to be the goal node, explain how Best First Search reaches the goal by
+showing changes in the open list, closed list, and path at each step of the search.
+\figC{c3_76bh_bfs.png}{5.0in}
+\end{asked}
+
+\sbs{%
+\lead{Reading the figure}
+\begin{itemize}
+  \item Tree: $A \rightarrow B, C, D$; \quad $B \rightarrow E, F$; \quad
+        $D \rightarrow G, H$; \quad $G \rightarrow I, J$. \quad $I$ (the square) is the
+        goal.
+  \item Values on the edges, taken as the estimate for the child node:
+        $B{=}3$, $C{=}6$, $D{=}1$, $E{=}6$, $F{=}5$, $G{=}4$, $H{=}6$, $I{=}1$, $J{=}2$.
+  \item \textbf{Best first} expands the OPEN node with the smallest value, so the OPEN
+        list is re-ordered after every expansion.
+\end{itemize}
+\lead{The trace}
+\vspace{-1pt}
+\begin{tabularx}{\linewidth}{@{}L{0.75cm}L{1.1cm}XL{2.4cm}@{}}
+\toprule
+\hrow \thead{Step} & \thead{Expand} & \thead{OPEN after (node/value)} & \thead{CLOSED} \\
+\midrule
+1 & A & D/1, B/3, C/6 & A \\
+2 & D & B/3, G/4, C/6, H/6 & A, D \\
+3 & B & G/4, F/5, C/6, E/6, H/6 & A, D, B \\
+4 & G & \textbf{I}/1, J/2, F/5, C/6, E/6, H/6 & A, D, B, G \\
+5 & I & \mk{goal reached} & A, D, B, G, I \\
+\bottomrule
+\end{tabularx}}{%
+\lead{Path at each step}
+\vspace{-1pt}
+\begin{tabularx}{\linewidth}{@{}L{0.75cm}X@{}}
+\toprule
+\hrow \thead{Step} & \thead{Path to the node just expanded} \\
+\midrule
+1 & A \\
+2 & A $\rightarrow$ D \\
+3 & A $\rightarrow$ B \\
+4 & A $\rightarrow$ D $\rightarrow$ G \\
+5 & \textbf{A $\rightarrow$ D $\rightarrow$ G $\rightarrow$ I} \\
+\bottomrule
+\end{tabularx}
+\vspace{3pt}
+{\color{acc}\bfseries Answer:} path $\mathbf{A \rightarrow D \rightarrow G \rightarrow I}$,
+cost $1 + 4 + 1 = \mathbf{6}$.
+\vspace{2pt}
+\begin{itemize}
+  \item \mk{Step 3 is the one to explain.} After expanding $D$, the best
+        node on OPEN is $B$ at 3, not $G$ at 4 $-$ so best first
+        \textbf{jumps back across the tree} to a different branch before returning to
+        $G$. That switching is precisely what distinguishes best first from depth first,
+        and it is where the marks are.
+  \item $C$, $E$, $F$, $H$ and $J$ are \textbf{never expanded}. Five of the ten nodes are
+        never touched, which is the point of using a heuristic at all.
+  \item If the numbers are read as \emph{edge costs} and accumulated instead, the same
+        path comes out at the same cost of 6. Either reading is defensible here; say which
+        you are using.
+\end{itemize}}
+
+%=======================================================================
+\T{3.N.4 Minimax and alpha-beta on the 2079 Chaitra tree}
+
+\creamq{Apply minimax with alpha-beta pruning to the given tree}{\m{2+6}}
+{\color{sub}\footnotesize \tP{1} \yr{\textbf{79 Ch} \m{2+6}} \gap$\cdot$\gap
+squares are MAX, circles are MIN, and \mk{three of the MIN nodes have only
+one child}, which is easy to misread}
+
+\begin{asked}{\textbf{79 Ch} \textperiodcentered{} \m{2+6}}
+What is minmax search? Apply minmax search along with alpha-beta pruning for the following
+tree (max node at top).
+\figC{c3_79ch_minmax.png}{5.0in}
+\end{asked}
+
+\sbs{%
+\lead{Reading the tree}
+\begin{itemize}
+  \item Five levels: \textbf{MAX} root, \textbf{MIN}, \textbf{MAX}, \textbf{MIN}, then the
+        12 leaves.
+  \item Left MIN node $m_1$ over MAX nodes $s_1, s_2$; right MIN node $m_2$ over
+        $s_3, s_4$.
+  \item The MIN nodes above the leaves, left to right, take:
+        $\{3,9\}$, $\{2,7\}$, $\{2\}$, $\{5,0\}$, $\{2,5\}$, $\{8\}$, $\{3,14\}$.
+        \mk{Three of them have a single child}: count the lines in the
+        figure, not the leaves.
+\end{itemize}
+\lead{Step 1: MIN over the leaves}
+\begin{itemize}
+  \item $c_1 = \min(3,9) = 3$ \quad $c_2 = \min(2,7) = 2$ \quad $c_3 = 2$
+  \item $c_4 = \min(5,0) = 0$ \quad $c_5 = \min(2,5) = 2$ \quad $c_6 = 8$
+  \item $c_7 = \min(3,14) = 3$
+\end{itemize}
+\lead{Step 2: MAX}
+\begin{itemize}
+  \item $s_1 = \max(3,2) = 3$ \quad $s_2 = \max(2,0) = 2$
+  \item $s_3 = \max(2,8) = 8$ \quad $s_4 = 3$
+\end{itemize}
+\lead{Step 3: MIN, then the root}
+\begin{itemize}
+  \item $m_1 = \min(3,2) = 2$ \quad $m_2 = \min(8,3) = 3$
+  \item \textbf{root} $= \max(2,3) = \mathbf{3}$, so MAX plays the \textbf{right} branch.
+\end{itemize}}{%
+\lead{Alpha-beta, left to right}
+\vspace{-1pt}
+\begin{tabularx}{\linewidth}{@{}L{1.1cm}L{1.9cm}X@{}}
+\toprule
+\hrow \thead{Node} & \thead{$(\alpha, \beta)$ on entry} & \thead{What happens} \\
+\midrule
+$c_1$ & $(-\infty, \infty)$ & leaves 3, 9 $\rightarrow$ 3 \\
+$s_1$ & $\alpha \leftarrow 3$ & \\
+$c_2$ & $(3, \infty)$ & leaf 2 gives value 2; $2 \leq \alpha = 3$ $\rightarrow$ \mk{PRUNE leaf 7} \\
+$m_1$ & $\beta \leftarrow 3$ & $s_1 = 3$ \\
+$c_3$ & $(-\infty, 3)$ & leaf 2 $\rightarrow$ 2 \\
+$c_4$ & $(2, 3)$ & leaves 5, 0 $\rightarrow$ 0; no cut, 5 $>\alpha$ when tested \\
+$m_1$ & & $= \min(3, 2) = 2$; root $\alpha \leftarrow 2$ \\
+$c_5$ & $(2, \infty)$ & leaf 2 gives 2; $2 \leq \alpha = 2$ $\rightarrow$ \mk{PRUNE leaf 5} \\
+$c_6$ & $(2, \infty)$ & leaf 8 $\rightarrow$ 8, so $s_3 = 8$ \\
+$m_2$ & $\beta \leftarrow 8$ & \\
+$c_7$ & $(2, 8)$ & leaves 3, 14 $\rightarrow$ 3, so $s_4 = 3$ \\
+root & & $m_2 = \min(8,3) = 3$; $\max(2,3) = \mathbf{3}$ \\
+\bottomrule
+\end{tabularx}}
+
+\penalty0\vspace{2pt}
+{\color{acc}\bfseries Answer:} minimax value $\mathbf{3}$; MAX plays the right branch.
+\textbf{2 of the 12 leaves are pruned}: the \textbf{7} under $c_2$, and the \textbf{5}
+under $c_5$. Ten leaves are examined.
+
+\vspace{2pt}
+{\color{sub}\footnotesize \mk{Note the equality in the second cut.} At
+$c_5$ the value is 2 and $\alpha$ is also 2. A MIN node cuts on $\textbf{value} \leq
+\alpha$, not $<$, because MAX already has a way to score 2 elsewhere and will never
+\emph{prefer} this branch. Using a strict $<$ here is the commonest slip and it costs you
+that pruned leaf.}
+
+%=======================================================================
+\T{3.N.5 Alpha-beta on the 2076 Baishakh tree}
+
+\creamq{Discuss alpha-beta pruning and find the minimax value}{\m{4+4}}
+{\color{sub}\footnotesize \tP{1} \yr{76 Ba \m{4+4}} \gap$\cdot$\gap
+a small tree that prunes \mk{a much larger fraction} than \S3.N.4, and the
+reason why is the lesson}
+
+\begin{asked}{76 Ba \textperiodcentered{} \m{4+4}}
+Discuss the alpha-beta pruning algorithm. Find the min-max value using this concept in the
+following tree.
+\figC{c3_76ba_minmax.png}{5.0in}
+\end{asked}
+
+\sbs{%
+\lead{The trace}
+\begin{itemize}
+  \item MAX root over three MIN nodes, each with three leaves:
+        $\{3,5,10\}$, $\{2,8,19\}$, $\{2,7,3\}$.
+\end{itemize}
+\vspace{-1pt}
+\begin{tabularx}{\linewidth}{@{}L{1.3cm}L{1.7cm}X@{}}
+\toprule
+\hrow \thead{Node} & \thead{$(\alpha, \beta)$} & \thead{What happens} \\
+\midrule
+$m_1$ & $(-\infty, \infty)$ & 3 $\rightarrow$ 5 $\rightarrow$ 10, value $= 3$.
+  \mk{Nothing can be pruned here}, because $\alpha$ is still $-\infty$ \\
+root & $\alpha \leftarrow 3$ & \\
+$m_2$ & $(3, \infty)$ & leaf 2 gives 2; $2 \leq 3$ $\rightarrow$ \mk{PRUNE 8 and 19} \\
+$m_3$ & $(3, \infty)$ & leaf 2 gives 2; $2 \leq 3$ $\rightarrow$ \mk{PRUNE 7 and 3} \\
+root & & $\max(3, 2, 2) = \mathbf{3}$ \\
+\bottomrule
+\end{tabularx}
+\vspace{2pt}
+\begin{itemize}
+  \item \textbf{Minimax value 3}, MAX plays the \textbf{leftmost} branch.
+  \item \textbf{4 of the 9 leaves pruned} (8, 19, 7, 3); five examined:
+        3, 5, 10, 2, 2.
+\end{itemize}}{%
+\lead{\mk{Why this tree prunes so much better}}
+\begin{itemize}
+  \item \S3.N.4 pruned 2 leaves in 12, about 17\,\%. This one prunes 4 in 9, about 44\,\%.
+        The algorithm is identical; the \textbf{move ordering} is not.
+  \item Here the \textbf{best branch happens to be examined first}. That sets $\alpha = 3$
+        immediately, and every later MIN node that finds any child below 3 can stop at
+        once. Both of them do, on their very first leaf.
+  \item \textbf{The general rule}: alpha-beta is only as good as the order in which moves
+        are examined.
+  \begin{itemize}
+    \item \textbf{Best case} (best move first everywhere): $O(b^{m/2})$, so the same time
+          searches \textbf{twice as deep}.
+    \item \textbf{Worst case} (best move last everywhere): $O(b^m)$, i.e.\
+          \mk{no saving at all} $-$ alpha-beta never prunes more than minimax
+          examines, and can prune nothing.
+  \end{itemize}
+  \item This is why real game programs spend effort on \textbf{move ordering heuristics}
+        before they spend it on searching deeper.
+\end{itemize}
+\lead{Two things to say when asked to ``discuss'' it}
+\begin{itemize}
+  \item \mk{It returns exactly the minimax value.} Pruning removes work,
+        never accuracy. Say this first.
+  \item A pruned branch is one whose value \textbf{cannot change the root}, because a
+        player higher up already has a better guaranteed alternative.
+\end{itemize}}
