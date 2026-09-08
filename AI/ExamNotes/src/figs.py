@@ -27,9 +27,9 @@ Two ways to say where the figure is:
                                           hand recovers them exactly.
 
 INSIGHTS IS A TWO-PAGE SPREAD PER PDF PAGE. A box on it must stay inside one
-half: x < 0.5 is the LEFT (even) book page, x > 0.5 the RIGHT (odd) one.
-Book page -> PDF page:  pdf = (book + 6) // 2  for an even book page,
-                        pdf = (book + 5) // 2  for an odd one.
+half: x < 0.5 is the LEFT (even) book page, x > 0.5 the RIGHT (odd) one. Use
+ins() and give it the PRINTED book page; it works the PDF page out, including
+the one spread the scan skips (book pp.96-97 are not in the file).
 
 Run from this folder:  python figs.py [name ...]
 """
@@ -74,11 +74,27 @@ def add(name, pdf, page, box=None, pick=0, dpi=300, pad=0.004, flat=False):
                      dpi=dpi, pad=pad, flat=flat))
 
 
+def ins_pdf_page(book):
+    """PDF page holding a given Insights book page.
+
+    Two book pages per PDF page, left half even and right half odd. But the
+    scan SKIPS ONE SPREAD: pdf p50 holds book pp.94-95 and pdf p51 holds book
+    pp.98-99, so book pages 96 and 97 do not exist in this file at all. The
+    offset therefore drops by one PDF page from book 98 on. Verified against
+    the printed folios, which is also how AI/ocr/notes_text/insights/ is
+    numbered.
+    """
+    if book in (96, 97):
+        raise SystemExit("Insights book pp.96-97 are missing from the scan")
+    off = 6 if book < 96 else 4
+    return (book + off) // 2 if book % 2 == 0 else (book + off - 1) // 2
+
+
 def ins(name, book, box, dpi=320):
     """A figure on one half of an Insights spread. `box` is in HALF-PAGE
     fractions (0-1 across that half), so a figure is placed the same way
     whether it sits on a left or a right book page."""
-    pdf_page = (book + 6) // 2
+    pdf_page = ins_pdf_page(book)
     left = (book % 2 == 0)
     x0 = (box[0] * 0.5) if left else (0.5 + box[0] * 0.5)
     x1 = (box[2] * 0.5) if left else (0.5 + box[2] * 0.5)
