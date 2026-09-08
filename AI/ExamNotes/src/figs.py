@@ -141,6 +141,37 @@ for _n in ("ai_81ch_astar", "ai_80ch_astar", "ai_76bh_bfs",
                      copy=os.path.join(HERE, "..", "..", "images", _n + ".png")))
 
 
+# ------------------------------------------------------------------ chapter 4
+# BA Sir's CH-04 deck is 4 slides to a page, so every box here is a manual
+# clip inside one quadrant. The deck pastes each figure as its own raster but
+# several quadrants carry two, so the largest-raster default picks the wrong
+# one -- boxes it is.
+# The resolution refutation cascade for the Colonel West premises: the exact
+# shape the answer to 33 of the 41 papers has to take.
+add("c4_res_graph.png", BA4, 9, box=(0.085, 0.628, 0.462, 0.900))
+# Backward chaining as a proof tree (Russell & Norvig fig 9.7), with the KB
+# clauses and the goal beside it.
+add("c4_bwd_chain.png", BA4, 11, box=(0.196, 0.210, 0.452, 0.455))
+# Bayes' theorem with every term named: likelihood, prior, posterior,
+# marginalisation. Five papers ask the theorem itself before the numerical.
+add("c4_bayes_anatomy.png", BA4, 11, box=(0.532, 0.213, 0.918, 0.438))
+# The alarm network, the standard belief-network example. The whole slide, not just
+# the graph: the CPT boxes sit ON the graph and the joint-probability worked example
+# beside it is the calculation the caption quotes. Cropping tighter cuts a line of it.
+add("c4_bbn_alarm.png", BA4, 12, box=(0.528, 0.268, 0.918, 0.472))
+# A causal network proper: Cloudy -> Sprinkler / Rain -> WetGrass. Same shape
+# as the network 78 Ba prints, so it reads as a rehearsal for that question.
+add("c4_causal_net.png", BA4, 12, box=(0.138, 0.694, 0.283, 0.845))
+# Forward chaining drawn the way Insights draws it: facts on the bottom row,
+# each iteration adding a row above until the goal appears.
+ins("c4_fwd_chain.png", 119, (0.00, 0.313, 1.00, 0.566))
+# The Bayesian network 78 Ba prints with its question, reused from the crop
+# already made for the Sorted PYQ document.
+JOBS.append(dict(name="c4_78ba_bbn.png", pdf=None, page=None, box=None,
+                 pick=0, dpi=0, pad=0, flat=False,
+                 copy=os.path.join(HERE, "..", "..", "images", "ai_78ba_bbn.png")))
+
+
 def rect_for(pg, job):
     r = pg.rect
     if job["box"]:

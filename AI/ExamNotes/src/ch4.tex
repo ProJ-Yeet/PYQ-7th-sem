@@ -1,0 +1,916 @@
+%=======================================================================
+%  CHAPTER 4 — KNOWLEDGE REPRESENTATION, INFERENCE AND REASONING  (4 hrs)
+%=======================================================================
+\section{Knowledge Representation, Inference and Reasoning}
+
+{\color{sub}\footnotesize 4 hrs \gap$\cdot$\gap asked in \mk{all 41 papers}
+\gap$\cdot$\gap 4 syllabus sub-topics \gap$\cdot$\gap 638 marks, \mk{18.8\,\% of every
+mark ever set}, against a 7.8\,\% share of the teaching hours \gap$\cdot$\gap
+23 resolution proofs and 15 Bayes numericals worked in \emph{Ch4 -- Knowledge
+Representation, Inference and Reasoning -- Solved Problems}.}
+
+\lead{Read this first:}
+\begin{itemize}
+  \item \mk{This is the highest-paying chapter in the subject, by a factor
+        of 2.4.} Four teaching hours, nearly a fifth of every mark. Whatever time the
+        timetable suggests for it, spend more.
+  \item \mk{One question dominates everything}: \textbf{prove a goal from
+        given premises by resolution refutation} \tS{33}. It is in \textbf{33 of the 41
+        papers}, always for 6 to 10 marks. The premises change; the procedure never does.
+        Learn the procedure once and the question is answered for the rest of your life.
+  \item Its two feeder topics are asked in their own right: \textbf{conversion to CNF}
+        \tS{9} and the \textbf{rules of inference}. You cannot resolve without CNF, so
+        this is one topic wearing two hats.
+  \item The other two reliable topics: \textbf{forward Vs backward chaining} \tS{11},
+        always a comparison with an example, and \textbf{belief / causal networks}
+        \tF{7}.
+  \item \mk{Fifteen papers set a Bayes numerical}, usually bolted onto a
+        2--3 mark theory opener. The arithmetic is one formula; all 15 are worked in the
+        companion.
+  \item Pairs the examiner reliably asks together: a resolution proof preceded by
+        \textbf{the CNF steps}, \textbf{skolemization} or \textbf{the rules of
+        inference}, and a Bayes numerical preceded by \textbf{prior/posterior}. The short
+        part is always the definition; the long part is always the work.
+  \item \mk{The 5-mark saver}: if a resolution proof stalls in the exam,
+        write the FOPL, write the clause form, write the negated goal, and show the
+        resolution steps you do have. The marks are spread across those stages, not
+        parked on the empty clause.
+\end{itemize}
+
+\hr
+
+%-----------------------------------------------------------------------
+\T{4.1 Knowledge, representation and reasoning}
+
+\Q{What is knowledge, representation and reasoning? What kinds of knowledge are there?}{\m{2}\m{2+5}}
+{\color{sub}\footnotesize \yr{\textbf{72 Ash} \m{2+5}, \textbf{77 Ch} \m{2}, 72 Ma \m{7}}
+\gap$\cdot$\gap never asked alone: it is the opening 2 marks of a chaining or
+rule-based-reasoning question, so \mk{answer it in four lines and move on}}
+
+\sbs{%
+\lead{The three words}
+\begin{itemize}
+  \item \textbf{Knowledge} $=$ facts, concepts, rules and relationships about a domain
+        that an agent can use. It sits above data and information:
+  \begin{itemize}
+    \item \textbf{data} $\rightarrow$ raw symbols; \textbf{information} $\rightarrow$ data
+          with context; \textbf{knowledge} $\rightarrow$ information plus how to use it;
+          \textbf{intelligence} $\rightarrow$ knowledge applied to a new situation.
+  \end{itemize}
+  \item \textbf{Representation} $=$ writing that knowledge in a formal notation a machine
+        can store and manipulate. Not any notation: one that
+        \mk{supports inference}.
+  \item \textbf{Reasoning} $=$ deriving new sentences from the stored ones, so the agent
+        knows things nobody explicitly told it.
+  \item The four questions KR exists to answer: how do we represent facts about the
+        world, how do we reason about them, which representation suits the real world,
+        and how do we put it in a form a machine can compute with.
+\end{itemize}}{%
+\lead{\mk{The five kinds of knowledge}}
+\vspace{-1pt}
+\begin{tabularx}{\linewidth}{@{}L{2.2cm}XL{2.6cm}@{}}
+\toprule
+\hrow \thead{Kind} & \thead{What it is} & \thead{Example} \\
+\midrule
+\textbf{Declarative} & Knowing \emph{that}. Facts, concepts, objects, stated without
+saying how to use them & ``Kathmandu is the capital of Nepal'' \\
+\textbf{Procedural} & Knowing \emph{how}. Rules, strategies, procedures, agendas &
+the steps to sort a list \\
+\textbf{Heuristic} & Rules of thumb from experience: good, not guaranteed &
+in chess, keep the opponent's king exposed \\
+\textbf{Structural} & Relationships between concepts and objects &
+``a cow \emph{is-a} mammal'' \\
+\textbf{Meta} & Knowledge \emph{about} knowledge: what the agent knows, and how reliable
+it is & ``my map of Pokhara is out of date'' \\
+\bottomrule
+\end{tabularx}
+\vspace{2pt}
+\begin{itemize}
+  \item \mk{Name all five with one example each.} Papers award a mark
+        per kind, and \emph{meta-knowledge} and \emph{structural} are the two students
+        forget.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+\sbs{%
+\lead{What a good representation must give you}
+\begin{itemize}
+  \item \textbf{Representational adequacy} $-$ can it express everything in the domain?
+  \item \textbf{Inferential adequacy} $-$ can new knowledge be derived from it?
+  \item \textbf{Inferential efficiency} $-$ can the derivation be steered, so the search
+        does not explode?
+  \item \textbf{Acquisitional efficiency} $-$ can new knowledge be added easily?
+\end{itemize}}{%
+\lead{Why logic is the representation of choice}
+\begin{itemize}
+  \item It is concise, unambiguous, context-insensitive and expressive, and it comes with
+        a \textbf{proof theory}, i.e.\ \mk{inference is defined for you}.
+        That last property is what the rest of this chapter is built on.
+  \item Logic is fixed by three things, and papers ask for them by name:
+        \textbf{syntax} (which strings are sentences), \textbf{semantics} (what a
+        sentence means about the world) and \textbf{proof theory} (which new sentences
+        may be derived from old ones).
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+\creamq{What is a knowledge-based agent? How does it work?}{\m{2+3+2}}
+{\color{sub}\footnotesize \tP{1} \yr{\texttt{82 Ba} \m{2+3+2}} \gap$\cdot$\gap
+\mk{no lecture deck in the set covers this by name} \added \gap$\cdot$\gap
+answer it as the \emph{three operations} plus the two levels}
+
+\sbs{%
+\lead{Definition and structure}
+\begin{itemize}
+  \item An agent whose behaviour comes from a \textbf{knowledge base} (KB) of sentences
+        about the world, plus an \textbf{inference engine} that derives new sentences
+        from it. It \mk{acts on what it can prove}, not on hard-wired
+        reflexes.
+  \item Two levels, and papers like the distinction:
+  \begin{itemize}
+    \item \textbf{Knowledge level} $-$ \emph{what} the agent knows and what goal it has,
+          independent of any notation.
+    \item \textbf{Implementation level} $-$ the sentences, the data structures and the
+          algorithm that actually run.
+  \end{itemize}
+  \item Three operations, in this order, once per time step:
+  \begin{itemize}
+    \item \textbf{TELL} the KB what was perceived;
+    \item \textbf{ASK} the KB which action to take;
+    \item \textbf{TELL} the KB that the action was taken.
+  \end{itemize}
+\end{itemize}}{%
+\lead{Why it matters, with the standard example}
+\begin{itemize}
+  \item The \textbf{Wumpus world}: an agent in a cave perceives \emph{breeze},
+        \emph{stench}, \emph{glitter}. No single percept names a pit, but
+        \mk{breeze in (1,2) and (2,1) with none in (1,1)} \emph{proves}
+        where the pit is. That inference, not the percept, is the whole point.
+  \item \checkmark It can be \textbf{told new facts} without reprogramming: add a sentence
+        and the behaviour changes.
+  \item \checkmark It handles \textbf{partially observable} worlds, because it reasons
+        about what it has not seen.
+  \item \xmark It is only as good as its KB, and inference costs time: a large KB with an
+        undirected engine is exactly the search-explosion problem of Ch\,3.
+  \item \textbf{Every expert system} (Ch\,7) is a knowledge-based agent with a domain
+        KB and a chaining inference engine. Say that sentence and the examiner sees you
+        have connected the chapters.
+\end{itemize}}
+
+%-----------------------------------------------------------------------
+\T{4.2 Propositional logic: WFF, tautology and the rules of inference}
+
+\Q{Define a WFF with its properties. Prove that $(A \wedge (A \rightarrow B)) \rightarrow B$ is a tautology}{\m{4+4}}
+{\color{sub}\footnotesize \tP{1} \yr{\textbf{\textit{71 Bh}} \m{4+4}} \gap$\cdot$\gap
+the proof is a \mk{4-row truth table}, worked in the companion
+\gap$\cdot$\gap ``short note: predicate logic / sentence validity'' \yr{\textbf{75 Bh}
+\m{4}, \textit{72 Ma} \m{4}} wants the same vocabulary}
+
+\sbs{%
+\lead{Proposition and well-formed formula}
+\begin{itemize}
+  \item A \textbf{proposition} is a declarative statement that is \textbf{either true or
+        false, never both}. ``5 is a prime number'' is one; ``close the door'' is not.
+  \item An \textbf{atomic} sentence is a single propositional symbol ($P$, $Q$).
+        A \textbf{compound} sentence joins atomic ones with the connectives
+        $\neg, \wedge, \vee, \rightarrow, \leftrightarrow$.
+  \item A \textbf{WFF} is a string built only by these recursive rules:
+  \begin{itemize}
+    \item any propositional symbol is a WFF;
+    \item if $\alpha$ is a WFF then $\neg\alpha$ and $(\alpha)$ are WFFs;
+    \item if $\alpha, \beta$ are WFFs then so are
+          $(\alpha \wedge \beta)$, $(\alpha \vee \beta)$,
+          $(\alpha \rightarrow \beta)$, $(\alpha \leftrightarrow \beta)$;
+    \item \mk{nothing else is a WFF.} That closing clause is worth a
+          mark and is the one students leave out.
+  \end{itemize}
+  \item Precedence, when brackets are missing:
+        $\neg$, then $\wedge$, then $\vee$, then $\rightarrow$, then $\leftrightarrow$.
+\end{itemize}}{%
+\lead{\mk{The four properties to name}}
+\begin{itemize}
+  \item \textbf{Valid} (a \textbf{tautology}): true under \emph{every} interpretation.
+        \emph{Eg} $P \vee \neg P$.
+  \item \textbf{Satisfiable}: true under \emph{at least one}. \emph{Eg} $P \wedge Q$.
+  \item \textbf{Unsatisfiable} (a \textbf{contradiction}): true under \emph{none}.
+        \emph{Eg} $P \wedge \neg P$.
+  \item \textbf{Equivalent}: $\alpha \equiv \beta$ when they have the same truth value in
+        every row. Equivalently, $\alpha \leftrightarrow \beta$ is valid.
+  \item \mk{The link resolution depends on}: $\alpha$ is valid
+        \emph{iff} $\neg\alpha$ is unsatisfiable. That single line is why proving a goal
+        is done by \textbf{refuting its negation} in \S4.5.
+\end{itemize}
+\lead{Equivalences you must be able to quote}
+\begin{itemize}
+  \item $\alpha \rightarrow \beta \;\equiv\; \neg\alpha \vee \beta$
+        \gap\mk{(the workhorse)}
+  \item $\alpha \leftrightarrow \beta \;\equiv\;
+        (\alpha \rightarrow \beta) \wedge (\beta \rightarrow \alpha)$
+  \item De Morgan: $\neg(\alpha \wedge \beta) \equiv \neg\alpha \vee \neg\beta$; \;
+        $\neg(\alpha \vee \beta) \equiv \neg\alpha \wedge \neg\beta$
+  \item Distribution:
+        $\alpha \vee (\beta \wedge \gamma) \equiv
+         (\alpha \vee \beta) \wedge (\alpha \vee \gamma)$
+  \item \textbf{Contrapositive} $\neg\beta \rightarrow \neg\alpha$ is equivalent to
+        $\alpha \rightarrow \beta$; the \textbf{converse}
+        $\beta \rightarrow \alpha$ and the \textbf{inverse}
+        $\neg\alpha \rightarrow \neg\beta$ are \textbf{not}.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+\creamq{List the rules of inference. When can we use them?}{\m{2}\m{3}\m{2+3}}
+{\color{sub}\footnotesize \yr{\textbf{78 Ch} \m{3}, 80 Ash \m{3}, \textbf{81 Ch} \m{2+3},
+76 Ba \m{2}, 70 Ma \m{3}} \gap$\cdot$\gap 5 papers, none over 3 marks on its own, so no
+tier chip \gap$\cdot$\gap \mk{it is always the opener to a resolution proof},
+which is where the other 7 or 8 marks are}
+
+\sbsr{0.56}{%
+\lead{\mk{The eight propositional rules}}
+\vspace{-1pt}
+\begin{tabularx}{\linewidth}{@{}L{3.0cm}L{3.4cm}X@{}}
+\toprule
+\hrow \thead{Rule} & \thead{From \; $\therefore$ \; conclude} & \thead{Tautological form} \\
+\midrule
+\textbf{Modus ponens} & $P \rightarrow Q$, $P$ \; $\therefore$ \; $Q$ &
+$[(P \rightarrow Q) \wedge P] \rightarrow Q$ \\
+\textbf{Modus tollens} & $P \rightarrow Q$, $\neg Q$ \; $\therefore$ \; $\neg P$ &
+$[(P \rightarrow Q) \wedge \neg Q] \rightarrow \neg P$ \\
+\textbf{Hypothetical syllogism} & $P \rightarrow Q$, $Q \rightarrow R$ \; $\therefore$ \;
+$P \rightarrow R$ & chains two implications \\
+\textbf{Disjunctive syllogism} & $P \vee Q$, $\neg P$ \; $\therefore$ \; $Q$ &
+eliminates a disjunct \\
+\textbf{Addition} & $P$ \; $\therefore$ \; $P \vee Q$ & weakens \\
+\textbf{Simplification} & $P \wedge Q$ \; $\therefore$ \; $P$ & splits \\
+\textbf{Conjunction} & $P$, $Q$ \; $\therefore$ \; $P \wedge Q$ & joins \\
+\textbf{Resolution} & $P \vee Q$, $\neg P \vee R$ \; $\therefore$ \; $Q \vee R$ &
+\mk{the only one \S4.5 needs} \\
+\bottomrule
+\end{tabularx}}{%
+\lead{The four quantifier rules}
+\begin{itemize}
+  \item \textbf{Universal instantiation}: from $\forall x\,P(x)$ infer $P(c)$ for
+        \emph{any} constant $c$.
+  \item \textbf{Existential instantiation}: from $\exists x\,P(x)$ infer $P(c)$ for a
+        \mk{brand-new} constant $c$. Reusing an existing name is the
+        classic mistake; this is skolemization in one line.
+  \item \textbf{Universal generalisation}: from $P(c)$ for an arbitrary $c$ infer
+        $\forall x\,P(x)$.
+  \item \textbf{Existential generalisation}: from $P(c)$ infer $\exists x\,P(x)$.
+\end{itemize}
+\lead{\mk{When can we use them} (the second half of the question)}
+\begin{itemize}
+  \item Only when the premises \textbf{match the pattern exactly}, after unification.
+        A rule is a \emph{syntactic} licence: it never looks at meaning.
+  \item They are \textbf{sound}: applied to true premises they can only produce true
+        conclusions, so a derivation is a proof.
+  \item They are used when the KB is in the right form: modus ponens needs implications,
+        \textbf{resolution needs CNF} (\S4.4), and forward/backward chaining
+        (\S4.6) need \emph{definite} clauses.
+\end{itemize}}
+
+%-----------------------------------------------------------------------
+\T{4.3 First-order predicate logic}
+
+\Q{Why do we need FOPL? Explain its syntax and quantifiers}{\m{2}\m{2+3}\m{4}}
+{\color{sub}\footnotesize \yr{70 Ma \m{2+3}, \textbf{75 Bh} \m{4}, \textit{72 Ma} \m{4}}
+\gap$\cdot$\gap \mk{translating English into FOPL is the first step of every
+resolution proof}, so this section is really 33 papers wide \gap$\cdot$\gap
+a translation set is worked in the companion \yr{(\textbf{\textit{76 Bh}} \m{2})}}
+
+\sbs{%
+\lead{\mk{Why propositional logic is not enough}}
+\begin{itemize}
+  \item In PL a whole statement is \textbf{one indivisible symbol}. ``All humans are
+        intelligent'' and ``Some humans are intelligent'' become two unrelated letters
+        $P$ and $Q$, with no way to see that one implies the other.
+  \item It cannot express \textbf{objects, their properties or relations between them},
+        and it has \mk{no quantifiers}, so a fact about a million
+        individuals needs a million sentences.
+  \item FOPL fixes exactly that: it breaks a sentence into \textbf{subject} and
+        \textbf{predicate}, and quantifies over objects.
+  \item The three-line answer: PL has \mk{limited expressive power};
+        FOPL adds objects, predicates and quantifiers; so one FOPL sentence replaces an
+        unbounded set of PL ones.
+\end{itemize}
+\lead{Syntax: the seven elements}
+\begin{itemize}
+  \item \textbf{Constants} $-$ \emph{John}, \emph{Nepal}, 2. Named objects.
+  \item \textbf{Variables} $-$ $x, y, z$.
+  \item \textbf{Predicates} $-$ \emph{Brother}, \emph{Loves}, $>$. Relations, true or
+        false of their arguments.
+  \item \textbf{Functions} $-$ \emph{FatherOf}, \emph{sqrt}. Return an \emph{object},
+        not a truth value. \mk{Predicate Vs function is a favourite
+        one-mark trap.}
+  \item \textbf{Connectives} $\neg, \wedge, \vee, \rightarrow, \leftrightarrow$,
+        \textbf{equality} $=$, and \textbf{quantifiers} $\forall, \exists$.
+\end{itemize}}{%
+\lead{The two quantifiers, and the connective each takes}
+\begin{itemize}
+  \item $\forall$ (\textbf{universal}, ``for all'') goes with $\rightarrow$:\\
+        \mbox{}\hfill $\forall x\; man(x) \rightarrow drinks(x, coffee)$\hfill\mbox{}
+  \item $\exists$ (\textbf{existential}, ``there exists'') goes with $\wedge$:\\
+        \mbox{}\hfill $\exists x\; student(x) \wedge fails(x, maths)$\hfill\mbox{}
+  \item \mk{Swap the connectives and the sentence is nonsense.}
+        $\forall x\, (man(x) \wedge drinks(x,coffee))$ says \emph{everything in the
+        universe is a coffee-drinking man}; $\exists x\, (student(x) \rightarrow
+        fails(x))$ is satisfied by any non-student. This single pairing earns or loses
+        the translation marks.
+  \item \textbf{Duality}, needed in every CNF conversion:
+        $\neg \forall x\, P \equiv \exists x\, \neg P$ \; and \;
+        $\neg \exists x\, P \equiv \forall x\, \neg P$.
+\end{itemize}
+\lead{Translation patterns worth memorising}
+\begin{itemize}
+  \item ``All A are B'' $\rightarrow$ $\forall x\, A(x) \rightarrow B(x)$
+  \item ``Some A are B'' $\rightarrow$ $\exists x\, A(x) \wedge B(x)$
+  \item ``No A is B'' $\rightarrow$ $\forall x\, A(x) \rightarrow \neg B(x)$, or
+        $\neg \exists x\, (A(x) \wedge B(x))$
+  \item ``A has at least one B'' $\rightarrow$ $\exists x\, B(x) \wedge has(A, x)$
+  \item ``Everyone who \ldots\ all animals'' $\rightarrow$ a $\forall$ \emph{inside} the
+        antecedent of another $\rightarrow$; that nesting is what makes the standard CNF
+        example in \S4.4 hard.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+\sbs{%
+\lead{Skolemization \yr{(\texttt{81 Ba} \m{2}, \textbf{69 Bh}, short note)}}
+\begin{itemize}
+  \item \textbf{Definition}: removing an existential quantifier by replacing its variable
+        with a \emph{new} symbol, so the sentence can be written as a clause.
+  \item \textbf{Two cases, and the second is the one papers test}:
+  \begin{itemize}
+    \item $\exists$ \textbf{not inside any} $\forall$ $\rightarrow$ replace with a new
+          \textbf{Skolem constant}. \; $\exists x\, rich(x) \Rightarrow rich(A)$.
+    \item $\exists$ \textbf{inside} $\forall$ $\rightarrow$ replace with a
+          \textbf{Skolem function} of the enclosing universal variables. \;
+          $\forall x\, \exists y\, loves(x,y) \Rightarrow loves(x, F(x))$.
+  \end{itemize}
+  \item \mk{Why a function and not a constant}: the person loved
+        depends on who is loving. A constant would assert that
+        \emph{everyone loves the same individual}, which is a different and stronger
+        claim, and the proof built on it is wrong.
+  \item The new symbol must be one \textbf{not already used} anywhere in the KB.
+\end{itemize}}{%
+\lead{Horn clause and definite clause \yr{(\textbf{78 Ch} \m{3}, 70 Ma)}}
+\begin{itemize}
+  \item A \textbf{clause} is a disjunction of literals: $\neg P \vee Q \vee \neg R$.
+  \item \textbf{Definite clause}: a clause with \mk{exactly one
+        positive} literal. \; $\neg P \vee \neg Q \vee K$.
+  \item \textbf{Horn clause}: a clause with \mk{at most one positive}
+        literal. So every definite clause is a Horn clause, and the extra case is the
+        \textbf{goal clause} with no positive literal at all.
+  \item \textbf{Why the restriction exists}, which is what the 3 marks are for: a definite
+        clause is exactly an implication with a single conclusion,
+        $(P \wedge Q) \rightarrow K$, so
+  \begin{itemize}
+    \item inference collapses to \textbf{modus ponens}, and
+    \item \textbf{forward and backward chaining} (\S4.6) become possible, in time
+          \emph{linear} in the size of the KB rather than exponential.
+  \end{itemize}
+  \item \textbf{Prolog} is exactly this: a program is a set of definite clauses.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+\creamq{Unification and the most general unifier}{\m{2}\m{3}}
+{\color{sub}\footnotesize \yr{asked inside resolution questions, never alone}
+\gap$\cdot$\gap \mk{but no resolution step is legal without it}, and
+examiners take marks off a proof that unifies wrongly}
+
+\sbs{%
+\lead{What it does}
+\begin{itemize}
+  \item \textbf{Unification} finds a substitution $\theta$ that makes two atomic
+        sentences identical: $\text{UNIFY}(\alpha, \beta) = \theta$ where
+        $\alpha\theta = \beta\theta$.
+  \item The substitution with the fewest commitments is the \textbf{most general unifier
+        (MGU)}, and it is the one to use: a more specific one can lose proofs.
+  \item Written $[term/variable]$, \emph{Eg} $\theta = [John/x]$.
+  \item \textbf{It fails}, and the resolution step is then illegal, when
+  \begin{itemize}
+    \item the predicate symbols or the arities differ;
+    \item two different constants must match, \emph{Eg} $King(John)$ Vs $King(Ram)$;
+    \item a variable would have to be bound to a term containing itself
+          (the \emph{occurs check}).
+  \end{itemize}
+\end{itemize}}{%
+\lead{Worked, in the form the papers expect}
+\begin{itemize}
+  \item $King(x)$ and $King(John)$ \; $\rightarrow$ \; $\theta = [John/x]$.
+  \item $P(x, y)$ and $P(a, f(z))$ \; $\rightarrow$ \; $\theta = [a/x,\; f(z)/y]$.
+  \item $P(x, f(y))$ and $P(a, f(g(x)))$ \; $\rightarrow$ \; $\theta = [a/x,\; g(a)/y]$:
+        substitute $a$ for $x$ first, then \mk{apply that binding inside
+        the second term too}. Writing $g(x)/y$ and stopping is the common
+        half-answer.
+  \item $Q(a, g(x,a), f(y))$ and $Q(a, g(f(b),a), x)$ \; $\rightarrow$ \;
+        $\theta = [f(b)/x,\; b/y]$.
+  \item \textbf{Standardise apart first}: if both clauses use $x$, rename one of them.
+        Two clauses that share a variable name will unify wrongly and the proof will be
+        rejected.
+\end{itemize}}
+
+%-----------------------------------------------------------------------
+\T{4.4 Conversion to conjunctive normal form}
+
+\Q{Why is CNF required? Explain all the steps involved in converting to CNF, with an example}{\m{2+6}\m{3}\m{5}\m{8}\m{10}}
+{\color{sub}\footnotesize \tS{9} \yr{69 Po \m{10}, \textbf{70 Bh} \m{8}, 75 Ba \m{2+6},
+\textbf{79 Ch} \m{2+6}, \textbf{75 Bh} \m{2+6}, \textbf{\textit{76 Bh}} \m{5},
+\textbf{80 Ch} \m{3}, \textbf{81 Ch} \m{2+3}, 76 Ba \m{4}} \gap$\cdot$\gap
+\mk{four more papers} give a formula and ask for its CNF \tF{4}
+\yr{\textbf{\textit{73 Bh}} \m{2+2+2+3}, \textit{74 Ma} \m{6},
+\textbf{\textit{72 Ash}} \m{8}, 79 Jth \m{2+2+4}}, all worked in the companion}
+
+\sbs{%
+\lead{\mk{Why CNF is required} (the 2 marks, and the only part
+students skip)}
+\begin{itemize}
+  \item \textbf{CNF} $=$ a conjunction of clauses, each clause a disjunction of literals:
+        \mbox{}\hfill $(A \vee \neg B) \wedge (C \vee D \vee \neg E)$ \hfill\mbox{}
+  \item \textbf{Resolution is a single inference rule and it only operates on clauses.}
+        Everything else $-$ implications, biconditionals, nested negations, quantifiers
+        $-$ has to go before the machinery can start.
+  \item Because the whole formula is one big \textbf{AND}, each clause can be
+        \mk{asserted separately} and stored as its own line in the KB.
+  \item \textbf{Every} sentence of propositional or first-order logic has a CNF
+        equivalent, so nothing is lost by insisting on it. That completeness is what
+        makes resolution a \emph{general} proof procedure.
+  \item Contrast \textbf{DNF}, a disjunction of conjunctions. Papers sometimes ask for
+        both: CNF is joined by AND, DNF by OR.
+\end{itemize}}{%
+\lead{\mk{The eight steps, in this order}}
+\begin{enumerate}
+  \item \textbf{Eliminate} $\leftrightarrow$: \;
+        $\alpha \leftrightarrow \beta \Rightarrow
+        (\alpha \rightarrow \beta) \wedge (\beta \rightarrow \alpha)$.
+  \item \textbf{Eliminate} $\rightarrow$: \;
+        $\alpha \rightarrow \beta \Rightarrow \neg\alpha \vee \beta$.
+  \item \textbf{Move $\neg$ inwards}, until it sits on atoms only: De Morgan,
+        $\neg\neg\alpha \equiv \alpha$, and the quantifier duals
+        $\neg\forall x\,P \equiv \exists x\,\neg P$,
+        $\neg\exists x\,P \equiv \forall x\,\neg P$.
+  \item \textbf{Standardise variables apart}: rename so that no two quantifiers bind the
+        same variable name.
+  \item \textbf{Skolemize}: drop each $\exists$, replacing its variable by a new constant,
+        or by a \textbf{function} of the enclosing universal variables (\S4.3).
+  \item \textbf{Drop the universal quantifiers}: every remaining variable is understood
+        to be universally quantified.
+  \item \textbf{Distribute $\vee$ over $\wedge$}: \;
+        $\alpha \vee (\beta \wedge \gamma) \Rightarrow
+        (\alpha \vee \beta) \wedge (\alpha \vee \gamma)$.
+  \item \textbf{Split} the conjunction into separate clauses, and rename variables again
+        so no two clauses share one.
+\end{enumerate}
+\vspace{1pt}
+{\color{sub}\footnotesize \mk{Steps 4, 7 and 8 are the ones the local
+textbook leaves out}, and a proof that skips 4 or 8 unifies two unrelated
+variables and derives nonsense. Write all eight; the marks are per step.}}
+
+\penalty0\vspace{2pt}
+
+\sbs{%
+\lead{The worked example the papers use
+\yr{(\textbf{79 Ch}, \textbf{75 Bh}, \textbf{\textit{73 Bh}})}}
+\begin{itemize}
+  \item \emph{``Everyone who loves all animals is loved by someone.''}
+  \item \textbf{FOPL}: \;
+        $\forall x\,[\forall y\; Animal(y) \rightarrow Loves(x,y)]
+         \rightarrow [\exists z\; Loves(z,x)]$
+  \item \textbf{2. Eliminate} $\rightarrow$, twice: \;
+        $\forall x\, \neg[\forall y\; \neg Animal(y) \vee Loves(x,y)]
+         \vee [\exists z\; Loves(z,x)]$
+  \item \textbf{3. Move $\neg$ in}, using the dual and De Morgan: \;
+        $\forall x\, [\exists y\; Animal(y) \wedge \neg Loves(x,y)]
+         \vee [\exists z\; Loves(z,x)]$
+  \item \textbf{5. Skolemize.} Both $\exists$ are inside $\forall x$, so both become
+        \textbf{functions of $x$}: $y \Rightarrow F(x)$, $z \Rightarrow G(x)$: \;
+        $\forall x\, [Animal(F(x)) \wedge \neg Loves(x, F(x))] \vee Loves(G(x), x)$
+  \item \textbf{6. Drop $\forall$}, \textbf{7. distribute}, \textbf{8. split}:
+  \begin{itemize}
+    \item $Animal(F(x)) \vee Loves(G(x), x)$
+    \item $\neg Loves(x, F(x)) \vee Loves(G(x), x)$
+  \end{itemize}
+  \item \mk{Read the Skolem functions back}: $F(x)$ is ``the animal
+        $x$ does not love, if there is one'' and $G(x)$ is ``someone who loves $x$''.
+        Saying that in one line shows the step was understood, not copied.
+\end{itemize}}{%
+\lead{\mk{Where marks are actually lost}}
+\begin{itemize}
+  \item \textbf{Skolemizing to a constant inside a $\forall$.} $\forall x \exists y$
+        becomes $F(x)$, never $A$. This is the single commonest error, and it silently
+        changes the meaning.
+  \item \textbf{Distributing where you must not.}
+        $\neg(A \wedge \neg B) \vee C$ is
+        $\neg A \vee B \vee C$ $-$ \emph{one} clause. It is \textbf{not}
+        $(\neg A \vee C) \wedge (B \vee C)$.
+        \mk{The local textbook makes exactly this error} in its
+        ``likes all food'' problem, then quietly uses the correct single clause in the
+        proof underneath. The companion works that family properly.
+  \item \textbf{Forgetting to standardise apart.} Two clauses both using $x$ will unify on
+        a variable they do not share in meaning.
+  \item \textbf{Dropping $\forall$ before skolemizing.} The order in the list is not
+        decoration: once the $\forall$ is gone there is nothing to make the Skolem
+        function depend on.
+  \item \textbf{Simplification is allowed and is worth doing}: a clause containing both
+        $P$ and $\neg P$ is a tautology and can be dropped, and duplicate literals in one
+        clause collapse.
+\end{itemize}}
+
+%-----------------------------------------------------------------------
+\T{4.5 Resolution refutation}
+
+\Q{Prove the given goal from the given premises using resolution refutation}{\m{6}\m{7}\m{8}\m{9}\m{10}}
+{\color{sub}\footnotesize \tS{33} \yr{\textbf{69 Bh} \m{10}, 75 Ba \m{8},
+\textbf{77 Ch} \m{8}, 82 Ka \m{8}, 81 Ash \m{2+6}, \textbf{\texttt{81 Bh}} \m{9},
+\textbf{\texttt{82 Bh}} \m{6}, \textbf{70 Bh} \m{8}, \textbf{71 Bh} \m{8},
+\textbf{72 Ash} \m{7}, \textbf{74 Bh} \m{8}, \textbf{\textit{73 Bh}} \m{8},
+\textbf{\textit{71 Bh}} \m{8}, \textbf{\texttt{80 Bh}} \m{8}, \texttt{80 Ba} \m{8},
+\textit{72 Ma} \m{6+4}, 72 Ma \m{7}, \textbf{73 Bh} \m{8}, 78 Po \m{8},
+\textbf{\textit{74 Bh}} \m{8}, 79 Jth \m{6}, \textbf{\texttt{79 Bh}} \m{8}, 78 Ba \m{8},
+73 Ma \m{10}, \texttt{81 Ba} \m{2+6}, \textbf{81 Ch} \m{8}, \textbf{78 Ch} \m{3+3},
+\textbf{80 Ch} \m{3+5}, 80 Ash \m{3+5}, 79 Ash \m{7}, 76 Ba \m{2+8},
+\textbf{\textit{76 Bh}} \m{7}, \textbf{\textit{77 Ch}} \m{8}} \gap$\cdot$\gap
+\mk{33 of 41 papers, 260 marks} \gap$\cdot$\gap
+all 23 distinct premise sets are worked in the companion}
+
+\sbsr{0.52}{%
+\lead{\mk{The procedure. This is the chapter.}}
+\begin{itemize}
+  \item \textbf{1.} Convert every premise into \textbf{FOPL}.
+  \item \textbf{2.} Convert every FOPL sentence into \textbf{CNF} (\S4.4), and number the
+        clauses.
+  \item \textbf{3.} \mk{Negate the goal}, convert that to CNF too, and
+        add it to the clause set.
+  \item \textbf{4.} Repeatedly \textbf{resolve} two clauses containing complementary
+        literals, unifying them with the MGU, and add the \textbf{resolvent}.
+  \item \textbf{5.} Stop when the \textbf{empty clause} $\square$ is derived. The clause
+        set is then unsatisfiable, so the negated goal is false, so
+        \mk{the goal is true}.
+\end{itemize}
+\lead{Why refute instead of prove directly}
+\begin{itemize}
+  \item Resolution is \textbf{refutation complete}, not complete: it is guaranteed to find
+        a contradiction in an unsatisfiable set, but it is not guaranteed to derive an
+        arbitrary true sentence.
+  \item So the proof is turned round using \; $KB \models \alpha$ \; iff \;
+        $KB \wedge \neg\alpha$ \; is unsatisfiable, the equivalence from \S4.2.
+\end{itemize}}{%
+\lead{\mk{How to write one that scores}}
+\begin{itemize}
+  \item \textbf{Number every clause} and, beside each resolvent, write \emph{which two
+        clauses} it came from and \emph{which substitution} was used. Examiners award
+        those annotations.
+  \item \textbf{Resolve towards the goal.} Start from the negated goal clause and work
+        down: it prunes the search and it reads as a proof rather than a search log.
+  \item \textbf{One complementary pair per step.} Cancelling two pairs in one line is
+        unsound and is a standard trap.
+  \item \textbf{Standardise variables apart} before each step (\S4.4, step 8).
+  \item Finish with the sentence \emph{``the empty clause is derived, so the assumption
+        contradicts the premises, hence the goal is proved''}. It is worth a mark and
+        takes one line.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+\sbsr{0.56}{%
+\figT{c4_res_graph.png}
+{\color{sub}\footnotesize The shape the answer must take: clauses down the left, each
+resolvent to its right, the empty clause $\square$ at the foot. Premises are the Colonel
+West set, asked in 6 papers.}}{%
+\lead{Contradiction Vs extraction \yr{(the textbook's two methods)}}
+\begin{itemize}
+  \item \textbf{Answer by contradiction}: negate the goal, derive $\square$. Use this
+        whenever the paper says \emph{prove that \ldots}, which is 21 of the 23 sets.
+  \item \textbf{Answer by extraction}: do not negate; chain the clauses forward until the
+        goal literal itself is produced. Use it when the paper asks \emph{who} or
+        \emph{what} rather than \emph{prove}, \emph{Eg} \yr{72 Ma}'s
+        \emph{``did Marcus hate Caesar?''}
+  \item \mk{Same clauses, same resolution rule}; only the starting
+        point differs.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+\sbs{%
+\lead{The 23 premise sets, grouped}
+\begin{itemize}
+  \item \textbf{Likes-all-food / peanuts} $-$ \textbf{7 papers}, five namings of one
+        puzzle (John/Bill/Sue, Ram/Krishna/Radha, Ram/Anil, Sita/mushroom,
+        Bhogendra/chicken). \mk{Learn this one first.}
+  \item \textbf{Charlie is a horse / a mammal} $-$ 6 papers, including the
+        Kali-and-Taarey cow rewording. Tests \emph{inverse relations}.
+  \item \textbf{Colonel West / weapons to hostile nations} $-$ 6 papers under five names
+        (John, Donald, Colonel West, Gorge, Mr.\,R). Tests \emph{existential
+        instantiation} of ``has some missiles''.
+  \item \textbf{Light sleeper, hounds and mice} $-$ 3 papers (hounds, direwolves). The
+        hardest of the four: the goal is itself an implication, so
+        \mk{negating it produces three clauses}.
+  \item Then 12 one-off sets: Marcus and Caesar, Santa and Rudolph, Curiosity and the cat,
+        Sneha and the lottery, Steve and BK301, the strawberry-picking day, the
+        oversmart/naughty pair, cup-on-book, Mary loves a football star, the exciting
+        life, and the two forward-chaining variants.
+\end{itemize}}{%
+\lead{\mk{The two things that go wrong in an exam}}
+\begin{itemize}
+  \item \textbf{Negating a goal that is an implication.} \emph{``If John is a light
+        sleeper then John has no mice''} negates to \emph{``John IS a light sleeper AND
+        John HAS a mouse''}, which after skolemization is
+        \textbf{three} clauses: $LS(John)$, $Have(John, b)$, $Mouse(b)$. Students negate
+        it to one clause and the proof cannot close.
+  \item \textbf{``Has some'' is existential.} ``Nono has some missiles'' is
+        $\exists x\, Missile(x) \wedge Owns(Nono, x)$, which skolemizes to a
+        \textbf{new constant} $M_1$: two clauses, $Missile(M_1)$ and $Owns(Nono, M_1)$.
+        Writing $Missile(x)$ with a free variable claims \emph{everything} is a missile.
+  \item Both are worked step by step in the companion, which prints each paper's premises
+        exactly as the paper words them.
+\end{itemize}}
+
+%-----------------------------------------------------------------------
+\T{4.6 Rule-based reasoning: forward and backward chaining}
+
+\Q{Differentiate between forward and backward chaining with a suitable example}{\m{2}\m{3}\m{4}\m{7}\m{8}}
+{\color{sub}\footnotesize \tS{11} \yr{70 Ma \m{4+4}, \textbf{74 Bh} \m{4},
+\textbf{\texttt{79 Bh}} \m{7}, \textbf{\texttt{81 Bh}} \m{7}, 82 Ka \m{2+4},
+81 Ash \m{2}, \textbf{\textit{73 Bh}} \m{3}, \textbf{80 Ch} \m{4},
+\textbf{72 Ash} \m{2+5}, 78 Po \m{8}, \textbf{\textit{77 Ch}} \m{8}} \gap$\cdot$\gap
+\mk{always wants an example, not just the table} \gap$\cdot$\gap
+in 81 Ash the example \emph{is} the Colonel West proof, done forward}
+
+\sbs{%
+\lead{Forward chaining: data-driven}
+\begin{itemize}
+  \item Start from the \textbf{known facts}. Fire every rule whose premises are all
+        satisfied, add its conclusion to the fact base, repeat until the goal appears or
+        nothing new can be derived.
+  \item \textbf{Bottom-up}, and it uses \textbf{modus ponens} on definite clauses.
+  \item \checkmark Derives \textbf{everything} that follows, so it suits monitoring,
+        alarms and planning, where new data arrives and consequences must be found.
+  \item \xmark Does a lot of \textbf{irrelevant work}: it proves facts nobody asked for.
+\end{itemize}}{%
+\lead{Backward chaining: goal-driven}
+\begin{itemize}
+  \item Start from the \textbf{goal}. Find a rule that concludes it, make that rule's
+        premises the new sub-goals, and recurse until every sub-goal is a known fact.
+  \item \textbf{Top-down}, \textbf{depth first}, and again modus ponens.
+  \item \checkmark Touches \textbf{only what the goal needs}, so it suits diagnosis, query
+        answering and theorem proving. \textbf{Prolog} works this way.
+  \item \xmark Can loop on recursive rules, and it answers only the question asked.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+\sbs{%
+\figT{c4_fwd_chain.png}
+{\color{sub}\footnotesize \textbf{Forward} chaining on the Colonel West premises: facts
+on the bottom row, one new row per iteration, until $Criminal(Robert)$ appears.}}{%
+\figT{c4_bwd_chain.png}
+{\color{sub}\footnotesize \textbf{Backward} chaining, same premises: the goal at the top,
+its four conjuncts below it, each expanded until it meets a fact. The binding that made
+each unification succeed sits under its node.}}
+
+\penalty0\vspace{2pt}
+
+\begin{tabularx}{\textwidth}{@{}L{2.9cm}XX@{}}
+\toprule
+\hrow & \thead{Forward chaining} & \thead{Backward chaining} \\
+\midrule
+Starts from & Known facts / data & The goal to be proved \\
+Direction & Bottom-up, data-driven & Top-down, goal-driven \\
+Question answered & ``What can I conclude?'' & ``Can I prove this?'' \\
+Search & Breadth-first in effect: all consequences of the current facts & Depth-first: one sub-goal chain at a time \\
+Work done & Derives many facts, most irrelevant to any one goal & Derives only what the goal needs \\
+Suits & Monitoring, alarms, planning, real-time control, design & Diagnosis, query answering, theorem proving, Prolog \\
+Number of goals & Handles \textbf{many} goals at once & Handles \textbf{one} goal at a time \\
+Efficiency & Slow when the goal is specific & Slow when the fact base is small and rules are deep \\
+\bottomrule
+\end{tabularx}
+\par\penalty0
+\vspace{3pt}
+
+\begin{itemize}
+  \item \mk{The one-line discriminator to write}: forward chaining
+        asks \emph{what follows from what I know}, backward chaining asks
+        \emph{what would I need to know for this to be true}. Same rules, same modus
+        ponens, opposite ends.
+\end{itemize}
+
+\penalty0\vspace{2pt}
+
+\creamq{What is rule-based reasoning?}{\m{2}\m{7}}
+{\color{sub}\footnotesize \tF{4} \yr{72 Ma \m{7}, 70 Ma \m{4+4}, \textbf{71 Bh} \m{7},
+\textbf{77 Ch} \m{2}} \gap$\cdot$\gap asked as the \mk{2-mark opener} to
+a backward-chaining question in three of the four}
+
+\sbs{%
+\lead{Definition and parts}
+\begin{itemize}
+  \item Knowledge stored as \textbf{IF \emph{condition} THEN \emph{action}} rules, and
+        reasoning done by an \textbf{inference engine} that decides which rule to fire.
+  \item Three components:
+  \begin{itemize}
+    \item \textbf{Rule base} $-$ the IF-THEN rules (long-term knowledge);
+    \item \textbf{Working memory} $-$ the facts known right now;
+    \item \textbf{Inference engine} $-$ match, resolve conflicts, fire.
+  \end{itemize}
+  \item The engine's cycle is \textbf{match $\rightarrow$ conflict resolution
+        $\rightarrow$ execute}, exactly the production system of Ch\,2.
+        \mk{Say so}: the examiner set that question too.
+\end{itemize}}{%
+\lead{Why it is used, and the worked shape}
+\begin{itemize}
+  \item \checkmark Rules are \textbf{modular}: add or remove one without touching the
+        rest. \checkmark They are readable by a domain expert who is not a programmer.
+        \checkmark The chain of fired rules \textbf{is} the explanation, which is how an
+        expert system justifies itself (Ch\,7).
+  \item \xmark No learning, and \xmark large rule bases become slow and can conflict.
+  \item \textbf{The example to give}, since every paper asks for one:
+  \begin{itemize}
+    \item R1: IF \emph{fever} AND \emph{cough} THEN \emph{flu}.
+          R2: IF \emph{flu} THEN \emph{prescribe rest}.
+    \item Facts: \emph{fever}, \emph{cough}. Forward: R1 fires, \emph{flu} added, R2
+          fires, \emph{prescribe rest}. Backward from \emph{prescribe rest}: needs
+          \emph{flu}, which needs \emph{fever} and \emph{cough}, both known.
+          \mk{Two directions, one rule base.}
+  \end{itemize}
+\end{itemize}}
+
+%-----------------------------------------------------------------------
+\T{4.7 Statistical reasoning: uncertainty, Bayes and belief networks}
+
+\Q{How is reasoning done under uncertainty? What are the approaches for measuring it?}{\m{2}\m{3}\m{3+6}}
+{\color{sub}\footnotesize \yr{80 Ash \m{3}, 81 Ash \m{2}, 79 Ash \m{3+6}}
+\gap$\cdot$\gap \mk{always the opener to a Bayes numerical}, so keep it to
+half a page and spend the time on the calculation}
+
+\sbs{%
+\lead{Why logic is not enough}
+\begin{itemize}
+  \item FOPL is \textbf{monotonic and categorical}: a fact is true or false, and adding
+        knowledge never retracts a conclusion. The real world is neither.
+  \item Three sources of uncertainty, and papers want them named:
+  \begin{itemize}
+    \item \textbf{incomplete} knowledge (not all facts are available);
+    \item \textbf{imprecise / unreliable} data (a sensor, a symptom);
+    \item \textbf{rules that are only usually true} (\emph{a stiff neck suggests
+          meningitis}).
+  \end{itemize}
+  \item Writing \emph{stiff neck $\rightarrow$ meningitis} in logic is simply false, and
+        listing every exception is impossible. \mk{So attach a number to
+        the belief instead.}
+\end{itemize}}{%
+\lead{\mk{The approaches for measuring uncertainty}}
+\begin{itemize}
+  \item \textbf{Probability theory} $-$ degree of belief in $[0,1]$, updated by
+        \textbf{Bayes' rule}. The mainstream answer, and the only one the numericals use.
+  \item \textbf{Certainty factors} $-$ an ad-hoc $[-1, +1]$ score attached to each rule,
+        as used in MYCIN. Simple, but not probabilistically sound.
+  \item \textbf{Dempster-Shafer theory} $-$ assigns belief to \emph{sets} of hypotheses,
+        so it can represent \emph{ignorance} separately from \emph{disbelief}.
+  \item \textbf{Fuzzy logic} $-$ handles \emph{vagueness} (``tall'', ``warm''), which is a
+        different thing from uncertainty. Covered in Ch\,6.
+  \item \textbf{Non-monotonic / default reasoning} $-$ assume the normal case, retract the
+        conclusion when contradicted.
+  \item \mk{The distinction worth one mark}: probability is about
+        \emph{not knowing which case holds}; fuzzy logic is about
+        \emph{the case not having a sharp boundary}.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+\Q{What is prior and posterior probability? Explain Bayes' theorem and its role in reasoning}{\m{2}\m{3}\m{2+6}\m{3+5}}
+{\color{sub}\footnotesize \tS{15} \yr{71 Ma \m{3+5}, \textbf{73 Bh} \m{7},
+73 Ma \m{8}, \textbf{\textit{73 Bh}} \m{8}, \textbf{\textit{72 Ash}} \m{8},
+\textbf{78 Ch} \m{3+5}, \textbf{80 Ch} \m{3+5}, \textbf{\texttt{80 Bh}} \m{2+6},
+\texttt{80 Ba} \m{5+3}, \texttt{81 Ba} \m{2+6}, 80 Ash \m{3+5}, 81 Ash \m{2+6},
+78 Ba \m{2+6}, \texttt{82 Ba} \m{2+6}, \textbf{\texttt{82 Bh}} \m{7}} \gap$\cdot$\gap
+\mk{15 papers carry a Bayes calculation}, every one of them worked in the
+companion \gap$\cdot$\gap the theory part is never more than 3 marks}
+
+\sbsr{0.46}{%
+\lead{The vocabulary}
+\begin{itemize}
+  \item \textbf{Prior} $P(A)$ $-$ belief in $A$ \mk{before} any
+        evidence. \emph{Eg} 1 person in 50,000 has meningitis.
+  \item \textbf{Posterior} $P(A|B)$ $-$ belief in $A$ \mk{after}
+        evidence $B$ is observed. \emph{Eg} the chance of meningitis \emph{given} a stiff
+        neck.
+  \item \textbf{Likelihood} $P(B|A)$ $-$ how probable the evidence is if the hypothesis
+        holds. \mk{This is the number a doctor actually knows}, and it is
+        the reason the theorem is needed.
+  \item \textbf{Marginal} $P(B)$ $-$ the probability of the evidence however it arose.
+\end{itemize}
+\lead{The theorem}
+\[ P(A|B) \;=\; \frac{P(B|A)\,P(A)}{P(B)} \]
+\begin{itemize}
+  \item When $P(B)$ is not given, expand it by the
+        \textbf{law of total probability}, which is what most papers require:
+\end{itemize}
+\[ P(A|B) = \frac{P(B|A)P(A)}{P(B|A)P(A) + P(B|\neg A)P(\neg A)} \]}{%
+\lead{\mk{How it aids inference} (the marks in the theory half)}
+\begin{itemize}
+  \item It \mk{reverses the direction of a conditional}. Causal
+        knowledge runs cause $\rightarrow$ effect ($P(\textit{symptom}\,|\,
+        \textit{disease})$, stable and measurable); diagnosis needs effect
+        $\rightarrow$ cause. Bayes converts one into the other.
+  \item It gives a \textbf{principled update rule}: posterior $\propto$ likelihood
+        $\times$ prior. Evidence does not replace belief, it revises it.
+  \item It makes the \textbf{base rate} explicit. A 99\,\%-accurate test for a
+        1-in-10,000 disease still leaves you far more likely to be healthy than ill,
+        because the prior is tiny. \mk{This is asked directly}
+        \yr{(\textbf{\textit{72 Ash}})} and it is the single most useful sentence in the
+        section.
+  \item It composes: a chain of evidence can be applied one piece at a time, which is
+        exactly what a belief network does below.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+\sbsr{0.62}{%
+\figT{c4_bayes_anatomy.png}}{%
+\lead{Getting the arithmetic right}
+\begin{itemize}
+  \item Name the events \textbf{before} substituting. Half the lost marks are a $P(A|B)$
+        written where $P(B|A)$ was meant.
+  \item If the question gives percentages of a population that split into groups
+        (\emph{factories}, \emph{men and women}), the denominator is
+        \mk{always the total-probability sum} over those groups.
+  \item $P(\neg A) = 1 - P(A)$ is almost always needed and almost never given.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+\Q{What is a causal / belief network? How is reasoning done in it?}{\m{2+5}\m{2+6}\m{6}\m{7}}
+{\color{sub}\footnotesize \tF{7} \yr{71 Ma \m{2+5}, \textbf{79 Ch} \m{2+6},
+79 Ash \m{3+6}, \textbf{77 Ch} \m{6}, \textbf{73 Bh} \m{7}, \texttt{80 Ba} \m{5+3},
+\textbf{\texttt{82 Bh}} \m{7}} \gap$\cdot$\gap
+\emph{causal net}, \emph{belief network}, \emph{Bayesian network} and \emph{Bayesian
+belief network} are \mk{four names for one thing} in these papers
+\gap$\cdot$\gap two papers print a network and ask for a joint probability
+\yr{(78 Ba, \textbf{\texttt{82 Bh}})}}
+
+\sbsr{0.54}{%
+\lead{Definition and the two parts}
+\begin{itemize}
+  \item A \textbf{directed acyclic graph} in which
+  \begin{itemize}
+    \item each \textbf{node} is a random variable, and
+    \item each \textbf{edge} $X \rightarrow Y$ says $X$ has a \textbf{direct causal
+          influence} on $Y$;
+  \end{itemize}
+        plus a \textbf{conditional probability table (CPT)} at every node giving
+        $P(\textit{node} \mid \textit{its parents})$.
+  \item A root node has no parents, so its CPT is just its prior.
+  \item \mk{The whole network in one equation}, and this is what the
+        numericals use:
+\end{itemize}
+\[ P(x_1, \ldots, x_n) \;=\; \prod_{i=1}^{n} P\big(x_i \mid parents(x_i)\big) \]
+\begin{itemize}
+  \item \textbf{Why it is worth having}: a full joint distribution over $n$ binary
+        variables needs $2^n - 1$ numbers. The alarm network below has 5 variables and
+        needs \mk{only 10}, because each node depends on its parents
+        alone. That compactness is the answer to \emph{when do we use a Bayesian
+        network}.
+  \item \textbf{Conditional independence} is the property being exploited: a node is
+        independent of its non-descendants given its parents.
+\end{itemize}}{%
+\lead{\mk{Reasoning in the network} (the 5 or 6 marks)}
+\begin{itemize}
+  \item \textbf{Causal / top-down} $-$ from cause to effect. \emph{Burglary happened;
+        how likely is John to call?} Uses the CPTs directly.
+  \item \textbf{Diagnostic / bottom-up} $-$ from effect to cause. \emph{John called; how
+        likely is a burglary?} This is where \textbf{Bayes' theorem enters}, and it is
+        the answer to \emph{``how is Bayes' theorem used in a belief network''}
+        \yr{(\textbf{77 Ch})}.
+  \item \textbf{Intercausal} $-$ between two causes of one observed effect.
+        \emph{The alarm rang and an earthquake is reported, so burglary becomes less
+        likely}: \mk{explaining away}. Worth naming; almost nobody does.
+  \item \textbf{Mixed} $-$ evidence above and below the query node at once.
+  \item \textbf{The method for a numerical}: write the product form, substitute one CPT
+        entry per variable, and read $P(\neg X) = 1 - P(X)$ off the same table.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+\sbsr{0.30}{%
+\figT{c4_causal_net.png}
+{\color{sub}\footnotesize A causal net: \emph{Cloudy} influences \emph{Sprinkler} and
+\emph{Rain}, both influence \emph{WetGrass}. The shape 78 Ba prints.}}{%
+\figT{c4_bbn_alarm.png}
+{\color{sub}\footnotesize The standard alarm network, with a CPT at every node.
+\emph{Burglary} and \emph{Earthquake} both cause \emph{Alarm}; the alarm makes
+\emph{John} and \emph{Mary} call. Five variables, and the graph plus these five tables
+hold the whole joint distribution in \textbf{10 numbers} instead of $2^5 - 1 = 31$.
+The worked line beside it is the product form applied straight down the network, which
+is exactly what \yr{78 Ba} and \yr{\textbf{\texttt{82 Bh}}} ask for.}}
+
+\penalty0\vspace{2pt}
+
+\begin{itemize}
+  \item \mk{The connection the papers ask for in one sentence}: a
+        belief network stores \emph{causal} conditional probabilities, and Bayes' theorem
+        is what lets you run them \emph{backwards} to a diagnosis. Without the network
+        you would need the full joint distribution; without Bayes you could only reason
+        in the direction the arrows point.
+\end{itemize}
