@@ -341,6 +341,78 @@ add("c6_boltzmann.png", PS6, 154, box=(0.100, 0.325, 0.905, 0.990), pad=0)
 add("c6_rbm.png", BA6, 28, pick=0)
 
 
+# ------------------------------------------------------------------ chapter 7
+# BA Sir's CH-07 is one slide per page. Its figures are a mix: the tables and
+# textbook scans are pasted rasters (largest-raster default works), the neuron
+# and network drawings are native vector shapes (manual boxes).
+PS71 = os.path.join(PS, "7.1 Neural Network_old_syllabus.pdf")
+
+# The activation-function table: unit step, signum, linear, piecewise linear,
+# sigmoid, tanh, ReLU and softplus, each with its equation, where it is used,
+# and its curve. Three papers ask "the role of the activation function" and
+# "how to choose the best one for a project"; this one table answers both.
+add("c7_activation.png", BA7, 8)
+# The biological neuron, for the ANN-Vs-brain question.
+add("c7_bio_neuron.png", BA7, 4, pick=0)
+# The McCulloch-Pitts neuron with its threshold inequality printed beside it.
+# Vector art, so a box.
+add("c7_mcp.png", BA7, 11, box=(0.05, 0.575, 0.945, 0.935))
+# The perceptron: bias, weights, summation, threshold, and the three-valued
+# activation function written out. Vector.
+add("c7_perceptron.png", BA7, 18, box=(0.672, 0.408, 0.995, 0.712))
+# A multilayer perceptron with its layers and weight matrices named. Vector.
+add("c7_mlp.png", BA7, 20, box=(0.048, 0.235, 0.97, 0.945))
+# The 2-2-1 network BA Sir back-propagates the XOR example through, with the
+# truth table beside it. Every weight and bias is labelled, which is what makes
+# the worked example in the companion followable. Vector.
+add("c7_bp_xor.png", BA7, 30, box=(0.13, 0.525, 0.99, 0.965))
+
+# Rich & Knight fig 18.2: the four stable states of one small Hopfield net,
+# with the weights on every edge. It is the whole of "how does a Hopfield
+# network determine active and passive units" in one picture.
+add("c7_hopfield_states.png", BA7, 35, pick=0)
+# Fig 18.3: the energy landscape, showing why the net settles.
+add("c7_hopfield_energy.png", BA7, 35, pick=1)
+# The Kohonen map: the 2-D grid of neurons above, the input-to-grid
+# connections beside it, and the winner marked.
+add("c7_som.png", BA7, 36, box=(0.422, 0.650, 0.917, 0.913))
+
+# The expert system, twice over. The four-box block diagram is the one to
+# reproduce under exam pressure; the fuller architecture shows the working
+# memory and the consultation / development split that the better answers add.
+add("c7_es_block.png", BA7, 39, pick=1)
+add("c7_es_arch.png", BA7, 39, pick=0)
+# Human expert against expert system, point by point, with which side wins
+# each one. 80 Ash asks for exactly this comparison, "with practical examples".
+add("c7_es_vs_human.png", BA7, 46)
+
+# The five steps of NLP as a vertical block diagram (Insights fig 7.9). Asked
+# with a block diagram in 20 papers, more than any other question in the
+# subject.
+# dpi is deliberately low: a photographed book page quantises badly, and
+# this one prints in a half-column.
+ins("c7_nlp_steps.png", 218, (0.28, 0.288, 0.80, 0.566), dpi=120)
+# Rich & Knight fig 10.3: a parse tree for "The man bites the dog", with the
+# eleven grammar rules that produced it printed beside it. 76 Bh asks for a
+# parse tree of a sentence of the same shape.
+add("c7_parse_tree.png", BA7, 55, pick=0)
+add("c7_grammar.png", BA7, 55, pick=1)
+
+# The machine-vision pipeline: problem domain -> acquisition -> enhancement ->
+# restoration -> morphological processing -> segmentation -> representation and
+# description -> object recognition, with colour processing and compression as
+# side branches. Vector, and the whole slide body is the figure.
+add("c7_mv_stages.png", BA7, 63, box=(0.05, 0.185, 0.985, 0.975))
+
+# The network 82 Ka and 81 Ch both print with their forward-propagation
+# question, reused from the crop already made for the Sorted PYQ document.
+JOBS.append(dict(name="c7_82ka_ann.png", pdf=None, page=None, box=None,
+                 pick=0, dpi=0, pad=0, flat=False,
+                 mask=[(0.0, 0.88, 1.0, 1.0)],
+                 copy=os.path.join(HERE, "..", "..", "images",
+                                   "ai_82ka_ann.png")))
+
+
 def rect_for(pg, job):
     r = pg.rect
     if job["box"]:
@@ -430,7 +502,16 @@ def main():
         # through the same size cap so the whole folder obeys one policy
         if job.get("copy"):
             out = os.path.join(FIGS, job["name"])
-            img = shrink(Image.open(job["copy"]).convert("RGB"))
+            img = Image.open(job["copy"]).convert("RGB")
+            # a crop made for the Sorted PYQ document can carry a strip of the
+            # NEXT question along its foot; mask works here for the same reason
+            # it works on a pasted raster.
+            for m in (job.get("mask") or ()):
+                ImageDraw.Draw(img).rectangle(
+                    (round(m[0] * img.width), round(m[1] * img.height),
+                     round(m[2] * img.width), round(m[3] * img.height)),
+                    fill=(255, 255, 255))
+            img = shrink(img)
             img.save(out, optimize=True)
             print("%-30s %5dx%-5d %7.0f kB <- images/%s"
                   % (job["name"], img.size[0], img.size[1],

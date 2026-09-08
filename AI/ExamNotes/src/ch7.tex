@@ -1,0 +1,1176 @@
+%=======================================================================
+%  CHAPTER 7 — APPLICATIONS OF AI  (14 hrs)
+%=======================================================================
+\section{Applications of AI}
+
+{\color{sub}\footnotesize 14 hrs \gap$\cdot$\gap asked in \mk{all 41 papers}
+\gap$\cdot$\gap 3 syllabus groups, 12 leaf topics \gap$\cdot$\gap 899 marks,
+\mk{26.5\,\% of every mark ever set} \gap$\cdot$\gap the gate networks,
+the Hopfield matrix, the forward propagation and the parse tree are worked in
+\emph{Ch7 -- Applications of AI -- Solved Problems}.}
+
+\lead{Read this first:}
+\begin{itemize}
+  \item \mk{This one chapter is a quarter of the paper.} It is bigger
+        than chapters 1, 2, 3 and 5 put together, and \mk{no paper has
+        ever skipped it}. Expect three or four questions from it every time.
+  \item \mk{Four questions dominate, and each is nearly certain:}
+  \begin{itemize}
+    \item \textbf{The steps of NLP, with a block diagram} \tS{23} $-$ the
+          most-asked question in the entire subject.
+    \item \textbf{Perceptron, and design a net for AND / OR / XOR} \tS{17}.
+    \item \textbf{Expert system architecture, with a block diagram} \tS{17}.
+    \item \textbf{Machine vision: role, steps, applications} \tS{12}.
+  \end{itemize}
+  \item \mk{Three drawings are worth more than anything else here}:
+        the five-box NLP pipeline, the four-box expert system, and a two-input
+        perceptron. Practise all three until you can draw them in one minute each.
+  \item \textbf{Then the neural networks}: Kohonen \tS{9}, Hopfield \tS{8},
+        back-propagation \tS{8}, the neuron model and activation functions \tS{8},
+        Hebbian learning \tF{4}.
+  \item \mk{The examiner pairs across sub-topics}, so revise them
+        together: \emph{machine vision $+$ back-propagation} (\yr{71 Ma},
+        \yr{\textbf{\textit{72 Ash}}}), \emph{NLP challenges $+$ machine vision}
+        (\yr{\textbf{\texttt{79 Bh}}}), \emph{declarative Vs procedural $+$ expert
+        system architecture} (\yr{70 Ma}, \yr{72 Ma}, \yr{73 Ma}).
+  \item \mk{Chapter 6's neural-network syllabus line is answered here.}
+        The syllabus files neural networks under Machine Learning, but every paper
+        sets them under Applications of AI, so perceptron, back-propagation, Hopfield,
+        Kohonen and Hebbian learning are all in this chapter.
+\end{itemize}
+
+\hr
+
+%-----------------------------------------------------------------------
+\T{7.1 The artificial neuron: model, activation function, ANN Vs the brain}
+
+\Q{What is an ANN? Explain the McCulloch-Pitts model with a diagram. What is the role of the activation function?}{\m{4}\m{3+4}\m{4+3}\m{1+7}\m{3+5}\m{8}\m{10}}
+{\color{sub}\footnotesize \tS{8} \yr{\textbf{71 Bh} \m{3+5}, \textbf{81 Ch} \m{3+4},
+82 Ka \m{4+3}, 75 Ba \m{8}, 76 Ba \m{10}, \textbf{\texttt{80 Bh}} \m{2+2+4},
+\textbf{\texttt{79 Bh}} \m{1+7}, \textbf{69 Bh} \m{4}} \gap$\cdot$\gap
+\yr{\textbf{71 Bh}} and \yr{\textbf{69 Bh}} want the \textbf{brain comparison},
+\yr{\textbf{81 Ch}} and \yr{82 Ka} the \textbf{activation function},
+\yr{75 Ba} and \yr{76 Ba} the \textbf{MP neuron on AND and XOR} (worked in the
+companion), \yr{\textbf{\texttt{80 Bh}}} the \textbf{mathematical model and what
+training means}}
+
+\sbsr{0.55}{%
+\lead{Definition and the mathematical model}
+\begin{itemize}
+  \item \textbf{An artificial neural network is a parallel computational system of many
+        simple processing elements (neurons), connected in a specific way, that learns a
+        task from data rather than from a program.}
+  \item Modelled on the brain: massively parallel, and \mk{tolerant of
+        noise and of the failure of individual units}.
+  \item \textbf{One neuron does three things}, and that is the whole model:
+  \begin{itemize}
+    \item \textbf{1. Weight} each input. $w_1 x_1$ up to $w_n x_n$. The weight is the
+          strength of that connection, and \mk{the weights are what
+          the network learns}.
+    \item \textbf{2. Sum} them, plus a \textbf{bias} $b$ (equivalently, subtract a
+          \textbf{threshold} $\theta$):
+          \[ net \;=\; \sum_{i=1}^{n} w_i x_i \;+\; b \]
+    \item \textbf{3. Apply an activation function} $f$ to that sum:
+          $y = f(net)$.
+  \end{itemize}
+\end{itemize}}{%
+\figT{c7_mcp.png}
+{\color{sub}\footnotesize The McCulloch-Pitts neuron and its firing condition. Weight,
+sum, threshold: the same three operations every neuron in this chapter performs.}}
+
+\sbsr{0.55}{%
+\begin{itemize}
+  \item \textbf{The five elements to name} if the question says ``elements of a neural
+        network'': \textbf{inputs}, \textbf{weights}, \textbf{threshold or bias},
+        \textbf{activation function}, \textbf{learning rate} $\alpha$.
+  \item \mk{What ``training a network'' means} (\yr{\textbf{\texttt{80 Bh}}}
+        \m{2}): presenting examples and adjusting the weights and biases so the output
+        moves towards the target. \textbf{Nothing else in the network changes.}
+  \item \textbf{Learning rate} $\alpha$ sets the step size. Too large and the weights
+        oscillate and never settle; too small and training takes forever. Typical
+        $0.01$ to $0.5$.
+\end{itemize}}{%
+\lead{The McCulloch-Pitts neuron (1943)}
+{\color{sub}\footnotesize the first neuron model, and the one four papers name.}
+\begin{itemize}
+  \item Output is \textbf{binary}: 1 (fires) or 0. Nothing in between.
+  \item Every input is weighted; the neuron \textbf{fires when the weighted sum exceeds
+        the threshold} $T$:
+        \[ x_1w_1 + x_2w_2 + x_3w_3 > T \;\Rightarrow\; y=1 \]
+  \item \textbf{Excitatory} inputs carry positive weights, \textbf{inhibitory} inputs
+        negative ones, and in the original model \mk{one active
+        inhibitory input vetoes the neuron outright}.
+  \item \mk{The weights are fixed by the designer, not learnt.} That
+        is the difference from a perceptron, and it is the sentence the examiner is
+        looking for.
+  \item It can realise \textbf{AND, OR and NOT} $-$ so any Boolean function, if you are
+        allowed several layers $-$ but \mk{one MP neuron cannot do
+        XOR}. Both worked in the companion.
+\end{itemize}}
+
+\sbsr{0.42}{%
+\figT{c7_activation.png}}{%
+\lead{The activation function, and how to choose one \gap{\color{sub}\footnotesize(\yr{\textbf{81 Ch}} \m{3}, \yr{82 Ka} \m{3})}}
+\begin{itemize}
+  \item \textbf{What it is for}, three answers, all worth marks:
+  \begin{itemize}
+    \item \textbf{Decides whether the neuron fires}, by mapping an unbounded sum onto a
+          bounded output.
+    \item \mk{Introduces non-linearity}. Without it, a stack of
+          layers collapses into one linear map, and the network can only ever learn a
+          straight line $-$ this is the answer to \yr{\textbf{\texttt{79 Bh}}}'s
+          \emph{``how can non-linearity be modelled through an ANN''}.
+    \item Must be \textbf{differentiable} for gradient descent, which is why
+          back-propagation needs sigmoid or tanh, not a step.
+  \end{itemize}
+  \item \textbf{Choosing one for a project} $-$ answer with the rule, then an example:
+  \begin{itemize}
+    \item \textbf{Binary classification output} $\rightarrow$ \textbf{sigmoid}, because
+          it gives a value in $(0,1)$ readable as a probability.
+    \item \textbf{Multi-class output} $\rightarrow$ \textbf{softmax}.
+    \item \textbf{Regression output} $\rightarrow$ \textbf{linear}, so the value is
+          unbounded.
+    \item \textbf{Hidden layers of a deep net} $\rightarrow$ \textbf{ReLU}: cheap, and
+          it does not saturate, so it does not kill the gradient. Its cost is
+          \mk{dead units} $-$ a neuron whose input stays negative
+          has zero gradient and never recovers, which is exactly what happens in the
+          numerical worked in the companion.
+    \item \textbf{Zero-centred hidden layer} $\rightarrow$ \textbf{tanh}, which
+          converges faster than sigmoid for that reason.
+    \item \textbf{Hard threshold} (step, signum) $\rightarrow$ only for a perceptron or
+          an MP neuron, never where gradients are needed.
+  \end{itemize}
+\end{itemize}}
+
+\sbs{%
+\lead{ANN Vs the human brain \gap{\color{sub}\footnotesize(\yr{\textbf{71 Bh}} \m{5}, \yr{\textbf{69 Bh}} \m{4})}}
+\begin{tabularx}{\linewidth}{@{}L{2.2cm}XX@{}}
+\hrow \thead{} & \thead{Human brain} & \thead{ANN} \\
+Units & about \textbf{86 billion} neurons & a few tens to a few billion \\
+Connections & about \textbf{100 trillion} synapses & set by the architecture \\
+Speed & slow: a neuron fires at a few hundred Hz & fast: gigahertz \\
+Processing & \textbf{massively parallel}, all at once & parallel in principle, usually
+  serial on one machine \\
+Memory & about 2.5 petabytes, \textbf{content addressable} & limited, address based \\
+Fault tolerance & \textbf{very high}: neurons die daily and nothing is lost & high
+  within a net, none if the machine fails \\
+Learning & continuous, from few examples & needs many examples and retraining \\
+Power & about \textbf{20 W} & kilowatts to train \\
+\end{tabularx}
+\begin{itemize}
+  \item \mk{The contrast worth quoting}: for vision the brain is worth a
+        thousand supercomputers; for arithmetic a pocket calculator is worth ten brains.
+        Structure, not speed, is what differs.
+\end{itemize}}{%
+\lead{Network structures}
+\figT{c7_mlp.png}
+\begin{itemize}
+  \item \textbf{Feed-forward} $-$ signals travel one way, input to output, with
+        \mk{no loops}. A layer's output never affects that same layer.
+  \begin{itemize}
+    \item \textbf{Single layer}: input straight to output. Only linearly separable
+          problems (\S7.3).
+    \item \textbf{Multilayer (MLP)}: one or more \textbf{hidden layers} between them.
+          \mk{One hidden layer is enough to represent any Boolean
+          function}, and with enough units, any continuous function.
+  \end{itemize}
+  \item \textbf{Feedback (recurrent)} $-$ loops allowed, so the network has
+        \mk{state, and therefore memory}. More powerful, harder to
+        train. Hopfield (\S7.5) is the standard example.
+  \item \textbf{Competitive} $-$ output units compete and only the winner fires.
+        Kohonen (\S7.6).
+\end{itemize}}
+
+%-----------------------------------------------------------------------
+\T{7.2 Perceptron, linear separability and the XOR problem}
+
+\Q{What is a perceptron? Design a neural network that acts as an AND / OR / XOR gate.}{\m{4}\m{6}\m{7}\m{10}\m{1+7}\m{2+6}\m{1+8}}
+{\color{sub}\footnotesize \tS{17} \yr{72 Ma \m{2+7}, 73 Ma \m{1+7},
+\textit{74 Ma} \m{10}, \textbf{\textit{74 Bh}} \m{1+8}, \textbf{\texttt{82 Bh}} \m{2+6},
+\textbf{79 Ch} \m{2+6}, 79 Ash \m{1+8}, \textbf{77 Ch} \m{2+6}, 79 Jth \m{1+6},
+\textbf{\textit{73 Bh}} \m{2+6}, 78 Po \m{2+2+4}, \textbf{\textit{77 Ch}} \m{2+6},
+\textit{72 Ma} \m{7}, \textbf{\textit{76 Bh}} \m{6}, \textbf{\texttt{81 Bh}} \m{2+6},
+69 Po \m{4}, \textbf{72 Ash} \m{2+4+4}} \gap$\cdot$\gap
+\mk{second most-asked question in the subject}, and eight of the
+seventeen name \textbf{XOR} specifically \gap$\cdot$\gap all four gates are worked in
+the companion}
+
+\sbsr{0.55}{%
+\lead{The perceptron}
+\begin{itemize}
+  \item \textbf{A perceptron is a single artificial neuron with adjustable weights, a
+        bias and a threshold activation, trained by an iterative rule that is guaranteed
+        to converge when the classes are linearly separable.} Rosenblatt, \textbf{1958}.
+  \item \mk{The difference from a McCulloch-Pitts neuron}: the MP
+        neuron's weights are chosen by hand, the perceptron's are \emph{learnt}.
+  \item \textbf{Activation}, with threshold $\theta$:
+        \[ f(net) = \begin{cases} 1 & net > \theta \\ 0 & -\theta \le net \le \theta \\
+           -1 & net < -\theta \end{cases} \]
+  \item \textbf{The perceptron learning rule.} For each training pair, compute
+        $y$; if $y \neq t$, update, otherwise change nothing:
+        \[ w_i(new) = w_i(old) + \alpha\, t\, x_i \qquad
+           b(new) = b(old) + \alpha\, t \]
+  \item \mk{Weights change only when there is an error.} That single
+        sentence separates the perceptron rule from Hebbian learning (\S7.4), which
+        updates on \emph{every} pattern.
+  \item \textbf{Convergence theorem}: if a separating line exists, the rule finds one in
+        a finite number of steps, whatever the starting weights.
+\end{itemize}}{%
+\figT{c7_perceptron.png}
+\lead{Limitations \gap{\color{sub}\footnotesize(\yr{\textbf{\textit{76 Bh}}} \m{6} asks precisely this)}}
+\begin{itemize}
+  \item Learns \mk{only linearly separable} classes.
+  \item If the data is not separable the algorithm does not converge and its behaviour
+        is not defined $-$ it cycles.
+  \item If it \emph{is} separable there are usually \textbf{many} valid answers, and the
+        rule gives no way to tell whether the one it found is a good one (no margin, no
+        confidence). That is what SVMs later fixed.
+\end{itemize}}
+
+\sbs{%
+\lead{Linear separability, and why it decides everything}
+\begin{itemize}
+  \item A single neuron computes $w_1x_1 + w_2x_2 + b$ and thresholds it. The set of
+        inputs where that sum is zero is \mk{a straight line} (a
+        hyperplane in $n$ dimensions). Everything on one side outputs 1, everything on
+        the other outputs 0.
+  \item So \mk{a perceptron can learn a function if and only if one
+        straight line separates its 1s from its 0s}. That is the whole of
+        \yr{\textbf{\texttt{81 Bh}}}'s \emph{``perceptron works as a linear classifier''}.
+  \item Plot the four corners of the unit square:
+  \begin{itemize}
+    \item \textbf{AND} $-$ only $(1,1)$ is 1. One line cuts it off. \checkmark
+    \item \textbf{OR} $-$ only $(0,0)$ is 0. One line cuts it off. \checkmark
+    \item \textbf{XOR} $-$ the two 1s sit at \emph{opposite} corners, with the two 0s at
+          the other opposite corners. \mk{No straight line separates
+          them.} \xmark
+  \end{itemize}
+  \item \mk{Draw that square.} Marks are given for the picture, and
+        it takes ten seconds.
+\end{itemize}}{%
+\lead{The algebraic proof, which is what a ``justify'' question wants}
+\begin{itemize}
+  \item Suppose weights $w_1, w_2$ and bias $b$ realise XOR with the rule
+        \emph{output 1 iff $w_1x_1 + w_2x_2 + b > 0$}. The four rows give:
+  \begin{itemize}
+    \item $(0,0) \rightarrow 0$: \quad $b \le 0$ \hfill (i)
+    \item $(0,1) \rightarrow 1$: \quad $w_2 + b > 0$ \hfill (ii)
+    \item $(1,0) \rightarrow 1$: \quad $w_1 + b > 0$ \hfill (iii)
+    \item $(1,1) \rightarrow 0$: \quad $w_1 + w_2 + b \le 0$ \hfill (iv)
+  \end{itemize}
+  \item Add (ii) and (iii): $w_1 + w_2 + 2b > 0$, so $w_1 + w_2 > -2b$.
+  \item From (iv): $w_1 + w_2 \le -b$. Together: $-2b < -b$, i.e.
+        \mk{$b > 0$}, which contradicts (i).
+  \item \textbf{Therefore no single perceptron can implement XOR.} $\blacksquare$
+  \item \mk{The fix}: a \textbf{multilayer} perceptron. One hidden
+        layer computes OR and NAND, and the output neuron ANDs them, so the two hidden
+        units bend the decision boundary into two lines. Built and checked row by row in
+        the companion.
+\end{itemize}}
+
+%-----------------------------------------------------------------------
+\T{7.3 Learning in a neural network: Hebbian, delta and back-propagation}
+
+\Q{What is the back-propagation algorithm? When do we need it? Explain with an example.}{\m{4}\m{2+2+4}\m{3+5}\m{4+4}\m{2+6}\m{2+4+4}}
+{\color{sub}\footnotesize \tS{8} \yr{\textbf{70 Bh} \m{4+4},
+\textbf{72 Ash} \m{2+4+4}, 70 Ma \m{3+5}, \textbf{\texttt{80 Bh}} \m{2+2+4},
+\textbf{74 Bh} \m{4}, \textbf{79 Ch} \m{2+6}, 71 Ma \m{3+5},
+\textbf{\textit{72 Ash}} \m{3+5}} \gap$\cdot$\gap \yr{71 Ma} and
+\yr{\textbf{\textit{72 Ash}}} attach it to \textbf{machine vision} (\S7.9), so revise the
+two together \gap$\cdot$\gap one full step is computed in the companion}
+
+\sbsr{0.53}{%
+\lead{The three learning rules, in one place}
+\begin{tabularx}{\linewidth}{@{}L{2.0cm}XX@{}}
+\hrow \thead{Rule} & \thead{Update} & \thead{Updates when} \\
+\textbf{Hebb} & $w_i \mathrel{+}= x_i\,t$ & \mk{every} pattern \\
+\textbf{Perceptron} & $w_i \mathrel{+}= \alpha\,t\,x_i$ & only on an \textbf{error} \\
+\textbf{Delta (LMS, Widrow-Hoff)} & $w_i \mathrel{+}= \alpha\,(t - y_{in})\,x_i$ &
+  every pattern, by \textbf{how wrong} it was \\
+\end{tabularx}
+\begin{itemize}
+  \item The delta rule uses the \emph{net input} $y_{in}$, not the thresholded output, so
+        it measures the size of the error and not just its sign. That is what makes it
+        differentiable, and therefore what back-propagation generalises.
+  \item \textbf{Adaline} (Adaptive Linear Neuron, Widrow and Hoff 1960) is a single unit
+        trained by the delta rule: identity activation while training, threshold
+        afterwards. \mk{On the syllabus, never yet examined}, so know
+        it in four lines and no more.
+\end{itemize}}{%
+\figT{c7_bp_xor.png}
+\lead{Back-propagation}
+\begin{itemize}
+  \item \textbf{Short for ``backward propagation of errors''}: a supervised algorithm
+        that trains a \textbf{multilayer} network by gradient descent, pushing the output
+        error backwards through the layers to get a gradient for every weight.
+  \item \mk{When do we need it} (\yr{\textbf{79 Ch}} \m{2}): as soon
+        as there is a \textbf{hidden layer}. A hidden unit has no target of its own, so
+        the perceptron rule cannot say what its error is. Back-propagation manufactures
+        one from the chain rule. No hidden layer, no XOR (\S7.2), so no useful network.
+  \item \textbf{Why sigmoid}: $f(x)=\frac{1}{1+e^{-x}}$ has the derivative
+        $f'(x) = f(x)\,(1-f(x))$, so the forward pass already computed everything the
+        backward pass needs. That is the only reason it is the default in every
+        textbook example.
+\end{itemize}}
+
+\sbsr{0.53}{%
+\lead{Hebbian learning \gap{\color{sub}\footnotesize\tF{4} \yr{\textbf{73 Bh} \m{3+7}, \texttt{81 Ba} \m{2+6}, 78 Ba \m{1+7}, \textbf{78 Ch} \m{6+3}}}}
+\begin{itemize}
+  \item Hebb's postulate, 1949: \emph{when cell A repeatedly takes part in firing cell B,
+        the connection from A to B is strengthened}. Usually quoted as
+        \mk{``neurons that fire together wire together''}.
+  \item \textbf{Algorithm} (four steps, and this is the whole answer):
+  \begin{itemize}
+    \item \textbf{Step 0.} Set all weights and the bias to \textbf{0}.
+    \item \textbf{Step 1.} For a training pair $(s, t)$, set the inputs $x_i = s_i$.
+    \item \textbf{Step 2.} Set the output to the target, $y = t$.
+    \item \textbf{Step 3.} $w_i(new) = w_i(old) + x_i y$ and $b(new) = b(old) + y$.
+    \item Repeat for every pair. \mk{One pass. No iteration, no
+          learning rate, no error term.}
+  \end{itemize}
+  \item \mk{Is Hebbian learning supervised?} (\yr{\textbf{78 Ch}}
+        \m{3}) $-$ \textbf{yes, as used here}: the update needs the target $t$, so the
+        network is told the right answer. Hebb's biological postulate is unsupervised;
+        the \emph{Hebb net} for pattern association is not. Say both halves.
+  \item It needs \textbf{bipolar} data. With binary inputs a 0 contributes nothing to any
+        weight, so the AND net cannot be learnt at all $-$ a real trap, and the reason
+        every worked example uses $\pm 1$.
+\end{itemize}}{%
+\lead{The back-propagation algorithm}
+\begin{itemize}
+  \item \textbf{Six steps:}
+  \begin{itemize}
+    \item \textbf{1.} Initialise all weights and biases to small random values, pick
+          $\eta$.
+    \item \textbf{2. Forward pass}: layer by layer, compute
+          $net_j = \sum w_{ij} x_i + b_j$ and $h_j = f(net_j)$ to the output $y$.
+    \item \textbf{3. Error} at the output, $E = \tfrac12 (y - t)^2$.
+    \item \textbf{4. Backward pass}: output delta
+          $\delta_{out} = (y - t)\,y\,(1-y)$; hidden delta
+          $\delta_j = h_j(1-h_j)\sum_k \delta_k w_{jk}$.
+    \item \textbf{5. Update} every weight, $w \leftarrow w - \eta\,\delta\,(\text{input
+          to that weight})$, and every bias, $b \leftarrow b - \eta\,\delta$.
+    \item \textbf{6.} Repeat over the training set until $E$ is small enough or the
+          epoch limit is reached.
+  \end{itemize}
+  \item \textbf{Problems to name}: slow; \mk{gets stuck in local
+        minima}; \textbf{vanishing gradient} through many sigmoid layers; sensitive
+        to $\eta$ and to the initial weights; can overfit.
+\end{itemize}}
+
+%-----------------------------------------------------------------------
+\T{7.4 Hopfield network}
+
+\Q{What is a Hopfield network? Explain its features and all its steps with an example.}{\m{3}\m{4}\m{6}\m{8}\m{3+5}}
+{\color{sub}\footnotesize \tS{8} \yr{\textbf{69 Bh} \m{8}, \textbf{75 Bh} \m{8},
+\textbf{\textit{71 Bh}} \m{8}, 80 Ash \m{3+5}, \textbf{\texttt{82 Bh}} \m{6},
+\textbf{80 Ch} \m{4}, \texttt{82 Ba} \m{3}, 71 Ma \m{3}} \gap$\cdot$\gap
+\yr{\textbf{\texttt{82 Bh}}} wants the \textbf{weight matrix and a recall computed}, which
+is the companion \gap$\cdot$\gap \yr{80 Ash} and \yr{71 Ma} want it
+\textbf{compared} $-$ with a feed-forward net and with Kohonen}
+
+\sbsr{0.55}{%
+\begin{itemize}
+  \item \textbf{A Hopfield network is a single-layer, fully connected, recurrent network
+        of binary units with symmetric weights, which settles from any starting state
+        into the nearest stored pattern.} Hopfield, \textbf{1982}.
+  \item \textbf{Structure}, and every word of it earns a mark:
+  \begin{itemize}
+    \item One layer. Every unit is connected to \textbf{every other} unit, and each
+          unit's output feeds back as an input.
+    \item Weights are \textbf{symmetric}, $w_{ij} = w_{ji}$, with
+          \mk{no self connection}, $w_{ii}=0$.
+    \item Units are \textbf{binary} $\{0,1\}$ or \textbf{bipolar} $\{-1,+1\}$.
+    \item \mk{There is no separate output layer}: the same units
+          take the input and hold the answer.
+  \end{itemize}
+  \item \textbf{Hopfield Vs feed-forward} (\yr{80 Ash} \m{5}): recurrent Vs one-way;
+        symmetric weights Vs arbitrary; one layer Vs many; associative memory Vs function
+        approximation; converges to a stored pattern Vs computes an output in one pass;
+        trained in \textbf{one shot} Vs trained by many epochs of back-propagation.
+\end{itemize}}{%
+\figT{c7_hopfield_states.png}
+{\color{sub}\footnotesize Four stable states of one small net. Supply any part of one and
+the network falls into it.}
+\figT{c7_hopfield_energy.png}
+{\color{sub}\footnotesize Every update walks downhill on this surface, so the network
+always stops somewhere. The valleys are the stored patterns.}}
+
+\sbsr{0.55}{%
+\begin{itemize}
+  \item \textbf{The four features to list} (\yr{\textbf{\textit{71 Bh}}} asks for them by
+        name):
+  \begin{itemize}
+    \item \textbf{Content-addressable memory} $-$ retrieve a whole pattern by supplying
+          \emph{part} of it. This is the headline property.
+    \item \textbf{Distributed representation} $-$ a pattern is stored in all the weights
+          at once, not in one cell.
+    \item \textbf{Asynchronous control} $-$ units update one at a time, in any order, with
+          no central clock.
+    \item \textbf{Fault tolerance} $-$ damage a few weights and recall degrades
+          gracefully rather than failing.
+  \end{itemize}
+  \item \textbf{Energy.} Each state has an energy
+        \[ E = -\tfrac12 \sum_{i \neq j} w_{ij}s_i s_j - \sum_i \theta_i s_i \]
+        and every update either lowers it or leaves it alone. So the network
+        \mk{always converges}, to a local minimum of $E$. The stored
+        patterns are those minima.
+  \item \textbf{Capacity}: about $p \le 0.15N$ patterns for $N$ units. Store more and the
+        patterns interfere; the net then settles into \textbf{spurious states} that were
+        never taught.
+\end{itemize}}{%
+\lead{The algorithm}
+\begin{itemize}
+  \item \textbf{Training} (one pass, no iteration). For $P$ bipolar patterns:
+        \[ w_{ij} \;=\; \sum_{p=1}^{P} s_i^{(p)} s_j^{(p)} \quad (i \neq j),
+           \qquad w_{ii}=0 \]
+        i.e. sum the outer products and zero the diagonal.
+  \item \textbf{Recall / testing}, given a noisy input $x$:
+  \begin{itemize}
+    \item \textbf{1.} Set the state $y = x$.
+    \item \textbf{2.} Pick one unit $i$ at random and compute
+          $y_{in,i} = x_i + \sum_j y_j w_{ji}$.
+    \item \textbf{3.} Apply the threshold: $y_i = 1$ if $y_{in,i} > \theta_i$,
+          unchanged if equal, $0$ (or $-1$) if less.
+    \item \textbf{4.} \mk{Broadcast the new $y_i$ immediately} $-$
+          the next unit uses it. This is what \emph{asynchronous} means, and updating
+          all units at once is the commonest mistake.
+    \item \textbf{5.} Repeat until no unit changes. The state is then stable.
+  \end{itemize}
+  \item \mk{Worked in full in the companion}: three patterns stored,
+        the weight matrix built, and a corrupted pattern recalled unit by unit.
+\end{itemize}}
+
+%-----------------------------------------------------------------------
+\T{7.5 Kohonen network and the self-organizing map}
+
+\Q{What is a self-organizing map? Explain all the steps involved with an example.}{\m{3}\m{4}\m{5}\m{2+5}}
+{\color{sub}\footnotesize \tS{9} \yr{\textbf{74 Bh} \m{2+5},
+\textbf{\texttt{80 Bh}} \m{4}, \textbf{\texttt{79 Bh}} \m{4}, \textbf{75 Bh} \m{4},
+\textit{74 Ma} \m{4}, \textbf{\textit{72 Ash}} \m{4}, 79 Jth \m{5},
+\textbf{\texttt{81 Bh}} \m{3}, 71 Ma \m{3}} \gap$\cdot$\gap
+\mk{seven of the nine ask it as a short note}, so the answer is a
+definition, the algorithm as five steps, and one application \gap$\cdot$\gap
+\yr{71 Ma} wants it \textbf{compared with Hopfield}}
+
+\sbsr{0.55}{%
+\begin{itemize}
+  \item \textbf{A self-organizing map (Kohonen network) is an unsupervised, competitive
+        neural network that maps high-dimensional input onto a low-dimensional grid of
+        neurons while preserving the topology of the data.} Kohonen, \textbf{1982}.
+  \item \textbf{Structure}: an input layer, and \mk{a grid of output
+        neurons} (usually 2-D). Fully connected between them and
+        \mk{nothing else} $-$ no hidden layer, no bias, no activation
+        function.
+  \item \textbf{Competitive learning}: for each input, exactly one output neuron
+        \mk{wins}, the one whose weight vector is nearest the input.
+        It and its \emph{neighbours} are pulled towards that input; everyone else is
+        left alone.
+  \item \mk{Topology preserving} is the property to name: inputs that
+        are similar end up firing neurons that are close together on the grid. That is
+        what makes an SOM a visualisation tool and not just a clustering algorithm.
+  \item \textbf{Used for}: clustering, dimensionality reduction, data visualisation
+        (the poverty map is the classic), feature extraction, image compression.
+\end{itemize}}{%
+\figT{c7_som.png}
+{\color{sub}\footnotesize The grid of neurons, and the same net drawn as connections from
+the input vector to every output neuron with one marked \emph{winner}.}}
+
+\sbsr{0.50}{%
+\lead{Hopfield Vs Kohonen \gap{\color{sub}\footnotesize(\yr{71 Ma} \m{3})}}
+\begin{tabularx}{\linewidth}{@{}L{1.7cm}XX@{}}
+\hrow \thead{} & \thead{Hopfield} & \thead{Kohonen} \\
+Learning & supervised (patterns given) & \textbf{unsupervised} \\
+Structure & one layer, fully recurrent & input layer $\rightarrow$ output grid,
+  feed-forward \\
+Weights & symmetric, $w_{ii}=0$ & one vector per output neuron \\
+Rule & Hebbian outer product, one shot & competitive, winner takes most \\
+Output & a stored pattern & the winning neuron's position \\
+Used for & associative memory, optimization & clustering, visualisation \\
+\end{tabularx}
+\begin{itemize}
+  \item \checkmark Easy to interpret; handles large, complex data. \xmark
+        Computationally expensive; the grid size and the initial weights are guesses;
+        it assumes nearby points should behave alike.
+\end{itemize}}{%
+\lead{The algorithm, five steps}
+\begin{itemize}
+  \item \textbf{Step 1. Initialise} every neuron's weight vector $w_j$ randomly, and set
+        the learning rate $\alpha$ and the neighbourhood radius $\sigma$.
+  \item \textbf{Step 2. Present} an input vector $x$.
+  \item \textbf{Step 3. Find the winner} (the Best Matching Unit), the neuron whose
+        weight vector is nearest:
+        \[ D(j) = \sum_{i} (x_i - w_{ij})^2, \qquad
+           j^{*} = \arg\min_j D(j) \]
+        {\color{sub}\footnotesize the \emph{squared} Euclidean distance is enough $-$
+        the square root does not change which one is smallest, and skipping it saves
+        time in an exam.}
+  \item \textbf{Step 4. Update the winner and its neighbours}, moving them towards the
+        input:
+        \[ w_{ij}(new) = w_{ij}(old) + \alpha\,\bigl(x_i - w_{ij}(old)\bigr) \]
+        for every $j$ inside the neighbourhood of $j^{*}$.
+  \item \textbf{Step 5. Shrink} $\alpha$ and $\sigma$, and repeat from step 2 until they
+        reach their floor or the map stops moving.
+  \item \textbf{Two phases worth naming}: an early \textbf{ordering} phase with a large
+        radius that lays the map out, and a long \textbf{convergence} phase with a small
+        radius that fine-tunes it.
+\end{itemize}}
+
+%-----------------------------------------------------------------------
+\T{7.6 Expert systems: what they are, and the architecture}
+
+\Q{What is an expert system? Explain its general architecture with a block diagram.}{\m{4}\m{6}\m{8}\m{2+4}\m{1+7}\m{2+5}\m{3+5}}
+{\color{sub}\footnotesize \tS{17} \yr{69 Po \m{8}, 71 Ma \m{2+4}, 76 Ba \m{1+7},
+\textbf{\textit{71 Bh}} \m{8}, \texttt{80 Ba} \m{2+5}, \texttt{81 Ba} \m{3+5},
+\textbf{77 Ch} \m{6+2}, \textbf{78 Ch} \m{1+4+3}, \textbf{\textit{76 Bh}} \m{5+2+2},
+70 Ma \m{2+6}, 72 Ma \m{3+6}, 73 Ma \m{3+5}, 75 Ba \m{2+6}, \textbf{80 Ch} \m{6},
+\texttt{82 Ba} \m{8}, \textbf{71 Bh} \m{2+6}, \textbf{74 Bh} \m{2+5}}
+\gap$\cdot$\gap \mk{joint most-asked question in the subject}
+\gap$\cdot$\gap three papers dress it as a scenario $-$ \emph{disease diagnosis}
+(\yr{\textbf{80 Ch}}), \emph{a disaster-prone area of Nepal} (\yr{\texttt{82 Ba}}),
+\emph{create a scenario where we require one} (\yr{\textbf{79 Ch}}) $-$ and want the
+\emph{same} block diagram with the domain renamed}
+
+\sbsr{0.52}{%
+\lead{Definition}
+\begin{itemize}
+  \item \textbf{An expert system is a computer program that simulates the
+        decision-making of a human expert in one narrow domain, using a body of
+        high-quality specific knowledge rather than a general algorithm.}
+  \item \mk{Narrow is the operative word.} An expert system is expert
+        at one thing and useless at everything else.
+  \item Knowledge comes from \textbf{human specialists}, and also from texts, journals
+        and databases.
+\end{itemize}}{%
+\figT{c7_es_block.png}
+{\color{sub}\footnotesize \mk{Draw this.} Four boxes and one
+double-headed arrow to the user is a full answer to the block-diagram half of every one
+of the seventeen papers.}}
+
+\sbsr{0.52}{%
+\begin{itemize}
+  \item \textbf{Expert system shell} (\yr{82 Ka} \m{2}): an expert system with the
+        \mk{knowledge base emptied out} $-$ inference engine, user
+        interface and explanation facility, ready for a new domain's rules. It is what
+        turns building an expert system into writing rules instead of writing code.
+        Eg EMYCIN, the shell left when MYCIN's medical rules were removed.
+  \item \textbf{When is a problem suited to one} (\yr{82 Ka} \m{3}): the domain is
+        \textbf{narrow and well bounded}; genuine \textbf{human experts exist} and can
+        explain their reasoning; the task is \textbf{symbolic and heuristic}, not
+        numerical; it takes an expert minutes to hours, not seconds or months; and no
+        ordinary algorithm solves it.
+\end{itemize}}{%
+\lead{The components}
+\begin{itemize}
+  \item \textbf{Knowledge base} $-$ the domain knowledge, almost always as
+        \textbf{IF--THEN production rules}: \emph{IF the battery is dead THEN the car
+        will not start}. This is what makes it an expert system rather than a program.
+  \item \textbf{Working memory} $-$ the facts about \emph{this} case, built up during the
+        consultation. Sometimes called the database or the fact base.
+  \item \textbf{Inference engine} $-$ matches rules against working memory and fires
+        them. Also called the control structure or rule interpreter.
+  \item \textbf{User interface} $-$ two-way: it takes the user's queries and answers, and
+        it presents conclusions.
+  \item \textbf{Explanation facility} $-$ answers \emph{why are you asking} and
+        \emph{how did you conclude that}. \mk{Name it: it is the one
+        component most answers forget}, and it is what makes an expert system
+        acceptable to a professional.
+  \item \textbf{Knowledge acquisition subsystem} $-$ how new rules get in (\S7.7).
+\end{itemize}}
+
+\sbsr{0.52}{%
+\lead{How the inference engine works \gap{\color{sub}\footnotesize(\yr{\texttt{81 Ba}} \m{5}, \yr{\textbf{\texttt{82 Bh}}} \m{5})}}
+\begin{itemize}
+  \item It applies one rule of logic, \textbf{modus ponens}: if \emph{A $\rightarrow$ B}
+        is in the knowledge base and \emph{A} is in working memory, add \emph{B}.
+  \item \textbf{Two directions}, both from Chapter 4:
+  \begin{itemize}
+    \item \textbf{Forward chaining (data driven)} $-$ start from the facts, fire whatever
+          matches, add the conclusions, repeat. Use it when there are few facts and many
+          possible conclusions. \emph{Monitoring, planning, design.}
+    \item \textbf{Backward chaining (goal driven)} $-$ start from a hypothesis and look
+          for rules that would prove it, asking the user for what is missing. Use it when
+          there are few plausible conclusions. \emph{Diagnosis.} MYCIN works this way,
+          and it is why the system asks you questions.
+  \end{itemize}
+  \item \textbf{The recognize--select--act cycle}, which is the answer if the question
+        says \emph{how is inference performed}:
+  \begin{itemize}
+    \item \textbf{1. Match} $-$ compare every rule's condition against working memory,
+          producing a \textbf{conflict set} of rules that could fire.
+    \item \textbf{2. Conflict resolution} $-$ choose \emph{one} of them, by specificity,
+          recency, rule priority or a \textbf{meta-rule}.
+    \item \textbf{3. Act} $-$ fire it, updating working memory. Repeat until the goal is
+          reached or nothing matches.
+  \end{itemize}
+  \item \textbf{Rule types to name}: \textbf{relationship} (\emph{IF the battery is dead
+        THEN the car will not start}), \textbf{recommendation} (\emph{... THEN take a
+        cab}), \textbf{directive} (\emph{... AND the fuel system is ok THEN check the
+        electrical system}), \textbf{heuristic}, and \textbf{meta-rules}, which are rules
+        about which rules to use.
+\end{itemize}}{%
+\figT{c7_es_arch.png}
+{\color{sub}\footnotesize The fuller picture, worth drawing when the question is worth 6
+or more: the dashed line splits the \textbf{consultation environment} the end user sees
+from the \textbf{development environment} the knowledge engineer works in.}
+\lead{Two real systems to name}
+\begin{itemize}
+  \item \textbf{MYCIN} (Stanford, 1970s) $-$ diagnoses blood infections and recommends
+        antibiotics from about \textbf{500 production rules}. Uses
+        \textbf{backward chaining}, and will explain its reasoning on request. Matched
+        human specialists.
+  \item \textbf{DENDRAL} (Stanford, late 1960s) $-$ the \textbf{first} expert system.
+        Infers molecular structure from mass spectra using chemists' heuristics.
+        \textbf{Forward chaining}.
+  \item Others worth one word each: \textbf{XCON} (configuring VAX computers),
+        \textbf{PROSPECTOR} (mineral exploration), \textbf{CADUCEUS} (internal medicine).
+\end{itemize}}
+
+%-----------------------------------------------------------------------
+\T{7.7 Expert system development, and knowledge acquisition}
+
+\Q{Explain the stages of expert system development, with an example.}{\m{6}\m{8}\m{2+5}\m{2+6}\m{4+4}}
+{\color{sub}\footnotesize \tS{8} \yr{\textbf{69 Bh} \m{8}, \textbf{70 Bh} \m{4+4},
+\textbf{73 Bh} \m{2+6}, 75 Ba \m{2+6}, \textbf{79 Ch} \m{2+6}, \textbf{80 Ch} \m{6},
+\texttt{82 Ba} \m{8}, \texttt{80 Ba} \m{2+5}} \gap$\cdot$\gap
+\mk{always paired with the block diagram}, so answer both halves
+\gap$\cdot$\gap \yr{\textbf{80 Ch}} casts you as the \textbf{knowledge engineer} for a
+disease-diagnosis system, \yr{\texttt{82 Ba}} in a \textbf{disaster-prone area of Nepal}}
+
+\sbsr{0.52}{%
+\lead{The six stages}
+\begin{itemize}
+  \item \textbf{1. Identify the problem domain.} Is the problem suitable at all? Are
+        there real experts, and will they cooperate? Is it cost-effective?
+  \item \textbf{2. Design the system.} Choose the technology and the shell; decide how
+        the domain knowledge will be \emph{represented}; settle the integration with
+        existing databases.
+  \item \textbf{3. Develop the prototype.} The \textbf{knowledge engineer} acquires the
+        domain knowledge from the expert and encodes it as IF--THEN rules. This is the
+        long stage.
+  \item \textbf{4. Test and refine.} The knowledge engineer runs sample cases; end users
+        try the prototype; rules are corrected and added.
+        \mk{Iterate 3 and 4 until it performs like the expert.}
+  \item \textbf{5. Develop and complete.} Integrate with the real environment, document
+        it, train the users.
+  \item \textbf{6. Maintain.} Keep the knowledge base current as the domain changes, and
+        keep the interfaces working as the surrounding systems evolve.
+\end{itemize}
+\lead{Answering the scenario version}
+\begin{itemize}
+  \item \mk{Name the domain, the expert and three real rules.} For
+        \yr{\textbf{80 Ch}}'s disease diagnosis: expert $=$ a physician; rules like
+        \emph{IF fever $>$ 102\,$^\circ$F AND rash AND joint pain THEN suspect dengue,
+        certainty 0.8}; working memory $=$ this patient's symptoms; backward chaining,
+        because you are testing a hypothesis.
+  \item Then draw the block diagram with the boxes \emph{relabelled for that domain}, and
+        walk the six stages in one line each. That is a full 8 marks.
+\end{itemize}}{%
+\lead{Knowledge acquisition \gap{\color{sub}\footnotesize\tP{2} \yr{\textbf{71 Bh} \m{2+6}, \textbf{74 Bh} \m{2+5}}}}
+\begin{itemize}
+  \item \textbf{Knowledge acquisition is the process of extracting knowledge from human
+        experts and other sources and encoding it into the knowledge base.}
+  \item \mk{It is the bottleneck of the whole field.} Experts know
+        more than they can say, disagree with each other, and are expensive; and what
+        they do say has to be turned into rules by someone who is not an expert.
+  \item \textbf{The methods}: structured and unstructured \textbf{interviews};
+        \textbf{observation} of the expert working; \textbf{questionnaires};
+        \textbf{protocol analysis} (the expert thinks aloud); \textbf{case studies}; and
+        \textbf{automatic acquisition}, i.e. machine learning from records (Ch\,6), which
+        is what removes the bottleneck when data exists.
+  \item \textbf{Sources}: the expert (primary), then secondary and tertiary experts,
+        then literature $-$ reports, guidelines, books, manuals $-$ then end users.
+  \item \textbf{The four kinds of knowledge to name}: \textbf{declarative} (facts),
+        \textbf{procedural} (how to do it), \textbf{episodic} (remembered cases),
+        \textbf{meta-knowledge} (knowledge about the knowledge).
+  \item \textbf{Example to give}: interviewing a cardiologist about how she reads an ECG,
+        recording each judgement as a rule, then replaying old cases to see where the
+        rules disagree with her.
+\end{itemize}}
+
+%-----------------------------------------------------------------------
+\T{7.8 Expert systems: characteristics, advantages, limits, and Vs human experts}
+
+\Q{What are the characteristics of an expert system? Compare it with a human expert. Give its advantages and disadvantages.}{\m{3}\m{4}\m{7}\m{8}\m{2+2+3}}
+{\color{sub}\footnotesize \tS{11} \yr{\textbf{72 Ash} \m{8}, \textbf{81 Ch} \m{4+3},
+80 Ash \m{8}, 81 Ash \m{4}, \textbf{\texttt{79 Bh}} \m{4}, \textbf{78 Ch} \m{1+4+3},
+\textbf{\textit{76 Bh}} \m{5+2+2}, \textbf{77 Ch} \m{6+2}, 82 Ka \m{2+2+3},
+\texttt{80 Ba} \m{2+5}, \textbf{\texttt{82 Bh}} \m{2+5}} \gap$\cdot$\gap
+\yr{80 Ash} \m{8} asks for the \textbf{comparison alone, with practical examples for each
+point}, so the table below \emph{is} that answer}
+
+\sbsr{0.45}{%
+\figT{c7_es_vs_human.png}
+{\color{sub}\footnotesize Which side wins each point. The top block is where the machine
+is better, the bottom block where the person is.}
+\lead{Characteristics \gap{\color{sub}\footnotesize(\yr{\texttt{80 Ba}} \m{2}, \yr{82 Ka} \m{2})}}
+\begin{itemize}
+  \item \textbf{High performance} in its narrow domain, at expert level.
+  \item \textbf{Understandable} $-$ takes input and gives output in the user's language.
+  \item \textbf{Reliable} and \textbf{highly responsive}.
+  \item \textbf{Explains itself}, and separates \textbf{knowledge from the program that
+        uses it}, so the knowledge can be edited without touching the code.
+  \item Uses \textbf{symbolic} representation and \textbf{heuristics}, not an algorithm.
+  \item Handles \textbf{uncertainty}, with certainty factors or probabilities (Ch\,4).
+\end{itemize}}{%
+\lead{Advantages}
+\begin{itemize}
+  \item \mk{Permanent}: it does not retire, forget, or die. A human
+        expert's knowledge leaves with them.
+  \item \textbf{Reproducible} $-$ copy it to a hundred sites at no extra cost, so scarce
+        expertise reaches places that have none. This is the argument for
+        \yr{\texttt{82 Ba}}'s disaster scenario.
+  \item \textbf{Consistent}: same input, same answer, every time. A tired human is not.
+  \item \textbf{Fast}, available \textbf{24 hours}, and \textbf{cheaper} than the expert.
+  \item Works in \textbf{hazardous environments}; keeps a full audit trail; and is a
+        \textbf{training tool}, since it explains its reasoning.
+\end{itemize}
+\lead{Disadvantages and limitations}
+\begin{itemize}
+  \item \mk{No common sense.} It has knowledge, not understanding, and
+        will give a confidently absurd answer just outside its domain.
+  \item \textbf{Narrow}: cannot transfer anything it knows to a neighbouring problem.
+  \item \mk{Cannot learn from experience} on its own $-$ every new
+        rule has to be put in by a knowledge engineer.
+  \item No \textbf{creativity} or intuition, and no ability to recognise that the case in
+        front of it is unusual.
+  \item \textbf{Expensive and slow to build}, because of the knowledge-acquisition
+        bottleneck; and \mk{only as good as the expert it copied},
+        errors included.
+  \item Cannot take moral responsibility for a decision, which is why medical expert
+        systems advise rather than decide.
+\end{itemize}}
+
+\sbs{%
+\lead{Declarative Vs procedural knowledge \gap{\color{sub}\footnotesize\tF{4} \yr{70 Ma \m{2+6}, 72 Ma \m{3+6}, 73 Ma \m{3+5}, \textit{72 Ma} \m{6}}}}
+{\color{sub}\footnotesize all four ask it \emph{with} the expert system architecture, so
+the two are one answer.}
+\begin{tabularx}{\linewidth}{@{}L{2.0cm}XX@{}}
+\hrow \thead{} & \thead{Declarative} & \thead{Procedural} \\
+Is & \textbf{knowing what} & \textbf{knowing how} \\
+Content & facts about objects, events, situations & the steps to carry a task out \\
+Form & statements: logic, semantic nets, frames (Ch\,4, Ch\,5) & rules, programs,
+  procedures \\
+Stored & separately from how it is used & \textbf{inseparably} from the code using it \\
+Changed & easily, one fact at a time & only by rewriting the procedure \\
+Reused & by any inference method & only for its own purpose \\
+Efficiency & lower: control must be worked out at run time & higher: control is built in \\
+Example & \emph{Kathmandu is the capital of Nepal}; \code{dog(Tommy)} & \emph{how to ride
+  a bicycle}; a sorting routine \\
+\end{tabularx}}{%
+\lead{In an expert system, both are present \gap{\color{sub}\footnotesize(this is the half the papers actually mark)}}
+\begin{itemize}
+  \item The \textbf{knowledge base} is \mk{declarative}: it states what
+        is true in the domain and says nothing about how to use it.
+  \item The \textbf{inference engine} is \mk{procedural}: it knows how
+        to search and fire rules, and nothing about the domain.
+  \item \mk{That separation is the whole design}, and the reason a
+        shell exists at all: swap the declarative half and the same procedural half
+        serves a new domain.
+  \item An IF--THEN rule sits on the line, which is worth a sentence: it \emph{states} a
+        relationship, so it reads declaratively, but firing it \emph{does} something, so
+        it behaves procedurally. That is why production rules are the standard expert
+        system representation.
+\end{itemize}}
+
+%-----------------------------------------------------------------------
+\T{7.9 Natural language processing: NLU, NLG and the five steps}
+
+\Q{What is NLP? Explain the different steps involved, with a block diagram and examples.}{\m{5}\m{6}\m{7}\m{8}\m{9}\m{2+6}\m{3+5}}
+{\color{sub}\footnotesize \tS{23} \yr{\textbf{69 Bh} \m{6}, 69 Po \m{8}, 73 Ma \m{2+4},
+\textbf{79 Ch} \m{3+5}, \textbf{72 Ash} \m{2+6}, 75 Ba \m{8}, 72 Ma \m{8},
+\textbf{\textit{73 Bh}} \m{7}, \textbf{73 Bh} \m{2+7}, \textit{74 Ma} \m{9},
+\textbf{\textit{74 Bh}} \m{2+6}, \texttt{82 Ba} \m{2+6}, 79 Jth \m{1+6}, 82 Ka \m{2+5},
+\textbf{81 Ch} \m{2+5}, \textbf{\textit{77 Ch}} \m{2+6}, 78 Po \m{3+5}, 79 Ash \m{5+2},
+\textbf{75 Bh} \m{6+2+2}, \textbf{\textit{76 Bh}} \m{5+4}, 78 Ba \m{2+6},
+\textbf{78 Ch} \m{2+4+2}, \textbf{80 Ch} \m{2+6}}
+\gap$\cdot$\gap \mk{the most-asked question in the whole subject, in 23
+of the 41 papers}, and it has been set at least once in every year from 2069 to 2082
+\gap$\cdot$\gap eight of the twenty-three also want \textbf{NLU and NLG defined}
+\gap$\cdot$\gap \yr{\textbf{80 Ch}} asks it as \emph{build a Nepali chatbot}}
+
+\sbsr{0.52}{%
+\lead{What NLP is}
+\begin{itemize}
+  \item \textbf{Natural language processing is the branch of AI that analyses written or
+        spoken human language and converts it into a representation a computer can use,
+        and back again.}
+  \item \textbf{Two halves}, and the papers ask for both by name:
+  \begin{itemize}
+    \item \textbf{NLU, natural language understanding} $-$ text in, meaning out. Maps the
+          input to a useful representation: entities, concepts, keywords, relations,
+          sentiment, semantic roles. \mk{This is the hard half.}
+    \item \textbf{NLG, natural language generation} $-$ meaning in, text out. Its own
+          three stages: \textbf{text planning} (what to say), \textbf{sentence planning}
+          (how to phrase and combine it), \textbf{text realisation} (produce grammatical
+          output).
+  \end{itemize}
+  \item \textbf{Input} is text or speech, and \mk{the quality of the
+        input bounds everything downstream}: a bad transcription cannot be
+        recovered by a good parser.
+  \item \textbf{Applications} to name: machine translation, chatbots and virtual
+        assistants, sentiment analysis, information retrieval and search, spam
+        filtering, text summarisation, question answering, speech recognition, spelling
+        and grammar correction, optical character recognition.
+\end{itemize}}{%
+\figT{c7_nlp_steps.png}
+{\color{sub}\footnotesize \mk{Draw these five boxes in this order.} It
+is the single most valuable minute of drawing in the subject. (The published figure
+prints \emph{Disclosure Integration}; the term is \textbf{Discourse Integration} $-$ a
+misprint in the book, not a different step.)}}
+
+\sbsr{0.55}{%
+\lead{The five steps, each with the example to give}
+\begin{itemize}
+  \item \textbf{1. Lexical / morphological analysis.} Break the text into paragraphs,
+        sentences and \textbf{tokens}, and analyse the structure of each word.
+  \begin{itemize}
+    \item \emph{``I love NLP, it's fascinating!''} $\rightarrow$
+          \code{[I] [love] [NLP] [,] [it's] [fascinating] [!]}
+    \item Includes \textbf{stemming} (rule-based chopping: \emph{closed, closing, closer}
+          $\rightarrow$ \emph{clos}) and \textbf{lemmatization} (dictionary-based:
+          \emph{better} $\rightarrow$ \emph{good}). Name the difference; it is a
+          reliable extra mark.
+    \item Morphology: \emph{unhappily} $=$ \emph{un-} $+$ \emph{happy} $+$ \emph{-ly}.
+  \end{itemize}
+  \item \textbf{2. Syntactic analysis (parsing).} Check the words against the grammar and
+        build a \textbf{parse tree} showing how they combine.
+  \begin{itemize}
+    \item \emph{``The school goes to boy''} is \mk{rejected here} $-$
+          every word is a real word, but the arrangement is not English.
+    \item Includes \textbf{part-of-speech tagging}: \emph{book} is a noun in
+          \emph{the book on the table} and a verb in \emph{to book a flight}.
+    \item A worked parse tree is in the companion.
+  \end{itemize}
+\end{itemize}}{%
+\lead{Steps 3 to 5}
+\begin{itemize}
+  \item \textbf{3. Semantic analysis.} Turn the parse into \textbf{meaning}.
+  \begin{itemize}
+    \item \textbf{Word sense disambiguation}: \emph{bank} the riverbank or
+          \emph{bank} the institution; \emph{Mary had a bat in her office}.
+    \item Sentence-level meaning: \emph{``Colourless green ideas sleep furiously''} is
+          perfect syntax and \mk{rejected here}, which is the clean
+          example of what step 3 does that step 2 cannot.
+  \end{itemize}
+  \item \textbf{4. Discourse integration.} The meaning of a sentence depends on the
+        sentences around it.
+  \begin{itemize}
+    \item \emph{``The thieves stole the paintings. They were subsequently sold /
+          caught / found.''} \mk{One word changes who ``they'' is.}
+    \item \emph{``John wanted it''} means nothing without the previous sentence.
+  \end{itemize}
+  \item \textbf{5. Pragmatic analysis.} What was actually \emph{meant}, using real-world
+        knowledge.
+  \begin{itemize}
+    \item \emph{``Can you pass the salt?''} is a \textbf{request}, not a question about
+          your arm. Answering \emph{yes} is grammatically perfect and pragmatically
+          wrong.
+    \item Covers sarcasm, idiom and implied meaning.
+  \end{itemize}
+\end{itemize}}
+
+\sbsr{0.55}{%
+\lead{The four levels, and the ambiguity at each \gap{\color{sub}\footnotesize\tS{8} \yr{71 Ma \m{2+2+2+2}, \textbf{\textit{71 Bh}} \m{8}, \textit{72 Ma} \m{6}, 78 Ba \m{2+6}, \textbf{\textit{72 Ash}} \m{1+7}, \textbf{\texttt{82 Bh}} \m{3+4}, \textbf{\texttt{80 Bh}} \m{3+5}, \texttt{80 Ba} \m{2+5}}}}
+{\color{sub}\footnotesize eight papers ask for the \emph{levels} rather than the steps,
+usually with \emph{``give an example of ambiguity at each''}. Same material, different
+cut: give one example per level and you have the marks.}
+\begin{tabularx}{\linewidth}{@{}L{1.9cm}XX@{}}
+\hrow \thead{Level} & \thead{Concerns} & \thead{An ambiguity} \\
+\textbf{Phonetic} & sounds $\rightarrow$ words & \emph{``ice cream''} against
+  \emph{``I scream''}; \emph{``grey day''} against \emph{``grade A''} \\
+\textbf{Lexical} & which sense of a word & \emph{bank}: riverbank or institution \\
+\textbf{Syntactic} & which grammatical structure & \emph{``I saw the man with a
+  telescope''}: who has the telescope? \\
+\textbf{Semantic} & what the sentence means & \emph{``The chicken is ready to eat''}:
+  is it the eater or the meal? \\
+\textbf{Pragmatic} & what the speaker intended & \emph{``Can you open the window?''}:
+  request, not a question \\
+\end{tabularx}}{%
+\begin{itemize}
+  \item \mk{Phonetic is the level every deck skips}, and six papers
+        list it. It is the level at which \emph{sound} is turned into \emph{words}, and
+        its ambiguity is that one stream of sound splits into words in more than one way.
+  \item \textbf{Syntactic and semantic analysis compared} (\yr{\textbf{\texttt{80 Bh}}},
+        \yr{\texttt{80 Ba}}, \yr{\textbf{\texttt{82 Bh}}} ask exactly this): syntax asks
+        \emph{is this arrangement legal, and what is its structure} and answers with a
+        parse tree; semantics asks \emph{what does that structure mean} and answers with
+        a meaning representation. A sentence can pass one and fail the other, in both
+        directions.
+\end{itemize}}
+
+%-----------------------------------------------------------------------
+\T{7.10 Issues and challenges in NLP, and machine translation}
+
+\Q{What are the problems associated with NLP? Why is it hard?}{\m{2}\m{3}\m{5}\m{8}\m{1+7}}
+{\color{sub}\footnotesize \tS{13} \yr{\textbf{70 Bh} \m{1+7}, 70 Ma \m{2+6},
+\textbf{78 Ch} \m{2+4+2}, 82 Ka \m{2+5}, \textbf{81 Ch} \m{2+5},
+\textbf{\textit{77 Ch}} \m{2+6}, 78 Po \m{3+5}, 79 Ash \m{5+2}, \textbf{75 Bh} \m{6+2+2},
+\textbf{\texttt{79 Bh}} \m{2+5}, 81 Ash \m{8}, \textbf{\texttt{80 Bh}} \m{3+5},
+\texttt{80 Ba} \m{2+5}} \gap$\cdot$\gap
+\mk{almost always the \m{2} or \m{3} opener to the steps question}
+\gap$\cdot$\gap \yr{81 Ash} \m{8} and \yr{\textbf{80 Ch}} \m{2+6} set it as a
+\textbf{Nepali-language} problem and want the issues \emph{related to Nepali}}
+
+\sbsr{0.50}{%
+\lead{Why natural language is hard}
+\begin{itemize}
+  \item \textbf{Ambiguity at every level} $-$ \S7.9's table. This is the root cause and
+        should be your first sentence.
+  \item \textbf{Context dependence}: \emph{``Where's the water?''} means something
+        different in a chemistry lab, when you are thirsty, and under a leaking roof.
+  \item \textbf{Many ways to say one thing}: \emph{``Ram's birthday is October 11''} and
+        \emph{``Ram was born on October 11''}.
+  \item \textbf{The language will not stay still}: new words, new senses, slang. No
+        lexicon is ever complete.
+  \item \textbf{Hidden and figurative meaning}: idiom, metaphor, sarcasm.
+  \item \textbf{Pronouns and reference}: \emph{``Ravi went to the supermarket. He found
+        his favourite coffee. He paid for it and left.''} What is \emph{it}?
+  \item \textbf{Ungrammatical and incomplete input}: \emph{``He rice eats.''} People
+        still understand it; a parser does not.
+  \item \textbf{Ellipsis and conjunction}: \emph{``Ram and Hari went to a restaurant.
+        Ram had coffee, Hari tea.''} $-$ the second verb is simply missing.
+  \item \textbf{Speech adds its own}: accents, homophones, and
+        \mk{no spaces between spoken words}.
+\end{itemize}}{%
+\lead{The Nepali version of the answer \gap{\color{sub}\footnotesize(\yr{81 Ash} \m{8}, \yr{\textbf{80 Ch}} \m{6})}}
+\begin{itemize}
+  \item \mk{Low-resource language}: little annotated text, no large
+        treebank, few parallel corpora. Everything below follows from this.
+  \item \textbf{Devanagari script}: transliteration and code-mixing (Nepali typed in
+        Roman letters), inconsistent Unicode encoding, no standard spelling for many
+        loanwords.
+  \item \textbf{Morphologically rich}: heavy inflection and agglutination, so one root
+        yields dozens of surface forms and a lexicon lookup fails.
+  \item \textbf{Honorifics and levels of respect} (\emph{timi / tapai / hajur}) change the
+        verb, and carry meaning a translation must preserve.
+  \item \textbf{Free word order}, and \textbf{subject-object-verb}, so English-trained
+        parsers transfer badly.
+  \item \textbf{Dialects} and heavy loan vocabulary from English and Hindi.
+  \item \mk{Mitigation, which is the half that carries the marks}:
+        build and release an annotated corpus; use transfer learning from a multilingual
+        model rather than training from scratch; augment data by back-translation; write
+        a morphological analyser for the inflections; standardise the encoding; keep a
+        human in the loop for evaluation.
+\end{itemize}}
+
+\sbs{%
+\lead{Machine translation \gap{\color{sub}\footnotesize(\yr{\textbf{70 Bh}} \m{1+7})}}
+\begin{itemize}
+  \item \textbf{Machine translation is the automatic conversion of text or speech from
+        one natural language into another, preserving meaning.}
+  \item \textbf{Three approaches}, in historical order:
+  \begin{itemize}
+    \item \textbf{Rule based} $-$ dictionaries plus hand-written grammar rules. Accurate
+          where the rules cover, brittle everywhere else.
+    \item \textbf{Statistical} $-$ learn word and phrase probabilities from a
+          \textbf{parallel corpus}. Needs vast aligned data.
+    \item \textbf{Neural} $-$ an encoder-decoder network trained end to end. The current
+          standard, and the reason translation improved suddenly after 2016.
+  \end{itemize}
+  \item \textbf{Its challenges}: word-sense ambiguity; idioms that must not be translated
+        literally; different \textbf{word order} (English SVO, Nepali SOV); grammatical
+        gender and honorifics with no counterpart in the other language; named entities
+        and untranslatable culture-specific words; and no parallel corpus for
+        low-resource pairs.
+\end{itemize}}{%
+\lead{Tools NLP needs \gap{\color{sub}\footnotesize(the ``knowledge bases required'', \yr{\textbf{80 Ch}} \m{2})}}
+\begin{itemize}
+  \item \textbf{Lexicon / dictionary} $-$ the vocabulary, with meanings, pronunciations
+        and syntactic categories.
+  \item \textbf{Morphological analyser} $-$ splits words into prefix, root and suffix and
+        derives their grammatical features.
+  \item \textbf{Grammar} $-$ the rules that say which arrangements are legal, used by the
+        parser.
+  \item \textbf{Semantic and world knowledge} $-$ an ontology or knowledge base (Ch\,5)
+        that says what the words refer to and what is plausible.
+  \item \textbf{Annotated corpus} $-$ tagged and parsed text to train and to test on.
+  \item \textbf{Discourse and pragmatic model} $-$ to resolve pronouns and intent.
+\end{itemize}}
+
+%-----------------------------------------------------------------------
+\T{7.11 Machine vision}
+
+\Q{What is machine vision? Why is it important in AI? List its steps and applications.}{\m{3}\m{4}\m{2+4}\m{2+5}\m{2+6}\m{3+5}\m{1+5+2}}
+{\color{sub}\footnotesize \tS{12} \yr{71 Ma \m{3+5}, \textbf{\textit{72 Ash}} \m{3+5},
+80 Ash \m{2+6}, 81 Ash \m{2+4}, \textbf{\texttt{81 Bh}} \m{2+5}, 79 Ash \m{1+5+2},
+\textbf{69 Bh} \m{4}, \textbf{80 Ch} \m{4}, \texttt{80 Ba} \m{3}, \texttt{82 Ba} \m{3},
+\textbf{\texttt{79 Bh}} \m{2+5}, \textbf{70 Bh} \m{2+6}} \gap$\cdot$\gap
+\mk{two papers pair it with back-propagation} (\yr{71 Ma},
+\yr{\textbf{\textit{72 Ash}}}) and one with GA (\yr{\textbf{70 Bh}}), so it is often the
+\emph{other} half of a neural-network question \gap$\cdot$\gap \yr{80 Ash} wants a
+\textbf{scenario} and the steps to solve it}
+
+\sbsr{0.44}{%
+\begin{itemize}
+  \item \textbf{Machine vision is the field of AI that builds a model of the real world
+        from images} $-$ recovering useful information about a three-dimensional scene
+        from its two-dimensional projections.
+  \item \mk{The hard part in one line}: the world is 3-D and the image
+        is 2-D, so information has been thrown away and must be put back using knowledge
+        about the objects and the projection geometry.
+  \item \textbf{An image} is a 2-D array of intensity values. Each element is a
+        \textbf{pixel}. Grey scale $f = f(x,y)$; colour is three such functions,
+        $\{R(x,y), G(x,y), B(x,y)\}$.
+\end{itemize}}{%
+\figT{c7_mv_stages.png}}
+
+\sbsr{0.44}{%
+\lead{Why it matters to AI \gap{\color{sub}\footnotesize(\yr{71 Ma} \m{3}, \yr{\textbf{\texttt{79 Bh}}} \m{5})}}
+\begin{itemize}
+  \item \mk{Vision is how an agent perceives}, and Chapter 1's agent
+        model begins with sensors. Without it an agent is limited to whatever a human
+        types in.
+  \item It is the only practical channel for \textbf{unstructured} information about the
+        physical world: no one can hand-code a description of every scene.
+  \item It is what makes autonomy possible $-$ robots, vehicles, inspection $-$ and it
+        is where neural networks work best, which is why \textbf{back-propagation}
+        (\S7.3) and machine vision are asked together.
+\end{itemize}}{%
+\lead{The stages, in order}
+\begin{itemize}
+  \item \textbf{1. Image acquisition} $-$ capture the scene with a camera or sensor and
+        digitise it. Lighting is a design decision, not an accident.
+  \item \textbf{2. Image enhancement} $-$ make features easier to see: contrast
+        stretching, sharpening, noise filtering, edge detection.
+  \item \textbf{3. Image restoration} $-$ undo a \emph{known} degradation (blur, sensor
+        noise) using a model of how it happened. Enhancement is subjective, restoration
+        is objective; say so.
+  \item \textbf{4. Morphological processing} $-$ operate on shape: erosion, dilation,
+        opening, closing, to clean up the regions.
+  \item \textbf{5. Segmentation} $-$ \mk{partition the image into
+        objects and background}, grouping pixels that share intensity, colour,
+        texture or motion. The hardest step, and the one everything after depends on.
+  \item \textbf{6. Representation and description} $-$ turn each region into
+        \textbf{features}: boundary or area, size, shape, moments, texture.
+  \item \textbf{7. Object recognition} $-$ assign a label to each region by
+        \textbf{pattern recognition}: statistical (feature vectors into a classifier) or
+        structural (decompose into primitives).
+  \item \textbf{8. Interpretation} $-$ say what the scene \emph{means}: how many, where,
+        moving how, and what to do about it.
+  \item \textbf{Colour processing} and \textbf{image compression} sit beside the pipeline
+        rather than in it; the block diagram draws them as separate boxes and so should
+        you.
+\end{itemize}}
+
+\sbs{%
+\lead{Applications}
+\begin{itemize}
+  \item \textbf{Industry}: automated inspection on a production line, reading part
+        numbers, robot guidance and pick-and-place, barcode and label verification.
+  \item \textbf{Medicine}: X-ray, CT and MRI analysis, tumour detection, cell counting.
+  \item \textbf{Transport}: self-driving cars, lane and sign detection, number-plate
+        recognition, traffic monitoring.
+  \item \textbf{Security}: face recognition, fingerprint and iris biometrics,
+        surveillance, intrusion detection.
+  \item \textbf{Agriculture}: crop and disease monitoring, fruit grading, yield
+        estimation.
+  \item \textbf{Documents}: OCR, handwriting recognition, cheque processing.
+  \item \textbf{Remote sensing} and \textbf{astronomy}; \textbf{AR and VR}.
+\end{itemize}}{%
+\lead{Answering the scenario version \gap{\color{sub}\footnotesize(\yr{80 Ash} \m{6}, \yr{81 Ash} \m{4})}}
+\begin{itemize}
+  \item \mk{Pick a concrete scenario and walk the eight stages
+        through it.} That is the answer; a generic list of stages is half marks.
+  \item Worked example $-$ \textbf{sorting apples on a conveyor}:
+  \begin{itemize}
+    \item \textbf{Acquire}: overhead camera, diffuse lighting to kill shadows.
+    \item \textbf{Enhance}: median filter to remove sensor speckle.
+    \item \textbf{Restore}: deblur for the belt's motion, which is known and constant.
+    \item \textbf{Morphology}: close small gaps so each apple is one solid region.
+    \item \textbf{Segment}: threshold on colour to separate fruit from belt.
+    \item \textbf{Describe}: for each region take area, roundness, mean hue, and the
+          fraction of dark pixels.
+    \item \textbf{Recognise}: a classifier sorts each into grade A, grade B or reject.
+    \item \textbf{Interpret and act}: fire the diverter arm for the right bin.
+  \end{itemize}
+  \item Say what would break it $-$ overlapping apples defeat segmentation, changing
+        daylight defeats the colour threshold $-$ and how you would fix it. That
+        sentence is what separates a 6 from a 4.
+\end{itemize}}
+
+\hr
+
+%-----------------------------------------------------------------------
+\T{7.12 Every Chapter 7 question, grouped by the answer it wants}
+
+{\color{sub}\footnotesize \textbf{Bold} $=$ regular exam, plain $=$ back.
+\texttt{Monospace} $=$ CT 710 (BEI), \textit{italic} $=$ CT 78506 (BEX), upright $=$
+CT 653 (BCT).}
+
+\begin{itemize}
+  \item \textbf{Steps of NLP} \textbf{23 papers} $\rightarrow$ \S7.9. Wordings, all one
+        answer: \emph{explain the steps} (\yr{69 Po}, \yr{73 Ma}, \yr{\textbf{79 Ch}},
+        \yr{75 Ba}, \yr{72 Ma}, \yr{\textbf{\textit{73 Bh}}});
+        \emph{define NLU and NLG, then the steps} (\yr{\textbf{73 Bh}},
+        \yr{\textit{74 Ma}}, \yr{\textbf{\textit{74 Bh}}}, \yr{\texttt{82 Ba}},
+        \yr{79 Jth}); \emph{the problems, then the steps} (\yr{82 Ka},
+        \yr{\textbf{81 Ch}}, \yr{\textbf{\textit{77 Ch}}}, \yr{78 Po});
+        \emph{why is NLP hard} (\yr{79 Ash}); \emph{steps and a parse tree for ``A girl
+        has a name''} (\yr{\textbf{\textit{76 Bh}}}, worked in the companion);
+        \emph{a Nepali chatbot} (\yr{\textbf{80 Ch}}).
+  \item \textbf{NLP levels and their ambiguities} \textbf{8 papers} $\rightarrow$
+        \S7.9's second half (\yr{71 Ma}, \yr{\textbf{\textit{71 Bh}}},
+        \yr{\textit{72 Ma}}, \yr{78 Ba}, \yr{\textbf{\textit{72 Ash}}},
+        \yr{\textbf{\texttt{82 Bh}}}, \yr{\textbf{\texttt{80 Bh}}}, \yr{\texttt{80 Ba}}).
+        Phonetic is the level to make sure you can define.
+  \item \textbf{NLP issues, challenges, machine translation} \textbf{13 papers}
+        $\rightarrow$ \S7.10, including both Nepali-language questions
+        (\yr{81 Ash}, \yr{\textbf{80 Ch}}).
+  \item \textbf{Perceptron and the logic gates} \textbf{17 papers} $\rightarrow$ \S7.2,
+        all worked in the companion. \emph{OR} (\yr{72 Ma}); \emph{AND}
+        (\yr{\textbf{\textit{73 Bh}}}, \yr{78 Po}, \yr{\textbf{\textit{77 Ch}}});
+        \emph{XOR} (\yr{73 Ma}, \yr{\textit{74 Ma}}, \yr{\textbf{\textit{74 Bh}}},
+        \yr{\textbf{\texttt{82 Bh}}}, \yr{79 Ash}, \yr{\textbf{77 Ch}});
+        \emph{any logic gate} (\yr{79 Jth}); \emph{linear separability}
+        (\yr{\textbf{\textit{76 Bh}}}, \yr{\textbf{\texttt{81 Bh}}}); \emph{MLP}
+        (\yr{\textit{72 Ma}}, \yr{\textbf{\textit{77 Ch}}}); short note (\yr{69 Po}).
+  \item \textbf{Expert system architecture} \textbf{17 papers} $\rightarrow$ \S7.6.
+        \textbf{Development stages} \textbf{8 papers} $\rightarrow$ \S7.7.
+        \textbf{Advantages, limits, Vs human experts} \textbf{11 papers} $\rightarrow$
+        \S7.8. \textbf{Declarative Vs procedural} \textbf{4 papers} $\rightarrow$ \S7.8.
+        \textbf{Knowledge acquisition} \textbf{2 papers} $\rightarrow$ \S7.7.
+  \item \textbf{Machine vision} \textbf{12 papers} $\rightarrow$ \S7.11.
+  \item \textbf{Kohonen / SOM} \textbf{9 papers} $\rightarrow$ \S7.5.
+        \textbf{Hopfield} \textbf{8 papers} $\rightarrow$ \S7.4, with the weight matrix
+        and recall worked in the companion for \yr{\textbf{\texttt{82 Bh}}}.
+  \item \textbf{Back-propagation} \textbf{8 papers} $\rightarrow$ \S7.3, one full step
+        worked in the companion. \textbf{Hebbian learning} \textbf{4 papers}
+        $\rightarrow$ \S7.3, the AND net worked in the companion.
+  \item \textbf{The neuron model, McCulloch-Pitts, activation function}
+        \textbf{8 papers} $\rightarrow$ \S7.1.
+  \item \textbf{Forward propagation through the printed network} \tP{2}
+        \yr{82 Ka \m{8}, \textbf{81 Ch} \m{8}} $-$ the only genuine numerical in the
+        chapter, and \mk{the same question printed twice with the same
+        figure}. Worked in the companion, including why the ReLU layer's weights
+        cannot be updated at all for the given input.
+  \item \textbf{Short notes that live here}: \emph{learning in a neural network}
+        (\yr{69 Po}, \yr{\textbf{74 Bh}}, \yr{78 Ba}, \yr{\textbf{\textit{77 Ch}}},
+        \yr{81 Ash}), \emph{learning rate} and \emph{learning based on statistics}
+        (\yr{\textit{72 Ma}}), \emph{human brain Vs neural network}
+        (\yr{\textbf{69 Bh}}).
+  \item \textbf{Adaline} $-$ on the syllabus, \mk{never examined in 41
+        papers}. Four lines in \S7.3 and no more.
+  \item \textbf{Pattern recognition} $-$ in the textbook's \S7.4 but not on the CT 710
+        syllabus and never asked on its own. It appears here only as step 7 of the
+        machine-vision pipeline.
+\end{itemize}
+
+\lead{Source notes}
+\begin{itemize}
+  \item Spine: BA Sir \emph{CH-07 Applications of AI} (the fullest single source in
+        \emph{Notes\textbackslash} for this chapter), PS Sir \emph{7.1 Neural Network},
+        \emph{7.2 Expert Systems} and \emph{7.3 NLP and Machine Vision}, and
+        \emph{Insights on Artificial Intelligence} ch\,7 for the worked method.
+  \item \mk{One correction carried into the figure caption}: the
+        published NLP figure prints \emph{Disclosure Integration}; the step is
+        \textbf{Discourse Integration}. The same misprint runs through several decks.
+  \item \mk{Phonetic-level ambiguity is \added{}}. Six papers ask for
+        the four levels of analysis and no deck in \emph{Notes\textbackslash} explains
+        the phonetic one; the examples here were researched and written.
+  \item \mk{The Nepali-language answers are \added{}} for
+        \yr{81 Ash} and \yr{\textbf{80 Ch}}: no source covers them, and both questions
+        are worth 6 or 8 marks.
+  \item \textbf{Hebbian learning} is not on the syllabus under any name but is asked in
+        four papers, so it is written in full in \S7.3 and worked in the companion.
+\end{itemize}

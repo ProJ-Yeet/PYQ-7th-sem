@@ -1336,8 +1336,275 @@ def ch6():
         (w2 * 50 + w3 * 100) / (w2 + w3), 80.0)
 
 
+# =====================================================================
+#  chapter 7 -- perceptrons, Hebb nets, Hopfield, forward and back prop
+# =====================================================================
+
+def step3(net, theta=0.0):
+    """The perceptron's three-valued activation: +1 / 0 / -1."""
+    return 1 if net > theta else (-1 if net < -theta else 0)
+
+
+def perceptron(rows, alpha=1.0, theta=0.0, epochs=20):
+    """Train a two-input perceptron. Returns (w1, w2, b, epochs, trace).
+
+    `epochs` counts the pass on which nothing changed, so a gate that is
+    learnt in one pass reports 2: one pass of updates, one of verification.
+    """
+    w1 = w2 = b = 0.0
+    trace = []
+    for ep in range(1, epochs + 1):
+        changed = False
+        for x1, x2, t in rows:
+            net = b + w1 * x1 + w2 * x2
+            y = step3(net, theta)
+            if y != t:
+                w1 += alpha * t * x1
+                w2 += alpha * t * x2
+                b += alpha * t
+                changed = True
+            trace.append((ep, x1, x2, t, net, y, w1, w2, b))
+        if not changed:
+            return w1, w2, b, ep, trace
+    raise AssertionError("perceptron did not converge")
+
+
+def hebb(rows):
+    """One pass of the Hebb rule over bipolar patterns."""
+    w1 = w2 = b = 0
+    trace = []
+    for x1, x2, t in rows:
+        w1 += x1 * t
+        w2 += x2 * t
+        b += t
+        trace.append((w1, w2, b))
+    return w1, w2, b, trace
+
+
+def hop_weights(patterns):
+    """Hopfield weight matrix: sum of outer products, zero diagonal."""
+    n = len(patterns[0])
+    W = [[0] * n for _ in range(n)]
+    for s in patterns:
+        for i in range(n):
+            for j in range(n):
+                if i != j:
+                    W[i][j] += s[i] * s[j]
+    return W
+
+
+def hop_net(W, y, i):
+    return sum(W[i][j] * y[j] for j in range(len(y)))
+
+
+def sigmoid(z):
+    return 1.0 / (1.0 + math.exp(-z))
+
+
+def ch7():
+    AND = [(1, 1, 1), (1, -1, -1), (-1, 1, -1), (-1, -1, -1)]
+    OR = [(1, 1, 1), (1, -1, 1), (-1, 1, 1), (-1, -1, -1)]
+
+    # ---------------- 1.1 McCulloch-Pitts by inequality --------------------
+    # AND with w1 = w2 = 1, T = 1.5; OR with the same weights and T = 0.5.
+    for x1, x2, want in ((0, 0, 0), (0, 1, 0), (1, 0, 0), (1, 1, 1)):
+        chk("c7 P1.1 MP AND (%d,%d)" % (x1, x2),
+            1 if x1 * 1 + x2 * 1 > 1.5 else 0, want)
+    for x1, x2, want in ((0, 0, 0), (0, 1, 1), (1, 0, 1), (1, 1, 1)):
+        chk("c7 P1.1 MP OR (%d,%d)" % (x1, x2),
+            1 if x1 * 1 + x2 * 1 > 0.5 else 0, want)
+    for x, want in ((0, 1), (1, 0)):
+        chk("c7 P1.1 MP NOT %d" % x, 1 if -1 * x > -0.5 else 0, want)
+
+    # ---------------- 1.2 perceptron AND -----------------------------------
+    w1, w2, b, ep, tr = perceptron(AND)
+    chk("c7 P1.2 AND weights", (w1, w2, b), (1.0, 1.0, -1.0))
+    chk("c7 P1.2 AND converged on pass", ep, 2)
+    # the four rows of epoch 1 exactly as the notes print them
+    want = [(0.0, 0, 1.0, 1.0, 1.0),      # net, y, then w1 w2 b after
+            (1.0, 1, 0.0, 2.0, 0.0),
+            (2.0, 1, 1.0, 1.0, -1.0),
+            (-3.0, -1, 1.0, 1.0, -1.0)]
+    for k, (net, y, ww1, ww2, bb) in enumerate(want):
+        row = tr[k]
+        chk("c7 P1.2 epoch1 row%d net" % (k + 1), row[4], net)
+        chk("c7 P1.2 epoch1 row%d y" % (k + 1), row[5], y)
+        chk("c7 P1.2 epoch1 row%d weights" % (k + 1),
+            (row[6], row[7], row[8]), (ww1, ww2, bb))
+    # epoch 2 is the verification pass the notes print
+    for k, (x1, x2, t) in enumerate(AND):
+        chk("c7 P1.2 verify (%d,%d)" % (x1, x2),
+            step3(b + w1 * x1 + w2 * x2), t)
+    chk("c7 P1.2 verify nets",
+        [b + w1 * x1 + w2 * x2 for x1, x2, _ in AND], [1.0, -1.0, -1.0, -3.0])
+
+    # ---------------- 1.3 perceptron OR ------------------------------------
+    w1o, w2o, bo, epo, tro = perceptron(OR)
+    chk("c7 P1.3 OR weights", (w1o, w2o, bo), (1.0, 1.0, 1.0))
+    chk("c7 P1.3 OR converged on pass", epo, 2)
+    chk("c7 P1.3 OR updates only on the first row",
+        [(r[6], r[7], r[8]) for r in tro[:4]],
+        [(1.0, 1.0, 1.0)] * 4)
+    chk("c7 P1.3 OR verify nets",
+        [bo + w1o * x1 + w2o * x2 for x1, x2, _ in OR], [3.0, 1.0, 1.0, -1.0])
+    # the only difference between the two gates is the bias
+    chk("c7 P1.3 same weights, opposite bias",
+        (w1, w2, w1o, w2o, b, bo), (1.0, 1.0, 1.0, 1.0, -1.0, 1.0))
+
+    # ---------------- 1.4 XOR ----------------------------------------------
+    # no single perceptron realises XOR: exhaustive over integer weights
+    sols = [(b0, a, c) for b0 in range(-6, 7) for a in range(-6, 7)
+            for c in range(-6, 7)
+            if all((b0 + a * x1 + c * x2 > 0) == (x1 ^ x2 == 1)
+                   for x1 in (0, 1) for x2 in (0, 1))]
+    chk("c7 P1.4 no single-neuron XOR", sols, [])
+    # ... and AND / OR DO have solutions, which is what makes the search fair
+    for name, fn in (("AND", lambda p, q: p & q), ("OR", lambda p, q: p | q)):
+        n = sum(1 for b0 in range(-6, 7) for a in range(-6, 7)
+                for c in range(-6, 7)
+                if all((b0 + a * x1 + c * x2 > 0) == (fn(x1, x2) == 1)
+                       for x1 in (0, 1) for x2 in (0, 1)))
+        chk("c7 P1.4 %s is separable" % name, n > 0, True)
+    # the two-layer network the notes build
+    for x1 in (0, 1):
+        for x2 in (0, 1):
+            h1 = 1 if (x1 + x2 - 0.5) > 0 else 0
+            h2 = 1 if (x1 + x2 - 1.5) > 0 else 0
+            y = 1 if (h1 - h2 - 0.5) > 0 else 0
+            chk("c7 P1.4 MLP XOR (%d,%d)" % (x1, x2), y, x1 ^ x2)
+            chk("c7 P1.4 MLP hidden (%d,%d)" % (x1, x2),
+                (h1, h2), (1 if (x1 or x2) else 0, 1 if (x1 and x2) else 0))
+
+    # ---------------- 1.5 Hebb net for AND ---------------------------------
+    hw1, hw2, hb, htr = hebb(AND)
+    chk("c7 P1.5 Hebb weights", (hw1, hw2, hb), (2, 2, -2))
+    chk("c7 P1.5 Hebb trace", htr,
+        [(1, 1, 1), (0, 2, 0), (1, 1, -1), (2, 2, -2)])
+    chk("c7 P1.5 Hebb verify nets",
+        [hb + hw1 * x1 + hw2 * x2 for x1, x2, _ in AND], [2, -2, -2, -6])
+    for x1, x2, t in AND:
+        chk("c7 P1.5 Hebb output (%d,%d)" % (x1, x2),
+            step3(hb + hw1 * x1 + hw2 * x2), t)
+    # the trap the notes warn about: in BINARY the same rule fails
+    bw1 = bw2 = bb2 = 0
+    for x1, x2, t in ((1, 1, 1), (1, 0, 0), (0, 1, 0), (0, 0, 0)):
+        bw1 += x1 * t
+        bw2 += x2 * t
+        bb2 += t
+    chk("c7 P1.5 binary Hebb gives all-positive weights",
+        (bw1, bw2, bb2), (1, 1, 1))
+    chk("c7 P1.5 and therefore fires on (1,0), which AND must not",
+        1 if bb2 + bw1 * 1 + bw2 * 0 > 0 else 0, 1)
+
+    # ---------------- 2.1 forward propagation, 82 Ka / 81 Ch ---------------
+    x1 = x2 = -1.0
+    a = bb = 1.0
+    c, d, e, f = 4.0, 1.0, 2.0, 2.0
+    r1 = max(c * x1 + e * x2, 0.0)
+    r2 = max(d * x1 + f * x2, 0.0)
+    chk("c7 P2.1 pre-ReLU r1", c * x1 + e * x2, -6.0)
+    chk("c7 P2.1 pre-ReLU r2", d * x1 + f * x2, -3.0)
+    chk("c7 P2.1 r1", r1, 0.0)
+    chk("c7 P2.1 r2", r2, 0.0)
+    s1, s2 = sigmoid(r1), sigmoid(r2)
+    chk("c7 P2.1 s1", s1, 0.5)
+    chk("c7 P2.1 s2", s2, 0.5)
+    chk("c7 P2.1 net_y", a * s1 + bb * s2, 1.0)
+    y = sigmoid(a * s1 + bb * s2)
+    chk("c7 P2.1 y", y, 0.7311, tol=5e-5)
+    t, eta = 1.0, 0.1
+    delta = (y - t) * y * (1 - y)
+    chk("c7 P2.1 delta", delta, -0.05288, tol=5e-6)
+    chk("c7 P2.1 dE/da", delta * s1, -0.02644, tol=5e-6)
+    chk("c7 P2.1 a_new", a - eta * delta * s1, 1.00264, tol=5e-6)
+    chk("c7 P2.1 b_new", bb - eta * delta * s2, 1.00264, tol=5e-6)
+    # the ReLU units are dead, so the first layer gets no gradient at all
+    for w in "cdef":
+        chk("c7 P2.1 gradient to %s is zero" % w, 0.0, 0.0)
+    chk("c7 P2.1 both hidden pre-activations negative",
+        (c * x1 + e * x2 < 0, d * x1 + f * x2 < 0), (True, True))
+
+    # ---------------- 2.2 one back-propagation step ------------------------
+    w13, w14, w23, w24, w35, w45 = 0.5, 0.9, 0.4, 1.0, -1.2, 1.1
+    b3, b4, b5 = -0.8, 0.1, -0.3
+    eta = 0.1
+    X1 = X2 = 1.0
+    T = 0.0
+    n3 = X1 * w13 + X2 * w23 + b3
+    n4 = X1 * w14 + X2 * w24 + b4
+    chk("c7 P2.2 net3", n3, 0.1, tol=1e-9)
+    chk("c7 P2.2 net4", n4, 2.0, tol=1e-9)
+    h3, h4 = sigmoid(n3), sigmoid(n4)
+    chk("c7 P2.2 h3", h3, 0.5250, tol=5e-5)
+    chk("c7 P2.2 h4", h4, 0.8808, tol=5e-5)
+    n5 = h3 * w35 + h4 * w45 + b5
+    chk("c7 P2.2 net5", n5, 0.0389, tol=5e-5)
+    y5 = sigmoid(n5)
+    chk("c7 P2.2 y5", y5, 0.5097, tol=5e-5)
+    chk("c7 P2.2 error", 0.5 * (y5 - T) ** 2, 0.1299, tol=5e-5)
+    d5 = (y5 - T) * y5 * (1 - y5)
+    d3 = d5 * w35 * h3 * (1 - h3)
+    d4 = d5 * w45 * h4 * (1 - h4)
+    chk("c7 P2.2 delta5", d5, 0.12738, tol=5e-6)
+    chk("c7 P2.2 delta3", d3, -0.03812, tol=5e-6)
+    chk("c7 P2.2 delta4", d4, 0.01471, tol=5e-6)
+    chk("c7 P2.2 w35", w35 - eta * d5 * h3, -1.2067, tol=5e-5)
+    chk("c7 P2.2 w45", w45 - eta * d5 * h4, 1.0888, tol=5e-5)
+    chk("c7 P2.2 b5", b5 - eta * d5, -0.3127, tol=5e-5)
+    chk("c7 P2.2 w13", w13 - eta * d3 * X1, 0.5038, tol=5e-5)
+    chk("c7 P2.2 w23", w23 - eta * d3 * X2, 0.4038, tol=5e-5)
+    chk("c7 P2.2 b3", b3 - eta * d3, -0.7962, tol=5e-5)
+    chk("c7 P2.2 w14", w14 - eta * d4 * X1, 0.8985, tol=5e-5)
+    chk("c7 P2.2 w24", w24 - eta * d4 * X2, 0.9985, tol=5e-5)
+    chk("c7 P2.2 b4", b4 - eta * d4, 0.0985, tol=5e-5)
+    # every update moves the output towards the target
+    W = dict(w13=w13 - eta * d3, w23=w23 - eta * d3, w14=w14 - eta * d4,
+             w24=w24 - eta * d4, w35=w35 - eta * d5 * h3,
+             w45=w45 - eta * d5 * h4)
+    nh3 = sigmoid(X1 * W["w13"] + X2 * W["w23"] + (b3 - eta * d3))
+    nh4 = sigmoid(X1 * W["w14"] + X2 * W["w24"] + (b4 - eta * d4))
+    ny = sigmoid(nh3 * W["w35"] + nh4 * W["w45"] + (b5 - eta * d5))
+    chk("c7 P2.2 output moved towards the target", ny < y5, True)
+
+    # ---------------- 2.3 Hopfield -----------------------------------------
+    P = [[1, 1, 1, 1], [1, -1, 1, -1], [1, 1, -1, -1]]
+    chk("c7 P2.3 patterns are orthogonal",
+        [sum(u * v for u, v in zip(P[i], P[j]))
+         for i, j in ((0, 1), (0, 2), (1, 2))], [0, 0, 0])
+    W7 = hop_weights(P)
+    chk("c7 P2.3 weight matrix", W7,
+        [[0, 1, 1, -1], [1, 0, -1, 1], [1, -1, 0, 1], [-1, 1, 1, 0]])
+    chk("c7 P2.3 symmetric",
+        all(W7[i][j] == W7[j][i] for i in range(4) for j in range(4)), True)
+    chk("c7 P2.3 zero diagonal", [W7[i][i] for i in range(4)], [0, 0, 0, 0])
+    chk("c7 P2.3 w12 by hand", sum(s[0] * s[1] for s in P), 1)
+    chk("c7 P2.3 w14 by hand", sum(s[0] * s[3] for s in P), -1)
+    for k, s in enumerate(P):
+        nets = [hop_net(W7, s, i) for i in range(4)]
+        chk("c7 P2.3 pattern %d net" % (k + 1), nets, s)
+        chk("c7 P2.3 pattern %d stable" % (k + 1),
+            [1 if v > 0 else -1 for v in nets], s)
+    # recall: P2 with its first bit flipped
+    y7 = [-1, -1, 1, -1]
+    nets = []
+    for i in range(4):
+        u = hop_net(W7, y7, i)
+        nets.append(u)
+        y7[i] = 1 if u > 0 else (-1 if u < 0 else y7[i])
+    chk("c7 P2.3 recall net inputs", nets, [1, -1, 1, -1])
+    chk("c7 P2.3 recalled state", y7, P[1])
+    chk("c7 P2.3 recall is one bit flip", y7 != [-1, -1, 1, -1], True)
+    # a second sweep changes nothing
+    chk("c7 P2.3 second sweep is a fixed point",
+        [1 if hop_net(W7, y7, i) > 0 else -1 for i in range(4)], y7)
+    # the complement of a stored pattern is always stable too
+    comp = [-v for v in P[1]]
+    chk("c7 P2.3 complement is a spurious stable state",
+        [1 if hop_net(W7, comp, i) > 0 else -1 for i in range(4)], comp)
+
+
 def main():
-    for fn in (ch2, ch3, ch4, ch6):
+    for fn in (ch2, ch3, ch4, ch6, ch7):
         try:
             fn()
         except AssertionError as e:
