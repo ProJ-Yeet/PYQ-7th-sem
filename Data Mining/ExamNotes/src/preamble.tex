@@ -61,9 +61,9 @@
         font=\bfseries\scriptsize] (p) {#2};}}
 
 \newcommand{\m}[1]{\pill{mkL}{mkc}{#1}\hspace{0.5pt}}          % marks chip
-\newcommand{\tS}[1]{\pill{mkc}{white}{TOP\, #1/17}}            % 7+ papers
-\newcommand{\tF}[1]{\pill{acc}{white}{HOT\, #1/17}}            % 4-6 papers
-\newcommand{\tP}[1]{\pill{pin}{white}{PIN\, #1/17}}            % 1-3, >=8 marks
+\newcommand{\tS}[1]{\pill{mkc}{white}{TOP\, #1/23}}            % 9+ papers  (of 23)
+\newcommand{\tF}[1]{\pill{acc}{white}{HOT\, #1/23}}            % 5-8 papers (of 23)
+\newcommand{\tP}[1]{\pill{pin}{white}{PIN\, #1/23}}            % 1-4, >=8 marks
 \newcommand{\added}{\pill{gdL}{gd}{verified/added}}
 \newcommand{\yr}[1]{\textcolor{sub}{\footnotesize #1}}
 \newcommand{\mk}[1]{\textcolor{mkc}{\bfseries#1}}
@@ -87,30 +87,98 @@
   [\vspace{-7pt}{\color{acc}\rule{\textwidth}{1.1pt}}]
 \titlespacing*{\section}{0pt}{6pt}{7pt}
 
-% Q = exam question heading. #1 text, #2 mark chips
-% \needspace stops a heading being orphaned at the foot of a page with its
-% content on the next one.
-\newcommand{\Q}[2]{%
-  \par\vspace{7pt}\needspace{7\baselineskip}\noindent
-  {\large\bfseries\color{ink}#1}\hspace{0.45em}#2\par
-  \vspace{1pt}{\color{ruleL}\rule{\textwidth}{0.7pt}}\vspace{1.5pt}\par}
+% ------------------------------------------------------- keeping a topic whole
+% Ported from Wireless/AI 2026-09-08. Data Mining still had the ORIGINAL
+% lower-case \needspace version, which is why its headings kept stranding at
+% the foot of a page with the answer overleaf.
+%
+% Lower-case \needspace reserves space by injecting stretchable glue in FRONT
+% of a -100 penalty, so the reserve doubles as the width of a window in which
+% TeX finds that penalty cheap: it breaks there whenever the free space is
+% under roughly 4.6x the reserve. Capital \Needspace, from the same package,
+% instead compares \pagegoal-\pagetotal against the reserve and breaks only
+% when the page really is that short. No window, so the reserve can be honest.
+%
+% Second half of the same problem: a topic band was being stranded with its
+% question on the next page, and the culprit was the FOLLOWING heading's own
+% reserve, which put a breakpoint between the two. \T raises \ifbandopen and
+% \Q / \creamq answer it with \nobreak instead of a reserve of their own.
+% The flag has to be global (a band is often followed by a tag line wrapped in
+% a group) and has to expire on its own, or a band followed by prose would rob
+% the NEXT question of its reserve -- so the first paragraph after a band
+% clears it through \everypar and puts \everypar back as it found it.
+\newif\ifbandopen
+\newcommand{\bandon}{\global\let\ifbandopen\iftrue
+  \global\everypar{\bandoff\global\everypar{}}}
+\newcommand{\bandoff}{\global\let\ifbandopen\iffalse}
+\bandoff
+\newcommand{\holdspace}[1]{%
+  \ifbandopen \nobreak \bandoff \else \Needspace{#1\baselineskip}\fi}
 
-% T = topic band (tinted full-width bar)
-% \needspace reserves space by injecting stretchable glue before a -100
-% penalty, so the reserved length is also the width of the window in which
-% TeX finds that penalty CHEAP: it will happily break there whenever the
-% free space is under about 4.6x the reserve. At 11\baselineskip that window
-% ran to ~640pt and half-empty pages were the result once the question
-% statements were added. 6 lines still keeps a band off the foot of a page.
+% Third instalment: the reserve is a guess while the \sbs pair under the
+% heading is three or four times taller, so the reserve was satisfied, the
+% band + heading + tag were set, and the unbreakable pair went overleaf.
+% What fixes it is removing every legal breakpoint between the band and the
+% first block of the answer, so the page builder must fall back to the
+% breakpoint BEFORE the band and move the topic whole. \nobreak (penalty
+% 10000) is the only value that works: an underfull page costs 100000
+% whatever penalty sits there, and ties go to the later breakpoint.
+%
+% The junctions are: band|heading (already \nobreak), heading|rule, rule|tag,
+% inside the tag paragraph, and tag|answer. The tag line is plain source text
+% rather than a macro, so the last three are closed by \qhold below.
+\makeatletter
+\newcommand{\qhold}{%
+  \nobreak
+  \global\interlinepenalty10000
+  % There is no LaTeX hook for "after the next paragraph": para/after would do
+  % it, but switching the paragraph hooks on inserts its own node ahead of
+  % \parskip and hands back the very breakpoint being closed. So \par is
+  % borrowed for exactly one paragraph and put back on first use.
+  \global\let\qhsavedpar\par
+  \gdef\par{\qhsavedpar\global\let\par\qhsavedpar
+            \global\interlinepenalty0 \nobreak}%
+  % Last junction, and the one that cost the most to find: a tag line is
+  % written {\color{sub}\footnotesize ...}, and \color in vertical mode puts a
+  % whatsit on the list. A whatsit is not discardable, so the \parskip glue
+  % after it becomes a legal breakpoint again and the \nobreak above is wasted.
+  % Starting the paragraph here means \color runs in horizontal mode. Only do
+  % it when a group really does come next, or a following \sbsr or list gets
+  % an empty paragraph and a spare baseline of white.
+  \qh@peek}
+% The lookahead steps over a blank line first: \T is normally followed by one,
+% and that \par would otherwise fail the group test and burn the one-shot hook.
+\newcommand{\qh@peek}{%
+  \@ifnextchar\par{\qh@eatpar}{\@ifnextchar\bgroup{\leavevmode}{}}}
+\long\def\qh@eatpar#1{\qh@peek}
+\makeatother
+
+% Q = exam question heading. #1 text, #2 mark chips
+\newcommand{\Q}[2]{%
+  \par\vspace{7pt}\holdspace{9}%
+  \begingroup\interlinepenalty10000 \noindent
+  {\large\bfseries\color{ink}#1}\hspace{0.45em}#2\par\endgroup
+  \nobreak\vspace{1pt}%
+  \nobreak\noindent{\color{ruleL}\rule{\textwidth}{0.7pt}}\par
+  \nobreak\vspace{1.5pt}\qhold}
+
+% T = topic band (tinted full-width bar). The reserve has to cover the band,
+% the question heading under it, the year-tag line and a few lines of answer.
+% \qhold at the end covers the case where the band is followed by prose rather
+% than by a \Q; when a \Q does follow, \qhold's lookahead sees a control
+% sequence rather than a group, so it leaves the paragraph unstarted and
+% \ifbandopen survives for \Q to answer.
 \newcommand{\T}[1]{%
-  \par\vspace{7pt}\needspace{6\baselineskip}\noindent
+  \par\vspace{7pt}\Needspace{12\baselineskip}\noindent
   \colorbox{accL}{\makebox[\dimexpr\textwidth-2\fboxsep][l]{%
-    \textcolor{acc}{\bfseries #1}}}\par\vspace{3pt}}
+    \textcolor{acc}{\bfseries #1}}}\par\nobreak\vspace{3pt}\bandon\qhold}
 
 % small question sub-heading inside PYQ lists
 \newcommand{\creamq}[2]{%
-  \par\vspace{4pt}\needspace{5\baselineskip}%
-  {\bfseries\color{acc}#1}\hspace{0.4em}#2\par\vspace{1pt}}
+  \par\vspace{4pt}\holdspace{6}%
+  \begingroup\interlinepenalty10000
+  {\bfseries\color{acc}#1}\hspace{0.4em}#2\par\endgroup
+  \nobreak\vspace{1pt}\qhold}
 \let\qq\creamq
 
 % ---------------------------------------------------------------- question box
@@ -121,7 +189,7 @@
 %   Breakable across pages on purpose (a list, not a minipage): several
 %   statements carry a full data table and will not fit in the space left.
 \newenvironment{asked}[2][QUESTION AS PRINTED]%
-  {\par\vspace{4pt}\needspace{3\baselineskip}\noindent
+  {\par\vspace{4pt}\Needspace{4\baselineskip}\noindent
    \colorbox{rowL}{\makebox[\dimexpr\textwidth-2\fboxsep][l]{%
      \textcolor{acc}{\bfseries\scriptsize #1}\hspace{0.7em}%
      \textcolor{sub}{\footnotesize #2}}}\par\nobreak\vspace{2pt}%
@@ -139,6 +207,25 @@
 % bold lead-in line
 \newcommand{\lead}[1]{\vspace{2.5pt}\par\textbf{#1}\par\vspace{0.5pt}}
 
+% ---------------------------------------------------------------- FP-trees
+% One drawing idiom for every FP-tree in the Ch 4 companion. They used to be
+% set three different ways -- an indented \texttt{} list, a run of arrows in
+% prose, and a nested brace expression -- which made the same procedure look
+% like three procedures. Drawn trees also stop the prose versions overflowing
+% the column, which is what they were doing.
+\tikzset{
+  fproot/.style={draw=ink,   fill=rowL, rounded corners=2pt, inner sep=2.5pt,
+                 font=\footnotesize\bfseries},
+  fpn/.style   ={draw=acc,   fill=accL, rounded corners=2pt, inner sep=2.5pt,
+                 font=\footnotesize},
+  fpedge/.style={draw=sub, semithick},
+% Use as: \begin{tikzpicture}[fptree, level 1/.style={sibling distance=..}]
+% It must be a tikz STYLE, not a \newcommand -- pgfkeys parses the option list
+% before macro expansion, so a macro holding a key list is read as one key
+% name and rejected.
+  fptree/.style={level distance=8.5mm, every node/.style=fpn,
+                 edge from parent/.style={fpedge,draw}}}
+
 % ---------------------------------------------------------------- figures
 \newcommand{\figC}[2]{\begin{center}\includegraphics[width=#2]{figs/#1}\end{center}}
 % figure INSIDE a side-by-side column: \vspace{0pt} pins the minipage
@@ -153,12 +240,24 @@
 % when a pair does not fit; that trade was made deliberately -- keeping a
 % topic whole beats filling the page. Do NOT "fix" this with paracol or
 % multicol: both split the pair and were reverted for exactly that reason.
+% The pair is built into a box first so it can be measured. A pair taller than
+% \sbsmax cannot fit under its own heading on any page, so it would have no
+% legal breakpoint at all and print past the bottom margin. Anything over
+% \sbsmax is a CONTENT bug: split it into two pairs at a \lead boundary.
+\newlength{\sbsmax}\setlength{\sbsmax}{0.78\textheight}
+\newsavebox{\sbsbox}
 \newcommand{\sbsr}[3]{%
-  \par\noindent
+  \par
+  \setbox\sbsbox=\hbox to\textwidth{%
   \begin{minipage}[t]{#1\textwidth}\vspace{0pt}\raggedright #2\end{minipage}%
   \hfill
   \begin{minipage}[t]{\dimexpr 0.97\textwidth - #1\textwidth\relax}%
-    \vspace{0pt}\raggedright #3\end{minipage}\par}
+    \vspace{0pt}\raggedright #3\end{minipage}}%
+  \typeout{@SBS \the\dimexpr\ht\sbsbox+\dp\sbsbox\relax\space of \the\textheight}%
+  \ifdim\dimexpr\ht\sbsbox+\dp\sbsbox\relax>\sbsmax
+    \typeout{@SBS-TOO-TALL \the\dimexpr\ht\sbsbox+\dp\sbsbox\relax}%
+  \fi
+  \noindent\usebox{\sbsbox}\par}
 \newcommand{\sbs}[2]{\sbsr{0.485}{#1}{#2}}
 
 % ---------------------------------------------------------------- tables

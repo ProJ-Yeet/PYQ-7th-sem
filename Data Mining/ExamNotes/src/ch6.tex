@@ -3,7 +3,7 @@
 %=======================================================================
 \section{Anomaly / Fraud Detection}
 
-{\color{sub}\footnotesize 3 hrs \gap$\cdot$\gap \mk{in 17/17 papers, the only chapter with perfect
+{\color{sub}\footnotesize 3 hrs \gap$\cdot$\gap \mk{in 23/23 papers, the only chapter with perfect
 coverage} \gap$\cdot$\gap syllabus gives it no sub-topics \gap$\cdot$\gap 1 numerical
 $\rightarrow$ Ch 6 companion.}
 
@@ -12,7 +12,7 @@ $\rightarrow$ Ch 6 companion.}
   \item Only 3 hrs of syllabus, but it has appeared in \textbf{every single paper}.
         \mk{Best marks-per-hour in the subject.}
   \item One question dominates: \textbf{``What is anomaly detection $+$ explain distance-based
-        methods''} \tS{6}. Learn that and the importance/types answer, and the chapter is banked.
+        methods''} \tS{10}. Learn that and the importance/types answer, and the chapter is banked.
 \end{itemize}
 
 \hr
@@ -20,7 +20,7 @@ $\rightarrow$ Ch 6 companion.}
 \T{6.1 Basics}
 
 \Q{What is anomaly detection? Why is it important?}{\m{2+2+4}\m{3+3}\m{5}\m{2+3}}
-{\color{sub}\footnotesize \tF{3} \yr{81 Ba, 79 Bh, 72 Ka}}
+{\color{sub}\footnotesize \tF{6} \yr{82 Bh, 81 Bh, 81 Ba, 79 Bh, 73 Ch, 72 Ka}}
 
 \sbs{%
 \lead{Definition}
@@ -159,7 +159,7 @@ Depends on the clustering; costly; outliers can distort the clusters themselves.
 \T{6.3 Distance / Proximity-Based Approaches}
 
 \Q{Explain distance-based methods for anomaly detection.}{\m{2+3}\m{8}\m{2+6}\m{10}\m{5}\m{4+3}}
-{\color{sub}\footnotesize \tS{6} \yr{80 Ba, 75 Ch, 75 Ash, 74 Ch, 73 Shr, 71 Ch}
+{\color{sub}\footnotesize \tS{10} \yr{82 Bh, 81 Bh, 80 Ba, 79 Ba, 75 Ch, 75 Ash, 74 Ch, 73 Shr, 71 Ch, 70 Asa}
 \gap \mk{The single most repeated question in this chapter.}}
 
 \sbsr{0.52}{%
@@ -253,12 +253,72 @@ Depends on the clustering; costly; outliers can distort the clusters themselves.
   \end{itemize}
 \end{itemize}}
 
+\penalty0\vspace{3pt}
+\creamq{The likelihood (mixture-model) approach}{\m{8}}
+{\color{sub}\footnotesize \yr{70 Asa} \gap ``What is anomaly detection? Explain likelihood approach
+for anomaly detection.'' \gap Tan/Steinbach \S10.2; not in Han \& Kamber. \added}
+
+\sbs{%
+\lead{The model}
+\begin{itemize}
+  \item Treat the data set $D$ as a \textbf{mixture of two distributions}:
+  \begin{itemize}
+    \item $M$ $=$ the \textbf{majority} (normal) distribution, something tight such as a Gaussian.
+    \item $A$ $=$ the \textbf{anomaly} distribution, taken as \textbf{uniform} because nothing is
+          assumed about how outliers are spread.
+  \end{itemize}
+  \item $\lambda$ $=$ prior probability that an object is an anomaly, a small number fixed in
+        advance.
+  \[ D = (1-\lambda)\,M + \lambda\,A \]
+  \item At any moment the objects are partitioned into $M_t$ and $A_t$.
+        \mk{Start with $M_0 = D$ and $A_0 = \emptyset$}: assume everything is normal.
+\end{itemize}
+
+\lead{Log-likelihood of the whole data set}
+\[ LL_t(D) = |M_t|\log(1-\lambda) + \sum_{x_i \in M_t}\log P_{M_t}(x_i) \]
+\[ \qquad {} + |A_t|\log \lambda + \sum_{x_i \in A_t}\log P_{A_t}(x_i) \]
+\begin{itemize}
+  \item First two terms are the \emph{normal} account, last two the \emph{anomaly} account.
+\end{itemize}}{%
+\lead{Algorithm}
+\begin{enumerate}
+  \item $M \leftarrow D$, \; $A \leftarrow \emptyset$, compute $LL_t(D)$.
+  \item For each point $x \in M$:
+  \begin{enumerate}
+    \item Tentatively move $x$ to $A$.
+    \item Re-estimate $M$'s parameters without $x$ and compute the new $LL_{t+1}(D)$.
+    \item $\Delta = LL_{t+1}(D) - LL_t(D)$.
+    \item If $\Delta > c$ (a threshold), \mk{keep $x$ in $A$ and declare it an anomaly};
+          otherwise put it back in $M$.
+  \end{enumerate}
+  \item Repeat until no point moves.
+\end{enumerate}
+
+\lead{Why the test works \mk{(this is the explanation the marks are for)}}
+\begin{itemize}
+  \item Moving a \emph{normal} point out forces $M$ to explain fewer points it already explained
+        well, and the uniform $A$ explains it badly $\rightarrow$ likelihood \textbf{falls}.
+  \item Moving a \emph{genuine outlier} out lets $M$ tighten around the rest, and the outlier was
+        costing $M$ a huge penalty anyway $\rightarrow$ likelihood \textbf{rises sharply}.
+  \item So \mk{a large gain in likelihood is itself the evidence} that the point does not belong.
+\end{itemize}
+
+\lead{Strengths and weaknesses}
+\begin{itemize}
+  \item $+$ Firm statistical footing; gives a principled test rather than an arbitrary distance.
+  \item $+$ Handles mixed / categorical attributes if a model exists for them.
+  \item $-$ Needs a distribution assumption for $M$, and a wrong one gives wrong outliers.
+  \item $-$ Expensive: $M$ is re-estimated once per candidate point.
+  \item $-$ The threshold $c$ and the prior $\lambda$ are both guesses.
+  \item $-$ Degrades badly in \textbf{high dimensions}, like every parametric method.
+\end{itemize}}
+
 \hr
 
 \T{6.4 Base Rate Fallacy}
 
 \Q{Base rate fallacy}{\m{3}\m{5}}
-{\color{sub}\footnotesize \yr{70 Ch short note, 76 Ch numerical} \gap
+{\color{sub}\footnotesize \yr{70 Ch short note, 69 Ch \m{7}, 76 Ch numerical} \gap
 \mk{Numerical solved in the Ch 6 companion.} Not in Han \& Kamber; from Tan/Steinbach and Axelsson. \added}
 
 \sbs{%
@@ -334,6 +394,18 @@ The syllabus gives this chapter no sub-topics, so PYQs are grouped by what they 
     \item \textbf{Anomaly Detection; Base Rate Fallacy; Convex Hull Method} \hfill \m{15} \yr{70 Ch}
   \end{itemize}
 \end{enumerate}
+
+\creamq{Papers added by the 2026-09 merge}{}
+{\color{sub}\footnotesize The six papers of \code{DM4.1BCT.pdf} (2082 Bh, 2081 Bh, 2079 Ba, 2073 Ch, 2070 Asa, 2069 Ch), indexed here for the
+first time --- the notes were built before that scan was merged. \mk{N} $=$ solved in this chapter's companion. \added}
+\begin{itemize}
+  \item What is anomaly detection? $+$ distance-based method. \hfill \m{2+5} \yr{82 Bh}
+  \item Anomaly detection $+$ the different \textbf{approaches}. \hfill \m{2+6} \yr{81 Bh}
+  \item \textbf{Strengths and weaknesses} of the statistical, proximity-based, density-based and cluster-based approaches. \hfill \m{6} \yr{79 Ba}
+  \item Anomaly detection $+$ the \textbf{issues} associated with it. \hfill \m{2+3} \yr{73 Ch}
+  \item Anomaly detection $+$ the \textbf{likelihood approach}. \hfill \m{8} \yr{70 Asa} \added
+  \item What is \textbf{Base Rate Fallacy}? Explain w/ example. \hfill \m{7} \yr{69 Ch}
+\end{itemize}
 
 \lead{Coverage check}
 \begin{itemize}

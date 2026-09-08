@@ -3,7 +3,7 @@
 %=======================================================================
 \section{Advanced Applications}
 
-{\color{sub}\footnotesize 3 hrs \gap$\cdot$\gap in 16/17 papers \gap$\cdot$\gap 3 topics
+{\color{sub}\footnotesize 3 hrs \gap$\cdot$\gap in 22/23 papers \gap$\cdot$\gap 3 topics
 \gap$\cdot$\gap 1 numerical (PageRank) $\rightarrow$ Ch 7 companion.}
 
 \lead{Weight of the chapter:}
@@ -19,7 +19,7 @@
 \T{7.1 Web Mining}
 
 \Q{What is Web Mining? Briefly explain the structure / taxonomy of Web Mining.}{\m{3+5}\m{6}\m{8}}
-{\color{sub}\footnotesize \tS{11} \yr{81 Ba, 80 Bh, 79 Bh, 78 Bh, 76 Ch, 76 Ash, 75 Ch, 74 Ch, 74 Ash, 73 Shr, 70 Ch}}
+{\color{sub}\footnotesize \tS{14} \yr{81 Ba, 80 Bh, 79 Bh, 79 Ba, 78 Bh, 76 Ch, 76 Ash, 75 Ch, 74 Ch, 74 Ash, 73 Ch, 73 Shr, 70 Ch, 69 Ch}}
 
 \sbsr{0.52}{%
 \lead{Definition}
@@ -35,7 +35,7 @@
   \item Only a \textbf{tiny fraction} is relevant to any one user.
   \item Broad topics return hundreds of thousands of documents $\rightarrow$
         \mk{search returns too much, and misses too much}.
-\end{itemize}
+\end{itemize}}{%
 \lead{The taxonomy \mk{(3 branches --- this IS the answer)}}
 \begin{enumerate}
   \item \textbf{Web Content Mining}: mine the \emph{content} of pages (text, images, video).
@@ -55,7 +55,10 @@
     \item \emph{Customised usage tracking}: per-user personalisation.
     \item Uses: site restructuring, recommendation, targeted ads, caching, fraud detection.
   \end{itemize}
-\end{enumerate}}{%
+\end{enumerate}}
+
+\penalty0\vspace{3pt}
+\sbsr{0.52}{%
 \lead{PageRank \mk{(asked as a short note in 2 papers + 1 numerical)}}
 \begin{itemize}
   \item Ranks a page by \textbf{who links to it}, not by what it says.
@@ -76,7 +79,7 @@
   \item \mk{Why damping is needed}: without it, a group of pages linking only to each other would
         hoard all the rank (a ``rank sink''), and pages with no outlinks would leak it.
   \item Computed \textbf{iteratively} until the values settle; ranks converge quickly.
-\end{itemize}
+\end{itemize}}{%
 \lead{HITS (for contrast)}
 \begin{itemize}
   \item Two scores per page: \textbf{authority} (pointed to by good hubs) and
@@ -139,7 +142,7 @@
 \T{7.2 Time-Series Data Mining}
 
 \Q{Explain time series data mining with an example.}{\m{6}\m{5}\m{4}\m{3}}
-{\color{sub}\footnotesize \tF{6} \yr{80 Ba, 75 Ch, 74 Ch, 72 Ch, 72 Ka, 71 Shr} \gap Mostly short notes.}
+{\color{sub}\footnotesize \tS{11} \yr{82 Bh, 81 Bh, 80 Ba, 79 Ba, 75 Ch, 74 Ch, 73 Ch, 72 Ch, 72 Ka, 71 Shr, 70 Asa} \gap Mostly short notes, but \mk{now asked in 11 papers}.}
 
 \sbs{%
 \lead{Definition}
@@ -220,6 +223,16 @@
   \item \tF{4} Short note: Time Series Data Mining.
         \hfill \m{5} \yr{80 Ba} \m{3} \yr{74 Ch} \m{4} \yr{72 Ch} \yr{71 Shr}
 \end{enumerate}
+
+\creamq{Papers added by the 2026-09 merge}{}
+{\color{sub}\footnotesize The six papers of \code{DM4.1BCT.pdf} (2082 Bh, 2081 Bh, 2079 Ba, 2073 Ch, 2070 Asa, 2069 Ch), indexed here for the
+first time --- the notes were built before that scan was merged. \mk{N} $=$ solved in this chapter's companion. \added}
+\begin{itemize}
+  \item Explain \textbf{seasonality} in time-series data. \hfill \m{5} \yr{70 Asa}
+  \item Short notes: \textbf{Time Series Data Mining}. \hfill \m{5}\m{4}\m{4}\m{4} \yr{82 Bh, 81 Bh, 79 Ba, 73 Ch}
+  \item Short notes: \textbf{Web mining} \yr{79 Ba} $\cdot$ \textbf{www mining} \yr{73 Ch} $\cdot$ \textbf{Page Rank} \yr{69 Ch}. \hfill \m{4}\m{4}\m{5}
+  \item Short note: \textbf{Data visualization}. \hfill \m{4} \yr{79 Ba}
+\end{itemize}
 
 \lead{Coverage check}
 \begin{itemize}

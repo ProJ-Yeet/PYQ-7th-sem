@@ -3,15 +3,15 @@
 %=======================================================================
 \section{Association Analysis}
 
-{\color{sub}\footnotesize 10 hrs \gap$\cdot$\gap in 17/17 papers \gap$\cdot$\gap 5 topics, 3 TOP tier
+{\color{sub}\footnotesize 10 hrs \gap$\cdot$\gap in 23/23 papers \gap$\cdot$\gap 5 topics, 3 TOP tier
 \gap$\cdot$\gap \mk{heaviest numericals in the syllabus} $\rightarrow$ Ch 4 companion.}
 
 \lead{Weight of the chapter:}
 \begin{itemize}
-  \item FP-Growth / FP-Tree \tS{11} \gap $\rightarrow$ \mk{2nd most-asked topic in the whole subject}.
-  \item Frequent Itemset \& Apriori \tS{9} \gap $\rightarrow$ almost always a full numerical.
-  \item Basics (support, confidence, market basket) \tS{7}
-  \item Sequential / Subgraph / Infrequent patterns \tF{4} \gap $\cdot$\gap Categorical attributes \tP{3}
+  \item FP-Growth / FP-Tree \tS{17} \gap $\rightarrow$ \mk{2nd most-asked topic in the whole subject}.
+  \item Frequent Itemset \& Apriori \tS{14} \gap $\rightarrow$ almost always a full numerical.
+  \item Basics (support, confidence, market basket) \tS{10}
+  \item Sequential / Subgraph / Infrequent patterns \tF{5} \gap $\cdot$\gap Categorical attributes \tP{3}
 \end{itemize}
 
 \hr
@@ -19,7 +19,7 @@
 \T{4.1 Basics and Algorithms}
 
 \Q{What is association analysis? Explain its importance in market-basket analysis.}{\m{2+5}\m{10}\m{2+6}}
-{\color{sub}\footnotesize \tS{7} \yr{80 Ba, 75 Ch, 75 Ash, 74 Ch, 72 Ch, 72 Ka, 70 Ch}}
+{\color{sub}\footnotesize \tS{10} \yr{82 Bh, 80 Ba, 75 Ch, 75 Ash, 74 Ch, 73 Ch, 72 Ch, 72 Ka, 70 Ch, 70 Asa}}
 
 \sbs{%
 \lead{Definitions}
@@ -32,9 +32,10 @@
         minimum confidence.
 \end{itemize}
 \lead{The 2 measures \mk{(learn both definitions exactly)}}
-\[ support(A \Rightarrow B) = P(A \cup B) = \frac{\text{no. of txns containing both}}{\text{total txns}} \]
-\[ confidence(A \Rightarrow B) = P(B|A) = \frac{support(A \cup B)}{support(A)}
-   = \frac{support\_count(A \cup B)}{support\_count(A)} \]
+{\color{sub}\footnotesize $\sigma(X)$ $=$ support \emph{count} of $X$ (how many
+transactions contain it), $|D|$ $=$ total transactions.}
+\[ sup(A \Rightarrow B) = P(A \cup B) = \frac{\sigma(A \cup B)}{|D|} \]
+\[ conf(A \Rightarrow B) = P(B|A) = \frac{\sigma(A \cup B)}{\sigma(A)} \]
 \begin{itemize}
   \item \textbf{Support} $\rightarrow$ how \emph{frequent}. Filters out rules with too little evidence.
   \item \textbf{Confidence} $\rightarrow$ how \emph{reliable}. Strength of the implication.
@@ -106,12 +107,63 @@ statistical based measures used for measuring interestingness.'' \mk{Full worked
   \item Use \textbf{Kulc $+$ imbalance ratio} together for the clearest reading.
 \end{itemize}}
 
+\penalty0\vspace{3pt}
+\creamq{Why a 100\,\% confidence rule is uninteresting, and why 99\,\% is}{\m{4}}
+{\color{sub}\footnotesize \yr{80 Ba} \gap ``Generally we are more interested in rules with high
+confidence. However often we will \emph{not} be interested in rules with a confidence of 100\,\%.
+Why? Then specifically explain why rules with 99\,\% confidence may be interesting.'' \added}
+
+\sbs{%
+\lead{100\,\%: true by construction, so it teaches nothing}
+\begin{itemize}
+  \item $conf(A \Rightarrow B) = 100\,\%$ means \mk{every} transaction holding $A$ also holds $B$,
+        no exceptions anywhere in $D$.
+  \item Almost always that is a \mk{property of the schema, not of the customers} $\rightarrow$
+        already known before mining started:
+  \begin{itemize}
+    \item \textbf{Definitional}: \code{\{pregnant\} => \{female\}},
+          \code{\{Corolla\} => \{car\}}.
+    \item \textbf{Taxonomic}: \code{\{Kathmandu\} => \{Nepal\}}, item $\rightarrow$ its own category.
+    \item \textbf{Subset artefact}: \code{\{milk, bread\} => \{milk\}}. Consequent already sits
+          inside the antecedent's itemset.
+    \item \textbf{Bundled by a business rule}: free gift always shipped with the product, so the
+          pair can never come apart.
+  \end{itemize}
+  \item \mk{No headroom, so no action.} You cannot lift sales of $B$ by promoting $A$: everyone
+        who takes $A$ takes $B$ already. Cross-selling, shelf layout and recommendation all have
+        nothing to work with.
+  \item Such rules are also generated in bulk (every frequent itemset spawns its own subset
+        rules) and \mk{bury the genuine findings}. Fix: a maximum support threshold, or drop rules
+        whose consequent is implied by the antecedent.
+\end{itemize}}{%
+\lead{99\,\%: real regularity, and the 1\,\% is the payload}
+\begin{itemize}
+  \item A definitional rule cannot have exceptions. So \mk{99\,\% proves the dependency is
+        empirical}, discovered from behaviour rather than built into the data dictionary.
+  \item It is still near-deterministic $\rightarrow$ strong enough to predict on, unlike a 60\,\%
+        rule.
+  \item \mk{The interest is in the 1\,\% that breaks it}, and it reads two ways. Give both:
+  \begin{enumerate}
+    \item \textbf{The exceptions are wrong} $\rightarrow$ candidate \mk{data-quality defects}:
+          mis-keyed records, typos, a faulty sensor, a duplicated ID. Near-100\,\% rules are used
+          exactly this way to discover integrity constraints and clean a warehouse (Ch 2).
+    \item \textbf{The exceptions are real} $\rightarrow$ candidate \mk{anomalies}: fraud, intrusion,
+          a defective batch, a customer segment behaving unlike every other. This is the
+          association-rule route into anomaly detection (Ch 6).
+  \end{enumerate}
+  \item Practical value too: 1\,\% is small but non-empty, so the customers who take $A$ without
+        $B$ are a \mk{precisely targetable list}.
+  \item \mk{One line worth memorising}: a 100\,\% rule tells you about the \emph{schema},
+        a 99\,\% rule tells you about the \emph{world}, and its exceptions are where the
+        interesting cases live.
+\end{itemize}}
+
 \hr
 
 \T{4.2 Frequent Itemset Pattern \& Apriori Principle}
 
 \Q{Explain the Apriori algorithm / principle with example.}{\m{2+6}\m{10}\m{8}}
-{\color{sub}\footnotesize \tS{9} \yr{80 Bh, 80 Ba, 79 Bh, 76 Ch, 76 Ash, 74 Ash, 71 Ch, 71 Shr, 70 Ch}
+{\color{sub}\footnotesize \tS{14} \yr{82 Bh, 81 Bh, 80 Bh, 80 Ba, 79 Bh, 79 Ba, 76 Ch, 76 Ash, 74 Ash, 73 Ch, 71 Ch, 71 Shr, 70 Ch, 69 Ch}
 \gap \mk{Numerical in 7 of those} $\rightarrow$ companion.}
 
 \sbsr{0.50}{%
@@ -147,6 +199,11 @@ statistical based measures used for measuring interestingness.'' \mk{Full worked
 \begin{itemize}
   \item For each frequent $l$, for each non-empty proper subset $s$:
         output $s\Rightarrow(l-s)$ if $\frac{sup(l)}{sup(s)} \ge$ min\_conf.
+  \item \mk{When no rule can exist at any confidence} \yr{79 Ba \m{3}} \added: a rule needs a
+        \emph{proper} non-empty subset, so it needs a frequent itemset of size $\ge 2$. If
+        $L_2 = \emptyset$ (every frequent itemset is a single item), then \mk{no rule exists for
+        any confidence threshold, including 0\,\%} $\rightarrow$ lowering min\_conf cannot help,
+        only lowering min\_sup can. Check $L_2$ before answering, never the confidence value.
 \end{itemize}}
 
 \vspace{2pt}
@@ -171,7 +228,7 @@ statistical based measures used for measuring interestingness.'' \mk{Full worked
 \T{4.3 FP-Growth and the FP-Tree}
 
 \Q{What is FP-Growth? Explain with example. How does it overcome Apriori's problems?}{\m{2+5}\m{8}\m{10}\m{2+6}}
-{\color{sub}\footnotesize \tS{11} \yr{81 Ba, 80 Bh, 79 Bh, 78 Bh, 75 Ch, 75 Ash, 74 Ch, 74 Ash, 73 Shr, 72 Ka, 71 Shr}
+{\color{sub}\footnotesize \tS{17} \yr{82 Bh, 81 Bh, 81 Ba, 80 Bh, 79 Bh, 79 Ba, 78 Bh, 75 Ch, 75 Ash, 74 Ch, 74 Ash, 73 Ch, 73 Shr, 72 Ka, 71 Shr, 70 Asa, 69 Ch}
 \gap \mk{The single most-asked topic in this chapter.}}
 
 \sbsr{0.52}{%
@@ -210,9 +267,12 @@ statistical based measures used for measuring interestingness.'' \mk{Full worked
         frequent \emph{within} it.
   \item \textbf{Recurse} on the conditional tree, concatenating $\alpha$ to each pattern found.
   \item If a conditional tree is a \textbf{single path}, just enumerate all subsets of that path.
-\end{enumerate}
+\end{enumerate}}
+
+\penalty0\vspace{3pt}
 \lead{Apriori vs FP-Growth \mk{(asked as a direct comparison 4 times)}}
-\begin{tabularx}{\linewidth}{@{}L{2.6cm}XX@{}}
+\par
+\begin{tabularx}{\textwidth}{@{}L{2.6cm}XX@{}}
 \toprule
 \hrow & \thead{Apriori} & \thead{FP-Growth} \\
 Candidates & Generates them & \textbf{None} \\
@@ -226,7 +286,7 @@ Speed & Slower & Roughly an order faster \\
 \begin{itemize}
   \item \mk{FP-Growth's weakness}: if the tree does not fit in memory, or the data is very sparse
         so paths barely share prefixes, the advantage disappears.
-\end{itemize}}
+\end{itemize}
 
 \hr
 
@@ -267,7 +327,7 @@ Speed & Slower & Roughly an order faster \\
 \T{4.5 Sequential, Subgraph and Infrequent Patterns}
 
 \Q{Sequential patterns, subsequences, subgraph patterns}{\m{3+3}\m{2}\m{3}}
-{\color{sub}\footnotesize \tF{4} \yr{79 Bh, 76 Ch, 76 Ash, 72 Ka} \gap
+{\color{sub}\footnotesize \tF{5} \yr{79 Bh, 76 Ch, 76 Ash, 73 Ch, 72 Ka} \gap
 \mk{Subsequence and subgraph enumeration are numericals} $\rightarrow$ companion.}
 
 \sbsr{0.50}{%
@@ -372,6 +432,23 @@ Speed & Slower & Roughly an order faster \\
   \item \tP{3} Short notes: AprioriAll \yr{76 Ash} $\cdot$ Sequential pattern \yr{72 Ka} $\cdot$
         Categorical data \yr{72 Ch}. \hfill \m{3}\m{4}
 \end{enumerate}
+
+\creamq{Papers added by the 2026-09 merge}{}
+{\color{sub}\footnotesize The six papers of \code{DM4.1BCT.pdf} (2082 Bh, 2081 Bh, 2079 Ba, 2073 Ch, 2070 Asa, 2069 Ch), indexed here for the
+first time --- the notes were built before that scan was merged. \mk{N} $=$ solved in this chapter's companion. \added}
+\begin{itemize}
+  \item \mk{N} Support and confidence $+$ derive rules, min sup 60\%, min conf 80\%, 5 transactions. \hfill \m{2+8} \yr{82 Bh}
+  \item \mk{N} Apriori with \mk{confidence 65\%} and min support 50\%, 4 transactions. \hfill \m{2+6} \yr{81 Bh}
+  \item \mk{N} Apriori on a $7\times9$ \textbf{binary} table (min\_sup 20\%) $+$ \mk{can any rule exist at any confidence threshold?} \hfill \m{5+3} \yr{79 Ba} \added
+  \item \mk{N} Apriori in market-basket analysis, both thresholds 50\%. \hfill \m{3+7} \yr{73 Ch}
+  \item Advantages of FP-Growth over Apriori $+$ FP-Growth w/ example. \hfill \m{2+6} \yr{81 Bh}
+  \item How does FP-Growth generate frequent itemsets \textbf{without candidate generation}? \hfill \m{6} \yr{79 Ba}
+  \item Use of FP-Growth in market-basket analysis \yr{73 Ch} $\cdot$ FP-Growth in detail \yr{70 Asa}. \hfill \m{10}\m{12}
+  \item What is frequent itemset mining? How do Apriori \emph{and} FP-Growth optimise the brute-force approach? \hfill \m{15} \yr{69 Ch}
+  \item How can Apriori be used to find rules \emph{out of} a frequent itemset? \hfill \m{7} \yr{69 Ch}
+  \item Association rules $+$ their importance w/ example \yr{70 Asa} $\cdot$ short note \textbf{FP Growth} \yr{82 Bh}. \hfill \m{6}\m{5}
+  \item Sequential pattern and sub-graph pattern w/ suitable example. \hfill \m{4+4} \yr{73 Ch}
+\end{itemize}
 
 \lead{Coverage check}
 \begin{itemize}

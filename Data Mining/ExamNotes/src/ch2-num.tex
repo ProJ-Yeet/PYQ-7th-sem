@@ -56,6 +56,7 @@ Use the following methods to normalize the data: 200, 300, 400, 600 and 1000.
 \sbsr{0.46}{%
 \lead{(a) Min-max, $new\_min=0$, $new\_max=1$}
 \[ v' = \frac{v-200}{1000-200} = \frac{v-200}{800} \]
+\par
 \begin{tabularx}{\linewidth}{@{}L{1.6cm}X@{}}
 \toprule
 \hrow \thead{$v$} & \thead{$v'$} \\
@@ -73,6 +74,7 @@ Use the following methods to normalize the data: 200, 300, 400, 600 and 1000.
   \item $\sum(v-\bar{A})^2 = 90000+40000+10000+10000+250000 = 400000$
   \item $\sigma_A = \sqrt{400000/5} = \sqrt{80000} = 282.84$
 \end{itemize}
+\par
 \begin{tabularx}{\linewidth}{@{}L{1.6cm}X@{}}
 \toprule
 \hrow \thead{$v$} & \thead{$v' = (v-500)/282.84$} \\
@@ -92,6 +94,7 @@ Use the following methods to normalize the data: 200, 300, 400, 600 and 1000.
   \item $j=3$: $1000/10^3 = 1$, not $<1$. \mk{Rejected.}
   \item $j=4$: $1000/10^4 = 0.1 < 1$. \textbf{Use $j=4$.}
 \end{itemize}
+\par
 \begin{tabularx}{\linewidth}{@{}L{1.6cm}X@{}}
 \toprule
 \hrow \thead{$v$} & \thead{$v' = v/10000$} \\
@@ -117,6 +120,77 @@ Use the following methods to normalize the data: 200, 300, 400, 600 and 1000.
   \item Min-max: $0,\ 0.125,\ 0.25,\ 0.5,\ 1$
   \item Z-score: $-1.0607,\ -0.7071,\ -0.3536,\ +0.3536,\ +1.7678$
   \item Decimal scaling: $0.02,\ 0.03,\ 0.04,\ 0.06,\ 0.1$
+\end{itemize}
+
+\creamq{Problem 1.2 --- all four transformations on one data set}{\m{6}}
+\begin{asked}{2079 Baishakh \textperiodcentered{} Q2 \textperiodcentered{} [6]}
+Suppose that the data for analysis include the attribute the frequency of stop words in
+documents. The values are given in increasing order:
+13, 15, 16, 16, 19, 20, 20, 21, 22, 22, 25, 25, 25, 25, 30, 33, 33, 35, 35, 35, 35, 36, 40,
+45, 46, 52, 70.
+\begin{enumerate}[label=\alph*), leftmargin=1.6em]
+  \item Use smoothing by bin means with a depth of 3.
+  \item Use min-max normalization to transform the value 35 into the range from 0.0 to 1.0.
+  \item Use z-score normalization to transform the value 35 where the standard deviation of
+        the above frequency is 12.94.
+  \item Use normalization by decimal scaling to transform the value 35.
+\end{enumerate}
+\end{asked}
+{\color{sub}\footnotesize \mk{$n = 27$}, already sorted. \gap \mk{``Depth 3'' means 3 values per
+bin}, not 3 bins --- so $27/3 = 9$ bins. This is the single most common error on this question.
+\gap Parts (b)--(d) each transform \textbf{only the value 35}, so no full table is needed there.}
+
+\lead{(a) Smoothing by bin means, depth 3} \; partition in order, replace every value by its
+bin mean
+\par
+\begin{tabularx}{\textwidth}{@{}L{1.2cm}L{3.6cm}L{2.2cm}X@{}}
+\toprule
+\hrow \thead{Bin} & \thead{Values} & \thead{Mean} & \thead{Smoothed to} \\
+\midrule
+1 & 13, 15, 16 & $44/3 = 14.67$ & 14.67, 14.67, 14.67 \\
+2 & 16, 19, 20 & $55/3 = 18.33$ & 18.33, 18.33, 18.33 \\
+3 & 20, 21, 22 & $63/3 = 21.00$ & 21, 21, 21 \\
+4 & 22, 25, 25 & $72/3 = 24.00$ & 24, 24, 24 \\
+5 & 25, 25, 30 & $80/3 = 26.67$ & 26.67, 26.67, 26.67 \\
+6 & 33, 33, 35 & $101/3 = 33.67$ & 33.67, 33.67, 33.67 \\
+7 & 35, 35, 35 & $105/3 = 35.00$ & 35, 35, 35 \\
+8 & 36, 40, 45 & $121/3 = 40.33$ & 40.33, 40.33, 40.33 \\
+9 & 46, 52, 70 & $168/3 = 56.00$ & 56, 56, 56 \\
+\bottomrule
+\end{tabularx}
+\begin{itemize}
+  \item \mk{Bin 9 shows why smoothing works}: the outlier 70 is pulled down to 56, and 46 pushed
+        up. Noise is absorbed into the local average.
+  \item This is \textbf{equal-depth} (equal-frequency) binning: same \emph{count} per bin, not
+        the same value range. Compare Practice A, which uses depth 4.
+\end{itemize}
+
+\lead{(b), (c), (d): transforming the single value 35}
+\par
+\begin{tabularx}{\textwidth}{@{}L{3.2cm}L{5.0cm}X L{1.8cm}@{}}
+\toprule
+\hrow \thead{Method} & \thead{Formula} & \thead{Substitution} & \thead{Result} \\
+\midrule
+Min-max into $[0,1]$ &
+$v' = \dfrac{v - \min}{\max - \min}(new_{max}-new_{min}) + new_{min}$ &
+$\dfrac{35-13}{70-13} = \dfrac{22}{57}$ & $\mathbf{0.386}$ \\
+\addlinespace[2pt]
+Z-score &
+$v' = \dfrac{v - \bar{A}}{\sigma_A}$, \; $\bar{A} = \dfrac{809}{27} = 29.963$ &
+$\dfrac{35 - 29.963}{12.94} = \dfrac{5.037}{12.94}$ & $\mathbf{0.389}$ \\
+\addlinespace[2pt]
+Decimal scaling &
+$v' = v/10^{\,j}$, \; smallest $j$ with $\max(|v'|) < 1$ &
+$\max = 70 \rightarrow j = 2$, \; $35/100$ & $\mathbf{0.35}$ \\
+\bottomrule
+\end{tabularx}
+\begin{itemize}
+  \item \mk{$\sigma$ is given as 12.94}, so do not recompute it --- but you \emph{must} compute
+        the mean yourself. Sum the 27 values: $809$.
+  \item \mk{Decimal scaling: $j = 2$, not 1.} $j=1$ would give $70/10 = 7 \not< 1$. Check the
+        \emph{maximum}, not the value being transformed.
+  \item All three land near $0.35$--$0.39$ here, which is coincidence: 35 sits just above the
+        mean and just under the middle of the range.
 \end{itemize}
 
 \hr
@@ -182,6 +256,7 @@ when the covariance matrix of the three random variables $X_1$, $X_2$ and $X_3$ 
         $\rightarrow$ orthogonal, as required for a symmetric matrix.
 \end{itemize}}{%
 \lead{Step 4: proportion of variance}
+\par
 \begin{tabularx}{\linewidth}{@{}L{1.5cm}L{1.7cm}X@{}}
 \toprule
 \hrow \thead{PC} & \thead{$\lambda_i$} & \thead{$\lambda_i/8$} \\
@@ -242,6 +317,7 @@ Supremum distances between them.
 Given the following points compute the distance matrix using the Manhattan and the
 Supremum distance.
 \par\vspace{2pt}
+\par
 \begin{tabularx}{0.40\textwidth}{@{}L{1.9cm}XX@{}}
 \toprule
 \hrow \thead{Points} & \thead{X} & \thead{Y} \\
@@ -260,6 +336,7 @@ P3 & 3 & 4 \\
   \item $d(P_1,P_3) = |6-3|+|3-4| = 3+1 = 4$
   \item $d(P_2,P_3) = |2-3|+|2-4| = 1+2 = 3$
 \end{itemize}
+\par
 \begin{tabularx}{\linewidth}{@{}L{1.1cm}XXX@{}}
 \toprule
 \hrow & \thead{$P_1$} & \thead{$P_2$} & \thead{$P_3$} \\
@@ -274,6 +351,7 @@ $P_3$ & 4 & 3 & 0 \\
   \item $d(P_1,P_3) = \max(3,1) = 3$
   \item $d(P_2,P_3) = \max(1,2) = 2$
 \end{itemize}
+\par
 \begin{tabularx}{\linewidth}{@{}L{1.1cm}XXX@{}}
 \toprule
 \hrow & \thead{$P_1$} & \thead{$P_2$} & \thead{$P_3$} \\
@@ -293,6 +371,7 @@ $P_3$ & 3 & 2 & 0 \\
 How do similarity / dissimilarity is calculated? Find the cosine similarity between Object-2
 and 4. Also calculate the Euclidean distance between object 1, 3 and object 1, 4.
 \par\vspace{2pt}
+\par
 \begin{tabularx}{0.72\textwidth}{@{}L{1.6cm}XXXX@{}}
 \toprule
 \hrow \thead{Object} & \thead{Size} & \thead{Weight} & \thead{Color\_Code} & \thead{Taste\_Score} \\
@@ -341,6 +420,7 @@ His final answer $0.3150$ is correct and only follows from $2.449$
 How do similarity / dissimilarity is calculated? Find the cosine similarity between Object-2
 and 4. Also calculate the Euclidean distance between object 1, 3 and object 1, 4.
 \par\vspace{2pt}
+\par
 \begin{tabularx}{0.72\textwidth}{@{}L{1.6cm}XXXX@{}}
 \toprule
 \hrow \thead{Object} & \thead{Size} & \thead{Weight} & \thead{Color\_Code} & \thead{Taste\_Score} \\
@@ -429,6 +509,7 @@ Coefficient.
 \end{asked}
 
 \lead{Step-by-step: tabulate position by position}
+\par
 \begin{tabularx}{0.78\textwidth}{@{}L{1.8cm}XXXXXX@{}}
 \toprule
 \hrow \thead{Position} & 1 & 2 & 3 & 4 & 5 & 6 \\
@@ -450,6 +531,7 @@ SMC is higher because it credits the one 0-0 match that Jaccard discards.
 \begin{asked}{2080 Baishakh \textperiodcentered{} Q2 (b) \textperiodcentered{} [2+2+2+1]}
 Consider the following table:
 \par\vspace{2pt}
+\par
 \begin{tabularx}{\textwidth}{@{}L{1.5cm}XXXXXXX@{}}
 \toprule
 \hrow \thead{Name} & \thead{Gender} & \thead{Eyecolor} & \thead{Haircolor} & \thead{Test-1} & \thead{Test-2} & \thead{Fever} & \thead{Cough} \\
@@ -480,6 +562,7 @@ Shyam & M & Blue  & Gray  & N & P & N & P \\
 \vspace{2pt}
 \sbsr{0.48}{%
 \lead{(i) Jaccard(Ram, Laxmi)}
+\par
 \begin{tabularx}{\linewidth}{@{}L{1.7cm}XXXX@{}}
 \toprule
 \hrow & \thead{T1} & \thead{T2} & \thead{Fev} & \thead{Cou} \\
@@ -496,6 +579,7 @@ Cat.  & $M_{11}$ & $M_{01}$ & $M_{10}$ & $M_{00}$ \\
 
 \vspace{3pt}
 \lead{(iii) SMC(Ram, Shyam)}
+\par
 \begin{tabularx}{\linewidth}{@{}L{1.7cm}XXXX@{}}
 \toprule
 \hrow & \thead{T1} & \thead{T2} & \thead{Fev} & \thead{Cou} \\
@@ -515,6 +599,7 @@ Cat.  & $M_{10}$ & $M_{01}$ & $M_{10}$ & $M_{01}$ \\
         and neither state is an ``absence'' $\rightarrow$ all 3 are \textbf{symmetric binary}.
   \item Encode: Gender M$=$1 $\cdot$ Eyecolor Black$=$1 $\cdot$ Haircolor Gray$=$1.
 \end{itemize}
+\par
 \begin{tabularx}{\linewidth}{@{}L{1.7cm}XXX@{}}
 \toprule
 \hrow & \thead{Gender} & \thead{Eye} & \thead{Hair} \\
@@ -656,7 +741,7 @@ location, supplier, brand,} and \emph{product}, and two measures: \emph{count} a
 %=======================================================================
 \T{M7. Central tendency, quartiles, IQR and outliers}
 
-{\color{sub}\footnotesize \pillo{gd}{NEW} \gap \textbf{Not in any of the 17 papers.} Added because
+{\color{sub}\footnotesize \pillo{gd}{NEW} \gap \textbf{Not in any of the 23 papers.} Added because
 \code{Notes by PC/unit 2 Numerical.docx} and \code{Untitled spreadsheet.xlsx} (2025--26) are built
 entirely around it. Theory in Ch 2, §2.5.}
 
@@ -677,6 +762,7 @@ shown in the table below. Find the median salary.
 \end{asked}
 
 \sbs{%
+\par
 \begin{tabularx}{\linewidth}{@{}L{2.6cm}L{1.5cm}X@{}}
 \toprule
 \hrow \thead{Salary (\$)} & \thead{Freq} & \thead{Cum freq} \\

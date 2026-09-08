@@ -427,6 +427,152 @@ chk("7 PRnorm A it1", pr2['A'], 0.2500, 1e-3)
 chk("7 PRnorm C it1", pr2['C'], 0.5688, 1e-3)
 chk("7 PRnorm sum", sum(pr2.values()), 1.0, 2e-3)
 
+
+# ===================== 2026-09 MERGE: the six new papers =====================
+# 82 Bh Q5 -- DBSCAN, eps 2, MinPts 2 (the point counts itself)
+pts = {'A':(2,10),'B':(2,5),'C':(8,4),'D':(5,8),'E':(7,5),'F':(6,4),'G':(1,2),'H':(4,9)}
+nb = {k: [j for j,w in pts.items() if math.dist(v,w) <= 2] for k,v in pts.items()}
+core = sorted(k for k in pts if len(nb[k]) >= 2)
+chks("82Bh DBSCAN core", core, ['C','D','E','F','H'])
+chks("82Bh DBSCAN noise", sorted(k for k in pts if len(nb[k]) < 2), ['A','B','G'])
+chk("82Bh DBSCAN C-F is exactly eps", math.dist(pts['C'],pts['F']), 2.0, 1e-9)
+
+# 82 Bh Q6 -- K-means k=2 seeded (1,2),(6,4)
+def kmeans(P, C, dist=math.dist, iters=25):
+    for _ in range(iters):
+        a = [min(range(len(C)), key=lambda i: dist(p,C[i])) for p in P]
+        n = [tuple(sum(p[d] for p,x in zip(P,a) if x==i)/max(1,a.count(i))
+                   for d in range(len(P[0]))) for i in range(len(C))]
+        if n == C: return C, a
+        C = n
+    return C, a
+C,a = kmeans([(1,2),(1.5,1),(3.5,1.5),(4,3),(3.5,2.5),(6,4)], [(1,2),(6,4)])
+chk("82Bh kmeans c1x", C[0][0], 2.375); chk("82Bh kmeans c1y", C[0][1], 1.75)
+chk("82Bh kmeans c2x", C[1][0], 5.0);   chk("82Bh kmeans c2y", C[1][1], 3.5)
+
+# 81 Bh Q8 -- K-means from one given centroid; second seed = farthest point
+P = [(2,3),(3,3),(6,8),(8,8),(7,5)]
+chks("81Bh farthest seed", [max(P, key=lambda p: math.dist((2,3),p))], [(8,8)])
+C,a = kmeans(P, [(2,3),(8,8)])
+chk("81Bh kmeans c1x", C[0][0], 2.5); chk("81Bh kmeans c1y", C[0][1], 3.0)
+chk("81Bh kmeans c2x", C[1][0], 7.0); chk("81Bh kmeans c2y", C[1][1], 7.0)
+
+# 73 Ch Q7 -- 1-D K-means from {5,12,18} then SSE
+x = [5,12,18,24,30,42,48]; c = [5,12,18]
+for _ in range(25):
+    a = [min(range(3), key=lambda i: abs(p-c[i])) for p in x]
+    n = [sum(p for p,g in zip(x,a) if g==i)/max(1,a.count(i)) for i in range(3)]
+    if n == c: break
+    c = n
+chks("73Ch 1d centroids", c, [5.0,18.0,40.0])
+chk("73Ch SSE", sum((p-c[g])**2 for p,g in zip(x,a)), 240.0)
+
+# 79 Ba Q8 -- K-means with MANHATTAN, 3 centres, stop after 3 iterations
+xs = [5.9,4.6,6.2,4.7,5.5,5.0,4.9,6.7,5.1,6.0]
+ys = [3.2,2.9,2.8,3.2,4.2,3.0,3.1,3.1,3.8,3.0]
+P3 = list(zip(xs,ys)); C3 = [(6.2,3.2),(6.6,3.7),(6.5,3.0)]
+man = lambda p,q: abs(p[0]-q[0])+abs(p[1]-q[1])
+for _ in range(3):
+    a = [min(range(3), key=lambda i: man(p,C3[i])) for p in P3]
+    C3 = [(sum(p[0] for p,g in zip(P3,a) if g==i)/max(1,a.count(i)),
+           sum(p[1] for p,g in zip(P3,a) if g==i)/max(1,a.count(i))) for i in range(3)]
+chk("79Ba manhattan Ax", C3[0][0], 4.8, 1e-3); chk("79Ba manhattan Ay", C3[0][1], 3.05, 1e-3)
+chk("79Ba manhattan Bx", C3[1][0], 5.3, 1e-3); chk("79Ba manhattan By", C3[1][1], 4.0, 1e-3)
+chk("79Ba manhattan Cx", C3[2][0], 6.2, 1e-3); chk("79Ba manhattan Cy", C3[2][1], 3.025, 1e-3)
+
+# ---- Apriori helper shared by the four new association numericals
+def apri(trans, minc):
+    L = {}; k = 1; cur = [frozenset([i]) for i in {i for t in trans for i in t}]
+    while cur:
+        keep = {c: sum(1 for t in trans if c <= t) for c in cur}
+        keep = {c: n for c, n in keep.items() if n >= minc}
+        if not keep: break
+        L.update(keep); k += 1
+        cur = [a | b for a, b in itertools.combinations(keep, 2)
+               if len(a | b) == k and all(frozenset(s) in keep
+                                          for s in itertools.combinations(a | b, k - 1))]
+        cur = list(dict.fromkeys(cur))
+    return L
+def strong(L, mc):
+    out = []
+    for l, n in L.items():
+        if len(l) < 2: continue
+        for r in range(1, len(l)):
+            for s in itertools.combinations(sorted(l), r):
+                if n / L[frozenset(s)] >= mc:
+                    out.append((tuple(sorted(s)), tuple(sorted(l - frozenset(s)))))
+    return out
+
+# 82 Bh Q4 -- min sup 60% of 5 = 3, min conf 80%
+T = [set('ABCDEF'), set('BCDEFG'), set('ADEH'), set('ADFIJ'), set('BDEK')]
+L = apri(T, 3)
+chks("82Bh L1", [''.join(sorted(s)) for s in L if len(s)==1], ['A','B','D','E','F'])
+chks("82Bh L2", [''.join(sorted(s)) for s in L if len(s)==2],
+     ['AD','BD','BE','DE','DF'])
+chks("82Bh L3", [''.join(sorted(s)) for s in L if len(s)==3], ['BDE'])
+chk("82Bh strong rule count", len(strong(L, 0.80)), 9)
+
+# 81 Bh Q7 -- min sup 50% of 4 = 2, min conf 65%
+T = [{'MILK','BREAD','CAKE'}, {'BUTTER','BREAD','EGG'},
+     {'MILK','BUTTER','BREAD','EGG'}, {'BUTTER','EGG'}]
+L = apri(T, 2)
+chk("81Bh L3 size", len([s for s in L if len(s)==3]), 1)
+chk("81Bh all 14 rules strong", len(strong(L, 0.65)), 14)
+
+# 73 Ch Q5 -- both thresholds 50%
+T = [{'A','B','C'}, {'A','C'}, {'A','D'}, {'B','E','F'}]
+L = apri(T, 2)
+chks("73Ch L2", [''.join(sorted(s)) for s in L if len(s)==2], ['AC'])
+chk("73Ch strong rules", len(strong(L, 0.50)), 2)
+
+# 79 Ba Q5 -- 7 transactions, 20% -> count 2; rules DO exist
+T = [{'A2','A4','A8'}, {'A4','A5','A7'}, {'A3'}, {'A5','A6','A7'},
+     {'A2','A3','A4'}, {'A2','A6','A7','A9'}, {'A5'}]
+L = apri(T, 2)
+chks("79Ba L2", sorted(''.join(sorted(s)) for s in L if len(s)==2),
+     ['A2A4','A5A7','A6A7'])
+chk("79Ba rule count at conf 0", len(strong(L, 0.0)), 6)
+
+# 79 Ba Q6 / 73 Ch Q4 -- confusion matrices
+chk("79Ba accuracy",   (100+50)/165, 0.909, 1e-3)
+chk("79Ba error rate", (10+5)/165,   0.091, 1e-3)
+chk("79Ba sensitivity", 100/105,     0.952, 1e-3)
+chk("79Ba specificity", 50/60,       0.833, 1e-3)
+chk("79Ba precision",   100/110,     0.909, 1e-3)
+chk("73Ch TPR rows-actual", 100/140, 0.714, 1e-3)
+chk("73Ch FPR rows-actual", 60/360,  0.167, 1e-3)
+chk("73Ch accuracy either way", 400/500, 0.800, 1e-9)
+
+# 79 Ba Q2 -- binning depth 3, then the three normalisations of 35
+v = [13,15,16,16,19,20,20,21,22,22,25,25,25,25,30,33,33,35,35,35,35,36,40,45,46,52,70]
+chk("79Ba n", len(v), 27)
+means = [sum(v[i:i+3])/3 for i in range(0, 27, 3)]
+chk("79Ba bin1 mean", means[0], 14.67, 5e-3)
+chk("79Ba bin9 mean", means[8], 56.0)
+chk("79Ba minmax 35", (35-13)/(70-13), 0.386, 1e-3)
+chk("79Ba mean", sum(v)/len(v), 29.963, 1e-3)
+chk("79Ba zscore 35", (35-sum(v)/len(v))/12.94, 0.389, 1e-3)
+chk("79Ba decimal 35", 35/100, 0.35)
+
+# 82 Bh Q3 / 81 Bh Q5 -- ID3 gains
+def H(*c):
+    n = sum(c)
+    return -sum((x/n)*math.log2(x/n) for x in c if x)
+chk("82Bh Info(D)", H(6,3,5), 1.531, 1e-3)
+chk("82Bh gain Income", H(6,3,5) - (4/14*H(4)+4/14*H(2,2)+6/14*H(1,5)), 0.966, 1e-3)
+chk("82Bh gain CreditHistory",
+    H(6,3,5) - (4/14*H(3,1)+5/14*H(2,1,2)+5/14*H(1,1,3)), 0.266, 1e-3)
+chk("81Bh Info(D)", H(4,3,3), 1.571, 1e-3)
+chk("81Bh gain TravelCost", H(4,3,3) - (5/10*H(4,1)+2/10*H(2)+3/10*H(3)), 1.210, 1e-3)
+chk("81Bh Car and Income tie",
+    H(4,3,3) - (3/10*H(2,1)+5/10*H(2,2,1)+2/10*H(2)),
+    H(4,3,3) - (2/10*H(2)+5/10*H(2,2,1)+3/10*H(1,2)), 1e-9)
+
+# ch3-num Problem 1.2 -- the Income-level gain that was printed as 0.971
+chk("78Bh Info(D) 3-class", H(4,3,3), 1.571, 1e-3)
+chk("78Bh gain Income (was wrong)",
+    H(4,3,3) - (2/10*H(2)+6/10*H(2,1,3)+2/10*H(2)), 0.695, 1e-3)
+
 print(f"checks run: {checks}")
 print(f"failures  : {len(fails)}")
 for f in fails: print(" ", f)

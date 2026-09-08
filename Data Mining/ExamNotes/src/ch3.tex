@@ -3,7 +3,7 @@
 %=======================================================================
 \section{Classification}
 
-{\color{sub}\footnotesize 12 hrs \gap$\cdot$\gap in 17/17 papers \gap$\cdot$\gap 7 topics, 3 TOP tier
+{\color{sub}\footnotesize 12 hrs \gap$\cdot$\gap in 23/23 papers \gap$\cdot$\gap 7 topics, 3 TOP tier
 \gap$\cdot$\gap \textbf{largest chapter in the syllabus} \gap$\cdot$\gap numericals $\rightarrow$ Ch 3 companion.}
 
 \lead{Weight of the chapter:}
@@ -21,7 +21,7 @@
 \T{3.1 Basics and Algorithms}
 
 \Q{Why is classification a supervised learning method?}{\m{2}\m{10}}
-{\color{sub}\footnotesize \tP{3} \yr{71 Shr, 74 Ch, 80 Bh}}
+{\color{sub}\footnotesize \tP{4} \yr{82 Bh, 80 Bh, 74 Ch, 71 Shr}}
 
 \sbs{%
 \lead{Classification}
@@ -72,7 +72,7 @@
 \T{3.2 Decision Tree Classifier}
 
 \Q{What is a decision tree? How is information gain used for attribute selection?}{\m{8}\m{10}\m{4+6}}
-{\color{sub}\footnotesize \tS{9} \yr{79 Bh, 78 Bh, 76 Ch, 76 Ash, 75 Ch, 74 Ch, 73 Shr, 72 Ka, 71 Ch}
+{\color{sub}\footnotesize \tS{13} \yr{82 Bh, 81 Bh, 79 Bh, 78 Bh, 76 Ch, 76 Ash, 75 Ch, 74 Ch, 73 Ch, 73 Shr, 72 Ka, 71 Ch, 70 Asa}
 \gap \mk{Almost always a full tree-building numerical} $\rightarrow$ companion.}
 
 \sbsr{0.56}{%
@@ -217,7 +217,7 @@ Let $D_t$ $=$ training records reaching node $t$, $y=\{y_1\dots y_c\}$ the class
 \T{3.3 Rule Based Classifier}
 
 \Q{How does a Rule Based Classifier work? Explain with example.}{\m{7}\m{2+8}\m{9}}
-{\color{sub}\footnotesize \tF{4} \yr{80 Bh, 76 Ch, 74 Ash, 70 Ch}}
+{\color{sub}\footnotesize \tF{5} \yr{80 Bh, 76 Ch, 74 Ash, 70 Ch, 69 Ch}}
 
 \sbs{%
 \lead{Form}
@@ -287,12 +287,62 @@ Let $D_t$ $=$ training records reaching node $t$, $y=\{y_1\dots y_c\}$ the class
         Produces an ordered rule list (decision list) $+$ a default rule.
 \end{itemize}}
 
+\penalty0\vspace{3pt}
+\creamq{Decision tree classifier vs rule-based classifier}{\m{8}}
+{\color{sub}\footnotesize \yr{69 Ch} \gap ``How is decision tree classifier different than rule
+based classifier?'' \gap \mk{Note they are relatives, not rivals}: every tree converts to a rule
+set, so say that first and then give the differences. \added}
+
+\begin{tabularx}{\textwidth}{@{}L{3.1cm}X X@{}}
+\toprule
+\hrow \thead{} & \thead{Decision tree} & \thead{Rule-based} \\
+\midrule
+\textbf{Model form} & One connected \textbf{tree}; internal node $=$ attribute test, leaf $=$ class. &
+An unordered set or an \textbf{ordered list} of \code{IF-THEN} rules. \\
+\addlinespace[2pt]
+\textbf{How it is built} & \textbf{Divide and conquer}: recursively split the whole data set on the
+best attribute (Hunt's algorithm, ID3, C4.5, CART). &
+\textbf{Separate and conquer} (sequential covering): learn one rule, remove the tuples it covers,
+repeat on the remainder (CN2, RIPPER). \\
+\addlinespace[2pt]
+\textbf{Coverage} & Partitions the space \mk{exactly once}: rules are automatically
+\textbf{mutually exclusive and exhaustive}, so every tuple lands in exactly one leaf. &
+Rules may \textbf{overlap or leave gaps} $\rightarrow$ needs a \mk{conflict-resolution strategy}
+(size / class / rule ordering) and a \textbf{default rule}. \\
+\addlinespace[2pt]
+\textbf{Attribute reuse} & A test near the root constrains \emph{every} rule below it, so an
+attribute chosen early is forced on all branches. &
+Each rule is grown independently, so \mk{rules need share no condition at all}. \\
+\addlinespace[2pt]
+\textbf{Pruning} & Prunes \emph{subtrees}; removing a node changes every path through it. &
+Prunes \emph{individual rules}, and may drop conditions from one rule without touching the rest.
+\mk{More flexible, but can break mutual exclusivity.} \\
+\addlinespace[2pt]
+\textbf{Replicated subtree problem} & Suffers from it: the same subtree is duplicated under several
+branches when the concept is disjunctive. &
+\mk{Immune}: one rule expresses the disjunct once. \\
+\addlinespace[2pt]
+\textbf{Readability} & Whole model visible in one diagram; easy to explain end to end, but a deep
+tree becomes unreadable. & Individual rules read very well on their own; a large unordered set is
+hard to see as a whole. \\
+\bottomrule
+\end{tabularx}
+
+\begin{itemize}
+  \item \mk{The link worth stating for the marks}: a decision tree can always be converted into a
+        rule set by taking \textbf{one rule per root-to-leaf path}, ANDing the conditions along it.
+        The reverse is \emph{not} true, a general rule set need not correspond to any tree.
+  \item So the real difference is \mk{direct vs indirect induction}: rule-based classifiers learn
+        rules straight from the data, decision trees learn a partition and get rules as a
+        by-product.
+\end{itemize}
+
 \hr
 
 \T{3.4 Nearest Neighbor Classifier}
 
 \Q{What is a Nearest Neighbor Classifier? Main issues? Propose a fix.}{\m{1+3+4}\m{3+6}}
-{\color{sub}\footnotesize \tP{2} \yr{80 Ba, 80 Bh} \gap \yr{80 Bh} is a numerical $\rightarrow$ companion.}
+{\color{sub}\footnotesize \tP{4} \yr{81 Bh, 80 Ba, 80 Bh, 70 Asa} \gap \yr{80 Bh} is a numerical $\rightarrow$ companion.}
 
 \sbs{%
 \lead{Idea}
@@ -318,7 +368,10 @@ Let $D_t$ $=$ training records reaching node $t$, $y=\{y_1\dots y_c\}$ the class
   \item $k$ too small $\rightarrow$ sensitive to \textbf{noise}, overfits.
   \item $k$ too large $\rightarrow$ neighbourhood includes other classes, underfits.
   \item Pick by cross-validation; rule of thumb $k \approx \sqrt{n}$.
-\end{itemize}
+\end{itemize}}
+
+\penalty0\vspace{3pt}
+\sbs{%
 \lead{Issues \mk{(80 Ba asks exactly this)}}
 \begin{itemize}
   \item \textbf{Expensive at query time}: $O(n)$ distance computations \emph{per} query,
@@ -328,6 +381,7 @@ Let $D_t$ $=$ training records reaching node $t$, $y=\{y_1\dots y_c\}$ the class
   \item \textbf{Irrelevant attributes} distort distance equally w/ relevant ones.
   \item Needs the whole training set in memory.
 \end{itemize}
+}{%
 \lead{Fixes / classifier to propose}
 \begin{itemize}
   \item Speed: k-d trees, ball trees, partial distance, editing (drop redundant tuples).
@@ -337,12 +391,57 @@ Let $D_t$ $=$ training records reaching node $t$, $y=\{y_1\dots y_c\}$ the class
         builds the model once, then classifies in near-constant time, and ignores irrelevant attrs.
 \end{itemize}}
 
+\penalty0\vspace{3pt}
+\creamq{How the distance metric is used in an instance-based classifier}{\m{10}}
+{\color{sub}\footnotesize \yr{70 Asa} \gap ``What are the properties of a distance metric? How is
+distance metric used in instance based classifier?'' \gap \mk{Two chapters in one question}: the
+properties are \S2.4, the use is here. \mk{The bridge between them is the answer.} \added}
+
+\sbs{%
+\lead{The four properties, restated \yr{\S2.4}}
+\begin{enumerate}
+  \item \textbf{Non-negativity}: $d(p,q) \ge 0$.
+  \item \textbf{Identity}: $d(p,q) = 0$ iff $p = q$.
+  \item \textbf{Symmetry}: $d(p,q) = d(q,p)$.
+  \item \textbf{Triangle inequality}: $d(p,r) \le d(p,q) + d(q,r)$.
+\end{enumerate}
+\begin{itemize}
+  \item A function with all four is a \textbf{metric}. Euclidean, Manhattan and Minkowski
+        qualify; \mk{cosine similarity does not} (it is a similarity, not a distance).
+\end{itemize}}{%
+\lead{Why an instance-based classifier needs each one}
+\begin{itemize}
+  \item \mk{The classifier \emph{is} the distance function.} KNN stores the tuples and does no
+        other modelling, so every decision it makes is a comparison of distances. A defective
+        metric is a defective classifier.
+  \item \textbf{Identity} $\rightarrow$ a training tuple identical to the query is at distance 0,
+        so it is always among the $k$ nearest. Without it a tuple could fail to match itself.
+  \item \textbf{Symmetry} $\rightarrow$ ``$q$ is near $p$'' and ``$p$ is near $q$'' agree, so the
+        neighbourhood is well defined however you sort.
+  \item \textbf{Triangle inequality} $\rightarrow$ \mk{this is the one that pays}: it lets
+        \textbf{k-d trees} and \textbf{ball trees} discard an entire branch without measuring the
+        tuples in it, turning an $O(n)$ scan into roughly $O(\log n)$. Drop it and every query
+        must compare against the whole training set.
+  \item \textbf{Non-negativity} $\rightarrow$ ``nearest'' means smallest, with a floor at 0.
+\end{itemize}}
+
+\begin{itemize}
+  \item \mk{Where the metric enters KNN, step by step}: compute $d$(query, every training tuple)
+        $\rightarrow$ sort $\rightarrow$ take the $k$ smallest $\rightarrow$ majority vote (or
+        distance-weighted vote, $w = 1/d^2$, which uses the actual magnitudes and not just the
+        ordering).
+  \item \mk{Choice of metric changes the answer}: Euclidean for continuous attributes,
+        \textbf{Manhattan} when attributes are independent scales, \textbf{Hamming} for nominal
+        attributes, \textbf{Jaccard} for asymmetric binary. \textbf{Normalise first} --- an
+        attribute measured in thousands otherwise dominates the sum (\S2.4).
+\end{itemize}
+
 \hr
 
 \T{3.5 Bayesian Classifier}
 
 \Q{Explain Naive Bayesian classification with a suitable example.}{\m{8}\m{6}\m{10}\m{3+7}}
-{\color{sub}\footnotesize \tS{8} \yr{81 Ba, 79 Bh, 78 Bh, 76 Ash, 75 Ash, 72 Ch, 71 Ch, 71 Shr}
+{\color{sub}\footnotesize \tS{9} \yr{81 Ba, 79 Bh, 78 Bh, 76 Ash, 75 Ash, 72 Ch, 71 Ch, 71 Shr, 69 Ch}
 \gap \mk{Numerical in 79 Bh and 72 Ch} $\rightarrow$ companion.}
 
 \sbsr{0.52}{%
@@ -443,7 +542,7 @@ Let $D_t$ $=$ training records reaching node $t$, $y=\{y_1\dots y_c\}$ the class
 \T{3.6 Artificial Neural Network Classifier}
 
 \Q{How does an ANN classifier work? Explain with algorithm.}{\m{8}\m{2+6}\m{5}}
-{\color{sub}\footnotesize \tF{5} \yr{81 Ba, 80 Ba, 76 Ch, 75 Ch, 72 Ka} \gap
+{\color{sub}\footnotesize \tF{6} \yr{82 Bh, 81 Ba, 80 Ba, 76 Ch, 75 Ch, 72 Ka} \gap
 \yr{76 Ch} is a gradient numerical $\rightarrow$ companion.}
 
 \sbsr{0.58}{%
@@ -458,7 +557,11 @@ Let $D_t$ $=$ training records reaching node $t$, $y=\{y_1\dots y_c\}$ the class
         \[ \sigma(\theta) = \frac{1}{1+e^{-\theta}}, \qquad
            \sigma'(\theta) = \sigma(\theta)\big(1-\sigma(\theta)\big) \]
   \item \mk{That derivative identity is why sigmoid is used} $\rightarrow$ makes backprop cheap.
-\end{itemize}
+\end{itemize}}{%
+\figT{pyq_ann_76ch}
+{\color{sub}\footnotesize The 76 Ch network. Gradients derived in the companion.}}
+
+\penalty0\vspace{3pt}
 \lead{Backpropagation algorithm}
 \begin{enumerate}
   \item \textbf{Initialise} weights and biases to small random numbers.
@@ -471,10 +574,9 @@ Let $D_t$ $=$ training records reaching node $t$, $y=\{y_1\dots y_c\}$ the class
         $w_{ij} \mathrel{+}= l\cdot Err_j\cdot O_i$, \quad $\theta_j \mathrel{+}= l\cdot Err_j$
         \ ($l$ $=$ learning rate).
   \item \textbf{Repeat} until the terminating condition (error small, or epoch limit).
-\end{enumerate}}{%
-\figT{pyq_ann_76ch}
-{\color{sub}\footnotesize The 76 Ch network. Gradients derived in the companion.}
-\vspace{3pt}
+\end{enumerate}
+
+\penalty0\vspace{3pt}
 \lead{General considerations \yr{72 Ka asks this}}
 \begin{itemize}
   \item \textbf{Network topology}: no. of hidden layers and units. Chosen by trial and error;
@@ -485,9 +587,9 @@ Let $D_t$ $=$ training records reaching node $t$, $y=\{y_1\dots y_c\}$ the class
         slow. Often $1/t$ w/ epoch $t$.
   \item \textbf{Initial weights}: small random, to break symmetry.
   \item \textbf{Update mode}: case updating (per tuple) vs epoch updating (per pass).
-\end{itemize}}
+\end{itemize}
 
-\vspace{2pt}
+\penalty0\vspace{2pt}
 \sbs{%
 \lead{Advantages}
 \begin{itemize}
@@ -511,7 +613,7 @@ Let $D_t$ $=$ training records reaching node $t$, $y=\{y_1\dots y_c\}$ the class
 \T{3.7 Issues: Overfitting, Validation, Model Comparison}
 
 \Q{Confusion matrix: calculate accuracy, sensitivity, specificity, precision, recall.}{\m{4}\m{10}\m{3+5}}
-{\color{sub}\footnotesize \tS{7} \yr{80 Ba, 78 Bh, 75 Ash, 74 Ash, 73 Shr, 72 Ch, 70 Ch, 74 Ch}
+{\color{sub}\footnotesize \tS{11} \yr{82 Bh, 80 Ba, 79 Ba, 78 Bh, 75 Ash, 74 Ash, 74 Ch, 73 Ch, 73 Shr, 72 Ch, 70 Ch}
 \gap \mk{8 papers. Highest-yield numerical in the whole syllabus} $\rightarrow$ companion.}
 
 \sbsr{0.55}{%
@@ -564,7 +666,7 @@ then compute. \added
         ROC/AUC, or cost-sensitive measures.
   \item Note: $accuracy = sensitivity\frac{P}{P+N} + specificity\frac{N}{P+N}$
         $\rightarrow$ accuracy hides the split.
-\end{itemize}
+\end{itemize}}{%
 \lead{Precision vs recall trade-off \yr{74 Ch asks the inverse relation}}
 \begin{itemize}
   \item Loosen the threshold $\rightarrow$ more positives flagged $\rightarrow$ recall $\uparrow$,
@@ -572,22 +674,6 @@ then compute. \added
   \item Tighten it $\rightarrow$ precision $\uparrow$, recall $\downarrow$.
   \item Perfect precision \emph{and} recall is only possible w/ a perfect classifier
         $\rightarrow$ report $F_1$ to balance them.
-\end{itemize}}{%
-\lead{Validation methods}
-\begin{itemize}
-  \item \textbf{Holdout}: split, typically $\tfrac{2}{3}$ train / $\tfrac{1}{3}$ test. Fast, but
-        depends on the one split.
-  \item \textbf{Random subsampling}: holdout repeated $k$ times, accuracies averaged.
-  \item \textbf{$k$-fold cross-validation} \mk{(the standard)}
-  \begin{itemize}
-    \item Split into $k$ equal folds. Train on $k-1$, test on 1. Rotate $k$ times.
-    \item Every tuple is used for training $k-1$ times and testing exactly once.
-    \item \textbf{$k=10$ recommended} (low bias and variance).
-    \item \emph{Stratified}: each fold keeps the class distribution. Preferred.
-  \end{itemize}
-  \item \textbf{Leave-one-out}: $k = n$. Expensive; for very small data sets.
-  \item \textbf{Bootstrap (.632)}: sample $n$ tuples \emph{with} replacement. On average
-        63.2\% of tuples appear in the training set. Best for small data sets.
 \end{itemize}
 \lead{ROC curve \yr{73 Shr \m{1}}}
 \begin{itemize}
@@ -597,7 +683,61 @@ then compute. \added
   \item Lets you compare 2 classifiers \textbf{independently of the threshold} and of class balance.
 \end{itemize}}
 
-\vspace{2pt}
+\penalty0\vspace{3pt}
+\creamq{Evaluating a classifier: holdout, random subsampling, $k$-fold, bootstrap}{\m{8}}
+{\color{sub}\footnotesize \yr{79 Ba} \gap ``Describe the working mechanism as well as the merits
+and demerits of the holdout method, random sampling, k-cross validation and bootstrap approaches
+in evaluating the performance of a classifier.'' \gap
+\mk{8 marks means all four, each with mechanism $+$ merit $+$ demerit.} \added}
+
+\begin{tabularx}{\textwidth}{@{}L{2.45cm}X L{4.0cm} L{4.0cm}@{}}
+\toprule
+\hrow \thead{Method} & \thead{Working mechanism} & \thead{Merits} & \thead{Demerits} \\
+\midrule
+\textbf{Holdout} &
+Partition $D$ once at random into a training set and a disjoint test set, typically
+$\tfrac{2}{3}$ / $\tfrac{1}{3}$. Build the model on the first, measure accuracy on the second. &
+Simplest and \mk{cheapest}: one model is built. Test set is genuinely unseen. &
+Estimate depends entirely on \mk{one lucky or unlucky split} (high variance). Only part of the
+data trains, so accuracy is \textbf{pessimistic} on small $D$. \\
+\addlinespace[2pt]
+\textbf{Random subsampling} &
+Holdout repeated $k$ times with a fresh random split each time; report the \textbf{mean} of the
+$k$ accuracies. &
+Averages the split luck away $\rightarrow$ \mk{much more stable} than one holdout. Simple to run. &
+$k$ models to build. Splits overlap uncontrolled, so \mk{some tuples are tested many times and
+others never}, and the runs are not independent. \\
+\addlinespace[2pt]
+\textbf{$k$-fold cross-validation} &
+Split $D$ into $k$ equal, mutually exclusive folds. In round $i$ train on all folds but $D_i$ and
+test on $D_i$. Accuracy $=$ total correct over all $k$ rounds $/\;|D|$.
+\mk{$k=10$ is the recommended value}; \emph{stratified} folds keep each class's proportion. &
+\mk{Every tuple is tested exactly once and trains $k-1$ times} $\rightarrow$ uses the data fully
+and has low bias and low variance. The standard method, and the safe answer to ``which would
+you use''. &
+Costs $k$ model builds. Still slightly pessimistic (trains on $\tfrac{k-1}{k}$ of $D$).
+\textbf{Leave-one-out} ($k=n$) removes the bias but is \mk{prohibitively expensive} and has high
+variance. \\
+\addlinespace[2pt]
+\textbf{Bootstrap (.632)} &
+Sample $n$ tuples from $D$ \emph{with} replacement to form the training set; the tuples never
+drawn become the test set. A tuple is missed with probability
+$(1-\tfrac{1}{n})^n \approx e^{-1} = 0.368$, so \mk{$63.2\,\%$ of $D$ trains} on average.
+Repeat $b$ times and combine:
+$acc = \frac{1}{b}\sum_{i=1}^{b}\big(0.632\,acc_{test_i} + 0.368\,acc_{train_i}\big)$. &
+\mk{Best estimator for small data sets}, where holdout wastes too much and folds are tiny.
+Reuses every tuple. &
+\mk{Optimistically biased}, because duplicated training tuples also reappear in the model.
+The $0.632$ weighting is a correction, not a cure. Most expensive of the four. \\
+\bottomrule
+\end{tabularx}
+
+\begin{itemize}
+  \item \mk{One-line ranking to close the answer}: holdout for speed, cross-validation for a
+        trustworthy number, bootstrap when $D$ is small.
+\end{itemize}
+
+\penalty0\vspace{2pt}
 \lead{Improving accuracy: ensembles \mk{(1 line each is enough)}}
 \begin{itemize}
   \item \textbf{Bagging}: train $k$ models on bootstrap samples, take a \textbf{majority vote}.
@@ -683,6 +823,22 @@ then compute. \added
   \item \tP{1} When can you \emph{not} use accuracy? Give examples. \hfill \m{3} \yr{80 Ba}
   \item \tP{1} Short note: Overfitting problem in classification. \hfill \m{4} \yr{78 Bh}
 \end{enumerate}
+
+\creamq{Papers added by the 2026-09 merge}{}
+{\color{sub}\footnotesize The six papers of \code{DM4.1BCT.pdf} (2082 Bh, 2081 Bh, 2079 Ba, 2073 Ch, 2070 Asa, 2069 Ch), indexed here for the
+first time --- the notes were built before that scan was merged. \mk{N} $=$ solved in this chapter's companion. \added}
+\begin{itemize}
+  \item \mk{N} When do we use a decision tree? $+$ a full \textbf{ID-3} tree on the credit-risk table $+$ how to evaluate the model. \hfill \m{2+9+3} \yr{82 Bh}
+  \item \mk{N} Decision-tree algorithm $+$ use \textbf{ID3 to identify the root node} only. \hfill \m{2+8} \yr{81 Bh}
+  \item Working mechanism \emph{and} \textbf{merits and demerits} of holdout, random sampling, $k$-fold cross-validation and bootstrap. \hfill \m{8} \yr{79 Ba} \added
+  \item \mk{N} Confusion matrix $\rightarrow$ accuracy, error rate, sensitivity, specificity, precision, recall. \hfill \m{4} \yr{79 Ba}
+  \item \mk{N} What is ID3? $+$ TPR, FPR and accuracy from a matrix that \mk{labels both axes Predicted}. \hfill \m{2+6} \yr{73 Ch}
+  \item Importance of the \textbf{homogeneity measure} in a decision tree $+$ explain \textbf{Gini index}. \hfill \m{8} \yr{70 Asa}
+  \item How is the distance metric \textbf{used in an instance-based classifier}? \hfill \m{10} \yr{70 Asa} \added
+  \item How is a decision tree classifier \textbf{different from a rule-based classifier}? \hfill \m{8} \yr{69 Ch} \added
+  \item Bayes' theorem $+$ how Naive Bayes \textbf{simplifies the computational complexity}. \hfill \m{12} \yr{69 Ch}
+  \item Nearest neighbour classifier and when it is used \yr{81 Bh} $\cdot$ short notes \textbf{Neural Network Classifier} \yr{82 Bh}, \textbf{Overfitting and ROC} \yr{73 Ch}. \hfill \m{2+4}\m{5}\m{4}
+\end{itemize}
 
 \lead{Coverage check}
 \begin{itemize}

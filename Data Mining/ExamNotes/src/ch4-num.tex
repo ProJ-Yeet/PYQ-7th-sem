@@ -45,6 +45,7 @@ Also: \mk{support is over ALL transactions; confidence is over the antecedent's 
 What is Association Analysis? Explain with different use cases? Use the Apriori algorithm to
 find the frequent itemsets. Assume minimum support count is 4 and confidence is 80\%.
 \par\vspace{2pt}
+\par
 \begin{tabularx}{0.62\textwidth}{@{}L{1.9cm}X@{}}
 \toprule
 \hrow \thead{TID} & \thead{Items} \\
@@ -61,37 +62,139 @@ T106 & F, A, C, I, B, A, P \\
 {\color{sub}\footnotesize T106 genuinely prints ``F, A, C, I, B, A, P'' ---
 \mk{A is repeated; a transaction is a set}, so treat it as \{F,A,C,I,B,P\}.}
 
-\lead{Step 1: item counts} (7 transactions)
+\lead{Step 1: $C_1 \rightarrow L_1$} \; count all 18 distinct items over the 7 transactions,
+min count $=4$
+\par
+\begin{tabularx}{\textwidth}{@{}L{0.9cm}L{1.0cm}L{0.9cm}@{\hspace{10pt}}L{0.9cm}L{1.0cm}L{0.9cm}@{\hspace{10pt}}L{0.9cm}L{1.0cm}L{0.9cm}@{\hspace{10pt}}L{0.9cm}L{1.0cm}X@{}}
+\toprule
+\hrow \thead{It.} & \thead{Cnt} & \thead{Keep} & \thead{It.} & \thead{Cnt} & \thead{Keep} &
+      \thead{It.} & \thead{Cnt} & \thead{Keep} & \thead{It.} & \thead{Cnt} & \thead{Keep} \\
+\midrule
+A & 6 & \checkmark & F & 5 & \checkmark & K & 1 & \xmark & O & 2 & \xmark \\
+B & 5 & \checkmark & G & 1 & \xmark      & L & 2 & \xmark & P & 6 & \checkmark \\
+C & 5 & \checkmark & H & 1 & \xmark      & M & 4 & \checkmark & S & 2 & \xmark \\
+D & 2 & \xmark     & I & 3 & \xmark      & N & 2 & \xmark & V & 3 & \xmark \\
+E & 1 & \xmark     & J & 1 & \xmark      &   &   &        &   &   &  \\
+\bottomrule
+\end{tabularx}
+\par\penalty0\vspace{1pt}
+$\mathbf{L_1 = \{A(6),\ B(5),\ C(5),\ F(5),\ M(4),\ P(6)\}}$ \; --- 6 items survive of 18.
+
+\penalty0\vspace{3pt}
+\lead{Step 2: $C_2 \rightarrow L_2$} \; all $\binom{6}{2} = 15$ pairs from $L_1$, counted against $D$
+\par
+\begin{tabularx}{\textwidth}{@{}L{1.2cm}L{1.0cm}L{0.9cm}@{\hspace{10pt}}L{1.2cm}L{1.0cm}L{0.9cm}@{\hspace{10pt}}L{1.2cm}L{1.0cm}L{0.9cm}@{\hspace{10pt}}L{1.2cm}L{1.0cm}X@{}}
+\toprule
+\hrow \thead{Pair} & \thead{Cnt} & \thead{Keep} & \thead{Pair} & \thead{Cnt} & \thead{Keep} &
+      \thead{Pair} & \thead{Cnt} & \thead{Keep} & \thead{Pair} & \thead{Cnt} & \thead{Keep} \\
+\midrule
+AB & 4 & \checkmark & AP & 5 & \checkmark & BP & 4 & \checkmark & CP & 4 & \checkmark \\
+AC & 5 & \checkmark & BC & 3 & \xmark     & CF & 4 & \checkmark & FM & 3 & \xmark \\
+AF & 4 & \checkmark & BF & 3 & \xmark     & CM & 3 & \xmark     & FP & 5 & \checkmark \\
+AM & 4 & \checkmark & BM & 2 & \xmark     &    &   &            & MP & 4 & \checkmark \\
+\bottomrule
+\end{tabularx}
+\par\penalty0\vspace{1pt}
+$\mathbf{L_2 = \{AB(4),\ AC(5),\ AF(4),\ AM(4),\ AP(5),\ BP(4),\ CF(4),\ CP(4),\ FP(5),\ MP(4)\}}$
+
+\penalty0\vspace{3pt}
+\lead{Step 3: $C_3 \rightarrow L_3$} \; join $L_2$ pairs sharing their first item, then
+\mk{prune before counting}
+\par
+\begin{tabularx}{\textwidth}{@{}L{1.5cm}X L{3.2cm}L{1.1cm}L{0.9cm}@{}}
+\toprule
+\hrow \thead{Cand.} & \thead{Subset test (all 2-subsets must be in $L_2$)} & \thead{Transactions}
+& \thead{Count} & \thead{Keep} \\
+\midrule
+ABC & BC $\notin L_2$ & \mk{pruned, never counted} & --- & \xmark \\
+ABF & BF $\notin L_2$ & \mk{pruned, never counted} & --- & \xmark \\
+ABM & BM $\notin L_2$ & \mk{pruned, never counted} & --- & \xmark \\
+ABP & AB \checkmark\ AP \checkmark\ BP \checkmark\ $\rightarrow$ survives pruning
+    & T101, T105, T106 & 3 & \xmark \\
+ACF & AC \checkmark\ AF \checkmark\ CF \checkmark & T100, T101, T104, T106 & 4 & \checkmark \\
+ACM & CM $\notin L_2$ & \mk{pruned, never counted} & --- & \xmark \\
+ACP & AC \checkmark\ AP \checkmark\ CP \checkmark & T100, T101, T104, T106 & 4 & \checkmark \\
+AFM & FM $\notin L_2$ & \mk{pruned, never counted} & --- & \xmark \\
+AFP & AF \checkmark\ AP \checkmark\ FP \checkmark & T100, T101, T104, T106 & 4 & \checkmark \\
+AMP & AM \checkmark\ AP \checkmark\ MP \checkmark & T100, T101, T104, T105 & 4 & \checkmark \\
+CFP & CF \checkmark\ CP \checkmark\ FP \checkmark & T100, T101, T104, T106 & 4 & \checkmark \\
+\bottomrule
+\end{tabularx}
+\par\penalty0\vspace{1pt}
+$\mathbf{L_3 = \{ACF(4),\ ACP(4),\ AFP(4),\ AMP(4),\ CFP(4)\}}$
 \begin{itemize}
-  \item A:6 $\cdot$ P:6 $\cdot$ B:5 $\cdot$ C:5 $\cdot$ F:5 $\cdot$ M:4 $\cdot$ I:3 $\cdot$ V:3
-        $\cdot$ D:2 $\cdot$ L:2 $\cdot$ N:2 $\cdot$ O:2 $\cdot$ S:2 $\cdot$ others 1
-  \item $\mathbf{L_1 = \{A(6),\ B(5),\ C(5),\ F(5),\ M(4),\ P(6)\}}$
+  \item \mk{Five candidates died at the prune step without a single database scan} --- that saving
+        is the whole point of the Apriori property, so show the column.
+  \item ABP is the instructive one: it \emph{passes} pruning and still fails on the count.
+        \mk{Pruning is sufficient to reject, never sufficient to accept.}
 \end{itemize}
 
-\lead{Step 2: $L_2$} (15 candidate pairs; counts shown, $\ge4$ kept)
-\begin{itemize}
-  \item Kept: \textbf{AB(4), AC(5), AF(4), AM(4), AP(5), BP(4), CF(4), CP(4), FP(5), MP(4)}
-  \item Dropped: BC(3), BF(3), BM(2), CM(3), FM(3)
-\end{itemize}
+\penalty0\vspace{2pt}
+\lead{Step 4: $C_4 \rightarrow L_4$} \; join $L_3$ triples sharing their first \emph{two} items
+\par
+\begin{tabularx}{\textwidth}{@{}L{1.5cm}L{3.0cm}X L{1.1cm}L{0.9cm}@{}}
+\toprule
+\hrow \thead{Cand.} & \thead{Joined from} & \thead{Subset test} & \thead{Count} & \thead{Keep} \\
+\midrule
+ACFP & ACF $+$ ACP & ACF \checkmark\ ACP \checkmark\ AFP \checkmark\ CFP \checkmark &
+       4 \; \footnotesize (T100, T101, T104, T106) & \checkmark \\
+\bottomrule
+\end{tabularx}
+\par\penalty0\vspace{1pt}
+$\mathbf{L_4 = \{ACFP(4)\}}$; \; no two 4-itemsets remain to join $\rightarrow$ $C_5 = \emptyset$
+$\rightarrow$ \textbf{stop}.
 
-\lead{Step 3: $L_3$}
-\begin{itemize}
-  \item ABP: all 3 subsets present $\rightarrow$ counted $=3$ \xmark
-  \item \textbf{ACF(4)}, \textbf{ACP(4)}, \textbf{AFP(4)}, \textbf{AMP(4)}, \textbf{CFP(4)} \checkmark
-  \item Pruned without counting: ABC (BC$\notin L_2$), ABF (BF), ABM (BM), ACM (CM), AFM (FM)
-\end{itemize}
-
-\lead{Step 4: $L_4$}
-\begin{itemize}
-  \item ACFP: subsets ACF \checkmark ACP \checkmark AFP \checkmark CFP \checkmark $\rightarrow$ candidate.
-        Count $=4$ (T100, T101, T104, T106) \checkmark
-  \item $\mathbf{L_4 = \{ACFP(4)\}}$. \ $L_5$ empty $\rightarrow$ stop.
-\end{itemize}
-
-\lead{Final answer} Maximal frequent itemset $=$ \mk{\textbf{\{A, C, F, P\}} with support 4/7 $=$ 57\%}.
+\lead{Frequent itemsets} Maximal frequent itemset $=$ \mk{\textbf{\{A, C, F, P\}} with support
+4/7 $=$ 57\%}.
 \begin{itemize}
   \item \textbf{Check}: all $2^4-2 = 14$ proper subsets of ACFP do appear in $L_1$--$L_3$ above. \checkmark
 \end{itemize}
+
+\lead{Step 5: the rules \mk{(the question gives confidence $=$ 80\,\%, so this half is asked)}}
+\begin{itemize}
+  \item From the maximal itemset $l = \{A,C,F,P\}$, $\sigma(l) = 4$. For every non-empty proper
+        subset $s$, output $s \Rightarrow (l-s)$ with
+        $conf = \dfrac{\sigma(l)}{\sigma(s)} = \dfrac{4}{\sigma(s)}$.
+  \item $2^4 - 2 = \mathbf{14}$ candidate rules. \mk{$conf \ge 0.80$ needs $\sigma(s) \le 5$}, so
+        read the answer straight off the antecedent's count.
+\end{itemize}
+
+\sbsr{0.52}{%
+\par
+\begin{tabularx}{\linewidth}{@{}L{2.5cm}L{1.0cm}X@{}}
+\toprule
+\hrow \thead{Rule} & \thead{$\sigma(s)$} & \thead{Confidence} \\
+\midrule
+$C \Rightarrow AFP$   & 5 & $4/5 = 80\,\%$ \checkmark \\
+$F \Rightarrow ACP$   & 5 & $4/5 = 80\,\%$ \checkmark \\
+$AC \Rightarrow FP$   & 5 & $4/5 = 80\,\%$ \checkmark \\
+$AP \Rightarrow CF$   & 5 & $4/5 = 80\,\%$ \checkmark \\
+$FP \Rightarrow AC$   & 5 & $4/5 = 80\,\%$ \checkmark \\
+$AF \Rightarrow CP$   & 4 & $4/4 = 100\,\%$ \checkmark \\
+$CF \Rightarrow AP$   & 4 & $4/4 = 100\,\%$ \checkmark \\
+$CP \Rightarrow AF$   & 4 & $4/4 = 100\,\%$ \checkmark \\
+$ACF \Rightarrow P$   & 4 & $4/4 = 100\,\%$ \checkmark \\
+$ACP \Rightarrow F$   & 4 & $4/4 = 100\,\%$ \checkmark \\
+$AFP \Rightarrow C$   & 4 & $4/4 = 100\,\%$ \checkmark \\
+$CFP \Rightarrow A$   & 4 & $4/4 = 100\,\%$ \checkmark \\
+\midrule
+$A \Rightarrow CFP$   & 6 & $4/6 = 66.7\,\%$ \xmark \\
+$P \Rightarrow ACF$   & 6 & $4/6 = 66.7\,\%$ \xmark \\
+\bottomrule
+\end{tabularx}}{%
+\lead{Reading the table}
+\begin{itemize}
+  \item \mk{\textbf{12 of the 14 rules are strong}} at min\_conf $=$ 80\,\%.
+  \item The only two failures are the ones with $A$ or $P$ \emph{alone} on the left. Both occur in
+        6 of the 7 transactions, so they are \mk{too common to predict anything}: a frequent
+        antecedent divides the confidence down.
+  \item \mk{The general lesson}: confidence falls as the antecedent gets more frequent, and rises
+        as it gets more specific. Longer left-hand sides almost always score higher.
+  \item Seven rules here sit at \textbf{100\,\%}. By \S4.1 those are the \emph{least} interesting
+        of the twelve, because $\{A,F\}$ never appears without $C$ and $P$ anywhere in this
+        database $\rightarrow$ nothing actionable. \mk{Say so if the question asks you to
+        comment}, do not just report the highest number.
+\end{itemize}}
 
 \creamq{Problem 1.2}{\m{5}}
 \begin{asked}{2080 Baishakh \textperiodcentered{} Q5 \textperiodcentered{} [4+5]}
@@ -101,6 +204,7 @@ specifically explain why association rules with 99\% confidence may be interesti
 might they indicate)? Identify the candidate and large item sets of the following transaction
 table using Apriori algorithm with minimum support 2.
 \par\vspace{2pt}
+\par
 \begin{tabularx}{0.42\textwidth}{@{}L{1.9cm}X@{}}
 \toprule
 \hrow \thead{TID} & \thead{Items} \\
@@ -112,32 +216,57 @@ table using Apriori algorithm with minimum support 2.
 \end{tabularx}
 \end{asked}
 
-\lead{Step 1: $L_1$, count every item across the 4 transactions}
-\begin{itemize}
-  \item A appears in T1, T3 $\rightarrow$ 2 \quad B appears in T2, T3, T4 $\rightarrow$ 3
-  \item C appears in T1, T2, T3 $\rightarrow$ 3 \quad D appears in T1 only $\rightarrow$ 1 \mk{(dropped)}
-  \item E appears in T2, T3, T4 $\rightarrow$ 3
-  \item $\mathbf{L_1 = \{A(2),\ B(3),\ C(3),\ E(3)\}}$
-\end{itemize}
+\sbsr{0.46}{%
+\lead{Step 1: $C_1 \rightarrow L_1$} \; min count $=2$
+\par
+\begin{tabularx}{\linewidth}{@{}L{1.1cm}X L{1.0cm}L{0.9cm}@{}}
+\toprule
+\hrow \thead{Item} & \thead{In} & \thead{Count} & \thead{Keep} \\
+\midrule
+A & 10, 30     & 2 & \checkmark \\
+B & 20, 30, 40 & 3 & \checkmark \\
+C & 10, 20, 30 & 3 & \checkmark \\
+D & 10         & 1 & \xmark \\
+E & 20, 30, 40 & 3 & \checkmark \\
+\bottomrule
+\end{tabularx}
+\par\penalty0\vspace{1pt}
+$\mathbf{L_1 = \{A(2),\ B(3),\ C(3),\ E(3)\}}$}{%
+\lead{Step 2: $C_2 \rightarrow L_2$} \; all $\binom{4}{2} = 6$ pairs from $L_1$
+\par
+\begin{tabularx}{\linewidth}{@{}L{1.3cm}X L{1.0cm}L{0.9cm}@{}}
+\toprule
+\hrow \thead{Pair} & \thead{In} & \thead{Count} & \thead{Keep} \\
+\midrule
+AB & 30         & 1 & \xmark \\
+AC & 10, 30     & 2 & \checkmark \\
+AE & 30         & 1 & \xmark \\
+BC & 20, 30     & 2 & \checkmark \\
+BE & 20, 30, 40 & 3 & \checkmark \\
+CE & 20, 30     & 2 & \checkmark \\
+\bottomrule
+\end{tabularx}
+\par\penalty0\vspace{1pt}
+$\mathbf{L_2 = \{AC(2),\ BC(2),\ BE(3),\ CE(2)\}}$}
 
-\lead{Step 2: $C_2$, join $L_1$ with itself, then count each pair against the transactions}
-\begin{itemize}
-  \item AB: only T3 $\rightarrow$ 1 \xmark \quad AC: T1, T3 $\rightarrow$ \textbf{2} \checkmark \quad
-        AE: only T3 $\rightarrow$ 1 \xmark
-  \item BC: T2, T3 $\rightarrow$ \textbf{2} \checkmark \quad BE: T2, T3, T4 $\rightarrow$ \textbf{3} \checkmark \quad
-        CE: T2, T3 $\rightarrow$ \textbf{2} \checkmark
-  \item $\mathbf{L_2 = \{AC(2),\ BC(2),\ BE(3),\ CE(2)\}}$; dropped AB(1), AE(1)
-\end{itemize}
+\penalty0\vspace{3pt}
+\lead{Step 3: $C_3 \rightarrow L_3$} \; join $L_2$ on a shared first item, prune, then count
+\par
+\begin{tabularx}{\textwidth}{@{}L{1.8cm}L{3.5cm}X L{1.7cm}L{1.0cm}L{0.9cm}@{}}
+\toprule
+\hrow \thead{Joined from} & \thead{Candidate} & \thead{Subset test} & \thead{In} & \thead{Count}
+& \thead{Keep} \\
+\midrule
+BC $+$ BE & \textbf{BCE} & BC \checkmark\ BE \checkmark\ CE \checkmark\ $\rightarrow$ survives
+          & 20, 30 & 2 & \checkmark \\
+AC $+$ --- & none & AC is the only pair starting with A, so it has nothing to join with
+          & --- & --- & --- \\
+\bottomrule
+\end{tabularx}
+\par\penalty0\vspace{1pt}
+$\mathbf{L_3 = \{BCE(2)\}}$; \; $C_4$ needs two 3-itemsets sharing a prefix and there is only
+one $\rightarrow$ \textbf{stop}.
 
-\lead{Step 3: $C_3$, join $L_2$ with itself, prune, then count}
-\begin{itemize}
-  \item BC and BE share prefix B $\rightarrow$ candidate \textbf{BCE}. Subsets BC \checkmark, BE \checkmark, CE \checkmark
-        all in $L_2$ $\rightarrow$ not pruned.
-  \item AC joins with nothing else in $L_2$ (no other pair starts with A) $\rightarrow$ no candidate.
-  \item Count BCE against the transactions: T2 $=\{B,C,E\}$ \checkmark, T3 $=\{A,B,C,E\}$ \checkmark
-        $\rightarrow$ count $=\mathbf{2}$ \checkmark (meets threshold).
-  \item $\mathbf{L_3 = \{BCE(2)\}}$. \ $C_4$ is empty (only one 3-itemset survived) $\rightarrow$ stop.
-\end{itemize}
 \lead{Final answer} Frequent itemsets: A, B, C, E, AC, BC, BE, CE, BCE.
 
 \creamq{Problem 1.3}{\m{10}}
@@ -145,6 +274,7 @@ table using Apriori algorithm with minimum support 2.
 Explain Apriori algorithm. Use Apriori to generate frequent item sets with support of 50\% for
 the following transaction database.
 \par\vspace{2pt}
+\par
 \begin{tabularx}{0.36\textwidth}{@{}L{1.9cm}X@{}}
 \toprule
 \hrow \thead{TID} & \thead{Items} \\
@@ -168,6 +298,7 @@ the following transaction database.
 \begin{asked}{2076 Chaitra \textperiodcentered{} Q7 \textperiodcentered{} [5+3]}
 Consider the transaction data shown in the following table from a fast food restaurant.
 \par\vspace{2pt}
+\par
 \begin{tabularx}{0.62\textwidth}{@{}L{2.3cm}X@{}}
 \toprule
 \hrow \thead{Meal Item} & \thead{List of Item IDs} \\
@@ -198,6 +329,7 @@ support is 2/9 and the minimum confidence is 7/9.
 Identify the candidate, frequent item sets and association rules for the following transaction
 data using Apriori algorithm.
 \par\vspace{2pt}
+\par
 \begin{tabularx}{0.50\textwidth}{@{}L{1.9cm}X@{}}
 \toprule
 \hrow \thead{TID} & \thead{ITEMS} \\
@@ -219,62 +351,197 @@ Take minimum support $=$ 20\%, minimum confidence 80\%
 count of 2}, so the frequent itemsets are the same; only the rule filter differs.}
 
 \lead{Frequent itemsets} (9 transactions, min count 2)
+
+\sbsr{0.42}{%
+\lead{Step 1: $C_1 \rightarrow L_1$}
+\par
+\begin{tabularx}{\linewidth}{@{}L{1.1cm}X L{1.0cm}L{0.9cm}@{}}
+\toprule
+\hrow \thead{Item} & \thead{In} & \thead{Count} & \thead{Keep} \\
+\midrule
+M1 & T1,4,5,7,8,9   & 6 & \checkmark \\
+M2 & T1,2,3,4,6,8,9 & 7 & \checkmark \\
+M3 & T3,5,6,7,8,9   & 6 & \checkmark \\
+M4 & T2,4           & 2 & \checkmark \\
+M5 & T1,8           & 2 & \checkmark \\
+\bottomrule
+\end{tabularx}
+\par\penalty0\vspace{1pt}
+\mk{Nothing is dropped} --- all 5 items clear a count of 2.}{%
+\lead{Step 2: $C_2 \rightarrow L_2$} \; all $\binom{5}{2} = 10$ pairs
+\par
+\begin{tabularx}{\linewidth}{@{}L{1.4cm}X L{1.0cm}L{0.9cm}@{}}
+\toprule
+\hrow \thead{Pair} & \thead{In} & \thead{Count} & \thead{Keep} \\
+\midrule
+M1M2 & T1, T4, T8, T9 & 4 & \checkmark \\
+M1M3 & T5, T7, T8, T9 & 4 & \checkmark \\
+M1M4 & T4             & 1 & \xmark \\
+M1M5 & T1, T8         & 2 & \checkmark \\
+M2M3 & T3, T6, T8, T9 & 4 & \checkmark \\
+M2M4 & T2, T4         & 2 & \checkmark \\
+M2M5 & T1, T8         & 2 & \checkmark \\
+M3M4 & ---            & 0 & \xmark \\
+M3M5 & T8             & 1 & \xmark \\
+M4M5 & ---            & 0 & \xmark \\
+\bottomrule
+\end{tabularx}}
+
+\penalty0\vspace{2pt}
+$\mathbf{L_2}$ $=$ \{$\mathbf{M1M2(4)}$, $\mathbf{M1M3(4)}$, $\mathbf{M1M5(2)}$,
+$\mathbf{M2M3(4)}$, $\mathbf{M2M4(2)}$, $\mathbf{M2M5(2)}$\}
+
+\penalty0\vspace{3pt}
+\lead{Step 3: $C_3 \rightarrow L_3$} \; join two $L_2$ pairs \mk{only when both are in $L_2$ and
+they share their first item}
+\par
+\begin{tabularx}{\textwidth}{@{}L{2.6cm}L{1.9cm}X L{1.5cm}L{1.0cm}L{0.9cm}@{}}
+\toprule
+\hrow \thead{Joined from} & \thead{Candidate} & \thead{Subset test} & \thead{In} & \thead{Count}
+& \thead{Keep} \\
+\midrule
+M1M2 $+$ M1M3 & M1M2M3 & M1M2 \checkmark\ M1M3 \checkmark\ M2M3 \checkmark & T8, T9 & 2 & \checkmark \\
+M1M2 $+$ M1M5 & M1M2M5 & M1M2 \checkmark\ M1M5 \checkmark\ M2M5 \checkmark & T1, T8 & 2 & \checkmark \\
+M1M3 $+$ M1M5 & M1M3M5 & M3M5 $\notin L_2$ $\rightarrow$ \mk{pruned} & --- & --- & \xmark \\
+M2M3 $+$ M2M4 & M2M3M4 & M3M4 $\notin L_2$ $\rightarrow$ \mk{pruned} & --- & --- & \xmark \\
+M2M3 $+$ M2M5 & M2M3M5 & M3M5 $\notin L_2$ $\rightarrow$ \mk{pruned} & --- & --- & \xmark \\
+M2M4 $+$ M2M5 & M2M4M5 & M4M5 $\notin L_2$ $\rightarrow$ \mk{pruned} & --- & --- & \xmark \\
+\bottomrule
+\end{tabularx}
+\par\penalty0\vspace{1pt}
+$\mathbf{L_3 = \{M1M2M3(2),\ M1M2M5(2)\}}$
 \begin{itemize}
-  \item \textbf{Step 1, $L_1$}: M1 in T1,T4,T5,T7,T8,T9 $\rightarrow$ 6. \
-        M2 in T1,T2,T3,T4,T6,T8,T9 $\rightarrow$ 7. \
-        M3 in T3,T5,T6,T7,T8,T9 $\rightarrow$ 6. \
-        M4 in T2,T4 $\rightarrow$ 2. \ M5 in T1,T8 $\rightarrow$ 2.
-  \item $\mathbf{L_1 = \{M1(6),\ M2(7),\ M3(6),\ M4(2),\ M5(2)\}}$ (nothing dropped, all 5 items clear count 2)
-  \item \textbf{Step 2, $C_2 \rightarrow L_2$}: check each pair against the table.
-        M1M2: T1,T4,T8,T9 $\rightarrow$ \textbf{4} \checkmark. \
-        M1M3: T5,T7,T8,T9 $\rightarrow$ \textbf{4} \checkmark. \
-        M1M4: T4 only $\rightarrow$ 1 \xmark. \
-        M1M5: T1,T8 $\rightarrow$ \textbf{2} \checkmark. \
-        M2M3: T3,T6,T8,T9 $\rightarrow$ \textbf{4} \checkmark. \
-        M2M4: T2,T4 $\rightarrow$ \textbf{2} \checkmark. \
-        M2M5: T1,T8 $\rightarrow$ \textbf{2} \checkmark. \
-        M3M4: never together $\rightarrow$ 0 \xmark. \
-        M3M5: T8 only $\rightarrow$ 1 \xmark. \
-        M4M5: never together $\rightarrow$ 0 \xmark.
-  \item $\mathbf{L_2 = \{M1M2(4),\ M1M3(4),\ M1M5(2),\ M2M3(4),\ M2M4(2),\ M2M5(2)\}}$;
-        dropped M1M4(1), M3M4(0), M3M5(1), M4M5(0)
-  \item \textbf{Step 3, $C_3$}: join pairs sharing a prefix, prune by subset, then count.
-        M1M2M3 (from M1M2 + M1M3, needs M2M3 too $\rightarrow$ present) $\rightarrow$ count in
-        T8,T9 $\rightarrow$ \textbf{2} \checkmark. \
-        M1M2M5 (from M1M2 + M1M5, needs M2M5 $\rightarrow$ present) $\rightarrow$ count in
-        T1,T8 $\rightarrow$ \textbf{2} \checkmark. \
-        M1M2M4 pruned (subset M1M4 $\notin L_2$). \
-        M2M3M5 pruned (subset M3M5 $\notin L_2$). \ M1M3M5 pruned (subset M3M5 $\notin L_2$).
-  \item $\mathbf{L_3 = \{M1M2M3(2),\ M1M2M5(2)\}}$
-  \item \textbf{Step 4, $C_4$}: only candidate is M1M2M3M5 (from M1M2M3 + M1M2M5), pruned because
-        its subset M1M3M5 $\notin L_3$ $\rightarrow$ $L_4$ empty $\rightarrow$ stop.
+  \item \mk{Note what is \emph{not} in the table}: M1M2M4 never appears, because generating it
+        would need M1M4, and M1M4 failed at step 2. \mk{A candidate is only ever built from two
+        surviving parents} --- it is not built and then pruned.
 \end{itemize}
 
-\sbs{%
-\lead{1.4 --- rules $X \wedge Y \Rightarrow Z$, min conf $7/9 = 0.778$}
+\penalty0\vspace{2pt}
+\lead{Step 4: $C_4 \rightarrow L_4$}
+\par
+\begin{tabularx}{\textwidth}{@{}L{2.4cm}L{1.8cm}X L{1.0cm}L{0.85cm}@{}}
+\toprule
+\hrow \thead{Joined from} & \thead{Candidate} & \thead{Subset test} & \thead{Count} & \thead{Keep} \\
+\midrule
+M1M2M3 $+$ M1M2M5 & M1M2M3M5 & M1M3M5 $\notin L_3$ $\rightarrow$ \mk{pruned} & --- & \xmark \\
+\bottomrule
+\end{tabularx}
+\par\penalty0\vspace{1pt}
+$L_4 = \emptyset$ $\rightarrow$ \textbf{stop}.
+
+\penalty0\vspace{2pt}
+\lead{The one idea that decides every rule below}
 \begin{itemize}
-  \item From M1M2M3 (sup 2): all three give $2/4 = 0.5$ \xmark
-  \item From M1M2M5 (sup 2):
-  \begin{itemize}
-    \item M1$\wedge$M2$\Rightarrow$M5 $= 2/4 = 0.5$ \xmark
-    \item \textbf{M1$\wedge$M5$\Rightarrow$M2 $= 2/2 = 1.0$} \checkmark
-    \item \textbf{M2$\wedge$M5$\Rightarrow$M1 $= 2/2 = 1.0$} \checkmark
-  \end{itemize}
+  \item Every rule out of an itemset $l$ has the \emph{same} numerator:
+        $conf(s \Rightarrow l-s) = \sigma(l)/\sigma(s)$. \mk{Only the antecedent's count moves.}
+  \item So a rule is strong exactly when \mk{the antecedent is nearly as rare as the whole
+        itemset} $\rightarrow$ when the antecedent hardly ever appears without the consequent.
+  \item Here $\sigma(\text{M4}) = \sigma(\text{M5}) = 2$, and both \emph{always} appear with their
+        partners. \mk{Expect every strong rule to have M4 or M5 on the left}, and check that
+        prediction against the tables. Nothing else can win, because M1, M2 and M3 each occur
+        6--7 times while no itemset containing them has support above 4.
 \end{itemize}
-\lead{Answer} 2 strong rules, both at 100\% confidence.}{%
-\lead{1.5 --- all rules, min conf 0.80}
+
+\penalty0\vspace{2pt}
+\lead{1.4 \; Rules of the form $X \wedge Y \Rightarrow Z$, \; min conf $= 7/9 = 0.778$}
 \begin{itemize}
-  \item \textbf{M5$\Rightarrow$M1} $=2/2=1.0$ \checkmark \quad \textbf{M5$\Rightarrow$M2} $=2/2=1.0$ \checkmark
-  \item \textbf{M4$\Rightarrow$M2} $=2/2=1.0$ \checkmark
-  \item \textbf{M5$\Rightarrow$M1$\wedge$M2} $=2/2=1.0$ \checkmark
-  \item Plus the two 3-itemset rules from 1.4.
-  \item All rules with M1, M2 or M3 as antecedent fail
-        (best is $4/6 = 0.667$).
+  \item That form means a \textbf{2-item antecedent and a 1-item consequent}, so only the
+        \textbf{3-itemsets} in $L_3$ can produce one. Two of them, three rules each
+        $\rightarrow$ \mk{6 candidates, and they are all of them}.
 \end{itemize}
+
+\sbsr{0.56}{%
+\par
+\begin{tabularx}{\linewidth}{@{}L{2.2cm}L{2.7cm}L{0.85cm}X@{}}
+\toprule
+\hrow \thead{From} & \thead{Rule} & \thead{$\sigma(XY)$} & \thead{Conf $= 2/\sigma(XY)$} \\
+\midrule
+M1M2M3 & M1$\wedge$M2$\Rightarrow$M3 & 4 & $0.50$ \xmark \\
+$\sigma = 2$ & M1$\wedge$M3$\Rightarrow$M2 & 4 & $0.50$ \xmark \\
+       & M2$\wedge$M3$\Rightarrow$M1 & 4 & $0.50$ \xmark \\
+\addlinespace[2pt]
+M1M2M5 & M1$\wedge$M2$\Rightarrow$M5 & 4 & $0.50$ \xmark \\
+$\sigma = 2$ & \textbf{M1$\wedge$M5$\Rightarrow$M2} & 2 & $\mathbf{1.00}$ \checkmark \\
+       & \textbf{M2$\wedge$M5$\Rightarrow$M1} & 2 & $\mathbf{1.00}$ \checkmark \\
+\bottomrule
+\end{tabularx}}{%
+\lead{Answer to 1.4}
 \begin{itemize}
-  \item \mk{Pattern}: only the \emph{rare} items (M4, M5) produce confident rules --- they never
-        appear without their partners.
+  \item \mk{\textbf{2 strong rules}, both at 100\,\% confidence}:
+        M1$\wedge$M5$\Rightarrow$M2 and M2$\wedge$M5$\Rightarrow$M1.
+  \item Every rule out of M1M2M3 fails, and all three fail \emph{identically} at $0.50$, because
+        all three of its 2-subsets happen to have $\sigma = 4$.
+  \item The two winners are exactly the ones predicted above: \mk{M5 is in the antecedent}, and
+        M5 occurs only in T1 and T8, both of which also hold M1 and M2.
 \end{itemize}}
+
+\penalty0\vspace{3pt}
+\lead{1.5 \; \emph{All} association rules, \; min conf $= 0.80$}
+\begin{itemize}
+  \item Now every frequent itemset with $|l| \ge 2$ contributes: six 2-itemsets ($2$ rules each)
+        and two 3-itemsets ($2^3 - 2 = 6$ rules each) $\rightarrow$ \mk{$12 + 12 = 24$ candidate
+        rules}. All 24 are listed, none is skipped.
+\end{itemize}
+
+\par
+\begin{tabularx}{\textwidth}{@{}L{1.9cm}L{2.8cm}L{0.75cm}L{1.45cm}@{\hspace{4pt}}L{1.9cm}L{2.8cm}L{0.75cm}X@{}}
+\toprule
+\hrow \thead{From} & \thead{Rule} & \thead{$\sigma(s)$} & \thead{Conf} &
+\thead{From} & \thead{Rule} & \thead{$\sigma(s)$} & \thead{Conf} \\
+\midrule
+M1M2 $(4)$ & M1$\Rightarrow$M2 & 6 & $0.67$ \xmark &
+M2M5 $(2)$ & M2$\Rightarrow$M5 & 7 & $0.29$ \xmark \\
+           & M2$\Rightarrow$M1 & 7 & $0.57$ \xmark &
+           & \textbf{M5$\Rightarrow$M2} & 2 & $\mathbf{1.00}$ \checkmark \\
+\addlinespace[2pt]
+M1M3 $(4)$ & M1$\Rightarrow$M3 & 6 & $0.67$ \xmark &
+M1M2M3 $(2)$ & M1$\Rightarrow$M2M3 & 6 & $0.33$ \xmark \\
+           & M3$\Rightarrow$M1 & 6 & $0.67$ \xmark &
+           & M2$\Rightarrow$M1M3 & 7 & $0.29$ \xmark \\
+\addlinespace[2pt]
+M1M5 $(2)$ & M1$\Rightarrow$M5 & 6 & $0.33$ \xmark &
+           & M3$\Rightarrow$M1M2 & 6 & $0.33$ \xmark \\
+           & \textbf{M5$\Rightarrow$M1} & 2 & $\mathbf{1.00}$ \checkmark &
+           & M1$\wedge$M2$\Rightarrow$M3 & 4 & $0.50$ \xmark \\
+\addlinespace[2pt]
+M2M3 $(4)$ & M2$\Rightarrow$M3 & 7 & $0.57$ \xmark &
+           & M1$\wedge$M3$\Rightarrow$M2 & 4 & $0.50$ \xmark \\
+           & M3$\Rightarrow$M2 & 6 & $0.67$ \xmark &
+           & M2$\wedge$M3$\Rightarrow$M1 & 4 & $0.50$ \xmark \\
+\addlinespace[2pt]
+M2M4 $(2)$ & M2$\Rightarrow$M4 & 7 & $0.29$ \xmark &
+M1M2M5 $(2)$ & M1$\Rightarrow$M2M5 & 6 & $0.33$ \xmark \\
+           & \textbf{M4$\Rightarrow$M2} & 2 & $\mathbf{1.00}$ \checkmark &
+           & M2$\Rightarrow$M1M5 & 7 & $0.29$ \xmark \\
+\addlinespace[2pt]
+           &  &  &  &
+           & \textbf{M5$\Rightarrow$M1$\wedge$M2} & 2 & $\mathbf{1.00}$ \checkmark \\
+           &  &  &  &
+           & M1$\wedge$M2$\Rightarrow$M5 & 4 & $0.50$ \xmark \\
+           &  &  &  &
+           & \textbf{M1$\wedge$M5$\Rightarrow$M2} & 2 & $\mathbf{1.00}$ \checkmark \\
+           &  &  &  &
+           & \textbf{M2$\wedge$M5$\Rightarrow$M1} & 2 & $\mathbf{1.00}$ \checkmark \\
+\bottomrule
+\end{tabularx}
+
+\lead{Answer to 1.5}
+\begin{itemize}
+  \item \mk{\textbf{6 strong rules}, every one of them at 100\,\% confidence}:
+  \begin{itemize}
+    \item[] M5$\Rightarrow$M1 \quad M5$\Rightarrow$M2 \quad M4$\Rightarrow$M2 \quad
+            M5$\Rightarrow$M1$\wedge$M2 \quad M1$\wedge$M5$\Rightarrow$M2 \quad
+            M2$\wedge$M5$\Rightarrow$M1
+  \end{itemize}
+  \item The other 18 fail, and \mk{the prediction held}: every survivor has M4 or M5 on the left.
+        M1, M2 and M3 are too frequent to be confident antecedents here, the best any of them
+        manages is $0.67$.
+  \item \textbf{Cross-check with 1.4}: the two rules found there must reappear here, since 1.4's
+        threshold ($0.778$) is the tighter of the two. They do, on the last two rows. \checkmark
+  \item \mk{Worth a closing sentence}: all six sit at 100\,\%, which by \S4.1 makes them
+        \emph{reliable but not surprising} $\rightarrow$ M4 and M5 are simply never ordered
+        alone. Confidence alone cannot see that; lift would.
+\end{itemize}
 
 \creamq{Problem 1.6}{\m{8}}
 \begin{asked}{2079 Bhadra \textperiodcentered{} Q5 \textperiodcentered{} [8]}
@@ -282,6 +549,7 @@ Derive association rule for the following market basket transactions.
 
 Minimum support $=$ 50\% \qquad Minimum confidence $=$ 80\%
 \par\vspace{2pt}
+\par
 \begin{tabularx}{0.46\textwidth}{@{}L{3.0cm}X@{}}
 \toprule
 \hrow \thead{Transaction ID} & \thead{Item Set} \\
@@ -294,21 +562,449 @@ Minimum support $=$ 50\% \qquad Minimum confidence $=$ 80\%
 \bottomrule
 \end{tabularx}
 \end{asked}
-{\color{sub}\footnotesize \mk{This one has a surprise.}}
-\begin{itemize}
-  \item 6 transactions, 50\% $\rightarrow$ min count $=3$.
-  \item $L_1$: A(4), B(3), E(3) \quad (C:2 \xmark, D:2 \xmark)
-  \item $C_2$: AB $=1$ \xmark \quad AE $=1$ \xmark \quad BE $=2$ \xmark
-  \item $\mathbf{L_2 = \emptyset}$
-\end{itemize}
+{\color{sub}\footnotesize \mk{This one has a surprise.} \gap 6 transactions,
+50\,\% $\rightarrow$ min count $= 3$.}
+
+\sbs{%
+\lead{Step 1: $C_1 \rightarrow L_1$}
+\par
+\begin{tabularx}{\linewidth}{@{}L{1.0cm}X L{1.0cm}L{0.9cm}@{}}
+\toprule
+\hrow \thead{Item} & \thead{In} & \thead{Count} & \thead{Keep} \\
+\midrule
+A & 1, 2, 3, 6 & 4 & \checkmark \\
+B & 1, 4, 5    & 3 & \checkmark \\
+C & 3, 6       & 2 & \xmark \\
+D & 2, 5       & 2 & \xmark \\
+E & 4, 5, 6    & 3 & \checkmark \\
+\bottomrule
+\end{tabularx}
+\par\penalty0\vspace{1pt}
+$\mathbf{L_1 = \{A(4),\ B(3),\ E(3)\}}$}{%
+\lead{Step 2: $C_2 \rightarrow L_2$} \; the 3 pairs from $L_1$
+\par
+\begin{tabularx}{\linewidth}{@{}L{1.0cm}X L{1.0cm}L{0.9cm}@{}}
+\toprule
+\hrow \thead{Pair} & \thead{In} & \thead{Count} & \thead{Keep} \\
+\midrule
+AB & 1     & 1 & \xmark \\
+AE & 6     & 1 & \xmark \\
+BE & 4, 5  & 2 & \xmark \\
+\bottomrule
+\end{tabularx}
+\par\penalty0\vspace{1pt}
+$\mathbf{L_2 = \emptyset}$ \; --- every pair falls short.}
+
 \lead{Final answer}
 \begin{itemize}
   \item \mk{No frequent 2-itemset exists, so \textbf{no association rule can be derived} at
-        50\% support.} Say this explicitly --- it is the correct answer, not a dead end.
+        50\,\% support.} Say this explicitly --- it is the correct answer, not a dead end.
+  \item And it holds \mk{for every confidence threshold, including 0\,\%}: a rule needs a
+        2-itemset to split, and there is none. \mk{Lowering min\_conf cannot rescue it, only
+        lowering min\_sup can} (\S4.2).
   \item \textbf{Show you understand why}: the data is spread thin, every pair occurs at most twice.
-  \item \textbf{If min support is relaxed to 33.3\%} (count 2): $L_2 = \{AC(2),\ BE(2)\}$,
-        and the only rule clearing 80\% confidence is \textbf{C$\Rightarrow$A} at
-        $2/2 = 100\%$. Worth adding as a one-line remark. \added
+  \item \textbf{If min support is relaxed to 33.3\,\%} (count 2), the picture changes:
+\end{itemize}
+
+\par
+\begin{tabularx}{\textwidth}{@{}L{1.5cm}L{1.1cm}L{2.5cm}L{1.5cm}X@{}}
+\toprule
+\hrow \thead{New $L_2$} & \thead{Count} & \thead{Rule} & \thead{Confidence} & \thead{Strong at 80\,\%?} \\
+\midrule
+AC & 2 & A $\Rightarrow$ C & $2/4 = 0.50$ & \xmark \\
+   &   & \textbf{C $\Rightarrow$ A} & $\mathbf{2/2 = 1.00}$ & \checkmark \\
+\addlinespace[2pt]
+BE & 2 & B $\Rightarrow$ E & $2/3 = 0.67$ & \xmark \\
+   &   & E $\Rightarrow$ B & $2/3 = 0.67$ & \xmark \\
+\bottomrule
+\end{tabularx}
+\par\penalty0\vspace{1pt}
+\mk{One rule survives}: \textbf{C $\Rightarrow$ A} at 100\,\%. Worth adding as a closing
+remark. \added
+
+\creamq{Problem 1.7}{\m{2+8}}
+\begin{asked}{2082 Bhadra \textperiodcentered{} Q4 \textperiodcentered{} [2+8]}
+Explain the term support and confidence in association analysis. Derive association rule for
+following transaction considering minimum support $=$ 60\% and confidence $=$ 80\% using Apriori
+Algorithm.
+\par\penalty0\vspace{2pt}
+\par
+\begin{tabularx}{0.52\textwidth}{@{}L{1.6cm}X@{}}
+\toprule
+\hrow \thead{TID} & \thead{Transaction} \\
+T1 & A, B, C, D, E, F \\
+T2 & B, C, D, E, F, G \\
+T3 & A, D, E, H \\
+T4 & A, D, F, I, J \\
+T5 & B, D, E, K \\
+\bottomrule
+\end{tabularx}
+\end{asked}
+{\color{sub}\footnotesize 5 transactions, 60\,\% $\rightarrow$ \mk{min count $= 3$}.}
+
+\sbs{%
+\lead{Step 1: $C_1 \rightarrow L_1$} \; 11 distinct items
+\par
+\begin{tabularx}{\linewidth}{@{}L{1.0cm}XL{1.0cm}L{0.9cm}@{}}
+\toprule
+\hrow \thead{Item} & \thead{In} & \thead{Cnt} & \thead{Keep} \\
+\midrule
+A & T1, T3, T4     & 3 & \checkmark \\
+B & T1, T2, T5     & 3 & \checkmark \\
+C & T1, T2         & 2 & \xmark \\
+D & T1--T5         & 5 & \checkmark \\
+E & T1, T2, T3, T5 & 4 & \checkmark \\
+F & T1, T2, T4     & 3 & \checkmark \\
+G & T2             & 1 & \xmark \\
+H & T3             & 1 & \xmark \\
+I & T4             & 1 & \xmark \\
+J & T4             & 1 & \xmark \\
+K & T5             & 1 & \xmark \\
+\bottomrule
+\end{tabularx}
+\par\penalty0\vspace{1pt}
+$\mathbf{L_1 = \{A(3), B(3), D(5), E(4), F(3)\}}$}{%
+\lead{Step 2: $C_2 \rightarrow L_2$} \; all $\binom{5}{2} = 10$ pairs
+\par
+\begin{tabularx}{\linewidth}{@{}L{1.2cm}XL{1.0cm}L{0.9cm}@{}}
+\toprule
+\hrow \thead{Pair} & \thead{In} & \thead{Cnt} & \thead{Keep} \\
+\midrule
+AB & T1             & 1 & \xmark \\
+AD & T1, T3, T4     & 3 & \checkmark \\
+AE & T1, T3         & 2 & \xmark \\
+AF & T1, T4         & 2 & \xmark \\
+BD & T1, T2, T5     & 3 & \checkmark \\
+BE & T1, T2, T5     & 3 & \checkmark \\
+BF & T1, T2         & 2 & \xmark \\
+DE & T1, T2, T3, T5 & 4 & \checkmark \\
+DF & T1, T2, T4     & 3 & \checkmark \\
+EF & T1, T2         & 2 & \xmark \\
+\bottomrule
+\end{tabularx}
+\par\penalty0\vspace{1pt}
+$\mathbf{L_2 = \{AD(3), BD(3), BE(3), DE(4), DF(3)\}}$}
+
+\penalty0\vspace{3pt}
+\lead{Step 3: $C_3 \rightarrow L_3$}
+\par
+\begin{tabularx}{\textwidth}{@{}L{2.2cm}L{1.6cm}X L{2.2cm}L{1.0cm}L{0.9cm}@{}}
+\toprule
+\hrow \thead{Joined from} & \thead{Cand.} & \thead{Subset test} & \thead{In} & \thead{Cnt}
+& \thead{Keep} \\
+\midrule
+BD $+$ BE & \textbf{BDE} & BD \checkmark\ BE \checkmark\ DE \checkmark & T1, T2, T5 & 3 & \checkmark \\
+AD $+$ --- & none & AD is the only pair starting with A & --- & --- & --- \\
+DE $+$ DF & DEF & EF $\notin L_2$ $\rightarrow$ \mk{pruned} & --- & --- & \xmark \\
+\bottomrule
+\end{tabularx}
+\par\penalty0\vspace{1pt}
+$\mathbf{L_3 = \{BDE(3)\}}$; \; $C_4 = \emptyset$ $\rightarrow$ \textbf{stop}.
+
+\lead{Step 4: the rules} \; $5 \times 2 + (2^3-2) = \mathbf{16}$ candidates, min conf 80\,\%
+\par
+\begin{tabularx}{\textwidth}{@{}L{1.8cm}L{2.6cm}L{0.9cm}L{1.7cm}@{\hspace{6pt}}L{1.8cm}L{2.6cm}L{0.9cm}X@{}}
+\toprule
+\hrow \thead{From} & \thead{Rule} & \thead{$\sigma(s)$} & \thead{Conf} &
+      \thead{From} & \thead{Rule} & \thead{$\sigma(s)$} & \thead{Conf} \\
+\midrule
+AD $(3)$ & \textbf{A $\Rightarrow$ D} & 3 & $\mathbf{1.00}$ \checkmark &
+DF $(3)$ & D $\Rightarrow$ F & 5 & $0.60$ \xmark \\
+         & D $\Rightarrow$ A & 5 & $0.60$ \xmark &
+         & \textbf{F $\Rightarrow$ D} & 3 & $\mathbf{1.00}$ \checkmark \\
+\addlinespace[2pt]
+BD $(3)$ & \textbf{B $\Rightarrow$ D} & 3 & $\mathbf{1.00}$ \checkmark &
+BDE $(3)$ & \textbf{B $\Rightarrow$ DE} & 3 & $\mathbf{1.00}$ \checkmark \\
+         & D $\Rightarrow$ B & 5 & $0.60$ \xmark &
+          & D $\Rightarrow$ BE & 5 & $0.60$ \xmark \\
+\addlinespace[2pt]
+BE $(3)$ & \textbf{B $\Rightarrow$ E} & 3 & $\mathbf{1.00}$ \checkmark &
+          & E $\Rightarrow$ BD & 4 & $0.75$ \xmark \\
+         & E $\Rightarrow$ B & 4 & $0.75$ \xmark &
+          & \textbf{BD $\Rightarrow$ E} & 3 & $\mathbf{1.00}$ \checkmark \\
+\addlinespace[2pt]
+DE $(4)$ & \textbf{D $\Rightarrow$ E} & 5 & $\mathbf{0.80}$ \checkmark &
+          & \textbf{BE $\Rightarrow$ D} & 3 & $\mathbf{1.00}$ \checkmark \\
+         & \textbf{E $\Rightarrow$ D} & 4 & $\mathbf{1.00}$ \checkmark &
+          & DE $\Rightarrow$ B & 4 & $0.75$ \xmark \\
+\bottomrule
+\end{tabularx}
+\begin{itemize}
+  \item \mk{\textbf{9 strong rules} of 16.} $D \Rightarrow E$ scrapes in at exactly $0.80$
+        --- \mk{$\ge$ the threshold counts as passing}, so keep it.
+  \item Every failure has $D$ or $E$ alone on the left. $D$ is in \emph{all five} transactions,
+        so it predicts nothing (\S4.1); it is the consequent of four winning rules instead.
+\end{itemize}
+
+\creamq{Problem 1.8}{\m{2+6}}
+\begin{asked}{2081 Bhadra \textperiodcentered{} Q7 \textperiodcentered{} [2+6]}
+For the transaction given below, consider Confidence $=$ 65\% and minimum support $=$ 50\%.
+Identify frequent itemsets with possible association rules using Apriori Algorithm.
+\par\penalty0\vspace{2pt}
+\par
+\begin{tabularx}{0.56\textwidth}{@{}L{1.3cm}X@{}}
+\toprule
+\hrow \thead{TID} & \thead{Items} \\
+1 & MILK, BREAD, CAKE \\
+2 & BUTTER, BREAD, EGG \\
+3 & MILK, BUTTER, BREAD, EGG \\
+4 & BUTTER, EGG \\
+\bottomrule
+\end{tabularx}
+\end{asked}
+{\color{sub}\footnotesize 4 transactions, 50\,\% $\rightarrow$ \mk{min count $= 2$}.
+\gap \mk{Note the unusually low confidence bar}, 65\,\%, which is why almost everything survives.}
+
+\sbs{%
+\lead{Step 1: $C_1 \rightarrow L_1$}
+\par
+\begin{tabularx}{\linewidth}{@{}L{1.7cm}XL{1.0cm}L{0.9cm}@{}}
+\toprule
+\hrow \thead{Item} & \thead{In} & \thead{Cnt} & \thead{Keep} \\
+\midrule
+MILK   & 1, 3    & 2 & \checkmark \\
+BREAD  & 1, 2, 3 & 3 & \checkmark \\
+CAKE   & 1       & 1 & \xmark \\
+BUTTER & 2, 3, 4 & 3 & \checkmark \\
+EGG    & 2, 3, 4 & 3 & \checkmark \\
+\bottomrule
+\end{tabularx}
+\par\penalty0\vspace{1pt}
+$\mathbf{L_1 = \{MILK(2), BREAD(3), BUTTER(3), EGG(3)\}}$}{%
+\lead{Step 2: $C_2 \rightarrow L_2$} \; 6 pairs
+\par
+\begin{tabularx}{\linewidth}{@{}L{2.6cm}XL{1.0cm}L{0.9cm}@{}}
+\toprule
+\hrow \thead{Pair} & \thead{In} & \thead{Cnt} & \thead{Keep} \\
+\midrule
+BREAD, BUTTER & 2, 3    & 2 & \checkmark \\
+BREAD, EGG    & 2, 3    & 2 & \checkmark \\
+BREAD, MILK   & 1, 3    & 2 & \checkmark \\
+BUTTER, EGG   & 2, 3, 4 & 3 & \checkmark \\
+BUTTER, MILK  & 3       & 1 & \xmark \\
+EGG, MILK     & 3       & 1 & \xmark \\
+\bottomrule
+\end{tabularx}}
+
+\penalty0\vspace{2pt}
+\lead{Step 3: $C_3 \rightarrow L_3$}
+\par
+\begin{tabularx}{\textwidth}{@{}L{4.2cm}L{3.6cm}X L{1.0cm}L{0.9cm}@{}}
+\toprule
+\hrow \thead{Joined from} & \thead{Candidate} & \thead{Subset test} & \thead{Cnt} & \thead{Keep} \\
+\midrule
+\{BR,BU\} $+$ \{BR,EG\} & \textbf{BREAD, BUTTER, EGG} &
+  all three 2-subsets in $L_2$ \checkmark & 2 & \checkmark \\
+\{BR,BU\} $+$ \{BR,MI\} & BREAD, BUTTER, MILK & \{BU,MI\} $\notin L_2$ $\rightarrow$ \mk{pruned}
+  & --- & \xmark \\
+\{BR,EG\} $+$ \{BR,MI\} & BREAD, EGG, MILK & \{EG,MI\} $\notin L_2$ $\rightarrow$ \mk{pruned}
+  & --- & \xmark \\
+\bottomrule
+\end{tabularx}
+\par\penalty0\vspace{1pt}
+$\mathbf{L_3 = \{\{BREAD, BUTTER, EGG\}(2)\}}$, \; $C_4 = \emptyset$ $\rightarrow$ stop.
+
+\lead{Step 4: the rules} \; $4 \times 2 + 6 = \mathbf{14}$ candidates, min conf 65\,\%
+\par
+\begin{tabularx}{\textwidth}{@{}L{4.6cm}L{1.0cm}L{1.7cm}@{\hspace{8pt}}L{4.6cm}L{1.0cm}X@{}}
+\toprule
+\hrow \thead{Rule} & \thead{$\sigma(s)$} & \thead{Conf} &
+      \thead{Rule} & \thead{$\sigma(s)$} & \thead{Conf} \\
+\midrule
+BREAD $\Rightarrow$ BUTTER & 3 & $0.667$ \checkmark &
+BUTTER $\Rightarrow$ EGG   & 3 & $\mathbf{1.00}$ \checkmark \\
+BUTTER $\Rightarrow$ BREAD & 3 & $0.667$ \checkmark &
+EGG $\Rightarrow$ BUTTER   & 3 & $\mathbf{1.00}$ \checkmark \\
+BREAD $\Rightarrow$ EGG    & 3 & $0.667$ \checkmark &
+BREAD $\Rightarrow$ BU,EG  & 3 & $0.667$ \checkmark \\
+EGG $\Rightarrow$ BREAD    & 3 & $0.667$ \checkmark &
+BUTTER $\Rightarrow$ BR,EG & 3 & $0.667$ \checkmark \\
+BREAD $\Rightarrow$ MILK   & 3 & $0.667$ \checkmark &
+EGG $\Rightarrow$ BR,BU    & 3 & $0.667$ \checkmark \\
+MILK $\Rightarrow$ BREAD   & 2 & $\mathbf{1.00}$ \checkmark &
+BR,BU $\Rightarrow$ EGG    & 2 & $\mathbf{1.00}$ \checkmark \\
+                           &   &                 &
+BR,EG $\Rightarrow$ BUTTER & 2 & $\mathbf{1.00}$ \checkmark \\
+                           &   &                 &
+BU,EG $\Rightarrow$ BREAD  & 3 & $0.667$ \checkmark \\
+\bottomrule
+\end{tabularx}
+\begin{itemize}
+  \item \mk{All 14 rules are strong.} That is the point of the 65\,\% threshold: the lowest
+        confidence anywhere in this database is $2/3 = 0.667$, which clears it.
+  \item \mk{Say so explicitly rather than listing 14 rules and stopping} --- ``every candidate
+        rule passes, because min\_conf sits below the minimum achievable confidence here'' is the
+        observation worth a mark. Raise the bar to 70\,\% and only the five 100\,\% rules survive.
+\end{itemize}
+
+\creamq{Problem 1.9}{\m{3+7}}
+\begin{asked}{2073 Chaitra \textperiodcentered{} Q5 \textperiodcentered{} [3+7]}
+Explain Apriori algorithm in market basket analysis? Derive association rule from the following
+market basket transactions with 50\% of minimum support and confidence respectively.
+\par\penalty0\vspace{2pt}
+\par
+\begin{tabularx}{0.44\textwidth}{@{}L{2.6cm}X@{}}
+\toprule
+\hrow \thead{Transaction} & \thead{Itemsets} \\
+1 & A, B, C \\
+2 & A, C \\
+3 & A, D \\
+4 & B, E, F \\
+\bottomrule
+\end{tabularx}
+\end{asked}
+{\color{sub}\footnotesize ``50\,\% of minimum support and confidence respectively'' means
+\mk{both} thresholds are 50\,\%: min count $= 2$, min conf $= 0.50$.}
+
+\sbs{%
+\lead{Step 1: $C_1 \rightarrow L_1$}
+\par
+\begin{tabularx}{\linewidth}{@{}L{1.0cm}XL{1.0cm}L{0.9cm}@{}}
+\toprule
+\hrow \thead{Item} & \thead{In} & \thead{Cnt} & \thead{Keep} \\
+\midrule
+A & 1, 2, 3 & 3 & \checkmark \\
+B & 1, 4    & 2 & \checkmark \\
+C & 1, 2    & 2 & \checkmark \\
+D & 3       & 1 & \xmark \\
+E & 4       & 1 & \xmark \\
+F & 4       & 1 & \xmark \\
+\bottomrule
+\end{tabularx}
+\par\penalty0\vspace{1pt}
+$\mathbf{L_1 = \{A(3), B(2), C(2)\}}$}{%
+\lead{Step 2: $C_2 \rightarrow L_2$}
+\par
+\begin{tabularx}{\linewidth}{@{}L{1.2cm}XL{1.0cm}L{0.9cm}@{}}
+\toprule
+\hrow \thead{Pair} & \thead{In} & \thead{Cnt} & \thead{Keep} \\
+\midrule
+AB & 1    & 1 & \xmark \\
+AC & 1, 2 & 2 & \checkmark \\
+BC & 1    & 1 & \xmark \\
+\bottomrule
+\end{tabularx}
+\par\penalty0\vspace{1pt}
+$\mathbf{L_2 = \{AC(2)\}}$; only one pair survives, so $C_3 = \emptyset$ $\rightarrow$ stop.}
+
+\lead{Step 3: the rules} \; only $\{A,C\}$ can produce any, so $2^2-2 = 2$ candidates
+\par
+\begin{tabularx}{\textwidth}{@{}L{3.0cm}L{2.0cm}L{3.0cm}X@{}}
+\toprule
+\hrow \thead{Rule} & \thead{$\sigma(s)$} & \thead{Confidence} & \thead{Strong at 50\,\%?} \\
+\midrule
+A $\Rightarrow$ C & 3 & $2/3 = 0.667$ & \checkmark \\
+C $\Rightarrow$ A & 2 & $2/2 = 1.000$ & \checkmark \\
+\bottomrule
+\end{tabularx}
+\begin{itemize}
+  \item \mk{Both are strong}: \textbf{A $\Rightarrow$ C} (67\,\%) and
+        \textbf{C $\Rightarrow$ A} (100\,\%).
+  \item \mk{Transaction 4 contributes nothing.} $\{B,E,F\}$ shares no item pattern with the rest,
+        which is why $B$ survives as a 1-itemset but never appears in a rule. Worth a sentence.
+\end{itemize}
+
+\creamq{Problem 1.10}{\m{5+3}}
+\begin{asked}{2079 Baishakh \textperiodcentered{} Q5 \textperiodcentered{} [5+3]}
+a) Write Apriori algorithm and using the algorithm find all the frequent itemset for the
+following database. (min\_sup $=$ 20\%).
+\par\penalty0\vspace{2pt}
+\par
+\begin{tabularx}{0.86\textwidth}{@{}L{1.1cm}L{0.8cm}L{0.8cm}L{0.8cm}L{0.8cm}L{0.8cm}L{0.8cm}L{0.8cm}L{0.8cm}X@{}}
+\toprule
+\hrow \thead{TID} & \thead{A1} & \thead{A2} & \thead{A3} & \thead{A4} & \thead{A5} & \thead{A6}
+ & \thead{A7} & \thead{A8} & \thead{A9} \\
+\midrule
+T2 & 0 & 1 & 0 & 1 & 0 & 0 & 0 & 1 & 0 \\
+T3 & 0 & 0 & 0 & 1 & 1 & 0 & 1 & 0 & 0 \\
+T4 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 \\
+T5 & 0 & 0 & 0 & 0 & 1 & 1 & 1 & 0 & 0 \\
+T6 & 0 & 1 & 1 & 1 & 0 & 0 & 0 & 0 & 0 \\
+T7 & 0 & 1 & 0 & 0 & 0 & 1 & 1 & 0 & 1 \\
+T8 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 \\
+\bottomrule
+\end{tabularx}
+\par\penalty0\vspace{2pt}
+b) Is it possible to generate any rules out of the frequent items, considering any value of
+confidence threshold?
+\end{asked}
+{\color{sub}\footnotesize \mk{The table really does start at T2}, has seven rows, and its 8th
+column really is headed \texttt{A8} (the scan clips the 8). \gap $20\,\%$ of 7 transactions
+$= 1.4$, and a count cannot be fractional, so \mk{min count $= 2$}. \gap
+\mk{Column A1 is 0 in every row} --- it can never be frequent, so drop it at once and say why.}
+
+\sbs{%
+\lead{(a) Step 1: $C_1 \rightarrow L_1$}
+\par
+\begin{tabularx}{\linewidth}{@{}L{1.1cm}XL{1.0cm}L{0.9cm}@{}}
+\toprule
+\hrow \thead{Item} & \thead{In} & \thead{Cnt} & \thead{Keep} \\
+\midrule
+A1 & --- \mk{(all zero)} & 0 & \xmark \\
+A2 & T2, T6, T7 & 3 & \checkmark \\
+A3 & T4, T6     & 2 & \checkmark \\
+A4 & T2, T3, T6 & 3 & \checkmark \\
+A5 & T3, T5, T8 & 3 & \checkmark \\
+A6 & T5, T7     & 2 & \checkmark \\
+A7 & T3, T5, T7 & 3 & \checkmark \\
+A8 & T2         & 1 & \xmark \\
+A9 & T7         & 1 & \xmark \\
+\bottomrule
+\end{tabularx}}{%
+\lead{Step 2: $C_2 \rightarrow L_2$} \; $\binom{6}{2} = 15$ pairs
+\par
+\begin{tabularx}{\linewidth}{@{}L{1.6cm}L{1.0cm}L{0.9cm}@{\hspace{8pt}}L{1.6cm}L{1.0cm}X@{}}
+\toprule
+\hrow \thead{Pair} & \thead{Cnt} & \thead{Keep} & \thead{Pair} & \thead{Cnt} & \thead{Keep} \\
+\midrule
+A2,A3 & 1 & \xmark     & A4,A5 & 1 & \xmark \\
+A2,A4 & 2 & \checkmark & A4,A6 & 0 & \xmark \\
+A2,A5 & 0 & \xmark     & A4,A7 & 1 & \xmark \\
+A2,A6 & 1 & \xmark     & A5,A6 & 1 & \xmark \\
+A2,A7 & 1 & \xmark     & A5,A7 & 2 & \checkmark \\
+A3,A4 & 1 & \xmark     & A6,A7 & 2 & \checkmark \\
+A3,A5 & 0 & \xmark     &       &   & \\
+A3,A6 & 0 & \xmark     &       &   & \\
+A3,A7 & 0 & \xmark     &       &   & \\
+\bottomrule
+\end{tabularx}}
+
+\penalty0\vspace{2pt}
+\lead{Step 3: $C_3$}
+\begin{itemize}
+  \item $L_2 = \{\text{A2A4}(2),\ \text{A5A7}(2),\ \text{A6A7}(2)\}$.
+  \item To build a 3-itemset two pairs must \mk{share their first item}. A2A4, A5A7 and A6A7 all
+        start with a different item, so \mk{no candidate can be formed at all}
+        $\rightarrow$ $C_3 = \emptyset$ $\rightarrow$ stop.
+  \item \textbf{Frequent itemsets}: A2, A3, A4, A5, A6, A7, \{A2,A4\}, \{A5,A7\}, \{A6,A7\}.
+\end{itemize}
+
+\lead{(b) Can any rule be generated, at \emph{any} confidence threshold?}
+\begin{itemize}
+  \item \mk{Yes.} The question is a trap only if you stop at $L_1$: a rule needs a frequent
+        itemset of size $\ge 2$ to split into antecedent and consequent, and here \mk{three
+        2-itemsets survive}, so rules exist.
+  \item Each 2-itemset yields $2^2 - 2 = 2$ rules, so \mk{6 rules in total}:
+\end{itemize}
+\par
+\begin{tabularx}{\textwidth}{@{}L{2.6cm}L{1.2cm}L{2.6cm}X@{}}
+\toprule
+\hrow \thead{Rule} & \thead{$\sigma(s)$} & \thead{Confidence} & \thead{Comment} \\
+\midrule
+A2 $\Rightarrow$ A4 & 3 & $2/3 = 0.667$ & \\
+A4 $\Rightarrow$ A2 & 3 & $2/3 = 0.667$ & \\
+A5 $\Rightarrow$ A7 & 3 & $2/3 = 0.667$ & \\
+A7 $\Rightarrow$ A5 & 3 & $2/3 = 0.667$ & \\
+A6 $\Rightarrow$ A7 & 2 & $2/2 = 1.000$ & \mk{A6 never occurs without A7} \\
+A7 $\Rightarrow$ A6 & 3 & $2/3 = 0.667$ & \\
+\bottomrule
+\end{tabularx}
+\begin{itemize}
+  \item So the honest answer is: \mk{rules exist for any threshold up to 0.667}, and above that
+        only \textbf{A6 $\Rightarrow$ A7} survives. Above $1.0$ nothing does.
+  \item \mk{The general principle} (\S4.2): rules exist iff $L_2 \ne \emptyset$. \textbf{Check
+        $L_2$, not the confidence value} --- if $L_2$ were empty no threshold, not even 0\,\%,
+        could produce a rule. Compare Problem 1.6, where exactly that happens.
 \end{itemize}
 
 \hr
@@ -370,6 +1066,7 @@ K,E $\Rightarrow$ O & $3/4$ & 0.75 & \xmark \\
 What is limitation of Apriori algorithm compared to FP-growth? A database has 5 transactions,
 given in table below. Let min support $=$ 60\% and min confidence $=$ 80\%.
 \par\vspace{2pt}
+\par
 \begin{tabularx}{0.50\textwidth}{@{}L{1.9cm}X@{}}
 \toprule
 \hrow \thead{TID} & \thead{Item\_bought} \\
@@ -407,26 +1104,97 @@ T500 & \{C, O, O, K, I, E\} \\
   \item T500 $\rightarrow$ K, E, O
 \end{itemize}
 \lead{Step 3: the FP-tree}
+\par\penalty0\vspace{1pt}
+\begin{center}
+\par
+\begin{tikzpicture}[fptree, level 1/.style={sibling distance=30mm},
+                    level 2/.style={sibling distance=15mm},
+                    level 3/.style={sibling distance=13mm}, scale=0.9]
+\node[fproot]{root}
+  child { node{K:5}
+    child { node{E:4}
+      child { node{M:2} child { node{O:1} child { node{Y:1} } } }
+      child { node{O:2} child { node{Y:1} } } }
+    child { node{M:1} child { node{Y:1} } } };
+\end{tikzpicture}
+\end{center}
 \begin{itemize}
-  \item \texttt{root}
-  \item \quad$\rightarrow$ \texttt{K:5}
-  \item \qquad$\rightarrow$ \texttt{E:4}
-  \item \qquad\quad$\rightarrow$ \texttt{M:2} $\rightarrow$ \texttt{O:1} $\rightarrow$ \texttt{Y:1}
-  \item \qquad\quad$\rightarrow$ \texttt{O:2} $\rightarrow$ \texttt{Y:1}
-  \item \qquad$\rightarrow$ \texttt{M:1} $\rightarrow$ \texttt{Y:1}
   \item \mk{Check}: counts on each level sum correctly --- K:5 $=$ E:4 $+$ M:1. \checkmark
 \end{itemize}}{%
-\lead{Step 4: mine bottom-up}
-\begin{tabularx}{\linewidth}{@{}L{1.1cm}XL{3.3cm}@{}}
+\lead{The node-link (header) table}
+\begin{itemize}
+  \item One entry per F-list item, pointing at every node carrying that label:
+  \begin{itemize}
+    \item[] K $\rightarrow$ \texttt{K:5}
+    \item[] E $\rightarrow$ \texttt{E:4}
+    \item[] M $\rightarrow$ \texttt{M:2} (under E), \texttt{M:1} (under K)
+    \item[] O $\rightarrow$ \texttt{O:1} (under M), \texttt{O:2} (under E)
+    \item[] Y $\rightarrow$ \texttt{Y:1} $\times$ 3 (three different branches)
+  \end{itemize}
+  \item \mk{This table is what makes mining possible} --- it is how you find all occurrences of an
+        item without walking the tree.
+\end{itemize}}
+
+\penalty0\vspace{3pt}
+\lead{Step 4: mine the tree bottom-up \mk{(FP-Growth proper --- this is where the marks are)}}
+
+\begin{itemize}
+  \item \textbf{The procedure, for one item $i$ at a time, taken in \mk{reverse F-list order}}
+        (least frequent first, so Y $\rightarrow$ O $\rightarrow$ M $\rightarrow$ E $\rightarrow$ K):
+  \begin{enumerate}
+    \item Follow $i$'s node-links to \mk{every} node labelled $i$.
+    \item For each such node, write down the \textbf{prefix path}: the labels from the root down
+          to it, \mk{excluding $i$ itself}, and tag that whole path with \mk{the count of the
+          $i$-node}, not the counts written on the path. Together these are $i$'s
+          \textbf{conditional pattern base}.
+    \item Add up each label's tag totals across the base. Drop labels below min count.
+          What remains is $i$'s \textbf{conditional FP-tree}.
+    \item Every itemset in that conditional tree, with $i$ appended, is frequent. Its support is
+          the count in the conditional tree.
+    \item If the conditional tree branches, recurse on it the same way.
+  \end{enumerate}
+  \item \mk{The single most common mistake} is truncating a prefix path. A path is the
+        \emph{whole} route from the root, so an item sitting between the root and $i$ stays in
+        even when it is not adjacent to $i$.
+\end{itemize}
+
+\par
+\begin{tabularx}{\textwidth}{@{}L{0.9cm}L{5.4cm}L{4.1cm}X@{}}
 \toprule
-\hrow \thead{Item} & \thead{Conditional pattern base} & \thead{Frequent patterns} \\
-Y & \{K,E,M:1\}, \{K,E:1\}, \{K,M:1\} \newline counts K:3, E:2, M:2 & \{K,Y\}:3 \\
-O & \{K,E,M:1\}, \{K,E:2\} \newline counts K:3, E:3 & \{K,O\}:3, \{E,O\}:3, \newline \textbf{\{K,E,O\}:3} \\
-M & \{K,E:2\}, \{K:1\} \newline counts K:3, E:2 & \{K,M\}:3 \\
-E & \{K:4\} & \{K,E\}:4 \\
-K & --- & \{K\}:5 \\
+\hrow \thead{Item} & \thead{Conditional pattern base} & \thead{Totals $\rightarrow$ cond. FP-tree}
+& \thead{Frequent patterns} \\
+\midrule
+Y & \{K,E,M,O\}:1 \newline \{K,E,O\}:1 \newline \{K,M\}:1 &
+    K:3, E:2, M:2, O:2 \newline $\rightarrow$ \mk{only} \texttt{K:3} &
+    \{K,Y\}:3 \\
+\addlinespace[2pt]
+O & \{K,E,M\}:1 \newline \{K,E\}:2 &
+    K:3, E:3, M:1 \newline $\rightarrow$ \texttt{K:3}$\rightarrow$\texttt{E:3} &
+    \{K,O\}:3, \{E,O\}:3, \newline \textbf{\{K,E,O\}:3} \\
+\addlinespace[2pt]
+M & \{K,E\}:2 \newline \{K\}:1 &
+    K:3, E:2 \newline $\rightarrow$ \mk{only} \texttt{K:3} &
+    \{K,M\}:3 \\
+\addlinespace[2pt]
+E & \{K\}:4 & K:4 $\rightarrow$ \texttt{K:4} & \{K,E\}:4 \\
+\addlinespace[2pt]
+K & --- (root child, no prefix) & --- & \{K\}:5 \\
 \bottomrule
-\end{tabularx}}
+\end{tabularx}
+
+\begin{itemize}
+  \item \mk{Worked in full for Y}, since it is the one people get wrong. Y sits at the end of
+        three different branches:
+        \texttt{K}$\rightarrow$\texttt{E}$\rightarrow$\texttt{M}$\rightarrow$\texttt{O}$\rightarrow$\texttt{Y:1},
+        \texttt{K}$\rightarrow$\texttt{E}$\rightarrow$\texttt{O}$\rightarrow$\texttt{Y:1} and
+        \texttt{K}$\rightarrow$\texttt{M}$\rightarrow$\texttt{Y:1}. Strip the Y and keep
+        \mk{the whole remaining path each time}, so O belongs in the first two entries.
+        Totals give K:3 only, hence the one pattern \{K,Y\}:3.
+  \item \mk{Why only O recurses}: its conditional tree still has two items (K and E), so the
+        single branch \texttt{K:3}$\rightarrow$\texttt{E:3} yields \{K,O\}, \{E,O\} \emph{and} the
+        combination \{K,E,O\}. Every other conditional tree is a single node, so it yields exactly
+        one pattern.
+\end{itemize}
 
 \lead{All frequent itemsets}
 \begin{itemize}
@@ -442,14 +1210,20 @@ K & --- & \{K\}:5 \\
         \textbf{Y$\Rightarrow$K} $=3/3=1.0$ \checkmark \quad \textbf{O$\Rightarrow$E} $=3/3=1.0$ \checkmark
   \item \textbf{K,O$\Rightarrow$E} $=1.0$ \checkmark \quad \textbf{E,O$\Rightarrow$K} $=1.0$ \checkmark \quad
         \textbf{O$\Rightarrow$K,E} $=1.0$ \checkmark
-  \item Failing: K$\Rightarrow$M, K$\Rightarrow$O, K$\Rightarrow$Y (all $3/5=0.6$),
-        E$\Rightarrow$O (0.75), K,E$\Rightarrow$O (0.75), E$\Rightarrow$K,O (0.75).
+  \item Failing, all 7 of them: K$\Rightarrow$M, K$\Rightarrow$O, K$\Rightarrow$Y and
+        K$\Rightarrow$E,O (all $3/5=0.6$), E$\Rightarrow$O, K,E$\Rightarrow$O and
+        E$\Rightarrow$K,O (all $3/4 = 0.75$).
+  \item \mk{Count check}: five 2-itemsets give $5 \times 2 = 10$ rules and \{K,E,O\} gives
+        $2^3-2 = 6$, so \textbf{16 candidates $=$ 9 strong $+$ 7 failing}. \checkmark
+  \item \mk{Note K is on the right of five of the nine}. K is in every transaction, so anything
+        implies it $\rightarrow$ high confidence, no information (\S4.1).
 \end{itemize}
 
 \creamq{Problem 3.2}{\m{4+4}}
 \begin{asked}{2075 Chaitra \textperiodcentered{} Q4 \textperiodcentered{} [4+4]}
 What do you mean by frequent Pattern growth, draw FP-tree with given tabular data.
 \par\vspace{2pt}
+\par
 \begin{tabularx}{0.56\textwidth}{@{}L{1.9cm}X@{}}
 \toprule
 \hrow \thead{TID} & \thead{Items} \\
@@ -479,14 +1253,23 @@ this dataset. \added}
   \item 05 $\rightarrow$ f, c, a, m, p
 \end{itemize}}{%
 \lead{The FP-tree}
+\par\penalty0\vspace{1pt}
+\begin{center}
+\par
+\begin{tikzpicture}[fptree, level 1/.style={sibling distance=26mm},
+                    level 2/.style={sibling distance=16mm},
+                    level 3/.style={sibling distance=13mm}, scale=0.9]
+\node[fproot]{root}
+  child { node{f:4}
+    child { node{c:3}
+      child { node{a:3}
+        child { node{m:2} child { node{p:2} } }
+        child { node{b:1} child { node{m:1} } } } }
+    child { node{b:1} } }
+  child { node{c:1} child { node{b:1} child { node{p:1} } } };
+\end{tikzpicture}
+\end{center}
 \begin{itemize}
-  \item \texttt{root}
-  \item \quad$\rightarrow$ \texttt{f:4}
-  \item \qquad$\rightarrow$ \texttt{c:3} $\rightarrow$ \texttt{a:3}
-  \item \qquad\quad$\rightarrow$ \texttt{m:2} $\rightarrow$ \texttt{p:2}
-  \item \qquad\quad$\rightarrow$ \texttt{b:1} $\rightarrow$ \texttt{m:1}
-  \item \qquad$\rightarrow$ \texttt{b:1}
-  \item \quad$\rightarrow$ \texttt{c:1} $\rightarrow$ \texttt{b:1} $\rightarrow$ \texttt{p:1}
   \item \mk{Note the second root child}: transaction 04 starts with \texttt{c}, not \texttt{f},
         so it cannot share the main prefix.
 \end{itemize}}
@@ -500,6 +1283,7 @@ Consider the given transactional database from a grocery store. Use a support th
   \item Use FP-Growth algorithm to discover the frequent itemsets from this FP-tree.
 \end{enumerate}
 \par\vspace{2pt}
+\par
 \begin{tabularx}{0.58\textwidth}{@{}L{3.0cm}X@{}}
 \toprule
 \hrow \thead{Transcation ID} & \thead{Items} \\
@@ -519,46 +1303,74 @@ T6 & HotDogs, Coke, Chips \\
         (4-way tie broken alphabetically).
 \end{itemize}
 
-\sbs{%
+\sbsr{0.53}{%
 \lead{Tree, built transaction by transaction}
-\begin{itemize}
-  \item T1 (HotDogs, Buns, Ketchup): \texttt{root$\rightarrow$H:1$\rightarrow$Bu:1$\rightarrow$Ke:1}
-  \item T2 (HotDogs, Buns): H:2, Bu:2
-  \item T3 (Chips, HotDogs, Coke): new branch \texttt{Ch:1$\rightarrow$H:1$\rightarrow$Co:1}
-  \item T4 (Chips, Coke): Ch:2, new child \texttt{Co:1}
-  \item T5 (Chips, Ketchup): Ch:3, new child \texttt{Ke:1}
-  \item T6 (Chips, HotDogs, Coke): Ch:4, H:2, Co:2
-\end{itemize}
-\lead{Final tree}
-\begin{itemize}
-  \item \texttt{root}
-  \item \quad$\rightarrow$ \texttt{Chips:4} $\rightarrow$
-        \{\texttt{HotDogs:2$\rightarrow$Coke:2}, \texttt{Coke:1}, \texttt{Ketchup:1}\}
-  \item \quad$\rightarrow$ \texttt{HotDogs:2} $\rightarrow$ \texttt{Buns:2} $\rightarrow$ \texttt{Ketchup:1}
-\end{itemize}}{%
-\lead{Mining}
-\begin{tabularx}{\linewidth}{@{}L{1.7cm}XL{2.6cm}@{}}
+\par
+\begin{tabularx}{\linewidth}{@{}L{0.7cm}L{2.6cm}X@{}}
 \toprule
-\hrow \thead{Item} & \thead{Cond.\ pattern base} & \thead{Patterns} \\
-Ketchup & \{H,Bu:1\}, \{Ch:1\} & none (all counts 1) \\
-Buns & \{H:2\} & \{H,Bu\}:2 \\
-Coke & \{Ch,H:2\}, \{Ch:1\} & \{Ch,Co\}:3, \{H,Co\}:2, \textbf{\{Ch,H,Co\}:2} \\
-HotDogs & \{Ch:2\} & \{Ch,H\}:2 \\
-Chips & --- & \{Ch\}:4 \\
+\hrow \thead{T} & \thead{Reordered} & \thead{Effect on the tree} \\
+\midrule
+T1 & H, Bu, Ke & new branch \texttt{H:1$\rightarrow$Bu:1$\rightarrow$Ke:1} \\
+T2 & H, Bu     & prefix shared $\rightarrow$ H:2, Bu:2 \\
+T3 & Ch, H, Co & \mk{new root child} \texttt{Ch:1$\rightarrow$H:1$\rightarrow$Co:1} \\
+T4 & Ch, Co    & Ch:2, new child \texttt{Co:1} under Ch \\
+T5 & Ch, Ke    & Ch:3, new child \texttt{Ke:1} under Ch \\
+T6 & Ch, H, Co & fully shared $\rightarrow$ Ch:4, H:2, Co:2 \\
 \bottomrule
 \end{tabularx}
+\begin{itemize}
+  \item \mk{Two root children}, because T1 and T2 do not contain Chips and so cannot join the
+        Chips prefix.
+\end{itemize}}{%
+\lead{Final tree}
+\par\penalty0\vspace{1pt}
+\begin{center}
+\par
+\begin{tikzpicture}[fptree, level 1/.style={sibling distance=32mm},
+                    level 2/.style={sibling distance=15mm},
+                    level 3/.style={sibling distance=13mm}, scale=0.72,
+                    every node/.append style={transform shape}]
+\node[fproot]{root}
+  child { node{H:2} child { node{Bu:2} child { node{Ke:1} } } }
+  child { node{Ch:4}
+    child { node{H:2} child { node{Co:2} } }
+    child { node{Co:1} }
+    child { node{Ke:1} } };
+\end{tikzpicture}
+\end{center}}
+
+\penalty0\vspace{3pt}
+\lead{Mining, least-frequent item first}
+\par
+\begin{tabularx}{\textwidth}{@{}L{1.7cm}XL{6.0cm}@{}}
+\toprule
+\hrow \thead{Item} & \thead{Conditional pattern base} & \thead{Totals $\rightarrow$ patterns} \\
+\midrule
+Ketchup & \{H, Bu\}:1, \; \{Ch\}:1 & H:1, Bu:1, Ch:1 $\rightarrow$ \mk{all below 2, no pattern} \\
+Buns    & \{H\}:2                  & H:2 $\rightarrow$ \{H, Bu\}:2 \\
+Coke    & \{Ch, H\}:2, \; \{Ch\}:1 & Ch:3, H:2 $\rightarrow$ \{Ch,Co\}:3, \{H,Co\}:2,
+                                     \textbf{\{Ch,H,Co\}:2} \\
+HotDogs & \{\ \}:2, \; \{Ch\}:2    & Ch:2 $\rightarrow$ \{Ch, H\}:2 \\
+Chips   & --- (root child)         & --- $\rightarrow$ \{Ch\}:4 \\
+\bottomrule
+\end{tabularx}
+
 \lead{Frequent itemsets}
 \begin{itemize}
-  \item Chips 4, HotDogs 4, Coke 3, Buns 2, Ketchup 2
-  \item \{Chips,Coke\} 3, \{Chips,HotDogs\} 2, \{HotDogs,Coke\} 2, \{HotDogs,Buns\} 2
-  \item \{Chips,HotDogs,Coke\} 2
-\end{itemize}}
+  \item \textbf{1-itemsets}: Chips 4, HotDogs 4, Coke 3, Buns 2, Ketchup 2
+  \item \textbf{2-itemsets}: \{Chips,Coke\} 3, \{Chips,HotDogs\} 2, \{HotDogs,Coke\} 2,
+        \{HotDogs,Buns\} 2
+  \item \textbf{3-itemsets}: \{Chips,HotDogs,Coke\} 2
+  \item \mk{HotDogs has an empty prefix once} (it is a root child from T1/T2), which contributes
+        nothing to its conditional base. Write the empty set rather than omitting the row.
+\end{itemize}
 
 \creamq{Problem 3.4}{\m{2+8}}
 \begin{asked}{2074 Chaitra \textperiodcentered{} Q6 \textperiodcentered{} [2+8]}
 How does FP growth approach overcomes the disadvantages of Apriori algorithm. For the
 transaction data given in table generate FP-Tree.
 \par\vspace{2pt}
+\par
 \begin{tabularx}{0.58\textwidth}{@{}L{3.0cm}X@{}}
 \toprule
 \hrow \thead{Transaction ID} & \thead{Item set} \\
@@ -571,18 +1383,84 @@ T6 & Laptop, Mobile, Earphone \\
 \bottomrule
 \end{tabularx}
 \end{asked}
-{\color{sub}\footnotesize Min support is not printed; use 2.}
+{\color{sub}\footnotesize Min support is not printed; use 2. \gap Abbreviations:
+E $=$ Earphone, L $=$ Laptop, Mo $=$ Mobile, Ca $=$ Camera, Pd $=$ Pen drive.}
+
+\sbsr{0.53}{%
+\lead{Step 1: counts and F-list}
+\par
+\begin{tabularx}{\linewidth}{@{}L{2.3cm}X L{1.0cm}L{0.9cm}@{}}
+\toprule
+\hrow \thead{Item} & \thead{In} & \thead{Count} & \thead{Keep} \\
+\midrule
+Earphone  & T3, T4, T5, T6 & 4 & \checkmark \\
+Laptop    & T1, T2, T3, T6 & 4 & \checkmark \\
+Mobile    & T3, T4, T6     & 3 & \checkmark \\
+Camera    & T1, T5         & 2 & \checkmark \\
+Pen drive & T1, T2         & 2 & \checkmark \\
+\bottomrule
+\end{tabularx}
+\par\penalty0\vspace{1pt}
+\textbf{F-list $=$ E(4), L(4), Mo(3), Ca(2), Pd(2)} \; --- \mk{all five are frequent}, and the
+E/L tie at 4 is broken alphabetically.
+
+\lead{Step 2: reorder each transaction by the F-list}
+\par
+\begin{tabularx}{\linewidth}{@{}L{0.7cm}L{3.4cm}X@{}}
+\toprule
+\hrow \thead{T} & \thead{As printed} & \thead{Reordered} \\
+\midrule
+T1 & Camera, Laptop, Pen drive & L, Ca, Pd \\
+T2 & Laptop, Pen drive         & L, Pd \\
+T3 & Laptop, Mobile, Earphone  & E, L, Mo \\
+T4 & Earphone, Mobile          & E, Mo \\
+T5 & Camera, Earphone          & E, Ca \\
+T6 & Laptop, Mobile, Earphone  & E, L, Mo \\
+\bottomrule
+\end{tabularx}}{%
+\lead{Step 3: insert them one at a time}
+\par
+\begin{tabularx}{\linewidth}{@{}L{0.7cm}X@{}}
+\toprule
+\hrow \thead{T} & \thead{Effect on the tree} \\
+\midrule
+T1 & new branch \texttt{L:1$\rightarrow$Ca:1$\rightarrow$Pd:1} \\
+T2 & L:2, new child \texttt{Pd:1} under L \\
+T3 & \mk{new root child} \texttt{E:1$\rightarrow$L:1$\rightarrow$Mo:1} \\
+T4 & E:2, new child \texttt{Mo:1} under E \\
+T5 & E:3, new child \texttt{Ca:1} under E \\
+T6 & fully shared $\rightarrow$ E:4, L:2, Mo:2 \\
+\bottomrule
+\end{tabularx}
 \begin{itemize}
-  \item Counts: Laptop 4, Earphone 4, Mobile 3, Camera 2, Pen drive 2 --- all frequent.
-  \item \textbf{F-list $=$ Earphone(4), Laptop(4), Mobile(3), Camera(2), Pen drive(2)}
-  \item Reordered: T1 (L, Ca, Pd) $\cdot$ T2 (L, Pd) $\cdot$ T3 (E, L, Mo) $\cdot$ T4 (E, Mo)
-        $\cdot$ T5 (E, Ca) $\cdot$ T6 (E, L, Mo)
-  \item \textbf{Tree}: \texttt{root} $\rightarrow$
-        \texttt{Earphone:4} $\rightarrow$ \{\texttt{Laptop:2$\rightarrow$Mobile:2},
-        \texttt{Mobile:1}, \texttt{Camera:1}\}; \quad and
-        \texttt{root} $\rightarrow$ \texttt{Laptop:2} $\rightarrow$
-        \{\texttt{Camera:1$\rightarrow$PenDrive:1}, \texttt{PenDrive:1}\}
-  \item Key frequent pattern: \textbf{\{Earphone, Laptop, Mobile\}:2}
+  \item \mk{Two root children}: T1 and T2 hold no Earphone, so they cannot join the E prefix.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+\lead{Final FP-tree}
+\par\penalty0\vspace{1pt}
+\begin{center}
+\par
+\begin{tikzpicture}[fptree, level 1/.style={sibling distance=62mm},
+                    level 2/.style={sibling distance=20mm},
+                    level 3/.style={sibling distance=18mm}, scale=0.82,
+                    every node/.append style={transform shape}]
+\node[fproot]{root}
+  child { node{L:2}
+    child { node{Ca:1} child { node{Pd:1} } }
+    child { node{Pd:1} } }
+  child { node{E:4}
+    child { node{L:2} child { node{Mo:2} } }
+    child { node{Mo:1} }
+    child { node{Ca:1} } };
+\end{tikzpicture}
+\end{center}
+
+\begin{itemize}
+  \item \mk{Check}: L appears 4 times in $D$ and the tree shows 2 under the root plus 2 under E.
+        \checkmark\ Do this for one item, it catches most construction errors.
+  \item Mining it gives the key pattern \textbf{\{Earphone, Laptop, Mobile\}:2} (T3 and T6).
+        The question only asks for the tree, so this is a bonus line.
 \end{itemize}
 
 \hr
@@ -626,6 +1504,7 @@ standard \emph{game / video} contingency table below is the one every textbook u
    \ \rightarrow\ \text{negatively correlated} \]
 
 \lead{Step 4: $\chi^2$ agrees}
+\par
 \begin{tabularx}{0.66\textwidth}{@{}L{2.2cm}XXL{1.6cm}@{}}
 \toprule
 \hrow & \thead{game} & \thead{$\overline{game}$} & \thead{row} \\
@@ -671,6 +1550,31 @@ $\langle \{1,3\}\ \{2\}\ \{2,3\}\ \{4\} \rangle$
 
 \lead{Given} $e_1=\{1,3\}$, $e_2=\{2\}$, $e_3=\{2,3\}$, $e_4=\{4\}$; 6 items in total.
 
+\sbs{%
+\lead{What counts as a subsequence \mk{(get this right first)}}
+\begin{itemize}
+  \item Take a subset from each element, \mk{possibly empty}. Elements chosen empty simply
+        disappear.
+  \item \mk{Element order must be preserved}, and items from two different elements can never be
+        merged into one element.
+  \item \textbf{A $k$-subsequence has $k$ \emph{items} in total}, counted across all surviving
+        elements. It is \mk{not} $k$ elements. This is the single most common misreading.
+  \item So $\langle\{1,3\}\{2\}\rangle$ is a 3-subsequence, not a 2-subsequence.
+\end{itemize}}{%
+\lead{Why enumerate by splits}
+\begin{itemize}
+  \item A choice is fully described by \mk{how many items are taken from each element}, written
+        $(a,b,c,d)$ for $e_1 \ldots e_4$.
+  \item The bounds are the element sizes: $a\le2$, $b\le1$, $c\le2$, $d\le1$, and we need
+        $a+b+c+d = 4$.
+  \item For a fixed split the number of ways is a product of binomials,
+        \mk{$\binom{2}{a}\binom{1}{b}\binom{2}{c}\binom{1}{d}$}, because the elements are chosen
+        independently.
+  \item \mk{Enumerating splits first guarantees nothing is missed}, which listing by hand does
+        not. Then remove duplicates at the end.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
 \lead{Step 1: enumerate the item-count splits} $(a,b,c,d)$ with $a\le2, b\le1, c\le2, d\le1$, sum $=4$\par
 \begin{tabularx}{0.9\textwidth}{@{}L{2.2cm}L{1.6cm}X@{}}
 \toprule
@@ -687,10 +1591,21 @@ $\langle \{1,3\}\ \{2\}\ \{2,3\}\ \{4\} \rangle$
 \bottomrule
 \end{tabularx}
 
+\lead{Step 2: check the count, then remove duplicates}
+\begin{itemize}
+  \item Ways per split: $2+1+1+2+2+4+2+1 = \mathbf{15}$ selections.
+        \mk{Do this arithmetic} --- it is how you know no split was dropped.
+  \item \mk{A duplicate appears when the same items can be taken from different elements.}
+        Here $e_2 = \{2\}$ and $e_3 = \{2,3\}$ share the item 2, so
+        $\langle\{1,3\}\{2\}\{4\}\rangle$ is produced twice: once as $(2,1,0,1)$ taking the 2 from
+        $e_2$, once as $(2,0,1,1)$ taking it from $e_3$. \mk{Same sequence, so it counts once.}
+  \item No other pair of splits can collide, because every other split keeps a different number
+        of surviving elements or a different element content.
+\end{itemize}
+
 \lead{Final answer}
 \begin{itemize}
-  \item 15 selections, but $\langle\{1,3\}\{2\}\{4\}\rangle$ arises twice (the \{2\} can come from
-        $e_2$ or $e_3$), so there are \mk{\textbf{14 distinct 4-subsequences}}.
+  \item 15 selections $-$ 1 duplicate $\rightarrow$ \mk{\textbf{14 distinct 4-subsequences}}.
   \item \mk{The exam usually only wants ``at least four''} \yr{79 Bh}, so listing the first few from a
         clearly stated method is enough. \textbf{Show the method, not just the list.}
 \end{itemize}
@@ -710,4 +1625,116 @@ $<\{2,3,5\}, \{6,7,8\}, \{9,1\}, \{7,4\}>$.
   \item \mk{Must hold}: element order preserved, and each chosen sub-element is a subset of the
         original element. \mk{Must not do}: reorder elements, or merge items from two elements
         into one.
+\end{itemize}
+%=======================================================================
+\T{M6. Subgraph candidate generation by edge growing}
+
+\lead{Method}
+\begin{itemize}
+  \item Two frequent subgraphs are joined only if they share a \textbf{common core}: the
+        subgraph left when one edge is removed from each.
+  \item \textbf{Edge growing} joins two $k$-edge graphs sharing a $(k-1)$-edge core and produces a
+        \mk{$(k+1)$-edge candidate} $=$ core $+$ the edge unique to each parent.
+  \item \textbf{Vertex growing} instead adds a vertex, and generates far more candidates.
+        \mk{Edge growing is preferred for exactly that reason.}
+  \item \mk{The trap, and the whole point of this question}: when the core carries
+        \textbf{repeated vertex labels}, the two extra edges can be attached in more than one
+        non-isomorphic way, so \mk{one join yields several candidates}. Enumerate them, do not
+        assume there is one.
+\end{itemize}
+
+\creamq{Problem 6.1}{\m{3}}
+\begin{asked}{2076 Chaitra \textperiodcentered{} Q8 (b) \textperiodcentered{} [3]}
+Draw all candidate sub-graphs obtained from joining the pair of graphs shown below using
+edge-growing method to expand the sub-graphs.
+\par\penalty0\vspace{2pt}
+\figC{pyq_subgraph_76ch.png}{0.52\textwidth}
+\end{asked}
+
+\sbs{%
+\lead{Step 1: read the two parents}
+\begin{itemize}
+  \item Both are a \textbf{4-cycle of $a$ vertices} with two pendant vertices hanging off two
+        \emph{adjacent} corners of that cycle.
+  \item $G_1$: pendants are $b$ and $b$. \quad $G_2$: pendants are $b$ and $c$.
+  \item Each has \textbf{6 vertices and 6 edges}, so $k = 6$.
+\end{itemize}
+
+\lead{Step 2: find the core}
+\begin{itemize}
+  \item Delete one edge from each so that what is left is the same graph:
+        drop the second pendant edge from both.
+  \item \mk{Core $=$ 4-cycle of $a$'s $+$ one pendant $b$}, 5 vertices and \textbf{5 edges}
+        $= k-1$. \checkmark\ the graphs are joinable.
+  \item Edge unique to $G_1$: $a - b$. \quad Edge unique to $G_2$: $a - c$.
+\end{itemize}
+
+\lead{Step 3: the candidate size}
+\begin{itemize}
+  \item Candidate $=$ core $+$ both unique edges $\rightarrow$ $5 + 2 = \mathbf{7}$ edges,
+        7 vertices.
+\end{itemize}}{%
+\lead{Step 4: where can the two new edges attach?}
+\begin{itemize}
+  \item Call the core's pendant-carrying $a$ vertex $A_1$. In \emph{both} parents the second
+        pendant sits on a cycle vertex \textbf{adjacent to $A_1$}, and $A_1$ has two neighbours
+        in the cycle, $A_2$ and $A_4$.
+  \item All four placements $(b,c)$ are legal: $(A_2,A_2)$, $(A_4,A_4)$, $(A_2,A_4)$, $(A_4,A_2)$.
+  \item The core has a \mk{mirror symmetry swapping $A_2$ and $A_4$}, so these collapse to
+        \textbf{two} non-isomorphic candidates:
+  \begin{itemize}
+    \item[] $(A_2,A_2)\cong(A_4,A_4)$ $\rightarrow$ \textbf{candidate I}
+    \item[] $(A_2,A_4)\cong(A_4,A_2)$ $\rightarrow$ \textbf{candidate II}
+  \end{itemize}
+  \item \mk{This multiplicity comes entirely from the four $a$'s sharing one label.} Had the
+        cycle been $a,b,c,d$ the join would have given a single candidate.
+\end{itemize}}
+
+\penalty0\vspace{3pt}
+\lead{\mk{Final answer: 2 candidate sub-graphs}, each with 7 vertices and 7 edges}
+
+\begin{center}
+\par
+\begin{tikzpicture}[gv/.style={circle,draw=ink,thick,inner sep=0.7pt,minimum size=13pt,
+                               font=\footnotesize},
+                    every path/.style={draw=ink,thick}, scale=0.95]
+% ---------------- candidate I : both new pendants on the same corner
+\begin{scope}
+  \node[gv] (a1) at (1.1,1.1) {$a$};
+  \node[gv] (a2) at (2.4,1.1) {$a$};
+  \node[gv] (a3) at (2.4,0)   {$a$};
+  \node[gv] (a4) at (1.1,0)   {$a$};
+  \node[gv] (b0) at (0,1.1)   {$b$};
+  \node[gv] (b1) at (0,0)     {$b$};
+  \node[gv] (c1) at (1.1,-1.1){$c$};
+  \draw (a1)--(a2) (a2)--(a3) (a3)--(a4) (a4)--(a1);
+  \draw (b0)--(a1) (b1)--(a4) (c1)--(a4);
+  \node[font=\footnotesize\bfseries,text=acc] at (1.2,-1.85) {Candidate I};
+  \node[font=\scriptsize,text=sub,align=center] at (1.2,-2.35)
+       {both new pendants\\on the same $a$};
+\end{scope}
+% ---------------- candidate II : new pendants on the two different neighbours
+\begin{scope}[xshift=6.2cm]
+  \node[gv] (B1) at (1.1,1.1) {$a$};
+  \node[gv] (B2) at (2.4,1.1) {$a$};
+  \node[gv] (B3) at (2.4,0)   {$a$};
+  \node[gv] (B4) at (1.1,0)   {$a$};
+  \node[gv] (C0) at (0,1.1)   {$b$};
+  \node[gv] (C1) at (0,0)     {$b$};
+  \node[gv] (C2) at (3.5,1.1) {$c$};
+  \draw (B1)--(B2) (B2)--(B3) (B3)--(B4) (B4)--(B1);
+  \draw (C0)--(B1) (C1)--(B4) (C2)--(B2);
+  \node[font=\footnotesize\bfseries,text=acc] at (1.6,-1.85) {Candidate II};
+  \node[font=\scriptsize,text=sub,align=center] at (1.6,-2.35)
+       {new pendants on the two\\different neighbours of $A_1$};
+\end{scope}
+\end{tikzpicture}
+\end{center}
+
+\begin{itemize}
+  \item \mk{Marking note}: the marks are for showing the \emph{core} and then arguing the
+        placements. A single drawing with no core and no count of candidates scores badly even
+        if the drawing itself is one of the two right answers.
+  \item \mk{Cross-check}: every candidate must contain both parents as subgraphs, and must have
+        exactly $k+1 = 7$ edges. Both do.
 \end{itemize}

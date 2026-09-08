@@ -3,7 +3,7 @@
 %=======================================================================
 \section{Data Preprocessing}
 
-{\color{sub}\footnotesize 6 hrs \gap$\cdot$\gap in 17/17 papers \gap$\cdot$\gap 4 topics, 2 TOP tier
+{\color{sub}\footnotesize 6 hrs \gap$\cdot$\gap in 23/23 papers \gap$\cdot$\gap 4 topics, 2 TOP tier
 \gap$\cdot$\gap \textbf{first chapter with numericals} $\rightarrow$ see the Ch 2 Numerical companion.}
 
 \lead{Weight of the chapter:}
@@ -92,7 +92,7 @@
 \T{2.2 Data Pre-processing}
 
 \Q{What is Data Pre-Processing? Explain the major tasks performed in it.}{\m{2+7}\m{4+4}\m{5+5}}
-{\color{sub}\footnotesize \tS{12} \yr{81 Ba, 75 Ch, 72 Ka} \gap Most-asked topic in the syllabus.}
+{\color{sub}\footnotesize \tS{16} \yr{82 Bh, 81 Ba, 79 Ba, 75 Ch, 73 Ch, 72 Ka, 69 Ch} \gap Most-asked topic in the syllabus.}
 
 \sbs{%
 \lead{Why preprocess}
@@ -217,7 +217,7 @@
 
 %-----------------------------------------------------------------------
 \creamq{(c) Data transformation + normalisation}{\m{2+6}\m{4}\m{2+2+2}}
-{\color{sub}\footnotesize \tS{} \yr{73 Shr, 75 Ch, 78 Bh} \gap \textbf{Normalisation numerical is a
+{\color{sub}\footnotesize \tS{} \yr{79 Ba, 78 Bh, 75 Ch, 73 Shr} \gap \textbf{Normalisation numerical is a
 recurring 6-mark question} $\rightarrow$ full solution in the Numerical companion.}
 
 \sbsr{0.42}{%
@@ -285,14 +285,17 @@ Using $min$ makes every $v'\ge 0$, which defeats the whole point of a zero-mean 
     \item \textbf{Data compression}: lossless (exact rebuild) vs lossy (approximation).
           The other two are themselves forms of compression.
   \end{itemize}
-\end{itemize}
+\end{itemize}}{%
 \lead{Sampling types}
 \begin{itemize}
   \item \textbf{Simple random}: equal prob for each item.
   \item \textbf{W/o replacement}: item removed once picked.
   \item \textbf{W/ replacement}: not removed, same item can repeat.
   \item \textbf{Stratified}: split into partitions, sample each. Best for skewed data.
-\end{itemize}}{%
+\end{itemize}}
+
+\penalty0\vspace{3pt}
+\sbs{%
 \lead{Feature subset selection}
 \begin{itemize}
   \item Rm \textbf{redundant} features (purchase price + sales tax paid).
@@ -321,8 +324,7 @@ Using $min$ makes every $v'\ge 0$, which defeats the whole point of a zero-mean 
     \item Pick $T$ \textbf{minimising} $E$; recurse until $Ent(S)-E(T,S) \le \delta$.
   \end{itemize}
   \item Also: \textbf{mapping to a new space} (Fourier, wavelet transform).
-\end{itemize}
-
+\end{itemize}}{%
 \lead{Curse of dimensionality \yr{70 Ch \m{5}}}
 \begin{itemize}
   \item As dims $\uparrow$, data becomes increasingly \textbf{sparse} in the space it occupies.
@@ -384,7 +386,7 @@ a non-linear method, \textbf{not} PCA. PCA is purely linear: covariance $\righta
 \T{2.3 OLAP \& Multidimensional Data Analysis}
 
 \Q{Explain typical OLAP operations over a multidim DW. Differentiate OLAP vs OLTP.}{\m{6+4}\m{10}\m{5+5}\m{2+5+3}}
-{\color{sub}\footnotesize \tS{10} \yr{79 Bh, 72 Ch, 75 Ash, 74 Ch}}
+{\color{sub}\footnotesize \tS{13} \yr{81 Bh, 79 Bh, 75 Ash, 74 Ch, 73 Ch, 72 Ch, 70 Asa}}
 
 \sbsr{0.55}{%
 \lead{Multidimensional model}
@@ -470,7 +472,7 @@ Cuboid-count and schema-drawing questions are worked in the Numerical companion 
 \T{2.4 Various Similarity Measures}
 
 \Q{How is similarity/dissimilarity calculated? Properties of a distance metric.}{\m{3}\m{10}\m{4}}
-{\color{sub}\footnotesize \tF{6} \yr{80 Bh, 80 Ba, 78 Bh, 76 Ch, 76 Ash, 71 Ch}
+{\color{sub}\footnotesize \tF{7} \yr{80 Bh, 80 Ba, 78 Bh, 76 Ch, 76 Ash, 71 Ch, 70 Asa}
 \gap \mk{Almost always numerical} $\rightarrow$ companion.}
 
 \sbs{%
@@ -629,7 +631,7 @@ Testing linear relationship & Correlation coefficient \\
 \T{2.5 Basic Statistical Descriptions of Data}
 
 {\color{sub}\footnotesize \pillo{gd}{NEW} \gap Han \& Kamber 3rd ed §2.2.
-\textbf{Never asked in the 17 papers}, so no tier chip. Added because PC's 2025--26 Unit 2 handout
+\textbf{Never asked in the 23 papers}, so no tier chip. Added because PC's 2025--26 Unit 2 handout
 and its numerical companion are built entirely on it, and because the IQR outlier rule below is the
 statistical basis of the boxplot test used in Ch 6.
 \mk{Learn the two boxed formulas; skim the rest.}}
@@ -663,14 +665,14 @@ $freq_{median}$ $=$ its own frequency, $width$ $=$ its width.\\[2pt]
 \[ mean - mode \approx 3\,(mean - median) \]
 \vspace{-8pt}
 \[ \Rightarrow\quad mode \approx 3\,median - 2\,mean \]
-\end{minipage}}
+\end{minipage}}}{%
 \lead{Skew, read off mean vs median vs mode}
 \begin{itemize}
   \item \textbf{Symmetric}: $mean = median = mode$.
   \item \textbf{Positively skewed} (right tail): $mode < median < mean$.
   \item \textbf{Negatively skewed} (left tail): $mean < median < mode$.
   \item \mk{Mean is dragged toward the tail}, median is not. That is why median is the robust one.
-\end{itemize}}{%
+\end{itemize}
 \lead{Measures of dispersion}
 \begin{itemize}
   \item \textbf{Range} $= max - min$.
@@ -679,7 +681,10 @@ $freq_{median}$ $=$ its own frequency, $width$ $=$ its width.\\[2pt]
   \item \textbf{Variance} $s^2 = \frac{1}{n-1}\sum_i (x_i-\bar{x})^2$, \
         \textbf{std deviation} $s = \sqrt{s^2}$.
   \item Population forms use $\frac{1}{N}$ and $\sigma$.
-\end{itemize}
+\end{itemize}}
+
+\penalty0\vspace{3pt}
+\sbs{%
 \lead{Two quartile conventions \mk{(they disagree, say which you used)}}
 \begin{itemize}
   \item \textbf{Positional} \mk{(Han \& Kamber, the syllabus book)}: for $n=12$ take the 3rd, 6th
@@ -688,7 +693,7 @@ $freq_{median}$ $=$ its own frequency, $width$ $=$ its width.\\[2pt]
         linear interpolation between the two neighbouring values.
   \item Both are marked correct. \mk{The outlier verdict comes out the same either way}
         $\rightarrow$ see Ch 2 Numerical, M7.
-\end{itemize}
+\end{itemize}}{%
 \lead{Five-number summary and boxplot}
 \begin{itemize}
   \item \textbf{Five-number summary}, in this order:
@@ -718,7 +723,7 @@ Beyond $3\,IQR$ $=$ \textbf{extreme} outlier. \mk{Used again in Ch 6} as the box
 %-----------------------------------------------------------------------
 \T{2.6 PYQ Mapping}
 
-{\color{sub}\footnotesize Tiers: \tS{} $=$ 7+/17 \gap \tF{} $=$ 4--6 \gap \tP{} $=$ 1--3 but $\ge$8 marks.
+{\color{sub}\footnotesize Tiers: \tS{} $=$ 9+/23 \gap \tF{} $=$ 5--8 \gap \tP{} $=$ 1--4 but $\ge$8 marks.
 \mk{N} marks a question fully solved in the Ch 2 Numerical companion.}
 
 \creamq{2.1 Data Types and Attributes}{}
@@ -771,6 +776,22 @@ Beyond $3\,IQR$ $=$ \textbf{extreme} outlier. \mk{Used again in Ch 6} as the box
   \item \tP{1} ``List types of similarity measures $+$ their application areas.'' \hfill \m{3} \yr{80 Ba}
   \item \tP{2} Short notes: Minkowski Distance \yr{78 Bh} $\cdot$ similarity measures between tuples \yr{76 Ash}. \hfill \m{4}\m{3}
 \end{enumerate}
+
+\creamq{Papers added by the 2026-09 merge}{}
+{\color{sub}\footnotesize The six papers of \code{DM4.1BCT.pdf} (2082 Bh, 2081 Bh, 2079 Ba, 2073 Ch, 2070 Asa, 2069 Ch), indexed here for the
+first time --- the notes were built before that scan was merged. \mk{N} $=$ solved in this chapter's companion. \added}
+\begin{itemize}
+  \item What is performed during preprocessing? $+$ techniques to handle missing values. \hfill \m{4+4} \yr{82 Bh}
+  \item \textbf{Curse of dimensionality} in data mining. \hfill \m{6} \yr{81 Bh}
+  \item Why are similarity measures important? $+$ the different measures w/ examples. \hfill \m{2+6} \yr{81 Bh}
+  \item \mk{N} Bin means at depth 3 $+$ min-max $+$ z-score $+$ decimal scaling of 35, on 27 values. \hfill \m{6} \yr{79 Ba}
+  \item Nominal and ordinal attributes $+$ handling missing and noisy data. \hfill \m{6} \yr{79 Ba}
+  \item Preprocessing $+$ \textbf{data sampling} $+$ dimensionality reduction w/ example. \hfill \m{2+4+4} \yr{73 Ch}
+  \item How does real data become \textbf{asymmetric}? Symmetric vs asymmetric data. \hfill \m{5} \yr{73 Ch}
+  \item What is dimensionality reduction and why does it matter? \hfill \m{5} \yr{70 Asa}
+  \item Properties of a distance metric \gap (its second half is \S3.4). \hfill \m{10} \yr{70 Asa}
+  \item Different data types w/ examples \yr{69 Ch} $\cdot$ short note \textbf{OLAP cubes} \yr{70 Asa}. \hfill \m{5}\m{5}
+\end{itemize}
 
 \lead{Coverage check}
 \begin{itemize}

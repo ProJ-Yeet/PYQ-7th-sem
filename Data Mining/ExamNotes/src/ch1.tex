@@ -3,13 +3,13 @@
 %=======================================================================
 \section{Introduction}
 
-{\color{sub}\footnotesize 2 hrs \gap$\cdot$\gap in 16/17 papers \gap$\cdot$\gap 2 topics, both TOP tier
+{\color{sub}\footnotesize 2 hrs \gap$\cdot$\gap in 22/23 papers \gap$\cdot$\gap 2 topics, both TOP tier
 \gap$\cdot$\gap no numericals in this ch.}
 
 \lead{Whole chapter in 2 items:}
 \begin{itemize}
-  \item KDD process \tS{7}
-  \item DW fundamentals \tS{9}
+  \item KDD process \tS{9}
+  \item DW fundamentals \tS{12}
 \end{itemize}
 
 \hr
@@ -17,7 +17,7 @@
 \T{1.1 Data Mining Origin}
 
 \Q{What is DM? + Explain steps of KDD process}{\m{2+3}\m{2+5}\m{2+6}\m{1+5}\m{4}}
-{\color{sub}\footnotesize \tS{7} \gap Most repeated Q in the paper.}
+{\color{sub}\footnotesize \tS{9} \yr{82 Bh, 79 Ba} \gap Most repeated Q in the paper.}
 
 \lead{DM}
 \begin{itemize}
@@ -158,6 +158,46 @@
         until association analysis gives \{nappies\} $\Rightarrow$ \{beer\}.
 \end{enumerate}
 
+\penalty0\vspace{3pt}
+\creamq{``Data mining turns a large collection of data into knowledge''. Justify}{\m{6}}
+{\color{sub}\footnotesize \yr{81 Bh} \gap \mk{The mirror image of the question above}, and it is
+asked separately, so learn it as its own answer. That one asks why we are \emph{stuck}; this one
+asks how DM \emph{gets us out}. \mk{Structure the answer on the four-rung ladder} and carry one
+example all the way up it. \added}
+
+\sbs{%
+\lead{The ladder, one rung at a time}
+\begin{enumerate}
+  \item \textbf{Data}: raw recorded facts, no context.
+        \emph{Eg} 2 million supermarket receipt lines.
+  \item \textbf{Information}: data aggregated and given context by querying.
+        \emph{Eg} ``nappies sold 4,200 units last month''. A DW and OLAP get you here, and
+        \mk{this is as far as a query tool can go} --- it answers only what you thought to ask.
+  \item \textbf{Knowledge}: patterns that hold across the data and \mk{were not asked for}.
+        \emph{Eg} ``customers buying nappies on Friday evening also buy beer''. Only \textbf{data
+        mining} produces this rung, because only it searches the space of possible patterns.
+  \item \textbf{Decision / wisdom}: acting on the pattern. \emph{Eg} move the beer display beside
+        the nappies, and measure the lift in basket value.
+\end{enumerate}}{%
+\lead{Why the step to knowledge is data mining's alone}
+\begin{itemize}
+  \item \mk{Queries are deductive, mining is inductive.} SQL retrieves what you specify; mining
+        induces a general rule from the instances.
+  \item It is \textbf{automatic and exhaustive}: Apriori tests every itemset the thresholds allow,
+        far more hypotheses than an analyst would think to write.
+  \item The output is \textbf{predictive}, not just descriptive: a classifier built on past data
+        labels tuples that do not exist yet.
+  \item The patterns are required to be \mk{valid, novel, useful and understandable} --- Fayyad's
+        four conditions. \mk{``Novel'' is what makes it knowledge}: a pattern you already knew is
+        information, not knowledge.
+\end{itemize}
+\lead{Close with the qualifier}
+\begin{itemize}
+  \item DM does not turn \emph{all} data into knowledge. Garbage in, garbage out: without
+        preprocessing (Ch 2) it turns noise into confident nonsense, and without pattern
+        evaluation (\S4.1) it reports rules that are strong but false.
+\end{itemize}}
+
 %-----------------------------------------------------------------------
 \Q{Architecture of a typical DM system (+Fig)}{\m{2}\m{4+2}}
 {\color{sub}\footnotesize \yr{78 Bh} asked as ``Explain DM process with diagram''.}
@@ -215,7 +255,7 @@ Web mining & PageRank, usage $+$ structure mining. \hfill{\footnotesize$\rightar
 \T{1.2 Data Mining \& Data Warehousing Basics}
 
 \Q{What is a DW? Write its key features.}{\m{2}\m{2+4}\m{2+5}}
-{\color{sub}\footnotesize \tS{9}}
+{\color{sub}\footnotesize \tS{12} \yr{73 Ch, 70 Asa, 69 Ch}}
 
 \lead{Definition (Inmon)}
 \begin{itemize}
@@ -260,7 +300,7 @@ Web mining & PageRank, usage $+$ structure mining. \hfill{\footnotesize$\rightar
 
 %-----------------------------------------------------------------------
 \Q{How is DW diff from a DB? How are they similar?}{\m{2+2}}
-{\color{sub}\footnotesize \tP{2} \yr{75 Ash} \gap Asks \textbf{both} directions.}
+{\color{sub}\footnotesize \tP{3} \yr{75 Ash, 73 Ch} \gap Asks \textbf{both} directions. \yr{73 Ch} asks it as DW vs \textbf{RDBMS}.}
 
 \begin{tabularx}{\textwidth}{@{}L{2.5cm}XX@{}}
 \toprule
@@ -375,7 +415,7 @@ Size & 100 MB--GB & 100 GB--TB \\
 
 %-----------------------------------------------------------------------
 \Q{What is DW and data mart? (short notes)}{\m{15}\m{2+4}}
-{\color{sub}\footnotesize \tP{2} \yr{70 Ch, 71 Shr}}
+{\color{sub}\footnotesize \tP{3} \yr{70 Ch, 71 Shr, 69 Ch}}
 
 \lead{Data mart}
 \begin{itemize}
@@ -484,7 +524,7 @@ DW not required for DM, but a clean DW makes DM far more effective.} \\
 %-----------------------------------------------------------------------
 \T{1.3 PYQ Mapping}
 
-{\color{sub}\footnotesize Tiers: \tS{} $=$ 7+/17 papers \gap \tF{} $=$ 4--6 \gap \tP{} $=$ 1--3 but $\ge$8 marks.
+{\color{sub}\footnotesize Tiers: \tS{} $=$ 9+/23 papers \gap \tF{} $=$ 5--8 \gap \tP{} $=$ 1--4 but $\ge$8 marks.
 Same Q in diff wording grouped under 1 entry.}
 
 \creamq{1.1 Data Mining Origin}{}
@@ -519,6 +559,17 @@ Same Q in diff wording grouped under 1 entry.}
   \item \tP{2} Short notes: \textbf{Data warehouse and Data mart.} \hfill \m{15} \yr{70 Ch, 71 Shr}
 \end{enumerate}
 
+\creamq{Papers added by the 2026-09 merge}{}
+{\color{sub}\footnotesize The six papers of \code{DM4.1BCT.pdf} (2082 Bh, 2081 Bh, 2079 Ba, 2073 Ch, 2070 Asa, 2069 Ch), indexed here for the
+first time --- the notes were built before that scan was merged. \mk{N} $=$ solved in this chapter's companion. \added}
+\begin{itemize}
+  \item What is data mining? Describe the steps involved in it. \hfill \m{2+6} \yr{82 Bh}
+  \item ``Data mining turns a large collection of data into knowledge''. Justify. \hfill \m{6} \yr{81 Bh} \added
+  \item KDD process $+$ \mk{the challenges that motivated data mining}. \hfill \m{3+3} \yr{79 Ba}
+  \item How is a data warehouse different from an \textbf{RDBMS}? Also list the similarities. \hfill \m{2+2} \yr{73 Ch}
+  \item Short notes: \textbf{Data warehouse} \yr{70 Asa} $\cdot$ \textbf{Datamart} \yr{69 Ch}. \hfill \m{5}\m{5}
+\end{itemize}
+
 \lead{Coverage check}
 \begin{itemize}
   \item All Ch 1 PYQs covered above.
@@ -544,7 +595,7 @@ Same Q in diff wording grouped under 1 entry.}
 
 \lead{Numericals}
 \begin{itemize}
-  \item \mk{Ch 1 has no numerical component.} No Q in 17 papers needs a calculation here
+  \item \mk{Ch 1 has no numerical component.} No Q in 23 papers needs a calculation here
         $\rightarrow$ no ``Ch1 Numerical'' companion. First numericals appear in Ch 2
         (normalisation, similarity measures, PCA).
 \end{itemize}

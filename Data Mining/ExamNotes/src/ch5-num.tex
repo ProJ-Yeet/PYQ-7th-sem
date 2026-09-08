@@ -39,6 +39,7 @@ around 60 marks across the archive.}
 Write K-means clustering algorithm. Generate two clusters from following dataset using K-means
 clustering.
 \par\vspace{2pt}
+\par
 \begin{tabularx}{0.34\textwidth}{@{}L{2.2cm}L{1.8cm}X@{}}
 \toprule
 \hrow \thead{Instance} & \thead{A} & \thead{B} \\
@@ -54,6 +55,7 @@ clustering.
 \begin{asked}{2074 Ashwin \textperiodcentered{} Q7 \textperiodcentered{} [2+8]}
 Write K-means algorithm and find clusters for following data set.
 \par\vspace{2pt}
+\par
 \begin{tabularx}{0.34\textwidth}{@{}L{2.2cm}L{1.8cm}X@{}}
 \toprule
 \hrow \thead{Instance} & \thead{X} & \thead{Y} \\
@@ -74,6 +76,7 @@ Write K-means algorithm and find clusters for following data set.
 $c_2 = p_6(5,3)$. \ (A standard, defensible heuristic; state it.)
 
 \lead{Iteration 1}
+\par
 \begin{tabularx}{0.86\textwidth}{@{}L{1.5cm}XXL{2.2cm}@{}}
 \toprule
 \hrow \thead{Point} & \thead{$d$ to $c_1(1,2)$} & \thead{$d$ to $c_2(5,3)$} & \thead{Cluster} \\
@@ -92,6 +95,7 @@ $p_6(5,3)$   & 4.123 & 0     & C2 \\
 \end{itemize}
 
 \lead{Iteration 2}
+\par
 \begin{tabularx}{0.86\textwidth}{@{}L{1.5cm}XXL{2.2cm}@{}}
 \toprule
 \hrow \thead{Point} & \thead{$d$ to $(1.75,1.5)$} & \thead{$d$ to $(4,2)$} & \thead{Cluster} \\
@@ -117,7 +121,7 @@ $p_6$ & 3.580 & 1.414 & C2 \\
 \begin{center}\fbox{\begin{minipage}{0.92\textwidth}\small
 \mk{Seed sensitivity --- worth a line, since the question asks for limitations.}
 Seeding instead with the \emph{first two} points, $c_1=p_1(1,2)$ and $c_2=p_2(2.5,1)$, gives
-C1$=\{p_1\}$ and C2$=\{p_2,\dots,p_6\}$, which also converges but leaves a
+C1$=\{p_1\}$ and C2$=\{p_2,p_3,p_4,p_5,p_6\}$, which also converges but leaves a
 \textbf{degenerate 1-point cluster}. \\
 Same data, same $K$, \textbf{different answer} --- this is exactly the ``sensitive to initial
 centroids / converges to a local optimum'' limitation. \added
@@ -128,6 +132,7 @@ centroids / converges to a local optimum'' limitation. \added
 Explain K-means clustering with limitation. Generate two clusters from following dataset using
 K-means clustering.
 \par\vspace{2pt}
+\par
 \begin{tabularx}{0.22\textwidth}{@{}L{1.8cm}X@{}}
 \toprule
 \hrow \thead{A} & \thead{B} \\
@@ -140,19 +145,46 @@ K-means clustering.
 \bottomrule
 \end{tabularx}
 \end{asked}
+\lead{Seeds} $c_1 = (1,2)$ (clearly isolated) and $c_2 = (4,6)$. \ (State the choice.)
+
+\sbs{%
+\lead{Iteration 1}
+\par
+\begin{tabularx}{\linewidth}{@{}L{2.1cm}XXL{1.2cm}@{}}
+\toprule
+\hrow \thead{Point} & \thead{$d$ to $c_1(1,2)$} & \thead{$d$ to $c_2(4,6)$} & \thead{Cl.} \\
+\midrule
+$(1,2)$     & \textbf{0}     & 5.000 & C1 \\
+$(2.5,4.5)$ & 2.915 & \textbf{2.121} & C2 \\
+$(4,6)$     & 5.000 & \textbf{0}     & C2 \\
+$(3.5,4)$   & 3.202 & \textbf{2.062} & C2 \\
+$(4,5.5)$   & 4.610 & \textbf{0.500} & C2 \\
+$(3,6)$     & 4.472 & \textbf{1.000} & C2 \\
+\bottomrule
+\end{tabularx}
 \begin{itemize}
-  \item Seeds: $c_1 = (1,2)$ (clearly isolated), $c_2 = (4,6)$.
-  \item \textbf{Iteration 1}: $(1,2)\rightarrow$C1. All of $(2.5,4.5)$, $(4,6)$, $(3.5,4)$,
-        $(4,5.5)$, $(3,6)$ are nearer $(4,6)$ $\rightarrow$ C2.
-  \begin{itemize}
-    \item Eg $(2.5,4.5)$: $d$ to $c_1 = \sqrt{1.5^2+2.5^2}=2.92$; to $c_2 = \sqrt{1.5^2+1.5^2}=2.12$ $\rightarrow$ C2.
-    \item Eg $(3.5,4)$: $d$ to $c_1 = \sqrt{2.5^2+2^2}=3.20$; to $c_2 = \sqrt{0.5^2+2^2}=2.06$ $\rightarrow$ C2.
-  \end{itemize}
-  \item New centroids: C1 $=(1,2)$; C2 $=\big(\tfrac{2.5+4+3.5+4+3}{5},\tfrac{4.5+6+4+5.5+6}{5}\big)
-        = \mathbf{(3.4,\ 5.2)}$
-  \item \textbf{Iteration 2}: every C2 member stays nearer $(3.4,5.2)$ than $(1,2)$ $\rightarrow$
-        unchanged $\rightarrow$ \mk{converged}.
-\end{itemize}
+  \item C1 $=\{(1,2)\}$ $\rightarrow$ centroid stays $\mathbf{(1,\ 2)}$
+  \item C2 $\rightarrow$ centroid
+        $\big(\tfrac{2.5+4+3.5+4+3}{5},\tfrac{4.5+6+4+5.5+6}{5}\big) = \mathbf{(3.4,\ 5.2)}$
+\end{itemize}}{%
+\lead{Iteration 2}
+\par
+\begin{tabularx}{\linewidth}{@{}L{2.1cm}XXL{1.2cm}@{}}
+\toprule
+\hrow \thead{Point} & \thead{$d$ to $(1,2)$} & \thead{$d$ to $(3.4,5.2)$} & \thead{Cl.} \\
+\midrule
+$(1,2)$     & \textbf{0}     & 4.000 & C1 \\
+$(2.5,4.5)$ & 2.915 & \textbf{1.140} & C2 \\
+$(4,6)$     & 5.000 & \textbf{1.000} & C2 \\
+$(3.5,4)$   & 3.202 & \textbf{1.204} & C2 \\
+$(4,5.5)$   & 4.610 & \textbf{0.671} & C2 \\
+$(3,6)$     & 4.472 & \textbf{0.894} & C2 \\
+\bottomrule
+\end{tabularx}
+\begin{itemize}
+  \item \mk{Assignment unchanged $\rightarrow$ converged} after 2 iterations.
+\end{itemize}}
+
 \lead{Final answer} C1 $=\{(1,2)\}$, \ C2 $=\{(2.5,4.5),(4,6),(3.5,4),(4,5.5),(3,6)\}$, centroid $(3.4,5.2)$.
 \begin{itemize}
   \item \mk{Note}: $(1,2)$ is a genuine outlier here, so the 1-point cluster is the honest answer,
@@ -164,6 +196,7 @@ K-means clustering.
 Explain K-means clustering with limitation Use k-means clustering to cluster the following
 dataset.
 \par\vspace{2pt}
+\par
 \begin{tabularx}{0.22\textwidth}{@{}L{1.8cm}X@{}}
 \toprule
 \hrow \thead{A} & \thead{B} \\
@@ -179,17 +212,52 @@ dataset.
 \par\vspace{2pt}
 {\color{sub}The paper prints no $K$; take $K = 2$, the value its sister questions use.}
 \end{asked}
+\lead{Seeds} $c_1=(1,1)$, $c_2=(5,7)$ --- the two most widely separated points.
+
+\sbs{%
+\lead{Iteration 1}
+\par
+\begin{tabularx}{\linewidth}{@{}L{2.1cm}XXL{1.2cm}@{}}
+\toprule
+\hrow \thead{Point} & \thead{$d$ to $c_1(1,1)$} & \thead{$d$ to $c_2(5,7)$} & \thead{Cl.} \\
+\midrule
+$(1,1)$     & \textbf{0}     & 7.211 & C1 \\
+$(1.5,2)$   & \textbf{1.118} & 6.104 & C1 \\
+$(3,4)$     & 3.606 & 3.606 & \mk{tie} \\
+$(5,7)$     & 7.211 & \textbf{0}     & C2 \\
+$(3.5,5)$   & 4.717 & \textbf{2.500} & C2 \\
+$(4.5,5)$   & 5.315 & \textbf{2.062} & C2 \\
+$(3.5,4.5)$ & 4.301 & \textbf{2.915} & C2 \\
+\bottomrule
+\end{tabularx}
 \begin{itemize}
-  \item Seeds $c_1=(1,1)$, $c_2=(5,7)$.
-  \item \textbf{Iteration 1}: $(1,1)$ and $(1.5,2)$ $\rightarrow$ C1; the rest $\rightarrow$ C2.
-  \begin{itemize}
-    \item $(3,4)$: $d$ to $c_1=\sqrt{4+9}=3.61$; to $c_2=\sqrt{4+9}=3.61$ --- \mk{an exact tie}.
-          Break it toward C2 (state your rule).
-  \end{itemize}
-  \item Centroids: C1 $=(1.25,\ 1.5)$; C2 $=\big(\tfrac{3+5+3.5+4.5+3.5}{5},\tfrac{4+7+5+5+4.5}{5}\big)
+  \item \mk{$(3,4)$ is an exact tie}: $\sqrt{4+9} = \sqrt{4+9} = 3.606$ both ways.
+        \mk{State a tie-break rule and use it} --- here, send it to C2. Examiners give the mark
+        for naming the rule, not for the direction chosen.
+  \item C1 $\rightarrow$ centroid $\mathbf{(1.25,\ 1.5)}$
+  \item C2 $\rightarrow \big(\tfrac{3+5+3.5+4.5+3.5}{5},\tfrac{4+7+5+5+4.5}{5}\big)
         = \mathbf{(3.9,\ 5.1)}$
-  \item \textbf{Iteration 2}: assignments unchanged $\rightarrow$ converged.
-\end{itemize}
+\end{itemize}}{%
+\lead{Iteration 2}
+\par
+\begin{tabularx}{\linewidth}{@{}L{2.1cm}XXL{1.2cm}@{}}
+\toprule
+\hrow \thead{Point} & \thead{$d$ to $(1.25,1.5)$} & \thead{$d$ to $(3.9,5.1)$} & \thead{Cl.} \\
+\midrule
+$(1,1)$     & \textbf{0.559} & 5.022 & C1 \\
+$(1.5,2)$   & \textbf{0.559} & 3.921 & C1 \\
+$(3,4)$     & 3.052 & \textbf{1.421} & C2 \\
+$(5,7)$     & 6.657 & \textbf{2.195} & C2 \\
+$(3.5,5)$   & 4.161 & \textbf{0.412} & C2 \\
+$(4.5,5)$   & 4.776 & \textbf{0.608} & C2 \\
+$(3.5,4.5)$ & 3.750 & \textbf{0.721} & C2 \\
+\bottomrule
+\end{tabularx}
+\begin{itemize}
+  \item \mk{Assignment unchanged $\rightarrow$ converged.} The tie at $(3,4)$ is now decisive
+        ($1.421$ against $3.052$), so the arbitrary choice in iteration 1 did not matter here.
+\end{itemize}}
+
 \lead{Final answer} C1 $=\{(1,1),(1.5,2)\}$ centroid $(1.25,1.5)$; \
 C2 $=\{(3,4),(5,7),(3.5,5),(4.5,5),(3.5,4.5)\}$ centroid $(3.9,5.1)$.
 
@@ -226,6 +294,7 @@ for the clusters to converge.
 \end{itemize}
 
 \lead{Final answer}
+\par
 \begin{tabularx}{0.86\textwidth}{@{}L{1.9cm}XL{3.2cm}@{}}
 \toprule
 \hrow \thead{Cluster} & \thead{Members} & \thead{Final centre} \\
@@ -258,6 +327,274 @@ algorithm, and demonstrate on any small dataset of your own, stating that you as
 Use \textbf{Problem 1.1's} 6 points --- it is the dataset this paper's sister questions use. \added
 \end{minipage}}\end{center}
 
+\creamq{Problem 1.7}{\m{2+8}}
+\begin{asked}{2082 Bhadra \textperiodcentered{} Q6 \textperiodcentered{} [2+8]}
+Describe the K-means clustering algorithm. Generate two clusters from following dataset using
+K-means clustering.
+\par\penalty0\vspace{2pt}
+\par
+\begin{tabularx}{0.34\textwidth}{@{}L{2.2cm}L{1.8cm}X@{}}
+\toprule
+\hrow \thead{Instance} & \thead{A} & \thead{B} \\
+1 & 1   & 2   \\
+2 & 1.5 & 1   \\
+3 & 3.5 & 1.5 \\
+4 & 4   & 3   \\
+5 & 3.5 & 2.5 \\
+6 & 6   & 4   \\
+\bottomrule
+\end{tabularx}
+\end{asked}
+\lead{Seeds} the two most widely separated points, $c_1 = (1,2)$ and $c_2 = (6,4)$.
+
+\sbs{%
+\lead{Iteration 1}
+\par
+\begin{tabularx}{\linewidth}{@{}L{2.1cm}XXL{1.2cm}@{}}
+\toprule
+\hrow \thead{Point} & \thead{$d$ to $(1,2)$} & \thead{$d$ to $(6,4)$} & \thead{Cl.} \\
+\midrule
+$(1,2)$     & \textbf{0}     & 5.385 & C1 \\
+$(1.5,1)$   & \textbf{1.118} & 5.408 & C1 \\
+$(3.5,1.5)$ & \textbf{2.550} & 3.536 & C1 \\
+$(4,3)$     & 3.162 & \textbf{2.236} & C2 \\
+$(3.5,2.5)$ & \textbf{2.550} & 2.915 & C1 \\
+$(6,4)$     & 5.385 & \textbf{0}     & C2 \\
+\bottomrule
+\end{tabularx}
+\begin{itemize}
+  \item C1 $\rightarrow \big(\tfrac{1+1.5+3.5+3.5}{4},\tfrac{2+1+1.5+2.5}{4}\big)
+        = \mathbf{(2.375,\ 1.75)}$
+  \item C2 $\rightarrow \big(\tfrac{4+6}{2},\tfrac{3+4}{2}\big) = \mathbf{(5,\ 3.5)}$
+\end{itemize}}{%
+\lead{Iteration 2}
+\par
+\begin{tabularx}{\linewidth}{@{}L{2.1cm}XXL{1.2cm}@{}}
+\toprule
+\hrow \thead{Point} & \thead{$d$ to $(2.375,1.75)$} & \thead{$d$ to $(5,3.5)$} & \thead{Cl.} \\
+\midrule
+$(1,2)$     & \textbf{1.398} & 4.272 & C1 \\
+$(1.5,1)$   & \textbf{1.152} & 4.301 & C1 \\
+$(3.5,1.5)$ & \textbf{1.152} & 2.500 & C1 \\
+$(4,3)$     & 2.050 & \textbf{1.118} & C2 \\
+$(3.5,2.5)$ & \textbf{1.352} & 1.803 & C1 \\
+$(6,4)$     & 4.267 & \textbf{1.118} & C2 \\
+\bottomrule
+\end{tabularx}
+\begin{itemize}
+  \item \mk{Assignment unchanged $\rightarrow$ converged} after 2 iterations.
+\end{itemize}}
+
+\lead{Final answer}
+\begin{itemize}
+  \item \textbf{Cluster 1} $=\{(1,2),(1.5,1),(3.5,1.5),(3.5,2.5)\}$, centroid $(2.375,\ 1.75)$
+  \item \textbf{Cluster 2} $=\{(4,3),(6,4)\}$, centroid $(5,\ 3.5)$
+\end{itemize}
+
+\creamq{Problem 1.8}{\m{5+3}}
+\begin{asked}{2081 Bhadra \textperiodcentered{} Q8 \textperiodcentered{} [5+3]}
+Consider the data points $\{(2,3), (3,3), (6,8), (8,8), (7,5)\}$ with initial centroid $(2,3)$.
+Apply K-means algorithm to choose the next centroid and cluster these data points into $k = 2$.
+Discuss the problems that arise with K-means clustering algorithm and ways to solve it.
+\end{asked}
+{\color{sub}\footnotesize \mk{Only ONE centroid is given}, and ``choose the next centroid'' is the
+first thing asked. Take the \textbf{farthest point} from the given one --- the standard
+max-separation seeding rule --- and say so.}
+
+\lead{Step 1: choose the second centroid}
+\par
+\begin{tabularx}{\textwidth}{@{}L{3.6cm}XXXX@{}}
+\toprule
+\hrow \thead{Distance from $(2,3)$} & $(3,3)$ & $(6,8)$ & $(8,8)$ & $(7,5)$ \\
+\midrule
+Euclidean & 1.000 & 6.403 & \mk{\textbf{7.810}} & 5.385 \\
+\bottomrule
+\end{tabularx}
+\par\penalty0\vspace{1pt}
+$(8,8)$ is farthest $\rightarrow$ \mk{$c_2 = (8,8)$}.
+
+\sbs{%
+\lead{Iteration 1}
+\par
+\begin{tabularx}{\linewidth}{@{}L{1.7cm}XXL{1.2cm}@{}}
+\toprule
+\hrow \thead{Point} & \thead{$d$ to $(2,3)$} & \thead{$d$ to $(8,8)$} & \thead{Cl.} \\
+\midrule
+$(2,3)$ & \textbf{0}     & 7.810 & C1 \\
+$(3,3)$ & \textbf{1.000} & 7.071 & C1 \\
+$(6,8)$ & 6.403 & \textbf{2.000} & C2 \\
+$(8,8)$ & 7.810 & \textbf{0}     & C2 \\
+$(7,5)$ & 5.385 & \textbf{3.162} & C2 \\
+\bottomrule
+\end{tabularx}
+\begin{itemize}
+  \item C1 $\rightarrow \mathbf{(2.5,\ 3)}$ \quad C2 $\rightarrow
+        \big(\tfrac{6+8+7}{3},\tfrac{8+8+5}{3}\big) = \mathbf{(7,\ 7)}$
+\end{itemize}}{%
+\lead{Iteration 2}
+\par
+\begin{tabularx}{\linewidth}{@{}L{1.7cm}XXL{1.2cm}@{}}
+\toprule
+\hrow \thead{Point} & \thead{$d$ to $(2.5,3)$} & \thead{$d$ to $(7,7)$} & \thead{Cl.} \\
+\midrule
+$(2,3)$ & \textbf{0.500} & 6.403 & C1 \\
+$(3,3)$ & \textbf{0.500} & 5.657 & C1 \\
+$(6,8)$ & 6.103 & \textbf{1.414} & C2 \\
+$(8,8)$ & 7.433 & \textbf{1.414} & C2 \\
+$(7,5)$ & 4.924 & \textbf{2.000} & C2 \\
+\bottomrule
+\end{tabularx}
+\begin{itemize}
+  \item \mk{Unchanged $\rightarrow$ converged.}
+\end{itemize}}
+
+\lead{Final answer} C1 $=\{(2,3),(3,3)\}$ centroid $(2.5,\ 3)$; \;
+C2 $=\{(6,8),(8,8),(7,5)\}$ centroid $(7,\ 7)$. \; The 3-mark ``problems and ways to solve'' half
+is the limitations list in \S5.2.
+
+\creamq{Problem 1.9}{\m{4+8}}
+\begin{asked}{2073 Chaitra \textperiodcentered{} Q7 \textperiodcentered{} [4+8]}
+How clustering differ from classification? Given the one-dimensional points
+$\{5, 12, 18, 24, 30, 42, 48\}$ with initial centroids $\{5, 12, 18\}$, create three clusters by
+K-Means algorithm and calculate SSE for this clustering result.
+\end{asked}
+{\color{sub}\footnotesize \mk{One dimension, so ``distance'' is just $|x - c|$.} This is the only
+PYQ that asks for \textbf{SSE}, and it is the only one that runs past two iterations.}
+
+\par
+\begin{tabularx}{\textwidth}{@{}L{1.3cm}L{5.6cm}XL{4.6cm}@{}}
+\toprule
+\hrow \thead{Iter.} & \thead{Assignment (nearest centroid)} & \thead{Clusters} & \thead{New centroids} \\
+\midrule
+1 & centroids $5,\ 12,\ 18$ & $\{5\}$, $\{12\}$, $\{18,24,30,42,48\}$ &
+    $5$, \; $12$, \; $\tfrac{162}{5} = 32.4$ \\
+2 & centroids $5,\ 12,\ 32.4$ & $\{5\}$, $\{12,18\}$, $\{24,30,42,48\}$ &
+    $5$, \; $15$, \; $\tfrac{144}{4} = 36$ \\
+3 & centroids $5,\ 15,\ 36$ & $\{5\}$, $\{12,18,24\}$, $\{30,42,48\}$ &
+    $5$, \; $18$, \; $40$ \\
+4 & centroids $5,\ 18,\ 40$ & $\{5\}$, $\{12,18,24\}$, $\{30,42,48\}$ &
+    $5$, \; $18$, \; $40$ \; \mk{unchanged} \\
+\bottomrule
+\end{tabularx}
+\begin{itemize}
+  \item \mk{Converged at iteration 4.} Note the cluster boundaries kept moving for three rounds
+        --- do not stop after two just because the earlier problems did.
+\end{itemize}
+
+\lead{SSE} \; $SSE = \sum_{i}\sum_{x \in C_i} (x - c_i)^2$
+\par
+\begin{tabularx}{\textwidth}{@{}L{2.4cm}L{2.0cm}XL{2.4cm}@{}}
+\toprule
+\hrow \thead{Cluster} & \thead{Centroid} & \thead{Squared errors} & \thead{Subtotal} \\
+\midrule
+$\{5\}$          & $5$  & $(5-5)^2 = 0$ & $0$ \\
+$\{12,18,24\}$   & $18$ & $(12-18)^2 + (18-18)^2 + (24-18)^2 = 36 + 0 + 36$ & $72$ \\
+$\{30,42,48\}$   & $40$ & $(30-40)^2 + (42-40)^2 + (48-40)^2 = 100 + 4 + 64$ & $168$ \\
+\bottomrule
+\end{tabularx}
+\par\penalty0\vspace{1pt}
+\mk{$SSE = 0 + 72 + 168 = \mathbf{240}$}
+\begin{itemize}
+  \item \mk{SSE is the objective K-means minimises}, so quoting it is how you show the clustering
+        is the algorithm's answer and not just a guess. A different seeding that gave a larger SSE
+        would be a worse local optimum.
+\end{itemize}
+
+\creamq{Problem 1.10 --- the Manhattan one}{\m{8}}
+\begin{asked}{2079 Baishakh \textperiodcentered{} Q8 \textperiodcentered{} [8]}
+Define clustering. Given the matrix whose column represent different data points, perform a
+K-means clustering on this dataset using the \textbf{Manhattan} as the distance function. The
+center of the 3 clusters are initiated as $A(6.2, 3.2)$, $B(6.6, 3.7)$ and $C(6.5, 3.0)$.
+Provide the final cluster centers after 3 iteration.
+\par\penalty0\vspace{2pt}
+\par
+\begin{tabularx}{\textwidth}{@{}L{1.0cm}L{1.3cm}L{1.3cm}L{1.3cm}L{1.3cm}L{1.3cm}L{1.3cm}L{1.3cm}L{1.3cm}L{1.3cm}X@{}}
+\toprule
+\hrow $x$ & 5.9 & 4.6 & 6.2 & 4.7 & 5.5 & 5.0 & 4.9 & 6.7 & 5.1 & 6.0 \\
+\hrow $y$ & 3.2 & 2.9 & 2.8 & 3.2 & 4.2 & 3.0 & 3.1 & 3.1 & 3.8 & 3.0 \\
+\bottomrule
+\end{tabularx}
+\end{asked}
+{\color{sub}\footnotesize \mk{Manhattan, not Euclidean}: $d = |x_1-x_2| + |y_1-y_2|$, no squares
+and no square root. \gap \mk{Stop after 3 iterations} --- the question says so, and it has
+\emph{not} converged by then. Say that in the answer.}
+
+\lead{Iteration 1} \; centres $A(6.2,3.2)$, $B(6.6,3.7)$, $C(6.5,3.0)$
+\par
+\begin{tabularx}{\textwidth}{@{}L{2.0cm}L{1.5cm}L{1.5cm}L{1.5cm}X@{}}
+\toprule
+\hrow \thead{Point} & \thead{$d$ to A} & \thead{$d$ to B} & \thead{$d$ to C} & \thead{Cluster} \\
+\midrule
+$(5.9,3.2)$ & \textbf{0.30} & 1.20 & 0.80 & A \\
+$(4.6,2.9)$ & \textbf{1.90} & 2.80 & 2.00 & A \\
+$(6.2,2.8)$ & \textbf{0.40} & 1.30 & 0.50 & A \\
+$(4.7,3.2)$ & \textbf{1.50} & 2.40 & 2.00 & A \\
+$(5.5,4.2)$ & 1.70 & \textbf{1.60} & 2.20 & B \\
+$(5.0,3.0)$ & \textbf{1.40} & 2.30 & 1.50 & A \\
+$(4.9,3.1)$ & \textbf{1.40} & 2.30 & 1.70 & A \\
+$(6.7,3.1)$ & 0.60 & 0.70 & \textbf{0.30} & C \\
+$(5.1,3.8)$ & 1.70 & \textbf{1.60} & 2.20 & B \\
+$(6.0,3.0)$ & \textbf{0.40} & 1.30 & 0.50 & A \\
+\bottomrule
+\end{tabularx}
+\par\penalty0\vspace{1pt}
+New centres: \; $A = \mathbf{(5.329,\ 3.029)}$ (7 points), \; $B = \mathbf{(5.3,\ 4.0)}$ (2),
+\; $C = \mathbf{(6.7,\ 3.1)}$ (1).
+
+\lead{Iteration 2} \; centres $A(5.329,3.029)$, $B(5.3,4.0)$, $C(6.7,3.1)$
+\par
+\begin{tabularx}{\textwidth}{@{}L{2.0cm}L{1.5cm}L{1.5cm}L{1.5cm}X@{}}
+\toprule
+\hrow \thead{Point} & \thead{$d$ to A} & \thead{$d$ to B} & \thead{$d$ to C} & \thead{Cluster} \\
+\midrule
+$(5.9,3.2)$ & \textbf{0.74} & 1.40 & 0.90 & A \\
+$(4.6,2.9)$ & \textbf{0.86} & 1.80 & 2.30 & A \\
+$(6.2,2.8)$ & 1.10 & 2.10 & \textbf{0.80} & \mk{C} \\
+$(4.7,3.2)$ & \textbf{0.80} & 1.40 & 2.10 & A \\
+$(5.5,4.2)$ & 1.34 & \textbf{0.40} & 2.30 & B \\
+$(5.0,3.0)$ & \textbf{0.36} & 1.30 & 1.80 & A \\
+$(4.9,3.1)$ & \textbf{0.50} & 1.30 & 1.80 & A \\
+$(6.7,3.1)$ & 1.44 & 2.30 & \textbf{0.00} & C \\
+$(5.1,3.8)$ & 1.00 & \textbf{0.40} & 2.30 & B \\
+$(6.0,3.0)$ & \textbf{0.70} & 1.70 & 0.80 & A \\
+\bottomrule
+\end{tabularx}
+\par\penalty0\vspace{1pt}
+New centres: \; $A = \mathbf{(5.183,\ 3.067)}$ (6), \; $B = \mathbf{(5.3,\ 4.0)}$ (2),
+\; $C = \mathbf{(6.45,\ 2.95)}$ (2).
+
+\lead{Iteration 3} \; centres $A(5.183,3.067)$, $B(5.3,4.0)$, $C(6.45,2.95)$
+\par
+\begin{tabularx}{\textwidth}{@{}L{2.0cm}L{1.5cm}L{1.5cm}L{1.5cm}X@{}}
+\toprule
+\hrow \thead{Point} & \thead{$d$ to A} & \thead{$d$ to B} & \thead{$d$ to C} & \thead{Cluster} \\
+\midrule
+$(5.9,3.2)$ & 0.85 & 1.40 & \textbf{0.80} & \mk{C} \\
+$(4.6,2.9)$ & \textbf{0.75} & 1.80 & 1.90 & A \\
+$(6.2,2.8)$ & 1.28 & 2.10 & \textbf{0.40} & C \\
+$(4.7,3.2)$ & \textbf{0.62} & 1.40 & 2.00 & A \\
+$(5.5,4.2)$ & 1.45 & \textbf{0.40} & 2.20 & B \\
+$(5.0,3.0)$ & \textbf{0.25} & 1.30 & 1.50 & A \\
+$(4.9,3.1)$ & \textbf{0.32} & 1.30 & 1.70 & A \\
+$(6.7,3.1)$ & 1.55 & 2.30 & \textbf{0.40} & C \\
+$(5.1,3.8)$ & 0.82 & \textbf{0.40} & 2.20 & B \\
+$(6.0,3.0)$ & 0.88 & 1.70 & \textbf{0.50} & \mk{C} \\
+\bottomrule
+\end{tabularx}
+
+\lead{Final answer after 3 iterations}
+\begin{itemize}
+  \item $A = \mathbf{(4.8,\ 3.05)}$ \; from $\{(4.6,2.9),(4.7,3.2),(5.0,3.0),(4.9,3.1)\}$
+  \item $B = \mathbf{(5.3,\ 4.0)}$ \; from $\{(5.5,4.2),(5.1,3.8)\}$
+  \item $C = \mathbf{(6.2,\ 3.025)}$ \; from $\{(5.9,3.2),(6.2,2.8),(6.7,3.1),(6.0,3.0)\}$
+  \item \mk{The assignment was still changing at iteration 3}, so this is \emph{not} a converged
+        clustering. The question asked for 3 iterations, so stop there and \mk{state that it has
+        not converged} --- that sentence is worth a mark.
+  \item \mk{Note how the three seeds were all bunched near $(6.5,3)$}, which is why cluster $C$
+        started with a single point and had to grow every round. A textbook illustration of
+        \textbf{poor seeding}.
+\end{itemize}
+
 \hr
 
 %=======================================================================
@@ -282,35 +619,118 @@ Use \textbf{Problem 1.1's} 6 points --- it is the dataset this paper's sister qu
 What is hierarchical clustering? Use this clustering approach to draw dendrogram for given
 data points.
 \par\vspace{2pt}
-\begin{tabularx}{0.72\textwidth}{@{}L{1.1cm}XXXXX@{}}
+\par
+\begin{tabularx}{0.80\textwidth}{@{}L{1.1cm}XXXXXX@{}}
 \toprule
-\hrow & \thead{$p_1$} & \thead{$p_2$} & \thead{$p_3$} & \thead{$p_4$} & \thead{$p_5$} \\
-$p_1$ & 0.00 & 0.24 & 0.22 & 0.37 & 0.34 \\
-$p_2$ & 0.24 & 0.00 & 0.15 & 0.20 & 0.14 \\
-$p_3$ & 0.22 & 0.15 & 0.00 & 0.15 & 0.28 \\
-$p_4$ & 0.37 & 0.20 & 0.15 & 0.00 & 0.29 \\
-$p_5$ & 0.34 & 0.14 & 0.28 & 0.29 & 0.00 \\
-$p_6$ & 0.23 & 0.25 & 0.11 & 0.22 & 0.39 \\
+\hrow & \thead{$p_1$} & \thead{$p_2$} & \thead{$p_3$} & \thead{$p_4$} & \thead{$p_5$} & \thead{$p_6$} \\
+$p_1$ & 0.00 & 0.24 & 0.22 & 0.37 & 0.34 & 0.23 \\
+$p_2$ & 0.24 & 0.00 & 0.15 & 0.20 & 0.14 & 0.25 \\
+$p_3$ & 0.22 & 0.15 & 0.00 & 0.15 & 0.28 & 0.11 \\
+$p_4$ & 0.37 & 0.20 & 0.15 & 0.00 & 0.29 & 0.22 \\
+$p_5$ & 0.34 & 0.14 & 0.28 & 0.29 & 0.00 & 0.39 \\
+$p_6$ & 0.23 & 0.25 & 0.11 & 0.22 & 0.39 & 0.00 \\
 \bottomrule
 \end{tabularx}
-\par\vspace{2pt}
-{\color{sub}The paper prints the full symmetric $6\times6$; the $p_6$ column is
-0.23, 0.25, 0.11, 0.22, 0.39, 0.00.}
 \end{asked}
 {\color{sub}\footnotesize Distances are given directly, so no coordinate work.
-The paper does not name a linkage --- use \textbf{single link} and say so.}
+The paper does not name a linkage --- use \textbf{single link (MIN)} and say so. \gap
+\mk{Recompute and rewrite the whole matrix after every merge} --- that redrawing is the method,
+and it is where the marks are.}
 
-\lead{Merge sequence}
-\begin{tabularx}{0.94\textwidth}{@{}L{1.1cm}L{2.3cm}L{1.5cm}X@{}}
+\lead{Step 1} \; smallest entry in the matrix above is
+\mk{$d(p_3,p_6) = 0.11$} $\rightarrow$ merge at height \textbf{0.11}
+
+\sbs{%
+\lead{Matrix after merge 1} \; 5 clusters
+\par
+\begin{tabularx}{\linewidth}{@{}L{1.5cm}XXXX@{}}
 \toprule
-\hrow \thead{Step} & \thead{Merge} & \thead{Height} & \thead{Updated distances (MIN)} \\
-1 & $p_3, p_6$ & \textbf{0.11} & to $p_1$ 0.22, $p_2$ 0.15, $p_4$ 0.15, $p_5$ 0.28 \\
-2 & $p_2, p_5$ & \textbf{0.14} & to $p_1$ 0.24, $p_4$ 0.20, $\{p_3p_6\}$ 0.15 \\
-3 & $\{p_3p_6\}, p_4$ & \textbf{0.15} & to $p_1$ 0.22, $\{p_2p_5\}$ 0.15 \\
-4 & $\{p_3p_4p_6\}, \{p_2p_5\}$ & \textbf{0.15} & to $p_1$ 0.22 \\
-5 & all, $+\,p_1$ & \textbf{0.22} & --- \\
+\hrow & \thead{$p_1$} & \thead{$p_2$} & \thead{$p_4$} & \thead{$p_5$} \\
+\midrule
+$p_1$        & 0.00 & 0.24 & 0.37 & 0.34 \\
+$p_2$        & 0.24 & 0.00 & 0.20 & \mk{0.14} \\
+$p_4$        & 0.37 & 0.20 & 0.00 & 0.29 \\
+$p_5$        & 0.34 & \mk{0.14} & 0.29 & 0.00 \\
+$\{p_3p_6\}$ & 0.22 & 0.15 & 0.15 & 0.28 \\
 \bottomrule
-\end{tabularx}
+\end{tabularx}}{%
+\lead{How the new row was computed} \; MIN of the two old rows
+\begin{itemize}
+  \item $d(\{p_3p_6\}, p_1) = \min(0.22,\ 0.23) = 0.22$
+  \item $d(\{p_3p_6\}, p_2) = \min(0.15,\ 0.25) = 0.15$
+  \item $d(\{p_3p_6\}, p_4) = \min(0.15,\ 0.22) = 0.15$
+  \item $d(\{p_3p_6\}, p_5) = \min(0.28,\ 0.39) = 0.28$
+  \item Every other entry is copied over unchanged.
+\end{itemize}}
+
+\lead{Step 2} \; smallest is now \mk{$d(p_2,p_5) = 0.14$} $\rightarrow$ merge at height \textbf{0.14}
+
+\sbs{%
+\lead{Matrix after merge 2} \; 4 clusters
+\par
+\begin{tabularx}{\linewidth}{@{}L{1.5cm}XXX@{}}
+\toprule
+\hrow & \thead{$p_1$} & \thead{$p_4$} & \thead{$\{p_3p_6\}$} \\
+\midrule
+$p_1$        & 0.00 & 0.37 & 0.22 \\
+$p_4$        & 0.37 & 0.00 & \mk{0.15} \\
+$\{p_3p_6\}$ & 0.22 & \mk{0.15} & 0.00 \\
+$\{p_2p_5\}$ & 0.24 & 0.20 & \mk{0.15} \\
+\bottomrule
+\end{tabularx}}{%
+\lead{New row}
+\begin{itemize}
+  \item $d(\{p_2p_5\}, p_1) = \min(0.24,\ 0.34) = 0.24$
+  \item $d(\{p_2p_5\}, p_4) = \min(0.20,\ 0.29) = 0.20$
+  \item $d(\{p_2p_5\}, \{p_3p_6\}) = \min(0.15,\ 0.28) = 0.15$
+\end{itemize}
+\begin{itemize}
+  \item \mk{A tie at 0.15}, between $(\{p_3p_6\}, p_4)$ and $(\{p_3p_6\}, \{p_2p_5\})$.
+        \mk{Either may be merged first} and the dendrogram heights come out the same; state the
+        rule you use. Taken here in the order the matrix is read.
+\end{itemize}}
+
+\lead{Step 3} \; take \mk{$d(\{p_3p_6\}, p_4) = 0.15$} $\rightarrow$ merge at height \textbf{0.15}
+
+\sbs{%
+\lead{Matrix after merge 3} \; 3 clusters
+\par
+\begin{tabularx}{\linewidth}{@{}L{1.8cm}XX@{}}
+\toprule
+\hrow & \thead{$p_1$} & \thead{$\{p_2p_5\}$} \\
+\midrule
+$p_1$          & 0.00 & 0.24 \\
+$\{p_2p_5\}$   & 0.24 & 0.00 \\
+$\{p_3p_4p_6\}$ & 0.22 & \mk{0.15} \\
+\bottomrule
+\end{tabularx}}{%
+\lead{New row}
+\begin{itemize}
+  \item $d(\{p_3p_4p_6\}, p_1) = \min(0.22,\ 0.37) = 0.22$
+  \item $d(\{p_3p_4p_6\}, \{p_2p_5\}) = \min(0.15,\ 0.20) = 0.15$
+\end{itemize}}
+
+\lead{Step 4} \; smallest is \mk{0.15} $\rightarrow$ merge $\{p_3p_4p_6\}$ with $\{p_2p_5\}$
+at height \textbf{0.15}
+
+\sbs{%
+\lead{Matrix after merge 4} \; 2 clusters
+\par
+\begin{tabularx}{\linewidth}{@{}L{2.6cm}X@{}}
+\toprule
+\hrow & \thead{$p_1$} \\
+\midrule
+$p_1$                  & 0.00 \\
+$\{p_2p_3p_4p_5p_6\}$  & \mk{0.22} \\
+\bottomrule
+\end{tabularx}}{%
+\lead{New row}
+\begin{itemize}
+  \item $d(\{p_2p_3p_4p_5p_6\}, p_1) = \min(0.24,\ 0.22) = 0.22$, the smaller of the two
+        surviving links to $p_1$.
+\end{itemize}}
+
+\lead{Step 5} \; only one distance left $\rightarrow$ merge everything at height \textbf{0.22}
 
 \lead{Final answer} Dendrogram heights: \mk{0.11, 0.14, 0.15, 0.15, 0.22}.
 \begin{itemize}
@@ -323,6 +743,7 @@ The paper does not name a linkage --- use \textbf{single link} and say so.}
 Cluster the following samples based on complete-linkage algorithm and draw the dendrogram.
 Using Euclidean distance.
 \par\vspace{2pt}
+\par
 \begin{tabularx}{0.48\textwidth}{@{}L{1.8cm}L{3.0cm}X@{}}
 \toprule
 \hrow \thead{Point} & \thead{x Coordinate} & \thead{y Coordinate} \\
@@ -350,6 +771,7 @@ $p_6$ & 0.235 & 0.244 & \textbf{0.102} & 0.219 & 0.386 \\
 \end{tabularx}
 
 \lead{Step 2: merge sequence (MAX update)}
+\par
 \begin{tabularx}{0.94\textwidth}{@{}L{1.1cm}L{2.5cm}L{1.5cm}X@{}}
 \toprule
 \hrow \thead{Step} & \thead{Merge} & \thead{Height} & \thead{Updated distances (MAX)} \\
@@ -367,6 +789,7 @@ $\{p_1,p_2,p_5\}$ and $\{p_3,p_4,p_6\}$.
 \begin{asked}{2076 Chaitra \textperiodcentered{} Q10 \textperiodcentered{} [4+4]}
 The table below is a distance matrix for six objects:
 \par\vspace{2pt}
+\par
 \begin{tabularx}{0.70\textwidth}{@{}L{1.0cm}XXXXXX@{}}
 \toprule
 \hrow & \thead{A} & \thead{B} & \thead{C} & \thead{D} & \thead{E} & \thead{F} \\
@@ -388,6 +811,7 @@ one matrix, both linkages.}
 
 \sbs{%
 \lead{(a) Single link (MIN)}
+\par
 \begin{tabularx}{\linewidth}{@{}L{0.7cm}L{2.4cm}X@{}}
 \toprule
 \hrow & \thead{Merge} & \thead{Height} \\
@@ -403,6 +827,7 @@ one matrix, both linkages.}
   \item Everything merges early and at similar heights $\rightarrow$ \textbf{chaining}.
 \end{itemize}}{%
 \lead{(b) Complete link (MAX)}
+\par
 \begin{tabularx}{\linewidth}{@{}L{0.7cm}L{2.4cm}X@{}}
 \toprule
 \hrow & \thead{Merge} & \thead{Height} \\
@@ -440,15 +865,67 @@ while complete link produces two clean balanced groups. \\
   \item Join core points within $\varepsilon$ of each other into clusters; attach the border points.
 \end{enumerate}
 
-\creamq{Practice}{}
-\begin{asked}[PROBLEM]{not a PYQ \textperiodcentered{} written to fill the gap \added}
+\creamq{Problem 3.1}{\m{3+5}}
+\begin{asked}{2082 Bhadra \textperiodcentered{} Q5 \textperiodcentered{} [3+5]}
+What are core, border and noise points? Consider the following points
+$(2, 10)$, $(2, 5)$, $(8, 4)$, $(5, 8)$, $(7, 5)$, $(6, 4)$, $(1, 2)$, $(4, 9)$.
+Use DBSCAN algorithm to find cluster with $e = 2$ and minPts $= 2$.
+\end{asked}
+{\color{sub}\footnotesize The paper prints the radius as a plain \texttt{e}; it is $\varepsilon$.
+\gap Label the points $A \ldots H$ in the order given, so the working can name them.}
+
+\lead{Step 1: neighbourhood of every point} \; $\varepsilon = 2$, and \mk{the point counts
+itself}, so MinPts $= 2$ means ``at least one other point within 2''.
+\par
+\begin{tabularx}{\textwidth}{@{}L{1.9cm}XL{1.2cm}L{1.5cm}X@{}}
+\toprule
+\hrow \thead{Point} & \thead{Others within $\varepsilon = 2$} & \thead{$|N|$} & \thead{Type}
+& \thead{Why} \\
+\midrule
+$A(2,10)$ & --- \; (nearest is $H$ at $2.236$)     & 1 & \textbf{noise} & no neighbour \\
+$B(2,5)$  & --- \; (nearest is $G$ at $3.162$)     & 1 & \textbf{noise} & no neighbour \\
+$C(8,4)$  & $E$ $(1.414)$, $F$ $(2.000)$           & 3 & \textbf{core}  & $\ge 2$ \\
+$D(5,8)$  & $H$ $(1.414)$                          & 2 & \textbf{core}  & $\ge 2$ \\
+$E(7,5)$  & $C$ $(1.414)$, $F$ $(1.414)$           & 3 & \textbf{core}  & $\ge 2$ \\
+$F(6,4)$  & $C$ $(2.000)$, $E$ $(1.414)$           & 3 & \textbf{core}  & $\ge 2$ \\
+$G(1,2)$  & --- \; (nearest is $B$ at $3.162$)     & 1 & \textbf{noise} & no neighbour \\
+$H(4,9)$  & $D$ $(1.414)$                          & 2 & \textbf{core}  & $\ge 2$ \\
+\bottomrule
+\end{tabularx}
+\begin{itemize}
+  \item \mk{$C$--$F$ is exactly $2.000$}, which is \emph{inside} the neighbourhood: the definition
+        is $d \le \varepsilon$, not $d < \varepsilon$. Getting this wrong splits the cluster.
+  \item \mk{There are no border points here.} $A$, $B$ and $G$ are not core, and none of them is
+        within $\varepsilon$ of a core point either, so all three are noise. Say that explicitly
+        --- the question names all three categories.
+\end{itemize}
+
+\lead{Step 2: join the core points}
+\begin{itemize}
+  \item $C$, $E$, $F$ are mutually within $\varepsilon$ $\rightarrow$
+        \mk{\textbf{Cluster 1} $= \{(8,4),\ (7,5),\ (6,4)\}$}.
+  \item $D$ and $H$ are within $\varepsilon$ of each other and of nothing else $\rightarrow$
+        \mk{\textbf{Cluster 2} $= \{(5,8),\ (4,9)\}$}.
+  \item No border point is left to attach.
+\end{itemize}
+
+\lead{Final answer}
+\begin{itemize}
+  \item \textbf{2 clusters}: $\{(8,4),(7,5),(6,4)\}$ and $\{(5,8),(4,9)\}$.
+  \item \textbf{Core}: all 5 of those points. \quad \textbf{Border}: none.
+        \quad \textbf{Noise}: $(2,10)$, $(2,5)$, $(1,2)$.
+  \item \mk{Check}: $5 + 0 + 3 = 8$ points. \checkmark
+\end{itemize}
+
+\creamq{Practice --- the same method with MinPts $= 3$}{}
+\begin{asked}[PROBLEM]{not a PYQ \textperiodcentered{} written to show the MinPts effect \added}
 Classify each of the points $A(1,1)$, $B(1,2)$, $C(2,1)$, $D(8,8)$, $E(8,9)$, $F(25,25)$ as a
 \textbf{core}, \textbf{border} or \textbf{noise} point under DBSCAN with $\varepsilon = 2$ and
 MinPts $= 3$ (Euclidean distance, the point itself counted in its own neighbourhood). Then give
 the clusters DBSCAN produces.
 \end{asked}
-{\color{sub}\footnotesize No PYQ sets a DBSCAN numerical, but the algorithm is asked in 8 papers
-and a worked classification makes the definitions concrete. \added}
+{\color{sub}\footnotesize Kept because it isolates \mk{what MinPts alone changes}: the same shaped
+data gives a different answer at MinPts 3 than at MinPts 2. \added}
 
 \lead{Step 1: neighbourhood counts} (including the point itself)\par
 \begin{tabularx}{0.86\textwidth}{@{}L{1.2cm}XL{1.6cm}L{2.2cm}@{}}

@@ -41,6 +41,7 @@ Han \& Kamber 3rd ed Examples 8.1--8.4, which use the same dataset the IOE paper
 \begin{asked}{2079 Bhadra \textperiodcentered{} Q3 \textperiodcentered{} [10]}
 Draw decision tree for the given data using ID3 algorithm.
 \par\vspace{2pt}
+\par
 \begin{tabularx}{0.80\textwidth}{@{}L{2.3cm}L{1.8cm}L{1.7cm}L{2.5cm}X@{}}
 \toprule
 \hrow \thead{Age} & \thead{Income} & \thead{Student} & \thead{Credit\_Rating} & \thead{Buy's\_Computer} \\
@@ -69,6 +70,7 @@ Senior      & Medium & No  & Excellent & No  \\
    = 0.4098 + 0.5305 = \mathbf{0.940} \]
 
 \lead{Step 2: gain of each attribute}
+\par
 \begin{tabularx}{\textwidth}{@{}L{2.4cm}L{4.3cm}XL{1.9cm}@{}}
 \toprule
 \hrow \thead{Attribute} & \thead{Partition (Yes, No)} & \thead{$Info_A(D)$} & \thead{Gain} \\
@@ -131,6 +133,7 @@ Construct a decision tree for the following data set using information gain.
 
 Predict the class label for a data point with values $<$Female, 2, standard, high$>$
 \par\vspace{2pt}
+\par
 \begin{tabularx}{0.86\textwidth}{@{}L{1.7cm}L{2.6cm}L{2.2cm}L{2.4cm}X@{}}
 \toprule
 \hrow \thead{Gender} & \thead{Car ownership} & \thead{Travel cost} & \thead{Income level} & \thead{Transport mode} \\
@@ -152,26 +155,258 @@ Female & 1 & Standard  & Medium & Train \\
 \[ Info(D) = -\tfrac{4}{10}\log_2\tfrac{4}{10} - \tfrac{3}{10}\log_2\tfrac{3}{10}
    - \tfrac{3}{10}\log_2\tfrac{3}{10} = 0.5288+0.5211+0.5211 = \mathbf{1.571} \]
 
-\lead{Travel cost} \ Cheap (4 Bus, 0 Car, 1 Train) $\cdot$ Expensive (0,3,0) $\cdot$ Standard (0,0,2)
+\lead{Step 2: gain of each attribute} \; partitions written as (Bus, Car, Train)
+\par
+\begin{tabularx}{\textwidth}{@{}L{2.5cm}L{4.6cm}XL{1.7cm}@{}}
+\toprule
+\hrow \thead{Attribute} & \thead{Partition (Bus, Car, Train)} & \thead{$Info_A(D)$} & \thead{Gain} \\
+\midrule
+\textbf{Travel cost} & Cheap (4,0,1) $\cdot$ Expensive (0,3,0) $\cdot$ Standard (0,0,2) &
+$\tfrac{5}{10}(0.722)+\tfrac{3}{10}(0)+\tfrac{2}{10}(0)=0.361$ & $\mathbf{1.210}$ \\
+Income level & Low (2,0,0) $\cdot$ Medium (2,1,3) $\cdot$ High (0,2,0) &
+$\tfrac{2}{10}(0)+\tfrac{6}{10}(1.459)+\tfrac{2}{10}(0)=0.875$ & 0.695 \\
+Car ownership & 0 (2,0,1) $\cdot$ 1 (2,1,2) $\cdot$ 2 (0,2,0) &
+$\tfrac{3}{10}(0.918)+\tfrac{5}{10}(1.522)+\tfrac{2}{10}(0)=1.036$ & 0.534 \\
+Gender & Male (3,1,1) $\cdot$ Female (1,2,2) &
+$\tfrac{5}{10}(1.371)+\tfrac{5}{10}(1.522)=1.446$ & 0.125 \\
+\bottomrule
+\end{tabularx}
 \begin{itemize}
-  \item $Info(\text{Cheap}) = -\tfrac{4}{5}\log_2\tfrac{4}{5}-\tfrac{1}{5}\log_2\tfrac{1}{5} = 0.722$
-  \item Expensive and Standard are both \textbf{pure} $\rightarrow$ $Info = 0$
-  \item $Info_{TravelCost}(D) = \tfrac{5}{10}(0.722) + \tfrac{3}{10}(0) + \tfrac{2}{10}(0) = 0.361$
-  \item $Gain = 1.571 - 0.361 = \mathbf{1.210}$
-\end{itemize}
-\begin{itemize}
-  \item Every other attribute scores far lower (Gender $0.125$, Car ownership $0.534$,
-        Income level $0.971$), so \mk{Travel cost is the root} --- two of its three branches are pure.
-  \item Only the \emph{Cheap} branch needs splitting: 5 tuples (4 Bus, 1 Train). Splitting it on
-        \textbf{Gender} gives Male (3 Bus, 0 Train) and Female (1 Bus, 1 Train); splitting on
-        \textbf{Car ownership} gives 0 (2 Bus), 1 (2 Bus, 1 Train). Neither is perfect;
-        Gender has the higher gain, then Car ownership finishes the Female sub-branch.
+  \item \mk{Travel cost has the highest gain $\rightarrow$ it is the root}, and two of its three
+        branches (Expensive, Standard) are already pure.
+  \item \mk{Only the Cheap branch needs splitting}: 5 tuples, (4 Bus, 0 Car, 1 Train),
+        $Info = 0.722$.
 \end{itemize}
 
+\lead{Step 3: recurse on the Cheap branch} \; 5 tuples, $Info = 0.722$
+\par
+\begin{tabularx}{\textwidth}{@{}L{2.5cm}L{4.6cm}XL{1.7cm}@{}}
+\toprule
+\hrow \thead{Attribute} & \thead{Partition (Bus, Train)} & \thead{$Info_A$} & \thead{Gain} \\
+\midrule
+\textbf{Gender} & Male (3,0) \mk{pure} $\cdot$ Female (1,1) &
+$\tfrac{3}{5}(0)+\tfrac{2}{5}(1.0)=0.400$ & $\mathbf{0.322}$ \\
+Car ownership & 0 (2,0) \mk{pure} $\cdot$ 1 (2,1) &
+$\tfrac{2}{5}(0)+\tfrac{3}{5}(0.918)=0.551$ & 0.171 \\
+Income level & Low (2,0) \mk{pure} $\cdot$ Medium (2,1) &
+$\tfrac{2}{5}(0)+\tfrac{3}{5}(0.918)=0.551$ & 0.171 \\
+\bottomrule
+\end{tabularx}
+\begin{itemize}
+  \item \textbf{Gender} wins. Male is pure Bus; \emph{Female} still holds (1 Bus, 1 Train).
+  \item That last pair splits perfectly on \textbf{Car ownership} (0 $\rightarrow$ Bus,
+        1 $\rightarrow$ Train), gain $= 1.0$. \mk{Income level splits it equally well} --- say so
+        and pick one, either is correct.
+\end{itemize}
+
+\sbsr{0.5}{%
+\lead{Final tree}
+\begin{itemize}
+  \item \textbf{Travel cost?}
+  \begin{itemize}
+    \item \emph{Expensive} $\rightarrow$ \textbf{Car}
+    \item \emph{Standard} $\rightarrow$ \textbf{Train}
+    \item \emph{Cheap} $\rightarrow$ \textbf{Gender?}
+    \begin{itemize}
+      \item male $\rightarrow$ \textbf{Bus}
+      \item female $\rightarrow$ \textbf{Car ownership?}
+      \begin{itemize}
+        \item 0 $\rightarrow$ \textbf{Bus}
+        \item 1 $\rightarrow$ \textbf{Train}
+      \end{itemize}
+    \end{itemize}
+  \end{itemize}
+  \item 5 leaves, depth 3, classifies all 10 training tuples correctly.
+\end{itemize}}{%
 \lead{Prediction for $<$Female, 2, standard, high$>$}
 \begin{itemize}
-  \item Travel cost $=$ \textbf{standard} $\rightarrow$ that branch is \textbf{pure Train}.
-  \item \mk{No further tests are needed.} \quad \textbf{Answer: Train.}
+  \item Read the root first: Travel cost $=$ \textbf{standard}.
+  \item That branch is \mk{pure Train}, so the walk stops immediately.
+  \item \mk{No other attribute is consulted} --- Gender, car ownership and income are never
+        reached. \textbf{Answer: Train.}
+  \item \mk{This is the point of the question}: a decision tree only tests the attributes on the
+        path it takes, not all of them.
+\end{itemize}}
+
+\creamq{Problem 1.3}{\m{2+9+3}}
+\begin{asked}{2082 Bhadra \textperiodcentered{} Q3 \textperiodcentered{} [2+9+3]}
+When do we use decision tree? Construct a complete decision tree using ID-3 algorithm for
+following dataset. How do you evaluate the performance of this model?
+\par\penalty0\vspace{2pt}
+\par
+\begin{tabularx}{0.94\textwidth}{@{}L{0.8cm}L{2.5cm}L{1.3cm}L{2.1cm}L{2.6cm}X@{}}
+\toprule
+\hrow \thead{SN} & \thead{Credit history} & \thead{Debt} & \thead{Collateral} & \thead{Income}
+& \thead{Credit Risk} \\
+\midrule
+1  & bad     & high & none     & \$0 to \$15K  & high     \\
+2  & unknown & high & none     & \$15 to \$35K & high     \\
+3  & unknown & low  & none     & \$15 to \$35K & moderate \\
+4  & unknown & low  & none     & \$0 to \$15K  & high     \\
+5  & unknown & low  & none     & over \$35K    & low      \\
+6  & unknown & low  & adequate & over \$35K    & low      \\
+7  & bad     & low  & none     & \$0 to \$15K  & high     \\
+8  & bad     & low  & adequate & over \$35K    & moderate \\
+9  & good    & low  & none     & over \$35K    & low      \\
+10 & good    & high & adequate & over \$35K    & low      \\
+11 & good    & high & none     & \$0 to \$15K  & high     \\
+12 & good    & high & none     & \$15 to \$35K & moderate \\
+13 & good    & high & none     & over \$35K    & low      \\
+14 & bad     & high & none     & \$15 to \$35K & high     \\
+\bottomrule
+\end{tabularx}
+\end{asked}
+{\color{sub}\footnotesize \mk{Three classes, not two}, so $Info$ has three terms.
+\gap Classes: high $=6$, moderate $=3$, low $=5$, $n = 14$.}
+
+\lead{Step 1: entropy of the whole set}
+\[ Info(D) = -\tfrac{6}{14}\log_2\tfrac{6}{14} - \tfrac{3}{14}\log_2\tfrac{3}{14}
+   - \tfrac{5}{14}\log_2\tfrac{5}{14} = 0.5239 + 0.4741 + 0.5305 = \mathbf{1.531} \]
+
+\lead{Step 2: gain of each attribute} \; partitions written as (high, moderate, low)
+\par
+\begin{tabularx}{\textwidth}{@{}L{2.6cm}L{4.9cm}XL{1.7cm}@{}}
+\toprule
+\hrow \thead{Attribute} & \thead{Partition (high, mod, low)} & \thead{$Info_A(D)$} & \thead{Gain} \\
+\midrule
+\textbf{Income} & \$0--15K (4,0,0) \mk{pure} $\cdot$ \$15--35K (2,2,0) $\cdot$ over \$35K (0,1,5) &
+$\tfrac{4}{14}(0)+\tfrac{4}{14}(1.0)+\tfrac{6}{14}(0.650)=0.564$ & $\mathbf{0.966}$ \\
+Credit history & bad (3,1,0) $\cdot$ unknown (2,1,2) $\cdot$ good (1,1,3) &
+$\tfrac{4}{14}(0.811)+\tfrac{5}{14}(1.522)+\tfrac{5}{14}(1.371)=1.265$ & 0.266 \\
+Collateral & none (6,2,3) $\cdot$ adequate (0,1,2) &
+$\tfrac{11}{14}(1.435)+\tfrac{3}{14}(0.918)=1.325$ & 0.206 \\
+Debt & high (4,1,2) $\cdot$ low (2,2,3) &
+$\tfrac{7}{14}(1.379)+\tfrac{7}{14}(1.557)=1.468$ & 0.063 \\
+\bottomrule
+\end{tabularx}
+\begin{itemize}
+  \item \mk{Income wins by a wide margin $\rightarrow$ it is the root}, and its \$0--15K branch
+        is already pure (all high risk).
+\end{itemize}
+
+\sbs{%
+\lead{Step 3: recurse on \$15--35K} \; 4 tuples (2 high, 2 moderate), $Info = 1.0$
+\par
+\begin{tabularx}{\linewidth}{@{}L{2.4cm}XL{1.3cm}@{}}
+\toprule
+\hrow \thead{Attribute} & \thead{$Info_A$} & \thead{Gain} \\
+\midrule
+\textbf{Credit history} & $\tfrac{2}{4}(1.0)+\tfrac{1}{4}(0)+\tfrac{1}{4}(0)=0.500$ & $\mathbf{0.500}$ \\
+Debt       & $\tfrac{3}{4}(0.918)+\tfrac{1}{4}(0)=0.689$ & 0.311 \\
+Collateral & all ``none'' $\rightarrow 1.000$ & 0.000 \\
+\bottomrule
+\end{tabularx}
+\begin{itemize}
+  \item \textbf{Credit history} splits it: good $\rightarrow$ moderate, bad $\rightarrow$ high,
+        \mk{unknown is still mixed} (rows 2 and 3).
+  \item That last pair splits perfectly on \textbf{Debt}: high $\rightarrow$ high risk,
+        low $\rightarrow$ moderate. Gain $= 1.0$.
+\end{itemize}}{%
+\lead{Step 4: recurse on over \$35K} \; 6 tuples (0 high, 1 mod, 5 low), $Info = 0.650$
+\par
+\begin{tabularx}{\linewidth}{@{}L{2.4cm}XL{1.3cm}@{}}
+\toprule
+\hrow \thead{Attribute} & \thead{$Info_A$} & \thead{Gain} \\
+\midrule
+\textbf{Credit history} & unknown (0,0,2) $\cdot$ bad (0,1,0) $\cdot$ good (0,0,3)
+  $\rightarrow \mathbf{0}$ & $\mathbf{0.650}$ \\
+Collateral & $0.459$ & 0.191 \\
+Debt       & $0.541$ & 0.109 \\
+\bottomrule
+\end{tabularx}
+\begin{itemize}
+  \item \mk{Credit history splits this branch perfectly} --- all three partitions are pure, so
+        $Info_A = 0$ and the branch is finished in one step.
+\end{itemize}}
+
+\sbsr{0.52}{%
+\lead{Final tree}
+\begin{itemize}
+  \item \textbf{Income?}
+  \begin{itemize}
+    \item \emph{\$0--15K} $\rightarrow$ \textbf{high risk}
+    \item \emph{\$15--35K} $\rightarrow$ \textbf{Credit history?}
+    \begin{itemize}
+      \item bad $\rightarrow$ \textbf{high}
+      \item good $\rightarrow$ \textbf{moderate}
+      \item unknown $\rightarrow$ \textbf{Debt?} \; high $\rightarrow$ \textbf{high},
+            low $\rightarrow$ \textbf{moderate}
+    \end{itemize}
+    \item \emph{over \$35K} $\rightarrow$ \textbf{Credit history?}
+    \begin{itemize}
+      \item unknown $\rightarrow$ \textbf{low} \quad good $\rightarrow$ \textbf{low}
+      \item bad $\rightarrow$ \textbf{moderate}
+    \end{itemize}
+  \end{itemize}
+  \item 8 leaves; classifies all 14 tuples correctly.
+\end{itemize}}{%
+\lead{The 3-mark part: evaluating the model}
+\begin{itemize}
+  \item \mk{Do not evaluate on the training set} --- this tree scores 100\,\% there by
+        construction, which measures nothing.
+  \item Hold out data, or better \textbf{stratified 10-fold cross-validation} (\S3.7).
+  \item Build a \textbf{confusion matrix} on the held-out tuples, then report \textbf{accuracy},
+        and per class \textbf{precision}, \textbf{recall} and $F_1$. With three classes, report
+        them \mk{per class} --- a single accuracy hides which risk band is being missed.
+  \item Mention \textbf{pruning} and a validation set, since a fully grown ID3 tree overfits.
+\end{itemize}}
+
+\creamq{Problem 1.4 --- root node only}{\m{2+8}}
+\begin{asked}{2081 Bhadra \textperiodcentered{} Q5 \textperiodcentered{} [2+8]}
+State an algorithm for constructing a decision tree. Using ID3 identify the root node for the
+following data set.
+\par\penalty0\vspace{2pt}
+\par
+\begin{tabularx}{0.92\textwidth}{@{}L{1.7cm}L{2.6cm}L{2.2cm}L{2.4cm}X@{}}
+\toprule
+\hrow \thead{Gender} & \thead{Car Ownership} & \thead{Travel Cost} & \thead{Income Level}
+& \thead{Transport Mode} \\
+\midrule
+Male   & 0 & Cheap     & Low    & Bus   \\
+Male   & 1 & Cheap     & Medium & Bus   \\
+Female & 1 & Cheap     & Medium & Train \\
+Female & 0 & Cheap     & Low    & Bus   \\
+Male   & 1 & Cheap     & Medium & Bus   \\
+Male   & 0 & Standard  & High   & Train \\
+Female & 1 & Standard  & Medium & Train \\
+Female & 1 & Expensive & High   & Car   \\
+Male   & 2 & Expensive & Medium & Car   \\
+Female & 2 & Expensive & High   & Car   \\
+\bottomrule
+\end{tabularx}
+\end{asked}
+{\color{sub}\footnotesize \mk{A different 10-row table from Problem 1.2}, despite looking almost
+identical --- four rows differ. \gap \mk{Only the root is asked for}, so stop after the gain
+table; do not grow the whole tree.}
+
+\lead{Step 1} classes Bus $=4$, Train $=3$, Car $=3$, so
+$Info(D) = -\tfrac{4}{10}\log_2\tfrac{4}{10} - 2\big(\tfrac{3}{10}\log_2\tfrac{3}{10}\big)
+= \mathbf{1.571}$
+
+\lead{Step 2: gain of each attribute} \; partitions written as (Bus, Train, Car)
+\par
+\begin{tabularx}{\textwidth}{@{}L{2.5cm}L{4.6cm}XL{1.7cm}@{}}
+\toprule
+\hrow \thead{Attribute} & \thead{Partition (Bus, Train, Car)} & \thead{$Info_A(D)$} & \thead{Gain} \\
+\midrule
+\textbf{Travel cost} & Cheap (4,1,0) $\cdot$ Standard (0,2,0) \mk{pure} $\cdot$ Expensive (0,0,3) \mk{pure} &
+$\tfrac{5}{10}(0.722)+\tfrac{2}{10}(0)+\tfrac{3}{10}(0)=0.361$ & $\mathbf{1.210}$ \\
+Car ownership & 0 (2,1,0) $\cdot$ 1 (2,2,1) $\cdot$ 2 (0,0,2) \mk{pure} &
+$\tfrac{3}{10}(0.918)+\tfrac{5}{10}(1.522)+\tfrac{2}{10}(0)=1.036$ & 0.534 \\
+Income level & Low (2,0,0) \mk{pure} $\cdot$ Medium (2,2,1) $\cdot$ High (0,1,2) &
+$\tfrac{2}{10}(0)+\tfrac{5}{10}(1.522)+\tfrac{3}{10}(0.918)=1.036$ & 0.534 \\
+Gender & Male (3,1,1) $\cdot$ Female (1,2,2) &
+$\tfrac{5}{10}(1.371)+\tfrac{5}{10}(1.446)=1.446$ & 0.125 \\
+\bottomrule
+\end{tabularx}
+
+\lead{Answer}
+\begin{itemize}
+  \item \mk{\textbf{Travel cost} is the root node}, gain $1.210$, more than double the next best.
+  \item \mk{Car ownership and Income level tie exactly at $0.534$.} Note it --- if the question
+        had asked for the second level you would have to break that tie explicitly.
+  \item \mk{Why Travel cost wins}: two of its three branches are already pure, so it removes most
+        of the uncertainty in one test. \textbf{Say that}, do not just quote the number.
 \end{itemize}
 
 \hr
@@ -244,6 +479,7 @@ supply. The 14-tuple \emph{buys\_computer} set below is the safe one to reuse. \
 Predict Class label using naive Bayesian classifier for $X =$ (age $=$ youth, income $=$
 medium, student $=$ yes, credit-rating $=$ fair) using the following data set.
 \par\vspace{2pt}
+\par
 \begin{tabularx}{0.86\textwidth}{@{}L{0.9cm}L{2.3cm}L{1.7cm}L{1.6cm}L{2.4cm}X@{}}
 \toprule
 \hrow \thead{RID} & \thead{Age} & \thead{Income} & \thead{Student} & \thead{Credit-rating} & \thead{Class Buy computer} \\
@@ -269,6 +505,7 @@ medium, student $=$ yes, credit-rating $=$ fair) using the following data set.
 
 \sbs{%
 \lead{Conditional probabilities}
+\par
 \begin{tabularx}{\linewidth}{@{}L{3.4cm}XX@{}}
 \toprule
 \hrow & \thead{$|$Yes} & \thead{$|$No} \\
@@ -297,6 +534,7 @@ Suppose you have a test record ``$X =$ (Home Owner $=$ No, Material Status $=$ M
 Income $=$ \$120K)''. Your job is to classify this record using Naive Bayesian Classification.
 Use the following table for your calculations.
 \par\vspace{2pt}
+\par
 \begin{tabularx}{0.80\textwidth}{@{}L{0.9cm}L{2.3cm}L{2.6cm}L{2.6cm}X@{}}
 \toprule
 \hrow \thead{Tid} & \thead{Home Owner} & \thead{Marital Status} & \thead{Annual Income} & \thead{Defaulted Borrower} \\
@@ -373,6 +611,7 @@ When do we use classifier? You have the following information about the flower. 
 to classify the given flower with SepalLength $=$ 7, SepalWidth $=$ 3.2, PetalLength $=$ 4.7,
 and PetalWidth $=$ 1.4. Use KNN algorithm for $K = 3$ with Euclidean distance matrix.
 \par\vspace{2pt}
+\par
 \begin{tabularx}{0.86\textwidth}{@{}L{0.9cm}L{2.3cm}L{2.1cm}L{2.2cm}L{2.2cm}X@{}}
 \toprule
 \hrow \thead{Id} & \thead{Sepal\_Lenth} & \thead{Spal\_Width} & \thead{Petal\_Lenth} & \thead{Petal\_Width} & \thead{Labal} \\
@@ -389,6 +628,7 @@ and PetalWidth $=$ 1.4. Use KNN algorithm for $K = 3$ with Euclidean distance ma
 {\color{sub}Column names are the paper's own spellings.}
 \end{asked}
 
+\par
 \begin{tabularx}{\textwidth}{@{}L{0.9cm}L{4.6cm}XL{1.5cm}L{2.1cm}@{}}
 \toprule
 \hrow \thead{Id} & \thead{Tuple} & \thead{Squared differences} & \thead{$d$} & \thead{Label} \\
@@ -445,6 +685,7 @@ Draw clear block diagram depicting different stages in classification. Explain t
 relation between precision and recall. Given the confusion matrix, determine accuracy,
 sensitivity and precision of the classifier model.
 \par\vspace{2pt}
+\par
 \begin{tabularx}{0.60\textwidth}{@{}L{3.3cm}XX@{}}
 \toprule
 \hrow \thead{Actual $\backslash$ Predicted} & \thead{Positive} & \thead{Negative} \\
@@ -455,18 +696,25 @@ Negative & 98  & 720 \\
 \vspace{2pt}
 {\color{sub}``Positve'' is the paper's own spelling.}
 \end{asked}
-\begin{itemize}
-  \item $TP=142$, $FN=40$, $FP=98$, $TN=720$ $\rightarrow$ $P=182$, $N=818$, total $=1000$
-  \item Accuracy $=\frac{142+720}{1000}= \mathbf{0.862}$
-  \item Sensitivity $=\frac{142}{182}= \mathbf{0.780}$
-  \item Precision $=\frac{142}{142+98}=\frac{142}{240}= \mathbf{0.592}$
-  \item Specificity $=\frac{720}{818}= \mathbf{0.880}$
-\end{itemize}
+\lead{Step 1: read the four cells} \mk{rows are Actual here}, so
+$TP=142$, $FN=40$, $FP=98$, $TN=720$ $\rightarrow$ $P=182$, $N=818$, total $=1000$.
+\par
+\begin{tabularx}{\textwidth}{@{}L{3.4cm}L{4.2cm}X L{2.0cm}@{}}
+\toprule
+\hrow \thead{Metric} & \thead{Formula} & \thead{Substitution} & \thead{Value} \\
+\midrule
+Accuracy    & $(TP+TN)/(P+N)$ & $(142+720)/1000$ & $\mathbf{0.862}$ \\
+Sensitivity $=$ TPR & $TP/P$  & $142/182$        & $\mathbf{0.780}$ \\
+Precision   & $TP/(TP+FP)$    & $142/240$        & $\mathbf{0.592}$ \\
+Specificity & $TN/N$          & $720/818$        & $\mathbf{0.880}$ \\
+\bottomrule
+\end{tabularx}
 
 \creamq{Problem 5.2}{\m{4}}
 \begin{asked}{2078 Bhadra \textperiodcentered{} Q6 \textperiodcentered{} [4]}
 Calculate: Accuracy, TPR, FPR and Precision for the given confusion matrix for a classifier.
 \par\vspace{2pt}
+\par
 \begin{tabularx}{0.62\textwidth}{@{}L{2.6cm}L{1.9cm}XX@{}}
 \toprule
 \hrow & & \multicolumn{2}{@{}l}{\thead{Actual Class}} \\
@@ -478,12 +726,21 @@ Calculate: Accuracy, TPR, FPR and Precision for the given confusion matrix for a
 \end{tabularx}
 \end{asked}
 {\color{sub}\footnotesize \mk{Same four numbers as 5.1, but the rows are Predicted here.}}
+\lead{Step 1: read the four cells} \mk{rows are Predicted here}, so
+$TP=142$, $FP=40$, $FN=98$, $TN=720$ $\rightarrow$ $P = 142+98 = 240$, $N = 40+720 = 760$.
+\par
+\begin{tabularx}{\textwidth}{@{}L{3.4cm}L{4.2cm}X L{2.0cm}@{}}
+\toprule
+\hrow \thead{Metric} & \thead{Formula} & \thead{Substitution} & \thead{Value} \\
+\midrule
+Accuracy  & $(TP+TN)/(P+N)$ & $(142+720)/1000$ & $\mathbf{0.862}$ \\
+TPR       & $TP/P$          & $142/240$        & $\mathbf{0.592}$ \\
+FPR       & $FP/N$          & $40/760$         & $\mathbf{0.053}$ \\
+Precision & $TP/(TP+FP)$    & $142/182$        & $\mathbf{0.780}$ \\
+\bottomrule
+\end{tabularx}
 \begin{itemize}
-  \item Rows are predicted $\rightarrow$ $TP=142$, $FP=40$, $FN=98$, $TN=720$
-  \item $P = 142+98 = 240$, \ $N = 40+720 = 760$
-  \item Accuracy $=\frac{142+720}{1000}= \mathbf{0.862}$ \quad (unchanged --- the diagonal is the same)
-  \item TPR $=\frac{142}{240}= \mathbf{0.592}$ \quad FPR $=\frac{40}{760}= \mathbf{0.053}$
-  \item Precision $=\frac{142}{142+40}=\frac{142}{182}= \mathbf{0.780}$
+  \item Accuracy is \mk{unchanged from 5.1} --- the diagonal is the same either way round.
   \item \mk{Compare with 5.1}: sensitivity and precision have exchanged values. This is the
         orientation trap, live.
 \end{itemize}
@@ -492,6 +749,7 @@ Calculate: Accuracy, TPR, FPR and Precision for the given confusion matrix for a
 \begin{asked}{2075 Ashwin \textperiodcentered{} Q4 \textperiodcentered{} [10]}
 The confusion matrix for a classifier is given as follows:
 \par\vspace{2pt}
+\par
 \begin{tabularx}{0.62\textwidth}{@{}L{2.6cm}L{1.9cm}XX@{}}
 \toprule
 \hrow & & \multicolumn{2}{@{}l}{\thead{Predicted Class}} \\
@@ -508,6 +766,7 @@ Calculate: Accuracy, Sensitivity, Specificity and Precision.
 \begin{asked}{2072 Chaitra \textperiodcentered{} Q4 \textperiodcentered{} [10]}
 The confusion matrix for a classifier is given as follows:
 \par\vspace{2pt}
+\par
 \begin{tabularx}{0.62\textwidth}{@{}L{2.6cm}L{1.9cm}XX@{}}
 \toprule
 \hrow & & \multicolumn{2}{@{}l}{\thead{actual class}} \\
@@ -524,28 +783,36 @@ Calculate a.~accuracy \quad b.~sensitivity \quad c.~specificity \quad d.~precisi
 {\color{sub}\footnotesize \mk{Same four numbers, opposite orientation} --- that is the whole point
 of solving them side by side.}
 
-\sbs{%
-\lead{75 Ash --- rows are Actual}
+\lead{Both at once, so the orientation trap is visible}
 \begin{itemize}
-  \item $TP=21$, $FN=6$, $FP=7$, $TN=41$; $P=27$, $N=48$, total $75$
-  \item Accuracy $=\frac{62}{75}= \mathbf{0.827}$
-  \item Sensitivity $=\frac{21}{27}= \mathbf{0.778}$
-  \item Specificity $=\frac{41}{48}= \mathbf{0.854}$
-  \item Precision $=\frac{21}{28}= \mathbf{0.750}$
-\end{itemize}}{%
-\lead{72 Ch --- rows are Predicted}
+  \item \textbf{75 Ash}, rows are \mk{Actual}: $TP=21$, $FN=6$, $FP=7$, $TN=41$; $P=27$, $N=48$.
+  \item \textbf{72 Ch}, rows are \mk{Predicted}: $TP=21$, $FP=6$, $FN=7$, $TN=41$; $P=28$, $N=47$.
+  \item Both total $75$.
+\end{itemize}
+\par
+\begin{tabularx}{\textwidth}{@{}L{3.2cm}L{3.0cm}L{2.1cm}L{1.5cm}@{\hspace{8pt}}L{2.1cm}X@{}}
+\toprule
+\hrow & & \multicolumn{2}{@{}l}{\thead{75 Ash (rows Actual)}} &
+        \multicolumn{2}{@{}l}{\thead{72 Ch (rows Predicted)}} \\
+\hrow \thead{Metric} & \thead{Formula} & \thead{Subst.} & \thead{Value} &
+      \thead{Subst.} & \thead{Value} \\
+\midrule
+Accuracy    & $(TP+TN)/(P+N)$ & $62/75$ & $\mathbf{0.827}$ & $62/75$ & $\mathbf{0.827}$ \\
+Sensitivity $=$ recall & $TP/P$ & $21/27$ & $\mathbf{0.778}$ & $21/28$ & $\mathbf{0.750}$ \\
+Specificity & $TN/N$          & $41/48$ & $\mathbf{0.854}$ & $41/47$ & $\mathbf{0.872}$ \\
+Precision   & $TP/(TP+FP)$    & $21/28$ & $\mathbf{0.750}$ & $21/27$ & $\mathbf{0.778}$ \\
+\bottomrule
+\end{tabularx}
 \begin{itemize}
-  \item $TP=21$, $FP=6$, $FN=7$, $TN=41$; $P=28$, $N=47$, total $75$
-  \item Accuracy $=\frac{62}{75}= \mathbf{0.827}$
-  \item Sensitivity $=$ recall $=\frac{21}{28}= \mathbf{0.750}$
-  \item Specificity $=\frac{41}{47}= \mathbf{0.872}$
-  \item Precision $=\frac{21}{27}= \mathbf{0.778}$
-\end{itemize}}
+  \item \mk{Accuracy is identical, every other metric moves.} Sensitivity and precision simply
+        swap. Read the row/column labels before touching the arithmetic.
+\end{itemize}
 
 \creamq{Problem 5.5}{\m{10}}
 \begin{asked}{2074 Ashwin \textperiodcentered{} Q4 \textperiodcentered{} [10]}
 The confusion matrix for a classifier is given as follows:
 \par\vspace{2pt}
+\par
 \begin{tabularx}{0.62\textwidth}{@{}L{2.6cm}L{1.9cm}XX@{}}
 \toprule
 \hrow & & \multicolumn{2}{@{}l}{\thead{Predicted Class}} \\
@@ -559,11 +826,19 @@ The confusion matrix for a classifier is given as follows:
 
 Calculate: \ a) Accuracy \quad b) Sensitivity \quad c) Specificity \quad d) Precision
 \end{asked}
-\begin{itemize}
-  \item $TP=25$, $FN=9$, $FP=4$, $TN=31$; $P=34$, $N=35$, total $69$
-  \item Accuracy $=\frac{56}{69}= \mathbf{0.812}$ \quad Sensitivity $=\frac{25}{34}= \mathbf{0.735}$
-  \item Specificity $=\frac{31}{35}= \mathbf{0.886}$ \quad Precision $=\frac{25}{29}= \mathbf{0.862}$
-\end{itemize}
+\lead{Step 1: read the four cells} rows are Actual, so
+$TP=25$, $FN=9$, $FP=4$, $TN=31$ $\rightarrow$ $P=34$, $N=35$, total $69$.
+\par
+\begin{tabularx}{\textwidth}{@{}L{3.4cm}L{4.2cm}X L{2.0cm}@{}}
+\toprule
+\hrow \thead{Metric} & \thead{Formula} & \thead{Substitution} & \thead{Value} \\
+\midrule
+Accuracy    & $(TP+TN)/(P+N)$ & $56/69$ & $\mathbf{0.812}$ \\
+Sensitivity & $TP/P$          & $25/34$ & $\mathbf{0.735}$ \\
+Specificity & $TN/N$          & $31/35$ & $\mathbf{0.886}$ \\
+Precision   & $TP/(TP+FP)$    & $25/29$ & $\mathbf{0.862}$ \\
+\bottomrule
+\end{tabularx}
 
 \creamq{Problem 5.6}{\m{3+5}}
 \begin{asked}{2080 Baishakh \textperiodcentered{} Q3 \textperiodcentered{} [3+5]}
@@ -571,6 +846,7 @@ In what cases you cannot use Accuracy for performance measure, give some example
 that you have the following confusion matrix. Calculate the Classification error, Sensitivity,
 False alarm rate Specificity.
 \par\vspace{2pt}
+\par
 \begin{tabularx}{0.62\textwidth}{@{}L{2.6cm}L{1.9cm}XX@{}}
 \toprule
 \hrow & & \multicolumn{2}{@{}l}{\thead{Actual Values}} \\
@@ -581,18 +857,28 @@ False alarm rate Specificity.
 \bottomrule
 \end{tabularx}
 \end{asked}
+\lead{Step 1: read the four cells} \mk{rows are Predicted here}, so
+$TP=1050$, $FP=250$, $FN=150$, $TN=950$ $\rightarrow$ $P=1200$, $N=1200$, total $2400$.
+\par
+\begin{tabularx}{\textwidth}{@{}L{4.2cm}L{4.2cm}X L{2.0cm}@{}}
+\toprule
+\hrow \thead{Metric} & \thead{Formula} & \thead{Substitution} & \thead{Value} \\
+\midrule
+Classification error   & $(FP+FN)/(P+N)$ & $400/2400$  & $\mathbf{0.167}$ \\
+Sensitivity            & $TP/P$          & $1050/1200$ & $\mathbf{0.875}$ \\
+False alarm rate (FPR) & $FP/N$          & $250/1200$  & $\mathbf{0.208}$ \\
+Specificity            & $TN/N$          & $950/1200$  & $\mathbf{0.792}$ \\
+\bottomrule
+\end{tabularx}
 \begin{itemize}
-  \item $TP=1050$, $FP=250$, $FN=150$, $TN=950$; $P=1200$, $N=1200$, total $2400$
-  \item Classification error $=\frac{250+150}{2400}= \mathbf{0.167}$
-  \item Sensitivity $=\frac{1050}{1200}= \mathbf{0.875}$
-  \item False alarm rate (FPR) $=\frac{250}{1200}= \mathbf{0.208}$
-  \item Specificity $=\frac{950}{1200}= \mathbf{0.792}$ \quad (check: $0.208+0.792=1$ \checkmark)
+  \item \mk{Check}: FPR $+$ specificity $= 0.208 + 0.792 = 1$ \checkmark
 \end{itemize}
 
 \creamq{Problem 5.7}{\m{3+6}}
 \begin{asked}{2073 Shrawan \textperiodcentered{} Q4 \textperiodcentered{} [1+3+6]}
 Explain ROC. Using the following data, calculate TPR, FPR, precision for given confusion matrix.
 \par\vspace{2pt}
+\par
 \begin{tabularx}{0.40\textwidth}{@{}L{1.6cm}XX@{}}
 \toprule
 \hrow & \thead{A} & \thead{B} \\
@@ -604,10 +890,19 @@ B & 10 & 40 \\
 
 Classify, A $=$ Yes, B $=$ No
 \end{asked}
+\lead{Step 1: read the four cells} A $=$ Yes is the positive class, rows are Actual, so
+$TP=20$, $FN=5$, $FP=10$, $TN=40$ $\rightarrow$ $P=25$, $N=50$.
+\par
+\begin{tabularx}{\textwidth}{@{}L{3.4cm}L{4.2cm}X L{2.0cm}@{}}
+\toprule
+\hrow \thead{Metric} & \thead{Formula} & \thead{Substitution} & \thead{Value} \\
+\midrule
+TPR       & $TP/P$       & $20/25$ & $\mathbf{0.80}$ \\
+FPR       & $FP/N$       & $10/50$ & $\mathbf{0.20}$ \\
+Precision & $TP/(TP+FP)$ & $20/30$ & $\mathbf{0.667}$ \\
+\bottomrule
+\end{tabularx}
 \begin{itemize}
-  \item $TP=20$, $FN=5$, $FP=10$, $TN=40$; $P=25$, $N=50$
-  \item TPR $=\frac{20}{25}= \mathbf{0.80}$ \quad FPR $=\frac{10}{50}= \mathbf{0.20}$
-  \item Precision $=\frac{20}{30}= \mathbf{0.667}$
   \item The ROC point for this classifier is $(0.20,\ 0.80)$, comfortably above the diagonal.
 \end{itemize}
 
@@ -632,26 +927,123 @@ Category & TP & TP & FP & FP & TN & FN & TP & TP & FP & TN \\
 \bottomrule
 \end{tabularx}
 
-\sbs{%
-\lead{Classifier X} (identical to actual)
+\lead{Step 2: the two confusion matrices, then the metrics}
 \begin{itemize}
-  \item $TP=5$, $TN=5$, $FP=0$, $FN=0$
-  \item Accuracy $= \mathbf{1.0}$ \quad Precision $= \mathbf{1.0}$
-  \item TPR $= \mathbf{1.0}$ \quad FPR $= \mathbf{0}$
-  \item \mk{Perfect classifier} --- the ROC point is the top-left corner $(0,1)$.
-\end{itemize}}{%
-\lead{Classifier Y}
+  \item \textbf{X} is identical to the actual sequence: $TP=5$, $TN=5$, $FP=0$, $FN=0$.
+  \item \textbf{Y} from the table above: $TP=4$, $FN=1$, $FP=3$, $TN=2$; $P=5$, $N=5$
+        (total $10$ \checkmark).
+\end{itemize}
+\par
+\begin{tabularx}{\textwidth}{@{}L{2.6cm}L{3.4cm}L{2.1cm}L{1.6cm}@{\hspace{8pt}}L{2.1cm}X@{}}
+\toprule
+\hrow & & \multicolumn{2}{@{}l}{\thead{Classifier X}} &
+        \multicolumn{2}{@{}l}{\thead{Classifier Y}} \\
+\hrow \thead{Metric} & \thead{Formula} & \thead{Subst.} & \thead{Value} &
+      \thead{Subst.} & \thead{Value} \\
+\midrule
+Accuracy  & $(TP+TN)/(P+N)$ & $10/10$ & $\mathbf{1.00}$ & $6/10$ & $\mathbf{0.60}$ \\
+Precision & $TP/(TP+FP)$    & $5/5$   & $\mathbf{1.00}$ & $4/7$  & $\mathbf{0.571}$ \\
+TPR       & $TP/P$          & $5/5$   & $\mathbf{1.00}$ & $4/5$  & $\mathbf{0.80}$ \\
+FPR       & $FP/N$          & $0/5$   & $\mathbf{0}$    & $3/5$  & $\mathbf{0.60}$ \\
+\bottomrule
+\end{tabularx}
 \begin{itemize}
-  \item $TP=4$, $FN=1$, $FP=3$, $TN=2$; $P=5$, $N=5$ \ (total $10$ \checkmark)
-  \item Accuracy $=\frac{4+2}{10}= \mathbf{0.60}$
-  \item Precision $=\frac{4}{7}= \mathbf{0.571}$
-  \item TPR $=\frac{4}{5}= \mathbf{0.80}$
-  \item FPR $=\frac{3}{5}= \mathbf{0.60}$
-\end{itemize}}
+  \item \mk{X is a perfect classifier} --- its ROC point is the top-left corner $(0,1)$.
+\end{itemize}
 \begin{itemize}
   \item \mk{Reading}: Y has decent recall (0.80) but poor precision (0.571) --- it over-predicts A,
         firing 3 false alarms out of 5 actual Bs. Its ROC point $(0.60, 0.80)$ is only just above
         the diagonal, so it is barely better than guessing.
+\end{itemize}
+
+\creamq{Problem 5.9}{\m{4}}
+\begin{asked}{2079 Baishakh \textperiodcentered{} Q6 \textperiodcentered{} [4]}
+Given the following confusion matrix, determine Accuracy, Error rate, Sensitivity, Specificity,
+Precision, Recall of the classifier model.
+\par\penalty0\vspace{2pt}
+\par
+\begin{tabularx}{0.68\textwidth}{@{}L{2.9cm}L{3.0cm}L{3.2cm}X@{}}
+\toprule
+\hrow \thead{$n = 165$} & \thead{Predicted: NO} & \thead{Predicted: YES} & \\
+\midrule
+\textbf{Actual: NO}  & TN $=$ 50 & FP $=$ 10  & 60  \\
+\textbf{Actual: YES} & FN $=$ 5  & TP $=$ 100 & 105 \\
+                     & 55        & 110        &     \\
+\bottomrule
+\end{tabularx}
+\end{asked}
+{\color{sub}\footnotesize \mk{This paper labels the four cells for you}, so there is no
+orientation trap --- just read them off. $P = 105$, $N = 60$, total $165$. \checkmark}
+
+\par
+\begin{tabularx}{\textwidth}{@{}L{3.4cm}L{4.2cm}X L{2.0cm}@{}}
+\toprule
+\hrow \thead{Metric} & \thead{Formula} & \thead{Substitution} & \thead{Value} \\
+\midrule
+Accuracy    & $(TP+TN)/(P+N)$ & $(100+50)/165$ & $\mathbf{0.909}$ \\
+Error rate  & $(FP+FN)/(P+N)$ & $(10+5)/165$   & $\mathbf{0.091}$ \\
+Sensitivity & $TP/P$          & $100/105$      & $\mathbf{0.952}$ \\
+Specificity & $TN/N$          & $50/60$        & $\mathbf{0.833}$ \\
+Precision   & $TP/(TP+FP)$    & $100/110$      & $\mathbf{0.909}$ \\
+Recall      & $=$ sensitivity & $100/105$      & $\mathbf{0.952}$ \\
+\bottomrule
+\end{tabularx}
+\begin{itemize}
+  \item \mk{Checks}: accuracy $+$ error rate $= 1$ \checkmark
+  \item \mk{Recall and sensitivity are the same thing.} The question lists both, so write both
+        rows and say they are equal --- do not assume it is a trick.
+  \item Precision equalling accuracy here is a coincidence of the numbers, not a rule.
+\end{itemize}
+
+\creamq{Problem 5.10 --- the mislabelled matrix}{\m{2+6}}
+\begin{asked}{2073 Chaitra \textperiodcentered{} Q4 \textperiodcentered{} [2+6]}
+What is ID3 algorithm? Calculate TPR, FPR and Accuracy for given confusion matrix.
+\par\penalty0\vspace{2pt}
+\par
+\begin{tabularx}{0.60\textwidth}{@{}L{3.2cm}L{3.0cm}X@{}}
+\toprule
+\hrow & \thead{Predicted $+$} & \thead{Predicted $-$} \\
+\midrule
+\textbf{Predicted $+$} & 100 & 40  \\
+\textbf{Predicted $-$} & 60  & 300 \\
+\bottomrule
+\end{tabularx}
+\end{asked}
+{\color{sub}\footnotesize \mk{The paper labels BOTH axes ``Predicted''} --- reproduced exactly as
+printed. The row stubs should read \emph{Actual}. \gap \mk{Say so in the answer, take rows as
+Actual, and state the assumption.} That sentence is worth more than the arithmetic.}
+
+\lead{Reading rows as Actual (the intended matrix)}
+$TP=100$, $FN=40$, $FP=60$, $TN=300$ $\rightarrow$ $P=140$, $N=360$, total $500$.
+\par
+\begin{tabularx}{\textwidth}{@{}L{3.4cm}L{4.2cm}X L{2.0cm}@{}}
+\toprule
+\hrow \thead{Metric} & \thead{Formula} & \thead{Substitution} & \thead{Value} \\
+\midrule
+TPR      & $TP/P$          & $100/140$ & $\mathbf{0.714}$ \\
+FPR      & $FP/N$          & $60/360$  & $\mathbf{0.167}$ \\
+Accuracy & $(TP+TN)/(P+N)$ & $400/500$ & $\mathbf{0.800}$ \\
+\bottomrule
+\end{tabularx}
+
+\lead{If instead the rows really are Predicted}
+$TP=100$, $FP=40$, $FN=60$, $TN=300$ $\rightarrow$ $P=160$, $N=340$.
+\par
+\begin{tabularx}{\textwidth}{@{}L{3.4cm}L{4.2cm}X L{2.0cm}@{}}
+\toprule
+\hrow \thead{Metric} & \thead{Formula} & \thead{Substitution} & \thead{Value} \\
+\midrule
+TPR      & $TP/P$          & $100/160$ & $0.625$ \\
+FPR      & $FP/N$          & $40/340$  & $0.118$ \\
+Accuracy & $(TP+TN)/(P+N)$ & $400/500$ & $\mathbf{0.800}$ \\
+\bottomrule
+\end{tabularx}
+\begin{itemize}
+  \item \mk{Accuracy is 0.800 either way} --- the diagonal does not move when you transpose.
+        TPR and FPR do.
+  \item \mk{The safe exam answer}: give the first table, and add one line noting the paper's
+        label defect and what the numbers would become under the other reading. Full marks either
+        way, and it shows you understand the matrix rather than a memorised formula.
 \end{itemize}
 
 \hr

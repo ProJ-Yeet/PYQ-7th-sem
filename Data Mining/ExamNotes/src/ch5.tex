@@ -3,7 +3,7 @@
 %=======================================================================
 \section{Cluster Analysis}
 
-{\color{sub}\footnotesize 9 hrs \gap$\cdot$\gap in 17/17 papers \gap$\cdot$\gap 5 topics, 3 TOP tier
+{\color{sub}\footnotesize 9 hrs \gap$\cdot$\gap in 23/23 papers \gap$\cdot$\gap 5 topics, 3 TOP tier
 \gap$\cdot$\gap numericals $\rightarrow$ Ch 5 companion.}
 
 \lead{Weight of the chapter:}
@@ -18,7 +18,7 @@
 \T{5.1 Basics and Algorithms}
 
 \Q{What is cluster analysis? Applications? How does it differ from classification?}{\m{8}\m{5}\m{2+6}\m{3+4}}
-{\color{sub}\footnotesize \tS{10} \yr{81 Ba, 80 Bh, 79 Bh, 75 Ch, 74 Ash, 73 Shr, 72 Ch, 72 Ka, 71 Ch, 71 Shr}}
+{\color{sub}\footnotesize \tS{13} \yr{81 Ba, 80 Bh, 79 Bh, 75 Ch, 74 Ash, 73 Ch, 73 Shr, 72 Ch, 72 Ka, 71 Ch, 71 Shr, 70 Asa, 69 Ch}}
 
 \sbs{%
 \lead{Definition}
@@ -102,7 +102,7 @@ Classes & Fixed, known & Number often unknown \\
 \T{5.2 K-means Clustering}
 
 \Q{Write the K-means algorithm. Explain with example and state its limitations.}{\m{2+6}\m{2+8}\m{4+6}\m{4+4}}
-{\color{sub}\footnotesize \tS{8} \yr{81 Ba, 80 Ba, 78 Bh, 76 Ch, 75 Ash, 74 Ch, 74 Ash, 71 Shr}
+{\color{sub}\footnotesize \tS{13} \yr{82 Bh, 81 Bh, 81 Ba, 80 Ba, 79 Ba, 78 Bh, 76 Ch, 75 Ash, 74 Ch, 74 Ash, 73 Ch, 71 Shr, 69 Ch}
 \gap \mk{Numerical in 7 of those} $\rightarrow$ companion.}
 
 \sbsr{0.50}{%
@@ -173,7 +173,7 @@ Classes & Fixed, known & Number often unknown \\
 \T{5.3 Hierarchical Clustering}
 
 \Q{What is hierarchical clustering? Agglomerative vs divisive. Draw the dendrogram.}{\m{2+7}\m{8}\m{4+4}\m{10}}
-{\color{sub}\footnotesize \tF{4} \yr{80 Bh, 80 Ba, 76 Ch, 70 Ch} \gap \mk{All 4 are numericals}
+{\color{sub}\footnotesize \tF{5} \yr{80 Bh, 80 Ba, 79 Ba, 76 Ch, 70 Ch} \gap \mk{4 of the 5 are numericals}
 $\rightarrow$ companion.}
 
 \sbs{%
@@ -228,7 +228,7 @@ $\rightarrow$ companion.}
 \T{5.4 DBSCAN}
 
 \Q{What are core, border and noise points? Write the DBSCAN algorithm and how it handles noise.}{\m{3+5}\m{8}\m{8+2}\m{7}}
-{\color{sub}\footnotesize \tS{8} \yr{79 Bh, 78 Bh, 76 Ash, 75 Ch, 75 Ash, 74 Ash, 72 Ka, 70 Ch}}
+{\color{sub}\footnotesize \tS{12} \yr{82 Bh, 81 Bh, 79 Bh, 79 Ba, 78 Bh, 76 Ash, 75 Ch, 75 Ash, 74 Ash, 72 Ka, 70 Ch, 70 Asa}}
 
 \sbsr{0.50}{%
 \lead{Two parameters}
@@ -289,7 +289,7 @@ $\rightarrow$ companion.}
 \T{5.5 Issues: Evaluation, Scalability, Comparison}
 
 \Q{Explain the different measures of cluster validity. How do you evaluate the clusters generated?}{\m{10}\m{4}\m{3}}
-{\color{sub}\footnotesize \tF{4} \yr{80 Bh, 74 Ch, 72 Ka, 71 Ch}}
+{\color{sub}\footnotesize \tF{6} \yr{80 Bh, 74 Ch, 72 Ka, 71 Ch, 70 Asa, 69 Ch}}
 
 \sbs{%
 \lead{Why it is hard}
@@ -393,6 +393,21 @@ $\rightarrow$ companion.}
   \item \tP{3} How do you evaluate the clusters generated? \hfill \m{4} \yr{80 Bh};
         short notes: Issues in clustering \yr{74 Ch}, Cluster evaluation \yr{72 Ka}. \hfill \m{3}
 \end{enumerate}
+
+\creamq{Papers added by the 2026-09 merge}{}
+{\color{sub}\footnotesize The six papers of \code{DM4.1BCT.pdf} (2082 Bh, 2081 Bh, 2079 Ba, 2073 Ch, 2070 Asa, 2069 Ch), indexed here for the
+first time --- the notes were built before that scan was merged. \mk{N} $=$ solved in this chapter's companion. \added}
+\begin{itemize}
+  \item \mk{N} Core, border and noise points $+$ \textbf{DBSCAN on 8 points}, $\varepsilon = 2$, MinPts $= 2$. \hfill \m{3+5} \yr{82 Bh} \added
+  \item \mk{N} K-means, 2 clusters from a 6-instance dataset. \hfill \m{2+8} \yr{82 Bh}
+  \item \mk{N} K-means from \mk{a single given centroid} $(2,3)$, $k=2$, $+$ problems and fixes. \hfill \m{5+3} \yr{81 Bh}
+  \item \mk{N} K-means with the \textbf{Manhattan} distance, 3 centres, \mk{stop after 3 iterations}. \hfill \m{8} \yr{79 Ba} \added
+  \item \mk{N} Clustering vs classification $+$ 1-D K-means on 7 points $+$ \textbf{compute SSE}. \hfill \m{4+8} \yr{73 Ch} \added
+  \item Hierarchical clustering w/ a dendrogram example. \hfill \m{6} \yr{79 Ba}
+  \item What are density-based clusters? $+$ DBSCAN w/ example. \hfill \m{10} \yr{70 Asa}
+  \item Measures that can be used to \textbf{compare two clusters} \yr{70 Asa} $\cdot$ issues in cluster validation \yr{69 Ch}. \hfill \m{6}\m{6}
+  \item K-means w/ examples \yr{69 Ch} $\cdot$ short notes \textbf{DBSCAN clustering} \yr{81 Bh, 79 Ba}. \hfill \m{10}\m{4}\m{4}
+\end{itemize}
 
 \lead{Coverage check}
 \begin{itemize}
