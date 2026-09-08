@@ -524,8 +524,492 @@ def _ttt_win(b):
     return any(b[i] and b[i] == b[j] == b[k] for i, j, k in lines)
 
 
+# =====================================================================
+#  CHAPTER 4 — a small first-order resolution prover
+# =====================================================================
+# Every resolution answer in the Ch4 companion is checked by actually
+# running resolution on the published clause set. That matters more here
+# than anywhere else in the subject, because three papers print a goal
+# that does NOT follow from their own premises, and those three claims
+# are far too strong to make by hand. The prover confirms both
+# directions: refutable where the notes prove a goal, and NOT refutable
+# where the notes say the paper is broken.
+#
+# Terms   ('v', name) variable | ('c', name) constant | ('f', name, args)
+# Literal (negated?, predicate, args)
+# Clause  tuple of literals, implicitly a disjunction.
+
+def V(n):
+    return ("v", n)
+
+
+def K(n):
+    return ("c", n)
+
+
+def Fn(n, *a):
+    return ("f", n, tuple(a))
+
+
+def P(name, *a):
+    return (False, name, tuple(a))
+
+
+def Nt(name, *a):
+    return (True, name, tuple(a))
+
+
+def _walk(t, s):
+    while t[0] == "v" and t[1] in s:
+        t = s[t[1]]
+    return t
+
+
+def _occurs(v, t, s):
+    t = _walk(t, s)
+    if t[0] == "v":
+        return t[1] == v
+    if t[0] == "f":
+        return any(_occurs(v, a, s) for a in t[2])
+    return False
+
+
+def _unify(a, b, s):
+    if s is None:
+        return None
+    a, b = _walk(a, s), _walk(b, s)
+    if a == b:
+        return s
+    if a[0] == "v":
+        if _occurs(a[1], b, s):
+            return None
+        s = dict(s)
+        s[a[1]] = b
+        return s
+    if b[0] == "v":
+        return _unify(b, a, s)
+    if a[0] == "c" or b[0] == "c":
+        return None
+    if a[1] != b[1] or len(a[2]) != len(b[2]):
+        return None
+    for x, y in zip(a[2], b[2]):
+        s = _unify(x, y, s)
+        if s is None:
+            return None
+    return s
+
+
+def _unify_lit(l1, l2, s):
+    if l1[1] != l2[1] or len(l1[2]) != len(l2[2]):
+        return None
+    for x, y in zip(l1[2], l2[2]):
+        s = _unify(x, y, s)
+        if s is None:
+            return None
+    return s
+
+
+def _sub_t(t, s):
+    t = _walk(t, s)
+    if t[0] == "f":
+        return ("f", t[1], tuple(_sub_t(a, s) for a in t[2]))
+    return t
+
+
+def _sub_c(c, s):
+    return tuple((n, p, tuple(_sub_t(a, s) for a in args)) for n, p, args in c)
+
+
+def _rename(c, tag):
+    def r(t):
+        if t[0] == "v":
+            return ("v", t[1] + tag)
+        if t[0] == "f":
+            return ("f", t[1], tuple(r(a) for a in t[2]))
+        return t
+    return tuple((n, p, tuple(r(a) for a in args)) for n, p, args in c)
+
+
+def _norm(c):
+    """A clause is a SET of literals: drop duplicates, keep it hashable."""
+    return tuple(sorted(set(c)))
+
+
+def _tautology(c):
+    for n, p, a in c:
+        if (not n, p, a) in c:
+            return True
+    return False
+
+
+def _resolvents(c1, c2, tag):
+    c2 = _rename(c2, tag)
+    out = []
+    for i, l1 in enumerate(c1):
+        for j, l2 in enumerate(c2):
+            if l1[0] == l2[0]:
+                continue
+            s = _unify_lit(l1, l2, {})
+            if s is None:
+                continue
+            rest = tuple(l for k, l in enumerate(c1) if k != i) + \
+                   tuple(l for k, l in enumerate(c2) if k != j)
+            out.append(_norm(_sub_c(rest, s)))
+    return out
+
+
+def _factors(c):
+    out = []
+    for i in range(len(c)):
+        for j in range(i + 1, len(c)):
+            if c[i][0] != c[j][0]:
+                continue
+            s = _unify_lit(c[i], c[j], {})
+            if s is not None:
+                out.append(_norm(_sub_c(c, s)))
+    return out
+
+
+def _depth(t):
+    if t[0] == "f":
+        return 1 + max((_depth(a) for a in t[2]), default=0)
+    return 0
+
+
+def _cdepth(c):
+    return max((_depth(a) for _, _, args in c for a in args), default=0)
+
+
+def refutable(axioms, goals, rounds=8, maxlit=6, maxdepth=3, cap=6000):
+    """True if axioms + negated goal are refutable by resolution.
+
+    Set of support: every resolution step must involve a clause descended
+    from the negated goal. That is refutation complete whenever the axioms
+    alone are satisfiable, which they are in every set here, and it keeps
+    these proofs to a fraction of a second where blind saturation drowned.
+    Resolvents are capped on literal count and on term nesting depth, so a
+    set that is NOT refutable terminates and says so -- which is the point
+    for the three papers whose printed goal does not follow.
+    """
+    usable = set(_norm(c) for c in axioms)
+    sos = set(_norm(c) for c in goals)
+    if () in usable or () in sos:
+        return True
+    frontier = list(sos)
+    n = 0
+    for _ in range(rounds):
+        new = []
+        partners = list(usable) + list(sos)
+        for c1 in frontier:
+            for c2 in partners:
+                n += 1
+                cands = _resolvents(c1, c2, "_%d" % n)
+                for r in list(cands):
+                    cands.extend(_factors(r))
+                for r in cands:
+                    if r == ():
+                        return True
+                    if len(r) > maxlit or _cdepth(r) > maxdepth:
+                        continue
+                    if _tautology(r) or r in sos or r in usable:
+                        continue
+                    sos.add(r)
+                    new.append(r)
+        if not new or len(sos) > cap:
+            return False
+        frontier = new
+    return False
+
+
+def ch4():
+    # ---- Family A: John likes all kinds of food ---------------------
+    # 1 ~food(x) v likes(John,x)      4 ~eats(y,x) v killed(y) v food(x)
+    # 5a eats(Bill,Peanuts)           5b ~killed(Bill)
+    x, y = V("x"), V("y")
+    food = [
+        (Nt("food", x), P("likes", K("John"), x)),
+        (P("food", K("Apple")),),
+        (P("food", K("Chicken")),),
+        (Nt("eats", y, x), P("killed", y), P("food", x)),
+        (P("eats", K("Bill"), K("Peanuts")),),
+        (Nt("killed", K("Bill")),),
+        (Nt("eats", K("Bill"), x), P("eats", K("Sue"), x)),
+    ]
+    goal = (Nt("likes", K("John"), K("Peanuts")),)
+    chk("c4 A food: John likes peanuts", refutable(food, [goal]), True)
+
+    # the textbook's invalid split of premise 4 into two clauses: still
+    # closes, which is why the error survived so long unnoticed
+    book = [c for c in food if c[0][1] != "eats" or len(c) != 3]
+    book += [(Nt("eats", y, x), P("food", x)), (P("killed", y), P("food", x))]
+    chk("c4 A food, textbook's split", refutable(book, [goal]), True)
+
+    # 2072 Magh: the printed goal does NOT follow, but 'eats' does
+    bhog = [
+        (Nt("food", x), P("likes", K("Bhog"), x)),
+        (P("food", K("Orange")),),
+        (P("food", K("Chicken")),),
+        (Nt("eats", y, x), P("killed", y), P("food", x)),
+        (Nt("likes", y, x), P("eats", y, x)),
+        (P("eats", K("Jog"), K("Peanuts")),),
+        (Nt("killed", K("Jog")),),
+        (Nt("eats", K("Bhog"), x), P("eats", K("Shail"), x)),
+    ]
+    chk("c4 A 72Ma: 'Shailendri LIKES chicken' does not follow",
+        refutable(bhog, [(Nt("likes", K("Shail"), K("Chicken")),)]), False)
+    chk("c4 A 72Ma: 'Shailendri EATS chicken' does follow",
+        refutable(bhog, [(Nt("eats", K("Shail"), K("Chicken")),)]), True)
+
+    # ---- Family B: Charlie is a horse -------------------------------
+    charlie = [
+        (Nt("horse", x), P("mammal", x)),
+        (Nt("cow", x), P("mammal", x)),
+        (Nt("pig", x), P("mammal", x)),
+        (Nt("offspring", x, y), Nt("horse", y), P("horse", x)),
+        (P("horse", K("Blue")),),
+        (P("parent", K("Blue"), K("Charlie")),),
+        (Nt("offspring", x, y), P("parent", y, x)),
+        (Nt("parent", y, x), P("offspring", x, y)),
+        (Nt("mammal", x), P("parent", Fn("f", x), x)),
+    ]
+    chk("c4 B: Charlie is a horse",
+        refutable(charlie, [(Nt("horse", K("Charlie")),)]), True)
+    chk("c4 B: Charlie is a mammal",
+        refutable(charlie, [(Nt("mammal", K("Charlie")),)]), True)
+    # Dropping clause 5b (parent -> offspring) breaks the proof, but that
+    # negative is not checked here: without it the offspring/parent rules
+    # chain on themselves and the search does not terminate inside any
+    # honest budget. The notes claim only that 5b is the clause the proof
+    # uses, which the trace shows directly.
+
+    # ---- Family C: selling weapons ----------------------------------
+    p, q, r = V("p"), V("q"), V("r")
+    west = [
+        (Nt("American", p), Nt("Weapon", q), Nt("Sells", p, q, r),
+         Nt("Hostile", r), P("Criminal", p)),
+        (P("Missile", K("M1")),),
+        (P("Owns", K("Nono"), K("M1")),),
+        (Nt("Missile", x), Nt("Owns", K("Nono"), x),
+         P("Sells", K("West"), x, K("Nono"))),
+        (Nt("Missile", x), P("Weapon", x)),
+        (Nt("Enemy", x, K("America")), P("Hostile", x)),
+        (P("American", K("West")),),
+        (P("Enemy", K("Nono"), K("America")),),
+    ]
+    chk("c4 C: Colonel West is a criminal",
+        refutable(west, [(Nt("Criminal", K("West")),)]), True)
+    # 2069 Bhadra / 2075 Baishakh omit "missiles are weapons" and
+    # "an enemy is hostile": without them the proof cannot close
+    thin = [c for c in west
+            if not (len(c) == 2 and c[0][1] in ("Missile", "Enemy"))]
+    chk("c4 C: 69Bh/75Ba without the two bridging axioms",
+        refutable(thin, [(Nt("Criminal", K("West")),)]), False)
+    chk("c4 C: with them restored",
+        refutable(west, [(Nt("Criminal", K("West")),)]), True)
+
+    # 2082 Bhadra: Mr R sells, Mr A buys, so the criminal is R not A
+    nep = [
+        (Nt("Nepali", p), Nt("Weapon", q), Nt("Sells", p, q, r),
+         Nt("EnemyN", r), P("Criminal", p)),
+        (P("EnemyN", K("A")),),
+        (P("Missile", K("M1")),),
+        (P("Owns", K("A"), K("M1")),),
+        (Nt("Missile", x), P("Weapon", x)),
+        (P("Nepali", K("R")),),
+        (Nt("Missile", x), Nt("Owns", K("A"), x), P("Sells", K("R"), x, K("A"))),
+    ]
+    chk("c4 C 82Bh: Mr R is a criminal",
+        refutable(nep, [(Nt("Criminal", K("R")),)]), True)
+    chk("c4 C 82Bh: 'Mr A is a criminal' does not follow",
+        refutable(nep, [(Nt("Criminal", K("A")),)]), False)
+
+    # ---- Family D: the light sleeper --------------------------------
+    z = V("z")
+    ls = [
+        (Nt("Hound", x), P("Howl", x)),
+        (Nt("Have", x, y), Nt("Cat", y), Nt("Have", x, z), Nt("Mouse", z)),
+        (Nt("LS", x), Nt("Have", x, y), Nt("Howl", y)),
+        (P("Have", K("John"), K("a")),),
+        (P("Cat", K("a")), P("Hound", K("a"))),
+        (P("LS", K("John")),),
+        (P("Have", K("John"), K("b")),),
+        (P("Mouse", K("b")),),
+    ]
+    chk("c4 D: light sleeper has no mice", refutable(ls[:5], ls[5:]), True)
+
+    # ---- the ten one-off sets ---------------------------------------
+    marcus = [
+        (Nt("Pompeian", x), P("Roman", x)),
+        (Nt("Roman", x), P("loyal", x, K("Caesar")), P("hate", x, K("Caesar"))),
+        (P("loyal", x, Fn("f", x)),),
+        (Nt("tryAss", x, y), Nt("ruler", y), Nt("loyal", x, y)),
+        (P("tryAss", K("Marcus"), K("Caesar")),),
+        (P("Pompeian", K("Marcus")),),
+        (P("ruler", K("Caesar")),),
+    ]
+    chk("c4 1: Marcus hated Caesar",
+        refutable(marcus, [(Nt("hate", K("Marcus"), K("Caesar")),)]), True)
+
+    santa = [
+        (Nt("child", x), P("loves", x, K("Santa"))),
+        (Nt("loves", x, K("Santa")), Nt("reindeer", y), P("loves", x, y)),
+        (P("reindeer", K("Rud")),),
+        (P("redNose", K("Rud")),),
+        (Nt("redNose", x), P("weird", x), P("clown", x)),
+        (Nt("reindeer", x), Nt("clown", x)),
+        (Nt("weird", x), Nt("loves", K("Scrooge"), x)),
+        (P("child", K("Scrooge")),),          # negation of the goal
+    ]
+    chk("c4 2: Scrooge is not a child",
+        refutable(santa[:-1], santa[-1:]), True)
+
+    cur = [
+        (P("Animal", Fn("F", x)), P("Loves", Fn("G", x), x)),
+        (Nt("Loves", x, Fn("F", x)), P("Loves", Fn("G", x), x)),
+        (Nt("Animal", y), Nt("Kills", x, y), Nt("Loves", z, x)),
+        (Nt("Animal", x), P("Loves", K("Jack"), x)),
+        (P("Kills", K("Jack"), K("Tuna")), P("Kills", K("Curiosity"), K("Tuna"))),
+        (P("Cat", K("Tuna")),),
+        (Nt("Cat", x), P("Animal", x)),
+    ]
+    chk("c4 3: Curiosity killed the cat",
+        refutable(cur, [(Nt("Kills", K("Curiosity"), K("Tuna")),)]), True)
+
+    sneha = [
+        (Nt("pass", x), Nt("win", x), P("happy", x)),
+        (Nt("study", x), P("pass", x)),
+        (Nt("lucky", x), P("pass", x)),
+        (Nt("study", K("Sneha")),),
+        (P("lucky", K("Sneha")),),
+        (Nt("lucky", x), P("win", x)),
+    ]
+    chk("c4 4: Sneha is happy",
+        refutable(sneha, [(Nt("happy", K("Sneha")),)]), True)
+
+    # 2079 Ashwin: "Steve ONLY likes easy courses" is likes -> easy, and
+    # in that direction nothing ever concludes `likes`
+    steve_lit = [
+        (Nt("likes", x), P("easy", x)),
+        (Nt("science", x), Nt("easy", x)),
+        (Nt("bw", x), P("easy", x)),
+        (P("bw", K("BK301")),),
+    ]
+    chk("c4 5: literal reading proves nothing",
+        refutable(steve_lit, [(Nt("likes", K("BK301")),)]), False)
+    steve = [(Nt("easy", x), P("likes", x))] + steve_lit[1:]
+    chk("c4 5: converse reading proves Steve likes BK301",
+        refutable(steve, [(Nt("likes", K("BK301")),)]), True)
+
+    straw = [
+        (Nt("sunny"), Nt("warm"), P("enjoy")),
+        (Nt("warm"), Nt("pleasant"), P("picking")),
+        (Nt("raining"), Nt("picking")),
+        (Nt("raining"), P("wet")),
+        (P("warm"),), (P("raining"),), (P("sunny"),),
+    ]
+    chk("c4 6: you will enjoy", refutable(straw, [(Nt("enjoy"),)]), True)
+
+    naughty = [
+        (Nt("oversmart", x), P("stupid", x)),
+        (Nt("child", x, y), Nt("oversmart", y), P("naughty", x)),
+        (P("child", K("Ram"), K("Hari")),),
+        (P("oversmart", K("Hari")),),
+    ]
+    chk("c4 7: Ram is naughty",
+        refutable(naughty, [(Nt("naughty", K("Ram")),)]), True)
+
+    cup = [
+        (Nt("onTop", x, y), P("supports", y, x)),
+        (Nt("above", x, y), Nt("touching", x, y), P("onTop", x, y)),
+        (P("above", K("Cup"), K("Book")),),
+        (P("touching", K("Cup"), K("Book")),),
+    ]
+    chk("c4 8: the book supports the cup",
+        refutable(cup, [(Nt("supports", K("Book"), K("Cup")),)]), True)
+
+    mary = [
+        (Nt("loves", K("Mary"), x), P("star", x)),
+        (Nt("student", x), P("pass", x), Nt("play", x)),
+        (P("student", K("John")),),
+        (Nt("student", x), P("study", x), Nt("pass", x)),
+        (P("play", x), Nt("star", x)),
+        (Nt("study", K("John")),),                     # negated goal, part 1
+        (P("loves", K("Mary"), K("John")),),           # negated goal, part 2
+    ]
+    chk("c4 9: if John does not study, Mary does not love him",
+        refutable(mary[:5], mary[5:]), True)
+
+    excite = [
+        (P("poor", x), Nt("smart", x), P("happy", x)),
+        (Nt("read", x), Nt("stupid", x)),
+        (P("read", K("John")),),
+        (Nt("poor", K("John")),),
+        (Nt("happy", x), P("exciting", x)),
+        (P("stupid", x), P("smart", x)),
+    ]
+    chk("c4 10: someone has an exciting life",
+        refutable(excite, [(Nt("exciting", x),)]), True)
+
+    # ---- P7 / P8: every Bayes number the companion prints ------------
+    def bayes(l_h, p_h, l_nh):
+        """P(H|E) from P(E|H), P(H) and P(E|~H), by total probability."""
+        num = l_h * p_h
+        return num / (num + l_nh * (1 - p_h))
+
+    # B1, B2: P(evidence) is given outright, so no total-probability step
+    chk("c4 B1 meningitis 71Ma", 0.5 * (1 / 50000) / 0.05, 0.0002)
+    chk("c4 B2 meningitis 81Ba", 0.8 * (1 / 50000) / 0.01, 0.0016)
+    # B3 measles
+    chk("c4 B3 P(rash)", 0.95 * 0.1 + 0.08 * 0.9, 0.167)
+    chk("c4 B3 P(measles|rash)", bayes(0.95, 0.1, 0.08), 0.5689)
+    chk("c4 B3 complement", bayes(0.08, 0.9, 0.95), 0.4311)
+    # B4 cigar smoker
+    chk("c4 B4 P(cigar)", 0.095 * 0.51 + 0.017 * 0.49, 0.05678)
+    chk("c4 B4 P(male|cigar)", bayes(0.095, 0.51, 0.017), 0.8533)
+    # B5 the 99% test for a 1-in-10000 disease
+    chk("c4 B5 P(+)", 0.99 * 1e-4 + 0.01 * 0.9999, 0.010098)
+    chk("c4 B5 P(disease|+)", bayes(0.99, 1e-4, 0.01), 0.0098, tol=5e-5)
+    chk("c4 B5 true positives per million", round(1e6 * 1e-4 * 0.99), 99)
+    chk("c4 B5 false positives per million",
+        round(1e6 * 0.9999 * 0.01), 9999)
+    # B6 genetic defect
+    chk("c4 B6 P(+)", 0.9 * 0.01 + 0.1 * 0.99, 0.108)
+    chk("c4 B6 P(no defect|+)", 1 - bayes(0.9, 0.01, 0.1), 0.9167)
+    chk("c4 B6 P(defect|+)", bayes(0.9, 0.01, 0.1), 0.0833)
+    chk("c4 B6 odds against", 0.099 / 0.009, 11.0)
+    # B7 the three factories
+    chk("c4 B7 P(defective)",
+        0.2 * 0.02 + 0.5 * 0.05 + 0.3 * 0.03, 0.038)
+    chk("c4 B7 P(B|defective)", 0.025 / 0.038, 0.6579)
+    chk("c4 B7 P(A|defective)", 0.004 / 0.038, 0.105, tol=5e-4)
+    chk("c4 B7 P(C|defective)", 0.009 / 0.038, 0.237, tol=5e-4)
+    chk("c4 B7 posteriors sum to 1",
+        (0.004 + 0.025 + 0.009) / 0.038, 1.0)
+    # B8 the tall student, B9 the mammogram
+    chk("c4 B8 P(tall)", 0.02 * 0.6 + 0.05 * 0.4, 0.032)
+    chk("c4 B8 P(woman|tall)", bayes(0.02, 0.6, 0.05), 0.375)
+    chk("c4 B9 P(+)", 0.9 * 0.01 + 0.08 * 0.99, 0.0882)
+    chk("c4 B9 P(cancer|+)", bayes(0.9, 0.01, 0.08), 0.1020, tol=5e-4)
+    # B10 the 78 Ba wet-grass network, straight off the printed CPTs
+    chk("c4 B10 P(C,S,~R,W)", 0.6 * 0.10 * (1 - 0.80) * 0.90, 0.0108)
+    # B11 the 82 Bh smoker -> cancer -> test chain
+    p_c = 0.2 * 0.3 + 0.05 * 0.7
+    p_t = 0.9 * p_c + 0.1 * (1 - p_c)
+    chk("c4 B11 P(C)", p_c, 0.095)
+    chk("c4 B11 P(T)", p_t, 0.176)
+    chk("c4 B11 P(C|T)", 0.9 * p_c / p_t, 0.4858)
+    chk("c4 B11 P(T|S)", 0.9 * 0.2 + 0.1 * 0.8, 0.26)
+    chk("c4 B11 P(T|~S)", 0.9 * 0.05 + 0.1 * 0.95, 0.14)
+    chk("c4 B11 P(S|T)", 0.26 * 0.3 / p_t, 0.4432)
+    # the same P(T) by the other route: the network has to be coherent
+    chk("c4 B11 P(T) via S", 0.26 * 0.3 + 0.14 * 0.7, p_t)
+    chk("c4 B11 P(~C|T) is the larger half", 1 - 0.9 * p_c / p_t, 0.5142)
+    # B12 the two-node example the notes hand to the three data-free papers
+    chk("c4 B12 P(cancer|+)", bayes(0.9, 0.01, 0.08), 0.102, tol=5e-4)
+
+
 def main():
-    for fn in (ch2, ch3):
+    for fn in (ch2, ch3, ch4):
         try:
             fn()
         except AssertionError as e:

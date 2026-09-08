@@ -1,0 +1,1966 @@
+%=======================================================================
+%  CHAPTER 4 — SOLVED PROBLEMS
+%  Every worked answer follows the Insights method, checked independently.
+%  Where the book is wrong the notes do it correctly and say so.
+%=======================================================================
+\section{Knowledge Representation, Inference and Reasoning \textcolor{sub}{\large -- Solved Problems}}
+
+{\color{sub}\footnotesize \mk{The biggest companion in the subject.}
+33 papers set a resolution refutation, 15 set a Bayes calculation, 4 set a CNF conversion
+and 1 sets a truth-table proof. Every one is worked below under the question
+\textbf{exactly as its paper prints it}. Renamings of a puzzle already worked get the
+paper's own statement plus what changes, so nothing is left to guess and no proof is
+copied out twice.}
+
+\lead{The five procedures everything here is built on}
+\begin{itemize}
+  \item \textbf{P1 Truth table} $-$ $2^n$ rows for $n$ symbols; a \textbf{tautology} is a
+        column of all T.
+  \item \textbf{P2 CNF} $-$ eliminate $\leftrightarrow$, eliminate $\rightarrow$, move
+        $\neg$ in, standardise apart, skolemize, drop $\forall$, distribute $\vee$ over
+        $\wedge$, split.
+  \item \textbf{P3 Resolution refutation} $-$ FOPL, CNF, \textbf{negate the goal},
+        resolve on complementary literals with the MGU, derive $\square$.
+  \item \textbf{P4 Chaining} $-$ forward from the facts, or backward from the goal,
+        on definite clauses.
+  \item \textbf{P5 Bayes} $-$
+        $P(A|B) = \dfrac{P(B|A)P(A)}{P(B|A)P(A) + P(B|\neg A)P(\neg A)}$, and for a
+        network $P(x_1 \ldots x_n) = \prod P(x_i \mid parents(x_i))$.
+\end{itemize}
+
+{\color{sub}\footnotesize Notation used throughout: constants start with a capital,
+variables are $x, y, z$, and a clause is written as a disjunction of literals. Beside
+every resolvent, \mk{(i,\,j)} names the two clauses it came from and
+$[t/x]$ the substitution used. That annotation is where a third of the marks sit.}
+
+\hr
+
+%=======================================================================
+\T{P1. Truth tables: WFF, validity and tautology}
+
+\creamq{Define a WFF with its properties. Prove that $(A \wedge (A \rightarrow B)) \rightarrow B$ is a tautology}{\m{4+4}}
+{\color{sub}\footnotesize \tP{1} \yr{\textbf{\textit{71 Bh}} \m{4+4}}}
+
+\begin{asked}{2071 Bhadra \textperiodcentered{} CT 78506 \textperiodcentered{} [4+4]}
+Define a WFF with its properties. Prove that the proposition
+(A $\wedge$ (A $\rightarrow$ B) $\rightarrow$ B) is a tautology.
+\end{asked}
+
+\sbsr{0.46}{%
+\lead{Solution: build the table}
+\begin{itemize}
+  \item Two symbols, so $2^2 = 4$ rows. Work left to right, one column per sub-formula.
+\end{itemize}
+\vspace{1pt}
+\begin{tabularx}{\linewidth}{@{}L{0.7cm}L{0.7cm}L{1.5cm}L{2.0cm}X@{}}
+\toprule
+\hrow \thead{A} & \thead{B} & \thead{$A \rightarrow B$} & \thead{$A \wedge (A \rightarrow B)$} & \thead{$\ldots \rightarrow B$} \\
+\midrule
+T & T & T & T & \textbf{T} \\
+T & F & F & F & \textbf{T} \\
+F & T & T & F & \textbf{T} \\
+F & F & T & F & \textbf{T} \\
+\bottomrule
+\end{tabularx}
+\vspace{2pt}
+\begin{itemize}
+  \item The last column is \textbf{T in every row}, so the proposition is
+        \mk{valid: a tautology}. \checkmark
+  \item Rows 2--4 are true \emph{vacuously}: the antecedent
+        $A \wedge (A \rightarrow B)$ is false, and $F \rightarrow$ anything is T.
+        \mk{Say that} or the last mark is at risk.
+\end{itemize}}{%
+\lead{The definition half of the answer}
+\begin{itemize}
+  \item A \textbf{well-formed formula} is a string built only by the recursive rules in
+        \S4.2: a symbol; $\neg\alpha$; $(\alpha)$; and
+        $(\alpha \wedge \beta)$, $(\alpha \vee \beta)$, $(\alpha \rightarrow \beta)$,
+        $(\alpha \leftrightarrow \beta)$ for WFFs $\alpha, \beta$ $-$
+        \mk{and nothing else}.
+  \item \textbf{Properties to list}: it is finite; it is uniquely parsed (brackets or
+        precedence fix the reading); it has a truth value under every interpretation;
+        and it is exactly the set of strings the inference rules may be applied to.
+  \item $A \wedge \rightarrow B$ and $(A \vee B$ are \textbf{not} WFFs: no rule builds
+        them. Giving one non-example is worth a mark.
+  \item \textbf{This formula is modus ponens written as a single proposition}, which is
+        the point of the question: an inference rule is sound exactly when its
+        implication form is a tautology. Cross-refer to the rules table and the two marks
+        for ``properties'' are safe.
+\end{itemize}}
+
+%=======================================================================
+\T{P2. Conversion to CNF}
+
+{\color{sub}\footnotesize Four papers give a formula and ask for its clause form
+\tF{4}. Nine more ask for the steps in the abstract; those are answered by \S4.4 plus any
+one example below.}
+
+\creamq{P $\vee$ ($\neg$P $\wedge$ Q $\wedge$ R), and ``Everyone who loves all animals is loved by someone''}{\m{2+2+2+3}}
+{\color{sub}\footnotesize \yr{\textbf{\textit{73 Bh}} \m{2+2+2+3}}}
+
+\begin{asked}{2073 Bhadra \textperiodcentered{} CT 78506 \textperiodcentered{} [2+2+2+3]}
+Why is conjunctive normal form required? Explain all the steps to convert to CNF, and
+transform the given sentences into CNF:
+P $\vee$ ($\neg$P $\wedge$ Q $\wedge$ R); and ``Everyone who loves all animals is loved
+by someone.''
+\end{asked}
+
+\sbs{%
+\lead{Part 1: \; $P \vee (\neg P \wedge Q \wedge R)$}
+\begin{itemize}
+  \item No $\leftrightarrow$, no $\rightarrow$, no negation to move: go straight to
+        \textbf{step 7}, distribute $\vee$ over $\wedge$.
+  \item $P \vee (\neg P \wedge Q \wedge R)$
+        \[ = (P \vee \neg P) \wedge (P \vee Q) \wedge (P \vee R) \]
+  \item $P \vee \neg P$ is a \textbf{tautology}, true in every model, so the clause adds
+        nothing and is dropped:
+        \[ \boxed{(P \vee Q) \wedge (P \vee R)} \]
+  \item \textbf{Two clauses}: $\{P, Q\}$ and $\{P, R\}$.
+  \item \mk{Dropping the tautologous clause is worth doing and worth
+        saying.} Leaving it in is not wrong, but the simplification is the
+        part that shows the definition was understood.
+\end{itemize}}{%
+\lead{Part 2: the quantified sentence}
+\begin{itemize}
+  \item \textbf{FOPL}:
+        $\forall x\,[\forall y\; Animal(y) \rightarrow Loves(x,y)]
+         \rightarrow [\exists z\; Loves(z,x)]$
+  \item \textbf{Eliminate $\rightarrow$} (both of them):
+        $\forall x\, \neg[\forall y\; \neg Animal(y) \vee Loves(x,y)]
+         \vee \exists z\; Loves(z,x)$
+  \item \textbf{Move $\neg$ inwards}, dual then De Morgan:
+        $\forall x\, [\exists y\; Animal(y) \wedge \neg Loves(x,y)]
+         \vee \exists z\; Loves(z,x)$
+  \item \textbf{Skolemize.} Both $\exists$ sit inside $\forall x$, so both become
+        \mk{functions of $x$}: $y \Rightarrow F(x)$, $z \Rightarrow G(x)$.
+  \item \textbf{Drop $\forall$, distribute, split}:
+  \begin{itemize}
+    \item $Animal(F(x)) \vee Loves(G(x), x)$
+    \item $\neg Loves(x, F(x)) \vee Loves(G(x), x)$
+  \end{itemize}
+  \item \mk{$F$ and $G$ must be functions, not constants.} A constant
+        would claim one single animal, and one single admirer, for the whole universe.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+\creamq{P $\rightarrow$ ((Q $\wedge$ $\neg$R) $\rightarrow$ S)}{\m{6}}
+{\color{sub}\footnotesize \yr{\textit{74 Ma} \m{6}}}
+
+\begin{asked}{2074 Magh \textperiodcentered{} CT 78506 \textperiodcentered{} [6]}
+Why is conjunctive normal form required? Explain all the steps to convert to CNF, and
+transform the given sentence into CNF: \; P $\rightarrow$ ((Q $\wedge$ $\neg$R)
+$\rightarrow$ S)
+\end{asked}
+
+\sbs{%
+\lead{Solution}
+\begin{itemize}
+  \item \textbf{Inner implication first}:
+        $(Q \wedge \neg R) \rightarrow S \;=\; \neg(Q \wedge \neg R) \vee S$
+  \item \textbf{Outer implication}:
+        $P \rightarrow [\neg(Q \wedge \neg R) \vee S]
+        \;=\; \neg P \vee \neg(Q \wedge \neg R) \vee S$
+  \item \textbf{De Morgan}, then double negation:
+        $\neg(Q \wedge \neg R) = \neg Q \vee R$
+  \item \[ \boxed{\neg P \vee \neg Q \vee R \vee S} \]
+\end{itemize}}{%
+\lead{The point of this one}
+\begin{itemize}
+  \item Nothing to distribute, so the answer is \mk{a single clause}
+        with four literals. A conjunction of one clause is still CNF.
+  \item Students who expect several clauses often invent a split that is not there.
+        \textbf{$\vee$ distributes over $\wedge$, never the reverse}, and there is no
+        $\wedge$ left at the top level here.
+  \item Written as a set: $\{\neg P, \neg Q, R, S\}$. It is a
+        \textbf{definite clause} $-$ two positive literals, so no; it is a plain clause.
+        (Definite needs \emph{exactly one} positive literal, and this has two, $R$ and
+        $S$.) A one-line check like that is what \yr{\textbf{78 Ch}}'s Horn-clause part
+        is testing.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+\creamq{P $\rightarrow$ ((Q $\wedge$ $\neg$R) $\leftrightarrow$ S)}{\m{8}\m{2+2+4}}
+{\color{sub}\footnotesize \yr{\textbf{\textit{72 Ash}} \m{8}, 79 Jth \m{2+2+4}}
+\gap$\cdot$\gap 79 Jth pairs it with
+$\neg(P \wedge Q) \vee (P \vee S) \rightarrow R$, worked below}
+
+\begin{asked}{2072 Ashwin \textperiodcentered{} CT 78506 \textperiodcentered{} [8]}
+Why is conjunctive normal form required? Explain all the steps to convert to CNF, and
+transform the given sentence into CNF: \; P $\rightarrow$ ((Q $\wedge$ $\neg$R)
+$\leftrightarrow$ S)
+\end{asked}
+
+\sbsr{0.54}{%
+\lead{Solution: the biconditional first}
+\begin{itemize}
+  \item Write $M = Q \wedge \neg R$ to keep the algebra readable.
+  \item \textbf{Step 1, eliminate $\leftrightarrow$}:
+        $M \leftrightarrow S \;=\; (M \rightarrow S) \wedge (S \rightarrow M)$
+  \item \textbf{Step 2, eliminate $\rightarrow$} inside:
+        $= (\neg M \vee S) \wedge (\neg S \vee M)$
+  \item Substitute $M$ back and apply De Morgan to $\neg M$:
+        \[ (\neg Q \vee R \vee S) \wedge (\neg S \vee (Q \wedge \neg R)) \]
+  \item \textbf{Step 7, distribute} in the right half:
+        $\neg S \vee (Q \wedge \neg R) = (\neg S \vee Q) \wedge (\neg S \vee \neg R)$
+  \item So the inner formula is
+        $(\neg Q \vee R \vee S) \wedge (\neg S \vee Q) \wedge (\neg S \vee \neg R)$.
+  \item \textbf{Now the outer implication}: $P \rightarrow X = \neg P \vee X$, and
+        $\neg P$ distributes into every clause of $X$:
+  \[ \boxed{\begin{aligned}
+     &(\neg P \vee \neg Q \vee R \vee S) \;\wedge \\
+     &(\neg P \vee \neg S \vee Q) \;\wedge \\
+     &(\neg P \vee \neg S \vee \neg R)
+     \end{aligned}} \]
+  \item \textbf{Three clauses.}
+\end{itemize}}{%
+\lead{\mk{Where this one goes wrong}}
+\begin{itemize}
+  \item \textbf{Expanding $\leftrightarrow$ the other way.} $A \leftrightarrow B$ is also
+        $(A \wedge B) \vee (\neg A \wedge \neg B)$. That is correct logic but it is a
+        \emph{disjunction} of conjunctions, so it takes twice the work to push back into
+        CNF. \mk{Always use the two-implications form.}
+  \item \textbf{Forgetting to distribute $\neg P$ into all three clauses.} $\neg P \vee
+        (C_1 \wedge C_2 \wedge C_3)$ is not $\neg P \vee C_1 \wedge C_2 \wedge C_3$; the
+        $\neg P$ joins \emph{each} clause.
+  \item \textbf{Sanity check that costs 10 seconds}: set $P$ false. Every clause contains
+        $\neg P$, so all three are satisfied $-$ which is right, because
+        $P \rightarrow \ldots$ is vacuously true. Set $P$ true, $S$ true, $Q$ false: clause
+        2 becomes $F \vee F \vee F$, false, and indeed $S$ true with $Q$ false breaks the
+        biconditional. \mk{The CNF behaves like the original.}
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+\creamq{$\neg$(P $\wedge$ Q) $\vee$ (P $\vee$ S) $\rightarrow$ R}{\m{2+2+4}}
+{\color{sub}\footnotesize \yr{79 Jth \m{2+2+4}} \gap$\cdot$\gap the paper's part (i);
+part (ii) is the biconditional worked above}
+
+\begin{asked}{2079 Jestha \textperiodcentered{} CT 653 \textperiodcentered{} [2+2+4]}
+Why is conjunctive normal form required? Explain all the steps to convert to CNF, and
+transform the given sentences into CNF:
+(i) $\neg$(P $\wedge$ Q) $\vee$ (P $\vee$ S) $\rightarrow$ R \quad
+(ii) P $\rightarrow$ ((Q $\wedge$ $\neg$R) $\leftrightarrow$ S)
+\end{asked}
+
+\sbs{%
+\lead{Solution}
+\begin{itemize}
+  \item $\rightarrow$ binds \textbf{loosest}, so the sentence reads
+        $\big[\neg(P \wedge Q) \vee (P \vee S)\big] \rightarrow R$.
+        \mk{Reading the brackets wrongly here changes the answer};
+        state the reading before starting.
+  \item \textbf{Eliminate $\rightarrow$}:
+        $\neg\big[\neg(P \wedge Q) \vee P \vee S\big] \vee R$
+  \item \textbf{Move $\neg$ in} (De Morgan on the bracket):
+        $\big[(P \wedge Q) \wedge \neg P \wedge \neg S\big] \vee R$
+  \item \textbf{Distribute} $\vee R$ over the four conjuncts:
+  \[ \boxed{(P \vee R) \wedge (Q \vee R) \wedge (\neg P \vee R) \wedge (\neg S \vee R)} \]
+  \item \textbf{Four clauses.}
+\end{itemize}}{%
+\lead{Reading the answer back}
+\begin{itemize}
+  \item Clauses 1 and 3 are $(P \vee R)$ and $(\neg P \vee R)$. Resolving them gives $R$
+        on its own, so \mk{the whole sentence is equivalent to $R$}.
+  \item That is correct: the antecedent
+        $\neg(P \wedge Q) \vee P \vee S$ is a \textbf{tautology} (if $P$ is false the
+        first disjunct is true, if $P$ is true the second is), and
+        $\text{True} \rightarrow R$ is just $R$.
+  \item \mk{Saying this earns the last mark} and proves the
+        conversion was not mechanical. It is also the cleanest possible demonstration of
+        why resolution wants CNF: two clauses in, one simpler clause out.
+\end{itemize}}
+
+%=======================================================================
+\T{P3. Translating English into FOPL}
+
+\creamq{Convert the following into FOL}{\m{2}}
+{\color{sub}\footnotesize \yr{\textbf{\textit{76 Bh}} \m{2}} \gap$\cdot$\gap
+one paper, 2 marks, so no tier chip \gap$\cdot$\gap but
+\mk{the same skill is step 1 of all 33 resolution proofs}, which is the
+real reason to practise it}
+
+\begin{asked}{2076 Bhadra \textperiodcentered{} CT 78506 \textperiodcentered{} [2]}
+Convert the following into FOL.
+\begin{enumerate}[label=\alph*), leftmargin=1.6em]
+  \item Arya hates Joffery and Cersei.
+  \item No Lannister loves Bran.
+  \item Sansa has at least one sister.
+  \item Every Stark hates at least one Lannister.
+\end{enumerate}
+\end{asked}
+
+\sbs{%
+\lead{Solution}
+\begin{itemize}
+  \item \textbf{a)} Two separate facts, joined by $\wedge$. No quantifier: both are named
+        individuals.
+        \[ hates(Arya, Joffery) \wedge hates(Arya, Cersei) \]
+  \item \textbf{b)} ``No A loves B'' $=$ there is no A that loves B, or equivalently every
+        A fails to love B:
+        \[ \neg \exists x\, \big[Lannister(x) \wedge loves(x, Bran)\big] \]
+        \[ \equiv\; \forall x\, \big[Lannister(x) \rightarrow \neg loves(x, Bran)\big] \]
+  \item \textbf{c)} ``at least one'' $=$ $\exists$, and $\exists$ takes $\wedge$:
+        \[ \exists x\, \big[sister(x) \wedge sisterOf(x, Sansa)\big] \]
+  \item \textbf{d)} \mk{$\forall$ outside, $\exists$ inside}, because
+        each Stark may hate a different Lannister:
+        \[ \forall x\, \Big[Stark(x) \rightarrow \exists y\,
+           \big(Lannister(y) \wedge hates(x,y)\big)\Big] \]
+\end{itemize}}{%
+\lead{\mk{The four rules this question tests}}
+\begin{itemize}
+  \item $\forall$ takes $\rightarrow$; $\exists$ takes $\wedge$. Every wrong answer to
+        (c) or (d) breaks this.
+  \item \textbf{Quantifier order carries meaning.}
+        $\forall x \exists y$ (each Stark hates \emph{some} Lannister) is not
+        $\exists y \forall x$ (one Lannister is hated by \emph{all} Starks). The English
+        ``at least one'' after ``every'' fixes the order as $\forall\exists$.
+  \item \textbf{``No'' negates the whole existential}, not the predicate. Writing
+        $\forall x\, Lannister(x) \wedge \neg loves(x,Bran)$ says everything in the
+        universe is a Lannister.
+  \item Both forms of (b) are correct and \textbf{equivalent by the dual}
+        $\neg\exists \equiv \forall\neg$. Giving both, with that one-line justification,
+        is a complete answer to a 2-mark part.
+  \item \textbf{Predicate names are your choice}, but stay consistent: $sisterOf(x,y)$
+        must mean the same thing every time it appears.
+\end{itemize}}
+
+%=======================================================================
+\T{P4. Unification: finding the MGU}
+
+{\color{sub}\footnotesize Never asked on its own, but every resolution step needs one and
+the marks come off when it is wrong. Four standard pairs, in the form the papers and the
+textbook use.}
+
+\sbs{%
+\lead{Worked}
+\begin{itemize}
+  \item \textbf{1.} $King(x)$, $King(John)$ \; $\rightarrow$ \;
+        $\theta = [John/x]$.
+  \item \textbf{2.} $P(x, y)$, $P(a, f(z))$ \; $\rightarrow$ \;
+        $\theta = [a/x,\; f(z)/y]$. \; $z$ stays free: binding it would be
+        \emph{less} general.
+  \item \textbf{3.} $P(x, f(y))$, $P(a, f(g(x)))$ \; $\rightarrow$ \;
+        start with $[a/x]$, then $y$ must match $g(x)$, and $x$ is already $a$:
+        \[ \theta = [a/x,\; g(a)/y] \]
+  \item \textbf{4.} $Q(a, g(x,a), f(y))$, $Q(a, g(f(b),a), x)$ \; $\rightarrow$ \;
+        $x$ must be $f(b)$ from the second argument, and then $f(y)$ must match
+        $x = f(b)$, giving $y = b$:
+        \[ \theta = [f(b)/x,\; b/y] \]
+\end{itemize}}{%
+\lead{\mk{The three ways it fails}}
+\begin{itemize}
+  \item \textbf{Different predicate or arity.} $P(x)$ and $Q(x)$ never unify; neither do
+        $P(x)$ and $P(x,y)$.
+  \item \textbf{Two different constants.} $King(John)$ and $King(Ram)$ fail: a constant
+        cannot be substituted.
+  \item \textbf{Occurs check.} $x$ cannot bind to $f(x)$; the substitution would never
+        terminate.
+  \item \mk{Apply each binding to everything already found}, as in
+        example 3. Reporting $[a/x, g(x)/y]$ instead of $[a/x, g(a)/y]$ is the standard
+        half-mark loss.
+  \item \textbf{Standardise apart before unifying two clauses.} If both clauses call their
+        variable $x$, rename one to $x'$ first, or the unifier will tie together two
+        variables that have nothing to do with each other.
+\end{itemize}}
+
+%=======================================================================
+\T{P5. Resolution refutation \gap\textcolor{sub}{Family A: likes all kinds of food}}
+
+{\color{sub}\footnotesize \mk{7 papers, 5 wordings, 55 marks} $-$ the
+single most-repeated premise set in the subject \yr{\textbf{72 Ash} \m{7},
+\textbf{74 Bh} \m{8}, \textbf{\textit{73 Bh}} \m{8}, \textbf{\textit{71 Bh}} \m{8},
+\textbf{\texttt{80 Bh}} \m{8}, \texttt{80 Ba} \m{8}, \textit{72 Ma} \m{6+4}}. Work it once
+properly and five papers are answered.}
+
+\begin{asked}{2072 Ashwin \textperiodcentered{} Q10 \textperiodcentered{} [7] \; also 2074 Bhadra [8], 2073 Bhadra CT 78506 [8]}
+Assume the following facts: John likes all kinds of food; apples are food; chicken is
+food; anything anyone eats and isn't killed by is food; Bill eats peanuts and is still
+alive; Sue eats everything Bill eats. Prove that John likes peanuts using resolution
+refutation.
+\end{asked}
+
+\sbsr{0.47}{%
+\lead{Step 1 \; Facts into FOPL}
+\begin{itemize}
+  \item[1.] $\forall x\; food(x) \rightarrow likes(John, x)$
+  \item[2.] $food(Apple)$
+  \item[3.] $food(Chicken)$
+  \item[4.] $\forall y \forall x\; \big[eats(y,x) \wedge \neg killed(y)\big]
+            \rightarrow food(x)$
+  \item[5.] $eats(Bill, Peanuts) \wedge \neg killed(Bill)$
+  \item[6.] $\forall x\; eats(Bill, x) \rightarrow eats(Sue, x)$
+\end{itemize}
+{\color{sub}\footnotesize ``is still alive'' is written $\neg killed$, not a new predicate
+$alive$. One predicate fewer, one resolution step fewer.}
+\lead{Step 2 \; Into CNF}
+\begin{itemize}
+  \item[1.] $\neg food(x) \vee likes(John, x)$
+  \item[2.] $food(Apple)$
+  \item[3.] $food(Chicken)$
+  \item[4.] $\neg eats(y,x) \vee killed(y) \vee food(x)$
+  \item[5a.] $eats(Bill, Peanuts)$
+  \item[5b.] $\neg killed(Bill)$
+  \item[6.] $\neg eats(Bill, x) \vee eats(Sue, x)$
+\end{itemize}
+\lead{Step 3 \; Negate the goal}
+\begin{itemize}
+  \item[7.] $\neg likes(John, Peanuts)$
+\end{itemize}}{%
+\lead{Step 4 \; Resolution}
+\begin{itemize}
+  \item[8.] $\neg food(Peanuts)$ \hfill \yr{(7,\,1) $[Peanuts/x]$}
+  \item[9.] $\neg eats(y, Peanuts) \vee killed(y)$ \hfill \yr{(8,\,4) $[Peanuts/x]$}
+  \item[10.] $killed(Bill)$ \hfill \yr{(9,\,5a) $[Bill/y]$}
+  \item[11.] $\square$ \hfill \yr{(10,\,5b)}
+\end{itemize}
+\lead{Final answer}
+\begin{itemize}
+  \item The empty clause is derived, so $KB \wedge \neg goal$ is unsatisfiable.
+        \mk{``John likes peanuts'' is proved.} \checkmark
+  \item Clauses \textbf{2, 3 and 6 are never used}: apples, chicken and Sue are
+        distractors. Saying so is a mark in a 8-mark answer, not a risk.
+\end{itemize}
+\lead{\mk{The step the textbook gets wrong}}
+\begin{itemize}
+  \item Fact 4 has the shape $\neg[A \wedge \neg B] \vee C$, which is
+        \mk{$\neg A \vee B \vee C$: one clause}.
+  \item \emph{Insights} splits it into two, $\neg eats(y,x) \vee food(x)$ and
+        $\neg killed(y) \vee food(x)$. That is not a valid equivalence $-$ it asserts that
+        merely \emph{not being killed} makes something food $-$ and the book's own
+        resolution graph then quietly uses the correct single clause.
+  \item Write the one clause. If the marker expects the book's two, the proof still
+        closes, and yours is the sound one.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+\creamq{The four renamings}{\m{8}\m{6+4}}
+{\color{sub}\footnotesize same proof, different names \gap$\cdot$\gap
+\mk{the last one is not the same} and is the only place in the family where
+the printed goal does not follow}
+
+\begin{asked}{2071 Bhadra \textperiodcentered{} CT 78506 \textperiodcentered{} [8]}
+Assume the following facts: a) Ram likes all kinds of food; b) Apples are food;
+c) Chicken is food; d) Anything anyone eats and is not killed by is food; e) Krishna eats
+peanuts and is still alive; f) Radha eats everything Krishna eats. Prove the statement
+``Ram likes peanut'' using resolution.
+\end{asked}
+
+\begin{asked}{2080 Bhadra \textperiodcentered{} CT 710 \textperiodcentered{} [8]}
+Assume the following facts: i) Ram likes all kinds of food; ii) apples and vegetables are
+food; iii) anything anyone eats and not killed is food; iv) Anil eats peanuts and is still
+alive; v) Ram eats everything that Anil eats. Prove that ``Ram likes peanuts'' using
+resolution refutation.
+\end{asked}
+
+\begin{asked}{2080 Baishakh \textperiodcentered{} CT 710 \textperiodcentered{} [8]}
+Assume the following facts: a) Sita likes all kinds of food; b) Momo and Burger are food;
+c) anything anyone eats and isn't killed by is food; d) Bill eats mushroom and is still
+alive; e) Sue eats everything Bill eats. Prove that ``Sita likes mushroom'' using
+resolution refutation method.
+\end{asked}
+
+\sbs{%
+\lead{What changes, and what does not}
+\vspace{-1pt}
+\begin{tabularx}{\linewidth}{@{}L{1.75cm}L{2.2cm}L{2.0cm}X@{}}
+\toprule
+\hrow \thead{Paper} & \thead{Likes all food} & \thead{Eats it} & \thead{Goal} \\
+\midrule
+\textbf{72 Ash}, \textbf{74 Bh}, \textbf{\textit{73 Bh}} & John & Bill (Sue copies) & peanuts \\
+\textbf{\textit{71 Bh}} & Ram & Krishna (Radha copies) & peanuts \\
+\textbf{\texttt{80 Bh}} & Ram & Anil (\textbf{Ram} copies) & peanuts \\
+\texttt{80 Ba} & Sita & Bill (Sue copies) & mushroom \\
+\bottomrule
+\end{tabularx}
+\vspace{2pt}
+\begin{itemize}
+  \item \mk{The proof is identical in all four}: negate, resolve with
+        clause 1 to get $\neg food(g)$, resolve with clause 4 to get
+        $\neg eats(y,g) \vee killed(y)$, then the two halves of the eating fact.
+        Substitute the names and the four steps are unchanged.
+  \item \yr{\textbf{\texttt{80 Bh}}} is the one worth a second look: there the copier is
+        \textbf{Ram himself}, the same person who likes all food. It changes nothing $-$
+        the copying clause is still unused $-$ but it looks like it should, and that is
+        the trap.
+  \item \yr{\texttt{80 Ba}} swaps apples and chicken for momo and burger. Also unused.
+\end{itemize}}{%
+\lead{\mk{2072 Magh (CT 78506) is a different problem}}
+\begin{itemize}
+  \item It adds a fifth premise, \emph{``if a person likes a food it means that person has
+        eaten it''}, and asks for \textbf{Shailendri} $-$ the copier $-$ to
+        \emph{\textbf{like}} chicken.
+  \item Take the premises literally:
+  \begin{itemize}
+    \item $food(Chicken)$ and $\forall x\, food(x) \rightarrow likes(Bhogendra, x)$
+          give $likes(Bhogendra, Chicken)$;
+    \item $\forall x \forall y\, likes(x,y) \rightarrow eats(x,y)$
+          gives $eats(Bhogendra, Chicken)$;
+    \item $\forall x\, eats(Bhogendra,x) \rightarrow eats(Shailendri,x)$
+          gives \mk{$eats(Shailendri, Chicken)$}.
+  \end{itemize}
+  \item And there it stops. \textbf{Nothing in the premise set makes Shailendri
+        \emph{like} anything}: only Bhogendra has a likes-rule, and the new premise runs
+        \emph{likes $\rightarrow$ eats}, not back.
+  \item \textbf{How to answer it}: prove $eats(Shailendri, Chicken)$ in full, then add one
+        line $-$ \emph{``to reach \emph{likes} the fifth premise must be read as a
+        biconditional, $likes(x,y) \leftrightarrow eats(x,y)$; with that reading one more
+        resolution step gives $likes(Shailendri, Chicken)$.''}
+  \item \mk{Do not silently reverse the implication and hope.} Stating
+        the gap is worth more than a proof that assumes it away.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+\begin{asked}{2072 Magh \textperiodcentered{} CT 78506 \textperiodcentered{} [6+4]}
+Bhogendra likes all kinds of food. Oranges are food. Chicken is food. Anything anyone eats
+and isn't killed by is food. If a person likes a food it means that person has eaten it.
+Jogendra eats peanuts and is still alive. Shailendri eats everything Bhogendra eats.
+Express them in FOPL, put them into clause form, and use resolution to prove that
+Shailendri likes chicken.
+\end{asked}
+
+%=======================================================================
+\T{P5. Resolution refutation \gap\textcolor{sub}{Family B: Charlie is a horse}}
+
+{\color{sub}\footnotesize \mk{6 papers, 3 wordings, 46 marks}
+\yr{\textbf{73 Bh} \m{8}, 78 Po \m{8}, \textbf{\textit{74 Bh}} \m{8}, 79 Jth \m{6},
+\textbf{\texttt{79 Bh}} \m{8}, 78 Ba \m{8}}. The set that tests
+\textbf{inverse relations} and, quietly, whether you can spot an unused premise.}
+
+\begin{asked}{2073 Bhadra \textperiodcentered{} Q10 \textperiodcentered{} [8] \; also 2078 Poush [8], 2074 Bhadra CT 78506 [8], 2079 Jestha [6]}
+Assume the following facts: i) horses, cows, pigs are mammals; ii) an offspring of a horse
+is a horse; iii) Bluebeard is a horse; iv) Bluebeard is Charlie's parent; v) offspring and
+parent are inverse relations; vi) every mammal has a parent. Prove Charlie is a horse
+using resolution refutation.
+\end{asked}
+
+\sbsr{0.50}{%
+\lead{Step 1 \; Facts into FOPL}
+\begin{itemize}
+  \item[1.] $\forall x\; horse(x) \rightarrow mammal(x)$, and the same for $cow$, $pig$
+  \item[2.] $\forall x \forall y\; \big[offspring(x,y) \wedge horse(y)\big]
+            \rightarrow horse(x)$
+  \item[3.] $horse(Bluebeard)$
+  \item[4.] $parent(Bluebeard, Charlie)$
+  \item[5.] $\forall x \forall y\; offspring(x,y) \leftrightarrow parent(y,x)$
+  \item[6.] $\forall x\; mammal(x) \rightarrow \exists y\; parent(y, x)$
+\end{itemize}
+\lead{Step 2 \; Into CNF}
+\begin{itemize}
+  \item[1a.] $\neg horse(x) \vee mammal(x)$ \; (1b, 1c likewise for cow, pig)
+  \item[2.] $\neg offspring(x,y) \vee \neg horse(y) \vee horse(x)$
+  \item[3.] $horse(Bluebeard)$
+  \item[4.] $parent(Bluebeard, Charlie)$
+  \item[5a.] $\neg offspring(x,y) \vee parent(y,x)$
+  \item[5b.] $\neg parent(y,x) \vee offspring(x,y)$
+  \item[6.] $\neg mammal(x) \vee parent\big(f(x),\, x\big)$
+\end{itemize}
+{\color{sub}\footnotesize The $\exists y$ in premise 6 sits inside $\forall x$, so it
+skolemizes to a \textbf{function} $f(x)$: each mammal has its own parent.
+\mk{\emph{Insights} writes a free variable $y$ here}, which claims every
+object is a parent of every mammal. It changes nothing in this proof, because clause 6 is
+never used, but it is wrong and in another problem it would prove anything.}}{%
+\lead{Step 3 \; Negate the goal}
+\begin{itemize}
+  \item[7.] $\neg horse(Charlie)$
+\end{itemize}
+\lead{Step 4 \; Resolution}
+\begin{itemize}
+  \item[8.] $\neg offspring(Charlie, y) \vee \neg horse(y)$
+        \hfill \yr{(7,\,2) $[Charlie/x]$}
+  \item[9.] $\neg offspring(Charlie, Bluebeard)$
+        \hfill \yr{(8,\,3) $[Bluebeard/y]$}
+  \item[10.] $\neg parent(Bluebeard, Charlie)$
+        \hfill \yr{(9,\,5b) $[Charlie/x, Bluebeard/y]$}
+  \item[11.] $\square$ \hfill \yr{(10,\,4)}
+\end{itemize}
+\lead{Final answer}
+\begin{itemize}
+  \item \mk{``Charlie is a horse'' is proved.} \checkmark \; Four
+        resolution steps.
+  \item \textbf{Premises 1 and 6 are never used.} The mammal chain is a complete red
+        herring for this goal: being a horse follows from the offspring rule alone.
+        \mk{Say it in one line} $-$ examiners set the extra premises to
+        see whether the proof is understood or remembered.
+  \item \textbf{The whole problem is premise 5.} Written as a biconditional it yields the
+        two clauses 5a and 5b, and only \textbf{5b} is used: it turns the given
+        $parent(Bluebeard, Charlie)$ into the $offspring(Charlie, Bluebeard)$ that rule 2
+        needs. A one-directional reading of ``inverse relations'' cannot close the proof.
+  \item \textbf{Watch the argument order}: $offspring(x,y)$ means \emph{$x$ is the
+        offspring of $y$}, so its inverse is $parent(y,x)$, not $parent(x,y)$. Getting
+        this backwards is the commonest failure on this set.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+\creamq{The two renamings}{\m{8}}
+{\color{sub}\footnotesize \yr{\textbf{\texttt{79 Bh}} \m{8}} asks for a \emph{mammal},
+\yr{78 Ba \m{8}} renames every noun}
+
+\begin{asked}{2079 Bhadra \textperiodcentered{} CT 710 \textperiodcentered{} [8]}
+Prove that ``Charlie is a mammal'' with given propositions: a) cows, pigs and horses are
+mammal; b) the child of horse is a horse; c) Bluebeard is a horse; d) Bluebeard is
+Charlie's father; e) child and father are inverse relation; f) every mammal has a father.
+\end{asked}
+
+\begin{asked}{2078 Baishakh \textperiodcentered{} [8]}
+Assume the following facts: (i) Cow, Buffalo, Bull are mammals; (ii) an offspring of a Cow
+is Cow; (iii) Kali is a Cow; (iv) Kali is Taarey's parent; (v) offspring and parent are
+inverse relations; (vi) every mammal has a parent. By using resolution refutation, prove
+that Taarey is a Cow.
+\end{asked}
+
+\sbs{%
+\lead{2079 Bhadra: one extra step, and premise (a) stops being a distractor}
+\begin{itemize}
+  \item The goal is now $mammal(Charlie)$, so negate to
+        \textbf{7.} $\neg mammal(Charlie)$.
+  \item[] \textbf{8.} $\neg horse(Charlie)$ \hfill \yr{(7,\,1a) $[Charlie/x]$}
+  \item[] and from there the proof above runs unchanged, steps 8--11 becoming 9--12.
+  \item \mk{Five steps instead of four.} The mammal rule that was
+        unused in the ``horse'' version is now the first step of the ``mammal'' one $-$
+        the same six premises, one different goal, a different subset used.
+  \item \emph{child} and \emph{father} replace \emph{offspring} and \emph{parent}. Same
+        two clauses from the inverse relation, same argument-order trap.
+\end{itemize}}{%
+\lead{2078 Baishakh: a pure renaming}
+\vspace{-1pt}
+\begin{tabularx}{\linewidth}{@{}L{2.6cm}XX@{}}
+\toprule
+\hrow & \thead{2073 Bhadra} & \thead{2078 Baishakh} \\
+\midrule
+Species & horse & Cow \\
+Also mammals & cows, pigs & Buffalo, Bull \\
+The parent & Bluebeard & Kali \\
+The offspring & Charlie & Taarey \\
+Goal & $horse(Charlie)$ & $Cow(Taarey)$ \\
+\bottomrule
+\end{tabularx}
+\vspace{2pt}
+\begin{itemize}
+  \item Substitute and the four resolution steps are character-for-character the same.
+  \item \textbf{Buffalo and Bull are the distractors} this time, and premise (vi) is
+        again unused.
+  \item \mk{Answer to give}: $\square$ derived in 4 steps, so
+        ``Taarey is a Cow'' is proved. \checkmark
+\end{itemize}}
+
+%=======================================================================
+\T{P5. Resolution refutation \gap\textcolor{sub}{Family C: selling weapons to a hostile nation}}
+
+{\color{sub}\footnotesize \mk{7 papers, 6 wordings, 55 marks}
+\yr{\textbf{69 Bh} \m{10}, 75 Ba \m{8}, \textbf{77 Ch} \m{8}, 82 Ka \m{8},
+81 Ash \m{2+6}, \textbf{\texttt{81 Bh}} \m{9}, \textbf{\texttt{82 Bh}} \m{6}}. The set
+that tests \textbf{existential instantiation}, and the one paper
+\yr{(81 Ash)} that asks for \textbf{forward chaining} instead of refutation.}
+
+\begin{asked}{2077 Chaitra \textperiodcentered{} Q10 \textperiodcentered{} [8] \; also 2082 Kartik [8]}
+It is a crime for an American to sell weapons to hostile nations. Nono has some missiles.
+All the missiles owned by Nono were sold to it by Colonel West. Missiles are weapons. An
+enemy of America counts as hostile. Colonel West is an American. The country Nono is an
+enemy of America. Prove that Colonel West is a criminal by using FOPL based Resolution
+Refutation.
+\end{asked}
+
+\sbsr{0.49}{%
+\lead{Step 1 \; Facts into FOPL}
+\begin{itemize}
+  \item[1.] $\forall p \forall q \forall r\; \big[American(p) \wedge Weapon(q) \wedge
+            Sells(p,q,r) \wedge Hostile(r)\big] \rightarrow Criminal(p)$
+  \item[2.] $\exists x\; Missile(x) \wedge Owns(Nono, x)$
+  \item[3.] $\forall x\; \big[Missile(x) \wedge Owns(Nono,x)\big]
+            \rightarrow Sells(West, x, Nono)$
+  \item[4.] $\forall x\; Missile(x) \rightarrow Weapon(x)$
+  \item[5.] $\forall x\; Enemy(x, America) \rightarrow Hostile(x)$
+  \item[6.] $American(West)$
+  \item[7.] $Enemy(Nono, America)$
+\end{itemize}
+\lead{Step 2 \; Into CNF}
+\begin{itemize}
+  \item[1.] $\neg American(p) \vee \neg Weapon(q) \vee \neg Sells(p,q,r) \vee
+            \neg Hostile(r) \vee Criminal(p)$
+  \item[2a.] $Missile(M_1)$ \hfill \yr{skolem constant}
+  \item[2b.] $Owns(Nono, M_1)$
+  \item[3.] $\neg Missile(x) \vee \neg Owns(Nono,x) \vee Sells(West,x,Nono)$
+  \item[4.] $\neg Missile(x) \vee Weapon(x)$
+  \item[5.] $\neg Enemy(x, America) \vee Hostile(x)$
+  \item[6.] $American(West)$ \qquad \textbf{7.} $Enemy(Nono, America)$
+\end{itemize}
+{\color{sub}\footnotesize \mk{``Nono has some missiles'' is existential.}
+It is not $\forall x\, Missile(x)$, which would make everything a missile, and it is not a
+named missile either $-$ the paper never names one. Skolemize to a brand-new constant
+$M_1$ and it splits into two ground facts.}}{%
+\lead{Step 3 \; Negate the goal}
+\begin{itemize}
+  \item[8.] $\neg Criminal(West)$
+\end{itemize}
+\lead{Step 4 \; Resolution}
+\begin{itemize}
+  \item[9.] $\neg American(West) \vee \neg Weapon(q) \vee \neg Sells(West,q,r) \vee
+            \neg Hostile(r)$ \hfill \yr{(8,\,1) $[West/p]$}
+  \item[10.] $\neg Weapon(q) \vee \neg Sells(West,q,r) \vee \neg Hostile(r)$
+            \hfill \yr{(9,\,6)}
+  \item[11.] $\neg Missile(q) \vee \neg Sells(West,q,r) \vee \neg Hostile(r)$
+            \hfill \yr{(10,\,4) $[q/x]$}
+  \item[12.] $\neg Missile(q) \vee \neg Owns(Nono,q) \vee \neg Hostile(Nono)$
+            \hfill \yr{(11,\,3) $[q/x,\, Nono/r]$}
+  \item[13.] $\neg Owns(Nono, M_1) \vee \neg Hostile(Nono)$
+            \hfill \yr{(12,\,2a) $[M_1/q]$}
+  \item[14.] $\neg Hostile(Nono)$ \hfill \yr{(13,\,2b)}
+  \item[15.] $\neg Enemy(Nono, America)$ \hfill \yr{(14,\,5) $[Nono/x]$}
+  \item[16.] $\square$ \hfill \yr{(15,\,7)}
+\end{itemize}
+\lead{Final answer}
+\begin{itemize}
+  \item \mk{``Colonel West is a criminal'' is proved.} \checkmark \;
+        Eight resolution steps, and \textbf{every premise is used} $-$ unusual, and worth
+        noticing, because it means no step can be skipped.
+  \item \textbf{Work down the negated goal.} Clause 1 has five literals; resolving it
+        against clause 8 first turns the proof into a checklist of four conditions, each
+        discharged by one premise. Starting anywhere else wanders.
+  \item In step 12 the literal $\neg Missile(q)$ appears twice after the substitution and
+        \mk{collapses to one}. Duplicate literals in a clause always do.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+\creamq{2069 Bhadra and 2075 Baishakh: two premises are missing}{\m{10}\m{8}}
+{\color{sub}\footnotesize \yr{\textbf{69 Bh} \m{10}, 75 Ba \m{8}} \gap$\cdot$\gap
+\mk{neither paper says missiles are weapons, or that an enemy is hostile}
+\gap$\cdot$\gap the proof cannot close without them, so they must be stated as assumptions}
+
+\begin{asked}{2069 Bhadra \textperiodcentered{} Q10 \textperiodcentered{} [10]}
+Every American who sells weapons to hostile nations is a criminal. The country Abc is
+enemy of America. All of the missiles in Abc were sold by John. John is an American. Prove
+John is a criminal.
+\end{asked}
+
+\begin{asked}{2075 Baishakh \textperiodcentered{} [8]}
+Every American who sells weapons to hostile nations is a criminal. The country XYZ is
+enemy of America. All of its missiles in XYZ were sold by Donald, who is an American.
+Prove that Donald is a criminal using FOPL based resolution refutation.
+\end{asked}
+
+\sbs{%
+\lead{What is missing, and what to write}
+\begin{itemize}
+  \item Clause 1 needs \textbf{four} things about $p$: American, a weapon, a sale, and a
+        hostile buyer. These two papers supply \emph{American}, the \emph{sale} and the
+        \emph{enemy} $-$ but nothing links
+  \begin{itemize}
+    \item \emph{missile} to \emph{weapon}, and
+    \item \emph{enemy of America} to \emph{hostile}.
+  \end{itemize}
+  \item \mk{Add both, and say you are adding them}:
+  \begin{itemize}
+    \item[] $\forall x\; Missile(x) \rightarrow Weapon(x)$
+    \item[] $\forall x\; Enemy(x, America) \rightarrow Hostile(x)$
+  \end{itemize}
+  \item Then the proof is exactly the 8 steps above with $[John/West,\, Abc/Nono]$ or
+        $[Donald/West,\, XYZ/Nono]$.
+  \item \textbf{This is not pedantry.} A resolution proof is a formal derivation: if the
+        bridging axiom is not in the clause set, the empty clause cannot be derived, and
+        a proof that pretends otherwise is the thing being marked.
+\end{itemize}}{%
+\lead{\mk{Also read ``all of the missiles in Abc'' carefully}}
+\begin{itemize}
+  \item It says \emph{every missile in Abc was sold by John}, i.e.\
+        $\forall x\, \big[Missile(x) \wedge In(x, Abc)\big] \rightarrow Sells(John, x, Abc)$.
+  \item It does \textbf{not} say Abc has any. Strictly, with no missile in existence the
+        antecedent is never satisfied and nothing follows $-$ so the existential
+        \emph{``Abc has some missiles''} has to be assumed too, exactly as \yr{\textbf{77 Ch}}
+        states it outright.
+  \item \mk{Three assumptions, one line each}, then the standard proof.
+        An 10-mark answer has room for them and the examiner is looking for whether the
+        gap was noticed.
+  \item \yr{75 Ba}'s ``All of its missiles in XYZ were sold by Donald'' is the same
+        sentence with a typo; treat it identically.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+\creamq{2081 Bhadra and 2082 Bhadra: the two renamings that add a premise}{\m{9}\m{6}}
+{\color{sub}\footnotesize \yr{\textbf{\texttt{81 Bh}} \m{9}, \textbf{\texttt{82 Bh}} \m{6}}}
+
+\begin{asked}{2081 Bhadra \textperiodcentered{} CT 710 \textperiodcentered{} [9]}
+Every American who sells weapons to hostile nations is a criminal. Every enemy of America
+is a hostile. Nono has some missiles. All missiles of Nono were sold by Gorge. Gorge is an
+American. Nono is a Country. Nono is the enemy of America. Missiles are weapons. Prove
+that ``Is Gorge a criminal?'' using Resolution by Refutation.
+\end{asked}
+
+\begin{asked}{2082 Bhadra \textperiodcentered{} CT 710 \textperiodcentered{} [6]}
+It is a crime for a Nepali to sell weapons to an enemy of Nepal. Mr.\ A is an enemy of
+Nepal. Mr.\ A has some missiles. Missiles are weapons. Mr.\ R is a Nepali. If Mr.\ A has
+missiles then those missiles were sold to Mr.\ A by Mr.\ R. Prove ``Mr.\ A is a
+criminal''.
+\end{asked}
+
+\sbs{%
+\lead{2081 Bhadra: complete, with one spare premise}
+\begin{itemize}
+  \item All eight premises of the canonical set are present, plus
+        \emph{``Nono is a Country''}, $Country(Nono)$, which
+        \mk{appears in no rule and is never used}.
+  \item Substitute $[Gorge/West]$ and the eight steps run unchanged. Answer:
+        \mk{Gorge is a criminal.} \checkmark
+  \item The question is phrased as \emph{``Is Gorge a criminal?''} but asks for resolution
+        \emph{by refutation}, so still negate: assume $\neg Criminal(Gorge)$ and derive
+        $\square$. \textbf{Do not switch to extraction} just because the sentence ends in
+        a question mark.
+\end{itemize}}{%
+\lead{2082 Bhadra: \mk{the goal is the wrong person}}
+\begin{itemize}
+  \item Read the roles: \textbf{Mr.\,R} is the Nepali who \emph{sells}; \textbf{Mr.\,A}
+        is the enemy who \emph{buys}. The crime rule makes the \emph{seller} the criminal.
+  \item So the premises prove $Criminal(Mr.R)$, and the printed goal
+        \emph{``Mr.\,A is a criminal''} does not follow.
+  \item \mk{How to answer}: prove $Criminal(Mr.R)$ in full by the
+        standard eight steps, then one line $-$ \emph{``the premises make the seller the
+        criminal, so what follows is $Criminal(Mr.R)$; $Criminal(Mr.A)$ is not derivable
+        from this set.''}
+  \item The sixth premise is a conditional, \emph{if Mr.\,A has missiles then they were
+        sold to him by Mr.\,R}, which is the same clause 3 as ever:
+        $\neg Missile(x) \vee \neg Owns(A,x) \vee Sells(R,x,A)$.
+  \item \emph{Enemy of Nepal} is used directly as the hostile predicate here, so no
+        bridging axiom is needed.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+%=======================================================================
+\T{P6. The same premises by forward and backward chaining}
+
+\creamq{Prove Col.\ West is criminal using forward chaining}{\m{2+6}}
+{\color{sub}\footnotesize \tP{1} \yr{81 Ash \m{2+6}} \gap$\cdot$\gap
+\mk{the only paper that asks for a chaining proof rather than resolution},
+and 11 more ask for the forward/backward comparison this answers by example}
+
+\begin{asked}{2081 Ashwin \textperiodcentered{} [2+6]}
+The law says that it is a crime for an American to sell weapons to hostile nations. The
+country Nono, an enemy of America, has some missiles, and all of its missiles were sold to
+it by Colonel West, who is American. Prove that Col.\ West is criminal using
+\textbf{forward chaining}.
+\end{asked}
+
+\sbsr{0.52}{%
+\lead{Forward chaining, iteration by iteration}
+\begin{itemize}
+  \item \textbf{Start with the ground facts} (the clauses with no premises):
+  \begin{itemize}
+    \item[] $American(West)$, \; $Missile(M_1)$, \; $Owns(Nono, M_1)$, \;
+            $Enemy(Nono, America)$
+  \end{itemize}
+  \item \textbf{Iteration 1} $-$ fire every rule whose premises are all present:
+  \begin{itemize}
+    \item rule 4 with $[M_1/x]$ \; $\rightarrow$ \; \textbf{$Weapon(M_1)$}
+    \item rule 3 with $[M_1/x]$, needing $Missile(M_1)$ \emph{and} $Owns(Nono,M_1)$,
+          both present \; $\rightarrow$ \; \textbf{$Sells(West, M_1, Nono)$}
+    \item rule 5 with $[Nono/x]$ \; $\rightarrow$ \; \textbf{$Hostile(Nono)$}
+    \item rule 1 does \textbf{not} fire yet: its four premises are not all known.
+  \end{itemize}
+  \item \textbf{Iteration 2} $-$ rule 1 now matches with
+        $[West/p,\, M_1/q,\, Nono/r]$, because $American(West)$, $Weapon(M_1)$,
+        $Sells(West,M_1,Nono)$ and $Hostile(Nono)$ are all in the fact base:
+  \begin{itemize}
+    \item[] $\rightarrow$ \; \mk{$Criminal(West)$}
+  \end{itemize}
+  \item \textbf{Goal reached, stop.} \checkmark
+\end{itemize}
+{\color{sub}\footnotesize Draw it as three rows: the four given facts along the bottom,
+the three iteration-1 facts above them, $Criminal(West)$ at the top, with an arrow from
+each premise into the fact it helped derive. That picture is the answer; see \S4.6.}}{%
+\lead{The same thing backwards, for the 2 marks of comparison}
+\begin{itemize}
+  \item \textbf{Goal} $Criminal(West)$. Only rule 1 concludes $Criminal$, so unify
+        $[West/p]$ and take its four premises as sub-goals:
+  \begin{itemize}
+    \item $American(West)$ \; \checkmark a fact, done;
+    \item $Weapon(q)$ \; $\rightarrow$ sub-goal $Missile(q)$ \; \checkmark
+          matches the fact $Missile(M_1)$, binding $[M_1/q]$;
+    \item $Sells(West, M_1, r)$ \; $\rightarrow$ sub-goals $Missile(M_1)$ \checkmark
+          and $Owns(Nono, M_1)$ \checkmark, binding $[Nono/r]$;
+    \item $Hostile(Nono)$ \; $\rightarrow$ sub-goal $Enemy(Nono, America)$ \; \checkmark.
+  \end{itemize}
+  \item Every leaf is a fact, so the goal is proved.
+        \mk{Four sub-goals, depth first, left to right.}
+\end{itemize}
+\lead{\mk{What the examiner is comparing}}
+\begin{itemize}
+  \item Forward derived \textbf{three facts nobody asked for} on the way
+        ($Weapon$, $Sells$, $Hostile$ are all needed here, but on a bigger KB most would
+        not be).
+  \item Backward touched \textbf{only the four conjuncts of one rule}, and the binding
+        $[M_1/q]$ found in the second sub-goal was
+        \mk{carried into the third}, which is why $Sells(West,M_1,r)$
+        could be matched at all.
+  \item Same rules, same modus ponens, opposite ends. One sentence, and the comparison
+        marks are secured.
+\end{itemize}}
+
+%=======================================================================
+\T{P5. Resolution refutation \gap\textcolor{sub}{Family D: the light sleeper}}
+
+{\color{sub}\footnotesize \mk{2 papers, 17 marks}
+\yr{76 Ba \m{2+8}, \textbf{\textit{76 Bh}} \m{7}}. \textbf{The hardest set in the
+chapter}, because the goal is itself an implication and the premises hide two nested
+quantifiers.}
+
+\begin{asked}{2076 Baishakh \textperiodcentered{} [2+8]}
+List down the rule for Inference. Consider the following axioms: All hounds howl at night.
+Anyone who has any cats will not have any mice. Light sleepers do not have anything which
+howls at night. John has either a cat or a hound. Prove: ``If John is a light sleeper, then
+John does not have any mice'' by resolution refutation.
+\end{asked}
+
+\sbsr{0.50}{%
+\lead{Step 1 \; Facts into FOPL}
+\begin{itemize}
+  \item[1.] $\forall x\; Hound(x) \rightarrow Howl(x)$
+  \item[2.] $\forall x \forall y\; \big[Have(x,y) \wedge Cat(y)\big] \rightarrow
+            \forall z\, \big[Have(x,z) \rightarrow \neg Mouse(z)\big]$
+  \item[3.] $\forall x\; LS(x) \rightarrow \forall y\,
+            \big[Have(x,y) \rightarrow \neg Howl(y)\big]$
+  \item[4.] $\exists x\; Have(John, x) \wedge \big[Cat(x) \vee Hound(x)\big]$
+  \item[] \textbf{Goal} \;
+        $LS(John) \rightarrow \forall z\,
+        \big[Have(John,z) \rightarrow \neg Mouse(z)\big]$
+\end{itemize}
+\lead{Step 2 \; Into CNF}
+\begin{itemize}
+  \item[1.] $\neg Hound(x) \vee Howl(x)$
+  \item[2.] $\neg Have(x,y) \vee \neg Cat(y) \vee \neg Have(x,z) \vee \neg Mouse(z)$
+  \item[3.] $\neg LS(x) \vee \neg Have(x,y) \vee \neg Howl(y)$
+  \item[4a.] $Have(John, a)$ \hfill \yr{skolem constant $a$}
+  \item[4b.] $Cat(a) \vee Hound(a)$
+\end{itemize}
+\lead{Step 3 \; \mk{Negate the goal, and get three clauses}}
+\begin{itemize}
+  \item $\neg\big[LS(John) \rightarrow \forall z (Have(John,z) \rightarrow \neg
+        Mouse(z))\big]$
+  \item $= LS(John) \wedge \exists z\, \big[Have(John,z) \wedge Mouse(z)\big]$
+  \item[5a.] $LS(John)$ \qquad \textbf{5b.} $Have(John, b)$ \qquad
+             \textbf{5c.} $Mouse(b)$ \hfill \yr{skolem $b$}
+\end{itemize}
+{\color{sub}\footnotesize $\neg(P \rightarrow Q) = P \wedge \neg Q$. \mk{This
+is the whole difficulty of the problem}: students negate an implication to
+another implication, get one clause instead of three, and then cannot close the proof.}}{%
+\lead{Step 4 \; Resolution}
+\begin{itemize}
+  \item[6.] $\neg LS(x) \vee \neg Have(x,y) \vee \neg Hound(y)$
+            \hfill \yr{(3,\,1) $[y/x]$}
+  \item[7.] $\neg Have(John,y) \vee \neg Hound(y)$ \hfill \yr{(6,\,5a) $[John/x]$}
+  \item[8.] $\neg Hound(a)$ \hfill \yr{(7,\,4a) $[a/y]$}
+  \item[9.] $Cat(a)$ \hfill \yr{(8,\,4b)}
+  \item[10.] $\neg Have(x,a) \vee \neg Have(x,z) \vee \neg Mouse(z)$
+            \hfill \yr{(9,\,2) $[a/y]$}
+  \item[11.] $\neg Have(John,z) \vee \neg Mouse(z)$ \hfill \yr{(10,\,4a) $[John/x]$}
+  \item[12.] $\neg Mouse(b)$ \hfill \yr{(11,\,5b) $[b/z]$}
+  \item[13.] $\square$ \hfill \yr{(12,\,5c)}
+\end{itemize}
+\lead{Final answer}
+\begin{itemize}
+  \item \mk{``If John is a light sleeper then John has no mice'' is
+        proved.} \checkmark \; Eight steps.
+  \item \textbf{The shape of the argument}, worth stating in words underneath: John is a
+        light sleeper, so he has nothing that howls, so what he has is not a hound; it was
+        a cat or a hound, so it is a cat; anyone with a cat has no mice; so he has no mice.
+  \item \textbf{Two skolem constants, and they are different.} $a$ is the animal John owns
+        (from premise 4); $b$ is the mouse the negated goal claims he has. Reusing one
+        letter for both is a wrong proof that happens to close.
+  \item \textbf{Premise 2 needs four literals.} Both the cat and the mouse are things
+        \emph{John has}, so $Have$ appears twice with different second arguments.
+        Writing it with one $Have$ loses the proof.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+\begin{asked}{2076 Bhadra \textperiodcentered{} CT 78506 \textperiodcentered{} [7]}
+Consider the following axioms: All direwolves howl at night. Anyone who has any cat will
+not have any mice. Light sleepers do not have anything that howls at night. Jon has either
+a cat or a direwolf. Prove that if Jon is a light sleeper, then Jon does not have any mice,
+using the resolution method.
+\end{asked}
+
+{\color{sub}\footnotesize \mk{Identical}: substitute
+$[Jon/John,\; Direwolf/Hound]$ and the same eight steps close the proof. Nothing else
+changes.}
+
+%=======================================================================
+\T{P5. Resolution refutation \gap\textcolor{sub}{The ten one-off premise sets}}
+
+{\color{sub}\footnotesize 11 papers, one set each except Santa which is set twice
+\yr{72 Ma \m{7}, \textbf{81 Ch} \m{8}, \textbf{78 Ch} \m{3+3}, \textbf{80 Ch} \m{3+5},
+\texttt{81 Ba} \m{2+6}, 79 Ash \m{7}, \textbf{\textit{77 Ch}} \m{8}, \textbf{70 Bh} \m{8},
+\textbf{71 Bh} \m{8}, 73 Ma \m{10}, 80 Ash \m{3+5}}. Same five steps every time; only the
+premises move.}
+
+\creamq{1. Did Marcus hate Caesar?}{\m{7}}
+{\color{sub}\footnotesize \yr{72 Ma \m{7}} \gap$\cdot$\gap the paper prints
+\emph{``Find, did Marcus Caesor?''}, dropping the verb; it means \emph{hate}}
+
+\begin{asked}{2072 Magh \textperiodcentered{} [7]}
+Using resolution, solve the following statements: All pompeian are Romans. All Romans were
+either loyal to Caesor or hated him. Everyone is loyal to someone. People only try to
+assassinate rulers they not loyal to. Marcus tried to assassinate Caesor. Marcus was
+pompeian. Find, did Marcus Caesor?
+\end{asked}
+
+\sbs{%
+\lead{FOPL and CNF}
+\begin{itemize}
+  \item[1.] $\neg Pompeian(x) \vee Roman(x)$
+  \item[2.] $\neg Roman(x) \vee loyal(x, Caesar) \vee hate(x, Caesar)$
+  \item[3.] $loyal\big(x,\, f(x)\big)$ \hfill \yr{$\exists$ inside $\forall$: skolem
+            \textbf{function}}
+  \item[4.] $\neg tryAssassinate(x,y) \vee \neg ruler(y) \vee \neg loyal(x,y)$
+  \item[5.] $tryAssassinate(Marcus, Caesar)$
+  \item[6.] $Pompeian(Marcus)$ \qquad \textbf{7.} $ruler(Caesar)$
+\end{itemize}
+{\color{sub}\footnotesize $ruler(Caesar)$ is not printed but rule 4 is about
+\emph{rulers}, so state it as an assumption. \emph{``Everyone is loyal to someone''} is
+$\forall x \exists y\, loyal(x,y)$, and \mk{it skolemizes to $f(x)$, not to
+a constant} $-$ each person is loyal to their own someone.}}{%
+\lead{Proof \; \yr{negated goal 8. $\neg hate(Marcus, Caesar)$}}
+\begin{itemize}
+  \item[9.] $Roman(Marcus)$ \hfill \yr{(6,\,1)}
+  \item[10.] $loyal(Marcus,Caesar) \vee hate(Marcus,Caesar)$ \hfill \yr{(9,\,2)}
+  \item[11.] $loyal(Marcus, Caesar)$ \hfill \yr{(10,\,8)}
+  \item[12.] $\neg ruler(Caesar) \vee \neg loyal(Marcus, Caesar)$
+            \hfill \yr{(5,\,4) $[Marcus/x, Caesar/y]$}
+  \item[13.] $\neg loyal(Marcus, Caesar)$ \hfill \yr{(12,\,7)}
+  \item[14.] $\square$ \hfill \yr{(13,\,11)}
+\end{itemize}
+\begin{itemize}
+  \item \mk{Marcus hated Caesar.} \checkmark
+  \item \textbf{Clause 3 is never used}, and it is the only clause with a Skolem function
+        in it. It is there to see whether you skolemize it correctly, not because the
+        proof needs it.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+\creamq{2. Scrooge is not a child}{\m{8}\m{3+3}}
+{\color{sub}\footnotesize \yr{\textbf{81 Ch} \m{8}, \textbf{78 Ch} \m{3+3}}
+\gap$\cdot$\gap 78 Ch prints the same six axioms and asks only for the
+\textbf{CNF plus the horn-clause definition}, so the clause list below is the whole answer
+there}
+
+\begin{asked}{2081 Chaitra \textperiodcentered{} [8]}
+Every child loves Santa. Everyone who loves Santa loves any reindeer. Rudolph is a
+reindeer, and Rudolph has a red nose. Anything which has a red nose is weird or is a clown.
+No reindeer is a clown. Scrooge does not love anything which is weird. Using Resolution
+Refutation, derive the conclusion: Scrooge is not a child.
+\end{asked}
+
+\sbs{%
+\lead{CNF}
+\begin{itemize}
+  \item[1.] $\neg child(x) \vee loves(x, Santa)$
+  \item[2.] $\neg loves(x, Santa) \vee \neg reindeer(y) \vee loves(x,y)$
+  \item[3.] $reindeer(Rudolph)$ \qquad \textbf{4.} $redNose(Rudolph)$
+  \item[5.] $\neg redNose(x) \vee weird(x) \vee clown(x)$
+  \item[6.] $\neg reindeer(x) \vee \neg clown(x)$
+  \item[7.] $\neg weird(x) \vee \neg loves(Scrooge, x)$
+\end{itemize}
+{\color{sub}\footnotesize The goal is already a negation, so
+\mk{negating it removes the $\neg$}: clause 8 is
+$child(Scrooge)$, not $\neg child(Scrooge)$. Getting this backwards is the standard error
+on this set.}}{%
+\lead{Proof \; \yr{negated goal 8. $child(Scrooge)$}}
+\begin{itemize}
+  \item[9.] $loves(Scrooge, Santa)$ \hfill \yr{(8,\,1) $[Scrooge/x]$}
+  \item[10.] $\neg reindeer(y) \vee loves(Scrooge, y)$ \hfill \yr{(9,\,2)}
+  \item[11.] $loves(Scrooge, Rudolph)$ \hfill \yr{(10,\,3) $[Rudolph/y]$}
+  \item[12.] $\neg weird(Rudolph)$ \hfill \yr{(11,\,7) $[Rudolph/x]$}
+  \item[13.] $\neg redNose(Rudolph) \vee clown(Rudolph)$ \hfill \yr{(12,\,5)}
+  \item[14.] $clown(Rudolph)$ \hfill \yr{(13,\,4)}
+  \item[15.] $\neg reindeer(Rudolph)$ \hfill \yr{(14,\,6)}
+  \item[16.] $\square$ \hfill \yr{(15,\,3)}
+\end{itemize}
+\begin{itemize}
+  \item \mk{``Scrooge is not a child'' is proved.} \checkmark \;
+        Eight steps, every premise used.
+  \item The argument in words: if Scrooge were a child he would love Santa, hence love
+        Rudolph; but Scrooge loves nothing weird, so Rudolph is not weird, so
+        (red nose) he is a clown, and no reindeer is a clown $-$ contradiction.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+\creamq{3. Did Curiosity kill the cat?}{\m{3+5}}
+{\color{sub}\footnotesize \tP{1} \yr{\textbf{80 Ch} \m{3+5}} \gap$\cdot$\gap
+\mk{the hardest clause set in the chapter}: premise (a) is the
+Skolem-function sentence from P2, and it is needed twice}
+
+\begin{asked}{2080 Chaitra \textperiodcentered{} [3+5]}
+Convert the following sentences into FOPL and answer ``Did Curiosity kill the cat'' by
+resolution refutation:
+\begin{enumerate}[label=\alph*), leftmargin=1.6em]
+  \item Everyone who loves all animals is loved by someone.
+  \item Anyone who kills an animal is loved by no one.
+  \item Jack loves all animals.
+  \item Either Jack or Curiosity killed the cat.
+\end{enumerate}
+\end{asked}
+
+\sbsr{0.50}{%
+\lead{CNF \; \yr{(the cat is named Tuna; ``cats are animals'' is assumed)}}
+\begin{itemize}
+  \item[A1.] $Animal(F(x)) \vee Loves(G(x), x)$
+  \item[A2.] $\neg Loves(x, F(x)) \vee Loves(G(x), x)$
+  \item[B.] $\neg Animal(y) \vee \neg Kills(x,y) \vee \neg Loves(z,x)$
+  \item[C.] $\neg Animal(x) \vee Loves(Jack, x)$
+  \item[D.] $Kills(Jack, Tuna) \vee Kills(Curiosity, Tuna)$
+  \item[E.] $Cat(Tuna)$ \qquad \textbf{F.} $\neg Cat(x) \vee Animal(x)$
+\end{itemize}
+{\color{sub}\footnotesize A1 and A2 are premise (a) put through all eight CNF steps in
+P2 above. $F(x)$ is ``an animal $x$ does not love'' and $G(x)$ is ``someone who loves
+$x$''. \mk{Both must be functions of $x$.}}}{%
+\lead{Proof \; \yr{negated goal G. $\neg Kills(Curiosity, Tuna)$}}
+\begin{itemize}
+  \item[1.] $Kills(Jack, Tuna)$ \hfill \yr{(G,\,D)}
+  \item[2.] $Animal(Tuna)$ \hfill \yr{(E,\,F)}
+  \item[3.] $\neg Animal(Tuna) \vee \neg Loves(z, Jack)$
+            \hfill \yr{(1,\,B) $[Jack/x, Tuna/y]$}
+  \item[4.] $\neg Loves(z, Jack)$ \hfill \yr{(3,\,2)}
+  \item[5.] $\neg Animal(F(Jack)) \vee Loves(G(Jack), Jack)$
+            \hfill \yr{(C,\,A2) $[Jack/x,\, F(Jack)/x]$}
+  \item[6.] $Loves(G(Jack), Jack)$ \hfill \yr{(5,\,A1) $[Jack/x]$, duplicate collapses}
+  \item[7.] $\square$ \hfill \yr{(6,\,4) $[G(Jack)/z]$}
+\end{itemize}
+\begin{itemize}
+  \item \mk{Curiosity killed the cat.} \checkmark
+  \item \textbf{Steps 5 and 6 are the whole difficulty.} They prove
+        \emph{somebody loves Jack}, using (c) to satisfy the antecedent of (a): Jack loves
+        all animals, so in particular he loves $F(Jack)$, so the second clause of (a)
+        fires. Only then does step 4, \emph{nobody loves Jack}, become a contradiction.
+  \item \textbf{Two facts have to be assumed} because the paper omits them: the cat has a
+        name, and cats are animals. State both.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+\creamq{4. Sneha is happy}{\m{2+6}}
+{\color{sub}\footnotesize \yr{\texttt{81 Ba} \m{2+6}} \gap$\cdot$\gap the first 2 marks
+are \textbf{skolemization defined}, \S4.3 \gap$\cdot$\gap
+\mk{contrast the CNF of premise (b) with the food family's premise 4}: here
+the distribution into two clauses \emph{is} valid}
+
+\begin{asked}{2081 Baishakh \textperiodcentered{} CT 710 \textperiodcentered{} [2+6]}
+Define skolemization with example. Consider the following axioms: a) anyone passing his
+engineering exams and winning the lottery is happy; b) anyone who studies or is lucky can
+pass all his exams; c) Sneha did not study but she is lucky; d) anyone who is lucky wins
+the lottery. Using resolution refutation, prove that Sneha is happy.
+\end{asked}
+
+\sbs{%
+\lead{CNF}
+\begin{itemize}
+  \item[1.] $\neg pass(x) \vee \neg win(x) \vee happy(x)$
+  \item[2.] $\big[study(x) \vee lucky(x)\big] \rightarrow pass(x)$ \;
+            $= \big[\neg study(x) \wedge \neg lucky(x)\big] \vee pass(x)$, so
+  \begin{itemize}
+    \item[2a.] $\neg study(x) \vee pass(x)$
+    \item[2b.] $\neg lucky(x) \vee pass(x)$
+  \end{itemize}
+  \item[3a.] $\neg study(Sneha)$ \qquad \textbf{3b.} $lucky(Sneha)$
+  \item[4.] $\neg lucky(x) \vee win(x)$
+\end{itemize}
+{\color{sub}\footnotesize \mk{Why this splits and the food premise does
+not}: here the negation lands on a \emph{disjunction},
+$\neg(A \vee B) = \neg A \wedge \neg B$, so distributing is forced. In the food family it
+lands on a \emph{conjunction}, $\neg(A \wedge \neg B) = \neg A \vee B$, and there is
+nothing to split. One De Morgan apart, opposite answers.}}{%
+\lead{Proof \; \yr{negated goal 5. $\neg happy(Sneha)$}}
+\begin{itemize}
+  \item[6.] $\neg pass(Sneha) \vee \neg win(Sneha)$ \hfill \yr{(5,\,1) $[Sneha/x]$}
+  \item[7.] $\neg lucky(Sneha) \vee \neg win(Sneha)$ \hfill \yr{(6,\,2b)}
+  \item[8.] $\neg win(Sneha)$ \hfill \yr{(7,\,3b)}
+  \item[9.] $\neg lucky(Sneha)$ \hfill \yr{(8,\,4) $[Sneha/x]$}
+  \item[10.] $\square$ \hfill \yr{(9,\,3b)}
+\end{itemize}
+\begin{itemize}
+  \item \mk{``Sneha is happy'' is proved.} \checkmark \; Five steps.
+  \item \textbf{Clauses 2a and 3a are never used.} \emph{``Sneha did not study''} is there
+        only to tempt you into deriving nothing from it; the lucky half carries the whole
+        proof.
+  \item \emph{``can pass all his exams''} is written $pass(x)$ with the exam left implicit.
+        Adding a second argument $pass(x, exam)$ changes nothing except the typing.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+\creamq{5. Steve likes BK301}{\m{7}}
+{\color{sub}\footnotesize \yr{79 Ash \m{7}} \gap$\cdot$\gap
+\mk{the printed premise runs the wrong way} and has to be read as its
+converse before anything can be proved}
+
+\begin{asked}{2079 Ashwin \textperiodcentered{} [7]}
+Assume the following facts: a) Steve only likes easy courses; b) Science courses are hard;
+c) All the courses in the basket weaving department are easy; d) BK301 is a basket weaving
+course. Prove that Steve likes BK301 using Resolution Refutation.
+\end{asked}
+
+\sbs{%
+\lead{\mk{Read premise (a) carefully first}}
+\begin{itemize}
+  \item Literally, \emph{``Steve only likes easy courses''} is
+        $\forall x\; likes(Steve,x) \rightarrow easy(x)$: liking implies easy.
+  \item From that you can prove \emph{a course Steve likes is easy}. You cannot prove he
+        likes anything, because nothing in the set ever concludes $likes$.
+  \item The question is only answerable under the converse reading,
+        \emph{``Steve likes every easy course''}:
+        \[ \forall x\; easy(x) \rightarrow likes(Steve, x) \]
+  \item \mk{Write that line, then prove it.} Stating the reading you
+        adopted is a mark; silently reversing an implication is not.
+\end{itemize}}{%
+\lead{CNF and proof}
+\begin{itemize}
+  \item[1.] $\neg easy(x) \vee likes(Steve, x)$ \hfill \yr{(a), converse reading}
+  \item[2.] $\neg science(x) \vee \neg easy(x)$ \hfill \yr{(b)}
+  \item[3.] $\neg basketWeaving(x) \vee easy(x)$ \hfill \yr{(c)}
+  \item[4.] $basketWeaving(BK301)$ \hfill \yr{(d)}
+  \item[5.] $\neg likes(Steve, BK301)$ \hfill \yr{negated goal}
+  \item[6.] $\neg easy(BK301)$ \hfill \yr{(5,\,1) $[BK301/x]$}
+  \item[7.] $\neg basketWeaving(BK301)$ \hfill \yr{(6,\,3)}
+  \item[8.] $\square$ \hfill \yr{(7,\,4)}
+\end{itemize}
+\begin{itemize}
+  \item \mk{``Steve likes BK301'' is proved} under that reading.
+        \checkmark \; Three steps.
+  \item \textbf{Premise (b) is unused}, and it is the only one mentioning science.
+        \emph{Hard} is written $\neg easy$; inventing a separate $hard$ predicate needs a
+        fifth premise saying the two are opposites.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+\creamq{6. You will enjoy}{\m{8}}
+{\color{sub}\footnotesize \yr{\textbf{\textit{77 Ch}} \m{8}} \gap$\cdot$\gap
+purely \textbf{propositional}, no quantifiers, and \mk{four of the seven
+premises are noise}}
+
+\begin{asked}{2077 Chaitra \textperiodcentered{} CT 78506 \textperiodcentered{} [8]}
+If it is a sunny and warm day you will enjoy. If it is a warm and pleasant day you will do
+strawberry picking. If it is raining, no strawberry picking. If it is raining you will get
+wet. It is a warm day. It is raining. It is sunny. Prove that ``You will enjoy'' using
+resolution by refutation.
+\end{asked}
+
+\sbs{%
+\lead{CNF}
+\begin{itemize}
+  \item[1.] $\neg sunny \vee \neg warm \vee enjoy$
+  \item[2.] $\neg warm \vee \neg pleasant \vee picking$
+  \item[3.] $\neg raining \vee \neg picking$
+  \item[4.] $\neg raining \vee wet$
+  \item[5.] $warm$ \qquad \textbf{6.} $raining$ \qquad \textbf{7.} $sunny$
+\end{itemize}
+{\color{sub}\footnotesize Each implication becomes one clause by
+$\alpha \rightarrow \beta = \neg\alpha \vee \beta$ plus De Morgan on the conjunctive
+antecedent. No quantifiers means no unification: every resolution step here is on a
+\textbf{ground} literal.}}{%
+\lead{Proof \; \yr{negated goal 8. $\neg enjoy$}}
+\begin{itemize}
+  \item[9.] $\neg sunny \vee \neg warm$ \hfill \yr{(8,\,1)}
+  \item[10.] $\neg warm$ \hfill \yr{(9,\,7)}
+  \item[11.] $\square$ \hfill \yr{(10,\,5)}
+\end{itemize}
+\begin{itemize}
+  \item \mk{``You will enjoy'' is proved} in three steps. \checkmark
+  \item \textbf{Clauses 2, 3, 4 and 6 are never touched.} The strawberry picking and the
+        rain are a complete decoy: they are consistent with the rest and irrelevant to the
+        goal.
+  \item \mk{The lesson worth writing under the proof}: resolve
+        \emph{from the negated goal}. Starting from the facts, this set will happily
+        generate $wet$, $\neg picking$ and several other true-but-useless literals before
+        it stumbles on the answer.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+\creamq{7. Ram is naughty}{\m{8}}
+{\color{sub}\footnotesize \yr{\textbf{70 Bh} \m{8}} \gap$\cdot$\gap also set as an
+exercise by the textbook, whose own solution omits the argument order}
+
+\begin{asked}{2070 Bhadra \textperiodcentered{} [8]}
+All oversmart persons are stupid. Children of oversmart persons are naughty. Ram is
+children of Hari. Hari is oversmart. Show that Ram is naughty using FOPL based resolution.
+\end{asked}
+
+\sbs{%
+\lead{CNF}
+\begin{itemize}
+  \item[1.] $\neg oversmart(x) \vee stupid(x)$
+  \item[2.] $\neg child(x,y) \vee \neg oversmart(y) \vee naughty(x)$
+  \item[3.] $child(Ram, Hari)$ \qquad \textbf{4.} $oversmart(Hari)$
+\end{itemize}
+\lead{Proof \; \yr{negated goal 5. $\neg naughty(Ram)$}}
+\begin{itemize}
+  \item[6.] $\neg child(Ram, y) \vee \neg oversmart(y)$ \hfill \yr{(5,\,2) $[Ram/x]$}
+  \item[7.] $\neg oversmart(Hari)$ \hfill \yr{(6,\,3) $[Hari/y]$}
+  \item[8.] $\square$ \hfill \yr{(7,\,4)}
+\end{itemize}}{%
+\lead{Notes}
+\begin{itemize}
+  \item \mk{``Ram is naughty'' is proved} in three steps. \checkmark
+  \item \textbf{Premise 1 is unused.} \emph{Stupid} appears nowhere else, so the whole
+        first sentence is a decoy $-$ the same trick as the mammal rule in Family B.
+  \item \textbf{$child(x,y)$ must mean ``$x$ is a child of $y$''} and be used that way in
+        both clause 2 and clause 3. The English \emph{``Ram is children of Hari''} fixes
+        the order; write the reading down before you write the clause, because reversing
+        it silently breaks the unification in step 6.
+  \item Predicate names are free, but $naughty$ must be a \emph{property of the child}, not
+        a relation: $naughty(x)$, one argument.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+\creamq{8. The book supports the cup}{\m{8}}
+{\color{sub}\footnotesize \yr{\textbf{71 Bh} \m{8}} \gap$\cdot$\gap the only set written
+in \textbf{relational} rather than sentence form, so the argument order is the whole
+question}
+
+\begin{asked}{2071 Bhadra \textperiodcentered{} [8]}
+If X is on the top of Y, Y supports X. If X is above Y and they are touching each other, X
+is on the top of Y. A cup is above a book. A cup is touching a book. Show that
+supports(book, cup) is true.
+\end{asked}
+
+\sbs{%
+\lead{CNF}
+\begin{itemize}
+  \item[1.] $\neg onTop(x,y) \vee supports(y,x)$
+  \item[2.] $\neg above(x,y) \vee \neg touching(x,y) \vee onTop(x,y)$
+  \item[3.] $above(Cup, Book)$ \qquad \textbf{4.} $touching(Cup, Book)$
+\end{itemize}
+\lead{Proof \; \yr{negated goal 5. $\neg supports(Book, Cup)$}}
+\begin{itemize}
+  \item[6.] $\neg onTop(Cup, Book)$ \hfill \yr{(5,\,1) $[Cup/x, Book/y]$}
+  \item[7.] $\neg above(Cup,Book) \vee \neg touching(Cup,Book)$ \hfill \yr{(6,\,2)}
+  \item[8.] $\neg touching(Cup, Book)$ \hfill \yr{(7,\,3)}
+  \item[9.] $\square$ \hfill \yr{(8,\,4)}
+\end{itemize}}{%
+\lead{Notes}
+\begin{itemize}
+  \item \mk{$supports(Book, Cup)$ is proved} in four steps. \checkmark
+  \item \mk{Clause 1 reverses its arguments and that is the point.}
+        $onTop(x,y)$ has the supporter second; $supports(y,x)$ has it first. The goal
+        $supports(Book,Cup)$ therefore unifies with $[Cup/x, Book/y]$, giving
+        $onTop(Cup,Book)$ $-$ cup on book, which is what the facts describe.
+  \item \textbf{Every premise is used}, and there is no quantifier subtlety: the two rules
+        are plain universals, so drop the $\forall$ and go.
+  \item \emph{``they are touching each other''} is symmetric in English but
+        $touching(x,y)$ is not symmetric in the clause set. It does not matter here
+        because the facts are given in the same order the rule wants; if they were not,
+        a symmetry axiom $\neg touching(x,y) \vee touching(y,x)$ would be needed.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+\creamq{9. If John does not study, Mary does not love John}{\m{10}}
+{\color{sub}\footnotesize \tP{1} \yr{73 Ma \m{10}} \gap$\cdot$\gap the goal is an
+implication again, so \mk{negating it gives two clauses}, and every premise
+is a contrapositive}
+
+\begin{asked}{2073 Magh \textperiodcentered{} [10]}
+Consider the following axioms: i) anyone whom Mary loves is a football star; ii) any
+student who does not pass does not play; iii) John is a student; iv) any student who does
+not study does not pass; v) anyone who does not play is not a football star. Prove that
+``If John does not study, then Mary does not love John'' using resolution by refutation.
+\end{asked}
+
+\sbsr{0.48}{%
+\lead{CNF}
+\begin{itemize}
+  \item[1.] $\neg loves(Mary,x) \vee star(x)$
+  \item[2.] $\neg student(x) \vee pass(x) \vee \neg play(x)$
+  \item[3.] $student(John)$
+  \item[4.] $\neg student(x) \vee study(x) \vee \neg pass(x)$
+  \item[5.] $play(x) \vee \neg star(x)$
+\end{itemize}
+\lead{\mk{Negate the goal: two clauses}}
+\begin{itemize}
+  \item $\neg\big[\neg study(John) \rightarrow \neg loves(Mary, John)\big]
+        = \neg study(John) \wedge loves(Mary, John)$
+  \item[6a.] $\neg study(John)$ \qquad \textbf{6b.} $loves(Mary, John)$
+\end{itemize}
+{\color{sub}\footnotesize Premises (ii), (iv) and (v) are all of the form
+\emph{not-$P$ implies not-$Q$}. Convert each one mechanically:
+$[\,S \wedge \neg P\,] \rightarrow \neg Q$ becomes
+$\neg S \vee P \vee \neg Q$. Trying to simplify them into positive form first is where
+this question is usually lost.}}{%
+\lead{Proof}
+\begin{itemize}
+  \item[7.] $star(John)$ \hfill \yr{(6b,\,1) $[John/x]$}
+  \item[8.] $play(John)$ \hfill \yr{(7,\,5) $[John/x]$}
+  \item[9.] $\neg student(John) \vee pass(John)$ \hfill \yr{(8,\,2) $[John/x]$}
+  \item[10.] $pass(John)$ \hfill \yr{(9,\,3)}
+  \item[11.] $\neg student(John) \vee study(John)$ \hfill \yr{(10,\,4) $[John/x]$}
+  \item[12.] $study(John)$ \hfill \yr{(11,\,3)}
+  \item[13.] $\square$ \hfill \yr{(12,\,6a)}
+\end{itemize}
+\begin{itemize}
+  \item \mk{The implication is proved.} \checkmark \; Seven steps,
+        every premise used, and clause 3 used \textbf{twice}.
+  \item The chain in words: suppose Mary loves John and he does not study. Loved by Mary
+        $\rightarrow$ football star $\rightarrow$ plays $\rightarrow$ (being a student)
+        passes $\rightarrow$ studies. Contradiction with \emph{does not study}.
+  \item \mk{A clause may be reused as often as needed.} Students often
+        cross a clause off after one use; nothing in resolution says that.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+\creamq{10. Can anyone be found with an exciting life?}{\m{3+5}}
+{\color{sub}\footnotesize \yr{80 Ash \m{3+5}} \gap$\cdot$\gap asks \emph{who}, not
+\emph{prove}, so this is the chapter's one genuine
+\mk{answer-extraction} question}
+
+\begin{asked}{2080 Ashwin \textperiodcentered{} [3+5]}
+List the rules of inference. Convert the following into FOPL and prove using Resolution
+Refutation System: ``All people who are not poor and are smart are happy. Those people who
+can read are not stupid. John can read and is wealthy. Happy people have exciting lives.
+Can anyone be found with an exciting life?''
+\end{asked}
+
+\sbs{%
+\lead{CNF \; \yr{with \emph{wealthy} $= \neg poor$ and \emph{smart} $= \neg stupid$}}
+\begin{itemize}
+  \item[1.] $poor(x) \vee \neg smart(x) \vee happy(x)$
+  \item[2.] $\neg read(x) \vee \neg stupid(x)$
+  \item[3a.] $read(John)$ \qquad \textbf{3b.} $\neg poor(John)$
+  \item[4.] $\neg happy(x) \vee exciting(x)$
+  \item[5.] $\neg smart(x) \vee \neg stupid(x)$ is \textbf{not} needed; instead state the
+        bridging fact \; $\neg stupid(x) \rightarrow smart(x)$, i.e.\
+        \textbf{5.} $stupid(x) \vee smart(x)$
+\end{itemize}
+{\color{sub}\footnotesize \mk{Two vocabulary bridges must be stated}:
+\emph{wealthy} is $\neg poor$, and \emph{not stupid} is \emph{smart}. Without them the
+clause set has five predicates that never meet and no proof exists. Say so in one line
+before starting $-$ the examiner's own wording forces it.}}{%
+\lead{Proof \; \yr{negated goal 6. $\neg exciting(x)$, for all $x$}}
+\begin{itemize}
+  \item[7.] $\neg happy(x)$ \hfill \yr{(6,\,4)}
+  \item[8.] $poor(x) \vee \neg smart(x)$ \hfill \yr{(7,\,1)}
+  \item[9.] $\neg smart(John)$ \hfill \yr{(8,\,3b) $[John/x]$}
+  \item[10.] $stupid(John)$ \hfill \yr{(9,\,5) $[John/x]$}
+  \item[11.] $\neg read(John)$ \hfill \yr{(10,\,2) $[John/x]$}
+  \item[12.] $\square$ \hfill \yr{(11,\,3a)}
+\end{itemize}
+\begin{itemize}
+  \item \mk{Yes: John has an exciting life.} \checkmark
+  \item \textbf{How the name is recovered}, which is what \emph{``can anyone be found''}
+        asks: the goal $\exists x\, exciting(x)$ negates to
+        $\forall x\, \neg exciting(x)$, one clause with a free variable. The
+        substitutions used along the way bound that variable to \textbf{John}, and that
+        binding \emph{is} the answer.
+  \item The formal device is an \textbf{answer literal}: carry
+        $exciting(x) \vee Ans(x)$ instead of the bare negation, and read the answer off
+        the clause that survives. Worth naming even if you do not use it.
+\end{itemize}}
+
+%=======================================================================
+\T{P7. Bayes' theorem: the twelve numericals}
+
+{\color{sub}\footnotesize \mk{15 papers set a Bayes question}; twelve give
+numbers and are worked below, three ask for a worked example of your own and are answered
+by any one of them. \textbf{Every answer here was recomputed independently in
+\code{verify.py}}, not copied from a source. The recipe never changes:}
+
+\lead{The recipe}
+\begin{enumerate}
+  \item \textbf{Name the events} and write down which probability each given number is.
+        \mk{Half the lost marks happen here}, in the first thirty seconds.
+  \item Write Bayes' theorem with the names, not with $A$ and $B$.
+  \item If $P(\text{evidence})$ is not given, build it with the law of total probability:
+        $P(E) = P(E|H)P(H) + P(E|\neg H)P(\neg H)$.
+  \item Substitute, and quote the answer as a percentage as well as a decimal.
+\end{enumerate}
+
+\penalty0\vspace{2pt}
+
+\creamq{B1--B2. Meningitis and the stiff neck}{\m{3+5}\m{2+6}}
+{\color{sub}\footnotesize \yr{71 Ma \m{3+5}, \texttt{81 Ba} \m{2+6}} \gap$\cdot$\gap
+same scenario, \mk{different numbers in each paper} $-$ read them off the
+paper, not from memory}
+
+\begin{asked}{2071 Magh \textperiodcentered{} [3+5]}
+What is neural network? Describe its types. A doctor knows that the disease meningitis
+causes the patient to have a stiff neck 50\% of the time. The doctor also knows that the
+probability that a patient has meningitis is 1/50,000, and the probability that any patient
+has a stiff neck is 1/20. Find the probability that a patient with a stiff neck has
+meningitis?
+\end{asked}
+
+\sbs{%
+\lead{B1 \; 2071 Magh}
+\begin{itemize}
+  \item \textbf{Given} \; $P(s|m) = 0.5$, \; $P(m) = 1/50000 = 2 \times 10^{-5}$, \;
+        $P(s) = 1/20 = 0.05$.
+  \item \textbf{Wanted} \; $P(m|s)$.
+  \item \[ P(m|s) = \frac{P(s|m)\,P(m)}{P(s)}
+        = \frac{0.5 \times 2 \times 10^{-5}}{0.05}
+        = \frac{10^{-5}}{0.05} \]
+  \item \[ \boxed{P(m|s) = 0.0002 = 0.02\,\%} \]
+  \item \mk{$P(s)$ is given here}, so no total-probability step is
+        needed. That is the only easy version of this question in the archive.
+\end{itemize}}{%
+\lead{B2 \; 2081 Baishakh \yr{(CT 710)}}
+\begin{itemize}
+  \item \textbf{Given} \; $P(s|m) = 0.8$, \; $P(m) = 1/50000$, \; $P(s) = 0.01$.
+  \item \[ P(m|s) = \frac{0.8 \times 2 \times 10^{-5}}{0.01}
+        = \frac{1.6 \times 10^{-5}}{0.01} \]
+  \item \[ \boxed{P(m|s) = 0.0016 = 0.16\,\%} \]
+  \item The first 2 marks are \textbf{prior Vs posterior} defined: $P(m)$ is the prior,
+        $P(m|s)$ the posterior, and the stiff neck raised the belief from
+        \mk{0.002\,\% to 0.16\,\%} $-$ eighty times higher, and still
+        under one in six hundred.
+  \item \mk{That last sentence is the exam answer to ``what does this
+        tell you''}: a strong likelihood cannot outweigh a tiny prior.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+\creamq{B3. Measles or flu?}{\m{8}}
+{\color{sub}\footnotesize \yr{73 Ma \m{8}} \gap$\cdot$\gap the priors are given directly
+as a 90/10 split, so this is the cleanest total-probability example in the archive}
+
+\begin{asked}{2073 Magh \textperiodcentered{} [8]}
+A doctor is called to see a sick child. The doctor has prior information that 90\% of sick
+children in that neighborhood have the flu, while the other 10\% are sick with measles. Let
+F stand for an event of a child being sick with Flu and M stand for an event of a child
+being sick with measles. Assume for simplicity that there no other maladies in that
+neighborhood. A well-known (and common) symptom of measles is a rash and has probability of
+0.95. However, very occasionally, children with flu also develop rash and has probability
+of 0.08. Upon examining the child, the doctor finds a rash. What is the probability that the
+child has measles?
+\end{asked}
+
+\sbs{%
+\lead{Solution}
+\begin{itemize}
+  \item \textbf{Given} \; $P(F) = 0.9$, $P(M) = 0.1$, $P(R|M) = 0.95$, $P(R|F) = 0.08$.
+  \item \textbf{Total probability of a rash}:
+        \[ P(R) = P(R|M)P(M) + P(R|F)P(F) \]
+        \[ = 0.95 \times 0.1 + 0.08 \times 0.9 = 0.095 + 0.072 = 0.167 \]
+  \item \[ P(M|R) = \frac{P(R|M)P(M)}{P(R)} = \frac{0.095}{0.167} \]
+  \item \[ \boxed{P(M|R) = 0.5689 \approx 56.9\,\%} \]
+\end{itemize}}{%
+\lead{Reading the answer}
+\begin{itemize}
+  \item Measles goes from a \textbf{10\,\% prior to a 57\,\% posterior}: the rash is
+        strong evidence, but flu is nine times commoner, so it stays a coin flip.
+  \item \mk{Check the complement}:
+        $P(F|R) = 0.072/0.167 = 0.4311$, and $0.5689 + 0.4311 = 1$. \checkmark \;
+        Two extra lines, and they catch an arithmetic slip in the denominator every time.
+  \item \textbf{The trap}: reading 0.95 as $P(M|R)$ and answering ``95\,\%''. The paper
+        gives the \emph{likelihood} $P(R|M)$; the whole point of the question is that the
+        two are not the same number.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+\creamq{B4. The cigar smoker}{\m{2+6}\m{8}}
+{\color{sub}\footnotesize \yr{\textbf{\texttt{80 Bh}} \m{2+6}, \textbf{\textit{73 Bh}}
+\m{8}} \gap$\cdot$\gap two papers, identical data \gap$\cdot$\gap part (i) is the
+\textbf{prior}, and it is one mark for writing down a number already in the question}
+
+\begin{asked}{2080 Bhadra \textperiodcentered{} CT 710 \textperiodcentered{} [2+6] \; also 2073 Bhadra CT 78506 [8]}
+What do you understand by Bayesian Network? In a County, 51\% of the adults are males and
+the other 49\% are females. One adult is randomly selected for a survey involving credit
+card usage. i) Find the prior probability that the selected person is a male. ii) It is
+later learned that the selected survey subject was smoking a cigar. Also, 9.5\% of males
+smoke cigars, whereas 1.7\% of females smoke cigars (based on data from the Substance Abuse
+and Mental Health Services Administration). Use this additional information to find the
+probability that the selected subject is a male.
+\end{asked}
+
+\sbs{%
+\lead{Solution}
+\begin{itemize}
+  \item \textbf{(i) Prior} \; $P(M) = 0.51$. \; \mk{That is the whole
+        answer to part (i)}; no calculation is intended.
+  \item \textbf{(ii) Given} \; $P(F) = 0.49$, $P(C|M) = 0.095$, $P(C|F) = 0.017$.
+  \item \[ P(C) = 0.095 \times 0.51 + 0.017 \times 0.49 \]
+        \[ = 0.04845 + 0.00833 = 0.05678 \]
+  \item \[ P(M|C) = \frac{0.04845}{0.05678} \]
+  \item \[ \boxed{P(M|C) = 0.8533 \approx 85.3\,\%} \]
+\end{itemize}}{%
+\lead{Notes}
+\begin{itemize}
+  \item The prior 51\,\% rises to \textbf{85\,\%} because men are five and a half times as
+        likely to smoke a cigar. \mk{Here the likelihood ratio does
+        dominate}, which is the opposite lesson to B1 and B2 $-$ and the
+        difference is entirely that this prior is near a half rather than near zero.
+  \item \textbf{Keep five decimal places in the denominator.} Rounding $0.05678$ to
+        $0.057$ moves the answer to 85.0\,\%, and the marks for the final figure are
+        awarded on the exact value.
+  \item \yr{\textbf{\textit{73 Bh}}} prints the same scenario for a single 8-mark part.
+        Same two answers.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+\creamq{B5. The 99\,\% accurate test for a rare disease}{\m{8}}
+{\color{sub}\footnotesize \tP{1} \yr{\textbf{\textit{72 Ash}} \m{8}} \gap$\cdot$\gap
+\mk{the base-rate question}, and the one every paper's theory part is
+really about}
+
+\begin{asked}{2072 Ashwin \textperiodcentered{} CT 78506 \textperiodcentered{} [8]}
+After your yearly checkup, the doctor has bad news and good news. The bad news is that you
+tested positive for a serious disease, and that the test is 99\% accurate (i.e.\ the
+probability of testing positive given that you have the disease is 0.99, as is the
+probability of testing negative given that you don't have the disease). The good news is
+that this is a rare disease, striking only one in 10,000 people. Why is it good news that
+the disease is rare? What are the chances that you actually have the disease?
+\end{asked}
+
+\sbs{%
+\lead{Solution}
+\begin{itemize}
+  \item \textbf{Given} \; $P(D) = 10^{-4}$, $P(+|D) = 0.99$, $P(-|\neg D) = 0.99$, so
+        \mk{$P(+|\neg D) = 0.01$}.
+  \item \[ P(+) = 0.99 \times 10^{-4} + 0.01 \times 0.9999 \]
+        \[ = 0.000099 + 0.009999 = 0.010098 \]
+  \item \[ P(D|+) = \frac{0.000099}{0.010098} \]
+  \item \[ \boxed{P(D|+) = 0.0098 \approx 0.98\,\%} \]
+  \item \textbf{Fewer than 1 in 100} people with a positive result actually have the
+        disease.
+\end{itemize}}{%
+\lead{\mk{``Why is it good news that the disease is rare''}}
+\begin{itemize}
+  \item Because the \textbf{false positives outnumber the true ones}, and by a lot.
+        In 1,000,000 people: \textbf{100} have the disease and 99 of them test positive;
+        999,900 do not, and \textbf{9,999} of them still test positive.
+        \mk{9,999 against 99 is roughly 100 to 1.}
+  \item So a rare disease means a positive result is far more likely to be an error than
+        a diagnosis. Rarity protects you.
+  \item \textbf{Write the population count.} It is worth more marks than the algebra and
+        it is much harder to get wrong.
+  \item \textbf{The general lesson}: the posterior depends on the prior as much as on the
+        test. A 99\,\% test is not a 99\,\% answer.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+\creamq{B6. The genetic defect}{\m{2+6}}
+{\color{sub}\footnotesize \yr{81 Ash \m{2+6}} \gap$\cdot$\gap part (b) asks for the
+\textbf{probability that they do \emph{not} have it}, which is the complement $-$
+\mk{read the question twice}}
+
+\begin{asked}{2081 Ashwin \textperiodcentered{} [2+6]}
+What are the approaches for measuring uncertainty? 1\% of people have a certain genetic
+defect. 90\% of tests for the gene detect the defect (true positives). 10\% of the tests
+are false positives. a) What might be the probability of getting the genetic defect result?
+b) If a person gets a positive test result, what are the odds they actually don't have the
+genetic defect?
+\end{asked}
+
+\sbs{%
+\lead{Solution}
+\begin{itemize}
+  \item \textbf{Given} \; $P(D) = 0.01$, $P(+|D) = 0.90$, $P(+|\neg D) = 0.10$.
+  \item \textbf{(a)} The probability of a positive result:
+        \[ P(+) = 0.90 \times 0.01 + 0.10 \times 0.99 \]
+        \[ = 0.009 + 0.099 = \boxed{0.108 = 10.8\,\%} \]
+  \item \textbf{(b)} \[ P(\neg D \,|\, +) = \frac{0.099}{0.108} \]
+        \[ = \boxed{0.9167 \approx 91.7\,\%} \]
+  \item And so $P(D|+) = 0.009/0.108 = 0.0833 = 8.3\,\%$. \;
+        $91.7 + 8.3 = 100$. \checkmark
+\end{itemize}}{%
+\lead{Notes}
+\begin{itemize}
+  \item \textbf{As true odds}, which is what part (b) literally asks for:
+        $0.099 : 0.009$, i.e.\ \mk{11 to 1 against actually having the
+        defect}. Give both the probability and the odds and neither reading
+        can cost a mark.
+  \item \textbf{Part (a) is ambiguous} as printed $-$ \emph{``the probability of getting
+        the genetic defect result''} could mean $P(D)$, which is stated in the question
+        and would make the part worthless. It means $P(+)$. Say which reading you took.
+  \item Same shape as B5 with a much weaker test (10\,\% false positives instead of 1\,\%)
+        and a much commoner condition (1\,\% instead of 0.01\,\%). The posterior lands at
+        8\,\% rather than 1\,\%.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+\creamq{B7. Which factory made the defective bulb?}{\m{3+5}}
+{\color{sub}\footnotesize \yr{80 Ash \m{3+5}} \gap$\cdot$\gap
+\mk{three-way partition}, so the denominator has three terms}
+
+\begin{asked}{2080 Ashwin \textperiodcentered{} [3+5]}
+How is reasoning done under uncertainty? Three factories produce light bulbs to supply the
+market. Factory A produces 20\%, 50\% of the bulbs are produced in factory B and 30\% in
+factory C. 2\% of the bulbs produced in factory A, 5\% of the bulbs produced in factory B
+and 3\% of the bulbs produced in factory C are defective. A bulb is selected at random in
+the market and found to be defective. What is the probability that this bulb was produced by
+factory B?
+\end{asked}
+
+\sbs{%
+\lead{Solution}
+\begin{itemize}
+  \item \textbf{Given} \; $P(A) = 0.2$, $P(B) = 0.5$, $P(C) = 0.3$; \;
+        $P(D|A) = 0.02$, $P(D|B) = 0.05$, $P(D|C) = 0.03$.
+  \item \textbf{Total probability of a defective bulb}, one term per factory:
+        \[ P(D) = 0.2(0.02) + 0.5(0.05) + 0.3(0.03) \]
+        \[ = 0.004 + 0.025 + 0.009 = 0.038 \]
+  \item \[ P(B|D) = \frac{P(D|B)P(B)}{P(D)} = \frac{0.025}{0.038} \]
+  \item \[ \boxed{P(B|D) = 0.6579 \approx 65.8\,\%} \]
+\end{itemize}}{%
+\lead{Notes}
+\begin{itemize}
+  \item \textbf{The partition must be exhaustive}: $0.2 + 0.5 + 0.3 = 1$. \checkmark \;
+        Check it before you start; a partition that does not sum to 1 means a misread
+        question.
+  \item Factory B's share rises from \textbf{50\,\% to 66\,\%} because it is both the
+        biggest producer \emph{and} the worst. The other two posteriors are
+        $P(A|D) = 0.004/0.038 = 10.5\,\%$ and $P(C|D) = 0.009/0.038 = 23.7\,\%$, and the
+        three sum to 100\,\%. \checkmark
+  \item \mk{This is the template for every ``which source did it come
+        from'' question}, and there are three of them in the archive (bulbs,
+        factories, and the tall-student one below).
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+\creamq{B8--B9. The tall student, and the mammogram}{\m{3+5}\m{2+6}}
+{\color{sub}\footnotesize \yr{\textbf{78 Ch} \m{3+5}, \texttt{82 Ba} \m{2+6}}}
+
+\begin{asked}{2078 Chaitra \textperiodcentered{} [3+5]}
+Explain how statistical reasoning aids in inference and reasoning in light of Bayes'
+theorem. At a certain University, 5\% of men are over 6 feet tall and 2\% of women are 6
+feet tall. 60\% of students are female. If a student is selected at random from among all
+those over six feet tall, what is the probability that the selected student is a woman?
+\end{asked}
+
+\begin{asked}{2082 Baishakh \textperiodcentered{} CT 710 \textperiodcentered{} [2+6]}
+What are casual networks? Given the following statistics, what is the probability that a
+woman has cancer if she has a positive mammogram result? i) One percent of women over 50
+have breast cancer. ii) Ninety percent of women who have breast cancer test positive on
+mammograms. iii) Eight percent of women will have false positives.
+\end{asked}
+
+\sbs{%
+\lead{B8 \; the tall student}
+\begin{itemize}
+  \item \textbf{Given} \; $P(W) = 0.6$, $P(M) = 0.4$, $P(T|W) = 0.02$, $P(T|M) = 0.05$.
+  \item \[ P(T) = 0.02(0.6) + 0.05(0.4) = 0.012 + 0.020 = 0.032 \]
+  \item \[ P(W|T) = \frac{0.012}{0.032} = \boxed{0.375 = 37.5\,\%} \]
+  \item Women are the \textbf{majority} of students and the \textbf{minority} of tall
+        ones: 60\,\% prior, 37.5\,\% posterior. \mk{The evidence reverses
+        the balance}, which is the sentence the 3-mark theory part wants.
+\end{itemize}}{%
+\lead{B9 \; the mammogram}
+\begin{itemize}
+  \item \textbf{Given} \; $P(C) = 0.01$, $P(+|C) = 0.90$, $P(+|\neg C) = 0.08$.
+  \item \[ P(+) = 0.90(0.01) + 0.08(0.99) \]
+        \[ = 0.009 + 0.0792 = 0.0882 \]
+  \item \[ P(C|+) = \frac{0.009}{0.0882} = \boxed{0.1020 \approx 10.2\,\%} \]
+  \item \mk{Nine positives in ten are false alarms}, even though the
+        test catches 90\,\% of real cancers. Same base-rate lesson as B5, in the setting
+        it was originally made famous in.
+  \item \textbf{``Eight percent of women will have false positives''} means
+        $P(+|\neg C) = 0.08$, not $P(\neg C \wedge +) = 0.08$. The looser reading gives
+        $0.009/0.089 = 10.1\,\%$, close enough to hide the error $-$
+        \mk{state your reading}.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+%=======================================================================
+\T{P8. Bayesian networks: reading a joint probability off the graph}
+
+\creamq{B10. The wet grass network}{\m{2+6}}
+{\color{sub}\footnotesize \tP{1} \yr{78 Ba \m{2+6}} \gap$\cdot$\gap the paper prints the
+network and its four CPTs \gap$\cdot$\gap \mk{one multiplication, four
+factors}}
+
+\begin{asked}{2078 Baishakh \textperiodcentered{} [2+6]}
+What do you understand by Bayesian Network? For the given Bayesian network below, find the
+probability of grass being wet when the weather is cloudy, there is some sprinkler but no
+rain, i.e.\ C = True, S = True, R = False and W = True.
+\end{asked}
+
+\figC{c4_78ba_bbn.png}{0.72\textwidth}
+
+\sbs{%
+\lead{Solution}
+\begin{itemize}
+  \item \textbf{The product form}, one factor per node, each conditioned on its parents:
+        \[ P(C, S, \neg R, W) = P(C)\,P(S|C)\,P(\neg R|C)\,P(W|S, \neg R) \]
+  \item \textbf{Read each factor off its own table}:
+  \begin{itemize}
+    \item $P(C) = 0.6$ \hfill \yr{root node, prior}
+    \item $P(S|C{=}T) = 0.10$ \hfill \yr{sprinkler table, row T}
+    \item $P(R|C{=}T) = 0.80$, so
+          \mk{$P(\neg R|C{=}T) = 1 - 0.80 = 0.20$}
+    \item $P(W|S{=}T, R{=}F) = 0.90$ \hfill \yr{wet-grass table, row T F}
+  \end{itemize}
+  \item \[ = 0.6 \times 0.10 \times 0.20 \times 0.90 \]
+  \item \[ \boxed{P = 0.0108 = 1.08\,\%} \]
+\end{itemize}}{%
+\lead{\mk{The three ways this goes wrong}}
+\begin{itemize}
+  \item \textbf{Forgetting to complement $R$.} The query says \emph{no rain}, and the table
+        gives $P(R|C)$. Take $1 - 0.80$. Using 0.80 gives 0.0432, four times too big, and
+        it is the commonest wrong answer.
+  \item \textbf{Picking the wrong CPT row.} The wet-grass table is indexed by
+        \textbf{(S, R)}, and the query is $S = T$, $R = F$: row \textbf{T F}, value 0.90.
+        Row F T is also 0.90, so a misread here happens to give the right number in this
+        one query and the wrong one in every other.
+  \item \textbf{Conditioning on the wrong parent.} Sprinkler and Rain both depend on
+        \emph{Cloudy} only; \emph{WetGrass} depends on both of them and \emph{not} on
+        Cloudy. That is the conditional independence the network encodes, and it is what
+        makes four numbers enough.
+  \item \textbf{The 2-mark part}: a Bayesian network is a DAG of random variables with a
+        CPT at each node, and the joint distribution is the product above. Six variables
+        of this kind would need 31 free numbers as a full joint table; this one needs 9.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+\creamq{B11. Smoker $\rightarrow$ cancer $\rightarrow$ test}{\m{7}}
+{\color{sub}\footnotesize \tP{1} \yr{\textbf{\texttt{82 Bh}} \m{7}} \gap$\cdot$\gap
+asks for an \emph{explanation}, but the marks are safest if the explanation carries
+numbers \gap$\cdot$\gap a \mk{chain} network, so every inference is a
+two-step}
+
+\begin{asked}{2082 Bhadra \textperiodcentered{} CT 710 \textperiodcentered{} [7]}
+A Bayesian Belief Network (BBN) is used in a medical diagnosis system. The network includes
+the binary variables C (Patient has Cancer), T (Test result is Positive) and S (Patient is a
+Smoker), with structure S $\rightarrow$ C $\rightarrow$ T and conditional probabilities
+P(S=Yes)=0.3, P(C=Yes\,$|$\,S=Yes)=0.2, P(C=Yes\,$|$\,S=No)=0.05, P(T=Yes\,$|$\,C=Yes)=0.9,
+P(T=Yes\,$|$\,C=No)=0.1. Explain how the Bayesian Belief Network enables reasoning under
+uncertainty in this medical context.
+\end{asked}
+
+\sbsr{0.52}{%
+\lead{The three kinds of reasoning, each with its number}
+\begin{itemize}
+  \item \textbf{Causal, top-down} $-$ \emph{a smoker walks in; how likely is a positive
+        test?}
+        \[ P(T|S) = 0.9(0.2) + 0.1(0.8) = \mathbf{0.26} \]
+        against $P(T|\neg S) = 0.9(0.05) + 0.1(0.95) = 0.14$.
+  \item \textbf{Prior belief}, before anyone is seen:
+        \[ P(C) = 0.2(0.3) + 0.05(0.7) = 0.06 + 0.035 = \mathbf{0.095} \]
+        \[ P(T) = 0.9(0.095) + 0.1(0.905) = 0.0855 + 0.0905 = \mathbf{0.176} \]
+  \item \textbf{Diagnostic, bottom-up} $-$ \emph{the test came back positive; how likely
+        is cancer?} This is Bayes on the second edge:
+        \[ P(C|T) = \frac{0.9 \times 0.095}{0.176} = \frac{0.0855}{0.176}
+           = \mathbf{0.4858} \]
+  \item \textbf{Through the chain} $-$ \emph{the test is positive; how likely is the
+        patient a smoker?}
+        \[ P(S|T) = \frac{P(T|S)P(S)}{P(T)} = \frac{0.26 \times 0.3}{0.176}
+           = \frac{0.078}{0.176} = \mathbf{0.4432} \]
+\end{itemize}
+{\color{sub}\footnotesize Consistency check: $P(T)$ computed through $C$ gives 0.176, and
+computed through $S$ gives $0.26(0.3) + 0.14(0.7) = 0.078 + 0.098 = 0.176$. \checkmark \;
+\mk{Two routes, one answer} $-$ that is the network being coherent, and
+it is worth showing.}}{%
+\lead{\mk{What to say in words}, which is what the question asks}
+\begin{itemize}
+  \item The network \textbf{separates what is known from what is asked}. The doctor can
+        only measure causal probabilities $-$ how often smokers get cancer, how often
+        cancer shows on a test $-$ and the network stores exactly those. Bayes then runs
+        them backwards on demand.
+  \item It handles \textbf{partial evidence}: with no observation the belief in cancer is
+        9.5\,\%; knowing the patient smokes raises it to 20\,\%; a positive test raises it
+        to \mk{48.6\,\%}. Each piece of evidence revises, none replaces.
+  \item \textbf{Conditional independence keeps it small.} $T$ depends on $C$ alone: once
+        the cancer status is known, smoking tells you nothing more about the test. So
+        three variables need \textbf{5 numbers} instead of $2^3 - 1 = 7$, and the saving
+        grows exponentially with the network.
+  \item \textbf{It never claims certainty.} A positive test leaves the patient more likely
+        \emph{not} to have cancer than to have it $-$ 51.4\,\% against 48.6\,\% $-$ which
+        is precisely the kind of conclusion a logic-based KB cannot express at all.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+\creamq{B12. The three papers that ask for an example of your own}{\m{7}\m{5+3}\m{3+5}}
+{\color{sub}\footnotesize \yr{\textbf{73 Bh} \m{7}, \texttt{80 Ba} \m{5+3},
+\textbf{80 Ch} \m{3+5}} \gap$\cdot$\gap no data printed, so
+\mk{bring your own} $-$ and the smallest one that shows everything is the
+two-node version of B9}
+
+\sbs{%
+\lead{The example to memorise}
+\begin{itemize}
+  \item \textbf{Network}: $Cancer \rightarrow Test$, two nodes, one edge.
+  \item \textbf{CPTs}: $P(C) = 0.01$; \; $P(+|C) = 0.9$, \; $P(+|\neg C) = 0.08$.
+  \item \textbf{Causal use} (down the arrow): a patient with cancer tests positive
+        90\,\% of the time. Straight from the table, no calculation.
+  \item \textbf{Diagnostic use} (against the arrow): a positive test means cancer with
+        probability
+        \[ \frac{0.9 \times 0.01}{0.9(0.01) + 0.08(0.99)} = \frac{0.009}{0.0882}
+           = 10.2\,\% \]
+  \item \mk{Three numbers, four lines, and it demonstrates the entire
+        connection} the three papers ask about.
+\end{itemize}}{%
+\lead{The connection, stated}
+\begin{itemize}
+  \item \textbf{The network supplies the numbers Bayes needs.} $P(C)$ is the prior sitting
+        at the root; $P(+|C)$ and $P(+|\neg C)$ are the CPT of the child; the denominator
+        is the law of total probability over that same CPT.
+  \item \textbf{Bayes supplies the direction the network lacks.} The arrows point from
+        cause to effect, which is the direction knowledge is available in. Diagnosis needs
+        the other direction, and Bayes is the only thing that turns it round.
+  \item So the answer to \emph{``is there any connection''} is:
+        \mk{a belief network is a factored store of exactly the
+        conditional probabilities Bayes' theorem consumes}, and inference in the
+        network \emph{is} repeated application of Bayes plus the product rule.
+  \item \yr{\texttt{80 Ba}}'s ``how can inference be done'' is answered by the four modes
+        in \S4.7: causal, diagnostic, intercausal and mixed. Name all four; work one.
+\end{itemize}}
+
+%=======================================================================
+\T{How every answer above was checked}
+
+\sbs{%
+\lead{The proofs}
+\begin{itemize}
+  \item \code{verify.py} carries a small \textbf{first-order resolution prover}
+        (unification with occurs check, factoring, set of support) and runs it on
+        \mk{every clause set printed above}, in the exact form printed.
+  \item It confirms the empty clause is derivable for all of them $-$ and, just as
+        importantly, that it is \textbf{not} derivable for the three papers whose printed
+        goal does not follow:
+  \begin{itemize}
+    \item \yr{\textit{72 Ma}} \emph{Shailendri \textbf{likes} chicken} $-$ not derivable;
+          \emph{eats} is.
+    \item \yr{\textbf{\texttt{82 Bh}}} \emph{Mr.\,A is a criminal} $-$ not derivable;
+          $Criminal(Mr.R)$ is.
+    \item \yr{79 Ash} \emph{Steve likes BK301} $-$ not derivable from
+          \emph{likes $\rightarrow$ easy}; derivable from the converse.
+  \end{itemize}
+  \item It also confirms that \yr{\textbf{69 Bh}} and \yr{75 Ba} \textbf{cannot} be closed
+        without the two bridging axioms this document adds, and that they close once those
+        are supplied.
+\end{itemize}}{%
+\lead{The numbers}
+\begin{itemize}
+  \item Every Bayes posterior, every total-probability denominator and both network
+        products are recomputed from the paper's own figures and asserted against the
+        boxed value above. \mk{Nothing here was copied from a source.}
+  \item Three of those checks are consistency tests rather than answers: the measles
+        posteriors summing to 1, the three factory posteriors summing to 1, and
+        \yr{\textbf{\texttt{82 Bh}}}'s $P(T)$ computed by two different routes through the
+        network agreeing at 0.176.
+  \item \mk{Run it before trusting a rebuild}:
+\end{itemize}
+\vspace{1pt}
+\code{cd AI/ExamNotes/src \&\& python verify.py}
+\vspace{2pt}
+\begin{itemize}
+  \item A textbook error that survives a check is still an error. The three
+        \emph{Insights} corrections in this chapter $-$ the split of a negated
+        conjunction, the free variable where a Skolem function belongs, and the five-step
+        CNF list $-$ were each found by hand and then confirmed here.
+\end{itemize}}
+
