@@ -1,0 +1,845 @@
+%=======================================================================
+%  CHAPTER 5 — STRUCTURED KNOWLEDGE REPRESENTATION  (4 hrs)
+%=======================================================================
+\section{Structured Knowledge Representation}
+
+{\color{sub}\footnotesize 4 hrs \gap$\cdot$\gap asked in \mk{38 of 41 papers}
+\gap$\cdot$\gap 5 syllabus sub-topics \gap$\cdot$\gap 319 marks, 9.4\,\% of every mark
+ever set \gap$\cdot$\gap the 11 sentence sets and the net-to-frame conversion are worked
+in \emph{Ch5 -- Structured Knowledge Representation -- Solved Problems}.}
+
+\lead{Read this first:}
+\begin{itemize}
+  \item \mk{The chapter is two objects and one comparison.} A
+        \textbf{semantic net}, a \textbf{frame}, and \textbf{net Vs frame}. Learn those
+        three and you have answered nine tenths of what this chapter has ever set.
+  \item \mk{The most-asked question is a drawing}:
+        \emph{``convert the given sentences into a semantic network''}, in
+        \textbf{12 papers} across \textbf{11 sentence sets}, for 5 to 7 marks each, and
+        \mk{six of the eleven are the same three figures with the names
+        changed}. Answer with a drawing, never with prose. All worked in the companion.
+  \item \mk{Second-most-asked, and the safest marks here}:
+        \emph{``explain semantic net and frame with examples, list their advantages and
+        limitations''} \tS{13}. One comparison table plus two small drawings.
+  \item Three reliable short answers, each a fixed list: \textbf{issues in KR} \tF{7},
+        \textbf{approaches to KR} \tF{6}, \textbf{how a KR is evaluated} (four adequacies).
+  \item \mk{CD and scripts are only 2 papers, but both times they carry
+        the whole 8 marks} (\yr{\textbf{71 Bh}} \m{2+5}, \yr{\textbf{77 Ch}} \m{3+5}).
+  \item Pairs the examiner reliably asks together: \textbf{issues in KR $+$ draw the
+        semantic network}, \textbf{approaches $+$ semantic nets with an example}, and
+        \textbf{compare net and frame $+$ convert one into the other}.
+\end{itemize}
+
+\hr
+
+%-----------------------------------------------------------------------
+\T{5.1 Knowledge, representation, and what makes a representation ``structured''}
+
+\Q{What is knowledge representation? What do you understand by structured knowledge representation?}{\m{2}\m{2+5}}
+{\color{sub}\footnotesize \yr{\textbf{75 Bh} \m{2}, \textbf{\textit{76 Bh}} \m{2+5}}
+\gap$\cdot$\gap 2 papers at 2 marks each, so no tier chip \gap$\cdot$\gap
+\mk{always the opener} to a semantic-net question, so answer it in
+three lines and move on}
+
+\sbs{%
+\lead{Knowledge representation}
+\begin{itemize}
+  \item \textbf{Encoding what an agent knows about the world in a form a computer can
+        manipulate}, chosen so that \mk{inference is easy}.
+  \item Two things exist and must not be confused:
+  \begin{itemize}
+    \item \textbf{Facts} $-$ truths in the world. The \textbf{knowledge level}.
+    \item \textbf{Representations} of those facts in some formalism. The
+          \textbf{symbol level}.
+  \end{itemize}
+  \item KR is the \textbf{mapping} between the two, and it must run \emph{both ways}:
+        \emph{Tommy is a dog} $\rightarrow$ \code{dog(Tommy)}; add
+        $\forall x: dog(x) \rightarrow hastail(x)$, deduce \code{hastail(Tommy)}; map back
+        to \emph{Tommy has a tail}.
+  \item \mk{The backward map is where representations fail.} A
+        formalism that cannot say its answer back in the user's terms is useless in an
+        expert system.
+  \item Three \textbf{levels} a fact sits at: \textbf{knowledge} (what is true),
+        \textbf{logical} (the sentence encoding it), \textbf{implementation} (the data
+        structure holding the sentence).
+  \item The \textbf{kinds of knowledge} to name if asked: objects, events, performance
+        (how to do a task), meta-knowledge, facts.
+\end{itemize}}{%
+\lead{Structured knowledge representation}
+\begin{itemize}
+  \item In logic, everything known about one object is \mk{scattered across
+        many separate clauses}. Nothing in the formalism ties them together.
+  \item \textbf{Structured KR concentrates all of an object's knowledge in one place}: one
+        node of a graph, or one record of slots. The structure itself carries meaning.
+  \item So the definition to write: \mk{a representation in which knowledge
+        is stored in named, linked units rather than in flat sentences}, each unit holding
+        an object and everything known about it.
+  \item The four structured schemes on this syllabus: \textbf{semantic nets},
+        \textbf{frames}, \textbf{conceptual dependency}, \textbf{scripts}.
+  \item Rich and Knight call them \textbf{slot-and-filler} structures, \emph{weak} where
+        the slots carry no fixed meaning (nets, frames) and \emph{strong} where they do
+        (CD, scripts).
+  \item \textbf{What it buys you}: inheritance, default values, and the ability to answer
+        ``what do you know about $X$'' by looking in \emph{one} place.
+\end{itemize}}
+
+%-----------------------------------------------------------------------
+\T{5.2 Approaches, models and schemes of knowledge representation}
+
+\Q{What are the different approaches / models / schemes of knowledge representation? How do you choose among them?}{\m{2}\m{4}\m{7}\m{8}}
+{\color{sub}\footnotesize \tF{6} \yr{\textbf{69 Bh} \m{7}, \texttt{80 Ba} \m{2+5},
+\textbf{\textit{73 Bh}} \m{8}, 79 Ash \m{4}, \textbf{\texttt{81 Bh}} \m{2},
+\textbf{80 Ch} \m{2+2}} \gap$\cdot$\gap
+\yr{\textbf{\textit{73 Bh}}} says \emph{``four types of KR scheme''}, which is the
+\mk{four-scheme list} below, not the five-method one \gap$\cdot$\gap
+\yr{\textbf{80 Ch}} additionally asks \emph{how you make a choice}}
+
+\sbs{%
+\lead{The four schemes (answer \yr{\textbf{\textit{73 Bh}}} with these)}
+\begin{itemize}
+  \item \textbf{1. Logical} $-$ knowledge as formal sentences, manipulated by rules of
+        inference.
+  \begin{itemize}
+    \item Eg propositional logic, first-order predicate logic (Ch\,4).
+    \item \checkmark Precise, sound, complete. \xmark Rigid, and a
+          single object's facts end up scattered.
+  \end{itemize}
+  \item \textbf{2. Procedural} $-$ knowledge as procedures that \emph{do} something.
+  \begin{itemize}
+    \item Eg IF--THEN production rules, an expert system's rule base.
+    \item \checkmark Directly executable, control built in.
+          \xmark Knowledge and the code using it are inseparable, so
+          nothing can be modified independently.
+  \end{itemize}
+  \item \textbf{3. Network} $-$ knowledge as a labelled graph.
+  \begin{itemize}
+    \item Eg \textbf{semantic nets}, conceptual dependency, conceptual graphs.
+    \item \checkmark Visual, inheritance is free.
+          \xmark No quantifiers, no negation.
+  \end{itemize}
+  \item \textbf{4. Structured} $-$ a network whose nodes are themselves \emph{complex data
+        structures}.
+  \begin{itemize}
+    \item Eg \textbf{frames}, \textbf{scripts}.
+    \item \checkmark Defaults, procedures and constraints per slot.
+          \xmark No inference engine of its own.
+  \end{itemize}
+  \item \mk{One sentence that ties them together}: 3 and 4 are the
+        \emph{structured} half of this chapter; 1 and 2 are Ch\,4 and the expert system of
+        Ch\,7.
+\end{itemize}}{%
+\lead{The five methods (the wording BJ Sir and PS Sir use)}
+\begin{itemize}
+  \item \textbf{Procedural} $-$ facts plus the step-by-step operations on them,
+        hard-coded.
+  \item \textbf{Declarative} $-$ states, facts, rules and relations declared
+        \emph{separately} from the algorithm that reasons over them.
+  \begin{itemize}
+    \item This separation is the whole advantage: the knowledge can be changed without
+          rewriting the reasoner, and one optimised reasoner serves many knowledge bases.
+  \end{itemize}
+  \item \textbf{Relational} $-$ facts as rows of a table, exactly as a database holds
+        them. Simple, but carries no inference at all.
+  \item \textbf{Hierarchical} $-$ inheritable knowledge as a tree of classes,
+        each level inheriting the level above.
+  \item \textbf{Complex network graph} $-$ the general labelled graph: semantic nets.
+\end{itemize}
+\lead{\mk{How to choose} \yr{\textbf{80 Ch}} \m{2}}
+\begin{itemize}
+  \item Score the candidates on the \textbf{four adequacies} of \S5.3, against the domain
+        you actually have.
+  \item Then three practical questions:
+  \begin{itemize}
+    \item Is the knowledge mostly \textbf{taxonomic}? Use a net or frames, and get
+          inheritance for nothing.
+    \item Does it need \textbf{proof}, quantifiers or negation? Use logic $-$ a net
+          cannot express \emph{``no bird is a mammal''}.
+    \item Does it need \textbf{defaults and exceptions}? Use frames; logic has no clean
+          way to say \emph{``birds fly, except penguins''}.
+  \end{itemize}
+  \item \mk{The examiner's expected closing line}: no single scheme wins.
+        Real systems are \textbf{hybrid} $-$ frames for the objects, rules for the
+        reasoning.
+\end{itemize}}
+
+%-----------------------------------------------------------------------
+\T{5.3 Evaluating a knowledge representation, and the issues in KR}
+
+\Q{How is a knowledge representation evaluated? What are the issues in knowledge representation?}{\m{2}\m{3}\m{4}}
+{\color{sub}\footnotesize \tF{7} \yr{\textbf{\texttt{80 Bh}} \m{3}, \textbf{80 Ch} \m{2+2},
+79 Ash \m{2+2}, 80 Ash \m{3}, \textbf{\texttt{82 Bh}} \m{2},
+\textbf{\textit{76 Bh}} \m{2}, \textbf{\texttt{79 Bh}} \m{2}}
+\gap$\cdot$\gap two different lists, and \mk{papers mix them up}:
+\emph{properties} is the four adequacies, \emph{issues} is the five design questions
+\gap$\cdot$\gap \yr{\textbf{\textit{76 Bh}}} asks the issues inside an expert-system
+question}
+
+\sbs{%
+\lead{Evaluating a KR: the four adequacies}
+\begin{itemize}
+  \item \textbf{1. Representational adequacy} $-$ can it represent \emph{all} the kinds of
+        knowledge the domain needs?
+  \item \textbf{2. Inferential adequacy} $-$ can its structures be manipulated to
+        \emph{derive new} structures, ie new knowledge from old?
+  \item \textbf{3. Inferential efficiency} $-$ can it carry extra guidance that
+        \textbf{focuses} the inference engine in productive directions, rather than
+        letting it search blindly?
+  \item \textbf{4. Acquisitional efficiency} $-$ can new knowledge be added
+        \textbf{easily}, ideally automatically rather than by a human?
+  \item Two practical criteria worth adding for the last mark: it must be
+        \textbf{easy to use}, and \textbf{easy to modify and extend}.
+  \item \mk{The honest closing line}: no known representation scores well
+        on all four at once. That is exactly why hybrid systems exist, and it is what
+        \yr{\textbf{80 Ch}}'s \emph{``is it possible to evaluate a KR''} is fishing for
+        $-$ yes, on these four axes, but only relative to a domain.
+\end{itemize}}{%
+\lead{The five issues in knowledge representation}
+\begin{itemize}
+  \item \textbf{1. Important attributes} $-$ are there attributes so basic that they occur
+        in almost every domain, and so deserve special handling?
+  \begin{itemize}
+    \item \mk{Yes: \code{isa} and \code{instance}.} Both carry
+          \textbf{property inheritance}, and every scheme in this chapter is built on
+          them. This is the expected answer, not a shrug.
+  \end{itemize}
+  \item \textbf{2. Relationships among attributes} $-$ four to name:
+  \begin{itemize}
+    \item \textbf{inverses} (\emph{owns} / \emph{owned-by}),
+          \textbf{existence in an isa hierarchy} (\emph{height} generalises
+          \emph{batting-height}), \textbf{techniques for reasoning about values}
+          (types, ranges, rules), \textbf{single-valued attributes} (a person has one
+          date of birth).
+  \end{itemize}
+  \item \textbf{3. Level of representation, ie granularity} $-$ how fine should the
+        primitives be?
+  \begin{itemize}
+    \item Coarse: few facts, but similar sentences look different.
+          Fine: identical meanings collapse together, but the store explodes.
+          CD (\S5.7) is the extreme fine-grained answer.
+  \end{itemize}
+  \item \textbf{4. Representing sets of objects} $-$ by \textbf{listing members}, or by
+        \textbf{stating the defining property}? Only the second can say
+        \emph{``there are lots of sheep''}, which is a property of the set and of no
+        member.
+  \item \textbf{5. Finding the right structure} $-$ given a huge store, how do you
+        \textbf{select} the relevant structure and \textbf{revise} it when it turns out
+        wrong? Indexing, matching and frame selection all live here.
+  \item Two more the decks add: \textbf{interpretation is informal} in a net, and
+        \textbf{complex relationships are hard} to draw with binary links.
+\end{itemize}}
+
+%-----------------------------------------------------------------------
+\T{5.4 Semantic nets}
+
+\Q{What is a semantic net? Explain with an example. When do we use one?}{\m{2}\m{5}\m{6}\m{7}\m{8}}
+{\color{sub}\footnotesize \tS{9} \yr{\textbf{70 Bh} \m{8}, \textit{72 Ma} \m{7},
+\texttt{82 Ba} \m{2}, \textbf{75 Bh} \m{6}, \textbf{71 Bh} \m{7}, \textbf{69 Bh} \m{7},
+\texttt{80 Ba} \m{5}, \textbf{\textit{76 Bh}} \m{5}, \textbf{\texttt{80 Bh}} \m{5}}
+\gap$\cdot$\gap a further \textbf{12 papers} ask you to \emph{draw} one, all worked in
+the companion \gap$\cdot$\gap \yr{\textit{72 Ma}} asks for a net
+\mk{about the AI course itself}}
+
+\sbsr{0.52}{%
+\lead{What it is}
+\begin{itemize}
+  \item A \textbf{directed labelled graph} that stores knowledge as
+        \mk{nodes and arcs}.
+  \begin{itemize}
+    \item \textbf{Nodes} $=$ objects, concepts, situations or events.
+    \item \textbf{Arcs} $=$ the relationship between two nodes, and the arc is
+          \textbf{labelled with that relationship}.
+  \end{itemize}
+  \item A \textbf{declarative graphic representation}: it states what is true and supports
+        automated reasoning over it, but contains no procedure.
+  \item Proposed as \mk{an alternative to predicate logic}. Same facts,
+        but all of one object's facts meet at one node instead of being scattered over
+        clauses.
+  \item \textbf{Oldest KR in the subject}: the Tree of Porphyry, 3rd century AD.
+        Worth a line in an 8-mark answer.
+\end{itemize}
+\lead{The two links every paper wants named}
+\begin{itemize}
+  \item \code{isa} / \code{a-kind-of} $-$ \textbf{class to class}. \emph{A cat is a
+        mammal}. Set inclusion: $Cats \subset Mammals$.
+  \item \code{instance} / \code{member} $-$ \textbf{individual to class}. \emph{Tom is a
+        cat}. Set membership: $Tom \in Cats$.
+  \item \mk{Getting these two the wrong way round is the commonest lost
+        mark} in the drawing questions. \emph{Sakti Gauchan} is an \code{instance} of
+        Person; \emph{Person} is \code{isa} Mammal.
+  \item Everything else is an ordinary relation arc: \code{has-part},
+        \code{owns}, \code{likes}, \code{team}, \code{uniform-color}.
+\end{itemize}
+\figT{c5_isa_instance.png}
+{\footnotesize\color{sub} \code{isa} runs class to class, \code{instance-of} runs
+individual to class, and \code{owns} is an ordinary relation. Source: BA Sir CH-05.}}{%
+\lead{The canonical net, and its FOPL}
+\figT{c5_semnet_peewee.png}
+{\footnotesize\color{sub} Rich and Knight's figure. \mk{Every
+``convert these sentences'' question in the papers is this net with the names
+changed}: a class chain at the top, an individual hung off it by
+\code{instance}, and its own properties fanning out. Source: PS Sir ch5.}
+\lead{Why a net can do things logic cannot}
+\begin{itemize}
+  \item \textbf{Inheritance is free.} A property put on \emph{Person} is automatically
+        available to \emph{Pee-Wee-Reese} by following \code{instance} then \code{isa}
+        upward. No inference rule is needed; the arcs \emph{are} the rule.
+  \item \textbf{Intersection search.} Spread activation outward from two nodes and see
+        where the two wavefronts meet. That is how a net answers
+        \emph{``what connects the Brooklyn Dodgers and blue?''} $-$ a question logic can
+        only answer by proving a conjecture you already had to guess.
+  \item \mk{This is the advantage to quote}, because it exploits the
+        entity-based organisation that slot-and-filler structures have and logic does not.
+\end{itemize}}
+
+\Q{Advantages and limitations of a semantic net; how do you represent a three-place relation?}{\m{2}\m{4}}
+{\color{sub}\footnotesize part of the \emph{advantages and limitations} question in
+\yr{73 Ma}, \yr{76 Ba}, \yr{\textbf{78 Ch}}, \yr{78 Ba}, \yr{\textbf{\texttt{81 Bh}}}
+\gap$\cdot$\gap chip sits on \S5.6, where the comparison is}
+
+\sbsr{0.50}{%
+\lead{Advantages}
+\begin{itemize}
+  \item \textbf{Natural and transparent}: close to how people link ideas, so it is
+        readable by a non-programmer.
+  \item \textbf{Easy to visualise}, and easy to check by eye.
+  \item \textbf{Inheritance} of properties comes for free down \code{isa} chains.
+  \item \textbf{Space-efficient}: each object appears \emph{once}, however many facts
+        mention it.
+  \item Related facts sit next to each other, so \textbf{relevant knowledge is found by
+        following links} instead of by searching the whole store.
+\end{itemize}
+\lead{Limitations}
+\begin{itemize}
+  \item \mk{Cannot express quantification, negation or disjunction.}
+        There is no way to draw \emph{``every mammal has \emph{some} parent''},
+        \emph{``no bird is a mammal''} or \emph{``Tom is black or white''}. This is the
+        limitation to write first.
+  \item \textbf{No standard meaning for link names.} \code{has-part} means whatever the
+        person who drew it meant, so two nets are not comparable.
+  \item \textbf{No inference mechanism of its own}: it stores, it does not deduce.
+  \item \textbf{Slow at query time} $-$ answering may need a traversal of the whole graph.
+  \item \textbf{Does not scale}: a net that really modelled human memory cannot be built
+        by hand.
+  \item Interpretation is \textbf{informal}, so the net depends entirely on its creator.
+\end{itemize}}{%
+\lead{Three-place relations: use an event node}
+\begin{itemize}
+  \item Arcs are \textbf{binary}, so \emph{``John gave the book to Mary''} cannot be one
+        arc: it has three arguments.
+  \item \mk{The fix}: create a \textbf{new node for the event itself},
+        then hang one binary arc on it per argument.
+\end{itemize}
+\figT{c5_semnet_event.png}
+{\footnotesize\color{sub} \code{EV7} is the giving-event node. \code{agent} $\rightarrow$
+John, \code{object} $\rightarrow$ the book, \code{beneficiary} $\rightarrow$ Mary, and
+\code{instance} says \code{EV7} is a \emph{Give}. Source: PS Sir ch5.}
+\begin{itemize}
+  \item Same trick for a baseball game with two teams and a score:
+        \code{isa(G23, Game)}, \code{home\_team(G23, Dodgers)},
+        \code{visiting\_team(G23, Cubs)}, \code{score(G23, 5-3)}.
+  \item \mk{Say why it works}: it converts an $n$-place predicate into
+        $n$ binary ones by \emph{reifying} the relation as an object.
+\end{itemize}}
+
+\Q{What do the arcs of a semantic net actually mean?}{\m{2}}
+{\color{sub}\footnotesize not asked on its own \gap$\cdot$\gap included because it is the
+\mk{one line that separates a 5-mark answer from a 7-mark one} on
+every ``explain semantic nets'' question}
+
+\sbsr{0.53}{%
+\figT{c5_semnet_links.png}}{%
+\begin{itemize}
+  \item \code{Subset} arc $=$ \textbf{set inclusion}, $A \subset B$. Eg
+        $Cats \subset Mammals$.
+  \item \code{Member} arc $=$ \textbf{set membership}, $A \in B$. Eg $Felix \in Cats$.
+  \item A named arc between two \emph{individuals} $=$ the ground fact $R(A,B)$. Eg
+        \code{Friend(Felix, Opus)}.
+  \item A named arc drawn out of a \emph{class} box means
+        $\forall x\, (x \in A \Rightarrow R(x,B))$: \textbf{every} member has that value.
+        Eg \code{Legs} out of Birds $\rightarrow 2$.
+  \item Same arc with an existential reading:
+        $\forall x\, (x \in A \Rightarrow \exists y\, (y \in B \wedge R(x,y)))$. Eg
+        \code{Parent} out of Bird $\rightarrow$ Birds: every bird has \emph{some} bird
+        parent.
+  \item \mk{Why it matters}: the last two are the only quantification a
+        net can express, and only because the reader agrees to read the picture that way.
+        Nothing in the drawing says which of the two is meant. That ambiguity \emph{is}
+        the ``lack of formality'' limitation.
+  \item {\footnotesize\color{sub} Source: BJ Sir \code{AI\_Chapter5\_new}.}
+\end{itemize}}
+
+%-----------------------------------------------------------------------
+\T{5.5 Frames}
+
+\Q{What is a frame? Explain with a suitable example. What is its significance in AI?}{\m{1}\m{5}\m{7}\m{8}}
+{\color{sub}\footnotesize \tF{5} \yr{69 Po \m{7}, \textbf{74 Bh} \m{7},
+\textbf{\textit{71 Bh}} \m{8}, 82 Ka \m{1}, 80 Ash \m{5}} \gap$\cdot$\gap
+\yr{82 Ka} wants \mk{one sentence} for 1 mark \gap$\cdot$\gap
+\yr{80 Ash} asks for the \emph{importance} of frames, so end on the advantages}
+
+\sbsr{0.50}{%
+\lead{Definition}
+\begin{itemize}
+  \item A \textbf{frame} is a \mk{collection of attributes and their
+        values that describes one entity}, together with that entity's relationship to
+        other frames.
+  \begin{itemize}
+    \item \textbf{Slot} $=$ the attribute name. \textbf{Filler} $=$ its value.
+    \item So a frame is \textbf{a record structure with meaning attached}.
+  \end{itemize}
+  \item \mk{A single frame is almost useless.} The power is in a
+        \textbf{frame system}: many frames, connected because \textbf{the value of one
+        frame's slot is another frame}.
+  \item \mk{The line that earns the mark}: a semantic net is a
+        \textbf{two-dimensional} representation, nodes and arcs;
+        \textbf{frames add a third dimension by letting a node have internal structure}.
+  \item A frame is designed to represent a \textbf{stereotypical} object or situation:
+        what is normally true, with defaults for what has not been observed.
+  \item Frames are \textbf{static}. A script (\S5.7) is the same idea made
+        \emph{sequential}.
+\end{itemize}
+\lead{The four parts of a frame}
+\begin{itemize}
+  \item \textbf{1. Frame identification name} $-$ what entity this frame is about.
+  \item \textbf{2. Relationship to other frames} $-$ \code{isa}, \code{instance},
+        \code{part-of}, \code{superclass}.
+  \item \textbf{3. Slot and filler} $-$ the attribute--value pairs themselves.
+  \item \textbf{4. Default information} $-$ values taken as true \emph{until contradicted}.
+        \mk{Logic has no clean way to do this}; frames do, and it is
+        the strongest single argument for them.
+\end{itemize}
+\lead{Types of frame}
+\begin{itemize}
+  \item \textbf{Class frame} $-$ the generic frame others inherit from. Eg \emph{Vehicle}.
+  \item \textbf{Subclass frame} $-$ inherits a class frame and adds slots. Eg \emph{Car}.
+  \item \textbf{Instance frame} $-$ one individual. Eg \emph{Ram's Car}.
+  \item An instance or subclass frame \textbf{inherits every slot above it} and may add
+        its own. Generic frames sit at the top of the hierarchy.
+\end{itemize}}{%
+\lead{Class, subclass and instance in one picture}
+\figT{c5_frame_classes.png}
+{\footnotesize\color{sub} \emph{Vehicle} (class) $\rightarrow$ \emph{Truck} and
+\emph{Car} (subclass, \code{is-a}) $\rightarrow$ \emph{Ram's Car} (instance), with
+\code{part\_of} links out to \emph{Basket} and \emph{Ram}. Note the instance frame
+\textbf{fills in} the slots it inherited empty. Source: \emph{Insights} book p136.}}
+
+\penalty0\vspace{2pt}
+
+\sbsr{0.41}{%
+\figT{c5_frame_hotel.png}
+{\footnotesize\color{sub} Part of a frame description of a hotel room. Source: BA Sir
+CH-05.}}{%
+\lead{A frame system: four frames pointing at each other}
+\begin{itemize}
+  \item \emph{hotel room} carries three ordinary slots (\emph{specialization of},
+        \emph{location}, \emph{contains}), and the third one's filler is
+        \mk{three pointers, not three strings}. That is what makes this a
+        frame \emph{system}.
+  \item Each frame it points at repeats the pattern. \emph{hotel chair} has
+        \emph{specialization of: chair}, so it inherits everything a chair has and
+        \textbf{overrides} only \emph{height}, \emph{legs} and \emph{use}.
+  \item \emph{hotel bed} adds a \code{part} slot filled by the \emph{mattress} frame,
+        which is \textbf{part-of}, not \textbf{is-a}. \mk{Confusing those
+        two is the commonest error in a frame answer}: \emph{is-a} inherits,
+        \emph{part-of} does not.
+  \item \mk{The line to write under your own drawing}: the diagram is a
+        graph whose nodes happen to be records. That is structured knowledge
+        representation in one picture, and it is why \yr{\textbf{\texttt{80 Bh}}} can ask
+        for a net and a frame in the same breath.
+\end{itemize}}
+
+\Q{What can a slot hold, and what are demons?}{\m{2}\m{4}}
+{\color{sub}\footnotesize inside the frame question in \yr{\textbf{\textit{71 Bh}}}
+\m{8} and \yr{69 Po} \m{7} \gap$\cdot$\gap
+\mk{a slot holds more than a value}, and saying so is the difference
+between a 5-mark frame answer and an 8-mark one}
+
+\sbsr{0.42}{%
+\figT{c5_frame_facets.png}
+{\footnotesize\color{sub} One STUDENT frame with every facet filled in. Source: PS Sir
+ch5.}
+\figT{c5_frame_demons.png}
+{\footnotesize\color{sub} A generic property frame carrying two demons:
+\code{if-added: ADD\_PROPERTY} on \emph{types}, \code{if-needed: FIND\_OWNER} on
+\emph{owner}, which also shows a \textbf{default} of \emph{government}. Source: PS Sir
+ch5.}}{%
+\lead{Facets: what a slot carries besides its value}
+\begin{itemize}
+  \item \textbf{Value} $-$ the current filler.
+  \item \textbf{Default} $-$ the filler used when nothing has been observed.
+  \item \textbf{Cardinality} $-$ minimum and maximum number of fillers allowed.
+  \item \textbf{Type} $-$ a restriction on what a filler may be, usually another frame.
+  \item \textbf{Procedures} $-$ attached code, see demons below.
+  \item \textbf{Salience} $-$ how important this slot is to the frame.
+  \item \textbf{Constraints} $-$ axioms the value must satisfy, eg $0 \le CGPA \le 4.0$.
+\end{itemize}
+\lead{\mk{Demons} (attached procedures, Insights \S5.4.3)}
+\begin{itemize}
+  \item A demon is a \textbf{procedure stored in a slot and fired automatically when the
+        slot is touched}. The frame does not just hold data, it reacts.
+  \item \textbf{IF-NEEDED} $-$ fires when a value is required and none is stored.
+        \emph{Compute it now.}
+  \item \textbf{IF-ADDED} $-$ fires when a value is put into the slot.
+        \emph{Propagate the consequences.}
+  \item \textbf{IF-REMOVED} $-$ fires when a value is deleted.
+  \item \textbf{IF-CHANGED} $-$ fires when a stored value is replaced.
+  \item \mk{Why this matters for the exam}: demons are what make a frame
+        system \emph{active}, and they are the honest answer to
+        \emph{``frames have no inference mechanism''} $-$ they have no \emph{general} one,
+        but each slot can carry its own.
+  \item \textbf{Frames Vs objects}: slots are data members, demons are methods, \code{isa}
+        is inheritance and \code{part-of} is containment. \mk{A frame
+        system is object-oriented programming, invented for AI a decade earlier.} One
+        sentence, and it is often worth a mark.
+\end{itemize}}
+
+\Q{Advantages and limitations of frames}{\m{2}\m{4}}
+{\color{sub}\footnotesize part of the \emph{advantages and limitations} question,
+chip on \S5.6 \gap$\cdot$\gap \mk{write these as a pair with the semantic
+net list}, because every paper that asks for one asks for the other}
+
+\sbs{%
+\lead{Advantages}
+\begin{itemize}
+  \item \textbf{Groups related knowledge together}, so programming and retrieval are
+        easier: everything about an object is in one record.
+  \item \textbf{Defaults}, and therefore the ability to reason with incomplete
+        information and to detect missing values.
+  \item \textbf{Easy to extend}: adding a slot, a property or a relation costs one line.
+  \item \textbf{Inheritance} down the class hierarchy, exactly as in a semantic net.
+  \item \textbf{Procedural attachment}: a slot can compute or validate itself.
+  \item \textbf{Flexible and widely used} $-$ vision and natural language processing both
+        run on frames.
+  \item Good at \textbf{causal knowledge}, because the information is organised by cause
+        and effect.
+\end{itemize}}{%
+\lead{Limitations}
+\begin{itemize}
+  \item \mk{No inference mechanism of its own.} Frames store and
+        inherit; they do not deduce. Any reasoning has to be bolted on.
+  \item \textbf{Modification is dangerous}: change one frame and every frame that inherits
+        from it is affected.
+  \item \textbf{Redundancy} $-$ the same fact easily ends up in several frames.
+  \item \textbf{No standard structure}: the frame for a room and the frame for a person
+        look nothing alike, so nothing generic can be written over them.
+  \item \textbf{Defaults can be wrong}, and nothing in the formalism flags it when they
+        are.
+  \item \mk{The examiner's expected trade-off line}: frames win on
+        organisation and defaults, logic wins on proof, nets win on visibility.
+\end{itemize}}
+
+%-----------------------------------------------------------------------
+\T{5.6 Semantic nets Vs frames, and converting one into the other}
+
+\Q{Explain semantic nets and frames with examples. Compare them, and list their advantages and limitations}{\m{2}\m{4+4}\m{6+2}\m{7}}
+{\color{sub}\footnotesize \tS{13} \yr{\textbf{72 Ash} \m{7}, 72 Ma \m{7}, 73 Ma \m{4+4},
+\textit{74 Ma} \m{2+5}, \textbf{74 Bh} \m{7}, \textbf{\textit{74 Bh}} \m{4+3},
+75 Ba \m{2+6}, 76 Ba \m{6+2}, 78 Ba \m{6+2}, \textbf{78 Ch} \m{4+4}, 79 Jth \m{5},
+\texttt{81 Ba} \m{3+5}, \textbf{\texttt{81 Bh}} \m{2}}
+\gap$\cdot$\gap \mk{the second-most-asked question in the chapter}
+\gap$\cdot$\gap \yr{\textbf{72 Ash}} and \yr{78 Ba} ask the
+\mk{``why are they important in AI''} follow-up, so keep two lines for it}
+
+\begin{tabularx}{\linewidth}{@{}L{2.5cm}L{5.0cm}X@{}}
+\toprule
+\hrow & \thead{Semantic net} & \thead{Frame} \\
+\midrule
+Shape & labelled directed \textbf{graph} & collection of \textbf{records}, slots and
+fillers \\
+Dimension & \textbf{two}: node and arc & \textbf{three}: node, and structure
+\emph{inside} the node \\
+Unit of knowledge & one \textbf{arc} $=$ one fact & one \textbf{frame} $=$ one whole
+object \\
+Node holds & a name only & slots, values, defaults, types, constraints, procedures \\
+Relations & drawn as \textbf{arcs} & written as \textbf{slot values that are other
+frames} \\
+Inheritance & \checkmark down \code{isa} / \code{instance} arcs &
+\checkmark down class $\rightarrow$ subclass $\rightarrow$ instance \\
+Defaults & \xmark cannot express & \checkmark first-class, with
+\code{if-needed} to compute one \\
+Procedures & \xmark none & \checkmark demons on any slot \\
+Best at & \textbf{seeing} the relationships at a glance & \textbf{holding} everything
+about one object in one place \\
+Weakest at & complex or structured facts about a single node & showing the shape of the
+knowledge as a whole \\
+Reasoning & intersection search, link following & inheritance and slot lookup only \\
+Both fail at & \multicolumn{2}{@{}X@{}}{quantification, negation, disjunction, and having
+no inference engine of their own} \\
+\bottomrule
+\end{tabularx}
+\vspace{2pt}
+
+\sbs{%
+\lead{\mk{How frames are useful in semantic nets}
+\yr{\textbf{72 Ash}} \m{7}}
+\begin{itemize}
+  \item The question sounds like two topics. It is one: \textbf{a frame is what you get
+        when you let a semantic-net node have contents}.
+  \item A net node called \emph{Tom} can only be named. Make it a frame and it can carry
+        \emph{colour: ginger}, \emph{age: default 2}, \emph{owner: John}, plus a demon
+        that computes age from a birth date.
+  \item So frames \textbf{fix the net's weakest point}: they let one node hold structured,
+        defaulted, constrained knowledge instead of forcing every detail out onto its own
+        arc.
+  \item And the net \textbf{fixes the frame system's weakest point}: it shows the shape of
+        the whole knowledge base, which a pile of records does not.
+  \item \mk{Answer in one sentence}: frames give a semantic net depth at
+        each node, and the net gives a frame system its map.
+\end{itemize}
+\lead{Why both matter in AI \yr{78 Ba} \m{2}}
+\begin{itemize}
+  \item They give \textbf{inheritance and defaults}, which is how an agent reasons with
+        incomplete knowledge.
+  \item They are \textbf{human-readable}, so a domain expert can check the knowledge base
+        without knowing logic $-$ the bottleneck in every expert system (Ch\,7).
+  \item They organise knowledge by \textbf{object} rather than by \emph{sentence}, so
+        retrieval is local instead of a search of the whole store.
+\end{itemize}}{%
+\lead{\mk{Converting a semantic net into a frame}
+\yr{\texttt{81 Ba}} \m{5}}
+\begin{itemize}
+  \item \textbf{Step 1.} Every \textbf{node} becomes a \textbf{frame}, named after the
+        node.
+  \item \textbf{Step 2.} Every \textbf{outgoing arc} of that node becomes a \textbf{slot}
+        in its frame. \mk{The arc label is the slot name, the arc's
+        target is the filler.}
+  \item \textbf{Step 3.} \code{isa} and \code{instance} arcs become the frame's
+        \textbf{class link}, not ordinary slots: \code{isa} $\rightarrow$ a subclass
+        frame, \code{instance} $\rightarrow$ an instance frame.
+  \item \textbf{Step 4.} Any slot whose filler is a node that has its own frame is
+        \textbf{left as a pointer to that frame}, which is what makes the result a frame
+        \emph{system}.
+  \item \textbf{Step 5.} Push each property to the \textbf{highest} class that has it, and
+        let everything below inherit. A property drawn on three individuals in the net
+        belongs on their class in the frame system.
+  \item \mk{Check}: no information may be lost. Count the arcs in the
+        net; count the filled slots in the frames. They must match.
+  \item \yr{\texttt{81 Ba}} is worked end to end in the companion, on this net.
+\end{itemize}}
+
+\sbsr{0.42}{%
+\lead{The same knowledge three ways}
+\begin{itemize}
+  \item \mk{Frame, net and FOPL are interchangeable} for taxonomic
+        knowledge, and \yr{75 Ba} \m{6} asks for exactly that: \emph{examples of both,
+        with FOPL statements}.
+  \item Read the figure left to right: a frame-based knowledge base, then the
+        first-order sentences that say the same thing.
+  \item \code{Subset(Birds, Animals)} is the \code{isa} arc.
+        \code{Member(Opus, Penguins)} is the \code{instance} arc.
+        \code{Rel(Legs, Birds, 2)} is a slot with a value.
+  \item \mk{Write the FOPL line beside every arc you draw} in that
+        question. It is 2 free marks and most answers skip it.
+\end{itemize}}{%
+\figT{c5_frame_fopl.png}
+{\footnotesize\color{sub} (a) a frame-based knowledge base and (b) its translation into
+first-order logic, the same nine facts twice. Source: PS Sir ch5.}}
+
+%-----------------------------------------------------------------------
+\T{5.7 Conceptual dependency and scripts}
+
+\Q{What is conceptual dependency? Explain the common primitives used in it}{\m{2+5}\m{3}}
+{\color{sub}\footnotesize \tP{2} \yr{\textbf{71 Bh} \m{2+5}, \textbf{77 Ch} \m{3+5}}
+\gap$\cdot$\gap only 2 papers, but \mk{both times CD and scripts
+together carry the whole 8-mark question} \gap$\cdot$\gap
+\yr{\textbf{77 Ch}} pairs it with \emph{``how is knowledge represented using scripts''}}
+
+\sbsr{0.46}{%
+\lead{What it is}
+\begin{itemize}
+  \item \textbf{Schank, 1973--75}, built for \textbf{natural language understanding}.
+  \item A representation of the \mk{meaning} of a sentence, built from
+        a \textbf{small fixed set of primitive acts} instead of from the sentence's own
+        words.
+  \item \textbf{Three goals}, and the papers want all three:
+  \begin{itemize}
+    \item to \textbf{help draw inferences} from a sentence;
+    \item to be \textbf{independent of the words} used in the input;
+    \item so that \mk{any two sentences identical in meaning have
+          exactly one representation}.
+  \end{itemize}
+  \item Hence \emph{I gave the man a book}, \emph{the man got a book from me} and
+        \emph{the book was given to the man by me} all draw the \textbf{same} diagram.
+        That is the point of the whole theory.
+  \item A \textbf{strong} slot-and-filler structure: unlike a frame, the slots have
+        \textbf{fixed, agreed meanings}.
+\end{itemize}
+\lead{The four conceptual categories}
+\begin{itemize}
+  \item \textbf{ACT} $-$ an action, always one of the primitives below.
+  \item \textbf{PP} $-$ \emph{picture producer}, an object or actor.
+  \item \textbf{AA} $-$ \emph{action aider}, a modifier of an ACT (how, when, where).
+  \item \textbf{PA} $-$ \emph{picture aider}, a modifier of a PP (colour, size, quality).
+  \item \textbf{Dependency rule}: PP and ACT are \textbf{governors}, PA and AA are
+        \textbf{dependents}. A dependent cannot stand alone; a conceptualization needs at
+        least two governors.
+  \item Eg \emph{Sally stroked her fat cat}: PP $=$ Sally, cat; ACT $=$ stroke;
+        PA $=$ fat.
+\end{itemize}}{%
+\lead{The eleven primitive acts}
+\begin{tabularx}{\linewidth}{@{}L{1.85cm}X@{}}
+\toprule
+\hrow \thead{Primitive} & \thead{Transfer or action, and a verb that maps to it} \\
+\midrule
+\textbf{ATRANS} & transfer of an \textbf{abstract relationship}, ie possession. \emph{give,
+lend, borrow} \\
+\textbf{PTRANS} & transfer of the \textbf{physical location} of an object. \emph{go, come,
+went} \\
+\textbf{PROPEL} & application of a \textbf{physical force} to an object. \emph{push, pull}
+\\
+\textbf{MOVE} & movement of a \textbf{body part} by its owner. \emph{kick, punch} \\
+\textbf{GRASP} & an actor \textbf{grasping} an object. \emph{clutch, catch} \\
+\textbf{INGEST} & an animal \textbf{taking something in}. \emph{eat, drink} \\
+\textbf{EXPEL} & an animal \textbf{forcing something out}. \emph{cry, sweat, throw} \\
+\textbf{MTRANS} & transfer of \textbf{mental information}. \emph{tell, ask, read} \\
+\textbf{MBUILD} & \textbf{building new information} out of old. \emph{decide, infer,
+conclude} \\
+\textbf{SPEAK} & \textbf{producing a sound}. \emph{say, talk, play music} \\
+\textbf{ATTEND} & \textbf{focusing a sense organ} on a stimulus. \emph{listen, watch} \\
+\bottomrule
+\end{tabularx}
+\vspace{2pt}
+\begin{itemize}
+  \item \mk{Learn the first three and MTRANS.} Every example in every
+        paper and every scene of the restaurant script is built from those four.
+\end{itemize}}
+
+\Q{Draw the conceptual dependency of a sentence}{\m{2}\m{5}}
+{\color{sub}\footnotesize inside \yr{\textbf{71 Bh}} \m{5} \gap$\cdot$\gap
+the notation cannot be typed, so \mk{learn it as a picture}}
+
+\sbsr{0.58}{%
+\figT{c5_cd_examples.png}
+{\footnotesize\color{sub} The seven dependency forms, then each one used on a sentence.
+Row 6 is \emph{John pushed the cart} ($ACT \xleftarrow{o} PP$, PROPEL); row 7 is
+\emph{John took the book from Mary} (ATRANS with a recipient pair). Source: BA Sir
+CH-05.}}{%
+\lead{The notation}
+\begin{itemize}
+  \item $\Leftrightarrow$ \textbf{two-way link} between an actor and the action. Every
+        conceptualization has exactly one.
+  \item $\rightarrow$ \textbf{direction of dependency}: the dependent points at its
+        governor.
+  \item \textbf{o} $=$ objective case, what the act is done \emph{to}.
+  \item \textbf{R} $=$ recipient case, drawn as a \textbf{fork}: the arrow up is the
+        receiver, the arrow down is the giver.
+  \item \textbf{I} $=$ instrumental case, what it was done \emph{with}.
+  \item \textbf{D} $=$ directive case, from where to where.
+  \item \textbf{p} $=$ past tense, \textbf{f} future, \textbf{t} transition,
+        \textbf{?} interrogative, \textbf{/} negative. Tense sits on the
+        $\Leftrightarrow$.
+  \item \mk{Worked example} $-$ \emph{I gave a book to Ram}:
+  \begin{itemize}
+    \item $I \Leftrightarrow ATRANS$, with \textbf{p} on the link;
+    \item $\xleftarrow{o}$ book;
+    \item $\xleftarrow{R}$ forking up to \emph{Ram} and down to \emph{I}.
+  \end{itemize}
+\end{itemize}
+\lead{Problems with CD}
+\begin{itemize}
+  \item \textbf{The original sentence cannot be reconstructed} from the diagram; meaning
+        survives, wording does not.
+  \item \textbf{Choosing the primitive is hard}: one verb may map to several ACTs
+        depending on context.
+  \item \textbf{The structures get huge.} \emph{``John bet Mike that Nepal will win the
+        World Cup''} needs an enormous diagram for one sentence.
+  \item Rules must be \textbf{hand-written per primitive}, so the theory does not scale to
+        a general-purpose KR.
+\end{itemize}}
+
+\Q{How is knowledge represented using scripts? Explain with an example}{\m{5}}
+{\color{sub}\footnotesize \yr{\textbf{77 Ch} \m{5}} \gap$\cdot$\gap 1 paper at 5 marks,
+so no chip of its own \gap$\cdot$\gap \mk{always asked as the second half of
+the CD question}, never alone \gap$\cdot$\gap the restaurant script is the only example
+any deck or the textbook uses, so learn that one}
+
+\sbsr{0.47}{%
+\lead{What a script is}
+\begin{itemize}
+  \item \textbf{Schank and Abelson, 1977}, written in the CD notation.
+  \item A \mk{structured description of a stereotyped sequence of
+        events in a known context}: going to a restaurant, going to the theatre, visiting
+        a doctor.
+  \item It \textbf{extends a frame} by making the slot values \textbf{ordered in time} and
+        by representing \emph{expectations} about what happens next.
+  \item Justified by three facts about the world: events occur in known patterns, events
+        cause one another, and entry conditions decide whether a pattern applies at all.
+\end{itemize}
+\lead{\mk{The six components} (write all six)}
+\begin{itemize}
+  \item \textbf{Entry conditions} $-$ must be true before the script can be invoked.
+        Eg \emph{S is hungry}, \emph{S has money}.
+  \item \textbf{Results} $-$ true once it has run. Eg \emph{S is not hungry},
+        \emph{O has more money}.
+  \item \textbf{Props} $-$ the objects involved. Eg tables, menu, food, check, money.
+  \item \textbf{Roles} $-$ the participants and what each does. Eg S $=$ customer,
+        W $=$ waiter, C $=$ cook, M $=$ cashier, O $=$ owner.
+  \item \textbf{Track} $-$ a variation on the general pattern. Eg \emph{coffee shop} Vs
+        \emph{fancy restaurant}: same script, different track.
+  \item \textbf{Scenes} $-$ the ordered sequence of events, each written in CD primitives.
+\end{itemize}
+\lead{The RESTAURANT script, header and scene 1}
+\begin{itemize}
+  \item \textbf{Script}: RESTAURANT. \textbf{Track}: coffee shop.
+  \item \textbf{Props}: tables, menu, F $=$ food, check, money.
+  \item \textbf{Roles}: S $=$ customer, W $=$ waiter, C $=$ cook, M $=$ cashier,
+        O $=$ owner.
+  \item \textbf{Entry conditions}: S is hungry, S has money.
+  \item \textbf{Results}: S has less money, O has more money, S is not hungry,
+        S is pleased (optional).
+  \item \textbf{Scene 1, entering}: S PTRANS S into restaurant $\cdot$ S ATTEND eyes to
+        tables $\cdot$ S MBUILD where to sit $\cdot$ S PTRANS S to table $\cdot$ S MOVE S
+        to sitting position.
+\end{itemize}}{%
+\figT{c5_script_rest1.png}
+{\footnotesize\color{sub} Scene 2, ordering, with both tracks: menu already on the table,
+or the waiter brings it. Source: BA Sir CH-05.}}
+
+\penalty0\vspace{2pt}
+
+\sbsr{0.47}{%
+\lead{Invocation, and why it is the hard part}
+\begin{itemize}
+  \item A script is opened when its topic is \textbf{significant} in the input; if merely
+        mentioned, only a pointer is kept.
+  \item \emph{``John enjoyed the play in the theatre''} $\rightarrow$ invoke, and every
+        implicit question is answered: did he go, did he buy a ticket, did he have money.
+  \item \mk{The failure case to quote}: \emph{``John went to the theatre
+        to pick up his daughter''}. Same words, low significance, and invoking the script
+        produces confident wrong answers.
+  \item There is no reliable rule for judging significance, only heuristics. That is the
+        honest limitation to close on.
+\end{itemize}
+\lead{Advantages and disadvantages}
+\begin{itemize}
+  \item \checkmark \textbf{Predicts implicit events}: it fills in what
+        the text never said, which is exactly what language understanding needs.
+  \item \checkmark Builds \textbf{one coherent interpretation} out of
+        scattered observations.
+  \item \xmark \mk{Far more specific and less
+        general than a frame.} One script covers one situation.
+  \item \xmark Not suitable for knowledge that is not
+        event-sequenced.
+  \item \xmark Wrong invocation gives confidently wrong
+        answers.
+  \item The cure for the inflexibility: \textbf{MOPs}, memory organization packets $-$
+        smaller reusable modules recombined to fit the situation.
+\end{itemize}}{%
+\figT{c5_script_rest2.png}
+{\footnotesize\color{sub} Scene 3 eating and scene 4 exiting, including the
+\emph{no pay} path. Source: BA Sir CH-05.}}
+
+\hr
+
+{\color{sub}\footnotesize \textbf{Source notes.}
+\emph{Insights} \S5.4.2 (book p135) converts the Tom-the-cat semantic net into frames, but
+its figure prints \code{like John} and \code{type Ginger} where the net says
+\emph{is-owned-by} and \emph{is-coloured}, and gives the \emph{John} frame an
+\code{Age 22 / Color white} pair carried over from the car example on the facing page.
+The net-to-frame recipe in \S5.6 above follows the book's \emph{method} and Rich and
+Knight's \emph{figures}, and the companion works the conversion on a net that is drawn
+correctly.
+\gap$\cdot$\gap
+The syllabus files this chapter as five sub-topics but the papers only ever set four:
+representations and mappings is never asked on its own, always as the two-mark opener to
+\emph{what is knowledge representation}.}

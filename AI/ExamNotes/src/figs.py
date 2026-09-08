@@ -35,7 +35,7 @@ Run from this folder:  python figs.py [name ...]
 """
 import fitz, io, os, re, sys
 
-from PIL import Image
+from PIL import Image, ImageDraw
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 SRC = os.path.normpath(os.path.join(HERE, "..", "..", "Notes"))
@@ -69,9 +69,19 @@ CSIT = os.path.join(MISC, "AI (Detailed) for CSIT.pdf")
 JOBS = []
 
 
-def add(name, pdf, page, box=None, pick=0, dpi=300, pad=0.004, flat=False):
+def add(name, pdf, page, box=None, pick=0, dpi=300, pad=0.004, flat=False,
+        mask=None):
+    """`mask` paints rectangles of the finished crop white.
+
+    For stray text baked INTO a pasted raster, which no box can remove: a
+    slide author screenshots a figure together with the line above it, so the
+    text sits in a corner the figure itself does not use. Rectangles are
+    fractions of the cropped image, (x0, y0, x1, y1). Only ever use it on
+    empty corners -- it is the "trim the watermark strip" rule, not a licence
+    to edit a figure.
+    """
     JOBS.append(dict(name=name, pdf=pdf, page=page, box=box, pick=pick,
-                     dpi=dpi, pad=pad, flat=flat))
+                     dpi=dpi, pad=pad, flat=flat, mask=mask))
 
 
 def ins_pdf_page(book):
@@ -171,6 +181,78 @@ JOBS.append(dict(name="c4_78ba_bbn.png", pdf=None, page=None, box=None,
                  pick=0, dpi=0, pad=0, flat=False,
                  copy=os.path.join(HERE, "..", "..", "images", "ai_78ba_bbn.png")))
 
+
+# ------------------------------------------------------------------ chapter 5
+# BA Sir's CH-05 is ONE slide per page (unlike CH-04, which is four to a page),
+# and every figure on it is pasted as a single embedded raster, so the
+# largest-raster default is exact here and no boxes are needed.
+PS5 = os.path.join(PS, "5.Structured Knowledge Representation_old_syllabus.pdf")
+BJ5 = os.path.join(BJ, "AI_Chapter5_new.pdf")
+
+# The semantic net for the Tom-the-cat sentence set. This one figure IS the
+# published answer to three papers (79 Bh, 82 Bh, 81 Ch) and to Insights
+# Example 5.2, and BA Sir's is the cleanest drawing of it anywhere in Notes\.
+# The pasted raster includes the slide line above it ("...represent the
+# data:"), which sits in an empty top-left corner of the figure. Masked.
+add("c5_semnet_tom.png", BA5, 11, mask=[(0.0, 0.0, 0.47, 0.055)])
+# isa Vs instance-of on one small net (bird / robin / Clyde / nest-1). The
+# distinction is what the papers mean by "the two commonly used links".
+add("c5_isa_instance.png", BA5, 10)
+# A frame description of a hotel room: four frames, each with slots, linked by
+# their own slot values. The only figure in Notes\ that shows frames POINTING
+# AT each other, which is the whole difference from a slot table.
+add("c5_frame_hotel.png", BA5, 13, box=(0.497, 0.196, 0.985, 0.874))
+# Conceptual dependency worked on seven sentences in the arrow notation. The
+# notation cannot be typeset, so it has to be the picture.
+add("c5_cd_examples.png", BA5, 18)
+# The restaurant script in CD form, scenes 2 then 3-4.
+add("c5_script_rest1.png", BA5, 23)
+add("c5_script_rest2.png", BA5, 24)
+
+# PS Sir's deck is 720x540 with the figures placed as rasters over a blue
+# footer wave, so these are boxes taken from the rasters' own page rectangles.
+# The canonical semantic net (Rich & Knight fig 9.1): Pee-Wee-Reese, with the
+# four FOPL predicates printed under it. Every "convert these sentences into a
+# semantic network" question in the papers is a redressing of this figure.
+add("c5_semnet_peewee.png", PS5, 27, box=(0.016, 0.185, 0.990, 0.835))
+# The same net redressed for Sakti Gauchan, which is what 72 Ma and 78 Po ask
+# for almost word for word.
+add("c5_semnet_sakti.png", PS5, 34, box=(0.130, 0.530, 0.898, 0.905))
+# An EVENT node: "John gave the book to Mary" cannot be drawn with binary
+# links, so the give-event becomes a node (EV7) with agent / object /
+# beneficiary arcs. This is the answer to "how do you represent a three-place
+# predicate in a net".
+add("c5_semnet_event.png", PS5, 29, box=(0.212, 0.172, 0.885, 0.782))
+# The bird / robin / wing hierarchy, the shape 77 Ch's Tweety-Sweety set takes.
+add("c5_semnet_bird.png", PS5, 32, box=(0.532, 0.213, 0.878, 0.782))
+# A frame system and its first-order-logic translation, side by side in one
+# figure: the answer to 75 Ba ("provide examples of both with FOPL statements")
+# and half the answer to 81 Ba (net -> frame).
+add("c5_frame_fopl.png", PS5, 45, box=(0.128, 0.105, 0.924, 0.891))
+# Every facet a slot can carry -- value, default, cardinality, type, attached
+# procedure, salience, constraint -- on one worked STUDENT frame.
+add("c5_frame_facets.png", PS5, 44, box=(0.000, 0.140, 1.000, 1.000))
+# Fig 9.5, the simplified frame system for Pee-Wee-Reese: the FRAME form of
+# c5_semnet_peewee.png, so the two print together as the net->frame conversion.
+add("c5_frame_system.png", PS5, 41, box=(0.055, 0.000, 0.960, 0.998))
+# A generic Car frame with if-added / if-needed demons attached to its slots.
+add("c5_frame_demons.png", PS5, 46, box=(0.378, 0.138, 0.974, 0.591))
+
+# Link types with their set-theoretic semantics (subset, member, R): the one
+# table that says what a semantic-net arc actually MEANS.
+add("c5_semnet_links.png", BJ5, 43)
+
+# Insights book p136: class / subclass / instance frames. (Its book p135
+# net-to-frame figure is NOT used: it prints "like John" and "type Ginger"
+# where the net says owned-by and colour, and gives John an Age/Color pair
+# carried over from the car example. The notes use the Rich & Knight pair
+# c5_semnet_peewee + c5_frame_system for that conversion instead, and record
+# the book error in the text.)
+# dpi is deliberately low: this is a photographed book page, so the paper
+# grain quantises badly and at 210 dpi the single figure was 948 kB, three
+# times the next largest in the chapter. It prints in a half-width column,
+# where 950 px is still about 280 dpi on the page.
+ins("c5_frame_classes.png", 136, (0.06, 0.090, 0.99, 0.525), dpi=52)
 
 def rect_for(pg, job):
     r = pg.rect
@@ -281,6 +363,11 @@ def main():
         else:
             pm = pg.get_pixmap(dpi=job["dpi"], clip=clip)
             img = Image.frombytes("RGB", (pm.width, pm.height), pm.samples)
+        for m in (job.get("mask") or ()):
+            ImageDraw.Draw(img).rectangle(
+                (round(m[0] * img.width), round(m[1] * img.height),
+                 round(m[2] * img.width), round(m[3] * img.height)),
+                fill=(255, 255, 255))
         img = shrink(img)
         img.save(out, optimize=True)
         w, h = img.size

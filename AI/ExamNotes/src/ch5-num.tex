@@ -1,0 +1,877 @@
+%=======================================================================
+%  CHAPTER 5 — STRUCTURED KNOWLEDGE REPRESENTATION : SOLVED PROBLEMS
+%=======================================================================
+\section{Structured Knowledge Representation \textcolor{sub}{\large -- Solved Problems}}
+
+{\color{sub}\footnotesize Every problem opens with the question
+\mk{exactly as the paper prints it}, the paper's own spelling and
+slips included. \gap$\cdot$\gap \textbf{11 sentence sets over 12 papers}, plus the
+net-to-frame conversion and the net/frame/FOPL question. \gap$\cdot$\gap Where a lecture
+deck or the textbook already draws the answer, the published figure is printed and the
+caption says exactly what differs from the paper's wording. Where none does, the answer is
+given as an \textbf{arc list} $-$ every node, every link, every direction $-$ from which
+the drawing is mechanical.}
+
+\lead{\mk{The four-step recipe.} It works on all eleven sets:}
+\begin{itemize}
+  \item \textbf{Step 1. Underline every noun phrase.} Each distinct one is a
+        \textbf{node}. Do not invent nodes and do not merge two that the paper keeps
+        apart.
+  \item \textbf{Step 2. Sort the nodes into classes and individuals.} A proper name, or
+        anything the sentences call \emph{a} something, is an \textbf{individual}. Anything
+        that other things can \emph{be} is a \textbf{class}.
+  \item \textbf{Step 3. Draw the class spine first, bottom to top}, joined by \code{isa}
+        arcs, then hang each individual off its class with an \code{instance} arc.
+  \begin{itemize}
+    \item \mk{Class to class is \code{isa}. Individual to class is
+          \code{instance}.} Getting these two the wrong way round is the single
+          commonest lost mark in this question.
+  \end{itemize}
+  \item \textbf{Step 4. Add one labelled arc per remaining sentence}, always
+        \emph{out of} the thing the sentence is about. The verb becomes the arc label.
+  \item \textbf{Then check three things}, which is what separates a 6 from a 4:
+  \begin{itemize}
+    \item \textbf{Count.} One arc per sentence, plus the spine. If a sentence produced no
+          arc you have lost a mark.
+    \item \textbf{Push properties up.} If two individuals of the same class both carry a
+          property, draw it \textbf{once on the class} and let them inherit. Say in one
+          line that you did, and why.
+    \item \textbf{Flag what the net cannot say.} Quantifiers, negation and disjunction do
+          not draw. A sentence like \emph{``every mammal gives birth to a baby''} gets an
+          arc out of the class node and \mk{a note saying the arc is read
+          as $\forall x \in Mammal$}. Examiners give marks for that note.
+  \end{itemize}
+  \item \textbf{Layout that always works}: most general class at the \textbf{top},
+        \code{isa} arcs pointing \textbf{up}, individuals on a row near the bottom, and
+        their own properties fanning \textbf{sideways}. Every published figure in this
+        chapter is drawn that way.
+\end{itemize}
+
+\hr
+
+%=======================================================================
+\T{5.N.1 A person is a mammal: Sakti Gauchan, and the same set as Sandeep Lamichhane}
+
+\creamq{Convert the given sentences into a semantic net}{\m{7}\m{2+6}}
+{\color{sub}\footnotesize \tP{2} \yr{72 Ma \m{7}, 78 Po \m{2+6}} \gap$\cdot$\gap
+two papers, \mk{one net}: \yr{78 Po} is \yr{72 Ma} with the cricketer's
+name changed \gap$\cdot$\gap both also ask \emph{``what are frames and semantic net''}
+first, which is \S5.6 of the theory}
+
+\begin{asked}{72 Ma \textperiodcentered{} Q6 \textperiodcentered{} \m{7}}
+What are Frames and Semantic Net? Convert the given sentences in Semantic Net.
+\begin{itemize}[topsep=1pt]
+  \item i) A person is a mammal.
+  \item ii) Sakti Gauchan is a person.
+  \item iii) Person has nose.
+  \item iv) Sakti Gauchan is in Nepalese team.
+  \item v) Uniform color of sakti Gauchan is Red/Blue.
+\end{itemize}
+\end{asked}
+
+\begin{asked}{78 Po \textperiodcentered{} Q6 \textperiodcentered{} \m{2+6}}
+What are Frames and Semantic Net? Convert the given sentences in Semantic Net.
+\begin{itemize}[topsep=1pt]
+  \item A person is a mammal.
+  \item Sandeep Lamichane is a person.
+  \item Person has nose.
+  \item Sandeep Lamichane is in Nepalese cricket team.
+  \item \mk{Uniform color of Sakti Gauchan is Red/Blue.}
+\end{itemize}
+{\color{sub} The fifth sentence names a \emph{different} cricketer: the paper was
+copied from the \yr{72 Ma} set and this one line was never updated. Reproduced as
+printed.}
+\end{asked}
+
+\sbsr{0.53}{%
+\lead{Step 1--2: nodes}
+\begin{itemize}
+  \item \textbf{Classes}: Mammal, Person, Nepalese team (a named team, so it can also be
+        drawn as an individual $-$ either is accepted).
+  \item \textbf{Individual}: Sakti Gauchan.
+  \item \textbf{Values}: Nose, Red/Blue.
+\end{itemize}
+\lead{Step 3--4: the arcs}
+\begin{tabularx}{\linewidth}{@{}L{3.1cm}L{2.35cm}X@{}}
+\toprule
+\hrow \thead{From} & \thead{Link} & \thead{To} \\
+\midrule
+Person & \code{isa} & Mammal \\
+Sakti Gauchan & \code{instance} & Person \\
+Person & \code{has-part} & Nose \\
+Sakti Gauchan & \code{team} & Nepalese team \\
+Sakti Gauchan & \code{uniform-color} & Red/Blue \\
+\bottomrule
+\end{tabularx}
+\vspace{2pt}
+\begin{itemize}
+  \item \textbf{5 sentences, 5 arcs.} The count checks.
+  \item \mk{Note to write beside the drawing}: \emph{has-part} sits on
+        \textbf{Person}, not on Sakti Gauchan, so \textbf{every} person inherits a nose.
+        That is the inheritance the question is testing.
+  \item \yr{78 Po}: identical net, \emph{Sakti Gauchan} replaced by \emph{Sandeep
+        Lamichane} in the first four arcs. \mk{For the fifth, draw the
+        uniform-colour arc off Sandeep and add one line}: \emph{``the paper names Sakti
+        Gauchan here; taken as the same person the other four sentences are about.''}
+        Say it and you lose nothing.
+\end{itemize}}{%
+\figT{c5_semnet_sakti.png}
+{\footnotesize\color{sub} \mk{The published answer to this exact
+question}, from PS Sir's own slide. Two differences from the paper's wording, both
+harmless: it draws \code{has\_part} $\rightarrow$ \emph{Head} where the paper says
+\emph{nose}, and \code{team\_colours} $\rightarrow$ \emph{Black/Blue} where the paper says
+\emph{Red/Blue}. Substitute the paper's words; the shape is unchanged. Source: PS Sir
+ch5.}
+\lead{The FOPL the deck writes underneath}
+\begin{itemize}
+  \item \code{ISA(Mammal, Person)}, \code{INSTANCE(Person, Sakti Gauchan)},
+        \code{HAS\_PART(Person, head)}, \code{TEAM(Nepal, Sakti Gauchan)},
+        \code{TEAM\_COLOURS(black/blue, Sakti Gauchan)}.
+  \item \mk{The deck is inconsistent, twice over.} An earlier slide
+        writes \code{MAMMAL(person)} for the first sentence $-$ a \emph{unary} predicate
+        that loses the relation entirely. And it writes the arguments
+        \code{(class, individual)} here, the reverse of Rich and Knight's
+        \code{instance(Pee-Wee-Reese, Person)}.
+  \item \textbf{Use one order and say which.} This file writes
+        \code{isa(subclass, superclass)} and \code{instance(individual, class)}, matching
+        the arrow direction in every drawing. \mk{Consistency is what is
+        marked, not the choice}: pick one, state it in a line, and never swap.
+\end{itemize}}
+
+%=======================================================================
+\T{5.N.2 The baseball player: Pee-wee-Reese, and the same set as Rohit Paudel}
+
+\creamq{Convert the given sentences into a semantic net}{\m{7}\m{2+6}}
+{\color{sub}\footnotesize \tP{2} \yr{\textbf{73 Bh} \m{7}, \textbf{79 Ch} \m{2+6}}
+\gap$\cdot$\gap again \mk{two papers, one net}: \yr{\textbf{79 Ch}}
+is \yr{\textbf{73 Bh}} moved from baseball to cricket \gap$\cdot$\gap this is Rich and
+Knight's own figure, so \mk{it is also the set to expect in a
+``convert the net into a frame'' question}}
+
+\begin{asked}{\textbf{73 Bh} \textperiodcentered{} Q6 \textperiodcentered{} \m{7}}
+Convert given sentences into Semantic Network.
+\begin{itemize}[topsep=1pt]
+  \item i) The height of the adult male is 5.10
+  \item ii) Baseball player is an adult male.
+  \item iii) Adult male is a person.
+  \item iv) Batting average of Baseball players is 0.252
+  \item v) Pee-wee-Reese is a Fielder.
+  \item vi) Fielder is Baseball player.
+  \item vii) Team of pee-wee-Reese is Brooklyn Dodger.
+\end{itemize}
+\end{asked}
+
+\begin{asked}{\textbf{79 Ch} \textperiodcentered{} Q4 \textperiodcentered{} \m{2+6}}
+What is semantic network? Convert the following sentences into semantic network.
+\begin{itemize}[topsep=1pt]
+  \item i) The avg height of an adult is 5'6''.
+  \item ii) Cricket player is an adult male.
+  \item iii) Adult male is a person.
+  \item iv) Batting average of a cricket player is 37.59
+  \item v) Rohit Paudel is a Fielder.
+  \item vi) Fielder is a cricket player.
+  \item vii) Team of Rohit Paudel is Nepal.
+\end{itemize}
+{\color{sub} Sentence (i) says \emph{adult} where (ii) and (iii) say \emph{adult male}.
+Read as the same node.}
+\end{asked}
+
+\sbsr{0.52}{%
+\lead{The spine is four deep, and that is the whole difficulty}
+\begin{tabularx}{\linewidth}{@{}L{3.0cm}L{2.6cm}X@{}}
+\toprule
+\hrow \thead{From} & \thead{Link} & \thead{To} \\
+\midrule
+Adult Male & \code{isa} & Person \\
+Baseball Player & \code{isa} & Adult Male \\
+Fielder & \code{isa} & Baseball Player \\
+Pee-wee-Reese & \code{instance} & Fielder \\
+Adult Male & \code{height} & 5.10 \\
+Baseball Player & \code{batting-average} & 0.252 \\
+Pee-wee-Reese & \code{team} & Brooklyn Dodger \\
+\bottomrule
+\end{tabularx}
+\vspace{2pt}
+\begin{itemize}
+  \item \textbf{7 sentences, 7 arcs.} The count checks.
+  \item \mk{The mark is in where the properties hang.}
+        \emph{height} goes on \textbf{Adult Male} and \emph{batting-average} on
+        \textbf{Baseball Player}, because that is the class each sentence names. Hanging
+        either off Pee-wee-Reese loses the inheritance the question is set to test.
+  \item \textbf{Read the inheritance back} in one line: Pee-wee-Reese is a Fielder, so a
+        Baseball Player, so an Adult Male, so a Person $-$ and therefore
+        \mk{inherits height 5.10 and batting average 0.252 without either
+        being stored on him.}
+  \item \yr{\textbf{79 Ch}}: same seven arcs. Baseball Player $\rightarrow$ Cricket
+        Player, 5.10 $\rightarrow$ 5'6'', 0.252 $\rightarrow$ 37.59, Pee-wee-Reese
+        $\rightarrow$ Rohit Paudel, Brooklyn Dodger $\rightarrow$ Nepal.
+\end{itemize}}{%
+\figT{c5_semnet_peewee.png}
+{\footnotesize\color{sub} The figure both papers are drawn from, in its shorter textbook
+form: it keeps \emph{Person}, \emph{Pee-Wee-Reese} and the \emph{team} arc but collapses
+the Adult Male / Baseball Player / Fielder spine, and its property arcs are
+\code{has-part} and \code{uniform-color}. \mk{Copy the shape, use the
+seven arcs in the table} for the exam answer. Source: PS Sir ch5.}
+\lead{Why this set is worth extra attention}
+\begin{itemize}
+  \item It is the only sentence set in the papers with \textbf{four levels of class}, so
+        it is the one that shows inheritance properly.
+  \item It is also \mk{the set \yr{\texttt{81 Ba}} converts into a frame
+        system} $-$ see \S5.N.10, where the finished frames are printed.
+\end{itemize}}
+
+%=======================================================================
+\T{5.N.3 Tom the cat: two sentence sets, three papers}
+
+\creamq{Represent the following sentences using semantic net}{\m{2+5}\m{2+6}}
+{\color{sub}\footnotesize \tP{3} \yr{\textbf{\texttt{82 Bh}} \m{2+5},
+\textbf{81 Ch} \m{2+6}, \textbf{\texttt{79 Bh}} \m{2+6}} \gap$\cdot$\gap
+\mk{the most-repeated set in the chapter} \gap$\cdot$\gap
+\yr{\textbf{\texttt{82 Bh}}} and \yr{\textbf{81 Ch}} print it word for word identically;
+\yr{\textbf{\texttt{79 Bh}}} is a rewritten variant \gap$\cdot$\gap all three pair it with
+a KR short answer, \emph{issues in KR} twice and \emph{define semantic net} once}
+
+\begin{asked}{\textbf{\texttt{82 Bh}} Q5 \m{2+5} \textperiodcentered{} \textbf{81 Ch} Q5 \m{2+6} \textperiodcentered{} the same eleven sentences}
+What are different issues in knowledge representation? Represent the following sentences
+using semantic net representation.
+
+Tom is a cat. Tom caught a bird. Tom is owned by Sudeep. Tom is ginger in color. Cats like
+cream. The cat sat on the mat. A cat is a mammal. A bird is an animal. All mammals are
+animals. Mammals have fur. Sudeep age is 20.
+\end{asked}
+
+\sbsr{0.46}{%
+\figT{c5_semnet_tom.png}
+{\footnotesize\color{sub} \mk{The published answer, ten of the eleven
+arcs already drawn.} It is the textbook set, so the only difference from the paper is the
+owner's name: \emph{John} in the figure, \emph{Sudeep} in the paper. The eleventh
+sentence, \emph{Sudeep age is 20}, is not in the figure $-$ add one arc,
+\emph{Sudeep} \code{age} $\rightarrow$ \emph{20}. Source: BA Sir CH-05.}}{%
+\lead{The eleven arcs, in the order the sentences give them}
+\begin{tabularx}{\linewidth}{@{}L{2.1cm}L{2.35cm}X@{}}
+\toprule
+\hrow \thead{From} & \thead{Link} & \thead{To} \\
+\midrule
+Tom & \code{instance} & Cat \\
+Tom & \code{caught} & Bird \\
+Tom & \code{is-owned-by} & Sudeep \\
+Tom & \code{is-coloured} & Ginger \\
+Cat & \code{like} & Cream \\
+Cat & \code{sat-on} & Mat \\
+Cat & \code{isa} & Mammal \\
+Bird & \code{isa} & Animal \\
+Mammal & \code{isa} & Animal \\
+Mammal & \code{has} & Fur \\
+Sudeep & \code{age} & 20 \\
+\bottomrule
+\end{tabularx}
+\vspace{2pt}
+\begin{itemize}
+  \item \textbf{11 sentences, 11 arcs.} The count checks.
+  \item \mk{Two traps, and both are worth a mark each}:
+  \begin{itemize}
+    \item \emph{Tom is a cat} is \code{instance} (Tom is an individual);
+          \emph{a cat is a mammal} is \code{isa} (both are classes). Same English
+          construction, different link.
+    \item \emph{The cat sat on the mat} is about \textbf{the class} Cat as the figure draws
+          it, but the sentence plainly means \emph{that} cat, ie Tom.
+          \mk{Draw it as the figure does and add a line saying the
+          natural reading is Tom} $-$ the ambiguity is exactly the ``lack of formality''
+          limitation the paired theory question asks about.
+  \end{itemize}
+  \item \emph{Cats like cream} and \emph{mammals have fur} are drawn out of the
+        \textbf{class} nodes, so Tom inherits both. Say so.
+\end{itemize}}
+
+\creamq{The 2079 Bhadra variant: eleven different sentences, same shape}{\m{2+6}}
+{\color{sub}\footnotesize \yr{\textbf{\texttt{79 Bh}}} \m{2+6} \gap$\cdot$\gap counted in
+the chip above \gap$\cdot$\gap \mk{the last sentence is the interesting
+one}: it is a quantified statement, which a semantic net cannot properly express}
+
+\begin{asked}{\textbf{\texttt{79 Bh}} \textperiodcentered{} Q6 \textperiodcentered{} \m{2+6}}
+List the issues need to be consider in Knowledge Representation techniques. Convert given
+sentences into Semantic Network.
+\begin{itemize}[topsep=1pt]
+  \item a) Tom is a cat \quad b) Tom fights with rat \quad c) Tom is owned by Ram
+  \item d) Tom is black in color. \quad e) Cats like milk \quad f) Rats like cheese
+  \item g) The cat sat on the bed \quad h) A cat is a mammal \quad i) A Rat is an animal
+  \item j) All mammals are animals \quad k) Every mammal gives birth a baby
+\end{itemize}
+\end{asked}
+
+\sbs{%
+\begin{tabularx}{\linewidth}{@{}L{2.0cm}L{2.6cm}X@{}}
+\toprule
+\hrow \thead{From} & \thead{Link} & \thead{To} \\
+\midrule
+Tom & \code{instance} & Cat \\
+Tom & \code{fights-with} & Rat \\
+Tom & \code{is-owned-by} & Ram \\
+Tom & \code{is-coloured} & Black \\
+Cat & \code{like} & Milk \\
+Rat & \code{like} & Cheese \\
+Cat & \code{sat-on} & Bed \\
+Cat & \code{isa} & Mammal \\
+Rat & \code{isa} & Animal \\
+Mammal & \code{isa} & Animal \\
+Mammal & \code{gives-birth-to} & Baby \\
+\bottomrule
+\end{tabularx}}{%
+\begin{itemize}
+  \item \textbf{11 sentences, 11 arcs.} The count checks.
+  \item Layout: \emph{Animal} at the top, \emph{Mammal} and \emph{Rat} under it,
+        \emph{Cat} under \emph{Mammal}, \emph{Tom} at the bottom, and every value node
+        (Milk, Cheese, Bed, Black, Ram, Baby) hanging sideways.
+  \item \mk{(k) is the one that earns the extra mark.}
+        \emph{``Every mammal gives birth to a baby''} is
+        $\forall x\,(x \in Mammal \Rightarrow \exists y\,(y \in Baby \wedge
+        gives\text{-}birth\text{-}to(x,y)))$.
+  \begin{itemize}
+    \item The net can only draw \textbf{one arc} out of the \emph{Mammal} class node.
+    \item \textbf{Write underneath}: \emph{``the arc out of a class node is read as
+          `for every member', and the existential `some baby' is not expressible in a
+          semantic net at all $-$ this is the quantification limitation.''}
+  \end{itemize}
+  \item \emph{Tom fights with rat} is between Tom and the \textbf{class} Rat as printed.
+        Note that a fight is with one particular rat, so a strict reading needs an
+        \textbf{event node} (\S5.4 of the theory).
+\end{itemize}}
+
+%=======================================================================
+\T{5.N.4 Mammals, fur and water}
+
+\creamq{Define term frame. Convert the following sentences into a semantic network}{\m{1+6}}
+{\color{sub}\footnotesize \tP{1} \yr{82 Ka \m{1+6}} \gap$\cdot$\gap
+\mk{the set with three siblings under one class}, so it is the one that
+rewards pushing a property up \gap$\cdot$\gap the 1-mark opener is
+\emph{define a frame}, \S5.5 of the theory, one sentence}
+
+\begin{asked}{82 Ka \textperiodcentered{} Q5 \textperiodcentered{} \m{1+6}}
+Define term frame. Convert the following sentences into semantic network. Cat is a mammal.
+Cat has fur. Mammal has vertebra. Mammal is an animal. Bear is a mammal. Bear has fur.
+Whale is a mammal. Whale lives in water. \mk{Fish is an animal 10.} Fish
+lives in water.
+
+{\color{sub} The \emph{``10.''} is the paper's own stray list number printed inside the
+sentence. Reproduced as printed; it is not a tenth sentence.}
+\end{asked}
+
+\sbs{%
+\begin{tabularx}{\linewidth}{@{}L{1.9cm}L{2.0cm}X@{}}
+\toprule
+\hrow \thead{From} & \thead{Link} & \thead{To} \\
+\midrule
+Cat & \code{isa} & Mammal \\
+Bear & \code{isa} & Mammal \\
+Whale & \code{isa} & Mammal \\
+Mammal & \code{isa} & Animal \\
+Fish & \code{isa} & Animal \\
+Cat & \code{has} & Fur \\
+Bear & \code{has} & Fur \\
+Mammal & \code{has} & Vertebra \\
+Whale & \code{lives-in} & Water \\
+Fish & \code{lives-in} & Water \\
+\bottomrule
+\end{tabularx}
+\vspace{2pt}
+\begin{itemize}
+  \item \textbf{10 sentences, 10 arcs.} The count checks.
+  \item \mk{Every node here is a class}, so \textbf{every} link is
+        \code{isa} or a property arc. There is not one \code{instance} arc in this set $-$
+        no individual is named. Saying that in one line shows you understood the
+        difference rather than guessed it.
+\end{itemize}}{%
+\lead{Layout}
+\begin{itemize}
+  \item \emph{Animal} on the top row. \emph{Mammal} and \emph{Fish} on the second.
+        \emph{Cat}, \emph{Bear}, \emph{Whale} on the third. Values (\emph{Fur},
+        \emph{Vertebra}, \emph{Water}) off to the right.
+  \item \emph{Water} is one node reached by two arcs, not two nodes.
+        \mk{A semantic net stores each object once}; drawing it twice is
+        the mistake that costs a mark here.
+\end{itemize}
+\lead{\mk{The observation that earns the last mark}}
+\begin{itemize}
+  \item \emph{Cat has fur} and \emph{Bear has fur} are both given, and both are drawn
+        because the question says to convert the sentences.
+  \item But fur is a \textbf{mammal} property. Add a line: \emph{``\code{has fur} could be
+        moved onto Mammal, and then Cat, Bear and Whale would all inherit it $-$ that is
+        the space saving inheritance buys.''}
+  \item \mk{Then give the counter-example in the same set}: whales are
+        mammals and do \emph{not} have fur in the ordinary sense, so moving it up would
+        make the net assert something false. \textbf{A net has no way to state an
+        exception}, which is precisely why frames carry defaults and overrides.
+  \item That pair of sentences is the best two-line answer to \emph{``limitations of
+        semantic nets''} anywhere in these papers, and it comes free with this question.
+\end{itemize}}
+
+%=======================================================================
+\T{5.N.5 Fido the dog}
+
+\creamq{Explain the approaches of KR. Highlight pros and cons of semantic nets and frames. Use them to represent the following sentences}{\m{2+6}}
+{\color{sub}\footnotesize \tP{1} \yr{\textbf{\texttt{81 Bh}} \m{2+6}} \gap$\cdot$\gap
+the smallest set in the papers, \textbf{six sentences} \gap$\cdot$\gap
+\mk{it asks for both representations}, so draw the net \emph{and} write
+the frames $-$ the arc list below does both}
+
+\begin{asked}{\textbf{\texttt{81 Bh}} \textperiodcentered{} Q6 \textperiodcentered{} \m{2+6}}
+Explain different approaches of knowledge representation. Highlight pros and cons of
+Semantic Nets and Frames. Use them to represent following sentences.
+\begin{itemize}[topsep=1pt]
+  \item \mk{Figo is a dog.}
+  \item Fido is own by Rohit.
+  \item Fido is ginger in color.
+  \item Dog is a mammal.
+  \item All Mammals are animals.
+  \item Mammals have fur.
+\end{itemize}
+{\color{sub} The paper names the dog \emph{Figo} in the first line and \emph{Fido} in the
+next two. Reproduced as printed; take them as one animal and say so.}
+\end{asked}
+
+\sbsr{0.47}{%
+\lead{As a semantic net}
+\begin{tabularx}{\linewidth}{@{}L{1.7cm}L{2.35cm}X@{}}
+\toprule
+\hrow \thead{From} & \thead{Link} & \thead{To} \\
+\midrule
+Fido & \code{instance} & Dog \\
+Fido & \code{is-owned-by} & Rohit \\
+Fido & \code{is-coloured} & Ginger \\
+Dog & \code{isa} & Mammal \\
+Mammal & \code{isa} & Animal \\
+Mammal & \code{has} & Fur \\
+\bottomrule
+\end{tabularx}
+\vspace{2pt}
+\begin{itemize}
+  \item \textbf{6 sentences, 6 arcs.} The count checks.
+  \item Spine: \emph{Animal} $\leftarrow$ \emph{Mammal} $\leftarrow$ \emph{Dog}, with
+        \emph{Fido} hung off \emph{Dog}. \emph{Rohit} and \emph{Ginger} sideways.
+  \item \mk{Open the answer with one line on the name}: \emph{``the
+        paper writes Figo once and Fido twice; taken as the same dog throughout.''}
+        It costs nothing and shows you read the question.
+  \item \emph{Mammals have fur} is on the \textbf{class}, so \mk{Fido
+        inherits fur} without it being stored on him. Write that sentence out $-$ this
+        set is small enough that the inheritance remark is where the marks are.
+\end{itemize}}{%
+\lead{The same knowledge as frames}
+\begin{tabularx}{\linewidth}{@{}L{1.75cm}L{2.0cm}X@{}}
+\toprule
+\hrow \thead{Frame} & \thead{Slot} & \thead{Filler} \\
+\midrule
+\textbf{Animal} & \emph{(class frame)} & $-$ \\
+\midrule
+\textbf{Mammal} & \code{isa} & Animal \\
+ & \code{has} & Fur \\
+\midrule
+\textbf{Dog} & \code{isa} & Mammal \\
+\midrule
+\textbf{Fido} & \code{instance} & Dog \\
+ & \code{owner} & Rohit \\
+ & \code{colour} & Ginger \\
+ & \code{has} & \emph{Fur} (inherited) \\
+\bottomrule
+\end{tabularx}
+\vspace{2pt}
+\begin{itemize}
+  \item \textbf{One frame per node, one slot per outgoing arc}, exactly the recipe in
+        \S5.6 of the theory.
+  \item \mk{Write the inherited row in italics or brackets} and label it
+        \emph{inherited}. It shows the frame system doing the work, and it is the
+        difference between copying the net out as a table and answering the question.
+  \item \textbf{Pros and cons} (the first half of the question) are the two lists in
+        \S5.4 and \S5.5 of the theory. One line each is enough at 2 marks.
+\end{itemize}}
+
+%=======================================================================
+\T{5.N.6 Employees and supervisors}
+
+\creamq{When do we use a semantic network? Convert the following sentences into a semantic network}{\m{2+6}}
+{\color{sub}\footnotesize \tP{1} \yr{\texttt{82 Ba} \m{2+6}} \gap$\cdot$\gap
+\mk{the trickiest set in the papers}: it contains a word that is both a
+class and a relation, and a symmetric relation \gap$\cdot$\gap the 2-mark opener,
+\emph{when do we use a semantic net}, is \S5.4 of the theory}
+
+\begin{asked}{\texttt{82 Ba} \textperiodcentered{} Q6 \textperiodcentered{} \m{2+6}}
+When do we use semantic network? Convert the following sentences into semantic network.
+\begin{itemize}[topsep=1pt]
+  \item i) Employee is a human. \quad ii) Hari is an employee. \quad
+        iii) Sita is a human.
+  \item iv) Supervisor is a human. \quad v) Ram is a supervisor. \quad
+        vi) Ram is married to Sita.
+  \item vii) Ram is supervisor of Hari.
+\end{itemize}
+\end{asked}
+
+\sbs{%
+\begin{tabularx}{\linewidth}{@{}L{1.6cm}L{2.5cm}X@{}}
+\toprule
+\hrow \thead{From} & \thead{Link} & \thead{To} \\
+\midrule
+Employee & \code{isa} & Human \\
+Supervisor & \code{isa} & Human \\
+Hari & \code{instance} & Employee \\
+Sita & \code{instance} & Human \\
+Ram & \code{instance} & Supervisor \\
+Ram & \code{married-to} & Sita \\
+Ram & \code{supervisor-of} & Hari \\
+\bottomrule
+\end{tabularx}
+\vspace{2pt}
+\begin{itemize}
+  \item \textbf{7 sentences, 7 arcs.} The count checks.
+  \item Layout: \emph{Human} at the top; \emph{Employee} and \emph{Supervisor} under it;
+        \emph{Hari}, \emph{Ram}, \emph{Sita} on the bottom row so the two arcs between
+        individuals are horizontal and easy to read.
+\end{itemize}}{%
+\lead{\mk{Three things the examiner is testing here}}
+\begin{itemize}
+  \item \textbf{1. \emph{Supervisor} is used two ways in one question.}
+  \begin{itemize}
+    \item In (iv) and (v) it is a \textbf{class} node, reached by \code{isa} and
+          \code{instance}.
+    \item In (vii) \code{supervisor-of} is a \textbf{relation arc between two
+          individuals}, Ram to Hari. \mk{It is not the class node.}
+    \item Drawing an arc from Hari to the \emph{Supervisor} class is the mistake this
+          set is built to catch.
+  \end{itemize}
+  \item \textbf{2. Sita is an instance of \emph{Human} directly}, not of Employee or
+        Supervisor. The sentences never say what she does, so do not invent a class for
+        her. \mk{Adding information the sentences do not give loses
+        marks}, however sensible it looks.
+  \item \textbf{3. \code{married-to} is symmetric.} A semantic net arc is directed, so
+        either draw a \textbf{double-headed} arrow or add the inverse arc
+        \emph{Sita} \code{married-to} $\rightarrow$ \emph{Ram}, and say which convention
+        you used.
+  \begin{itemize}
+    \item This is the \emph{``relationships among attributes''} issue from \S5.3: inverse
+          and symmetric relations have to be handled explicitly, because the formalism
+          does not know they exist.
+  \end{itemize}
+\end{itemize}}
+
+%=======================================================================
+\T{5.N.7 FOPL first, then the net}
+
+\creamq{Convert the following sentences into FOPL and represent using a semantic network}{\m{2+6}}
+{\color{sub}\footnotesize \tP{1} \yr{81 Ash \m{2+6}} \gap$\cdot$\gap
+\mk{the only set that asks for FOPL as well as the drawing}, so it is
+worth doing every set this way in practice \gap$\cdot$\gap the FOPL is free marks: it is
+the arc list written as predicates}
+
+\begin{asked}{81 Ash \textperiodcentered{} Q6 \textperiodcentered{} \m{2+6}}
+What are Frames and Sematic Network? Convert the following sentences into FOPL and
+represent using semantic network.
+\begin{itemize}[topsep=1pt]
+  \item i) Ram is a person. \quad ii) Person is an animal. \quad
+        iii) Ram likes Jhilke. \quad iv) Jhilke is a cat.
+  \item v) Cat eats fish. \quad vi) Cat is an animal. \quad vii) fish is an animal.
+\end{itemize}
+\end{asked}
+
+\sbsr{0.53}{%
+\lead{Arc list and FOPL, side by side}
+\begin{tabularx}{\linewidth}{@{}L{1.35cm}L{1.85cm}L{1.35cm}X@{}}
+\toprule
+\hrow \thead{From} & \thead{Link} & \thead{To} & \thead{FOPL} \\
+\midrule
+Ram & \code{instance} & Person & \code{instance(Ram, Person)} \\
+Person & \code{isa} & Animal & \code{isa(Person, Animal)} \\
+Ram & \code{likes} & Jhilke & \code{likes(Ram, Jhilke)} \\
+Jhilke & \code{instance} & Cat & \code{instance(Jhilke, Cat)} \\
+Cat & \code{eats} & Fish & \emph{see below} \\
+Cat & \code{isa} & Animal & \code{isa(Cat, Animal)} \\
+Fish & \code{isa} & Animal & \code{isa(Fish, Animal)} \\
+\bottomrule
+\end{tabularx}
+\vspace{2pt}
+\begin{itemize}
+  \item \textbf{7 sentences, 7 arcs.} The count checks.
+  \item \mk{The rule for turning an arc into FOPL}: an arc
+        $A \xrightarrow{R} B$ becomes the binary predicate $R(A,B)$, with \code{isa} used
+        between classes and \code{instance} between an individual and its class. Nothing
+        else is needed for six of the seven.
+\end{itemize}}{%
+\lead{\mk{Sentence (v) is the one worth thinking about}}
+\begin{itemize}
+  \item \emph{``Cat eats fish''} is a statement about \textbf{every} cat and
+        \textbf{some} fish, so its honest FOPL is
+        $$\forall x\,\big(Cat(x) \Rightarrow \exists y\,(Fish(y) \wedge eats(x,y))\big)$$
+  \item The net can only draw \textbf{one arc}, \emph{Cat} \code{eats}
+        $\rightarrow$ \emph{Fish}, class to class.
+  \item \mk{Write both, and say what is lost}: the arc records the
+        relation but throws away the quantifiers. That single remark is the entire
+        \emph{``a semantic net cannot express quantification''} limitation, evidenced on
+        the examiner's own data.
+  \item If you want the flat version for the arc table, \code{eats(Cat, Fish)} is what
+        every deck writes and is accepted.
+\end{itemize}
+\lead{Layout}
+\begin{itemize}
+  \item \emph{Animal} on top, with \textbf{three} \code{isa} arcs into it, from
+        \emph{Person}, \emph{Cat} and \emph{Fish}.
+  \item \emph{Ram} under \emph{Person}, \emph{Jhilke} under \emph{Cat}, and the
+        \code{likes} arc running horizontally between the two individuals.
+  \item \mk{The net has a nice shape here}: two parallel
+        individual-to-class chains joined at the top by \emph{Animal} and at the bottom by
+        \code{likes}. Draw it that way and the seven arcs never cross.
+\end{itemize}}
+
+%=======================================================================
+\T{5.N.8 Birds: Tweety and Sweety}
+
+\creamq{What are frames and semantic nets? Convert the given sentences into a semantic net}{\m{2+6}}
+{\color{sub}\footnotesize \tP{1} \yr{\textbf{\textit{77 Ch}} \m{2+6}} \gap$\cdot$\gap
+\mk{two sentences here need more than one arc each}, which is what
+makes this set harder than it looks \gap$\cdot$\gap the same paper asks conceptual
+dependency and scripts at Q\,8, so \S5.7 of the theory is on the same sheet}
+
+\begin{asked}{\textbf{\textit{77 Ch}} \textperiodcentered{} Q6 \textperiodcentered{} \m{2+6}}
+What are Frames and Semantic Net? Convert the given sentences in semantic Net:
+\begin{itemize}[topsep=1pt]
+  \item Tweety and Sweety are birds. \quad Tweety has a red beak. \quad
+        Sweety is Tweety's child.
+  \item A crow is a bird. \quad Birds can fly. \quad Sparrow is a bird. \quad
+        Sparrow has a wing.
+\end{itemize}
+\end{asked}
+
+\sbsr{0.55}{%
+\begin{tabularx}{\linewidth}{@{}L{1.6cm}L{2.2cm}X@{}}
+\toprule
+\hrow \thead{From} & \thead{Link} & \thead{To} \\
+\midrule
+Tweety & \code{instance} & Bird \\
+Sweety & \code{instance} & Bird \\
+Tweety & \code{has-part} & Beak \\
+Beak & \code{is-coloured} & Red \\
+Sweety & \code{child-of} & Tweety \\
+Tweety & \code{parent-of} & Sweety \quad {\footnotesize\color{sub}(inverse)} \\
+Crow & \code{isa} & Bird \\
+Sparrow & \code{isa} & Bird \\
+Bird & \code{can} & Fly \\
+Sparrow & \code{has-part} & Wing \\
+\bottomrule
+\end{tabularx}
+\vspace{2pt}
+\begin{itemize}
+  \item \textbf{7 sentences, 10 arcs.} Here the count does \emph{not} match one to one,
+        and that is the point:
+  \begin{itemize}
+    \item \emph{Tweety and Sweety are birds} is \textbf{two} \code{instance} arcs, one
+          per bird.
+    \item \emph{Tweety has a red beak} is \textbf{two} arcs: the beak is a part of Tweety,
+          and \emph{red} is a property of the \textbf{beak}, not of Tweety.
+          \mk{Drawing one arc \emph{Tweety} \code{red-beak}
+          $\rightarrow$ \emph{Red} loses the mark} $-$ the colour belongs to the part.
+    \item \emph{Sweety is Tweety's child} is one arc, but the \textbf{inverse} arc is
+          worth drawing and labelling.
+  \end{itemize}
+\end{itemize}}{%
+\figT{c5_semnet_bird.png}
+{\footnotesize\color{sub} \mk{The shape to copy}, from PS Sir's deck:
+\emph{Animal} $\leftarrow$ \emph{Bird} $\leftarrow$ \emph{Robin} $\leftarrow$
+\emph{Rusty} / \emph{Red}, with \code{hasPart} $\rightarrow$ \emph{Wing} drawn once on
+the \emph{Bird} class. Substitute this paper's nodes. Source: PS Sir ch5.}
+\begin{itemize}
+  \item \mk{Note to add}: \emph{Sparrow has a wing} is drawn as the
+        paper gives it, on \emph{Sparrow}, but wings are a property of \textbf{all} birds
+        $-$ moving \code{has-part} $\rightarrow$ \emph{Wing} up to the \emph{Bird} class
+        would let Tweety, Sweety, Crow and Sparrow inherit it from one arc.
+  \item \emph{Birds can fly} is on the class, so every bird inherits it. That is also the
+        standard \textbf{exception} example: a penguin is a bird and cannot fly, and a
+        semantic net has no way to override an inherited property. Frames do, with a
+        default.
+\end{itemize}}
+
+%=======================================================================
+\T{5.N.9 A semantic net about the AI course itself}
+
+\creamq{Draw a sample net about your course AI to demonstrate the features and qualities of a semantic net}{\m{7}}
+{\color{sub}\footnotesize \tP{1} \yr{\textit{72 Ma} \m{7}} \gap$\cdot$\gap
+\mk{the only open-ended drawing question in the papers}: the content is
+yours, the marks are for demonstrating the \emph{features} \gap$\cdot$\gap so build the
+net so that each feature appears at least once, and label them}
+
+\begin{asked}{\textit{72 Ma} \textperiodcentered{} Q5 \textperiodcentered{} \m{7}}
+What is a semantic net? Draw a sample net about your course AI to demonstrate the
+knowledge representation features and qualities of semantic net.
+\end{asked}
+
+\sbs{%
+\lead{A net that hits every feature}
+\begin{tabularx}{\linewidth}{@{}L{2.5cm}L{2.35cm}X@{}}
+\toprule
+\hrow \thead{From} & \thead{Link} & \thead{To} \\
+\midrule
+Elective & \code{isa} & Course \\
+AI (CT 710) & \code{instance} & Course \\
+Course & \code{has-part} & Chapter \\
+AI (CT 710) & \code{credit-hours} & 3 \\
+AI (CT 710) & \code{semester} & IV/I \\
+AI (CT 710) & \code{programme} & BEI \\
+Search & \code{part-of} & AI (CT 710) \\
+A* & \code{isa} & Search \\
+Student & \code{studies} & AI (CT 710) \\
+Ram & \code{instance} & Student \\
+AI (CT 710) & \code{taught-by} & Teacher \\
+Teacher & \code{isa} & Person \\
+Student & \code{isa} & Person \\
+\bottomrule
+\end{tabularx}}{%
+\lead{\mk{Label the features on the drawing}, one arrow each}
+\begin{itemize}
+  \item \textbf{Class hierarchy} $-$ \emph{Person} $\leftarrow$ \emph{Student} /
+        \emph{Teacher}, joined by \code{isa}.
+  \item \textbf{Instances} $-$ \emph{Ram} \code{instance} $\rightarrow$ \emph{Student}.
+        Point out that \code{isa} and \code{instance} are different links.
+  \item \textbf{Inheritance} $-$ anything put on \emph{Person} is available to
+        \emph{Ram} through two arcs. Write the chain out.
+  \item \textbf{Part-whole} $-$ \emph{Search} \code{part-of} $\rightarrow$ \emph{AI},
+        which does \textbf{not} inherit the way \code{isa} does. Saying that is worth a
+        mark on its own.
+  \item \textbf{Attribute arcs} $-$ \emph{credit-hours}, \emph{semester},
+        \emph{programme}: values rather than objects.
+  \item \textbf{Intersection search} $-$ start from \emph{Ram} and from \emph{A*} and the
+        two wavefronts meet at \emph{AI (CT 710)}, which answers
+        \emph{``what connects Ram and A*?''} without anyone having asked that question in
+        advance.
+  \item \mk{Close on the limitation}, because the question says
+        \emph{qualities}: nothing in this net can say \emph{``no student takes more than
+        six electives''} or \emph{``AI is not a lab course''}. No quantifiers, no
+        negation.
+\end{itemize}}
+
+%=======================================================================
+\T{5.N.10 Converting a semantic net into a frame}
+
+\creamq{Compare semantic net and frame. How do you convert a semantic net into a frame? Explain with example}{\m{3+5}}
+{\color{sub}\footnotesize \tP{1} \yr{\texttt{81 Ba} \m{3+5}} \gap$\cdot$\gap
+the comparison table is \S5.6 of the theory \gap$\cdot$\gap
+\mk{worked here on the Pee-wee-Reese net of \S5.N.2}, because that is
+the set the textbook itself converts, and both halves are published figures}
+
+\begin{asked}{\texttt{81 Ba} \textperiodcentered{} Q6 \textperiodcentered{} \m{3+5}}
+Compare semantic net and frame. How you convert semantic net into frame? Explain with
+example.
+\end{asked}
+
+\sbsr{0.44}{%
+\lead{The five steps, applied}
+\begin{itemize}
+  \item \textbf{1. Every node becomes a frame.} The net of \S5.N.2 has seven nodes, so the
+        frame system has seven frames: \emph{Person}, \emph{Adult-Male},
+        \emph{ML-Baseball-Player}, \emph{Fielder}, \emph{Pee-Wee-Reese},
+        \emph{ML-Baseball-Team}, \emph{Brooklyn-Dodgers}.
+  \item \textbf{2. Every outgoing arc becomes a slot.} Arc label $\rightarrow$ slot name,
+        arc target $\rightarrow$ filler. \emph{Adult-Male} \code{height} $\rightarrow$
+        \emph{5-10} becomes a \code{height} slot in the \emph{Adult-Male} frame with
+        filler \emph{5-10}.
+  \item \textbf{3. \code{isa} and \code{instance} become the class link}, not ordinary
+        slots. \emph{Fielder} gets \code{isa: ML-Baseball-Player} and is a
+        \textbf{subclass} frame; \emph{Pee-Wee-Reese} gets \code{instance: Fielder} and is
+        an \textbf{instance} frame.
+  \item \textbf{4. A filler that has its own frame stays a pointer.} \emph{Pee-Wee-Reese}
+        \code{team} $\rightarrow$ \emph{Brooklyn-Dodgers} is a link to that frame, not the
+        string. \mk{This is what makes the result a frame system rather
+        than seven separate tables.}
+  \item \textbf{5. Push each property to the highest class that has it}, and let everything
+        below inherit. \code{height} sits on \emph{Adult-Male},
+        \code{batting-average} on \emph{ML-Baseball-Player}, and Pee-Wee-Reese overrides
+        both with his own values.
+\end{itemize}
+\lead{\mk{Then check, and say you checked}}
+\begin{itemize}
+  \item \textbf{No information may be lost.} Count the arcs in the net, count the filled
+        slots in the frames. They must agree.
+  \item \textbf{What the frames gained}: \emph{cardinality} (6,000,000,000 persons),
+        \emph{defaults} (\emph{handed: Right}), and slots marked with \code{*} for values
+        that belong to the class rather than to each member. None of those can be drawn in
+        a net.
+\end{itemize}}{%
+\figT{c5_frame_system.png}
+{\footnotesize\color{sub} \mk{The net of \S5.N.2 after conversion.}
+Seven frames, each slot either an inherited class link, a value, or a pointer to another
+frame. The \code{*} marks a value stored on the class. Compare with
+\code{c5\_semnet\_peewee} above: same knowledge, different formalism. Source: PS Sir ch5,
+after Rich and Knight Fig 9.5.}
+\lead{The reverse direction, if asked}
+\begin{itemize}
+  \item Frame $\rightarrow$ net is step 1 to 4 run backwards: one node per frame, one arc
+        per filled slot, and \code{isa} / \code{instance} arcs from the class links.
+  \item \mk{The conversion is lossy in this direction.} Defaults,
+        cardinalities, type restrictions and demons have no arc to become, so they are
+        simply dropped. Say so $-$ it is the cleanest one-line proof that a frame carries
+        more than a net.
+\end{itemize}}
+
+%=======================================================================
+\T{5.N.11 Semantic net and frame with FOPL statements}
+
+\creamq{Why are semantic networks and frames important in AI? Provide examples of both with FOPL statements}{\m{2+6}}
+{\color{sub}\footnotesize \tP{1} \yr{75 Ba \m{2+6}} \gap$\cdot$\gap
+\mk{three formalisms in one answer} $-$ net, frame and FOPL, all saying
+the same thing \gap$\cdot$\gap the 2-mark opener is the \emph{why they matter} list in
+\S5.6 of the theory}
+
+\begin{asked}{75 Ba \textperiodcentered{} Q6 \textperiodcentered{} \m{2+6}}
+Why semantic network and frames are important in AI? Provide examples of both with FOPL
+statements example.
+\end{asked}
+
+\sbsr{0.45}{%
+\figT{c5_frame_fopl.png}
+{\footnotesize\color{sub} (a) the frame-based knowledge base and (b) the first-order
+sentences that say the same thing. The semantic net is the same picture with the boxes
+redrawn as nodes and the \code{Subset} / \code{Member} labels put on the arcs. Source:
+PS Sir ch5.}}{%
+\lead{The three-way translation table to reproduce}
+\begin{tabularx}{\linewidth}{@{}L{2.15cm}L{2.5cm}X@{}}
+\toprule
+\hrow \thead{Net arc} & \thead{Frame} & \thead{FOPL} \\
+\midrule
+$A \xrightarrow{isa} B$ & \code{isa: B} in frame $A$ & \code{Subset(A, B)}, ie
+$A \subset B$ \\
+$A \xrightarrow{instance} B$ & \code{instance: B} in frame $A$ & \code{Member(A, B)}, ie
+$A \in B$ \\
+$A \xrightarrow{R} v$ on an individual & slot \code{R} with filler $v$ &
+\code{Rel(R, A, v)}, ie $R(A,v)$ \\
+$A \xrightarrow{R} v$ on a class & slot \code{R} on the class frame &
+$\forall x\,(x \in A \Rightarrow R(x,v))$ \\
+\bottomrule
+\end{tabularx}
+\vspace{2pt}
+\begin{itemize}
+  \item Worked on the figure's own data: \code{Subset(Birds, Animals)},
+        \code{Subset(Mammals, Animals)}, \code{Member(Opus, Penguins)},
+        \code{Rel(Legs, Birds, 2)}, \code{Rel(Legs, Mammals, 4)},
+        \code{Rel(Flies, Penguins, F)}, \code{Friend(Opus, Bill)}.
+  \item \mk{The answer structure that scores}: draw the small net, write
+        the same knowledge as two or three frames beside it, then write one FOPL line per
+        arc underneath. Three formalisms, one set of facts, and the marks are for showing
+        they are interchangeable.
+  \item \mk{Close with what FOPL has that neither picture does}:
+        quantifiers, negation and disjunction $-$ and what the pictures have that FOPL
+        does not: inheritance for free, defaults, and a shape a human can check by eye.
+        That is the \emph{``why they are important in AI''} half of the question.
+\end{itemize}}
+
+\hr
+
+{\color{sub}\footnotesize \textbf{Coverage.} All \textbf{12 papers} that set a
+sentence-set conversion are worked above: \yr{72 Ma}, \yr{78 Po} (\S5.N.1);
+\yr{\textbf{73 Bh}}, \yr{\textbf{79 Ch}} (\S5.N.2); \yr{\textbf{\texttt{82 Bh}}},
+\yr{\textbf{81 Ch}}, \yr{\textbf{\texttt{79 Bh}}} (\S5.N.3); \yr{82 Ka} (\S5.N.4);
+\yr{\textbf{\texttt{81 Bh}}} (\S5.N.5); \yr{\texttt{82 Ba}} (\S5.N.6); \yr{81 Ash}
+(\S5.N.7); \yr{\textbf{\textit{77 Ch}}} (\S5.N.8). \S5.N.9 to \S5.N.11 work the three
+remaining drawing questions: the open-ended net \yr{\textit{72 Ma}}, the net-to-frame
+conversion \yr{\texttt{81 Ba}}, and the net/frame/FOPL question \yr{75 Ba}.
+\gap$\cdot$\gap \textbf{Three papers print a defect in their own sentence list}, all
+reproduced above as printed and all flagged: \yr{78 Po} names Sakti Gauchan in a Sandeep
+Lamichane set, \yr{82 Ka} leaves a stray \emph{``10.''} inside a sentence, and
+\yr{\textbf{\texttt{81 Bh}}} calls the dog Figo once and Fido twice.
+\gap$\cdot$\gap \textbf{Nothing in this file is machine-checkable}: a semantic net has no
+arithmetic to recompute, so every arc list above was checked by hand against the OCR
+archive, sentence by sentence, and the arc counts are printed with each answer so the
+reader can check them too.}
