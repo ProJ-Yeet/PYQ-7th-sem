@@ -24,6 +24,8 @@ KR = "Knowledge Representation, Inference and Reasoning"
 
 TARGETS = {
     "master":  ("master", "Artificial Intelligence - Complete Exam Notes.pdf"),
+    "master-num": ("master-num",
+                   "Artificial Intelligence - Complete Solved Problems.pdf"),
     "ch1":     ("ch1-standalone", "Ch1 - Introduction.pdf"),
     "ch2":     ("ch2-standalone", "Ch2 - Problem Solving.pdf"),
     "ch2-num": ("ch2-num-standalone",

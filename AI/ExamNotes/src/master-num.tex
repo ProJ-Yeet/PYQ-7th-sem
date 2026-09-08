@@ -1,0 +1,121 @@
+%=======================================================================
+%  Artificial Intelligence — Complete Solved Problems
+%  The six solved-problem companions (ch 2-7) in syllabus order, then the
+%  abbreviation chart. Companion volume to master.tex; the per-chapter
+%  standalones stay exactly as they are.
+%
+%  Each companion heads itself with a NUMBERED \section, so the section
+%  counter is set before every \input to keep the numbers matching the
+%  chapter numbers -- the same thing each -num-standalone.tex does.
+%=======================================================================
+\documentclass[10pt]{article}
+\input{preamble}
+\usepackage{bookmark}
+
+\begin{document}
+
+% ------------------------------------------------ title page
+\thispagestyle{empty}
+\vspace*{2.0cm}
+\begin{center}
+  {\Huge\bfseries\color{acc} Artificial Intelligence}\\[6pt]
+  {\LARGE\bfseries Complete Solved Problems}\\[14pt]
+  {\large\color{sub} CT 710 (BEI, IV/I) \quad$\cdot$\quad CT 653 (BCT, III/II)
+   \quad$\cdot$\quad CT 78506 (BEX, IV/II)}\\[3pt]
+  {\color{sub} Institute of Engineering, Tribhuvan University}\\[20pt]
+  \begin{minipage}{0.78\textwidth}
+    \color{sub}\small
+    All \textbf{85 solved problems} from the six problem chapters, in one volume. Every
+    problem is a real question drawn from \textbf{all 41 past papers (2069--2082 BS)} and
+    opens with the \textbf{question exactly as the paper prints it}, the paper's own
+    spelling and slips included, so it can be attempted from this PDF alone. Solutions
+    are worked in full: what was calculated, why, and from which formula.\\[8pt]
+    ``Solved Problems'' rather than ``Numerical Problems'': in AI most of these are not
+    numerical. They are crypt-arithmetic puzzles, resolution proofs, semantic nets to
+    draw, search trees to expand and gate networks to train. The ones that \emph{are}
+    numerical $-$ Bayes, entropy and information gain, GA fitness, fuzzy inference,
+    perceptron and Hebbian weights, Hopfield matrices, forward and back propagation $-$
+    sit in the same files.\\[8pt]
+    \textbf{Chapter 1 sets no problems} in 41 papers, so it does not appear here.
+    Theory lives in the companion volume,
+    \textbf{Artificial Intelligence --- Complete Exam Notes}.
+  \end{minipage}
+\end{center}
+
+\vspace{10pt}
+\begin{center}
+\begin{tabularx}{0.94\textwidth}{@{}L{0.9cm}L{5.9cm}L{1.7cm}X@{}}
+\toprule
+\hrow \thead{Ch} & \thead{Topic} & \thead{Problems} & \thead{Biggest family} \\
+2 & Problem Solving & 18 & Crypt-arithmetic, \textbf{31/41 papers} \\
+3 & Search Techniques & 5 & A*, minimax and alpha-beta on printed graphs \\
+4 & Knowledge Representation, Inference and Reasoning & \textbf{31} &
+  Resolution refutation, \textbf{33/41 papers} \\
+5 & Structured Knowledge Representation & 12 &
+  Sentences into a semantic net, \textbf{13/41 papers} \\
+6 & Machine Learning & 10 & ID3, genetic algorithms, fuzzy arithmetic \\
+7 & Applications of AI & 9 & Gate networks, Hopfield, back propagation \\
+\midrule
+& \textbf{Total} & \textbf{85} & \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\par\penalty0\vspace{12pt}
+\begin{center}
+\begin{minipage}{0.88\textwidth}\small\color{sub}
+\mk{Every answer in this volume is machine checked.}
+\code{src/verify.py} recomputes each published result independently from the problem
+statement and asserts it against the printed value $-$ crypt-arithmetic maps by
+exhaustive search (which also reports that \textbf{seven of the thirteen puzzles have
+more than one solution}), jug paths replayed move by move, A* and alpha-beta expansions,
+a first-order resolution prover, Bayes posteriors, entropy and information gain, GA
+fitness, fuzzy memberships, perceptron and Hebbian weights, the Hopfield matrix with its
+recall, and every back-propagation update. \textbf{350 checks, all passing.}
+\end{minipage}
+\end{center}
+
+% ------------------------------------------------ contents
+\cleardoublepage
+\pagestyle{fancy}
+{\Large\bfseries\color{acc} Contents}
+\vspace{-6pt}{\color{acc}\rule{\textwidth}{1.1pt}}\vspace{4pt}
+\begingroup
+\renewcommand{\contentsname}{}
+\setcounter{tocdepth}{1}
+\vspace{-24pt}
+\tableofcontents
+\endgroup
+
+% ------------------------------------------------ chapters
+\cleardoublepage
+\setcounter{section}{1}
+\input{ch2-num}
+
+\cleardoublepage
+\setcounter{section}{2}
+\input{ch3-num}
+
+\cleardoublepage
+\setcounter{section}{3}
+\input{ch4-num}
+
+\cleardoublepage
+\setcounter{section}{4}
+\input{ch5-num}
+
+\cleardoublepage
+\setcounter{section}{5}
+\input{ch6-num}
+
+\cleardoublepage
+\setcounter{section}{6}
+\input{ch7-num}
+
+% ------------------------------------------------ abbreviations
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{section}{Abbreviations}
+\input{abbrev}
+
+\end{document}

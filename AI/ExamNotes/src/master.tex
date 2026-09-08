@@ -1,0 +1,104 @@
+%=======================================================================
+%  Artificial Intelligence — Complete Exam Notes (combined master)
+%  All seven chapters in syllabus order, then Last-Minute Revision and the
+%  abbreviation chart. The six solved-problem companions are collected in
+%  master-num.tex, exactly as Wireless and Data Mining do.
+%=======================================================================
+\documentclass[10pt]{article}
+\input{preamble}
+\usepackage{bookmark}
+
+\begin{document}
+
+% ------------------------------------------------ title page
+\thispagestyle{empty}
+\vspace*{2.0cm}
+\begin{center}
+  {\Huge\bfseries\color{acc} Artificial Intelligence}\\[6pt]
+  {\LARGE\bfseries Complete Exam Notes}\\[14pt]
+  {\large\color{sub} CT 710 (BEI, IV/I) \quad$\cdot$\quad CT 653 (BCT, III/II)
+   \quad$\cdot$\quad CT 78506 (BEX, IV/II)}\\[3pt]
+  {\color{sub} Institute of Engineering, Tribhuvan University}\\[20pt]
+  \begin{minipage}{0.78\textwidth}
+    \color{sub}\small
+    Built from the syllabus, seven lecturers' note sets and \textbf{all 41 past papers
+    (2069--2082 BS)} across the three course codes. Every topic carries a frequency tier
+    counted from those papers, and every count is checked against the paper's own year
+    tags.\\[8pt]
+    Solved problems live in the companion volume,
+    \textbf{Artificial Intelligence --- Complete Solved Problems}: \textbf{85 problems}
+    over six chapters, each opening with the question exactly as its paper prints it.
+    \textbf{Chapter 1 sets no problems} in 41 papers.\\[8pt]
+    \textbf{Short on time?} Go straight to \textbf{\S8, Last-Minute Revision}.
+  \end{minipage}
+\end{center}
+
+\vfill
+\begin{center}
+\begin{tabularx}{0.90\textwidth}{@{}L{1.0cm}XL{1.3cm}L{1.5cm}L{1.6cm}L{1.9cm}@{}}
+\toprule
+\hrow \thead{Ch} & \thead{Topic} & \thead{Hours} & \thead{Papers} & \thead{Marks} &
+  \thead{Problems} \\
+1 & Introduction & 7 & \textbf{41/41} & 337 & --- \\
+2 & Problem Solving & 7 & \textbf{41/41} & 366 & 18 \\
+3 & Search Techniques & 9 & \textbf{41/41} & 392 & 5 \\
+4 & Knowledge Representation, Inference and Reasoning & 4 & \textbf{41/41} &
+  \textbf{638} & \textbf{31} \\
+5 & Structured Knowledge Representation & 4 & 38/41 & 319 & 12 \\
+6 & Machine Learning & 6 & 40/41 & 436 & 10 \\
+7 & Applications of AI & 14 & \textbf{41/41} & \textbf{899} & 9 \\
+\midrule
+& \textbf{Total} & \textbf{51} & & \textbf{3387} & \textbf{85 problems} \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\par\penalty0\vspace{10pt}
+\begin{center}
+\begin{minipage}{0.86\textwidth}\small\color{sub}
+\mk{Read the marks column, not the hours column.} Chapter 4 is
+\textbf{4 syllabus hours} and \textbf{18.8\,\% of every mark ever set} $-$ 2.4 times its
+hour share $-$ because resolution refutation alone is asked in \textbf{33 of the 41
+papers}. Chapter 7 is a quarter of the paper on its own. Chapter 3 is the only chapter
+that is under-asked for its hours.
+\end{minipage}
+\end{center}
+\vspace{1.2cm}
+
+% ------------------------------------------------ contents
+\cleardoublepage
+\pagestyle{fancy}
+{\Large\bfseries\color{acc} Contents}
+\vspace{-6pt}{\color{acc}\rule{\textwidth}{1.1pt}}\vspace{4pt}
+\begingroup
+\renewcommand{\contentsname}{}
+\setcounter{tocdepth}{1}
+\vspace{-24pt}
+\tableofcontents
+\endgroup
+
+% ------------------------------------------------ chapters
+\cleardoublepage
+\input{ch1}
+\cleardoublepage
+\input{ch2}
+\cleardoublepage
+\input{ch3}
+\cleardoublepage
+\input{ch4}
+\cleardoublepage
+\input{ch5}
+\cleardoublepage
+\input{ch6}
+\cleardoublepage
+\input{ch7}
+
+% ------------------------------------------------ revision + abbreviations
+\input{revision}
+
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{section}{Abbreviations}
+\input{abbrev}
+
+\end{document}

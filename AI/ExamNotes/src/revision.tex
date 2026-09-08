@@ -1,0 +1,382 @@
+%=======================================================================
+%  LAST-MINUTE REVISION
+%  Master-only. Every count here is the one the chapter itself prints,
+%  which tiers.py checks against that chapter's own year tags. Nothing in
+%  this section is new material: every line points back into a chapter.
+%=======================================================================
+\cleardoublepage
+\section{Last-Minute Revision}
+
+{\color{sub}\footnotesize Built from the frequency analysis of all \textbf{41 papers,
+2069--2082 BS}, across CT 653, CT 710 and CT 78506. Nothing here is new: every line
+points back into a chapter. \gap$\cdot$\gap \textbf{Short on time?} \S R.5 is a
+one-day plan; \S R.4 is the fifteen questions to revise if you have an evening.}
+
+\hr
+
+\T{R.1 Must Know \mk{(every TOP-tier topic --- these carry the paper)}}
+
+{\color{sub}\footnotesize A topic is TOP tier when \textbf{8 or more} of the 41 papers
+ask it. There are \textbf{27}, and every chapter has at least two, so no chapter is safe
+to skip.}
+
+\vspace{2pt}
+\begin{tabularx}{\textwidth}{@{}L{0.7cm}L{5.5cm}L{1.35cm}X@{}}
+\toprule
+\hrow \thead{Ch} & \thead{Topic} & \thead{Papers} & \thead{The one thing to be able to do} \\
+4 & \textbf{Resolution refutation} & \textbf{33/41} & Negate the goal, convert to CNF,
+  resolve to the empty clause. \mk{The single most examined skill} \\
+2 & \textbf{Crypt-arithmetic by constraint satisfaction} & \textbf{31/41} &
+  Column by column with carries, state the constraints, show the map, verify the sum \\
+7 & \textbf{The steps of NLP, with a block diagram} & \textbf{23/41} &
+  Lexical, syntactic, semantic, discourse, pragmatic $-$ five boxes and one example each \\
+6 & \textbf{Genetic algorithm} & \textbf{21/41} & Flowchart $+$ selection, crossover,
+  mutation $+$ one worked generation \\
+7 & \textbf{Perceptron; design a net for AND / OR / XOR} & \textbf{17/41} &
+  Train the gate in bipolar form; prove XOR needs two layers, then build it \\
+7 & \textbf{Expert system architecture} & \textbf{17/41} & Four boxes: knowledge base,
+  working memory, inference engine, user interface. Add the explanation facility \\
+6 & \textbf{Fuzzy logic and fuzzy inference} & \textbf{16/41} & Fuzzifier
+  $\rightarrow$ inference engine $+$ rule base $\rightarrow$ defuzzifier, with membership
+  curves \\
+4 & Bayes' theorem and statistical reasoning & 15/41 &
+  $P(A|B) = P(B|A)P(A)/P(B)$, and the denominator by total probability \\
+5 & Semantic nets Vs frames, with examples & 13/41 & One comparison table plus two small
+  drawings; list advantages and limitations \\
+7 & Problems and challenges in NLP & 13/41 & Ambiguity at every level, then context,
+  variation, new words, pronouns \\
+2 & What is a CSP? List its constraints & 12/41 & Variables, domains, constraints, then
+  unary / binary / higher-order \\
+6 & Supervised Vs unsupervised learning & 12/41 & The comparison table, then
+  \mk{clustering is unsupervised}, naming K-means \\
+7 & Machine vision: role, steps, applications & 12/41 & Acquisition to interpretation,
+  eight stages, walked through one real scenario \\
+4 & Forward Vs backward chaining & 11/41 & Data driven Vs goal driven, one worked
+  example each, when to use which \\
+7 & Expert system advantages, limits, Vs human experts & 11/41 & Permanent, consistent,
+  reproducible against no common sense, cannot learn \\
+\bottomrule
+\end{tabularx}
+
+\par\penalty0\vspace{4pt}
+\begin{tabularx}{\textwidth}{@{}L{0.7cm}L{5.5cm}L{1.35cm}X@{}}
+\toprule
+\hrow \thead{Ch} & \thead{Topic} & \thead{Papers} & \thead{The one thing to be able to do} \\
+1 & Define AI, and its subfields & 10/41 & The four-quadrant definition, then six
+  subfields with one line each \\
+1 & The Turing test, and passing it & 10/41 & The three-room setup, the total Turing
+  test, and the standard objections \\
+3 & BFS Vs DFS, on the performance criteria & 10/41 & Complete, optimal, time, space $-$
+  one table, with $b^d$ against $bm$ \\
+4 & Why CNF, and the steps to convert & 9/41 & Eight steps in order; the two that
+  reorder are Skolemization and dropping $\forall$ \\
+5 & What is a semantic net, with an example & 9/41 & Nodes, labelled arcs,
+  \mk{isa between classes, instance to an individual} \\
+7 & Kohonen network / self-organizing map & 9/41 & Five steps, winner by Euclidean
+  distance, neighbours updated too \\
+1 & Applications of AI in daily life & 8/41 & Two named fields, worked, not a list of
+  buzzwords \\
+7 & The neuron model, McCulloch-Pitts, activation & 8/41 & Weight, sum, threshold;
+  MP weights are \emph{chosen}, a perceptron's are learnt \\
+7 & Back-propagation & 8/41 & Six steps; needed the moment there is a hidden layer \\
+7 & Hopfield network & 8/41 & Symmetric weights, $w_{ii}=0$, asynchronous update,
+  content-addressable memory \\
+7 & Expert system development stages & 8/41 & Six stages, and name the knowledge
+  engineer \\
+7 & The four levels of NLP analysis and their ambiguity & 8/41 & Phonetic, syntactic,
+  semantic, pragmatic $-$ one ambiguity example each \\
+\bottomrule
+\end{tabularx}
+
+\par\penalty0\vspace{4pt}
+\begin{center}\fbox{\begin{minipage}{0.94\textwidth}\small
+\mk{Where the marks actually are.} Chapter 7 is \textbf{899 marks, 26.5\,\%
+of everything ever set}, and chapter 4 is \textbf{638 marks from only 4 syllabus hours} $-$
+\mk{2.4 times its hour share}. Those two chapters alone are
+\textbf{45\,\% of the paper}. But chapters 1, 2 and 5 are cheap and reliable: 1022 marks
+between them for topics that are mostly fixed lists. \mk{Revise 4 and 7
+first, then 1, 2 and 5 for the easy marks, and give 3 whatever is left} $-$ it is
+the only chapter that is under-asked for its hours.
+\end{minipage}}\end{center}
+
+\hr
+
+\T{R.2 Must Memorize \mk{(the lists and formulas you cannot derive in the hall)}}
+
+\sbs{%
+\lead{Ch 1 --- Introduction}
+\begin{itemize}
+  \item \textbf{Four definitions of AI}: thinking humanly $|$ thinking rationally $|$
+        acting humanly $|$ acting rationally. \mk{Turing test sits in
+        ``acting humanly''}
+  \item \textbf{PEAS} $=$ Performance measure, Environment, Actuators, Sensors
+  \item \textbf{Agent types}, simplest first: simple reflex, model-based reflex,
+        goal-based, utility-based, \mk{learning}
+  \item \textbf{Environment properties}: fully / partially observable, deterministic /
+        stochastic, episodic / sequential, static / dynamic, discrete / continuous,
+        single / multi agent
+  \item \textbf{Turing test} $-$ human interrogator, human, machine, text only, 5 minutes,
+        30\,\% deception. \textbf{Total} Turing test adds vision and robotics
+\end{itemize}
+\lead{Ch 2 --- Problem Solving}
+\begin{itemize}
+  \item \textbf{CSP} $= \langle X, D, C \rangle$: variables, domains, constraints
+        (unary, binary, higher-order)
+  \item \textbf{Crypt-arithmetic constraints}: one digit per letter, all distinct, no
+        leading zero, carries are \mk{0 or 1}, at most 10 distinct
+        letters
+  \item \textbf{Well-defined problem} $=$ initial state, actions / operators, transition
+        model, goal test, path cost
+  \item \textbf{Production system} $=$ rule base $+$ working memory $+$ control strategy
+        (recognize, resolve conflict, act)
+\end{itemize}}{%
+\lead{Ch 3 --- Search}
+\begin{itemize}
+  \item \textbf{BFS} complete, optimal for unit cost, time and space $O(b^d)$
+  \item \textbf{DFS} not complete, not optimal, time $O(b^m)$, space
+        \mk{$O(bm)$} $-$ the one advantage
+  \item \textbf{A*}: $f(n) = g(n) + h(n)$; optimal iff $h$ is
+        \mk{admissible} ($h \le h^{*}$), and optimal on graphs iff
+        $h$ is \textbf{consistent} ($h(n) \le c(n,n') + h(n')$)
+  \item \textbf{Greedy} uses $h$ alone $\rightarrow$ fast, not optimal
+  \item \textbf{Alpha-beta} best case $O(b^{d/2})$, i.e.\ \mk{twice the
+        depth in the same time}; $\alpha$ is Max's best so far, $\beta$ is Min's;
+        prune when $\alpha \ge \beta$
+  \item \textbf{Hill-climbing traps}: local maximum, plateau, ridge. Cures: random
+        restart, simulated annealing, sideways moves
+\end{itemize}
+\lead{Ch 4 --- KR and reasoning}
+\begin{itemize}
+  \item \textbf{CNF in 8 steps}: remove $\leftrightarrow$; remove $\rightarrow$; push
+        $\neg$ inwards; standardise variables apart; move quantifiers left;
+        \mk{Skolemize} ($\exists$); drop $\forall$; distribute
+        $\vee$ over $\wedge$; split into clauses
+  \item \textbf{Resolution refutation}: KB $\cup \{\neg\text{goal}\}$ to CNF, resolve
+        complementary literals with the MGU, derive the \textbf{empty clause}
+  \item \textbf{Modus ponens} $A,\ A \rightarrow B \vdash B$
+  \item \textbf{Bayes} $P(A|B) = \dfrac{P(B|A)\,P(A)}{P(B)}$, \
+        $P(B) = P(B|A)P(A) + P(B|\neg A)P(\neg A)$
+  \item \textbf{Belief network joint}
+        $P(x_1 \ldots x_n) = \prod_i P(x_i \mid parents(x_i))$
+\end{itemize}}
+
+\penalty0\vspace{3pt}
+\sbs{%
+\lead{Ch 5 --- Structured KR}
+\begin{itemize}
+  \item \mk{Class to class is \code{isa}; individual to class is
+        \code{instance}} $-$ the commonest lost mark in the subject
+  \item \textbf{Four adequacies}: representational, inferential, inferential
+        \emph{efficiency}, acquisitional
+  \item \textbf{Five issues in KR}: important attributes; relations among attributes;
+        granularity; sets of objects; finding the right structure
+  \item \textbf{Frame} $=$ slots $+$ facets (value, default, range, if-added,
+        if-needed, cardinality)
+  \item \textbf{CD primitives}: ATRANS, PTRANS, PROPEL, MOVE, GRASP, INGEST, EXPEL,
+        MTRANS, MBUILD, SPEAK, ATTEND
+  \item \textbf{Script} $=$ entry conditions, roles, props, results, scenes
+\end{itemize}
+\lead{Ch 6 --- Machine Learning}
+\begin{itemize}
+  \item \textbf{Entropy} $H(S) = -\sum p_i \log_2 p_i$; \
+        \textbf{Gain} $= H(S) - \sum_v \frac{|S_v|}{|S|}H(S_v)$
+  \item $H = 0$ pure, $H = 1$ at 50/50. \mk{Highest gain wins}
+  \item \textbf{GA steps}: initialise $\rightarrow$ evaluate fitness $\rightarrow$
+        select $\rightarrow$ crossover $\rightarrow$ mutate $\rightarrow$ replace
+        $\rightarrow$ terminate
+  \item Crossover rate \textbf{0.6--0.9}, mutation \textbf{0.001--0.01}.
+        \mk{Mutation is the only source of new genes}
+  \item \textbf{Fuzzy ops}: union $\max$, intersection $\min$, complement $1-\mu$,
+        bold union $\min(1, \mu_A{+}\mu_B)$, bold intersection
+        $\max(0, \mu_A{+}\mu_B{-}1)$
+  \item \textbf{Fuzzy inference}: fuzzify $\rightarrow$ rule strength (AND $=\min$,
+        OR $=\max$) $\rightarrow$ implication (clip) $\rightarrow$ aggregate ($\max$)
+        $\rightarrow$ defuzzify (centroid)
+  \item \textbf{Boltzmann} $p_i = e^{-\varepsilon_i/kT} \big/ \sum_j
+        e^{-\varepsilon_j/kT}$
+\end{itemize}}{%
+\lead{Ch 7 --- Applications}
+\begin{itemize}
+  \item \textbf{Neuron} $net = \sum w_i x_i + b$, \ $y = f(net)$
+  \item \textbf{Perceptron rule} $w_i \mathrel{+}= \alpha\,t\,x_i$,
+        \mk{only on an error}
+  \item \textbf{Hebb rule} $w_i \mathrel{+}= x_i t$, \textbf{every} pattern, one pass
+  \item \textbf{Delta rule} $w_i \mathrel{+}= \alpha (t - y_{in}) x_i$
+  \item \textbf{Back-prop}: $\delta_{out} = (y-t)\,y(1-y)$; \
+        $\delta_j = h_j(1-h_j)\sum_k \delta_k w_{jk}$; \
+        $w \leftarrow w - \eta\,\delta\,(\text{input})$
+  \item Sigmoid $\sigma(z) = 1/(1+e^{-z})$, \
+        \mk{$\sigma' = \sigma(1-\sigma)$}
+  \item \textbf{Hopfield} $w_{ij} = \sum_p s_i^{(p)}s_j^{(p)}$ for $i \neq j$,
+        $w_{ii}=0$; capacity $p \le 0.15N$; update
+        \mk{one unit at a time}
+  \item \textbf{SOM}: winner by $\min \sum (x_i - w_{ij})^2$, then
+        $w_{ij} \mathrel{+}= \alpha (x_i - w_{ij})$ for the winner
+        \mk{and its neighbours}
+  \item \textbf{Expert system} $=$ knowledge base $+$ working memory $+$ inference
+        engine $+$ user interface $+$ explanation facility
+  \item \textbf{NLP} $=$ lexical, syntactic, semantic, discourse, pragmatic
+  \item \textbf{Machine vision} $=$ acquisition, enhancement, restoration, morphology,
+        segmentation, description, recognition, interpretation
+\end{itemize}}
+
+\hr
+
+\T{R.3 Must Practice \mk{(the worked problems, ranked by how many papers set them)}}
+
+{\color{sub}\footnotesize \textbf{85 problems} across six companions. Every one opens with
+the question exactly as its paper prints it, so each can be attempted from the PDF alone.
+Chapter 1 sets no problems in 41 papers and has no companion.}
+
+\vspace{2pt}
+\begin{tabularx}{\textwidth}{@{}L{0.7cm}L{5.2cm}L{1.5cm}L{1.4cm}X@{}}
+\toprule
+\hrow \thead{Ch} & \thead{Problem family} & \thead{Papers} & \thead{Problems} &
+  \thead{Do these first} \\
+4 & \textbf{Resolution refutation} & \textbf{33/41} & 10 & The food / likes-peanuts set
+  (7 papers), Charlie-the-horse (6), Colonel West (4) \\
+2 & \textbf{Crypt-arithmetic} & \textbf{31/41} & 13 & BASE$+$BALL$=$GAMES (8 papers),
+  SEND$+$MORE$=$MONEY (6) \\
+7 & \textbf{Design a net for a logic gate} & \textbf{17/41} & 5 &
+  Perceptron AND, then XOR both halves: the proof and the two-layer net \\
+6 & \textbf{Genetic algorithm generations} & \textbf{21/41} & 3 &
+  The knapsack, where \mk{mutation, not crossover, finds the optimum} \\
+5 & \textbf{Sentences into a semantic net} & \textbf{13/41} & 12 &
+  Any three; six of the eleven sets are the same three figures renamed \\
+6 & Fuzzy arithmetic & 16/41 & 3 & The set operations, then one full Mamdani inference \\
+4 & \textbf{Bayes numericals} & 15/41 & 12 & B5 the rare-disease test, B7 the defective
+  bulb, B10 the wet-grass network \\
+4 & CNF conversion & 9/41 & 4 & The four formulas the papers actually print \\
+3 & A*, best-first, minimax and alpha-beta on a printed graph & 8/41 & 5 &
+  Both A* graphs, then alpha-beta on the 2079 Chaitra tree \\
+6 & ID3: pick the root attribute & 6/41 & 4 &
+  \mk{Play golf AND play cricket} $-$ same-looking tables, different
+  answers \\
+7 & Hebbian AND network & 4/41 & 1 & One pass to $(2,2,-2)$; know why binary fails \\
+2 & Water jug, river crossing, tic-tac-toe & 5/41 & 5 & The 4-and-3 jug, both directions \\
+7 & Forward propagation on the printed net & 2/41 & 1 &
+  \mk{Both ReLU units are dead}: only $a$ and $b$ can be updated \\
+7 & Hopfield weight matrix and recall & 1/41 & 1 & Three \emph{orthogonal} patterns, or
+  four units cannot hold them \\
+7 & Back-propagation, one step & 8/41 & 1 & Nine parameters; the output must move
+  towards the target \\
+7 & Parse tree & 1/41 & 1 & Five words, eight nodes, three minutes \\
+\bottomrule
+\end{tabularx}
+
+\hr
+
+\T{R.4 Most Repeated PYQs \mk{(if you revise only fifteen questions, revise these)}}
+
+{\color{sub}\footnotesize Ordered by how many of the 41 papers set them. Together these
+fifteen have carried well over half the marks ever awarded in this subject.}
+
+\begin{enumerate}[topsep=2pt, itemsep=1.5pt, leftmargin=*]
+  \item \textbf{Assume the following facts. Convert to clause form and prove the goal by
+        resolution refutation.} \hfill \m{6}\m{8}\m{2+6} \yr{33 papers}
+  \item \textbf{Solve the following crypt-arithmetic problem by defining it as a
+        constraint satisfaction problem.} \hfill \m{6}\m{8}\m{2+6} \yr{31 papers}
+  \item \textbf{What is NLP? Explain the different steps involved, with a block diagram
+        and suitable examples.} \hfill \m{5}\m{6}\m{8}\m{2+6} \yr{23 papers}
+  \item \textbf{What is a genetic algorithm? Explain all its steps with a block diagram
+        and its operators.} \hfill \m{5}\m{7}\m{8}\m{2+6} \yr{21 papers}
+  \item \textbf{What is a perceptron? How can we design a neural network that acts as an
+        AND / OR / XOR gate?} \hfill \m{6}\m{7}\m{10}\m{1+8} \yr{17 papers}
+  \item \textbf{What is an expert system? Explain its general architecture with a block
+        diagram.} \hfill \m{4}\m{6}\m{8}\m{1+7} \yr{17 papers}
+  \item \textbf{What is fuzzy logic? When do we use it? Explain fuzzy inference with a
+        suitable example.} \hfill \m{4}\m{2+6}\m{3+7} \yr{16 papers}
+  \item \textbf{Explain Bayes' theorem and its role in reasoning; then the given
+        numerical.} \hfill \m{4}\m{2+6}\m{8} \yr{15 papers}
+  \item \textbf{Explain semantic nets and frames with examples; compare them and list
+        their advantages and limitations.} \hfill \m{4+4}\m{7}\m{8} \yr{13 papers}
+  \item \textbf{What are the problems associated with NLP?} \hfill \m{2}\m{3}\m{5}
+        \yr{13 papers}
+  \item \textbf{Differentiate supervised and unsupervised learning. Which category is
+        clustering? Justify, stating algorithms.} \hfill \m{4}\m{5}\m{2+4} \yr{12 papers}
+  \item \textbf{What is a constraint satisfaction problem? Discuss it and list its
+        constraints.} \hfill \m{2}\m{4}\m{2+6} \yr{12 papers}
+  \item \textbf{What is machine vision? List the steps involved and its applications.}
+        \hfill \m{3}\m{4}\m{2+5}\m{2+6} \yr{12 papers}
+  \item \textbf{Differentiate between forward and backward chaining with a suitable
+        example.} \hfill \m{4}\m{2+4}\m{6} \yr{11 papers}
+  \item \textbf{What are the advantages and disadvantages of an expert system? Compare it
+        with a human expert.} \hfill \m{4}\m{7}\m{8} \yr{11 papers}
+\end{enumerate}
+
+\par\penalty0\vspace{4pt}
+\begin{center}\fbox{\begin{minipage}{0.94\textwidth}\small
+\mk{The examiner's habit worth knowing.} Questions arrive in \emph{pairs},
+and the same pairs recur: \textbf{crypt-arithmetic $+$ well-defined problem};
+\textbf{resolution $+$ CNF}; \textbf{forward chaining $+$ the Colonel West premises};
+\textbf{issues in KR $+$ draw the semantic net}; \textbf{fuzzy logic $+$ genetic
+algorithm} in one question (\yr{82 Ka}, \yr{\textbf{\texttt{82 Bh}}},
+\yr{\texttt{81 Ba}}); \textbf{machine vision $+$ back-propagation} (\yr{71 Ma},
+\yr{\textbf{\textit{72 Ash}}}); \textbf{declarative Vs procedural $+$ expert system
+architecture} (\yr{70 Ma}, \yr{72 Ma}, \yr{73 Ma}). Revising one half of a pair and not
+the other is how whole 8-mark questions get half answered.
+\end{minipage}}\end{center}
+
+\hr
+
+\T{R.5 One-Day Revision Checklist}
+
+\sbs{%
+\lead{Morning --- the two big chapters (about 4 hrs)}
+\begin{itemize}
+  \item[$\square$] \textbf{Ch 4 resolution} (75 min): \mk{the highest-value
+        hour in this subject.} Do three refutations end to end $-$ the food set,
+        Charlie-the-horse, Colonel West $-$ writing the CNF steps out every time
+  \item[$\square$] \textbf{Ch 4 rest} (40 min): the eight CNF steps from memory $\cdot$
+        forward Vs backward chaining $\cdot$ two Bayes numericals $\cdot$ one belief
+        network
+  \item[$\square$] \textbf{Ch 7 diagrams} (60 min): the \mk{five-box NLP
+        pipeline} $\cdot$ the four-box expert system $\cdot$ a two-input perceptron
+        $\cdot$ the machine-vision pipeline. Draw each three times
+  \item[$\square$] \textbf{Ch 7 networks} (45 min): perceptron AND in bipolar $\cdot$ the
+        XOR proof and the two-layer net $\cdot$ the Hebb net $\cdot$ Hopfield and SOM
+        algorithms
+\end{itemize}
+\lead{Afternoon --- the reliable marks (about 3 hrs)}
+\begin{itemize}
+  \item[$\square$] \textbf{Ch 2 crypt-arithmetic} (50 min): BASE$+$BALL$=$GAMES and
+        SEND$+$MORE$=$MONEY, both fully written out with the constraint list
+  \item[$\square$] \textbf{Ch 6} (50 min): the GA flowchart and one worked generation
+        $\cdot$ the fuzzy inference block diagram $\cdot$ one ID3 root attribute
+  \item[$\square$] \textbf{Ch 5} (35 min): three semantic nets $\cdot$ the net Vs frame
+        table $\cdot$ isa against instance
+  \item[$\square$] \textbf{Ch 1} (25 min): the four definitions $\cdot$ PEAS for two
+        systems $\cdot$ the Turing test and the objections
+  \item[$\square$] \textbf{Ch 3} (25 min): BFS Vs DFS table $\cdot$ $f = g+h$ and
+        admissibility $\cdot$ one alpha-beta tree
+\end{itemize}}{%
+\lead{Evening --- consolidation (about 1 hr)}
+\begin{itemize}
+  \item[$\square$] Re-read \textbf{R.2 Must Memorize} twice. Write the eight CNF steps,
+        the GA operator rates and the back-propagation deltas from memory once
+  \item[$\square$] Re-read every \mk{orange} line in the chapters $-$
+        they are the traps
+  \item[$\square$] Read \textbf{R.4} and, for each of the fifteen, say out loud what the
+        first three lines of your answer would be
+  \item[$\square$] Check the \textbf{abbreviation chart} and the month codes $-$
+        \mk{Ash and Asa are different months}
+\end{itemize}
+\lead{In the hall}
+\begin{itemize}
+  \item[$\square$] \mk{Draw first, then annotate.} An unlabelled correct
+        block diagram still scores; three paragraphs with no diagram do not
+  \item[$\square$] Resolution $\rightarrow$ \mk{negate the goal before
+        converting}, and say you did
+  \item[$\square$] Crypt-arithmetic $\rightarrow$ substitute the digits back and
+        \mk{show the addition working}
+  \item[$\square$] Semantic net $\rightarrow$ \mk{isa between classes,
+        instance to an individual}; count one arc per sentence
+  \item[$\square$] ID3 $\rightarrow$ recompute; never carry a remembered root across from
+        a similar table
+  \item[$\square$] Any gate network $\rightarrow$ use \mk{bipolar
+        $\pm 1$}, and finish with the four-row verification table
+  \item[$\square$] Every numerical $\rightarrow$ write the formula before substituting
+  \item[$\square$] A ``scenario'' question (Nepali chatbot, disaster expert system,
+        machine-vision line) $\rightarrow$ \mk{it wants the standard
+        answer with the domain renamed}, plus two concrete rules or features
+\end{itemize}}
