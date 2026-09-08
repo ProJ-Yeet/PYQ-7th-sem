@@ -254,6 +254,93 @@ add("c5_semnet_links.png", BJ5, 43)
 # where 950 px is still about 280 dpi on the page.
 ins("c5_frame_classes.png", 136, (0.06, 0.090, 0.99, 0.525), dpi=52)
 
+
+# ------------------------------------------------------------------ chapter 6
+# BA Sir's CH-06 is one slide per page. Most figures on it are pasted rasters,
+# but the three that matter most (the analogy pair, the GA cycle, the GA
+# flowchart) are drawn as native vector shapes, so those are manual boxes.
+PS6 = os.path.join(PS, "6.Machine Learning_old_syllabus.pdf")
+SG6 = os.path.join(SG, "AIChapter_6.pdf")
+
+# The four components of a learning system -- environment, learning element,
+# knowledge base, performance element -- with the arrows between them. This IS
+# the answer to "explain the learning framework with a suitable block diagram"
+# (78 Ba, 69 Bh, 78 Po). SG Sir's is the only one anywhere in Notes\ that draws
+# all four boxes AND the loop back from the performance element.
+add("c6_framework.png", SG6, 15)
+# Deductive and inductive reasoning as two ladders read in opposite directions
+# (theory -> hypothesis -> observation -> confirmation, against
+# observation -> pattern -> hypothesis -> theory). One picture answers
+# "induction versus deduction" (73 Bh short note) outright.
+add("c6_ind_ded.png", SG6, 9)
+# The reinforcement-learning loop: agent, environment, state, action, reward.
+# 78 Po asks all three feedback types with examples and this is the only one
+# of the three that needs a drawing.
+add("c6_rl_loop.png", PS6, 25, box=(0.073, 0.236, 0.903, 0.855))
+
+# Learning by analogy, drawn as the pair the question always uses: a hydraulics
+# junction beside Kirchhoff's current law. Vector art on the slide, so a box.
+add("c6_analogy.png", BA6, 8, box=(0.22, 0.31, 0.78, 0.61))
+
+# Russell & Norvig fig 19.4: the SAME examples split on Type and on Patrons,
+# side by side, positives in light boxes and negatives in dark. It shows in one
+# glance WHY one attribute beats another, which is the whole of "how is the
+# best attribute selected in a decision tree".
+add("c6_id3_split.png", BA6, 13)
+
+# The GA flowchart -- START, generate random population, evaluate fitness, is
+# the answer good enough, mate, check for mutation, mutate, END. Asked by name
+# in 81 Ba ("with a flowchart") and as "block diagram" in six more. Two stacked
+# rasters plus vector arrows, so one box over the pair.
+add("c6_ga_flowchart.png", BA6, 21, box=(0.00, 0.17, 0.49, 0.95))
+# The same algorithm as a cycle: Population -> Selection -> Parents ->
+# Crossover -> Mutation -> Offspring -> Replacement -> Population. Vector.
+add("c6_ga_cycle.png", BA6, 18, box=(0.43, 0.505, 0.955, 0.95))
+# Single-point crossover shown twice over: as coloured parent/child bars AND as
+# a table of the four bit strings with the cut marked. PS Sir's is used rather
+# than BA Sir's because the table lets a reader check the swap gene by gene.
+add("c6_ga_crossover.png", PS6, 102, box=(0.030, 0.443, 0.975, 0.883),
+    mask=[(0.0, 0.76, 0.44, 1.0)])
+# Mutation: one gene flipped, before and after.
+add("c6_ga_mutation.png", BA6, 21, box=(0.60, 0.62, 0.93, 0.92))
+# f against x with one global and four local optima. This is the answer to
+# "when shall we use a genetic algorithm" (81 Ash, 80 Ch) as a picture: a
+# hill-climber stops on whichever bump it started under.
+add("c6_ga_optima.png", PS6, 92, pad=0)
+
+# The fuzzy inference system: crisp input -> fuzzifier -> inference engine
+# (with the rule base above it) -> defuzzifier -> crisp output, with the fuzzy
+# input and output sets labelled on the internal arrows. Asked as "the
+# architecture and working mechanism of a fuzzy inference system" (82 Ba) and
+# as "the block diagram" in five more papers.
+add("c6_fuzzy_arch.png", PS6, 143)
+# The same block diagram drawn WITH the membership curves on it, so the reader
+# sees what "fuzzy input" actually is. BA Sir's, and it carries the rule base
+# as an IF..THEN box.
+add("c6_fuzzy_infer.png", BA6, 25, pick=0, mask=[(0.90, 0.0, 1.0, 0.14)])
+# Crisp against fuzzy on one worked table: eleven people's heights, membership
+# of "tall" as a 0/1 step and as a graded value, with both curves plotted.
+# The cleanest possible answer to "how does fuzzy logic differ from classical
+# binary logic" (82 Bh).
+add("c6_crisp_fuzzy_tbl.png", BA6, 25, pick=1)
+# The set-theoretic version of the same point: a crisp set boundary against a
+# fuzzy one, showing that b is simply outside A on the left but partially
+# inside it on the right.
+add("c6_crisp_fuzzy_set.png", PS6, 123, pad=0)
+# Triangular membership functions for three linguistic variables at once
+# (humidity, temperature, moisture), which is what "construct membership
+# functions for them" produces in the fuzzy-learning steps.
+add("c6_memb_fns.png", BA6, 26, pick=0)
+
+# A Boltzmann machine as an undirected graph: visible nodes, hidden nodes,
+# every pair symmetrically connected, no self loops. The one figure that makes
+# "there is no output layer" obvious.
+add("c6_boltzmann.png", PS6, 154, box=(0.100, 0.325, 0.905, 0.990), pad=0)
+# A restricted Boltzmann machine in its two phases, learning and generating,
+# with the digit vectors it reconstructs underneath.
+add("c6_rbm.png", BA6, 28, pick=0)
+
+
 def rect_for(pg, job):
     r = pg.rect
     if job["box"]:

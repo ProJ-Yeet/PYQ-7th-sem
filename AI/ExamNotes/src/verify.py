@@ -24,6 +24,7 @@ Run it BEFORE building any -num target.
 """
 import collections
 import itertools
+import math
 import sys
 
 FAIL = []
@@ -1008,8 +1009,335 @@ def ch4():
     chk("c4 B12 P(cancer|+)", bayes(0.9, 0.01, 0.08), 0.102, tol=5e-4)
 
 
+# =====================================================================
+#  chapter 6 -- ID3 entropy and gain, genetic algorithms, fuzzy sets
+# =====================================================================
+
+def H(rows, tgt):
+    """Entropy of a labelled set, in bits."""
+    n = len(rows)
+    if n == 0:
+        return 0.0
+    c = collections.Counter(r[tgt] for r in rows)
+    return -sum((v / n) * math.log2(v / n) for v in c.values() if v)
+
+
+def gains(rows, tgt):
+    """Information gain of every attribute, and the split entropies."""
+    base = H(rows, tgt)
+    out = {}
+    for a in rows[0]:
+        if a == tgt:
+            continue
+        parts = {}
+        for r in rows:
+            parts.setdefault(r[a], []).append(r)
+        rem = sum(len(p) / len(rows) * H(p, tgt) for p in parts.values())
+        out[a] = (rem, base - rem,
+                  {k: (len(v), H(v, tgt)) for k, v in parts.items()})
+    return base, out
+
+
+def table(cols, data):
+    return [dict(zip(cols, d)) for d in data]
+
+
+# --- the three data tables, transcribed from the OCR archive ---------------
+WCOLS = ["Outlook", "Temp", "Humidity", "Windy", "Play"]
+
+# 74 Bh (785) / 74 Ma / 72 Ash -- "play golf"
+GOLF = table(WCOLS, [
+    ("Rainy", "Hot", "High", "False", "No"),
+    ("Rainy", "Hot", "High", "True", "No"),
+    ("Overcast", "Hot", "High", "False", "Yes"),
+    ("Sunny", "Mild", "High", "False", "Yes"),
+    ("Sunny", "Cool", "Normal", "False", "Yes"),
+    ("Sunny", "Cool", "Normal", "True", "No"),
+    ("Overcast", "Cool", "Normal", "True", "Yes"),
+    ("Rainy", "Mild", "High", "False", "No"),
+    ("Rainy", "Cool", "Normal", "False", "Yes"),
+    ("Sunny", "Mild", "Normal", "False", "Yes"),
+    ("Rainy", "Mild", "Normal", "True", "Yes"),
+    ("Overcast", "Mild", "High", "True", "Yes"),
+    ("Overcast", "Hot", "Normal", "False", "Yes"),
+    ("Sunny", "Mild", "High", "True", "No"),
+])
+
+# 79 Jth -- "play cricket". FOUR rows differ from the golf table, and that is
+# enough to change the root attribute from Outlook to Windy.
+CRICKET = table(WCOLS, [
+    ("Rainy", "Hot", "High", "False", "Yes"),
+    ("Rainy", "Hot", "High", "True", "No"),
+    ("Overcast", "Hot", "High", "False", "Yes"),
+    ("Sunny", "Mild", "High", "False", "Yes"),
+    ("Sunny", "Cool", "Normal", "False", "Yes"),
+    ("Sunny", "Cool", "Normal", "True", "No"),
+    ("Overcast", "Cool", "Normal", "True", "Yes"),
+    ("Rainy", "Mild", "High", "True", "No"),
+    ("Rainy", "Cool", "Normal", "False", "Yes"),
+    ("Sunny", "Mild", "Normal", "False", "Yes"),
+    ("Rainy", "Mild", "Normal", "True", "No"),
+    ("Overcast", "Mild", "High", "True", "Yes"),
+    ("Overcast", "Hot", "Normal", "False", "Yes"),
+    ("Sunny", "Mild", "High", "True", "No"),
+])
+
+# 77 Ch (785) -- the mushroom island. Only A-H are labelled; U, V, W are the
+# test cases and are NOT training data.
+MUSH = table(["NotHeavy", "Smelly", "Spotted", "Smooth", "Edible"], [
+    ("1", "0", "0", "0", "1"),
+    ("1", "0", "1", "0", "1"),
+    ("0", "1", "0", "1", "1"),
+    ("0", "0", "0", "1", "0"),
+    ("1", "1", "1", "0", "0"),
+    ("1", "0", "1", "1", "0"),
+    ("1", "0", "0", "1", "0"),
+    ("0", "1", "0", "0", "0"),
+])
+
+# Insights Example 6.4 -- the profit table, used as the method walkthrough
+PROFIT = table(["Age", "Competition", "Type", "Profit"], [
+    ("Old", "Yes", "Software", "Down"),
+    ("Old", "No", "Software", "Down"),
+    ("Old", "No", "Hardware", "Down"),
+    ("Mid", "Yes", "Software", "Down"),
+    ("Mid", "Yes", "Hardware", "Down"),
+    ("Mid", "No", "Hardware", "Up"),
+    ("Mid", "No", "Software", "Up"),
+    ("New", "Yes", "Software", "Up"),
+    ("New", "No", "Hardware", "Up"),
+    ("New", "No", "Software", "Up"),
+])
+
+# --- genetic algorithm helpers --------------------------------------------
+KNAP_W = {"A": 5, "B": 3, "C": 7, "D": 2}
+KNAP_V = {"A": 12, "B": 5, "C": 10, "D": 7}
+KNAP_CAP = 12
+
+
+def knap(bits):
+    """(fitness, weight, value) of a 4-bit knapsack chromosome, ABCD order."""
+    w = sum(KNAP_W["ABCD"[i]] for i, b in enumerate(bits) if b == "1")
+    v = sum(KNAP_V["ABCD"[i]] for i, b in enumerate(bits) if b == "1")
+    return (v if w <= KNAP_CAP else 0), w, v
+
+
+def gafit(x):
+    """75 Bh's fitness function f(x) = (a+b)-(c+d)+(e+f)-(g+h)."""
+    d = [int(c) for c in x]
+    return (d[0] + d[1]) - (d[2] + d[3]) + (d[4] + d[5]) - (d[6] + d[7])
+
+
+def cross(p1, p2, k):
+    """Single-point crossover after gene k. Returns both offspring."""
+    return p1[:k] + p2[k:], p2[:k] + p1[k:]
+
+
+# --- fuzzy helpers ---------------------------------------------------------
+def tri(x, a, b, c):
+    if x <= a or x >= c:
+        return 0.0
+    return (x - a) / (b - a) if x <= b else (c - x) / (c - b)
+
+
+def ramp_up(x, a, b):
+    return 0.0 if x <= a else (1.0 if x >= b else (x - a) / (b - a))
+
+
+def ramp_down(x, a, b):
+    return 1.0 if x <= a else (0.0 if x >= b else (b - x) / (b - a))
+
+
+def ch6():
+    # ---------------- A. ID3 -----------------------------------------------
+    # A1 the play-golf table (74 Bh, 74 Ma, 72 Ash)
+    base, g = gains(GOLF, "Play")
+    chk("c6 A1 H(S) golf", base, 0.9403, tol=5e-4)
+    chk("c6 A1 gain Outlook", g["Outlook"][1], 0.2467, tol=5e-4)
+    chk("c6 A1 gain Temp", g["Temp"][1], 0.0292, tol=5e-4)
+    chk("c6 A1 gain Humidity", g["Humidity"][1], 0.1518, tol=5e-4)
+    chk("c6 A1 gain Windy", g["Windy"][1], 0.0481, tol=5e-4)
+    chk("c6 A1 root is Outlook", max(g, key=lambda a: g[a][1]), "Outlook")
+    chk("c6 A1 H(Overcast)=0", g["Outlook"][2]["Overcast"][1], 0.0)
+    chk("c6 A1 H(Rainy)", g["Outlook"][2]["Rainy"][1], 0.9710, tol=5e-4)
+    chk("c6 A1 H(Sunny)", g["Outlook"][2]["Sunny"][1], 0.9710, tol=5e-4)
+    # second level: Rainy splits perfectly on Humidity, Sunny on Windy
+    rainy = [r for r in GOLF if r["Outlook"] == "Rainy"]
+    _, gr = gains(rainy, "Play")
+    chk("c6 A1 Rainy -> Humidity", max(gr, key=lambda a: gr[a][1]), "Humidity")
+    chk("c6 A1 Rainy Humidity gain", gr["Humidity"][1], 0.9710, tol=5e-4)
+    sunny = [r for r in GOLF if r["Outlook"] == "Sunny"]
+    _, gs = gains(sunny, "Play")
+    chk("c6 A1 Sunny -> Windy", max(gs, key=lambda a: gs[a][1]), "Windy")
+    chk("c6 A1 Sunny Windy gain", gs["Windy"][1], 0.9710, tol=5e-4)
+
+    # A2 the play-cricket table (79 Jth). Same shape, DIFFERENT answer.
+    base, g = gains(CRICKET, "Play")
+    chk("c6 A2 H(S) cricket", base, 0.9403, tol=5e-4)
+    chk("c6 A2 gain Outlook", g["Outlook"][1], 0.2467, tol=5e-4)
+    chk("c6 A2 gain Temp", g["Temp"][1], 0.0481, tol=5e-4)
+    chk("c6 A2 gain Humidity", g["Humidity"][1], 0.0161, tol=5e-4)
+    chk("c6 A2 gain Windy", g["Windy"][1], 0.5087, tol=5e-4)
+    chk("c6 A2 root is Windy, NOT Outlook",
+        max(g, key=lambda a: g[a][1]), "Windy")
+    chk("c6 A2 Windy=False is pure", g["Windy"][2]["False"][1], 0.0)
+    chk("c6 A2 Windy=False count", g["Windy"][2]["False"][0], 7)
+    chk("c6 A2 H(Windy=True)", g["Windy"][2]["True"][1], 0.8631, tol=5e-4)
+    wtrue = [r for r in CRICKET if r["Windy"] == "True"]
+    _, gw = gains(wtrue, "Play")
+    chk("c6 A2 True -> Outlook", max(gw, key=lambda a: gw[a][1]), "Outlook")
+    chk("c6 A2 True Outlook gain", gw["Outlook"][1], 0.8631, tol=5e-4)
+    # every Outlook branch under Windy=True is pure, so the tree is two deep
+    for v, n in (("Rainy", 3), ("Sunny", 2), ("Overcast", 2)):
+        chk("c6 A2 True/%s pure" % v, gw["Outlook"][2][v], (n, 0.0))
+
+    # A3 the mushroom island (77 Ch)
+    base, g = gains(MUSH, "Edible")
+    chk("c6 A3 H(S) mushroom", base, 0.9544, tol=5e-4)
+    chk("c6 A3 gain Smooth", g["Smooth"][1], 0.0488, tol=5e-4)
+    chk("c6 A3 gain NotHeavy", g["NotHeavy"][1], 0.0032, tol=5e-4)
+    chk("c6 A3 gain Smelly", g["Smelly"][1], 0.0032, tol=5e-4)
+    chk("c6 A3 gain Spotted", g["Spotted"][1], 0.0032, tol=5e-4)
+    chk("c6 A3 root is Smooth", max(g, key=lambda a: g[a][1]), "Smooth")
+    # the other three tie exactly, which is why the answer has to say so
+    chk("c6 A3 the other three tie",
+        len({round(g[a][1], 9) for a in ("NotHeavy", "Smelly", "Spotted")}), 1)
+
+    # A4 the profit table (Insights 6.4), the worked method
+    base, g = gains(PROFIT, "Profit")
+    chk("c6 A4 H(S) profit", base, 1.0)
+    chk("c6 A4 gain Age", g["Age"][1], 0.60, tol=5e-4)
+    chk("c6 A4 gain Competition", g["Competition"][1], 0.1245, tol=5e-4)
+    chk("c6 A4 gain Type", g["Type"][1], 0.0)
+    chk("c6 A4 root is Age", max(g, key=lambda a: g[a][1]), "Age")
+    mid = [r for r in PROFIT if r["Age"] == "Mid"]
+    _, gm = gains(mid, "Profit")
+    chk("c6 A4 Mid -> Competition",
+        max(gm, key=lambda a: gm[a][1]), "Competition")
+    chk("c6 A4 Mid Competition gain", gm["Competition"][1], 1.0)
+
+    # ---------------- B. genetic algorithm ---------------------------------
+    # B1 the knapsack. Generation 1, then crossover, then the mutation that
+    # actually finds the optimum.
+    for bits, want in (("0010", (10, 7, 10)), ("0110", (15, 10, 15)),
+                       ("1001", (19, 7, 19)), ("1111", (0, 17, 34))):
+        chk("c6 B1 fitness " + bits, knap(bits), want)
+    o1, o2 = cross("1001", "0110", 2)
+    chk("c6 B1 crossover offspring", (o1, o2), ("1010", "0101"))
+    chk("c6 B1 f(1010)", knap("1010")[0], 22)
+    chk("c6 B1 f(0101)", knap("0101")[0], 12)
+    chk("c6 B1 gen-1 best", max(knap(c)[0] for c in
+                                ("0010", "0110", "1001", "1111")), 19)
+    chk("c6 B1 gen-2 best", max(knap(c)[0] for c in
+                                ("1001", "0110", "1010", "0101")), 22)
+    chk("c6 B1 mutation 1001 -> 1101", knap("1101")[0], 24)
+    # 1101 is the true optimum, so the run terminates on it having found it
+    allc = ["".join(b) for b in itertools.product("01", repeat=4)]
+    chk("c6 B1 optimum is 24", max(knap(c)[0] for c in allc), 24)
+    chk("c6 B1 optimum chromosome",
+        [c for c in allc if knap(c)[0] == 24], ["1101"])
+
+    # B2 75 Bh's chromosomes, the fitness function the paper prints
+    f = {x: gafit(x) for x in ("65413532", "87126601", "23921285", "41852094")}
+    chk("c6 B2 f(x1)", f["65413532"], 9)
+    chk("c6 B2 f(x2)", f["87126601"], 23)
+    chk("c6 B2 f(x3)", f["23921285"], -16)
+    chk("c6 B2 f(x4)", f["41852094"], -19)
+    chk("c6 B2 ranking fittest first",
+        sorted(f, key=lambda k: -f[k]),
+        ["87126601", "65413532", "23921285", "41852094"])
+    chk("c6 B2 gen-1 mean fitness", sum(f.values()) / 4.0, -0.75)
+    a1, a2 = cross("87126601", "65413532", 4)
+    chk("c6 B2 mid-point offspring of x2,x1", (a1, a2),
+        ("87123532", "65416601"))
+    chk("c6 B2 f(OS1)", gafit("87123532"), 15)
+    chk("c6 B2 f(OS2)", gafit("65416601"), 17)
+    # x1 with x3, two-point (after gene 2 and gene 6), as Insights sets it
+    b1 = "65" + "9212" + "32"
+    b2 = "23" + "4135" + "85"
+    chk("c6 B2 two-point offspring", (b1, b2), ("65921232", "23413585"))
+    chk("c6 B2 f(OS1) x1x3", gafit(b1), -2)
+    chk("c6 B2 f(OS2) x1x3", gafit(b2), -5)
+
+    # B3 the coin problem: get the total number of heads above 30.
+    pop = ["1000101100", "1110010110", "1010110010",
+           "0111101011", "0111001111"]
+    scores = [c.count("1") for c in pop]
+    chk("c6 B3 gen-1 scores", scores, [4, 6, 5, 7, 7])
+    chk("c6 B3 gen-1 total", sum(scores), 29)
+    # Insights crosses C4 and C5 at a point inside the four genes they SHARE,
+    # so its offspring are copies of the parents. Cut after gene 6 instead.
+    for k in range(1, 5):
+        c1, c2 = cross(pop[3], pop[4], k)
+        chk("c6 B3 cut at %d is degenerate" % k,
+            sorted([c1, c2]), sorted([pop[3], pop[4]]))
+    d1, d2 = cross(pop[3], pop[4], 6)
+    chk("c6 B3 offspring", (d1, d2), ("0111101111", "0111001011"))
+    chk("c6 B3 f(OS1)", d1.count("1"), 8)
+    chk("c6 B3 f(OS2)", d2.count("1"), 6)
+    best5 = sorted(scores + [d1.count("1"), d2.count("1")], reverse=True)[:5]
+    chk("c6 B3 gen-2 best five", best5, [8, 7, 7, 6, 6])
+    chk("c6 B3 gen-2 total", sum(best5), 34)
+    chk("c6 B3 gen-2 max improved", max(best5) > max(scores), True)
+
+    # ---------------- C. fuzzy ---------------------------------------------
+    # C1 set operations. Insights p167 prints the complement of the third
+    # element as 0.5; it is 0.6. Everything else in that box is right.
+    A = {10: 0.2, 20: 0.3, 30: 0.4, 40: 0.5}
+    B = {10: 0.3, 20: 0.4, 30: 0.1, 40: 0.2}
+    xs = sorted(A)
+    chk("c6 C1 union", [round(max(A[x], B[x]), 2) for x in xs],
+        [0.3, 0.4, 0.4, 0.5])
+    chk("c6 C1 intersection", [round(min(A[x], B[x]), 2) for x in xs],
+        [0.2, 0.3, 0.1, 0.2])
+    chk("c6 C1 complement of A", [round(1 - A[x], 2) for x in xs],
+        [0.8, 0.7, 0.6, 0.5])
+    chk("c6 C1 bold union", [round(min(1, A[x] + B[x]), 2) for x in xs],
+        [0.5, 0.7, 0.5, 0.7])
+    chk("c6 C1 bold intersection",
+        [round(max(0, A[x] + B[x] - 1), 2) for x in xs], [0, 0, 0, 0])
+
+    # C2 fuzzification off a rising limb from 7.5 to 12.5
+    chk("c6 C2 mu(10)", (10 - 7.5) / (12.5 - 7.5), 0.5)
+    chk("c6 C2 mu(9)", (9 - 7.5) / (12.5 - 7.5), 0.3)
+
+    # C3 the Mamdani fan-speed controller, T = 26 C and H = 45 %
+    T, Hd = 26.0, 45.0
+    mu_cold = ramp_down(T, 10, 20)
+    mu_warm = tri(T, 10, 20, 30)
+    mu_hot = ramp_up(T, 20, 30)
+    mu_low = ramp_down(Hd, 30, 60)
+    mu_high = ramp_up(Hd, 30, 60)
+    chk("c6 C3 mu cold", mu_cold, 0.0)
+    chk("c6 C3 mu warm", mu_warm, 0.4)
+    chk("c6 C3 mu hot", mu_hot, 0.6)
+    chk("c6 C3 mu low", mu_low, 0.5)
+    chk("c6 C3 mu high", mu_high, 0.5)
+    w1 = min(mu_cold, mu_low)
+    w2 = mu_warm
+    w3 = max(mu_hot, mu_high)
+    chk("c6 C3 w1 (AND = min)", w1, 0.0)
+    chk("c6 C3 w2", w2, 0.4)
+    chk("c6 C3 w3 (OR = max)", w3, 0.6)
+    # aggregate the two clipped output sets, sampled every 10 units
+    agg = []
+    for s in range(0, 101, 10):
+        agg.append(round(max(min(w2, tri(s, 0, 50, 100)),
+                             min(w3, tri(s, 50, 100, 150))), 4))
+    chk("c6 C3 aggregated membership", agg,
+        [0.0, 0.2, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.6, 0.6, 0.6])
+    num = sum(s * m for s, m in zip(range(0, 101, 10), agg))
+    den = sum(agg)
+    chk("c6 C3 sum of memberships", den, 4.4)
+    chk("c6 C3 sum of s.mu", num, 272.0)
+    chk("c6 C3 centroid, 10-unit samples", num / den, 61.82, tol=5e-3)
+    # the weighted-average shortcut over the consequent peaks
+    chk("c6 C3 weighted average shortcut",
+        (w2 * 50 + w3 * 100) / (w2 + w3), 80.0)
+
+
 def main():
-    for fn in (ch2, ch3, ch4):
+    for fn in (ch2, ch3, ch4, ch6):
         try:
             fn()
         except AssertionError as e:

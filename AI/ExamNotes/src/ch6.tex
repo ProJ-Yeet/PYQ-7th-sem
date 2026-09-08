@@ -1,0 +1,888 @@
+%=======================================================================
+%  CHAPTER 6 — MACHINE LEARNING  (6 hrs)
+%=======================================================================
+\section{Machine Learning}
+
+{\color{sub}\footnotesize 6 hrs \gap$\cdot$\gap asked in \mk{40 of 41 papers}
+\gap$\cdot$\gap 6 syllabus sub-topics \gap$\cdot$\gap 436 marks, 12.9\,\% of every mark
+ever set \gap$\cdot$\gap the ID3 data tables, the GA generations and the fuzzy
+arithmetic are worked in \emph{Ch6 -- Machine Learning -- Solved Problems}.}
+
+\lead{Read this first:}
+\begin{itemize}
+  \item \mk{Two topics carry this chapter, and both are drawings.}
+        \textbf{Genetic algorithm} \tS{21} and \textbf{fuzzy logic} \tS{16}. Between
+        them they are asked in \mk{31 of the 41 papers} and they take
+        roughly two thirds of the chapter's marks. Learn the GA flowchart and the
+        fuzzy-inference block diagram cold; everything else here is a bonus.
+  \item \mk{The examiner pairs them with each other.} \yr{82 Ka},
+        \yr{\textbf{\texttt{82 Bh}}} and \yr{\texttt{81 Ba}} all ask fuzzy logic and GA in
+        the \emph{same} question. Answering one well and the other badly costs the
+        whole 8 marks.
+  \item \textbf{Third is supervised Vs unsupervised} \tS{12}, always with the rider
+        \emph{``clustering falls under which category? Justify, stating algorithms''}.
+        Name \textbf{K-means} and \textbf{hierarchical clustering} or the justification
+        scores nothing.
+  \item \mk{ID3 is the only real arithmetic in the chapter} \tF{6}, and
+        it is always the same shape: entropy of the whole set, entropy of each
+        attribute's split, gain $=$ difference, pick the largest. Three different data
+        tables appear, all worked in the companion.
+  \item \mk{The syllabus line says ``fuzzy learning'' and no paper has
+        ever asked that.} Every one of the sixteen asks the \textbf{fuzzy inference
+        system} $-$ membership functions, rules, fuzzification, defuzzification. \S6.7
+        teaches the inference system and says where the two names meet.
+  \item Reliable short notes, each a fixed list you can write in four minutes:
+        \textbf{GA} \m{3}\m{4}, \textbf{fuzzy logic} \m{3}\m{4},
+        \textbf{Boltzmann machine} \m{4}, \textbf{supervised Vs unsupervised} \m{4},
+        \textbf{mutation Vs crossover} \m{3}, \textbf{induction Vs deduction} \m{3}.
+\end{itemize}
+
+\hr
+
+%-----------------------------------------------------------------------
+\T{6.1 What machine learning is, and the learning framework}
+
+\Q{What is machine learning? Explain the learning framework with a block diagram.}{\m{1}\m{6}\m{2+6}}
+{\color{sub}\footnotesize \tP{2} \yr{78 Ba \m{2+6}, \textbf{69 Bh} \m{6}}
+\gap$\cdot$\gap the \emph{definition} alone opens eleven more papers, always as the
+\m{1} or \m{2} lead-in to a GA, fuzzy or Boltzmann question (\yr{80 Ash \m{1}}
+asks nothing else) \gap$\cdot$\gap so learn the definition as one sentence and the
+framework as four boxes}
+
+\sbs{%
+\lead{Definition}
+\begin{itemize}
+  \item \textbf{Machine learning is the branch of AI in which a program improves its
+        performance on a task from experience, without being explicitly programmed for
+        that task.}
+  \item Tom Mitchell's form, worth quoting: a program \textbf{learns} from experience
+        $E$ w.r.t. task $T$ and measure $P$ if \mk{its performance at $T$,
+        measured by $P$, improves with $E$}.
+  \item In AI terms: the agent \textbf{observes data}, \textbf{builds a model} of it,
+        and uses that model as both a hypothesis about the world and a program that
+        solves problems.
+  \item \textbf{Three things learning always does}, and the three-word answer to
+        \emph{``what is learning''}:
+  \begin{itemize}
+    \item \textbf{Change} $-$ the learner itself is altered.
+    \item \textbf{Generalization} $-$ performance improves on \emph{similar} tasks, not
+          only on the ones seen.
+    \item \textbf{Improvement} $-$ and the design must stop changes that make
+          performance worse.
+  \end{itemize}
+  \item \mk{Why an intelligent agent needs it} (asked as
+        \emph{``learning is an essential characteristic of intelligent agents, comment''},
+        Ch\,1): a designer cannot enumerate every situation; the environment changes
+        after deployment; and some tasks have no known algorithm, only examples.
+\end{itemize}}{%
+\lead{The learning framework: four components}
+\figT{c6_framework.png}
+{\color{sub}\footnotesize Environment feeds the learning element; the learning element
+writes the knowledge base; the performance element uses it and reports back.}
+\begin{itemize}
+  \item \textbf{1. Environment} $-$ supplies the information. Judge it on:
+  \begin{itemize}
+    \item \textbf{Level}: high level $=$ abstract, covers a broad class of problems;
+          low level $=$ detailed, covers one problem.
+    \item \textbf{Quality}: noise free, reliable, ordered.
+  \end{itemize}
+  \item \textbf{2. Learning element} $-$ turns that information into knowledge. Rote
+        learning, learning by example, by analogy, explanation-based (\S6.2).
+  \item \textbf{3. Knowledge base} $-$ stores what was learnt. Must be
+        \textbf{expressive}, \textbf{modifiable} and \textbf{extendible} (holds
+        meta-knowledge, so its own structure can change).
+  \item \textbf{4. Performance element} $-$ uses the knowledge to act, measures how well
+        it did, and \mk{feeds the error back} to the learning element.
+        That feedback arrow is the whole point of the diagram: draw it.
+\end{itemize}}
+
+%-----------------------------------------------------------------------
+\T{6.2 Ways of learning, and induction Vs deduction}
+
+\Q{What are the different ways / methods of learning? Describe each.}{\m{8}\m{3+5}}
+{\color{sub}\footnotesize \tP{2} \yr{\textbf{\textit{71 Bh}} \m{8}, \texttt{81 Ba} \m{3+5}}
+\gap$\cdot$\gap \yr{\texttt{81 Ba}} asks it as the \m{3} half of a GA question, so give
+the list, not essays \gap$\cdot$\gap \yr{\textbf{78 Ch}} \m{2} asks the narrower
+\emph{``algorithms inspired by biological phenomena and social behaviour''}: genetic
+algorithms, neural networks, swarm intelligence (ant colony, particle swarm),
+artificial immune systems}
+
+\sbs{%
+\lead{The five ways, easiest to hardest}
+\begin{itemize}
+  \item \textbf{1. Rote learning} $-$ memorise and recall.
+  \begin{itemize}
+    \item Solved problem $\rightarrow$ store $\rightarrow$ look up next time.
+    \item No inference at all: nothing new is derived.
+    \item \mk{Only worth it if retrieval is cheaper than recomputing.}
+    \item Eg Samuel's checkers player, which stored board positions it had seen.
+  \end{itemize}
+  \item \textbf{2. Learning by example (inductive)} $-$ specific cases
+        $\rightarrow$ general rule. Eg decision trees, ID3 (\S6.5).
+  \item \textbf{3. Learning by analogy} $-$ transfer a solution from a known similar
+        problem (\S6.4).
+  \item \textbf{4. Explanation-based learning (EBL)} $-$ use existing domain knowledge to
+        \emph{explain} one example, then generalise the explanation into a rule.
+  \begin{itemize}
+    \item Learns from \mk{a single example}, because the prior knowledge
+          does the work the extra examples would have done.
+    \item Eg see one cup once, know what makes it a cup, recognise every cup after.
+  \end{itemize}
+  \item \textbf{5. Learning by deduction} $-$ general rules $\rightarrow$ specific facts,
+        or new general rules from old ones. $A=B$, $B=C$, so $A=C$.
+\end{itemize}}{%
+\lead{Induction Vs deduction}
+{\color{sub}\footnotesize asked as a short note by \yr{\textbf{\textit{73 Bh}}} \m{3}.}
+\figT{c6_ind_ded.png}
+{\color{sub}\footnotesize Read the left ladder downwards and the right one upwards:
+that direction is the whole distinction.}}
+
+\sbsr{0.62}{%
+\begin{tabularx}{\linewidth}{@{}L{2.6cm}XX@{}}
+\hrow \thead{} & \thead{Inductive} & \thead{Deductive} \\
+Direction & observation $\rightarrow$ hypothesis & hypothesis $\rightarrow$ observation \\
+Goes from & specific & general \\
+Produces & a general rule from raw data & a specific fact from known rules \\
+Truth & \mk{not guaranteed}, only probable & guaranteed if the premises hold \\
+Reasoning & probabilistic & logical (Ch\,4) \\
+Example & 1000 white swans $\rightarrow$ ``swans are white'' & all men are mortal;
+          Socrates is a man; so Socrates is mortal \\
+\end{tabularx}}{%
+\begin{itemize}
+  \item \mk{The one-line answer}: induction generalises and can be
+        wrong; deduction specialises and cannot.
+  \item Both appear in \S6.2's list of ways of learning, and the papers ask them as a
+        \m{3} short note, so three rows of that table plus this line is a full answer.
+  \item \mk{Where each one lives in this subject}: deduction is
+        Chapter 4 (resolution, forward and backward chaining, all truth-preserving);
+        induction is this chapter (ID3, \S6.5) and every learning algorithm in it.
+  \item \textbf{Abduction} is worth one extra line if you have room: reasoning from an
+        observation to its \emph{most likely cause}. Medical diagnosis. Also not
+        truth-preserving.
+\end{itemize}}
+
+%-----------------------------------------------------------------------
+\T{6.3 Supervised, unsupervised and reinforcement learning}
+
+\Q{Differentiate supervised and unsupervised learning. Clustering falls under which category? Justify, stating algorithms.}{\m{4}\m{5}\m{2+4}\m{4+4}\m{2+6}}
+{\color{sub}\footnotesize \tS{12} \yr{\textit{74 Ma} \m{2+4},
+\textbf{\textit{72 Ash}} \m{2+4}, \textbf{\textit{74 Bh}} \m{4+4}, 79 Jth \m{4+4},
+\textbf{\textit{76 Bh}} \m{5}, 78 Po \m{2+6}, 69 Po \m{4}, \textbf{74 Bh} \m{4},
+78 Ba \m{4}, \textbf{\textit{77 Ch}} \m{4}, 81 Ash \m{4}, \textbf{75 Bh} \m{4}}
+\gap$\cdot$\gap \mk{third-most-asked topic in the whole subject}
+\gap$\cdot$\gap two riders recur: \emph{``clustering falls under which?''}
+(\yr{\textit{74 Ma}}, \yr{\textbf{\textit{72 Ash}}}) and \emph{``learning is essential
+for intelligent agents, comment''} (\yr{\textbf{\textit{74 Bh}}}, \yr{79 Jth})
+\gap$\cdot$\gap \yr{78 Po} wants all \emph{three} types with examples}
+
+\sbsr{0.60}{%
+\begin{tabularx}{\linewidth}{@{}L{2.2cm}XX@{}}
+\hrow \thead{} & \thead{Supervised} & \thead{Unsupervised} \\
+Training data & \textbf{labelled}: every input carries its correct output &
+  \textbf{unlabelled}: inputs only \\
+Aim & learn the input $\rightarrow$ output mapping, then predict for new inputs &
+  find hidden structure, groups and patterns in the data \\
+Feedback & direct: error $=$ predicted $-$ actual, at every sample & none;
+  the model is judged only by the structure it finds \\
+Tasks & \textbf{classification}, \textbf{regression} &
+  \textbf{clustering}, \textbf{association} \\
+Algorithms & linear + logistic regression, SVM, naive Bayes, KNN, decision tree,
+  back-propagation ANN & K-means, hierarchical (agglomerative), DBSCAN, Apriori, SOM \\
+Human effort & high: someone has to label everything & low \\
+Accuracy & higher, and measurable & lower, and hard to measure \\
+Example & spam filter trained on mails already marked spam / not spam &
+  segment customers by purchase behaviour, with no idea of the segments beforehand \\
+\end{tabularx}}{%
+\lead{Reinforcement learning}
+\figT{c6_rl_loop.png}
+\begin{itemize}
+  \item \textbf{Feedback-based}: the agent acts, the environment returns a
+        \textbf{reward} or a \textbf{penalty}, and the agent adjusts.
+  \item No labelled data and no supervisor. The agent \mk{discovers}
+        which actions pay by trying them.
+  \item Goal $=$ maximise \textbf{cumulative} reward over the long run, not the next
+        reward.
+  \item \textbf{Four elements to name} (\yr{78 Po}):
+  \begin{itemize}
+    \item \textbf{Policy} $-$ state $\rightarrow$ action mapping.
+    \item \textbf{Reward signal} $-$ one number per step, defines the goal.
+    \item \textbf{Value function} $-$ total reward expected \emph{from} a state:
+          good in the long run, where reward is good in the short run.
+    \item \textbf{Model} of the environment (optional).
+  \end{itemize}
+  \item Example: a robot that gets $+10$ for reaching the goal square and $-50$ for
+        falling in a pit. Also game playing, robot navigation, self-driving control.
+  \item \textbf{Semi-supervised} is the fourth type worth one line: a small labelled set
+        plus a large unlabelled one, used when labelling everything is too costly.
+\end{itemize}}
+
+\sbs{%
+\lead{The rider: which category is clustering? \gap{\color{sub}\footnotesize(\yr{\textit{74 Ma}}, \yr{\textbf{\textit{72 Ash}}}, \m{4} of the 6)}}
+\begin{itemize}
+  \item \mk{Clustering is unsupervised}, because the data carries
+        \mk{no class label} $-$ the algorithm both invents the groups
+        and assigns points to them.
+  \item \textbf{Justify by naming algorithms}, which is what the question asks for and
+        where the marks are:
+  \begin{itemize}
+    \item \textbf{K-means} $-$ choose $k$, assign every point to the nearest centroid,
+          recompute the centroids, repeat until nothing moves. Nobody ever tells it a
+          right answer.
+    \item \textbf{Hierarchical (agglomerative)} $-$ start with every point its own
+          cluster, repeatedly merge the two nearest, stop at $k$ clusters or one.
+    \item \textbf{DBSCAN} $-$ groups by density, and finds the number of clusters itself.
+    \item \textbf{SOM / Kohonen} (Ch\,7) is a clustering network, and is unsupervised for
+          exactly the same reason.
+  \end{itemize}
+  \item \mk{Contrast with classification}, which draws the same
+        picture but is supervised: the classes exist \emph{before} training and every
+        training point already carries one.
+\end{itemize}}{%
+\lead{Deciding the type of any example the examiner invents}
+\begin{tabularx}{\linewidth}{@{}L{4.0cm}X@{}}
+\hrow \thead{What does the data carry?} & \thead{Then it is} \\
+a correct output for every input & supervised \\
+nothing but inputs & unsupervised \\
+a few labelled, most not & semi-supervised \\
+no outputs, but a reward after acting & reinforcement \\
+\end{tabularx}
+\begin{itemize}
+  \item Worked on the examples the papers use: spam filter $=$ supervised
+        (mails already marked); customer segmentation $=$ unsupervised; game-playing
+        agent $=$ reinforcement; handwriting recognition trained on labelled digits $=$
+        supervised; market-basket association $=$ unsupervised.
+  \item \mk{One sentence that is always worth writing}: supervised
+        learning is told the answer and learns the mapping; unsupervised learning is told
+        nothing and learns the structure; reinforcement learning is told only whether it
+        did well, and learns the policy.
+\end{itemize}}
+
+%-----------------------------------------------------------------------
+\T{6.4 Learning by analogy}
+
+\Q{What is learning by analogy? Give an example, with a semantic network.}{\m{3}\m{2+6}\m{1+7}}
+{\color{sub}\footnotesize \tP{3} \yr{\textbf{71 Bh} \m{1+7}, 76 Ba \m{2+6}, 71 Ma \m{3}}
+\gap$\cdot$\gap \yr{\textbf{71 Bh}} demands the semantic network, so the answer is a
+\emph{drawing plus the mapping table} \gap$\cdot$\gap \yr{71 Ma} asks it as
+\emph{analogy Vs inductive learning}}
+
+\sbsr{0.53}{%
+\begin{itemize}
+  \item \textbf{Learning by analogy $=$ acquiring knowledge about a new entity by
+        transferring it from a known, similar entity.}
+  \item It carries a solution \mk{across domains}: find the analogous
+        states and operators in the two domains, then reuse the old solution.
+  \item \mk{One example is enough}, which is what makes it different
+        from inductive learning (which needs many).
+  \item \textbf{The five steps} (write these for a 6 or 7 mark answer):
+  \begin{itemize}
+    \item \textbf{1. Recognition} $-$ notice the new problem resembles a past one.
+    \item \textbf{2. Access and recall} $-$ the resemblance indexes memory; retrieve one
+          or more candidate analogues.
+    \item \textbf{3. Selection and mapping} $-$ pick the relevant parts and map them from
+          the \textbf{base} (known) domain to the \textbf{target} (new) one.
+    \item \textbf{4. Extension} $-$ modify and extend the mapped solution to fit the
+          target.
+    \item \textbf{5. Validation and generalization} $-$ test it; if it holds, form a
+          general rule covering both situations.
+  \end{itemize}
+  \item \textbf{Analogy Vs induction} \gap{\color{sub}\footnotesize(\yr{71 Ma} \m{3})}:
+        analogy maps \emph{one} case onto \emph{one} case and reasons by similarity;
+        induction generalises \emph{many} cases into a rule. Analogy transfers,
+        induction abstracts.
+\end{itemize}}{%
+\lead{First example: hydraulics and Kirchhoff}
+\figT{c6_analogy.png}
+\begin{itemize}
+  \item Flow into a junction equals flow out; current into a node equals current out.
+        Knowing $Q_a=3$, $Q_b=9$ gives $Q_c$ the same way $I_3=I_1+I_2$ does.
+  \item \textbf{The mapping}: pressure drop $\leftrightarrow$ voltage drop, pipe
+        $\leftrightarrow$ wire, flow rate $\leftrightarrow$ current, junction
+        $\leftrightarrow$ node.
+  \item So a student who knows Kirchhoff's law can solve the hydraulics problem
+        \mk{without being taught hydraulics}. That sentence is the
+        definition made concrete, and it is what the examiner wants.
+\end{itemize}}
+
+\sbsr{0.53}{%
+\begin{itemize}
+  \item \textbf{Second example: the atom and the solar system}, the one to draw as a
+        \textbf{semantic net} for \yr{\textbf{71 Bh}}: two small nets, one arc list
+        mapped onto the other.
+  \begin{itemize}
+    \item Base net: \code{Sun --greater-mass--> Earth},
+          \code{Sun --attracts--> Earth}, \code{Earth --revolves-around--> Sun}.
+    \item Target net: \code{Nucleus --greater-mass--> Electron},
+          \code{Nucleus --attracts--> Electron}, and the arc the analogy
+          \mk{supplies}: \code{Electron --revolves-around--> Nucleus}.
+    \item Draw the two nets side by side and \mk{a dashed arrow
+          between the matching nodes}: Sun $\leftrightarrow$ Nucleus,
+          Earth $\leftrightarrow$ Electron. That dashed mapping \emph{is} the answer.
+  \end{itemize}
+\end{itemize}}{%
+\lead{The mapping table, which is the marked half}
+\begin{tabularx}{\linewidth}{@{}L{2.9cm}XX@{}}
+\hrow \thead{Role} & \thead{Base: solar system} & \thead{Target: atom} \\
+Heavy central body & Sun & Nucleus \\
+Light orbiting body & Earth & Electron \\
+Relation known & attracts, greater mass & attracts, greater mass \\
+Relation \emph{transferred} & Earth revolves around Sun &
+  \mk{Electron revolves around Nucleus} \\
+\end{tabularx}
+\begin{itemize}
+  \item The last row is the whole point: it is \mk{not observed, it is
+        carried across} by the analogy, and then validated.
+  \item Say in one line what analogy risks: the mapping may not hold
+        (electrons do not really orbit like planets), so step 5 validation is not
+        optional. Naming that limitation reliably earns a mark.
+\end{itemize}}
+
+%-----------------------------------------------------------------------
+\T{6.5 Inductive learning, decision trees and ID3}
+
+\Q{Define inductive learning. How is the best attribute selected in a decision tree? Explain ID3 with an example.}{\m{8}\m{1+7}\m{2+6}\m{2+7}}
+{\color{sub}\footnotesize \tF{6} \yr{\textbf{\textit{74 Bh}} \m{2+7},
+\textit{74 Ma} \m{8}, \textbf{\textit{72 Ash}} \m{8}, 79 Jth \m{1+7},
+\textbf{\textit{77 Ch}} \m{8}, \textbf{74 Bh} \m{2+6}} \gap$\cdot$\gap
+\mk{five of the six print a data table and want the root attribute
+computed}, so this section is theory only $-$ all three tables are worked in the
+companion \gap$\cdot$\gap \yr{\textbf{\textit{77 Ch}}} disguises it as the
+\emph{mushroom island} story}
+
+\sbsr{0.52}{%
+\lead{Inductive learning, and the tree}
+\begin{itemize}
+  \item \textbf{Inductive learning $=$ drawing a general hypothesis from a set of
+        specific input--output examples}, chosen so that it classifies the examples well
+        \emph{and} generalises to new ones.
+  \item A \textbf{decision tree} is the standard hypothesis form:
+  \begin{itemize}
+    \item each \textbf{internal node} tests one attribute,
+    \item each \textbf{branch} is one value of that attribute,
+    \item each \textbf{leaf} carries a class label.
+  \end{itemize}
+  \item To classify, walk root to leaf and read off the label.
+  \item \textbf{ID3} (Iterative Dichotomiser 3, Quinlan) builds that tree
+        \mk{greedily, top down}: at every node it puts the attribute
+        that separates the classes best, and never goes back.
+\end{itemize}
+\lead{The two formulas $-$ memorise these}
+\[ H(S) \;=\; -\sum_{i} p_i \log_2 p_i \]
+{\color{sub}\footnotesize entropy of set $S$: $p_i$ is the fraction of $S$ in class $i$.
+$H=0$ when $S$ is pure, $H=1$ when a two-class set is split 50/50.}
+\[ Gain(S,A) \;=\; H(S) \;-\; \sum_{v \in A} \frac{|S_v|}{|S|}\, H(S_v) \]
+{\color{sub}\footnotesize the second term is the \emph{weighted average} entropy after
+splitting on $A$. Gain is the uncertainty removed.}
+\begin{itemize}
+  \item \mk{Highest gain $=$ lowest weighted entropy $=$ best
+        attribute.} The two rules are the same rule.
+\end{itemize}}{%
+\lead{Why it works, in one figure}
+\figT{c6_id3_split.png}
+{\color{sub}\footnotesize Splitting on \emph{Type} leaves every branch as mixed as the
+parent: gain 0, useless. Splitting on \emph{Patrons} produces two pure branches and one
+mixed one: high gain. That comparison \emph{is} the answer to ``how is the best attribute
+selected''.}}
+
+\sbsr{0.52}{%
+\lead{The algorithm, as five steps}
+\begin{itemize}
+  \item \textbf{1.} Compute $H(S)$ for the current set.
+  \item \textbf{2.} For each unused attribute $A$, split $S$ by its values and compute the
+        weighted entropy of the split.
+  \item \textbf{3.} $Gain(S,A) = H(S) -$ that weighted entropy.
+  \item \textbf{4.} Make the attribute with the \textbf{largest gain} the node, and branch
+        on its values.
+  \item \textbf{5.} Recurse on each branch with the remaining attributes. Stop a branch
+        when: it is \textbf{pure} (leaf $=$ that class); \textbf{no attributes are left}
+        (leaf $=$ majority class); or it is \textbf{empty} (leaf $=$ parent's majority).
+\end{itemize}
+\begin{itemize}
+  \item \mk{Three arithmetic checks that save marks}: $H$ of a pure
+        branch is \textbf{0}, not 1; $H$ of an even two-class split is exactly
+        \textbf{1}; and every gain must be $\geq 0$, so a negative one is an error in
+        your weighted sum.
+\end{itemize}}{%
+\lead{Characteristics to list if asked}
+\begin{itemize}
+  \item Greedy, so \mk{no guarantee of the optimal tree} $-$ it can
+        settle in a local optimum.
+  \item Produces small trees, but not always the smallest.
+  \item \textbf{Overfits} the training data; prefer smaller trees, and prune.
+  \item Awkward on \textbf{continuous} attributes: too many possible split points.
+  \item Handles noise and missing values badly. C4.5 fixes all four.
+\end{itemize}}
+
+%-----------------------------------------------------------------------
+\T{6.6 Genetic algorithm}
+
+\Q{What is a genetic algorithm? Explain all its steps with a block diagram, and its operators.}{\m{3}\m{4}\m{5}\m{7}\m{8}\m{10}\m{2+8}}
+{\color{sub}\footnotesize \tS{21} \yr{69 Po \m{10}, 71 Ma \m{2+8}, 72 Ma \m{2+6+2},
+75 Ba \m{8}, \textbf{77 Ch} \m{8}, \textbf{\texttt{81 Bh}} \m{2+6},
+\textbf{79 Ch} \m{2+6}, \texttt{80 Ba} \m{8}, \textbf{\textit{76 Bh}} \m{5},
+\texttt{81 Ba} \m{3+5}, \textit{72 Ma} \m{7}, 82 Ka \m{2+6},
+\textbf{\texttt{82 Bh}} \m{2+6}, 81 Ash \m{3+5}, \textbf{81 Ch} \m{7},
+\textbf{78 Ch} \m{2+6}, \textbf{\textit{74 Bh}} \m{4}, \textbf{\textit{73 Bh}} \m{3},
+\textbf{70 Bh} \m{2+6}, \textbf{74 Bh} \m{4+4}, \textbf{75 Bh} \m{2+8}}
+\gap$\cdot$\gap \mk{the single most-asked topic in the chapter and the
+second most-asked in the subject} \gap$\cdot$\gap it has been set in every year from
+2069 to 2082 \gap$\cdot$\gap the wording rotates but the answer never does: \emph{steps}
+$+$ \emph{block diagram} $+$ \emph{the three operators} $+$ \emph{a worked example}}
+
+\sbsr{0.47}{%
+\lead{Definition and idea}
+\begin{itemize}
+  \item \textbf{A genetic algorithm is a search and optimization technique that imitates
+        natural selection}: it keeps a \textbf{population} of candidate solutions and
+        evolves it, generation by generation, towards better ones.
+  \item Darwin in one line: \mk{select the best, discard the rest}.
+  \item \textbf{Evolutionary computing} (asked by name in \yr{\textbf{79 Ch}}) is the
+        family; GA is its best-known member, alongside genetic programming, evolutionary
+        strategies and swarm methods.
+  \item Formally a variant of \textbf{stochastic beam search}: many states kept at once,
+        successors generated by combining pairs rather than mutating one.
+  \item \textbf{Vocabulary} $-$ the examiner marks these:
+  \begin{itemize}
+    \item \textbf{Gene} $-$ one position in the string; controls one characteristic.
+    \item \textbf{Chromosome} (individual) $-$ a chain of genes $=$ \textbf{one candidate
+          solution}, usually a binary string.
+    \item \textbf{Population} $-$ the set of chromosomes alive in one generation.
+    \item \textbf{Fitness function} $-$ scores a chromosome. \mk{Problem
+          dependent; it is the only thing that knows what ``good'' means.}
+    \item \textbf{Generation} $-$ one full cycle of the loop.
+  \end{itemize}
+\end{itemize}}{%
+\figT{c6_ga_flowchart.png}
+{\color{sub}\footnotesize The flowchart \yr{\texttt{81 Ba}} asks for by name. Draw
+\textbf{START $\rightarrow$ generate random population $\rightarrow$ evaluate fitness
+$\rightarrow$ good enough? $\rightarrow$ (no) select and mate $\rightarrow$ mutate
+$\rightarrow$ back to evaluate; (yes) END}.}}
+
+\sbsr{0.55}{%
+\lead{The five steps, which are also the five operators}
+\begin{itemize}
+  \item \textbf{1. Initialization} $-$ generate the starting population at random.
+  \begin{itemize}
+    \item Encode a solution as a string first (\textbf{chromosome encoding}); binary is
+          usual, but integer and permutation encodings exist.
+    \item Population size trades diversity against run time. Seed it around a promising
+          region if you have one.
+  \end{itemize}
+  \item \textbf{2. Fitness evaluation} $-$ score every chromosome with the fitness
+        function. Infeasible chromosomes get fitness 0.
+  \item \textbf{3. Selection} $-$ choose parents, with probability rising with fitness.
+  \begin{itemize}
+    \item \textbf{Roulette wheel}: slice proportional to fitness.
+          \textbf{Tournament}: pick $k$ at random, take the best.
+          \textbf{Rank}: order them, select on rank.
+          \textbf{Elitism}: copy the best one or two through untouched.
+    \item \mk{Keep a few weak ones on purpose} $-$ they hold the
+          diversity the next crossover needs.
+  \end{itemize}
+  \item \textbf{4. Crossover (recombination)} $-$ cut two parents and swap the tails, so
+        each child inherits from both. Probability typically \textbf{0.6 to 0.9}.
+  \item \textbf{5. Mutation} $-$ flip a random gene with a small probability, typically
+        \textbf{0.001 to 0.01}.
+  \item \textbf{6. Replacement, then termination} $-$ offspring replace the weakest
+        members; stop on a \textbf{fixed number of generations}, a \textbf{fitness
+        threshold}, or when the population has \textbf{converged} (no improvement for
+        several generations).
+\end{itemize}}{%
+\figT{c6_ga_cycle.png}
+{\color{sub}\footnotesize The same algorithm as one cycle, which is the ``block diagram''
+most papers want: population $\rightarrow$ \emph{selection} $\rightarrow$ parents
+$\rightarrow$ \emph{crossover, mutation} $\rightarrow$ offspring $\rightarrow$
+\emph{replacement} $\rightarrow$ population.}
+\lead{Crossover, drawn}
+\figT{c6_ga_crossover.png}
+{\color{sub}\footnotesize Single-point: one cut, tails swapped. \textbf{Two-point}: two
+cuts, the middle segment swapped. \textbf{Uniform}: each gene taken from either parent by
+a coin toss.}}
+
+\sbsr{0.45}{%
+\figT{c6_ga_mutation.png}
+{\color{sub}\footnotesize Mutation flips one gene of one child.}
+\lead{Why mutation matters \gap{\color{sub}\footnotesize(\yr{\texttt{81 Ba}} asks exactly this)}}
+\begin{itemize}
+  \item Crossover only \mk{recombines genes already in the
+        population}. If every chromosome carries a 0 in some position, no amount
+        of crossover will ever produce a 1 there.
+  \item Mutation is the \mk{only source of new genetic material}. It
+        keeps diversity up and stops the search converging early on a
+        \textbf{local optimum}.
+  \item So the rate must be \emph{small}: too high and the search degenerates into a
+        random walk, losing the good solutions selection just found.
+\end{itemize}}{%
+\lead{Mutation Vs crossover \gap{\color{sub}\footnotesize(\yr{\textbf{\textit{73 Bh}}} \m{3})}}
+\begin{tabularx}{\linewidth}{@{}L{1.6cm}XX@{}}
+\hrow \thead{} & \thead{Crossover} & \thead{Mutation} \\
+Parents & two & one \\
+Does & exchanges segments between two chromosomes & flips a gene in one chromosome \\
+Rate & high, 0.6--0.9 & low, 0.001--0.01 \\
+Role & \textbf{exploitation}: combines what already works & \textbf{exploration}:
+  introduces what is missing \\
+If absent & population stagnates as copies of a few parents & search sticks in a local
+  optimum \\
+\end{tabularx}}
+
+\sbsr{0.50}{%
+\lead{When shall we use a genetic algorithm? \gap{\color{sub}\footnotesize(\yr{81 Ash}, \yr{\textbf{80 Ch}})}}
+\figT{c6_ga_optima.png}
+{\color{sub}\footnotesize One global and four local optima. A hill-climber stops on
+whichever bump it started under; a population searches all five at once.}
+\begin{itemize}
+  \item The search space has \mk{many local optima} and gradient
+        methods get trapped.
+  \item The objective function is \textbf{not smooth}, not differentiable, or is only
+        available as a black box, so no derivative method applies.
+  \item The number of parameters is \textbf{very large} and exhaustive search is
+        impossible.
+  \item The objective is \textbf{noisy or stochastic}.
+  \item A \mk{good-enough} answer is acceptable: GA gives no optimality
+        guarantee.
+  \item \mk{Do not use it} when an exact algorithm exists, when a single
+        evaluation of the fitness function is expensive, or when the answer must be
+        provably optimal.
+\end{itemize}}{%
+\lead{Where it is applied \gap{\color{sub}\footnotesize(\yr{72 Ma} \m{2})}}
+\begin{itemize}
+  \item Optimization: travelling salesman, knapsack, job-shop scheduling, timetabling.
+  \item Engineering design, antenna and circuit layout, PID controller tuning.
+  \item Neural network weight and architecture search; feature selection in ML.
+  \item Robotics path planning, vehicle routing, bioinformatics (gene sequencing).
+  \item \textbf{Why the study of genes belongs in AI} (\yr{\textbf{74 Bh}} \m{4}):
+        evolution is a \mk{proven search procedure} that solved design
+        problems no designer could; GA borrows the mechanism, not the biology.
+\end{itemize}
+\lead{Advantages and limitations}
+\begin{itemize}
+  \item \checkmark Simple concept; works on the \textbf{encoded} parameters, so it needs
+        no derivative and no auxiliary information, only a fitness score.
+  \item \checkmark Searches many points at once, so it escapes local optima; inherently
+        \textbf{parallel}; the answer improves with run time and can be stopped anywhere.
+  \item \xmark No guarantee of the global optimum; \xmark many fitness
+        evaluations, so slow when each is costly; \xmark the encoding, population size
+        and rates all need tuning; \xmark can converge prematurely if diversity is lost.
+\end{itemize}}
+
+%-----------------------------------------------------------------------
+\T{6.7 Fuzzy logic and the fuzzy inference system}
+
+\Q{What is fuzzy logic? When do we use it? Explain fuzzy inference / the steps, with an example.}{\m{2}\m{3}\m{4}\m{8}\m{2+6}\m{3+7}\m{1+2+5}}
+{\color{sub}\footnotesize \tS{16} \yr{\textbf{69 Bh} \m{4}, 70 Ma \m{2+6},
+80 Ash \m{1+2+5}, 73 Ma \m{3+7}, 79 Ash \m{1+2+5}, \textbf{80 Ch} \m{2+5},
+\texttt{82 Ba} \m{2+6}, \textbf{\texttt{80 Bh}} \m{8}, \textbf{\texttt{79 Bh}} \m{2+6},
+\texttt{81 Ba} \m{4}, 78 Po \m{4}, \textbf{77 Ch} \m{4}, 81 Ash \m{4},
+\texttt{80 Ba} \m{3}, 82 Ka \m{2}, \textbf{\texttt{82 Bh}} \m{2}}
+\gap$\cdot$\gap \mk{the syllabus calls this ``fuzzy learning'' and no
+paper ever has}: they ask fuzzy \emph{logic} and fuzzy \emph{inference}, which is
+reasoning, not learning \gap$\cdot$\gap \yr{73 Ma} is the only one to name
+\textbf{Mamdani} \gap$\cdot$\gap \yr{82 Ka} and \yr{\textbf{\texttt{82 Bh}}} bolt it onto
+a GA question}
+
+\sbsr{0.50}{%
+\lead{What it is}
+\begin{itemize}
+  \item \textbf{Fuzzy logic is a many-valued logic in which a proposition has a degree of
+        truth anywhere in $[0,1]$}, instead of only 0 or 1.
+  \item It exists because human concepts have \mk{no sharp boundary}:
+        \emph{tall}, \emph{hot}, \emph{slow}, \emph{near}, \emph{honest}. A crisp rule
+        must answer \emph{is 179\,cm tall?} yes or no; a fuzzy one answers 0.78.
+  \item Introduced by \textbf{Lotfi A. Zadeh}, UC Berkeley, \textbf{1965}.
+  \item \textbf{Fuzzy set}: for a universe $U$, a fuzzy set $A$ is the set of pairs
+        $\{(x, \mu_A(x)) : x \in U\}$ where the \textbf{membership function}
+  \[ \mu_A(x): U \rightarrow [0,1] \]
+  \begin{itemize}
+    \item $\mu_A(x)=1$ $\rightarrow$ $x$ is fully in $A$;
+          $\mu_A(x)=0$ $\rightarrow$ fully out;
+          $0<\mu_A(x)<1$ $\rightarrow$ partly in.
+  \end{itemize}
+  \item \textbf{Linguistic variable} $-$ a variable whose values are words:
+        Temperature $=$ \{very cold, cold, warm, hot, very hot\}. Each word is a fuzzy
+        set with its own membership curve, and the curves \textbf{overlap} on purpose.
+\end{itemize}}{%
+\figT{c6_crisp_fuzzy_tbl.png}
+{\color{sub}\footnotesize \textbf{Crisp Vs fuzzy on the same data.} Membership of
+\emph{tall}: the crisp column steps from 0 to 1 at 180\,cm, so Tom at 181 is tall and
+David at 179 is not. The fuzzy column grades them 0.82 and 0.78 $-$ which is what a person
+would say. This one table answers \emph{``how does fuzzy logic differ from classical
+binary logic''} (\yr{\textbf{\texttt{82 Bh}}}) outright.}
+\figT{c6_crisp_fuzzy_set.png}
+{\color{sub}\footnotesize The same point as sets: $b$ is simply outside crisp $A$; in
+fuzzy $A$ the boundary is a band, so $b$ and $c$ have partial membership.}}
+
+\sbsr{0.48}{%
+\lead{Fuzzy set operations}
+{\color{sub}\footnotesize all defined pointwise on the membership values; worked on real
+numbers in the companion.}
+\begin{tabularx}{\linewidth}{@{}L{3.1cm}X@{}}
+\hrow \thead{Operation} & \thead{Membership} \\
+Union $A \cup B$ & $\max(\mu_A, \mu_B)$ \\
+Intersection $A \cap B$ & $\min(\mu_A, \mu_B)$ \\
+Complement $A'$ & $1 - \mu_A$ \\
+Bold union (X-OR) & $\min(1,\; \mu_A + \mu_B)$ \\
+Bold intersection & $\max(0,\; \mu_A + \mu_B - 1)$ \\
+Equality & $\mu_A(x) = \mu_B(x)$ for every $x$ \\
+\end{tabularx}
+\lead{Fuzzy logic Vs probability}
+\begin{itemize}
+  \item \textbf{Not the same thing, and papers reward saying so.}
+  \item \emph{Ram's membership of ``old'' is 0.9} $-$ Ram \mk{is} 90\,\%
+        old. A statement about \textbf{vagueness}, and it stays 0.9 after you meet him.
+  \item \emph{P(Ram is old) $=$ 0.9} $-$ Ram either is or is not old and we do not know
+        which. A statement about \textbf{ignorance}, and it collapses to 0 or 1 once you
+        meet him.
+\end{itemize}}{%
+\lead{Architecture of a fuzzy inference system}
+\figT{c6_fuzzy_arch.png}
+{\color{sub}\footnotesize The block diagram \yr{\texttt{82 Ba}} and five other papers ask
+for: crisp input $\rightarrow$ \textbf{fuzzifier} $\rightarrow$ fuzzy input set
+$\rightarrow$ \textbf{inference engine} (driven by the \textbf{rule base} above it)
+$\rightarrow$ fuzzy output set $\rightarrow$ \textbf{defuzzifier} $\rightarrow$ crisp
+output.}
+\begin{itemize}
+  \item \textbf{Rule base} $-$ the IF--THEN rules supplied by domain experts.
+        \emph{IF temperature is cold AND target is warm THEN heater is on.}
+  \item \textbf{Fuzzification} $-$ read the crisp sensor value off each membership curve
+        to get a degree for every linguistic term.
+  \item \textbf{Inference engine} $-$ match the fuzzified inputs against the rules,
+        compute each rule's \textbf{firing strength}, and combine the consequents.
+  \item \textbf{Defuzzification} $-$ collapse the aggregated fuzzy output back to one
+        crisp number. \textbf{Centroid} (centre of gravity) is the usual method; also
+        mean of maxima, bisector, weighted average.
+\end{itemize}}
+
+\sbsr{0.52}{%
+\lead{The steps of ``fuzzy learning'' \gap{\color{sub}\footnotesize(\yr{\textbf{\texttt{80 Bh}}} \m{8}, \yr{\textbf{\texttt{79 Bh}}} \m{2+6}, \yr{\textbf{69 Bh}} \m{4})}}
+\begin{itemize}
+  \item \textbf{1. Define the linguistic variables and terms.}
+        Temperature $=$ \{very cold, cold, warm, very warm, hot\}.
+  \item \textbf{2. Construct a membership function for each term.} Triangular and
+        trapezoidal are normal; they must overlap.
+  \item \textbf{3. Build the rule base} of IF--THEN rules, usually as a matrix of every
+        input combination against the action to take.
+  \item \textbf{4. Fuzzify}: convert the crisp readings into membership degrees.
+  \item \textbf{5. Evaluate the rules} in the inference engine, and \textbf{aggregate}
+        the results into one fuzzy output.
+  \item \textbf{6. Defuzzify} into a crisp control value.
+  \item \mk{Worked end to end on an air-conditioner in the companion.}
+\end{itemize}}{%
+\figT{c6_memb_fns.png}
+{\color{sub}\footnotesize Step 2 for three linguistic variables of a soil-moisture
+controller. Note the overlaps: at 45 the humidity is \emph{both} medium and wet, to some
+degree.}}
+
+\sbsr{0.52}{%
+\lead{Mamdani fuzzy inference \gap{\color{sub}\footnotesize(\yr{73 Ma} \m{3+7})}}
+\begin{itemize}
+  \item Built by \textbf{Ebrahim Mamdani}, London, \textbf{1975}, to control a steam
+        engine and boiler from rules given by human operators.
+  \item Its six operations, in order: \textbf{determine the rules}, \textbf{fuzzify} the
+        inputs, combine them to get each rule's \textbf{strength} (fuzzy AND $=$ min),
+        apply \textbf{implication} to clip the output set, \textbf{aggregate} the clipped
+        sets, then \textbf{defuzzify}.
+  \item \mk{Mamdani Vs Sugeno} in one line: Mamdani's rule consequent is
+        a \emph{fuzzy set} and needs defuzzifying; Sugeno's is a \emph{function of the
+        inputs}, so the output is a weighted average and no defuzzification is needed.
+        Mamdani is more intuitive, Sugeno cheaper.
+\end{itemize}}{%
+\figT{c6_fuzzy_infer.png}
+{\color{sub}\footnotesize The same architecture with the membership curves drawn on it, so
+``fuzzy input'' and ``fuzzy output'' are visible as shapes rather than words.}}
+
+\sbsr{0.50}{%
+\lead{Advantages}
+\begin{itemize}
+  \item Mimics human reasoning, so the rules are \mk{readable and can be
+        written by a domain expert} who knows no mathematics.
+  \item Needs no exact mathematical model of the plant $-$ decisive where one does not
+        exist.
+  \item \textbf{Robust}: imprecise, noisy or partly missing inputs still give a sensible
+        output, so it degrades gracefully when a sensor fails.
+  \item Simple, cheap to implement on small hardware; handles nonlinearity of arbitrary
+        complexity.
+  \item Proven in real products: washing machines, air conditioners, camera autofocus,
+        anti-lock brakes, subway train braking.
+\end{itemize}}{%
+\lead{Disadvantages, and when not to use it}
+\begin{itemize}
+  \item \mk{No systematic design method.} Rules and membership
+        functions come from expert opinion, so two designers get two systems.
+  \item Accuracy depends entirely on the quality of that expert knowledge.
+  \item Validation and verification need extensive hardware testing; there is no proof of
+        stability the way there is for a classical controller.
+  \item Not suited to problems needing high precision, nor to pattern recognition where a
+        neural network learns the mapping from data.
+  \item \textbf{Do not use it} when the input space does not map naturally to an output
+        space, when a crisp model already works, or where common sense or a simple
+        threshold would do.
+\end{itemize}}
+
+%-----------------------------------------------------------------------
+\T{6.8 Boltzmann machine}
+
+\Q{Define the Boltzmann machine. Explain it with a suitable algorithm.}{\m{4}\m{1+7}\m{2+8}}
+{\color{sub}\footnotesize \tP{3} \yr{70 Ma \m{1+7}, \textbf{72 Ash} \m{2+8}, 76 Ba \m{4}}
+\gap$\cdot$\gap only three papers, but two of them put 7 or 8 marks on it
+\gap$\cdot$\gap \yr{70 Ma} pairs it with the semantic network (Ch\,5), \yr{\textbf{72 Ash}}
+with ``what is machine learning''}
+
+\sbsr{0.52}{%
+\begin{itemize}
+  \item \textbf{A Boltzmann machine is a stochastic, energy-based, recurrent neural
+        network of symmetrically connected binary units that switch on and off at
+        random, with a probability set by the network's energy.}
+  \item Invented by \textbf{Hinton and Sejnowski, 1985}. Named for the
+        \textbf{Boltzmann distribution} it samples from.
+  \item \textbf{Structure}:
+  \begin{itemize}
+    \item \textbf{Visible units} $V$ carry the data in \emph{and} the reconstruction out.
+    \item \textbf{Hidden units} $H$ capture features and dependencies.
+    \item Every pair is \textbf{symmetrically} connected, $w_{ij}=w_{ji}$, and there are
+          \mk{no self connections}.
+    \item \mk{There is no output layer} $-$ the same visible nodes
+          that take the input return the reconstruction.
+  \end{itemize}
+  \item \textbf{State and energy}. Each unit is 0 or 1; the network's energy is
+  \[ E \;=\; -\sum_{i<j} w_{ij}\, s_i\, s_j \;-\; \sum_i \theta_i s_i \]
+  and the probability of a state falls exponentially with its energy:
+  \[ p_i \;=\; \frac{e^{-\varepsilon_i / kT}}{\sum_{j} e^{-\varepsilon_j / kT}} \]
+  \item So the machine \mk{prefers low-energy states but can still
+        climb out of one}, which is how it escapes local minima $-$ the same
+        idea as simulated annealing (Ch\,3), with $T$ lowered as it runs.
+\end{itemize}}{%
+\figT{c6_boltzmann.png}
+{\color{sub}\footnotesize Visible nodes below, hidden above, every pair connected both
+ways. Compare with a feed-forward net: no layers, no direction, no output side.}}
+
+\sbsr{0.52}{%
+\lead{The learning algorithm, in six steps}
+\begin{itemize}
+  \item \textbf{1.} Initialise the weights randomly and set a high temperature $T$.
+  \item \textbf{2. Positive phase (clamped)}: fix the visible units to a training vector,
+        let the hidden units settle, record the correlation
+        $\langle s_i s_j \rangle_{data}$.
+  \item \textbf{3. Negative phase (free)}: release every unit, let the network run to
+        equilibrium, record $\langle s_i s_j \rangle_{model}$.
+  \item \textbf{4. Update}
+        $\Delta w_{ij} = \eta \left( \langle s_i s_j \rangle_{data} -
+        \langle s_i s_j \rangle_{model} \right)$.
+  \item \textbf{5.} Lower $T$ a little (annealing) and repeat over the training set.
+  \item \textbf{6.} Stop when the weights stop changing.
+\end{itemize}
+\begin{itemize}
+  \item \mk{What the two phases mean}: the clamped phase measures how
+        units co-fire when the world is showing them the truth, the free phase how they
+        co-fire when the network is dreaming on its own. Learning pushes the second
+        towards the first.
+\end{itemize}}{%
+\lead{Restricted Boltzmann machine (RBM)}
+\begin{itemize}
+  \item A full Boltzmann machine is \mk{far too slow}: every unit
+        depends on every other, so the weights must be updated one at a time.
+  \item RBM \textbf{forbids connections inside a layer}. Visible-to-hidden only.
+  \item Units within a layer are then independent given the other layer, so a whole layer
+        updates \textbf{in parallel}. Trained by \textbf{contrastive divergence}.
+  \item Used for dimensionality reduction, classification, regression, collaborative
+        filtering (recommender systems), and as the building block of deep belief
+        networks.
+\end{itemize}
+\figT{c6_rbm.png}}
+
+\hr
+
+%-----------------------------------------------------------------------
+\T{6.9 Every Chapter 6 question, grouped by the answer it wants}
+
+{\color{sub}\footnotesize Every Chapter 6 question in the 41 papers, grouped by the answer
+it wants. \textbf{Bold} $=$ regular exam, plain $=$ back. \texttt{Monospace} $=$ CT 710
+(BEI), \textit{italic} $=$ CT 78506 (BEX), upright $=$ CT 653 (BCT).}
+
+\begin{itemize}
+  \item \textbf{Genetic algorithm} \textbf{21 papers} $\rightarrow$ \S6.6, worked in the companion.
+        The wordings, all one answer: \emph{explain GA and its operators}
+        (\yr{69 Po}, \yr{71 Ma}, \yr{72 Ma}); \emph{all steps with block diagram}
+        (\yr{75 Ba}, \yr{\textbf{77 Ch}}, \yr{\textbf{\texttt{81 Bh}}},
+        \yr{\texttt{80 Ba}}, \yr{\textbf{\textit{76 Bh}}}, \yr{\textbf{78 Ch}});
+        \emph{steps with a flowchart, and why mutation matters} (\yr{\texttt{81 Ba}});
+        \emph{working principle with examples} (\yr{\textit{72 Ma}},
+        \yr{\textbf{81 Ch}}); \emph{when shall we use it} (\yr{81 Ash});
+        \emph{what is evolutionary computing} (\yr{\textbf{79 Ch}});
+        \emph{the algorithm of GA} (\yr{\textbf{70 Bh}}); \emph{justify that the study of
+        genes is part of AI} (\yr{\textbf{74 Bh}}); short notes
+        (\yr{\textbf{\textit{74 Bh}}}, \yr{\textbf{\textit{73 Bh}}} as
+        \emph{mutation Vs crossover}); and bolted to a fuzzy question in
+        \yr{82 Ka} and \yr{\textbf{\texttt{82 Bh}}}.
+  \item \textbf{Fuzzy logic and fuzzy inference} \textbf{16 papers} $\rightarrow$ \S6.7.
+        \emph{Fuzzy inference with an example} (\yr{70 Ma}, \yr{80 Ash});
+        \emph{Mamdani method} (\yr{73 Ma}); \emph{when do we use it, and the steps}
+        (\yr{79 Ash}, \yr{\textbf{80 Ch}}); \emph{architecture and working mechanism}
+        (\yr{\texttt{82 Ba}}); \emph{all the steps in fuzzy learning with a block diagram}
+        (\yr{\textbf{\texttt{80 Bh}}}, \yr{\textbf{\texttt{79 Bh}}}, which also asks
+        \emph{what is membership of an element}); \emph{what is fuzzy learning, with a
+        practical example} (\yr{\textbf{69 Bh}}); and short notes at
+        \yr{\texttt{81 Ba}}, \yr{78 Po}, \yr{\textbf{77 Ch}}, \yr{81 Ash},
+        \yr{\texttt{80 Ba}}.
+  \item \textbf{Supervised Vs unsupervised, and the three types} \textbf{12 papers}
+        $\rightarrow$ \S6.3. The \emph{clustering} rider is in
+        \yr{\textit{74 Ma}} and \yr{\textbf{\textit{72 Ash}}}; the
+        \emph{``learning is essential for intelligent agents''} rider in
+        \yr{\textbf{\textit{74 Bh}}} and \yr{79 Jth} (answered in Ch\,1); all three types
+        with examples in \yr{78 Po}.
+  \item \textbf{ID3 and the best attribute} \textbf{6 papers} $\rightarrow$ \S6.5 for the method,
+        companion for all three data tables: \emph{play golf}
+        (\yr{\textbf{\textit{74 Bh}}}, \yr{\textit{74 Ma}}, \yr{\textbf{\textit{72 Ash}}}),
+        \emph{play cricket} (\yr{79 Jth}), \emph{poisonous mushrooms}
+        (\yr{\textbf{\textit{77 Ch}}}). \yr{\textbf{74 Bh}} asks the ID3 \emph{process}
+        without a table.
+  \item \textbf{Ways of learning} \textbf{2 papers} $\rightarrow$ \S6.2
+        (\yr{\textbf{\textit{71 Bh}}} \m{8}, \yr{\texttt{81 Ba}} \m{3}). \emph{Induction
+        Vs deduction} as a short note at \yr{\textbf{\textit{73 Bh}}} \m{3}.
+        \emph{Algorithms inspired by biology and social behaviour} at
+        \yr{\textbf{78 Ch}} \m{2}.
+  \item \textbf{Learning framework} \textbf{2 papers} $\rightarrow$ \S6.1
+        (\yr{78 Ba}, \yr{\textbf{69 Bh}}). \emph{Define machine learning} alone at
+        \yr{80 Ash} \m{1}, and as the lead-in to eleven other questions.
+  \item \textbf{Learning by analogy} \textbf{3 papers} $\rightarrow$ \S6.4.
+        \yr{\textbf{71 Bh}} wants it \emph{with a semantic network};
+        \yr{71 Ma} wants \emph{analogy Vs inductive learning} \m{3}.
+  \item \textbf{Boltzmann machine} \textbf{3 papers} $\rightarrow$ \S6.8
+        (\yr{70 Ma}, \yr{\textbf{72 Ash}}, \yr{76 Ba}).
+  \item \textbf{Swarm intelligence} \m{2} \added{} $-$ asked once,
+        \yr{\textbf{75 Bh}}, and \mk{no lecture deck in this subject
+        mentions it}. Answer: a family of optimization methods in which many
+        simple agents following local rules produce intelligent group behaviour with no
+        central control $-$ ant colony optimization (pheromone trails, shortest path),
+        particle swarm optimization (each particle steers towards its own best and the
+        swarm's best), bee colony, flocking. Like GA it is population based and
+        nature inspired; unlike GA the individuals \mk{are not replaced,
+        they move}. The other half of that question, the GA fitness numerical, is
+        worked in the companion.
+  \item \textbf{Reinforcement learning in detail} $-$ named by \yr{78 Po} only, and the
+        one lecture deck that covers it is PS Sir's. \S6.3 carries the four elements
+        (policy, reward signal, value function, model).
+  \item \textbf{Not in this chapter}: \emph{neural networks} appear on the syllabus line
+        for Chapter 6 but every paper sets them under Applications of AI $-$ perceptron,
+        back-propagation, Hopfield, Kohonen and Hebbian learning are all in
+        \textbf{Ch\,7}. \emph{Learning in a neural network} short notes (\yr{69 Po},
+        \yr{\textbf{74 Bh}}, \yr{78 Ba}, \yr{\textbf{\textit{77 Ch}}}, \yr{81 Ash}) are
+        answered there.
+\end{itemize}
+
+\lead{Source notes}
+\begin{itemize}
+  \item Spine: BA Sir \emph{CH-06 Machine Learning}, PS Sir \emph{6.\,Machine Learning},
+        SG Sir \emph{AIChapter\_6}, and \emph{Insights on Artificial Intelligence} ch\,6
+        for the worked method.
+  \item \mk{Two corrections carried into the companion.} \emph{Insights}
+        p167 prints $\mu_{A'}(30)=0.5$ for a complement whose correct value is
+        \textbf{0.6}, and p166 labels a fuzzified pair \emph{(10, 0.3)} when the element
+        is 9, not 10. Both are shown correctly there, with a note.
+  \item \mk{Reinforcement learning and Mamdani inference are in PS Sir's
+        deck only}, which is labelled \emph{old syllabus}. Both are on the current
+        CT 710 syllabus by way of the papers, so both are kept, checked against the
+        standard sources.
+  \item Swarm intelligence is \added{} $-$ researched and written for
+        \yr{\textbf{75 Bh}}, because no deck in \emph{Notes\textbackslash} contains the
+        word.
+\end{itemize}
