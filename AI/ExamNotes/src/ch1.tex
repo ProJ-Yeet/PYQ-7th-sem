@@ -1,0 +1,973 @@
+%=======================================================================
+%  CHAPTER 1 — INTRODUCTION  (7 hrs)
+%=======================================================================
+\section{Introduction}
+
+{\color{sub}\footnotesize 7 hrs \gap$\cdot$\gap asked in \mk{all 41 papers}
+\gap$\cdot$\gap 6 syllabus sub-topics \gap$\cdot$\gap 337 marks, 9.9\,\% of every mark
+ever set \gap$\cdot$\gap no numerical component.}
+
+\lead{Read this first:}
+\begin{itemize}
+  \item \mk{Every paper opens here.} Q1 is nearly always a two- or three-part
+        Introduction question for 7 or 8 marks, and it is the cheapest 8 marks in the
+        subject.
+  \item Four questions carry the whole chapter:
+  \begin{itemize}
+    \item \textbf{Turing test} \tS{10} $-$ what it is, when it is passed, what a machine
+          needs to pass it.
+    \item \textbf{Applications of AI} \tS{8} $-$ almost always the tail of the Turing-test
+          question, never a question on its own.
+    \item \textbf{Intelligent agents} \tF{7} $-$ define, then the types, with diagrams.
+    \item \textbf{PEAS} \tF{7} $-$ write the four rows for a named system.
+  \end{itemize}
+  \item \mk{The one idea everything hangs off is the four-approaches grid}
+        (\S1.1). Thinking Vs acting, humanly Vs rationally. Every \emph{define AI} answer
+        is that grid; the Turing test is the \emph{acting humanly} box; the rational agent
+        is the \emph{acting rationally} box. Learn the grid and three separate questions
+        collapse into one.
+  \item Pairs the examiner reliably asks together: \textbf{Turing test $+$ applications}
+        (7 papers), \textbf{intelligent agent $+$ PEAS} (6 papers),
+        \textbf{knowledge $+$ learning} (5 papers).
+  \item \mk{PEAS is worth memorising cold.} It is asked in 9 papers for a
+        \emph{named} system (taxi, medical diagnosis, self-driving car, robot in a
+        manufacturing plant, medicine-delivery drone) and no lecture deck works a full
+        example. Four rows, four columns, \S1.4.
+  \item Do not write history as prose. The examiner wants \textbf{year $\rightarrow$ event}
+        lines, and one of those questions asks specifically which period was the
+        ``AI research failure'' and why.
+\end{itemize}
+
+\hr
+
+%-----------------------------------------------------------------------
+\T{1.1 What Artificial Intelligence is}
+
+\Q{Define Artificial Intelligence. Describe AI and its subfields}{\m{1}\m{2}\m{4}}
+{\color{sub}\footnotesize \tS{10} \yr{\textbf{70 Bh}, 69 Po, 75 Ba, \textbf{77 Ch}, 78 Ba,
+79 Ash, \textbf{\texttt{79 Bh}}, \texttt{81 Ba}, \textbf{\textit{77 Ch}},
+\textbf{\textit{76 Bh}}} \gap$\cdot$\gap
+opens the Turing-test question in almost every paper, so it is never worth more than
+2 marks on its own, and it is never skippable}
+
+\sbs{%
+\lead{Definitions worth quoting}
+\begin{itemize}
+  \item \textbf{Elaine Rich}: the study of how to make computers do things at which, at the
+        moment, people are better.
+  \begin{itemize}
+    \item Best one to write: it explains why the field keeps moving. Once machines win at
+          a task, it stops counting as AI.
+  \end{itemize}
+  \item \textbf{Kurzweil}: the art of creating machines that perform functions requiring
+        intelligence when performed by people.
+  \item \textbf{Minsky}: the science of making computers do things that require
+        intelligence when done by humans.
+  \item \textbf{Working definition}: a branch of computer science that builds machines
+        which solve complex problems in a human-like fashion.
+\end{itemize}
+\lead{Intelligence, unpacked}
+\begin{itemize}
+  \item Ability to \textbf{understand}, to \textbf{reason}, to \textbf{learn}, to
+        \textbf{create}.
+  \item No machine has all four. That gap is the whole subject.
+\end{itemize}}{%
+\lead{Intelligent behaviour: three task classes}
+\begin{itemize}
+  \item \textbf{Everyday tasks}: recognise a friend, recognise a caller's voice, translate
+        a language, interpret a photograph, talk, cook a meal.
+  \begin{itemize}
+    \item Easiest for people, \mk{hardest for machines}. Worth saying: this is
+          Moravec's paradox.
+  \end{itemize}
+  \item \textbf{Formal tasks}: prove a theorem, do calculus, play chess, checkers, Go.
+  \item \textbf{Expert tasks}: engineering design, medical diagnosis, financial analysis.
+  \begin{itemize}
+    \item Hardest for people, \mk{easiest for machines}, because the knowledge is
+          explicit and narrow.
+  \end{itemize}
+\end{itemize}
+\lead{Subfields of AI}
+\begin{itemize}
+  \item Search and problem solving $\cdot$ knowledge representation and reasoning $\cdot$
+        planning $\cdot$ machine learning $\cdot$ neural networks $\cdot$ expert systems
+        $\cdot$ natural language processing $\cdot$ machine vision and image processing
+        $\cdot$ robotics $\cdot$ fuzzy logic and evolutionary computing.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+\creamq{The four approaches to AI (the grid everything sits on)}{\m{4}\m{7}\m{8}}
+{\color{sub}\footnotesize \yr{\textbf{74 Bh}, 76 Ba, \textbf{\texttt{82 Bh}}} \gap$\cdot$\gap
+asked as ``justify that systems that think/act rationally are part of AI'' and as
+``define AI from the dimension of behavioural process and thought process''}
+
+\vspace{2pt}
+\begin{tabularx}{\textwidth}{@{}L{2.1cm}XX@{}}
+\toprule
+\hrow & \thead{Humanly (measured against people)} & \thead{Rationally (measured against an ideal)} \\
+\midrule
+\textbf{Thinking}
+  & \textbf{Thinking humanly} $-$ the cognitive modelling approach. Build a precise theory
+    of how the human mind works, then write it as a program. Needs psychology and
+    introspection. \emph{Eg} General Problem Solver, Newell and Simon, 1961.
+    \newline \mk{Criticism}: we have no scientific theory of the brain's internal
+    activity, so the model cannot be verified.
+  & \textbf{Thinking rationally} $-$ the laws of thought approach. Encode correct
+    reasoning as formal logic, then let an inference engine derive conclusions.
+    \emph{Eg} ``Socrates is a man; all men are mortal; therefore Socrates is mortal.''
+    \newline \mk{Criticism}: informal, uncertain knowledge is very hard to state in
+    logical notation, and solving a problem in principle is not solving it in practice. \\
+\midrule
+\textbf{Acting}
+  & \textbf{Acting humanly} $-$ \textbf{the Turing test} approach. Model what people do,
+    not how they think. Judged purely on external behaviour. \emph{Eg} ELIZA.
+    \newline This is the box \S1.2 lives in.
+  & \textbf{Acting rationally} $-$ \textbf{the rational agent} approach. Do whatever is
+    expected to achieve the best outcome. Covers reflex action, which needs no reasoning
+    at all. \newline \mk{The approach modern AI actually uses}, because it is
+    general and it can be measured. This is the box \S1.3 lives in. \\
+\bottomrule
+\end{tabularx}
+\par\penalty0
+\vspace{3pt}
+
+\sbs{%
+\lead{How to answer ``justify that X is part of AI''}
+\begin{itemize}
+  \item Name the box, give its yardstick, give an example system, give its criticism.
+  \item \textbf{Thinking rationally} is part of AI because logic-based inference (FOPL,
+        resolution, Ch\,4) derives new true facts from known ones without any human in the
+        loop.
+  \item \textbf{Acting rationally} is part of AI because an agent that maximises its
+        performance measure in an uncertain environment is doing what intelligence is
+        \emph{for}, whether or not it reasons the way people do.
+  \item \mk{Say which is preferred and why}: acting rationally, because
+        rationality is mathematically well defined and generalises, while ``humanly''
+        needs a theory of mind we do not have.
+\end{itemize}}{%
+\lead{Types of AI by capability}
+\begin{itemize}
+  \item \textbf{Artificial Narrow Intelligence (ANI, weak AI)}: one task or one narrow
+        domain. Everything that exists today. \emph{Eg} spam filter, chess engine, a
+        speech recogniser.
+  \item \textbf{Artificial General Intelligence (AGI, strong AI)}: any intellectual task a
+        human can do, transferring skill between domains. Does not exist.
+  \item \textbf{Artificial Super Intelligence (ASI)}: exceeds human ability in every field
+        including creativity and social skill. Hypothetical.
+\end{itemize}
+\lead{Weak Vs strong AI, the philosophical sense}
+\begin{itemize}
+  \item \textbf{Weak}: the machine \emph{simulates} thinking.
+  \item \textbf{Strong}: the machine genuinely \emph{has} a mind.
+  \item Searle's Chinese Room argues strong AI is impossible: symbol manipulation is not
+        understanding. \added
+\end{itemize}}
+
+%-----------------------------------------------------------------------
+\T{1.2 The Turing test}
+
+\Q{What is the Turing test? When is a machine said to have passed it?}{\m{2}\m{4}\m{5}\m{7}}
+{\color{sub}\footnotesize \tS{10} \yr{\textbf{70 Bh} \m{5}, 69 Po \m{7}, 75 Ba \m{2},
+\textbf{77 Ch} \m{3}, 78 Ba \m{2}, 79 Ash \m{4}, \textbf{\texttt{79 Bh}} \m{5},
+\texttt{81 Ba} \m{6}, \textbf{\textit{77 Ch}} \m{4}, \textbf{\textit{76 Bh}} \m{3}}
+\gap$\cdot$\gap \mk{the single most-asked question in the subject's first chapter}}
+
+\sbsr{0.52}{%
+\lead{The setup}
+\begin{itemize}
+  \item Proposed by \textbf{Alan Turing}, 1950, in \emph{Computing Machinery and
+        Intelligence}, to replace the unanswerable ``can machines think?'' with a testable
+        question, ``can machines behave intelligently?''
+  \item Three rooms, no sight or sound between them:
+  \begin{itemize}
+    \item a human \textbf{interrogator},
+    \item a human \textbf{respondent},
+    \item the \textbf{machine}.
+  \end{itemize}
+  \item The interrogator questions both over a text-only channel (a teletype, so voice and
+        handwriting give nothing away) and must say which is which.
+\end{itemize}
+\lead{\mk{When it is passed}}
+\begin{itemize}
+  \item The machine passes when the interrogator \textbf{cannot do better than chance},
+        i.e.\ is wrong about half the time.
+  \item Turing's own operational figure: an average interrogator has \textbf{under a 70\,\%
+        chance} of identifying correctly after \textbf{5 minutes} of questioning, so the
+        machine fools them \textbf{30\,\%} of the time.
+  \item \mk{Write both}: the half-the-time principle, then the 5-minute /
+        30\,\% figure as the concrete criterion.
+\end{itemize}}{%
+\lead{\mk{The four capabilities a machine needs to pass}}
+\begin{itemize}
+  \item \textbf{Natural Language Processing} $\rightarrow$ to communicate in English at
+        all.
+  \item \textbf{Knowledge Representation} $\rightarrow$ to store what it knows and what it
+        is told during the interview.
+  \item \textbf{Automated Reasoning} $\rightarrow$ to answer questions and draw new
+        conclusions from what is stored.
+  \item \textbf{Machine Learning} $\rightarrow$ to adapt to new circumstances and detect
+        patterns it was not given.
+\end{itemize}
+\lead{Total Turing test adds two more}
+\begin{itemize}
+  \item The plain test deliberately avoids physical contact, so it never tests perception
+        or manipulation. The \textbf{total Turing test} puts a video link and a hatch for
+        passing objects into the setup, adding:
+  \begin{itemize}
+    \item \textbf{Computer vision} $\rightarrow$ to perceive objects,
+    \item \textbf{Robotics} $\rightarrow$ to manipulate them and move about.
+  \end{itemize}
+  \item \textbf{6 capabilities in total.} \yr{(\textbf{\textit{77 Ch}} and
+        \textbf{\textit{76 Bh}} ask for the total test by name)}
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+\sbs{%
+\lead{ELIZA, the standard example}
+\begin{itemize}
+  \item Written at MIT, \textbf{1964--66}, by \textbf{Joseph Weizenbaum}. First script
+        \textbf{DOCTOR}, imitating a Rogerian psychotherapist.
+  \item Mechanism: a table of \textbf{syntactic patterns}, each with a canned reply that
+        echoes part of the input back after simple substitutions (\code{my} $\rightarrow$
+        \code{your}). \mk{No understanding, no knowledge base, no memory.}
+  \item Weizenbaum was disturbed by the reaction: psychiatrists thought it clinically
+        useful and users confided in it.
+  \item \mk{The exam point}: ELIZA shows a machine can be \emph{taken} for a
+        human without any intelligence behind it, which is the standing objection to the
+        test itself.
+\end{itemize}}{%
+\lead{Importance of the Turing test}
+\begin{itemize}
+  \item Turns a philosophical question into an \textbf{operational, repeatable} one.
+  \item Sets a \textbf{behavioural} yardstick: judge output, not internal mechanism, so it
+        does not need a theory of mind.
+  \item Defines the \textbf{research agenda}: its four required capabilities are four
+        whole subfields of AI, and this syllabus is mostly those four.
+  \item Still the benchmark by which conversational systems are reported.
+\end{itemize}
+\lead{Limitations}
+\begin{itemize}
+  \item Rewards \textbf{deception}, not competence. Passing needs human-like error and
+        delay, so a machine that answers arithmetic instantly and correctly \emph{fails}.
+  \item \textbf{Not reproducible} and not mathematically definable; the result depends on
+        the interrogator.
+  \item Tests only what people happen to do, so it caps machine intelligence at human
+        behaviour rather than measuring intelligence itself.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+\Q{If the Turing test is passed, does that show computers exhibit intelligence?}{\m{2}\m{3}\m{4}\m{7}}
+{\color{sub}\footnotesize \tF{4} \yr{72 Ma \m{7}, \textbf{73 Bh} \m{7},
+\textbf{\texttt{81 Bh}} \m{4+3}, \textbf{80 Ch} \m{2+4}} \gap$\cdot$\gap
+\mk{an argue-both-sides question}: take a side, but the marks are in giving
+both cases first. \textbf{\texttt{81 Bh}} and \textbf{80 Ch} tack the \emph{reverse}
+Turing test on the end}
+
+\sbs{%
+\lead{Case for ``yes''}
+\begin{itemize}
+  \item Intelligence has \textbf{no agreed internal definition}, so behaviour is the only
+        thing that can be measured at all.
+  \item We attribute intelligence to \emph{other people} on exactly this evidence, and
+        nothing else. Refusing the machine the same inference is inconsistent.
+  \item Passing is not a trick: it requires NLP, knowledge, reasoning \emph{and} learning
+        working together, which is a real and general capability.
+\end{itemize}}{%
+\lead{Case for ``no'' (the stronger answer)}
+\begin{itemize}
+  \item \textbf{Imitation is not cognition.} ELIZA fooled people with pattern substitution
+        and knew nothing.
+  \item \textbf{Searle's Chinese Room}: a person following symbol-manipulation rules can
+        answer Chinese questions perfectly while understanding no Chinese. Syntax does not
+        give semantics. \added
+  \item Tests only \textbf{one narrow channel}, text conversation. Says nothing about
+        perception, physical skill, creativity or goals.
+  \item \mk{Recommended stance}: passing shows \emph{intelligent behaviour},
+        not \emph{intelligence}. It is a sufficient test of appearing intelligent and a
+        necessary-but-not-sufficient test of being so.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+\creamq{Reverse Turing test}{\m{3}\m{4}} \added
+{\color{sub}\footnotesize \tP{2} \yr{\textbf{\texttt{81 Bh}} \m{3},
+\textbf{80 Ch} \m{4}} \gap$\cdot$\gap
+\mk{not in any lecture deck in this folder}, researched and added, and it has
+been asked twice in the last three years}
+
+\sbs{%
+\lead{What it is}
+\begin{itemize}
+  \item The roles are swapped: \textbf{a machine interrogates, and a human must prove it is
+        human.}
+  \item The test succeeds when the machine can tell human from machine, which is the
+        opposite goal to Turing's.
+  \item \textbf{CAPTCHA} is the everyday instance: \emph{Completely Automated Public
+        Turing test to tell Computers and Humans Apart}. A distorted-text or image-grid
+        challenge that people pass easily and programs do not.
+\end{itemize}}{%
+\lead{Turing Vs reverse Turing, side by side}
+\begin{itemize}
+  \item \textbf{Who judges}: human, Vs machine.
+  \item \textbf{Who is on trial}: machine, Vs human.
+  \item \textbf{Passed when}: the judge cannot tell them apart, Vs the judge \emph{can}.
+  \item \textbf{Purpose}: measure machine intelligence, Vs block bots from a web service.
+  \item \mk{Note the irony worth a mark}: every CAPTCHA solved by a program is
+        a small Turing test passed, which is why CAPTCHAs keep getting harder.
+\end{itemize}}
+
+%-----------------------------------------------------------------------
+\T{1.3 Intelligent agents}
+
+\Q{What is an intelligent agent? Explain the different types with examples}{\m{1}\m{2}\m{6}\m{8}}
+{\color{sub}\footnotesize \tF{7} \yr{\textbf{74 Bh} \m{1+6}, \textbf{\texttt{80 Bh}} \m{2+6},
+80 Ash \m{2+6}, 79 Jth \m{1+6}, \textbf{75 Bh} \m{8}, 76 Ba \m{8},
+\textbf{\textit{71 Bh}} \m{4+4}} \gap$\cdot$\gap
+\textbf{75 Bh} asks specifically \mk{how a learning agent works}, so do not
+stop at the four standard types}
+
+\sbsr{0.55}{%
+\lead{Definitions to write first}
+\begin{itemize}
+  \item \textbf{Agent}: anything that perceives its environment through \textbf{sensors}
+        and acts upon that environment through \textbf{actuators}.
+  \begin{itemize}
+    \item \textbf{Human agent}: eyes and ears as sensors; hands, legs and mouth as
+          actuators.
+    \item \textbf{Robotic agent}: cameras and infrared range finders as sensors; motors as
+          actuators.
+    \item \textbf{Software agent}: keystrokes and file contents as sensors; screen writes
+          and network packets as actuators.
+  \end{itemize}
+  \item \textbf{Percept}: what the agent perceives at one instant.
+        \textbf{Percept sequence}: everything it has ever perceived.
+  \item \textbf{Agent function} maps percept sequence to action, $f: P^{*} \rightarrow A$.
+  \item \textbf{Agent program} is the concrete implementation that runs on the hardware.
+  \item \mk{Agent $=$ architecture $+$ program.} One line, and it is often a
+        mark on its own.
+\end{itemize}}{%
+\figT{c1_agent_env.png}
+{\color{sub}\footnotesize The agent, its sensors and actuators, and the environment
+loop. \mk{Draw this first} in any agent answer; every later diagram is this
+one with a box added inside the agent.}}
+
+\penalty0\vspace{2pt}
+
+\sbs{%
+\lead{Rational agent}
+\begin{itemize}
+  \item For each possible percept sequence, a rational agent selects the action expected to
+        \textbf{maximise its performance measure}, given the evidence in the percept
+        sequence and whatever built-in knowledge it has.
+  \item \textbf{Performance measure}: the objective criterion for success, fixed by the
+        designer, not the agent. \emph{Eg} for a vacuum cleaner: dirt collected, time
+        taken, electricity used, noise made.
+  \item \mk{Rationality is not omniscience.} An omniscient agent knows the
+        actual outcome of its actions; that is impossible. Rationality maximises
+        \emph{expected} performance given what is knowable.
+  \item \textbf{Autonomy}: an agent is autonomous when its behaviour is determined by its
+        own percepts and experience rather than only by built-in knowledge. Autonomy
+        requires learning.
+  \item \textbf{Information gathering} and \textbf{exploration} are rational acts: it can
+        be rational to act now purely to get a better percept later.
+\end{itemize}}{%
+\lead{Environment properties (worth 2 marks when asked)}
+\begin{itemize}
+  \item \textbf{Fully Vs partially observable}: can the sensors see the whole relevant
+        state?
+  \item \textbf{Deterministic Vs stochastic}: does the next state follow from the current
+        state and action alone?
+  \item \textbf{Episodic Vs sequential}: does the current action affect later ones?
+  \item \textbf{Static Vs dynamic}: does the world change while the agent deliberates?
+  \item \textbf{Discrete Vs continuous}: countable states and actions, or not?
+  \item \textbf{Single agent Vs multi-agent}: is anything else optimising against it?
+  \item \emph{Eg} a taxi driver's world is partially observable, stochastic, sequential,
+        dynamic, continuous and multi-agent. \mk{The hardest kind on every axis.}
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+\lead{The five agent types, in increasing generality}
+
+\sbsr{0.5}{%
+\textbf{1. Table-driven agent}
+\begin{itemize}
+  \item Holds a lookup table indexed by the \emph{entire percept history}, and reads the
+        next action out of it.
+  \item \mk{Impractical}: the table grows exponentially with the length of the
+        history. A taxi with a camera would need more entries than there are atoms in the
+        universe.
+  \item Included only to show why the later types exist.
+\end{itemize}
+\figT{c1_agent_table.png}}{%
+\textbf{2. Simple reflex agent}
+\begin{itemize}
+  \item Acts on the \textbf{current percept only}, through
+        \textbf{condition-action (if-then) rules}. Implemented as a production system
+        (Ch\,2).
+  \item \textbf{Stateless}: no memory of past world states.
+  \item \emph{Eg} \code{if car-in-front-is-braking then initiate-braking}; the
+        vacuum-cleaner agent that sucks whenever the current square is dirty.
+  \item \mk{Fails when the environment is partially observable}, and can loop
+        forever in that case.
+\end{itemize}
+\figT{c1_agent_reflex.png}}
+
+\penalty0\vspace{2pt}
+
+\sbsr{0.5}{%
+\textbf{3. Model-based reflex agent}
+\begin{itemize}
+  \item Keeps \textbf{internal state} $=$ the part of the world it cannot currently see.
+  \item Needs two pieces of knowledge, together called the \textbf{model of the world}:
+  \begin{itemize}
+    \item \textbf{how the world evolves} on its own,
+    \item \textbf{what my actions do} to it.
+  \end{itemize}
+  \item \mk{Fixes partial observability.} \emph{Eg} a taxi remembering which
+        cars are in the lanes it cannot see right now.
+\end{itemize}
+\figT{c1_agent_model.png}}{%
+\textbf{4. Goal-based agent}
+\begin{itemize}
+  \item Adds \textbf{goal} information describing desirable situations, and asks ``what
+        will it be like if I do action A?''
+  \item Considers the \textbf{future}, so it can plan and search (Ch\,3), not just react.
+  \item \mk{Far more flexible}: change the goal and the behaviour changes, with
+        no rules rewritten. A reflex agent needs every rule rewritten.
+  \item \emph{Eg} a taxi told to go to a different destination.
+\end{itemize}
+\figT{c1_agent_goal.png}}
+
+\penalty0\vspace{2pt}
+
+\sbsr{0.5}{%
+\textbf{5. Utility-based agent}
+\begin{itemize}
+  \item A goal is binary: reached or not. A \textbf{utility function} maps a state to a
+        number saying \textbf{how happy} the agent is there.
+  \item Needed for two cases a goal cannot settle:
+  \begin{itemize}
+    \item \textbf{conflicting goals} $-$ fast Vs safe Vs cheap: utility trades them off;
+    \item \textbf{uncertain goals} $-$ pick the action with the highest
+          \emph{expected} utility.
+  \end{itemize}
+  \item \emph{Eg} a taxi choosing between a quick risky route and a slow safe one.
+\end{itemize}
+\figT{c1_agent_utility.png}}{%
+\textbf{Learning agent} \yr{(asked by name, \textbf{75 Bh} \m{8})}
+\begin{itemize}
+  \item Any of the four above, wrapped in machinery that \textbf{improves it with
+        experience}. Four parts:
+  \begin{itemize}
+    \item \textbf{Performance element} $-$ the old agent: takes percepts, chooses actions.
+    \item \textbf{Critic} $-$ judges the outcome against a fixed
+          \textbf{performance standard} and reports feedback. The standard must be
+          external, or the agent could just lower its own bar.
+    \item \textbf{Learning element} $-$ uses that feedback to change the performance
+          element.
+    \item \textbf{Problem generator} $-$ deliberately suggests \textbf{exploratory}
+          actions that look suboptimal now, so the agent discovers better behaviour later.
+  \end{itemize}
+  \item \mk{The exam point}: learning is what makes an agent truly autonomous,
+        which is the link straight to \S1.9 and to Ch\,6.
+\end{itemize}
+\figT{c1_agent_learning.png}}
+
+%-----------------------------------------------------------------------
+\T{1.4 PEAS: specifying the task environment}
+
+\Q{Define PEAS. Give the PEAS information for a named system}{\m{2}\m{3}\m{5}\m{6}}
+{\color{sub}\footnotesize \tF{7} \yr{\texttt{80 Ba} (medical diagnosis) \m{3},
+\textbf{78 Ch} \m{4}, \textbf{\textit{74 Bh}} \m{3}, 81 Ash (taxi $+$ robot) \m{5},
+82 Ka (robot) \m{3}, \texttt{82 Ba} (self-driving car) \m{6},
+\textbf{\texttt{82 Bh}} (medicine-delivery drone) \m{5}} \gap$\cdot$\gap
+\mk{asked with a different system every single time}, so learn the four rows,
+not four memorised answers}
+
+\sbs{%
+\lead{What and why}
+\begin{itemize}
+  \item Before designing an agent, its \textbf{task environment} must be specified. PEAS is
+        that specification:
+  \begin{itemize}
+    \item \textbf{P} $-$ \textbf{Performance measure}: what counts as success. Must be
+          about the \emph{environment}, not the agent's internal state.
+    \item \textbf{E} $-$ \textbf{Environment}: what the agent operates in and on.
+    \item \textbf{A} $-$ \textbf{Actuators}: how it acts.
+    \item \textbf{S} $-$ \textbf{Sensors}: how it perceives.
+  \end{itemize}
+  \item \mk{Why it must come first}: the performance measure decides what
+        ``rational'' means, and the sensors and actuators decide what the agent can even
+        represent. Design before PEAS is design without a specification.
+\end{itemize}
+\lead{Three mistakes that cost marks}
+\begin{itemize}
+  \item Writing the performance measure as \emph{``work well''}. Give measurable terms:
+        safe, fast, legal, comfortable, maximise profit.
+  \item Putting an actuator in the sensor row. A horn is an actuator; a microphone is a
+        sensor.
+  \item Forgetting that a \textbf{display} is an actuator when the agent uses it to tell a
+        person something.
+\end{itemize}}{%
+\lead{Ready-made answers for the systems actually asked}
+\begin{itemize}
+  \item \textbf{Taxi driver} \yr{(81 Ash)}
+  \begin{itemize}
+    \item \textbf{P}: safe, fast, legal, comfortable trip, maximise profits.
+    \item \textbf{E}: roads, other traffic, pedestrians, customers, weather.
+    \item \textbf{A}: steering, accelerator, brake, indicator, horn, display.
+    \item \textbf{S}: cameras, sonar, speedometer, GPS, odometer, accelerometer, engine
+          sensors, keyboard.
+  \end{itemize}
+  \item \textbf{Medical diagnosis system} \yr{(\texttt{80 Ba})}
+  \begin{itemize}
+    \item \textbf{P}: healthy patient, minimise costs and lawsuits.
+    \item \textbf{E}: patient, hospital, staff.
+    \item \textbf{A}: screen display of questions, tests, diagnoses, treatments,
+          referrals.
+    \item \textbf{S}: keyboard entry of symptoms, findings and the patient's answers.
+  \end{itemize}
+  \item \textbf{Part-picking robot in a plant} \yr{(81 Ash, 82 Ka)}
+  \begin{itemize}
+    \item \textbf{P}: percentage of parts placed in the correct bin.
+    \item \textbf{E}: conveyor belt with parts, the bins.
+    \item \textbf{A}: jointed arm, gripper.
+    \item \textbf{S}: camera, joint angle sensors.
+  \end{itemize}
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+\sbs{%
+\lead{Self-driving car \yr{(\texttt{82 Ba} \m{6})}}
+\begin{itemize}
+  \item \textbf{P}: reach the destination safely, obey traffic law, minimise journey time
+        and fuel, ride comfort, zero collisions.
+  \item \textbf{E}: roads and lane markings, other vehicles, pedestrians and cyclists,
+        traffic signals, road signs, weather, the passenger.
+  \item \textbf{A}: steering, throttle, brakes, gear selection, indicators, horn,
+        headlights, passenger display and speaker.
+  \item \textbf{S}: cameras, LIDAR, radar, ultrasonic parking sensors, GPS, IMU and
+        accelerometer, wheel-speed sensors, microphone.
+\end{itemize}}{%
+\lead{Medicine-delivery drone \yr{(\textbf{\texttt{82 Bh}} \m{5})} \added}
+\begin{itemize}
+  \item \mk{No source note covers this one}; state your assumptions, as the
+        paper explicitly allows, then give four clean rows.
+  \item \textbf{P}: medicine delivered intact, to the right address, within the time
+        window, maximum payload per charge, no collision, no airspace violation.
+  \item \textbf{E}: air corridor, buildings, terrain and hills, trees and power lines,
+        weather and wind, other drones and aircraft, the recipient, the dispatch centre.
+  \item \textbf{A}: rotors and motors, payload release hatch, landing gear, status
+        lights, radio downlink to the dispatch centre.
+  \item \textbf{S}: GPS, camera, LIDAR or ultrasonic altimeter, IMU and gyroscope,
+        barometer, wind and temperature sensors, battery gauge, radio uplink.
+\end{itemize}}
+
+%-----------------------------------------------------------------------
+\T{1.5 Importance and limitations of AI; AI Vs human intelligence}
+
+\Q{Differentiate natural and artificial intelligence. Can AI replace humans?}{\m{3}\m{4}\m{5}\m{7}}
+{\color{sub}\footnotesize \tP{3} \yr{\textbf{79 Ch} \m{1+3+4}, 78 Po \m{3+5},
+\textbf{\textit{73 Bh}} \m{7}} \gap$\cdot$\gap growth areas asked at
+\yr{\textbf{\textit{71 Bh}} \m{4}}, disadvantages at \yr{78 Ba \m{2}}}
+
+\sbs{%
+\vspace{-2pt}
+\begin{tabularx}{\linewidth}{@{}L{1.55cm}XX@{}}
+\toprule
+\hrow & \thead{Human intelligence} & \thead{Artificial intelligence} \\
+\midrule
+Origin      & Biological, inherited and grown & Engineered, programmed and trained \\
+Learns from & A few examples, plus intuition and context & Very large data sets, no context of its own \\
+Speed       & Slow, tires, needs rest & Constant, no fatigue, runs continuously \\
+Accuracy    & Errs when tired or emotional & Exact and repeatable within its domain \\
+Breadth     & \mk{General}: transfers skill to a new task & \mk{Narrow}: fails outside the trained task \\
+Creativity  & Original ideas, imagination & Recombines what it was trained on \\
+Emotion     & Empathy, judgement, ethics & None; only what is coded as a measure \\
+Adapting    & Handles the wholly unfamiliar & Needs retraining or reprogramming \\
+Cost        & Salary, training time & High to build, near-zero to copy \\
+\bottomrule
+\end{tabularx}}{%
+\lead{Can AI replace humans? \mk{Answer: in tasks, yes; in roles, no}}
+\begin{itemize}
+  \item \textbf{Where it replaces}: repetitive, rule-bound, data-heavy work. Data entry,
+        first-line support, defect inspection, routine diagnosis, translation drafts.
+  \item \textbf{Where it cannot}, and why:
+  \begin{itemize}
+    \item \textbf{No common sense} outside the training distribution.
+    \item \textbf{No moral or legal responsibility}; someone must be accountable.
+    \item \textbf{No genuine creativity or empathy}, both needed in teaching, care,
+          negotiation, design.
+    \item \textbf{Depends on data} that people must collect, label and correct.
+  \end{itemize}
+  \item \mk{Conclusion to write}: AI is a tool that shifts human work up the
+        skill ladder, not a replacement for the worker. The realistic risk is
+        \emph{displacement of specific tasks}, not obsolescence of people.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+\sbs{%
+\lead{Importance and advantages of AI}
+\begin{itemize}
+  \item \textbf{Automates repetitive work} $\rightarrow$ people move to judgement work.
+  \item \textbf{Better decisions}: finds patterns in data volumes no person can read.
+  \item \textbf{Available always}: no fatigue, no shift limits, consistent output.
+  \item \textbf{Works where people cannot}: deep sea, space, reactor cores, disaster
+        zones, mine clearance.
+  \item \textbf{Fewer human errors} in exact, repetitive tasks.
+  \item \textbf{Reaches scarce expertise}: an expert system puts specialist knowledge in a
+        village clinic.
+  \item \textbf{Speeds research}: drug discovery, protein folding, materials.
+\end{itemize}
+\lead{Growth areas \yr{(\textbf{\textit{71 Bh}})}}
+\begin{itemize}
+  \item Machine learning and deep learning $\cdot$ NLP and speech $\cdot$ computer vision
+        $\cdot$ robotics and autonomous vehicles $\cdot$ expert and decision-support
+        systems $\cdot$ recommender systems $\cdot$ medical imaging and diagnosis.
+\end{itemize}}{%
+\lead{Disadvantages and limitations \yr{(78 Ba \m{2})}}
+\begin{itemize}
+  \item \textbf{Cost}: high to build, and needs specialists to maintain.
+  \item \textbf{No common sense}: fails absurdly on inputs slightly outside its training.
+  \item \textbf{No creativity}: recombines, does not originate.
+  \item \textbf{Job displacement} in routine occupations.
+  \item \textbf{Opaque}: a neural network cannot explain its decision, which is
+        unacceptable in medicine and law.
+  \item \textbf{Inherits bias} from its training data, then applies it at scale.
+  \item \textbf{No ethics or accountability}, so misuse is easy: surveillance, autonomous
+        weapons, deepfakes.
+  \item \textbf{Data-hungry and energy-hungry}.
+\end{itemize}
+\lead{Two named ethical positions worth a line}
+\begin{itemize}
+  \item \textbf{Weizenbaum} (1976): a real AI would be autonomous and would not share our
+        motives or ethics, so the research is unethical.
+  \item \textbf{Asimov's three laws of robotics}: do not harm a human or by inaction allow
+        harm; obey humans; protect itself. Precedence runs lower number first.
+\end{itemize}}
+
+%-----------------------------------------------------------------------
+\T{1.6 AI and related fields}
+
+\Q{Describe AI and its subfields; which fields contributed to AI?}{\m{4}}
+{\color{sub}\footnotesize \yr{\textbf{\textit{76 Bh}} \m{4}} \gap$\cdot$\gap
+asked once, but it is a two-minute answer and it recurs as a sub-part of
+``define AI''}
+
+\sbs{%
+\lead{What each field gave AI}
+\begin{itemize}
+  \item \textbf{Philosophy}: logic, the idea of the mind as a physical system, foundations
+        of learning, language and rationality.
+  \item \textbf{Mathematics}: formal representation and proof, algorithms, computation,
+        decidability and intractability, probability, statistics, linear algebra.
+  \item \textbf{Psychology}: perception, motor control, adaptation, and the experimental
+        methods behind cognitive modelling.
+  \item \textbf{Economics}: formal theory of rational decision, utility, game theory.
+  \begin{itemize}
+    \item This is where the \emph{utility} in a utility-based agent comes from.
+  \end{itemize}
+  \item \textbf{Linguistics}: grammar, syntax and knowledge representation. NLP sits
+        directly on it.
+  \item \textbf{Neuroscience}: the physical substrate of mental activity. Neural networks
+        are a deliberate, loose imitation of it.
+  \item \textbf{Control theory}: stability, feedback, optimal agent design. The
+        agent-environment loop is a control loop.
+  \item \textbf{Computer engineering}: the machines fast enough to run any of it.
+\end{itemize}}{%
+\lead{Fields AI overlaps with, and how it differs}
+\begin{itemize}
+  \item \textbf{Machine learning} is a subfield of AI, not a synonym: AI also covers
+        search, logic and planning, which do not learn at all.
+  \item \textbf{Data mining} (Ch\,6 and the Data Mining elective) shares algorithms but
+        aims at \emph{discovering patterns in stored data}; AI aims at \emph{acting} well.
+  \item \textbf{Robotics} supplies the body; AI supplies the decision making.
+  \item \textbf{Cognitive science} is the joint enterprise of AI and psychology: AI wants
+        machines that work, cognitive science wants a theory of the mind.
+  \item \textbf{Operations research} shares optimisation and search but assumes a fully
+        specified model.
+\end{itemize}
+\lead{Programming languages of AI}
+\begin{itemize}
+  \item \textbf{LISP}: McCarthy, late 1950s. Functional, symbolic, interactive.
+  \item \textbf{PROLOG}: France 1970, developed at Edinburgh 1975--79. Logic programming:
+        a program is facts $+$ rules, and running it is inference. \mk{The
+        syllabus lab is in one of these two.}
+\end{itemize}}
+
+%-----------------------------------------------------------------------
+\T{1.7 Brief history of AI}
+
+\Q{Discuss the brief history of AI with chronological development}{\m{2}\m{5}\m{6}\m{7}}
+{\color{sub}\footnotesize \tP{3} \yr{70 Ma \m{2+6}, \textbf{71 Bh} \m{2+5},
+\textit{72 Ma} \m{7}} \gap$\cdot$\gap
+\yr{\textit{72 Ma}} asks specifically \mk{which period was the ``AI research
+failure'' period and why}, so learn the two AI winters, not just the timeline}
+
+\sbs{%
+\lead{The founding era, 1943--1979}
+\vspace{-1pt}
+\begin{tabularx}{\linewidth}{@{}L{1.3cm}X@{}}
+\toprule
+\hrow \thead{Year} & \thead{Event} \\
+\midrule
+1943 & \textbf{McCulloch and Pitts}: Boolean circuit model of the neuron. The first neural network. \\
+1950 & \textbf{Turing}, \emph{Computing Machinery and Intelligence}. The Turing test. \\
+1956 & \textbf{Dartmouth meeting}: the term ``Artificial Intelligence'' is adopted. \mk{The birth of the field.} \\
+1950s & Samuel's checkers program, which learned and beat its author; Newell and Simon's Logic Theorist; Gelernter's Geometry Theorem Prover (1959). \\
+1957 & \textbf{Rosenblatt's Perceptron}. \\
+1958 & \textbf{McCarthy} defines \textbf{LISP} and describes the Advice Taker. \\
+1963 & McCarthy starts the Stanford AI lab. Slagle's SAINT solves first-year calculus. \\
+1965 & \textbf{Robinson's resolution}: a complete theorem-proving algorithm for first-order logic. Ch\,4 is built on it. \\
+1966 & \textbf{ELIZA}, Weizenbaum. \\
+1969--79 & Knowledge-based and \textbf{expert systems}: DENDRAL, MYCIN, SHRDLU. Minsky's \textbf{frames} (1975). \\
+\bottomrule
+\end{tabularx}}{%
+\lead{Industry, science and the modern era, 1980--}
+\vspace{-1pt}
+\begin{tabularx}{\linewidth}{@{}L{1.3cm}X@{}}
+\toprule
+\hrow \thead{Year} & \thead{Event} \\
+\midrule
+1980 & AI becomes an \textbf{industry}. XCON saves DEC an estimated \$40 million a year. \\
+1986 & \textbf{Neural networks return}, on back-propagation. \\
+1987 & AI becomes a \textbf{science}: results measured against benchmarks, and statistics and probability adopted. \\
+1995 & The \textbf{intelligent agent} becomes the unifying idea of the field. \\
+1997 & \textbf{Deep Blue} beats Kasparov at chess. \\
+2011 & IBM Watson wins \emph{Jeopardy!} \\
+2016 & \textbf{AlphaGo} beats Lee Sedol at Go. \\
+2020-- & Large language models, \textbf{GPT-3} onward. \\
+\bottomrule
+\end{tabularx}
+\vspace{2pt}
+\begin{itemize}
+  \item \mk{Write it as a table, not as prose.} Year, then event, then one
+        clause on why it mattered. Dates with no significance score badly.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+\sbs{%
+\lead{\mk{The ``AI research failure'' period}}
+\begin{itemize}
+  \item Two collapses in funding and confidence, both called \textbf{AI winters}. The
+        question almost always means the first.
+  \item \textbf{First AI winter, 1966--73}, the ``dose of reality''. In 1957 Simon
+        predicted a computer chess champion and a major theorem proved within
+        \textbf{10 years}; both took roughly \textbf{40}. Three reasons it failed:
+  \begin{itemize}
+    \item \textbf{No subject knowledge.} Early programs succeeded by \emph{syntactic
+          manipulation} alone. Machine translation is the standard example: word-by-word
+          substitution with no meaning behind it.
+    \item \textbf{Intractability.} Programs solved toy problems by trying combinations of
+          steps. Scaling the problem exploded the search, and the 1965 discovery of
+          NP-completeness explained why faster hardware could not fix it.
+    \item \textbf{Structural limits.} Minsky and Papert's \emph{Perceptrons} (1969) proved
+          a single-layer perceptron cannot represent XOR, and neural network research
+          nearly stopped for fifteen years. \mk{This is the same XOR result you
+          prove in Ch\,7.}
+  \end{itemize}
+\end{itemize}}{%
+\lead{The second winter, and what ended both}
+\begin{itemize}
+  \item \textbf{Second AI winter, late 1980s to early 1990s}: the expert-system market
+        collapsed. The systems were \textbf{brittle} outside their narrow domain,
+        \textbf{could not learn}, and cost more to maintain than they saved.
+  \item \mk{What ended each}:
+  \begin{itemize}
+    \item the first ended with \textbf{knowledge-based systems} $-$ stop searching blindly
+          and put the domain knowledge in;
+    \item the second ended with \textbf{statistical machine learning}, then cheap parallel
+          hardware and large data sets.
+  \end{itemize}
+  \item \mk{The pattern behind both}, and the sentence that earns the last
+        mark: each winter followed a period of \textbf{over-promising on a technique that
+        did not scale}, and each ended when the field adopted a \emph{different} technique
+        rather than more of the same.
+\end{itemize}}
+
+%-----------------------------------------------------------------------
+\T{1.8 Applications of AI}
+
+\Q{Discuss fields of daily life where AI has been applied}{\m{2}\m{4}\m{6}\m{7}}
+{\color{sub}\footnotesize \tS{8} \yr{\textbf{69 Bh} \m{7}, \textbf{72 Ash} \m{7},
+73 Ma \m{6}, \textbf{81 Ch} \m{2+4}, 75 Ba, \textbf{77 Ch}, 78 Ba, 78 Po}
+\gap$\cdot$\gap \mk{usually the tail of a Turing-test or define-AI question},
+which is why it is worth 4 marks and two minutes. Most papers ask for
+\mk{any two}, explained}
+
+\sbs{%
+\lead{How to answer for full marks}
+\begin{itemize}
+  \item The question says \emph{explain two fields}, not \emph{list ten}. A list scores
+        badly.
+  \item For each field give: \textbf{the task}, \textbf{the AI technique behind it}, and
+        \textbf{a named example}. Three sentences each is the whole answer.
+  \item \yr{\textbf{81 Ch}} asks for applications \mk{as a problem-solving
+        tool}, so frame each one as ``the problem, and how AI solves it''.
+\end{itemize}
+\lead{Two safe choices, worked}
+\begin{itemize}
+  \item \textbf{Healthcare.} Problem: expert diagnosis is scarce and slow.
+        Technique: neural networks over medical images (Ch\,7), plus rule-based expert
+        systems for diagnosis. Examples: tumour detection on CT and MRI, IBM Watson for
+        Oncology, diabetic-retinopathy screening from retinal photographs.
+  \item \textbf{Transport.} Problem: driving needs continuous perception and decision under
+        uncertainty. Technique: computer vision and sensor fusion feeding a
+        utility-based agent, plus A* and its variants for route search (Ch\,3).
+        Examples: self-driving cars, Google Maps ETA prediction, Pathao and inDrive
+        dispatch and pricing.
+\end{itemize}}{%
+\lead{The wider list, grouped}
+\begin{itemize}
+  \item \textbf{Everyday software}: search-engine ranking and autocomplete, social-media
+        feeds, Netflix and YouTube recommendation, spam filters, photo tagging.
+  \item \textbf{Language}: machine translation, speech recognition, chatbots and virtual
+        assistants, Nepali NLP tools (Ch\,7).
+  \item \textbf{Finance}: fraud and money-laundering detection, credit scoring,
+        algorithmic trading.
+  \item \textbf{Industry and agriculture}: robotic assembly and part picking, predictive
+        maintenance, visual quality inspection, crop-disease detection from leaf images,
+        yield prediction.
+  \item \textbf{Games}: Deep Blue, AlphaGo, and the bots in Dota 2 and PUBG.
+  \item \textbf{Science and space}: astronomical object classification, protein folding,
+        space-mission monitoring, drug discovery.
+  \item \textbf{Public services}: weather and flood forecasting, traffic signal control,
+        disaster response, biometric identification.
+\end{itemize}
+\lead{Nepal-specific examples, if the question invites them}
+\begin{itemize}
+  \item Pathao and inDrive dispatch $\cdot$ eSewa and Khalti fraud detection $\cdot$ Nepali
+        speech and OCR $\cdot$ landslide and flood early warning $\cdot$ crop-disease apps.
+\end{itemize}}
+
+%-----------------------------------------------------------------------
+\T{1.9 Knowledge and learning}
+
+\Q{What is knowledge and learning? Why are they important?}{\m{2}\m{4}\m{5}\m{8}}
+{\color{sub}\footnotesize \tF{5} \yr{\textbf{73 Bh} \m{4+4}, \textit{74 Ma} \m{2+2+2+4},
+\textbf{\textit{72 Ash}} \m{2+2+2+4}, \textbf{\textit{74 Bh}} \m{4+4}, 79 Jth \m{4+4}}
+\gap$\cdot$\gap also inside the Turing question at \yr{79 Ash \m{2+2}} and
+\yr{71 Ma \m{2}} \gap$\cdot$\gap
+\mk{the quotable line the examiner wants back}: ``Learning is an essential
+characteristic for intelligent agents''}
+
+\sbsr{0.54}{%
+\vspace{-2pt}
+\begin{tabularx}{\linewidth}{@{}L{1.5cm}XXX@{}}
+\toprule
+\hrow & \thead{Data} & \thead{Information} & \thead{Knowledge} \\
+\midrule
+What & Raw facts, unorganised & Data processed into a meaningful, usable form & Information organised and understood, ready to act on \\
+Form & Numbers, symbols, a database & Tables, reports, summaries & Rules, procedures, models \\
+Answers & nothing on its own & who, what, where, when & \mk{how and why} \\
+Example & $V=12$, $I=6$, $R=2$ & $V = I \times R$ holds for these readings & Use $V=IR$ to design a circuit \\
+\bottomrule
+\end{tabularx}
+\vspace{2pt}
+\begin{itemize}
+  \item \textbf{Intelligence} sits one step above knowledge: the ability to
+        \textbf{use} knowledge to solve new problems and adapt to new situations.
+  \item \mk{Write the chain}: data $\rightarrow$ information $\rightarrow$
+        knowledge $\rightarrow$ intelligence. Each step adds structure and context.
+\end{itemize}}{%
+\lead{Knowledge, and why AI needs it}
+\begin{itemize}
+  \item \textbf{Knowledge}: the condition of knowing something with familiarity gained
+        through experience or association; what lets us explore and decide.
+  \item Stored by people in \textbf{natural language}, by machines as
+        \textbf{symbols, strings and structures}.
+  \item Forms it takes: simple facts, relations between concepts, \textbf{associations},
+        \textbf{inheritance hierarchies}, procedures.
+  \item \textbf{Importance}: enough knowledge is what produces intelligence. A search
+        algorithm with no domain knowledge is blind (Ch\,3); the same algorithm with a
+        heuristic is informed and vastly faster. \mk{Knowledge is what turns
+        search into intelligence.}
+  \item \textbf{The three designer problems} (they run through Ch\,4 and Ch\,5):
+  \begin{itemize}
+    \item \textbf{Knowledge acquisition} $-$ getting it out of the domain and its experts.
+    \item \textbf{Knowledge representation} $-$ encoding it: logic, semantic nets, frames,
+          rules.
+    \item \textbf{Knowledge manipulation} $-$ inferring new conclusions from it.
+  \end{itemize}
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+\sbs{%
+\lead{Learning}
+\begin{itemize}
+  \item \textbf{Herbert Simon (1983)}: ``Learning is the phenomenon of knowledge
+        acquisition in the absence of explicit programming.''
+  \item Fuller form: learning denotes \textbf{changes in the system that are adaptive},
+        in the sense that they let it do the same task, or a task drawn from the same
+        population, more efficiently and more effectively next time.
+  \item \textbf{Three factors in any learning system}:
+  \begin{itemize}
+    \item \textbf{Changes} $-$ what in the system is altered, and how it is represented.
+    \item \textbf{Generalisation} $-$ performance must improve on \emph{similar} tasks,
+          not only the one seen. Without this it is memorisation.
+    \item \textbf{Improvement} $-$ the change must not degrade performance; the system
+          must detect and prevent that.
+  \end{itemize}
+  \item \textbf{Knowledge Vs learning in one line}: knowledge is the \emph{content} an
+        agent holds; learning is the \emph{process} that changes that content.
+\end{itemize}}{%
+\lead{\mk{``Learning is an essential characteristic for intelligent agents''}}
+\begin{itemize}
+  \item \textbf{Agree, and justify in four steps}:
+  \begin{itemize}
+    \item \textbf{The designer cannot foresee every situation.} A fixed rule table is only
+          as good as its author's imagination, and the table-driven agent shows how
+          quickly enumeration becomes impossible.
+    \item \textbf{Environments change.} Roads are rebuilt, spam changes its wording, prices
+          move. A non-learning agent's performance decays with no fault of its own.
+    \item \textbf{Autonomy requires it.} An agent whose behaviour comes only from built-in
+          knowledge is running the designer's intelligence, not its own. Learning is
+          exactly what makes it autonomous.
+    \item \textbf{The Turing test demands it.} Machine learning is one of the four
+          capabilities needed to pass, so an agent that cannot learn cannot be judged
+          intelligent on the field's own benchmark.
+  \end{itemize}
+  \item \textbf{Example to close with}: a spam filter shipped with fixed rules is beaten
+        within weeks; one that learns from each user's marking of messages keeps working.
+        Same architecture, and learning is the only difference.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+\creamq{Belief, hypothesis and knowledge}{\m{4}}
+{\color{sub}\footnotesize \yr{\textbf{\textit{71 Bh}} \m{4}} \gap$\cdot$\gap
+asked once, as the tail of the growth-areas question. A three-row table is the
+whole answer}
+
+\vspace{2pt}
+\begin{tabularx}{\textwidth}{@{}L{2.1cm}XL{4.3cm}@{}}
+\toprule
+\hrow \thead{Term} & \thead{Means} & \thead{Confidence} \\
+\midrule
+\textbf{Belief} & Any statement an agent holds to be true. It need not be verified and may
+  turn out false. & Subjective, unverified. \\
+\textbf{Hypothesis} & A belief \emph{put forward for testing}, backed by some evidence and
+  held provisionally until confirmed or refuted. & Justified belief, not yet confirmed. \\
+\textbf{Knowledge} & A belief that is \emph{true} and \emph{justified}. Verified, and safe
+  to reason from. & Confirmed. \\
+\bottomrule
+\end{tabularx}
+\par\penalty0
+\vspace{2pt}
+
+\begin{itemize}
+  \item \mk{The relation, in one line}: knowledge $\subset$ hypothesis
+        $\subset$ belief. Every hypothesis is a belief; only a confirmed, true one becomes
+        knowledge.
+  \item \textbf{Why AI cares}: an agent must act on beliefs, because it rarely has
+        knowledge. That is precisely why Ch\,4 needs probability and belief networks
+        rather than plain logic.
+\end{itemize}

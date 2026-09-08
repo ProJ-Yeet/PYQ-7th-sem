@@ -37,11 +37,12 @@ def engine():
     return _ENGINE
 
 
-def render(src, page_no, zoom, y0=0.0, y1=1.0):
+def render(src, page_no, zoom, y0=0.0, y1=1.0, x0=0.0, x1=1.0):
     doc = fitz.open(src)
     page = doc[page_no - 1]
     rect = page.rect
-    clip = fitz.Rect(0, rect.height * y0, rect.width, rect.height * y1)
+    clip = fitz.Rect(rect.width * x0, rect.height * y0,
+                     rect.width * x1, rect.height * y1)
     pix = page.get_pixmap(matrix=fitz.Matrix(zoom, zoom), clip=clip)
     return pix.tobytes("png")
 
@@ -111,6 +112,11 @@ def main():
     ap.add_argument("--zoom", type=float, default=2.6)
     ap.add_argument("--crop", nargs=2, type=float, metavar=("Y0", "Y1"),
                     default=[0.0, 1.0], help="vertical slice as page fractions")
+    ap.add_argument("--xcrop", nargs=2, type=float, metavar=("X0", "X1"),
+                    default=[0.0, 1.0],
+                    help="horizontal slice as page fractions. A two-page-spread "
+                         "scan must be split into halves, or the reflow "
+                         "interleaves the two pages line by line.")
     ap.add_argument("--layout", action="store_true",
                     help="print x/y boxes instead of reflowed text")
     ap.add_argument("--out", help="write <out>/p<N>.txt per page instead of stdout")
@@ -120,16 +126,21 @@ def main():
         os.makedirs(args.out, exist_ok=True)
 
     for n in parse_pages(args.pages):
-        png = render(args.src, n, args.zoom, args.crop[0], args.crop[1])
+        png = render(args.src, n, args.zoom, args.crop[0], args.crop[1],
+                     args.xcrop[0], args.xcrop[1])
         if args.layout:
             body = "\n".join(
                 "x=%6.0f-%6.0f y=%6.0f  %s" % (b["x0"], b["x1"], b["cy"], b["text"])
                 for b in ocr(png, layout=True))
         else:
             body = ocr(png)
-        header = "===== %s p%d =====" % (os.path.basename(args.src), n)
+        # a spread split into halves needs two distinct names for one page
+        tag = ""
+        if (args.xcrop[0], args.xcrop[1]) != (0.0, 1.0):
+            tag = "-x%02d%02d" % (args.xcrop[0] * 100, args.xcrop[1] * 100)
+        header = "===== %s p%d%s =====" % (os.path.basename(args.src), n, tag)
         if args.out:
-            path = os.path.join(args.out, "p%d.txt" % n)
+            path = os.path.join(args.out, "p%d%s.txt" % (n, tag))
             with io.open(path, "w", encoding="utf-8", newline="\n") as f:
                 f.write(header + "\n" + body + "\n")
             print("wrote", path, "(%d chars)" % len(body))
