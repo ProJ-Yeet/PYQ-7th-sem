@@ -29,8 +29,10 @@ Everything below under sections A and B has been written, built and verified.
   printed as 0.971 and is 0.695.
 - `verify.py` now runs **242 checks, 0 failures** (was 189).
 
-**Still open:** AI chapters 6 and 7 are not written, so re-run this checklist against them
-when they are. Wireless needs nothing.
+**Still open (updated 2026-09-09):** AI chapters 6 and 7 have since been written
+(`66b37be`, `b5967f6`, `e19d32f`), so **this checklist is now due against them** — the three
+passes below have never been run over ch6, ch7 or the two combined masters. AI layout is
+0 stranded but 75 short pages, up from 19 when only ch1–5 existed. Wireless needs nothing.
 
 ## Method (reproducible)
 
