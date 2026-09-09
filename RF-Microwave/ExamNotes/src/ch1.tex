@@ -1,0 +1,421 @@
+\section{Introduction}
+{\color{sub}\footnotesize 3 hrs \gap$\cdot$\gap asked in \mk{21 of 24 papers}
+\gap$\cdot$\gap 3 syllabus sub-topics \gap$\cdot$\gap core foundational chapter
+$\rightarrow$ qualitative comparisons, equivalent circuits, frequency tables, and system protocols.}
+
+\vspace{3pt}\noindent
+\colorbox{gdL}{\makebox[\dimexpr\textwidth-2\fboxsep][l]{%
+  \textcolor{gd}{\bfseries\footnotesize READ THIS FIRST}}}
+\par\nobreak\vspace{3pt}
+
+This chapter provides guaranteed theory marks in almost every paper (typically 8--14 marks).
+The examiner repeatedly asks three core questions:
+\begin{enumerate}[label=\arabic*., leftmargin=1.4em, itemsep=1pt]
+  \item \textbf{Conventional low frequency vs RF/microwave circuit behavior} (asked in 21 papers) $\rightarrow$ contrast lumped vs distributed analysis ($d \ll \lambda$ vs $d \gtrsim 0.01\lambda$), breakdown of Kirchhoff's laws, skin effect, and equivalent circuit parasitics of $R$, $L$, $C$.
+  \item \textbf{Detailed real-world protocols and specifications of microwave communication systems} (asked in 19 papers) $\rightarrow$ prepare full parametric tables for GSM 900/1800, Satellite C/Ku-band, Terrestrial Microwave link, and WiFi 802.11.
+  \item \textbf{IEEE microwave frequency band classification} (asked in 6 papers) $\rightarrow$ memorise the letter-code frequency boundaries (L, S, C, X, Ku, K, Ka, mmWave) and their primary application.
+\end{enumerate}
+
+\hr
+
+%=======================================================================
+\T{1.1 Standard Frequency Bands and Features}
+
+\Q{How is microwave frequency band classified by IEEE? Enumerate features, advantages and disadvantages of microwaves}{\m{2+4}\m{3+3}\m{4+4}\m{5+5}}
+{\color{sub}\footnotesize \tF{6} \yr{\textbf{70 Bh}, 70 Ma, \textbf{76 Bh}, \texttt{80 Ba}, \textbf{\texttt{79 Bh}}, \texttt{82 Ba}, 69 Bh} \gap$\cdot$\gap standard frequency classification}
+
+\sbs{%
+\lead{Microwave definition and spectrum}
+\begin{itemize}
+  \item \textbf{Frequency range}: $300\text{ MHz}$ to $300\text{ GHz}$.
+  \item \textbf{Wavelength range}: $\lambda = c/f = 1\text{ m}$ down to $1\text{ mm}$ (free space).
+  \item \textbf{Millimeter waves (mmWave)}: $30\text{ GHz}$ to $300\text{ GHz}$ ($\lambda = 10\text{ mm}$ to $1\text{ mm}$).
+  \item \textbf{Sub-millimeter / Terahertz}: $300\text{ GHz}$ to $3\text{ THz}$ ($\lambda < 1\text{ mm}$).
+\end{itemize}
+\lead{IEEE Radar / Microwave Band Designations}
+\begin{tabularx}{\linewidth}{@{}L{1.6cm}L{2.0cm}X@{}}
+\toprule
+\hrow \thead{Band} & \thead{Frequency} & \thead{Primary Uses} \\
+\midrule
+\textbf{UHF}  & $300\text{--}1000\text{ MHz}$ & TV, GSM, GPS, RFID \\
+\textbf{L}    & $1\text{--}2\text{ GHz}$     & Mobile (GSM/LTE), GPS, ATC radar \\
+\textbf{S}    & $2\text{--}4\text{ GHz}$     & Wi-Fi ($2.4\text{ GHz}$), Bluetooth, MW oven \\
+\textbf{C}    & $4\text{--}8\text{ GHz}$     & Satellite TV, weather radar \\
+\textbf{X}    & $8\text{--}12\text{ GHz}$    & Military radar, marine radar, deep space \\
+\textbf{Ku}   & $12\text{--}18\text{ GHz}$   & Direct Broadcast Satellite (DBS TV) \\
+\textbf{K}    & $18\text{--}27\text{ GHz}$   & Police speed radar, water vapor absorption \\
+\textbf{Ka}   & $27\text{--}40\text{ GHz}$   & High-throughput satellite, 5G NR \\
+\textbf{V}    & $40\text{--}75\text{ GHz}$   & $60\text{ GHz}$ unlicensed WiGig, inter-sat \\
+\textbf{W}    & $75\text{--}110\text{ GHz}$  & Automotive radar ($77\text{ GHz}$), imaging \\
+\textbf{mm}   & $110\text{--}300\text{ GHz}$ & Radio astronomy, security imaging \\
+\bottomrule
+\end{tabularx}}{%
+\lead{Advantages of microwaves}
+\begin{itemize}
+  \item \textbf{High bandwidth}:
+  \begin{itemize}
+    \item Bandwidth is $1\text{--}10\%$ of carrier frequency.
+    \item Carrier at $10\text{ GHz}$ offers $1\text{ GHz}$ bandwidth $\rightarrow$ accommodates thousands of high-speed data channels.
+  \end{itemize}
+  \item \textbf{High directivity and gain}:
+  \begin{itemize}
+    \item Antenna gain $G \propto (D/\lambda)^2$.
+    \item Small physical antenna diameter $D$ produces sharp, pencil-beam radiation $\rightarrow$ high EIRP, low interference.
+  \end{itemize}
+  \item \textbf{Compact physical size}:
+  \begin{itemize}
+    \item Component dimensions scale with $\lambda$ ($\lambda/2, \lambda/4$).
+    \item RF circuits fit on compact MMICs and microstrip boards.
+  \end{itemize}
+  \item \textbf{Ionospheric transparency}:
+  \begin{itemize}
+    \item Waves above $100\text{ MHz}$ penetrate ionosphere without total reflection $\rightarrow$ enables satellite and space communication.
+  \end{itemize}
+  \item \textbf{Unique molecular resonance}:
+  \begin{itemize}
+    \item Water molecules absorb $2.45\text{ GHz}$ $\rightarrow$ efficient dielectric heating (cooking, industrial drying).
+  \end{itemize}
+\end{itemize}
+\lead{Disadvantages of microwaves}
+\begin{itemize}
+  \item \textbf{Atmospheric attenuation}:
+  \begin{itemize}
+    \item Rain fade and gaseous absorption ($\text{H}_2\text{O}$ at $22.2\text{ GHz}$, $\text{O}_2$ at $60\text{ GHz}$) degrade signals over long paths.
+  \end{itemize}
+  \item \textbf{Line of sight (LOS) required}:
+  \begin{itemize}
+    \item Cannot bend around obstacles (diffraction is minimal); shadows and terrain block transmission.
+  \end{itemize}
+  \item \textbf{High manufacturing cost}:
+  \begin{itemize}
+    \item Tight mechanical tolerances ($<\mu\text{m}$); requires GaAs, InP, or GaN instead of cheap silicon.
+  \end{itemize}
+  \item \textbf{Complex circuit analysis}:
+  \begin{itemize}
+    \item Lumped analysis fails; distributed transmission lines, scattering parameters, and electromagnetic field equations required.
+  \end{itemize}
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+%=======================================================================
+\T{1.2 Behaviour of Circuits: Conventional vs RF/Microwave Bands}
+
+\Q{Compare the behavior of microwave circuits against conventional low frequency circuits. Differentiate lumped vs distributed analysis}{\m{4}\m{5}\m{6}\m{8}\m{10}}
+{\color{sub}\footnotesize \tS{21} \yr{\textbf{70 Bh}, 70 Ma, 71 Ma, \textbf{72 Ash}, 72 Ma, \textbf{73 Bh}, 73 Ma, \textbf{75 Bh}, \textbf{76 Bh}, \textbf{77 Ch}, \textbf{78 Ch}, \textbf{79 Ch}, \texttt{80 Ba}, \textbf{\texttt{80 Bh}}, \textbf{80 Ch}, \textbf{\texttt{81 Bh}}, \texttt{81 Ba}, \textbf{\texttt{82 Bh}}, \texttt{82 Ba}, 69 Bh} \gap$\cdot$\gap top repeated topic}
+
+\sbs{%
+\lead{The fundamental governing criterion: $\boldsymbol{d/\lambda}$}
+\begin{itemize}
+  \item Let $d =$ maximum physical dimension of the circuit.
+  \item Let $\lambda = c/f =$ operating wavelength.
+  \item \textbf{Low frequency ($d \ll \lambda$, typically $d < 0.01\lambda$)}:
+  \begin{itemize}
+    \item Propagation time of EM wave across the circuit is negligible compared to wave period $T = 1/f$.
+    \item Phase change across any conductor: $\Delta\theta = \beta d = \frac{2\pi d}{\lambda} \approx 0$.
+    \item Voltage is instantaneous and uniform along an ideal node.
+    \item \textbf{Kirchhoff's Laws (KVL, KCL) hold strictly}.
+  \end{itemize}
+  \item \textbf{RF / Microwave ($d \gtrsim 0.01\lambda$ to $d \approx \lambda$)}:
+  \begin{itemize}
+    \item Propagation delay cannot be ignored; wave travel causes finite phase shift along conductors.
+    \item Voltage and current become functions of \textbf{both position $z$ and time $t$}: $v(z,t), i(z,t)$.
+    \item Reflections arise at every impedance discontinuity.
+    \item Wires exhibit distributed inductance and capacitance; open lines radiate energy like antennas.
+    \item \textbf{Distributed transmission line theory} and Maxwell's equations replace KVL/KCL.
+  \end{itemize}
+\end{itemize}}{%
+\lead{Comparison: Low Frequency vs RF/Microwave Systems}
+\begin{tabularx}{\linewidth}{@{}L{1.8cm}X X@{}}
+\toprule
+\hrow \thead{Parameter} & \thead{Low Frequency / Conventional} & \thead{RF / Microwave} \\
+\midrule
+\textbf{Circuit theory} & Lumped elements ($R, L, C$ discrete blocks). & Distributed elements ($R', L', G', C'$ per meter). \\
+\textbf{Laws applied}   & KVL, KCL, Ohm's law. & Maxwell's equations, Telegrapher's wave equations. \\
+\textbf{Variables}      & Absolute voltage $V$, current $I$. & Incident / reflected wave amplitudes ($a, b$), S-parameters, power. \\
+\textbf{Lines used}     & Wires, twisted pair, PCB traces. & Coaxial cables, Waveguides, Microstrip, Stripline. \\
+\textbf{Interconnects}  & Ideal short circuits (zero phase delay). & Transmission lines with characteristic impedance $Z_0$ and phase delay $\beta z$. \\
+\textbf{Discontinuities} & No reflection; current is continuous. & Causes wave reflection, standing waves ($\text{VSWR} > 1$). \\
+\textbf{Radiation}      & Negligible; energy guided in wire. & Significant radiation if unshielded ($d \approx \lambda/4$). \\
+\textbf{Tuning}         & Variable lumped capacitors/inductors. & Reactive stubs, slides, screws, waveguide plungers. \\
+\textbf{Active devices} & BJTs, Op-Amps, Si MOSFETs. & GaAs MESFETs, HEMTs, Gunn diodes, Klystrons, Magnetrons, TWTs. \\
+\textbf{Measurement}    & Voltmeter, ammeter, oscilloscope. & Power meter, Bolometer, VSWR meter, Spectrum/Vector Network Analyzer. \\
+\bottomrule
+\end{tabularx}}
+
+\penalty0\vspace{2pt}
+
+\Q{Why are S-parameters used in microwave network analysis instead of Z, Y, or h-parameters?}{\m{3}\m{4}\m{5}}
+{\color{sub}\footnotesize \tS{15} \yr{\textbf{70 Bh}, 70 Ma, 71 Ma, \textbf{72 Ash}, \textbf{73 Bh}, 73 Ma, 74 Ma, \textbf{78 Ch}, \texttt{80 Ba}, \textbf{80 Ch}, \textbf{\texttt{79 Bh}}, \textbf{\texttt{81 Bh}}} \gap$\cdot$\gap core justification}
+
+\sbs{%
+\lead{Limitations of H, Z, Y parameters at microwave bands}
+\begin{itemize}
+  \item \textbf{Requires open and short circuits}:
+  \begin{itemize}
+    \item $Z$-parameters require open circuits ($I = 0$): $Z_{11} = V_1/I_1 |_{I_2=0}$.
+    \item $Y$-parameters require short circuits ($V = 0$): $Y_{11} = I_1/V_1 |_{V_2=0}$.
+    \item $h$-parameters require both short and open circuits.
+  \end{itemize}
+  \item \textbf{Ideal opens and shorts are physically impossible}:
+  \begin{itemize}
+    \item An open-circuited line at microwave frequencies radiates energy like an open-ended antenna $\rightarrow$ radiation loss causes $I \neq 0$.
+    \item Stray fringe capacitance exists at open ends.
+    \item A short circuit has finite lead inductance ($L_{\text{lead}} > 0$) $\rightarrow \omega L \gg 0$, not a true short ($V \neq 0$).
+  \end{itemize}
+  \item \textbf{Active device instability}:
+  \begin{itemize}
+    \item Transistors (MESFETs, BJTs) frequently become conditionally unstable and oscillate violently under pure open/short terminations.
+  \end{itemize}
+  \item \textbf{Direct voltage/current measurement impossible}:
+  \begin{itemize}
+    \item Probes perturb fields; standing waves make $V$ and $I$ position-dependent.
+  \end{itemize}
+\end{itemize}}{%
+\lead{Why S-parameters succeed}
+\begin{itemize}
+  \item \textbf{Terminated in matched characteristic impedance $Z_0$}:
+  \begin{itemize}
+    \item S-parameter measurement terminates ports in matched loads ($Z_L = Z_0 = 50\,\Omega$).
+    \item Matched load absorbs all incident energy $\rightarrow$ zero reflection ($a_2 = 0$).
+    \item Precision $50\,\Omega$ broadband loads are easy to manufacture.
+  \end{itemize}
+  \item \textbf{No parasitic radiation or lead reactance}:
+  \begin{itemize}
+    \item Complete absorption eliminates open-circuit radiation and short-circuit inductive ringing.
+  \end{itemize}
+  \item \textbf{Active devices remain stable}:
+  \begin{itemize}
+    \item Resistive $50\,\Omega$ loading prevents self-oscillation of active transistors during testing.
+  \end{itemize}
+  \item \textbf{Based on traveling power waves}:
+  \begin{itemize}
+    \item Relies on incident wave $a$ and reflected wave $b$:
+      \[ a = \frac{V + Z_0 I}{2\sqrt{Z_0}}, \quad b = \frac{V - Z_0 I}{2\sqrt{Z_0}} \]
+    \item Directly measurable using directional couplers and Vector Network Analyzers (VNA).
+  \end{itemize}
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+%=======================================================================
+\T{1.3 High-Frequency Parasitics in Passive Components (R, L, C)}
+
+\Q{Explain the characteristic behavior of passive components (resistor, inductor, capacitor) at RF/microwave frequencies}{\m{4}\m{6}\m{8}}
+{\color{sub}\footnotesize \tF{5} \yr{\textbf{70 Bh}, \textbf{77 Ch}, \textbf{79 Ch}, \textbf{\texttt{80 Bh}}, \textbf{\texttt{82 Bh}}} \gap$\cdot$\gap equivalent circuits and frequency responses}
+
+\sbsr{0.55}{%
+\lead{1. Resistors at RF/Microwave}
+\begin{itemize}
+  \item \textbf{Parasitic effects}:
+  \begin{itemize}
+    \item \textbf{Lead inductance $L$}: metal leads introduce serial inductance ($L \approx 1\text{--}5\text{ nH}$).
+    \item \textbf{Stray capacitance $C_a$}: capacitive coupling between resistor terminals.
+    \item \textbf{Skin effect}: current concentrates in outer conductor layer ($\delta = 1/\sqrt{\pi f \mu \sigma}$) $\rightarrow$ cross-sectional area decreases $\rightarrow$ AC resistance increases: $R_{ac} \propto \sqrt{f}$.
+  \end{itemize}
+  \item \textbf{Equivalent circuit}:
+  \begin{itemize}
+    \item Resistor $R$ in series with lead inductance $L$, shunted by terminal capacitance $C_a$.
+    \item At low freq: $Z \approx R$.
+    \item At medium freq: $L$ causes inductive impedance rise.
+    \item At high freq: shunt $C_a$ bypasses $R$, causing impedance to drop.
+  \end{itemize}
+\end{itemize}}{%
+\lead{Resistor equivalent model}
+\figT{c1_resistor_equiv.png}
+{\footnotesize\color{sub} Equivalent circuit: ideal $R$ with series lead $L$ and parallel parasitic $C_a$.}}
+
+\penalty0\vspace{2pt}
+
+\sbsr{0.55}{%
+\lead{2. Inductors at RF/Microwave}
+\begin{itemize}
+  \item \textbf{Parasitic effects}:
+  \begin{itemize}
+    \item \textbf{Winding resistance $R_s$}: coil wire resistance, increased by skin and proximity effects ($R_{ac} \propto \sqrt{f}$).
+    \item \textbf{Inter-turn capacitance $C_d$}: electric field lines between adjacent coil turns create distributed parallel capacitance.
+  \end{itemize}
+  \item \textbf{Self-Resonant Frequency (SRF), $f_{SR}$}:
+    \[ f_{SR} = \frac{1}{2\pi \sqrt{L C_d}} \]
+  \item \textbf{Behavioral regions}:
+  \begin{itemize}
+    \item $f < f_{SR}$: inductive reactance dominates ($\omega L > 1/\omega C_d$); $X_L$ increases with $f$.
+    \item $f = f_{SR}$: parallel resonance $\rightarrow$ impedance peaks to a very large purely resistive value; quality factor $Q \rightarrow 0$.
+    \item $\boldsymbol{f > f_{SR}}$: \textbf{Inductor acts as a capacitor!} Inter-turn capacitance bypasses the coil ($\omega C_d > 1/\omega L$).
+  \end{itemize}
+\end{itemize}}{%
+\lead{Inductor equivalent model}
+\figT{c1_inductor_equiv.png}
+{\footnotesize\color{sub} Inductor equivalent circuit: inductance $L$ with series loss $R_s$ shunted by distributed winding capacitance $C_d$.}}
+
+\penalty0\vspace{2pt}
+
+\sbsr{0.55}{%
+\lead{3. Capacitors at RF/Microwave}
+\begin{itemize}
+  \item \textbf{Parasitic effects}:
+  \begin{itemize}
+    \item \textbf{Lead inductance $L_s$ (ESL)}: connecting leads and plates introduce series inductance ($L_s \approx 1\text{--}2\text{ nH}$).
+    \item \textbf{Dielectric loss $R_p$}: leakage resistance across dielectric ($\tan\delta = \epsilon''/\epsilon'$).
+    \item \textbf{Equivalent series resistance $R_s$ (ESR)}: resistance of plates and leads.
+  \end{itemize}
+  \item \textbf{Series Self-Resonant Frequency, $f_{SR}$}:
+    \[ f_{SR} = \frac{1}{2\pi \sqrt{L_s C}} \]
+  \item \textbf{Behavioral regions}:
+  \begin{itemize}
+    \item $f < f_{SR}$: capacitive reactance dominates ($1/\omega C > \omega L_s$); impedance drops with $f$.
+    \item $f = f_{SR}$: series resonance $\rightarrow$ impedance reaches a minimum equal to ESR ($R_s$); optimal for bypass/decoupling.
+    \item $\boldsymbol{f > f_{SR}}$: \textbf{Capacitor acts as an inductor!} ESL dominates ($\omega L_s > 1/\omega C$); impedance rises with $f$.
+  \end{itemize}
+\end{itemize}}{%
+\lead{Capacitor equivalent model}
+\figT{c1_capacitor_equiv.png}
+{\footnotesize\color{sub} Capacitor equivalent circuit: ideal $C$ with series lead inductance $L_s$, series resistance $R_s$, and dielectric leakage $R_p$.}}
+
+\penalty0\vspace{2pt}
+
+%=======================================================================
+\T{1.4 Comparison with Other Wave Types}
+
+\Q{Compare and contrast microwave signals with acoustic and seismic waves}{\m{4}\m{5}}
+{\color{sub}\footnotesize \tF{3} \yr{72 Ma, \textbf{72 Ash}, \textbf{75 Bh}} \gap$\cdot$\gap physical wave mechanisms}
+
+\sbs{%
+\lead{Physical wave nature}
+\begin{itemize}
+  \item \textbf{Microwave signals}:
+  \begin{itemize}
+    \item Electromagnetic transverse waves ($\vec{E} \perp \vec{H} \perp \vec{k}$).
+    \item Propagates in vacuum (no medium required).
+    \item Propagation speed: $c \approx 3 \times 10^8\text{ m/s}$.
+    \item Frequencies: $300\text{ MHz}$ to $300\text{ GHz}$; wavelengths: $1\text{ m}$ to $1\text{ mm}$.
+  \end{itemize}
+  \item \textbf{Acoustic (sound) waves}:
+  \begin{itemize}
+    \item Mechanical longitudinal pressure waves (compression / rarefaction).
+    \item Requires material medium (gas, liquid, solid); zero propagation in vacuum.
+    \item Speed: $\sim 343\text{ m/s}$ in air, $\sim 1500\text{ m/s}$ in water.
+    \item Frequencies: $20\text{ Hz}$ to $20\text{ kHz}$ (ultrasound $> 20\text{ kHz}$).
+  \end{itemize}
+  \item \textbf{Seismic waves}:
+  \begin{itemize}
+    \item Mechanical waves traveling through Earth's geological strata.
+    \item Body waves ($P$-waves longitudinal, $S$-waves transverse shear) + Surface waves (Rayleigh, Love).
+    \item Speed: $2\text{--}8\text{ km/s}$ depending on rock density.
+    \item Infrasonic frequencies: $0.01\text{ Hz}$ to $50\text{ Hz}$.
+  \end{itemize}
+\end{itemize}}{%
+\lead{Comparison Table}
+\begin{tabularx}{\linewidth}{@{}L{1.7cm}X X X@{}}
+\toprule
+\hrow \thead{Property} & \thead{Microwaves} & \thead{Acoustic} & \thead{Seismic} \\
+\midrule
+\textbf{Wave type}     & EM (Transverse)      & Mechanical (Longitudinal) & Mechanical (Long. \& Shear) \\
+\textbf{Medium}        & Not required (vacuum) & Mandatory (gas/liq/solid) & Solid earth / rock \\
+\textbf{Velocity}      & $3 \times 10^8\text{ m/s}$ & $\sim 343\text{ m/s}$ (air) & $2000\text{--}8000\text{ m/s}$ \\
+\textbf{Frequency}     & $10^8\text{--}10^{11}\text{ Hz}$ & $20\text{--}20000\text{ Hz}$ & $0.01\text{--}50\text{ Hz}$ \\
+\textbf{Wavelength}    & $1\text{ mm -- } 1\text{ m}$ & $17\text{ mm -- } 17\text{ m}$ & $100\text{ m -- } 100\text{ km}$ \\
+\textbf{Information}   & Massive data rate ($\text{Gbps}$) & Audio/speech, sonar & Geological fault analysis \\
+\textbf{Absorption}    & Rain / moisture fade & Viscous fluid damping & Geometric spreading, rock damping \\
+\textbf{Application}   & Radar, satellite, 5G & Audio, ultrasound NDT & Earthquake detection, oil survey \\
+\bottomrule
+\end{tabularx}}
+
+\penalty0\vspace{2pt}
+
+%=======================================================================
+\T{1.5 Microwave Applications and Real-World System Protocols}
+
+\Q{Prepare the detail real-world protocols and specifications of any 3 (or 5) major microwave communication systems}{\m{4+6}\m{2+6}\m{4+4}\m{8}\m{10}}
+{\color{sub}\footnotesize \tS{19} \yr{\textbf{70 Bh}, 70 Ma, \textbf{73 Bh}, \textbf{76 Bh}, \textbf{77 Ch}, \textbf{78 Ch}, \textbf{\texttt{79 Bh}}, \textbf{\texttt{80 Bh}}, \texttt{81 Ba}, \textbf{\texttt{81 Bh}}, \textbf{\texttt{82 Bh}}, \texttt{82 Ba}} \gap$\cdot$\gap top repeated exam requirement}
+
+\sbs{%
+\lead{General microwave communication system architecture}
+\begin{itemize}
+  \item \textbf{Transmitter (Tx)}:
+    Baseband source $\rightarrow$ Modulator (QPSK/QAM) $\rightarrow$ Up-converter (Mixer $+$ Local Oscillator) $\rightarrow$ Bandpass Filter $\rightarrow$ High Power Amplifier (HPA: TWT or GaN SSPA) $\rightarrow$ Duplexer/Circulator $\rightarrow$ Directional Antenna.
+  \item \textbf{Channel}: Free space line-of-sight (LOS) path with atmospheric attenuation and multipath fading.
+  \item \textbf{Receiver (Rx)}:
+    Directive Antenna $\rightarrow$ Duplexer $\rightarrow$ Low Noise Amplifier (LNA) $\rightarrow$ Down-converter (Mixer $+$ LO) $\rightarrow$ IF Filter / Amplifier $\rightarrow$ Demodulator $\rightarrow$ Baseband output.
+\end{itemize}
+\lead{Major application areas}
+\begin{itemize}
+  \item \textbf{Telecommunications}: Cellular BTS, satellite, microwave LOS trunk radio.
+  \item \textbf{Radar \& Navigation}: Air traffic control (ASR), weather radar, GPS/GLONASS.
+  \item \textbf{Industrial \& Domestic}: Microwave ovens ($2.45\text{ GHz}$), rubber vulcanization, food drying.
+  \item \textbf{Medical}: Hyperthermia cancer treatment, microwave diathermy, tomography.
+  \item \textbf{Scientific}: Radio astronomy, remote sensing, atmospheric sounding.
+\end{itemize}}{%
+\lead{Microwave system block diagram}
+\figT{c1_mw_system.png}
+{\footnotesize\color{sub} Block diagram of general microwave communication link: Tx upconversion, HPA, antenna, propagation, LNA, downconversion, and detector.}}
+
+\penalty0\vspace{2pt}
+
+\lead{Detailed Specifications and Protocols of Five Major Microwave Communication Systems}
+
+\begin{tabularx}{\textwidth}{@{}L{2.5cm}XXXXX@{}}
+\toprule
+\hrow \thead{Parameter} & \thead{1. GSM 900 / 1800} & \thead{2. Satellite (Ku-band)} & \thead{3. Terrestrial MW Link} & \thead{4. Wi-Fi (802.11ac)} & \thead{5. Airport Radar (ASR)} \\
+\midrule
+\textbf{Operating band} & UHF / L-band ($900/1800\text{ MHz}$) & Ku-band ($12\text{--}18\text{ GHz}$) & C / X-band ($6\text{--}11\text{ GHz}$) & S / C-band ($2.4\text{ \& }5\text{ GHz}$) & S-band ($2.7\text{--}2.9\text{ GHz}$) \\
+\textbf{Uplink / Tx Freq} & $890\text{--}915\text{ MHz}$ (GSM 900) & $14.0\text{--}14.5\text{ GHz}$ & $5.925\text{--}6.425\text{ GHz}$ & $5.15\text{--}5.85\text{ GHz}$ & $2.7\text{--}2.9\text{ GHz}$ pulsed \\
+\textbf{Downlink / Rx Freq} & $935\text{--}960\text{ MHz}$ (GSM 900) & $11.7\text{--}12.2\text{ GHz}$ & $3.700\text{--}4.200\text{ GHz}$ & $5.15\text{--}5.85\text{ GHz}$ & Reflected echo \\
+\textbf{Channel bandwidth} & $200\text{ kHz}$ per carrier & $36\text{--}54\text{ MHz}$ transponder & $28\text{--}56\text{ MHz}$ per channel & $20, 40, 80, 160\text{ MHz}$ & $1\text{--}5\text{ MHz}$ chirp \\
+\textbf{Duplexing mode} & FDD ($45\text{ MHz}$ duplex split) & FDD ($2\text{--}2.5\text{ GHz}$ split) & FDD (frequency separation) & TDD (CSMA/CA) & Monostatic simplex (pulsed) \\
+\textbf{Multiple access} & TDMA (8 time slots / carrier) & FDMA / TDMA / DVB-S2 & Point-to-Point dedicated & CSMA/CA, OFDMA & Pulse timing / PRF \\
+\textbf{Modulation scheme} & GMSK ($BT=0.3$) & QPSK, 8PSK, 16-APSK & 64-QAM, 256-QAM, 1024-QAM & OFDM w/ 256-QAM & Linear FM Chirp / Barker \\
+\textbf{Data rate} & $270.833\text{ kbps}$ gross & $30\text{--}90\text{ Mbps}$ per transponder & Up to $1\text{ Gbps}$ per link & Up to $1.3\text{ Gbps}$ & Target range \& velocity \\
+\textbf{Tx Output Power} & $20\text{--}40\text{ W}$ ($+43\text{--}46\text{ dBm}$) & $50\text{--}150\text{ W}$ TWTA & $1\text{--}10\text{ W}$ ($+30\text{--}40\text{ dBm}$) & $100\text{--}200\text{ mW}$ ($+20\text{ dBm}$) & $1\text{--}25\text{ kW}$ peak \\
+\textbf{Antenna type} & Sectorized panel ($120^\circ$) & Parabolic reflector ($1.2\text{--}3.0\text{ m}$) & Parabolic dish w/ radome & Printed patch array / dipole & Parabolic cosecant-squared \\
+\textbf{Antenna gain} & $15\text{--}18\text{ dBi}$ & $38\text{--}45\text{ dBi}$ & $35\text{--}44\text{ dBi}$ & $3\text{--}6\text{ dBi}$ & $32\text{--}35\text{ dBi}$ \\
+\textbf{Coverage / Range} & $1\text{--}35\text{ km}$ cell radius & $36000\text{ km}$ (GEO orbit) & $30\text{--}60\text{ km}$ per hop & $30\text{--}100\text{ m}$ indoor & $60\text{--}80\text{ NM}$ ($100\text{--}150\text{ km}$) \\
+\bottomrule
+\end{tabularx}
+
+\penalty0\vspace{2pt}
+
+%=======================================================================
+\T{1.6 Microstrip Lines vs Strip-Lines}
+
+\Q{Differentiate between microstrip lines and strip-lines. Discuss their transmission properties}{\m{5}}
+{\color{sub}\footnotesize \tP{1} \yr{71 Ma} \gap$\cdot$\gap planar transmission lines}
+
+\sbs{%
+\lead{Microstrip Line}
+\begin{itemize}
+  \item \textbf{Geometry}:
+  \begin{itemize}
+    \item Conducting strip of width $W$ on top of dielectric substrate ($h, \epsilon_r$).
+    \item Ground plane on the bottom; upper surface exposed to air ($\epsilon_0$).
+  \end{itemize}
+  \item \textbf{Wave mode}:
+  \begin{itemize}
+    \item \textbf{Quasi-TEM mode}: fields exist partly in dielectric ($\epsilon_r$) and partly in air ($\epsilon_0 = 1$).
+    \item Phase velocities in the two media differ $\rightarrow$ pure TEM cannot be supported.
+    \item Characterized by effective dielectric constant $\epsilon_{\text{eff}}$:
+      \[ 1 < \epsilon_{\text{eff}} < \epsilon_r, \quad v_p = \frac{c}{\sqrt{\epsilon_{\text{eff}}}} \]
+  \end{itemize}
+  \item \textbf{Dispersion}: Moderate dispersion at higher frequencies as fields pull into substrate.
+  \item \textbf{Fabrication}: Very easy; standard photolithography; surface accessible for discrete component mounting (SMD, diodes, FETs).
+  \item \textbf{Radiation}: Unshielded; radiates at bends and discontinuities.
+\end{itemize}}{%
+\lead{Strip-line}
+\begin{itemize}
+  \item \textbf{Geometry}:
+  \begin{itemize}
+    \item Conducting strip embedded symmetrically inside dielectric medium between \textbf{two parallel ground planes}.
+  \end{itemize}
+  \item \textbf{Wave mode}:
+  \begin{itemize}
+    \item \textbf{Pure TEM mode}: dielectric is completely homogeneous around the conductor.
+    \item Phase velocity is frequency-independent:
+      \[ v_p = \frac{c}{\sqrt{\epsilon_r}} \]
+  \end{itemize}
+  \item \textbf{Dispersion}: Non-dispersive; wide broadband operation.
+  \item \textbf{Shielding}: Completely enclosed between two ground planes $\rightarrow$ \textbf{zero radiation loss}, no crosstalk with adjacent circuits.
+  \item \textbf{Fabrication}: Difficult; multi-layer sandwich lamination; impossible to mount surface components after manufacturing.
+  \item \textbf{Applications}: High-performance broadband passive circuits (couplers, filters, power dividers).
+\end{itemize}}
+
+\penalty0\vspace{2pt}
