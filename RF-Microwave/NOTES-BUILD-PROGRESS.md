@@ -19,8 +19,8 @@ Audit pagination with `PYTHONIOENCODING=utf-8 python audit.py`
 
 | Ch | Title | Theory | Numerical | Notes |
 |----|-------|--------|-----------|-------|
-| 1 | Introduction | ✅ 10 pp | — (no numerical content) | built by a lower model; **audit pending** |
-| 2 | RF and M/W Transmission Lines | 🔨 in progress | 🔨 24 problems | the Smith-chart chapter |
+| 1 | Introduction | ✅ 10 pp | — none (stated in §1.7) | audited and repaired 2026-09-10 |
+| 2 | RF and M/W Transmission Lines | ✅ 12 pp | ✅ 42 pp, 24 problems | the Smith-chart chapter |
 | 3 | Network Theory and Analysis | ⬜ | ⬜ | S-parameters |
 | 4 | Components and Devices | ⬜ | ⬜ | biggest question count (52) |
 | 5 | Microwave Generators | ⬜ | — | |
@@ -53,6 +53,12 @@ session scratchpad, keyed on `\section` blocks of the Detailed `.tex`.
   no formula quoted from memory: single stub (shunt and series), double stub,
   microstrip synthesis, WTG readings. `python rf.py` self-tests against the
   four worked problems printed in Er. Gangaju's Chapter-2 deck.
+- **`src/check.py`** — tier-chip auditor. Compares every `\tS` / `\tF` / `\tP{n}` chip
+  to its own `\yr{}` list *and* to the Detailed PYQ, so a chapter cannot cite a
+  paper that asks no question in it. Found 8 defects in ch1, 0 in ch2.
+- **`src/verify.py`** — walks each published stub design forward through the line
+  equations and asserts `y_in = 1+j0`, re-deriving every susceptance from the
+  **published length** so a wrong length cannot hide behind a right `b`. 24/24 pass.
 - **`src/smith.py`** — Smith chart renderer that draws the **construction**,
   not just the answer: SWR circle, g = 1 circle, spacing circle, the walk
   toward the generator, the constant-g arc a shunt stub moves along, and the
@@ -104,6 +110,15 @@ Third-party and gitignored — build input only, never publish.
   `\end{center}`.
 - Never write LaTeX or regexes through a bash heredoc on Windows — backslashes
   get mangled. Use the Write tool; in Python build backslashes from `chr(92)`.
+  **This bit three times in the 2026-09-10 session alone.** The specific failure
+  is silent: a Python string `"\textbf"` is a literal TAB plus `extbf`, and
+  `"\t"`, `"\b"`, `"\f"`, `"\v"`, `"\a"`, `"\n"`, `"\r"` all do this. Unknown
+  escapes like `"\O"` survive but only warn. Guard with
+  `python -W error::SyntaxWarning -c "import <mod>"`, and grep the generated
+  output for raw control characters before building.
+- A companion trap: a blanket "fix escaping" regex must **skip raw strings**.
+  Doubling the backslash inside `r"\textbf{79 Ch}"` turns it into `\\textbf`,
+  which LaTeX renders as a line break followed by the literal word `textbf`.
 - Rebuild, verify, then commit sources **and** PDFs together, one commit per
   chapter as soon as it builds.
 
@@ -111,7 +126,10 @@ Third-party and gitignored — build input only, never publish.
 
 - **2026-09-09** — Ch1 (Introduction, 10 pp) built and committed.
 - **2026-09-10** — Phase-0 re-scope for the remaining 7 chapters. Built and
-  verified `rf.py` and `smith.py`. Started Ch2.
-  User asked that the numericals show **every Smith-chart construction step**,
-  not just the output, and that Ch1 be audited against the workflow spec at
-  the end of the session.
+  verified `rf.py`, `smith.py`, `verify.py`, `check.py`. **Ch2 shipped**: theory
+  12 pp + numerical companion 42 pp with all 24 PYQ constructions worked step by
+  step (the user asked for every chart step, not just the output). **Ch1 audited
+  and repaired**: 3 ghost paper citations removed, 4 tier counts resynced, one
+  tier reclassified, §1.7 PYQ-mapping band added, 3 content errors corrected.
+  Next: Ch3 (S-parameters, 193 marks) — note §2.8 already covers the S-matrix
+  rider, so cross-reference rather than repeat.
