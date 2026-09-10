@@ -570,6 +570,34 @@ $h_{te} = 200$ m, $h_{re} = 3$ m.}}
 \penalty0\vspace{1pt}
 {\color{sub}\footnotesize Measured same-floor partition losses.}}
 
+\penalty0\vspace{3pt}
+\sbs{%
+\lead{Model 3: ITU indoor path loss model \added}
+\[ L_{total}\,[\text{dB}] = 20\log(f) + N\log(d) + L_f(n) - 28 \]
+\begin{itemize}
+  \item $f$ $=$ frequency in \textbf{MHz}; $d$ $=$ separation in \textbf{metres}, $d > 1$ m.
+  \item $N$ $=$ \textbf{distance power loss coefficient} (tabulated per band and building type;
+        note it plays the role of $10n$, so $N \approx 30$ for an office at 1.8 GHz).
+  \item $L_f(n)$ $=$ \textbf{floor penetration loss factor} for $n$ floors crossed, read from a
+        table rather than computed.
+  \item \mk{Why it looks different}: the $20\log f$ term and the $-28$ constant are the free
+        space reference folded in, so no separate $\overline{PL}(d_0)$ measurement is needed.
+        \mk{That is its selling point} $-$ it is fully \textbf{empirical / tabulated}, usable
+        without a site survey.
+\end{itemize}}{%
+\lead{Which two to write \mk{(the question always says ``any two'')}}
+\begin{itemize}
+  \item Safest pair: \textbf{log-distance} $+$ \textbf{attenuation factor}. They share a form,
+        so one derivation covers both, and FAF/PAF is where the marks are.
+  \item \textbf{ITU} is the cheapest third model to add: one formula, three symbols, no
+        derivation.
+  \item \mk{The Ericsson multiple breakpoint model is also an indoor model} $-$ it is written up
+        in \S3.5 with the outdoor set because \textbf{80 Bh} asks for it by name there. Use it
+        here if the paper wants a model that gives \textbf{bounds} rather than a mean. \added
+  \item \mk{Never write only the formula.} Each model scores on
+        \textbf{what it adds over free space}: $n \ne 2$, then FAF/PAF, then floor tables.
+\end{itemize}}
+
 \hr
 
 \T{3.7 Small-scale fading and multipath}

@@ -128,12 +128,26 @@ is where the marks are.}
 
 \penalty0\vspace{3pt}
 \sbs{%
-\lead{Two more properties worth a line}
+\lead{Five more properties worth a line \mk{(each with the technique it justifies)}}
 \begin{itemize}
   \item \textbf{Band-limited}: speech is essentially confined to \textbf{300 Hz to 3400 Hz},
         so 8 kHz sampling suffices. This is what makes digital speech possible at all. \added
   \item \textbf{Quasi-stationary}: speech statistics are roughly constant over
         \textbf{10 to 30 ms}, which is why every coder works on frames of that length. \added
+  \item \textbf{Long-term (pitch) correlation}: in a \textbf{voiced} segment, samples one
+        \textbf{pitch period} apart are strongly correlated, on top of the sample-to-sample
+        correlation above. $\rightarrow$ justifies the \textbf{long term predictor (LTP)},
+        the second predictor in \textbf{CELP} and in GSM's \mk{RPE-LTP} codec (\S6.4). \added
+  \item \textbf{Silence}: a talker is silent for roughly \textbf{half} of a two-way
+        conversation (pauses between words, and listening while the other party speaks).
+        $\rightarrow$ justifies \textbf{VAD} (voice activity detection) and \textbf{DTX}
+        (discontinuous transmission): stop sending during a pause, and the decoder fills the
+        gap with synthetic \textbf{comfort noise}. \mk{Halves the average bit rate, cuts
+        interference, and saves handset battery.} \added
+  \item \textbf{Perceptual masking}: a loud spectral component \textbf{hides} quantization
+        noise at nearby frequencies, so noise need not be uniformly low, only low
+        \emph{where the ear can hear it}. $\rightarrow$ justifies \textbf{perceptual
+        weighting} in CELP, which shapes the error to hide under the formant peaks. \added
 \end{itemize}}{%
 \lead{Voiced Vs unvoiced speech +Fig}
 \begin{itemize}

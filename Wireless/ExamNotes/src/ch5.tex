@@ -332,6 +332,12 @@ Complexity & Lowest & Low, \textbf{$2N+1$} operations per iteration & \textbf{Hi
   $\propto N^2$ \\
 Convergence & Immediate (non-adaptive form) & \mk{Slow}, needs a long training sequence &
   \mk{Fastest}, an order of magnitude fewer iterations \\
+\midrule
+What sets the speed \added & Fixed by the channel & \mk{The eigenvalue spread}
+  $\lambda_{max}/\lambda_{min}$ of $\mathbf{R}$: a large spread $\rightarrow$ the error bowl is a
+  long narrow valley $\rightarrow$ one step size $\mu$ cannot suit both axes &
+  \mk{Insensitive to the eigenvalue spread}, which is exactly why it wins on a
+  badly conditioned channel \\
 Noise & \mk{Amplifies noise badly} at spectral nulls & Well behaved & Well behaved \\
 Use it when & The channel is benign and simple hardware matters & Convergence speed is not
   critical & The channel changes fast, or training must be short \\
