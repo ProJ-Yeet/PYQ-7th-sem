@@ -1,0 +1,83 @@
+\section{RF and M/W Transmission Lines --- Numerical Problems}
+{\color{sub}\footnotesize 24 solved PYQ constructions \gap$\cdot$\gap
+\mk{$\approx$230 marks} across 24 papers \gap$\cdot$\gap
+1 chart reading, 6 single-stub, 17 double-stub}
+
+\vspace{3pt}\noindent
+\colorbox{gdL}{\makebox[\dimexpr\textwidth-2\fboxsep][l]{%
+  \textcolor{gd}{\bfseries\footnotesize READ THIS FIRST}}}
+\par\nobreak\vspace{3pt}
+
+Every problem below is worked \textbf{as a Smith chart construction}, step by step ---
+which circle to draw, which arc to follow, what to read off the rim --- because that is
+what the examiner marks. The numbers were computed exactly from the transmission-line
+equations, so they are what a perfectly drawn chart would give; your hand-drawn readings
+will differ in the second decimal place and that is fine.
+
+\begin{itemize}
+  \item \textbf{Two solutions are normal.} Single-stub and double-stub tuners each have
+    two valid answers. Quote either --- but say which one you chose, and why.
+  \item \textbf{Always check the forbidden region} before starting a double stub:
+    $g_1 \le 1/\sin^2\beta d$. Stating this earns marks even when the load passes.
+  \item \textbf{Never drop the S-matrix rider} --- \S2.8, two lines, 2--6 marks.
+\end{itemize}
+
+\hr
+
+%=======================================================================
+\T{M. The Three Methods, in Brief}
+
+\sbs{%
+\lead{M1 --- Reading the chart (Problem 1)}
+\begin{enumerate}[label=\arabic*., leftmargin=1.4em]
+  \item Normalise $z_L = Z_L/Z_0$ and plot.
+  \item Swing the \textbf{SWR circle} about the centre through that point.
+    $|\Gamma_L|$ is its radius; $S$ is where it cuts the right-hand real axis.
+  \item Moving along the line is \textbf{rotation at constant radius}: clockwise toward the
+    generator, one lap $=\lambda/2$. Read distances on the WTG rim scale.
+  \item The circle crosses the horizontal axis twice per lap --- those are the only
+    \textbf{purely resistive} points, at $V_{\max}$ ($r=S$) and $V_{\min}$ ($r=1/S$).
+\end{enumerate}
+\lead{M2 --- Single-stub shunt tuner (Problems 2--7)}
+\begin{enumerate}[label=\arabic*., leftmargin=1.4em]
+  \item Plot $z_L$, half-turn to $y_L$ (shunt stubs \emph{add susceptance}, so all
+    stub work is done in admittance).
+  \item Rotate clockwise to the \textbf{$g=1$ circle}. It is cut \textbf{twice}
+    $\rightarrow$ $d_1$, $d_2$.
+  \item There $y = 1 \pm jb$. The stub must supply $\mp jb$.
+  \item For the length, start at the stub's own termination --- \textbf{open} stub at
+    $y=0$, \textbf{short} stub at $y=\infty$ --- and run clockwise round the rim to that
+    susceptance. $\ell_{short} = \ell_{open} \pm \lambda/4$.
+\end{enumerate}}{%
+\lead{M3 --- Double-stub shunt tuner (Problems 8--24)}
+\begin{enumerate}[label=\arabic*., leftmargin=1.4em]
+  \item Plot $z_L$, half-turn to $y_L$; if the first stub is offset, rotate clockwise to
+    get $y_1$, the admittance \textbf{just before stub 1}.
+  \item \textbf{Check $g_1 \le 1/\sin^2\beta d$.} If it fails, no length of stub can match
+    this load at this spacing.
+  \item Draw the \textbf{spacing circle}: the $g=1$ circle rotated the stub spacing $d$
+    \emph{toward the load}.
+  \item Stub 1 can only slide the point \textbf{along its own constant-$g$ circle}. Follow
+    that circle to its two intersections with the spacing circle $\rightarrow$
+    $y_a$, $y_a'$. Then $b_1 = \operatorname{Im}(y_a) - \operatorname{Im}(y_1)$.
+  \item Rotate $y_a$ clockwise by $d$ on a new SWR circle. It lands on $g=1$ at
+    $y_2 = 1 + jb$.
+  \item Stub 2 supplies $-jb$. Read both lengths off the rim as in M2.
+\end{enumerate}
+\lead{Sign conventions that decide the answer}
+\begin{itemize}
+  \item \textbf{Clockwise $=$ toward the generator.} One full lap is $\lambda/2$, so a
+    quarter turn is $\lambda/8$ and $3\lambda/8$ is three quarter-turns.
+  \item On the \textbf{admittance} chart the terminations swap ends: $y=0$ (open) is at
+    the left, $y=\infty$ (short) at the right --- the mirror of the impedance chart.
+    Getting this backwards corrupts every stub length by $\lambda/4$.
+  \item Upper half $= +b =$ \textbf{capacitive}; lower half $= -b =$ inductive.
+\end{itemize}
+\lead{Analytic back-check}
+\[ B = \frac{1 \pm \sqrt{g_1(1+t^2) - g_1^2 t^2}}{t}, \quad t = \tan\beta d,
+   \quad b_1 = B - b_L \]
+{\footnotesize\color{sub} Note the leading $1$ in the numerator, not $g_1$.}}
+
+\penalty0\vspace{2pt}
+
+\input{ch2-num-body}
