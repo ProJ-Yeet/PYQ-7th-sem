@@ -7,7 +7,7 @@ Method: `../HANDOFF-pyq-and-notes-method.md` and the Phase 0–3 workflow.
 ## Build
 
 ```bash
-cd RF-Microwave/ExamNotes/src && python build.py ch2 ch2-num
+cd RF-Microwave/ExamNotes/src && python build.py ch3 ch3-num
 ```
 
 `build.py` **skips a missing target silently**, so a bare `python build.py`
@@ -21,7 +21,7 @@ Audit pagination with `PYTHONIOENCODING=utf-8 python audit.py`
 |----|-------|--------|-----------|-------|
 | 1 | Introduction | ✅ 10 pp | — none (stated in §1.7) | audited and repaired 2026-09-10 |
 | 2 | RF and M/W Transmission Lines | ✅ 12 pp | ✅ 42 pp, 24 problems | the Smith-chart chapter |
-| 3 | Network Theory and Analysis | ⬜ | ⬜ | S-parameters |
+| 3 | Network Theory and Analysis | ✅ 13 pp | ✅ 18 pp, 12 problems | the magic-tee chapter |
 | 4 | Components and Devices | ⬜ | ⬜ | biggest question count (52) |
 | 5 | Microwave Generators | ⬜ | — | |
 | 6 | RF Design Practices | ⬜ | ⬜ | **heaviest chapter, 22.4 % of marks** |
@@ -59,6 +59,13 @@ session scratchpad, keyed on `\section` blocks of the Detailed `.tex`.
 - **`src/verify.py`** — walks each published stub design forward through the line
   equations and asserts `y_in = 1+j0`, re-deriving every susceptance from the
   **published length** so a wrong length cannot hide behind a right `b`. 24/24 pass.
+- **`src/sparam.py`** — Chapter-3 S-parameter solver. Re-derives the E-plane tee,
+  H-plane tee, magic tee, circulator and directional coupler **from their stated
+  properties** and then asserts reciprocity / unitary / matching on each; brute-forces
+  the 3-port impossibility theorem over the whole reciprocal-matched family;
+  reduces an n-port by terminating ports (`terminate()`, used for the shorted magic
+  tee); and asserts every published number for 2079 Bhadra and 2082 Bhadra.
+  `python sparam.py` runs the lot.
 - **`src/smith.py`** — Smith chart renderer that draws the **construction**,
   not just the answer: SWR circle, g = 1 circle, spacing circle, the walk
   toward the generator, the constant-g arc a shunt stub moves along, and the
@@ -99,6 +106,10 @@ Third-party and gitignored — build input only, never publish.
   in the source; the deck's own `b2` is right. **We carry 0.204λ.**
 - Same deck, Double-Stub Problem 2 step 5 prints `y1=0.55-j-0.11`; the double
   sign is a typo for `0.55 - j0.11`, confirmed by its own step 6 arithmetic.
+- RF Pulchowk Ch3 deck p32 prints `Insertion loss (dB) = 10 log |a1|²/|b1|²`.
+  `b1` is the wave coming **back out of port 1**, so that is the return loss.
+  Insertion loss compares `|a1|²` with `|b2|²`, i.e. `20 log 1/|S21|`, which is what
+  the deck's own next line prints. Corrected in §3.4, marked `[verified/added]`.
 
 ## Standing traps (see also ../CLAUDE.md)
 
@@ -121,6 +132,9 @@ Third-party and gitignored — build input only, never publish.
   which LaTeX renders as a line break followed by the literal word `textbf`.
 - Rebuild, verify, then commit sources **and** PDFs together, one commit per
   chapter as soon as it builds.
+- **Em dashes are banned by the house style** and Ch3 is written without them.
+  Ch1, Ch2 and Ch2-num still carry about 350 of them, mostly as `Problem N ---`
+  and `Step N ---` separators; a sweep to `:` is pending the user's call.
 
 ## Session log
 
@@ -131,5 +145,28 @@ Third-party and gitignored — build input only, never publish.
   step (the user asked for every chart step, not just the output). **Ch1 audited
   and repaired**: 3 ghost paper citations removed, 4 tier counts resynced, one
   tier reclassified, §1.7 PYQ-mapping band added, 3 content errors corrected.
-  Next: Ch3 (S-parameters, 193 marks) — note §2.8 already covers the S-matrix
-  rider, so cross-reference rather than repeat.
+- **2026-09-11** — **Ch3 shipped**: theory 13 pp (nine bands) + numerical companion
+  18 pp (12 problems, ~100 marks). `sparam.py` added. `check.py` clean, `audit.py`
+  0 stranded, mean fill 80 % / 87 %. Findings worth carrying forward:
+  - **Every one of the five "identify the passive device from this S-matrix"
+    questions is a magic tee** (78 Ch, 81 Bh, 74 Bh, 75 Bh; 82 Bh prints amplifier
+    sets instead). The papers permute which port number is the E-arm, so the
+    identification rule is **read the sign pattern down the column, not the port
+    number**.
+  - The Detailed PYQ compresses 82 Bh Q3 to "three-port network model". The paper
+    actually asks for the **S-matrix of a magic tee with both E- and H-arms
+    shorted**. No source note carries it; derived here and asserted:
+    `[S] = [[-1,0],[0,-1]]`, total reflection with a 180° flip and the collinear
+    isolation intact.
+  - `Notes/RF Pulchowk/Chapter 4/S-parameters.pdf` (8 pp, handwritten OneNote ink,
+    no text layer) holds the **local** E-plane, H-plane and magic-tee derivations
+    step by step. It is the authoritative source for Ch3 §3.5-3.6 and worth the
+    8 page renders; the Ch3 deck itself has its equations as images.
+  - **`\lead{}` has no orphan protection** — unlike `\T` / `\Q` / `\creamq` it
+    carries no `\Needspace` and no `\qhold`, so a bold step heading can strand at
+    the foot of a page. `audit.py` does not catch it (it only tests `\T` bands).
+    Ch3 needed 8 local `\par\penalty0\Needspace{N\baselineskip}` guards, re-run to
+    convergence. **Ch1 p7 and Ch2-num pp. 5, 8, 38 still carry the same defect.**
+  Next: Ch4 (Components and Devices, 317 marks, 52 questions, the biggest question
+  count) — note Ch3 §3.6 already catalogues the tee / coupler / circulator
+  S-matrices, so Ch4 should cover the physical construction and cross-reference.

@@ -113,6 +113,10 @@ def main():
         path = os.path.join(HERE, s + ".tex")
         if not os.path.exists(path):
             continue
+        if s not in SECTION:
+            # numerical companions carry their tier chips in the theory file
+            print("=== %s ===\n  not a chapter file, skipped" % s)
+            continue
         print("=== %s ===" % s)
         n = check(s, arch)
         total += n

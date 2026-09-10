@@ -57,7 +57,30 @@ Two more traps worth knowing before the paper starts:
     \item Ideal \textbf{open} and \textbf{short} terminations are available.
   \end{itemize}
   \item Both assumptions fail above roughly $1\,$GHz.
-\end{itemize}
+\end{itemize}}{%
+\lead{What S-parameters do instead}
+\begin{itemize}
+  \item Defined on \textbf{travelling waves}, not on totals:
+  \begin{itemize}
+    \item $a_i$ = wave incident on port $i$, $b_i$ = wave leaving port $i$.
+    \item Normalised so $|a_i|^2$ and $|b_i|^2$ \textbf{are powers}, in watts.
+  \end{itemize}
+  \item Every port is terminated in $Z_0$, a \textbf{matched load}:
+  \begin{itemize}
+    \item Easy to build and broadband, unlike open or short.
+    \item No reflection back into the device $\rightarrow$ no oscillation, no damage,
+      bias undisturbed.
+  \end{itemize}
+  \item Measured with \textbf{directional couplers} plus a vector network analyser, which
+    separate incident from reflected wave and read magnitude and phase directly.
+  \item Every practical figure of merit falls straight out: gain, return loss, insertion
+    loss, isolation, VSWR, stability ($\S$3.4).
+  \item Valid at \textbf{any} frequency, so the same formalism covers DC to mmWave.
+  \item Cascadable after conversion to the transfer (T) form, so a chain of measured
+    blocks can be multiplied out.
+\end{itemize}}
+
+\sbs{%
 \lead{The five reasons they break at microwave}
 \begin{enumerate}[label=\arabic*., leftmargin=1.4em]
   \item \textbf{No unique $V$ and $I$}:
@@ -89,27 +112,6 @@ Two more traps worth knowing before the paper starts:
       capacitance of active devices, so the measurement is not of the device in use.
   \end{itemize}
 \end{enumerate}}{%
-\lead{What S-parameters do instead}
-\begin{itemize}
-  \item Defined on \textbf{travelling waves}, not on totals:
-  \begin{itemize}
-    \item $a_i$ = wave incident on port $i$, $b_i$ = wave leaving port $i$.
-    \item Normalised so $|a_i|^2$ and $|b_i|^2$ \textbf{are powers}, in watts.
-  \end{itemize}
-  \item Every port is terminated in $Z_0$, a \textbf{matched load}:
-  \begin{itemize}
-    \item Easy to build and broadband, unlike open or short.
-    \item No reflection back into the device $\rightarrow$ no oscillation, no damage,
-      bias undisturbed.
-  \end{itemize}
-  \item Measured with \textbf{directional couplers} plus a vector network analyser, which
-    separate incident from reflected wave and read magnitude and phase directly.
-  \item Every practical figure of merit falls straight out: gain, return loss, insertion
-    loss, isolation, VSWR, stability ($\S$3.4).
-  \item Valid at \textbf{any} frequency, so the same formalism covers DC to mmWave.
-  \item Cascadable after conversion to the transfer (T) form, so a chain of measured
-    blocks can be multiplied out.
-\end{itemize}
 \lead{h-parameters vs S-parameters}
 \begin{tabularx}{\linewidth}{@{}L{2.1cm}XX@{}}
 \toprule
@@ -247,7 +249,7 @@ S-parameter. Useful when the question asks for a ``flow diagram''.}}{%
   \item \textbf{Fails} for magnetised ferrite (circulator, isolator, gyrator) and for
     active devices (amplifier, transistor), where $S_{21} \neq S_{12}$ by design.
   \item So a matrix that is \textbf{not} symmetric can never be a passive isotropic device.
-\end{itemize}
+\end{itemize}}{%
 \lead{P3. Unitary $\Leftrightarrow$ lossless}
 \begin{itemize}
   \item A lossless network redirects power but never dissipates it, which forces
@@ -262,7 +264,9 @@ S-parameter. Useful when the question asks for a ``flow diagram''.}}{%
   \item If a column sums to less than 1, the shortfall is the fraction of incident power
     the network \textbf{dissipates}, which is how ``is it lossless?'' is answered
     numerically ($\S$3.4 and Problem 1 of the companion).
-\end{itemize}}{%
+\end{itemize}}
+
+\sbs{%
 \lead{P4. Shifting the reference plane multiplies by a phase}
 \begin{itemize}
   \item Move the reference plane of port $i$ outward by an electrical length
@@ -287,7 +291,7 @@ S-parameter. Useful when the question asks for a ``flow diagram''.}}{%
   \item \textbf{Symmetric}: reciprocal \emph{and} $S_{11} = S_{22}$. The network looks the
     same from either end.
   \item \textbf{Antimetric}: $S_{11} = -S_{22}$.
-\end{itemize}
+\end{itemize}}{%
 \lead{The four tests as an exam checklist}
 \begin{tabularx}{\linewidth}{@{}L{2.5cm}L{2.9cm}X@{}}
 \toprule
@@ -406,24 +410,6 @@ lab. Source: RF Pulchowk Ch3 deck.}
       two output arms are in phase or in antiphase.
     \item \textbf{Insertion loss} and \textbf{bandwidth} over which all of the above hold.
   \end{itemize}
-\end{itemize}
-\lead{Theorem: no 3-port is lossless, reciprocal and matched at once}
-\begin{itemize}
-  \item \textbf{Assume all three.} Matched gives $S_{11}=S_{22}=S_{33}=0$, reciprocal
-    gives $S_{ij}=S_{ji}$, so
-    \[ [S] = \begin{bmatrix} 0 & S_{12} & S_{13} \\
-                             S_{12} & 0 & S_{23} \\
-                             S_{13} & S_{23} & 0 \end{bmatrix} \]
-  \item \textbf{Apply the orthogonality test} to each pair of columns:
-    \[ S_{13}^{*}S_{23} = 0, \qquad S_{12}^{*}S_{23} = 0, \qquad
-       S_{12}^{*}S_{13} = 0 \]
-    so at least \textbf{two} of $S_{12}, S_{13}, S_{23}$ must be zero.
-  \item \textbf{Apply the column-sum test}:
-    \[ |S_{12}|^2 + |S_{13}|^2 = 1, \quad |S_{12}|^2 + |S_{23}|^2 = 1, \quad
-       |S_{13}|^2 + |S_{23}|^2 = 1 \]
-    which requires all three to be non-zero.
-  \item The two demands \textbf{contradict}, so no such network exists.
-    \mk{Give up exactly one of the three properties.}
 \end{itemize}}{%
 \lead{The three escapes, and the device each one gives}
 \begin{tabularx}{\linewidth}{@{}L{2.35cm}L{2.5cm}X@{}}
@@ -443,7 +429,27 @@ lab. Source: RF Pulchowk Ch3 deck.}
   \item A \textbf{4-port} escapes the trap entirely: a directional coupler and a magic
     tee are matched, lossless \emph{and} reciprocal all at once, which is exactly why the
     exam favourite is a 4-port ($\S$3.6).
-\end{itemize}
+\end{itemize}}
+
+\sbs{%
+\lead{Theorem: no 3-port is lossless, reciprocal and matched at once}
+\begin{itemize}
+  \item \textbf{Assume all three.} Matched gives $S_{11}=S_{22}=S_{33}=0$, reciprocal
+    gives $S_{ij}=S_{ji}$, so
+    \[ [S] = \begin{bmatrix} 0 & S_{12} & S_{13} \\
+                             S_{12} & 0 & S_{23} \\
+                             S_{13} & S_{23} & 0 \end{bmatrix} \]
+  \item \textbf{Apply the orthogonality test} to each pair of columns:
+    \[ S_{13}^{*}S_{23} = 0, \qquad S_{12}^{*}S_{23} = 0, \qquad
+       S_{12}^{*}S_{13} = 0 \]
+    so at least \textbf{two} of $S_{12}, S_{13}, S_{23}$ must be zero.
+  \item \textbf{Apply the column-sum test}:
+    \[ |S_{12}|^2 + |S_{13}|^2 = 1, \quad |S_{12}|^2 + |S_{23}|^2 = 1, \quad
+       |S_{13}|^2 + |S_{23}|^2 = 1 \]
+    which requires all three to be non-zero.
+  \item The two demands \textbf{contradict}, so no such network exists.
+    \mk{Give up exactly one of the three properties.}
+\end{itemize}}{%
 \lead{E-plane tee: the worked 3-port ($\S$3.6 has the full matrix)}
 \begin{itemize}
   \item Ports 1 and 2 collinear, port 3 the E-arm, assumed matched to the junction.
