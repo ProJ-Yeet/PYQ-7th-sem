@@ -1,5 +1,5 @@
 \section{Introduction}
-{\color{sub}\footnotesize 3 hrs \gap$\cdot$\gap asked in \mk{21 of 24 papers}
+{\color{sub}\footnotesize 3 hrs \gap$\cdot$\gap asked in \mk{19 of 24 papers}
 \gap$\cdot$\gap 3 syllabus sub-topics \gap$\cdot$\gap core foundational chapter
 $\rightarrow$ qualitative comparisons, equivalent circuits, frequency tables, and system protocols.}
 
@@ -11,9 +11,9 @@ $\rightarrow$ qualitative comparisons, equivalent circuits, frequency tables, an
 This chapter provides guaranteed theory marks in almost every paper (typically 8--14 marks).
 The examiner repeatedly asks three core questions:
 \begin{enumerate}[label=\arabic*., leftmargin=1.4em, itemsep=1pt]
-  \item \textbf{Conventional low frequency vs RF/microwave circuit behavior} (asked in 21 papers) $\rightarrow$ contrast lumped vs distributed analysis ($d \ll \lambda$ vs $d \gtrsim 0.01\lambda$), breakdown of Kirchhoff's laws, skin effect, and equivalent circuit parasitics of $R$, $L$, $C$.
-  \item \textbf{Detailed real-world protocols and specifications of microwave communication systems} (asked in 19 papers) $\rightarrow$ prepare full parametric tables for GSM 900/1800, Satellite C/Ku-band, Terrestrial Microwave link, and WiFi 802.11.
-  \item \textbf{IEEE microwave frequency band classification} (asked in 6 papers) $\rightarrow$ memorise the letter-code frequency boundaries (L, S, C, X, Ku, K, Ka, mmWave) and their primary application.
+  \item \textbf{Conventional low frequency vs RF/microwave circuit behavior} (asked in 18 papers) $\rightarrow$ contrast lumped vs distributed analysis ($d \ll \lambda$ vs $d \gtrsim 0.01\lambda$), breakdown of Kirchhoff's laws, skin effect, and equivalent circuit parasitics of $R$, $L$, $C$.
+  \item \textbf{Detailed real-world protocols and specifications of microwave communication systems} (asked in 11 papers) $\rightarrow$ prepare full parametric tables for GSM 900/1800, Satellite C/Ku-band, Terrestrial Microwave link, and WiFi 802.11.
+  \item \textbf{IEEE microwave frequency band classification} (asked in 7 papers) $\rightarrow$ memorise the letter-code frequency boundaries (L, S, C, X, Ku, K, Ka, mmWave) and their primary application.
 \end{enumerate}
 
 \hr
@@ -22,7 +22,7 @@ The examiner repeatedly asks three core questions:
 \T{1.1 Standard Frequency Bands and Features}
 
 \Q{How is microwave frequency band classified by IEEE? Enumerate features, advantages and disadvantages of microwaves}{\m{2+4}\m{3+3}\m{4+4}\m{5+5}}
-{\color{sub}\footnotesize \tF{6} \yr{\textbf{70 Bh}, 70 Ma, \textbf{76 Bh}, \texttt{80 Ba}, \textbf{\texttt{79 Bh}}, \texttt{82 Ba}, 69 Bh} \gap$\cdot$\gap standard frequency classification}
+{\color{sub}\footnotesize \tS{7} \yr{\textbf{70 Bh}, 70 Ma, \textbf{76 Bh}, \texttt{80 Ba}, \textbf{\texttt{79 Bh}}, \texttt{82 Ba}, 69 Bh} \gap$\cdot$\gap standard frequency classification}
 
 \sbs{%
 \lead{Microwave definition and spectrum}
@@ -71,9 +71,10 @@ The examiner repeatedly asks three core questions:
   \begin{itemize}
     \item Waves above $100\text{ MHz}$ penetrate ionosphere without total reflection $\rightarrow$ enables satellite and space communication.
   \end{itemize}
-  \item \textbf{Unique molecular resonance}:
+  \item \textbf{Dielectric (dipolar) heating}:
   \begin{itemize}
-    \item Water molecules absorb $2.45\text{ GHz}$ $\rightarrow$ efficient dielectric heating (cooking, industrial drying).
+    \item Polar water molecules follow the alternating field, and the friction of that rotation heats the material $\rightarrow$ cooking, industrial drying, vulcanisation.
+    \item \added{} Not a ``resonance of water'': that is a \textbf{Debye relaxation} peaking near $20\text{ GHz}$. $2.45\text{ GHz}$ is an \textbf{ISM} band whose absorption is weak enough to penetrate centimetres --- a true resonance would cook only the surface.
   \end{itemize}
 \end{itemize}
 \lead{Disadvantages of microwaves}
@@ -102,7 +103,7 @@ The examiner repeatedly asks three core questions:
 \T{1.2 Behaviour of Circuits: Conventional vs RF/Microwave Bands}
 
 \Q{Compare the behavior of microwave circuits against conventional low frequency circuits. Differentiate lumped vs distributed analysis}{\m{4}\m{5}\m{6}\m{8}\m{10}}
-{\color{sub}\footnotesize \tS{21} \yr{\textbf{70 Bh}, 70 Ma, 71 Ma, \textbf{72 Ash}, 72 Ma, \textbf{73 Bh}, 73 Ma, \textbf{75 Bh}, \textbf{76 Bh}, \textbf{77 Ch}, \textbf{78 Ch}, \textbf{79 Ch}, \texttt{80 Ba}, \textbf{\texttt{80 Bh}}, \textbf{80 Ch}, \textbf{\texttt{81 Bh}}, \texttt{81 Ba}, \textbf{\texttt{82 Bh}}, \texttt{82 Ba}, 69 Bh} \gap$\cdot$\gap top repeated topic}
+{\color{sub}\footnotesize \tS{18} \yr{\textbf{70 Bh}, 70 Ma, 71 Ma, \textbf{72 Ash}, 72 Ma, 73 Ma, \textbf{75 Bh}, \textbf{76 Bh}, \textbf{77 Ch}, \textbf{78 Ch}, \texttt{80 Ba}, \textbf{\texttt{80 Bh}}, \textbf{80 Ch}, \textbf{\texttt{81 Bh}}, \texttt{81 Ba}, \textbf{\texttt{82 Bh}}, \texttt{82 Ba}, 69 Bh} \gap$\cdot$\gap top repeated topic}
 
 \sbs{%
 \lead{The fundamental governing criterion: $\boldsymbol{d/\lambda}$}
@@ -146,7 +147,7 @@ The examiner repeatedly asks three core questions:
 \penalty0\vspace{2pt}
 
 \Q{Why are S-parameters used in microwave network analysis instead of Z, Y, or h-parameters?}{\m{3}\m{4}\m{5}}
-{\color{sub}\footnotesize \tS{15} \yr{\textbf{70 Bh}, 70 Ma, 71 Ma, \textbf{72 Ash}, \textbf{73 Bh}, 73 Ma, 74 Ma, \textbf{78 Ch}, \texttt{80 Ba}, \textbf{80 Ch}, \textbf{\texttt{79 Bh}}, \textbf{\texttt{81 Bh}}} \gap$\cdot$\gap core justification}
+{\color{sub}\footnotesize \tS{10} \yr{\textbf{70 Bh}, 70 Ma, 71 Ma, \textbf{72 Ash}, 73 Ma, \textbf{78 Ch}, \texttt{80 Ba}, \textbf{80 Ch}, \textbf{\texttt{79 Bh}}, \textbf{\texttt{81 Bh}}} \gap$\cdot$\gap core justification}
 
 \sbs{%
 \lead{Limitations of H, Z, Y parameters at microwave bands}
@@ -202,7 +203,7 @@ The examiner repeatedly asks three core questions:
 \T{1.3 High-Frequency Parasitics in Passive Components (R, L, C)}
 
 \Q{Explain the characteristic behavior of passive components (resistor, inductor, capacitor) at RF/microwave frequencies}{\m{4}\m{6}\m{8}}
-{\color{sub}\footnotesize \tF{5} \yr{\textbf{70 Bh}, \textbf{77 Ch}, \textbf{79 Ch}, \textbf{\texttt{80 Bh}}, \textbf{\texttt{82 Bh}}} \gap$\cdot$\gap equivalent circuits and frequency responses}
+{\color{sub}\footnotesize \tF{4} \yr{\textbf{70 Bh}, \textbf{77 Ch}, \textbf{\texttt{80 Bh}}, \textbf{\texttt{82 Bh}}} \gap$\cdot$\gap equivalent circuits and frequency responses}
 
 \sbsr{0.55}{%
 \lead{1. Resistors at RF/Microwave}
@@ -327,7 +328,7 @@ The examiner repeatedly asks three core questions:
 \T{1.5 Microwave Applications and Real-World System Protocols}
 
 \Q{Prepare the detail real-world protocols and specifications of any 3 (or 5) major microwave communication systems}{\m{4+6}\m{2+6}\m{4+4}\m{8}\m{10}}
-{\color{sub}\footnotesize \tS{19} \yr{\textbf{70 Bh}, 70 Ma, \textbf{73 Bh}, \textbf{76 Bh}, \textbf{77 Ch}, \textbf{78 Ch}, \textbf{\texttt{79 Bh}}, \textbf{\texttt{80 Bh}}, \texttt{81 Ba}, \textbf{\texttt{81 Bh}}, \textbf{\texttt{82 Bh}}, \texttt{82 Ba}} \gap$\cdot$\gap top repeated exam requirement}
+{\color{sub}\footnotesize \tS{11} \yr{\textbf{70 Bh}, 70 Ma, \textbf{76 Bh}, \textbf{77 Ch}, \textbf{78 Ch}, \textbf{\texttt{79 Bh}}, \textbf{\texttt{80 Bh}}, \texttt{81 Ba}, \textbf{\texttt{81 Bh}}, \textbf{\texttt{82 Bh}}, \texttt{82 Ba}} \gap$\cdot$\gap top repeated exam requirement}
 
 \sbs{%
 \lead{General microwave communication system architecture}
@@ -358,9 +359,9 @@ The examiner repeatedly asks three core questions:
 \toprule
 \hrow \thead{Parameter} & \thead{1. GSM 900 / 1800} & \thead{2. Satellite (Ku-band)} & \thead{3. Terrestrial MW Link} & \thead{4. Wi-Fi (802.11ac)} & \thead{5. Airport Radar (ASR)} \\
 \midrule
-\textbf{Operating band} & UHF / L-band ($900/1800\text{ MHz}$) & Ku-band ($12\text{--}18\text{ GHz}$) & C / X-band ($6\text{--}11\text{ GHz}$) & S / C-band ($2.4\text{ \& }5\text{ GHz}$) & S-band ($2.7\text{--}2.9\text{ GHz}$) \\
-\textbf{Uplink / Tx Freq} & $890\text{--}915\text{ MHz}$ (GSM 900) & $14.0\text{--}14.5\text{ GHz}$ & $5.925\text{--}6.425\text{ GHz}$ & $5.15\text{--}5.85\text{ GHz}$ & $2.7\text{--}2.9\text{ GHz}$ pulsed \\
-\textbf{Downlink / Rx Freq} & $935\text{--}960\text{ MHz}$ (GSM 900) & $11.7\text{--}12.2\text{ GHz}$ & $3.700\text{--}4.200\text{ GHz}$ & $5.15\text{--}5.85\text{ GHz}$ & Reflected echo \\
+\textbf{Operating band} & UHF / L-band ($900/1800\text{ MHz}$) & Ku-band ($12\text{--}18\text{ GHz}$) & Lower 6 GHz band (L6) & U-NII, 5 GHz only & S-band ($2.7\text{--}2.9\text{ GHz}$) \\
+\textbf{Uplink / Tx Freq} & $890\text{--}915\text{ MHz}$ (GSM 900) & $14.0\text{--}14.5\text{ GHz}$ & $5.925\text{--}6.425\text{ GHz}$ (go) & $5.15\text{--}5.85\text{ GHz}$ & $2.7\text{--}2.9\text{ GHz}$ pulsed \\
+\textbf{Downlink / Rx Freq} & $935\text{--}960\text{ MHz}$ (GSM 900) & $11.7\text{--}12.2\text{ GHz}$ & $6.425\text{--}6.925\text{ GHz}$ (return) & $5.15\text{--}5.85\text{ GHz}$ & Reflected echo \\
 \textbf{Channel bandwidth} & $200\text{ kHz}$ per carrier & $36\text{--}54\text{ MHz}$ transponder & $28\text{--}56\text{ MHz}$ per channel & $20, 40, 80, 160\text{ MHz}$ & $1\text{--}5\text{ MHz}$ chirp \\
 \textbf{Duplexing mode} & FDD ($45\text{ MHz}$ duplex split) & FDD ($2\text{--}2.5\text{ GHz}$ split) & FDD (frequency separation) & TDD (CSMA/CA) & Monostatic simplex (pulsed) \\
 \textbf{Multiple access} & TDMA (8 time slots / carrier) & FDMA / TDMA / DVB-S2 & Point-to-Point dedicated & CSMA/CA, OFDMA & Pulse timing / PRF \\
@@ -417,5 +418,35 @@ The examiner repeatedly asks three core questions:
   \item \textbf{Fabrication}: Difficult; multi-layer sandwich lamination; impossible to mount surface components after manufacturing.
   \item \textbf{Applications}: High-performance broadband passive circuits (couplers, filters, power dividers).
 \end{itemize}}
+
+\penalty0\vspace{2pt}
+
+%=======================================================================
+\T{1.7 PYQ Mapping}
+
+\lead{Theory questions --- covered in this document}
+\begin{itemize}
+  \item \textbf{IEEE microwave band classification; features, (+) and (-) of microwaves} --- $\S$1.1.
+    \yr{69 Bh \m{4}, \texttt{80 Ba} \m{2+4}, \textbf{\texttt{79 Bh}} \m{3+3}, \textbf{76 Bh} \m{5+5}}
+  \item \textbf{Conventional low-frequency vs RF/microwave circuit behaviour; lumped vs distributed analysis} --- $\S$1.2. \mk{The most repeated topic in the chapter, 18 papers.}
+  \item \textbf{Why S-parameter based analysis is a must} --- $\S$1.2. Full S-parameter theory is Chapter 3; only the justification is asked here. \yr{\textbf{\texttt{81 Bh}} \m{5+3}}
+  \item \textbf{Behaviour of passive components ($R$, $L$, $C$) at microwave bands} --- $\S$1.3, with equivalent circuits and self-resonance.
+  \item \textbf{Microwaves vs acoustic and seismic waves} --- $\S$1.4. \yr{72 Ma \m{5}, \textbf{72 Ash} \m{5}, \textbf{75 Bh} \m{8}}
+  \item \textbf{Areas of application; real-world protocols and specifications of major microwave communication systems} --- $\S$1.5. \mk{Prepare the full parametric table; asked in 11 papers.}
+  \item \textbf{Microstrip vs strip-lines} --- $\S$1.6. Kept here because $\S$1.1--1.6 introduce the guiding structures; Chapter 2 ($\S$2.1) cross-references it rather than repeating it. \yr{71 Ma \m{5}}
+\end{itemize}
+
+\lead{Numerical content}
+\begin{itemize}
+  \item \textbf{This chapter has no numerical component.} Every Chapter 1 question across all 24 papers is qualitative --- classification, comparison, enumeration or specification. There is no numerical companion for Chapter 1.
+  \item The only arithmetic worth rehearsing is the one-line conversion $\lambda = c/f$ used to place a band, and the antenna-gain scaling $G \propto (D/\lambda)^2$ quoted in $\S$1.1.
+\end{itemize}
+
+\lead{Syllabus coverage check}
+\begin{itemize}
+  \item \textit{Standard frequency bands} --- $\S$1.1 \checkmark
+  \item \textit{Behaviour of circuits at conventional and RF/microwave bands} --- $\S$1.2, $\S$1.3, $\S$1.4 \checkmark
+  \item \textit{Microwave applications} --- $\S$1.5 \checkmark
+\end{itemize}
 
 \penalty0\vspace{2pt}
