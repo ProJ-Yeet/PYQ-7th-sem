@@ -21,7 +21,7 @@
 \vspace{-0.4em}
 \small
 \textbf{Notes:} TU IOE PYQ 2070--2082, 22 papers. Regular = \textbf{bold}, Back = normal; BEX (EX751) = normal font, BEI (EX715) = \texttt{mono}.
-Marks in (); unique values only.
+Marks in (); unique values only. Chapter and bullet order mirrors the Detailed PYQ --- every question in that document is represented here, with every distinct marks split it was ever asked for.
 Keys: (I)=Importance/Need \quad (+)=Advantage \quad (-)=Disadvantage \quad +Fig=Figure \quad +Eg=Example \quad Vs=Compare/Differentiate.
 \vspace{2pt}
 \hrule
@@ -32,112 +32,166 @@ Keys: (I)=Importance/Need \quad (+)=Advantage \quad (-)=Disadvantage \quad +Fig=
 
 \section*{1. Introduction}
 \begin{itemize}
-  \item Evolution of wireless / cellular 1G--5G; technology + worldwide market penetration \hfill (4)(6)
-  \item 1G/2G/3G/4G Vs, technology advancement; features 4G over 3G; benefits of wireless \hfill (4)(5)(6)(2+4)
-  \item Trends beyond 3G; forward \& reverse channel; 5G Vs 4G, features of 5G \hfill (4)(2)(2+2)
+  \item Evolution of wireless / cellular 1G--5G; technology + worldwide market penetration; features introduced 2G$\rightarrow$5G \hfill (4)(6)
+  \item 1G/2G/3G/4G Vs, technology advancement; improvements in 2G, 3G \& beyond-3G; 2G Vs 3G +Eg of technologies (with prioritized handoff \& cell dragging); features of 4G over 3G \hfill (4)(5)(6)(4+2)
+  \item Major benefits of wireless communication + the 4G system \hfill (2+4)
+  \item Trends beyond 3G (key technological changes); forward \& reverse channel; 5G Vs 4G, features of 5G \hfill (4)(2)(2+2)
 \end{itemize}
 
 \section*{2. Cellular Concepts}
 \begin{itemize}
-  \item Frequency reuse; co-channel reuse ratio $Q{=}\sqrt{3N}$ (prove); find $N$ (omni/120°/60°) \hfill (6)(4)(3+3)(4+4)(3+5)
+  \item Frequency reuse; co-channel reuse ratio in detail; minimizing reuse distance maximizes spectral efficiency (I); cellular concept for $N{=}7$ \hfill (6)(4)(3)
+  \item Prove $Q{=}\sqrt{3N}$, $N{=}i^2{+}ij{+}j^2$; optimal $N$ for omni / 120° / 60° sectoring at SIR 15 dB, $n{=}3$ or 4, + comment \hfill (4)(4+4)(3+5)
     \begin{itemize}
-      \item $S/I{=}\sqrt[n]{3N}/i_0$; min.\ co-channel distance (7-cell, 23 km²); $N{=}7$ concept \hfill (4)(3)
+      \item with co-channel Vs adjacent channel interference \hfill (3+3)
+      \item + 20 MHz duplex spectrum, 25 kHz simplex channel $\rightarrow$ duplex channels, channels/cell at $N{=}4$ \hfill (3+4+3)
+      \item obtain $S/I{=}\sqrt[n]{3N}/i_0$; min.\ co-channel centre distance (7-cell reuse, 23 km² cells) \hfill (4)
     \end{itemize}
-  \item Handoff --- margin +Fig, GSM strategy, types \& application, practical considerations \hfill (3)(4)(6)(8)
+  \item Handoff --- margin +Fig; handoff strategy used in GSM; handover process, types \& application; practical handover considerations \hfill (3)(4)(6)(8)(4+4)
     \begin{itemize}
-      \item Proper Vs improper handoff +Fig; cell dragging; prioritized handoff schemes \hfill (1+3)(2+4)(3+4)
+      \item proper Vs improper handoff +Fig; cell dragging; two prioritized handoff schemes; define GoS, traffic intensity, average holding time, blocked call \hfill (1+3)(2)(2+4)(3+4)
     \end{itemize}
-  \item Co-channel Vs adjacent interference; cell footprint, interference tier \hfill (2.5)(1+4)(4)
-  \item GoS + trunking (blocked-call-cleared); traffic intensity, Erlang-B tables \hfill (3+5)(2+2+2+3)
+  \item Co-channel Vs adjacent interference; cell footprint + interference tier; interference in wireless/mobile communication \hfill (2.5+2.5)(1+4)(4)
+  \item GoS + how it is measured in a blocked-call-cleared trunking system, with optimal $N$ \hfill (3+5)
     \begin{itemize}
       \item 394 cells/19 ch/2\% blocking $\rightarrow$ users + market penetration \hfill (5)
-      \item 1500 km², 12 cells, 28.5 MHz $\rightarrow$ cells/channels/traffic/users \hfill (12)
+      \item 3 calls/h of 5 min: traffic/user, users at 1\% on 1 ch and on 5 trunked ch, users doubled $\rightarrow$ new blocking (Erlang-B table printed) \hfill (2+2+2+3)
+      \item $N{=}7$, 1\% blocking, 57 ch, omni $\rightarrow$ 60° sectored: traffic capacity loss (GOS table printed) \hfill (2+2+2)
+      \item 1500 km², 12 cells, 28.5 MHz $\rightarrow$ cells, channels/cell, carried traffic, users, mobiles per channel \hfill (12)
       \item 32 cells, 1.6 km, reuse 7, 336 ch $\rightarrow$ area, ch/cell, simultaneous calls \hfill (4)
-      \item $N{=}7$, 1\% blocking, 57 ch, omni $\rightarrow$ 60° sectored: capacity loss \hfill (2+2+2)
-      \item cluster size / clusters / max.\ users --- \emph{73 Ma prints no data} \hfill (6)
+      \item cluster size / no.\ of clusters / max.\ users --- \emph{73 Ma prints no data} \hfill (6)
     \end{itemize}
-  \item Microcell zone concept; sectoring Vs cell splitting; capacity \& coverage enhancement \hfill (3)(5)(8)
+  \item Microcell zone concept (why needed + explain) \hfill (3)(1+3)
+  \item Sectoring Vs cell splitting --- which to choose as planning engineer, and why; how both improve coverage \& capacity \hfill (4)(5)
+  \item Techniques for enhancing capacity \& coverage in a cellular radio network \hfill (8)
 \end{itemize}
 
 \section*{3. Radio Wave Propagation}
 \begin{itemize}
-  \item Free-space \& link budget --- received power / E-field / flux density / rms voltage \hfill (8)(6)
+  \item Free-space \& link budget --- received power / E-field / power flux density / rms input voltage \hfill (8)(2+2+2+2)
     \begin{itemize}
-      \item 50 W@900 MHz, 10 km, $G_T{=}1$, $G_R{=}2$, 50\,$\Omega$; 165 W@325 MHz, 15 km
-      \item 10 W@250 MHz + 20 m coax + mismatch; 150 W, $-104$ dBm threshold, $n{=}4$
-      \item 50 W $\rightarrow$ dBm/dBW, $P_r$(100 m), $P_r$(10 km); cordless 52000 kHz, 50 m
-      \item $\lambda/4$ monopole 2.55 dB, $E{=}10^{-3}$ V/m@1 km, 2-ray; far-field, 1 m@900 MHz
+      \item 50 W@900 MHz, 10 km, $G_T{=}1$, $G_R{=}2$, 50\,$\Omega$ matched
+      \item 165 W@325 MHz into 12 dBi, 15 km, 6 dBi \hfill (6)
+      \item 10 W@250 MHz, 20 m coax @3 dB/100 m, 9 dBi, 25 km, 4 dBi, 0.2 dB mismatch \hfill (8)
+      \item coverage range: 150 W, threshold $-104$ dBm, 15 dB loss at first metre, $n{=}4$ \hfill (6)
+      \item $\lambda/4$ monopole 2.55 dB, $E{=}10^{-3}$ V/m@1 km, 900 MHz $\rightarrow$ length \& $A_e$, then two-ray $P_r$ (50 m / 1.5 m, 5 km) \hfill (6)
+      \item cordless 52000 kHz, 50 m $\rightarrow$ free-space path loss \hfill (6)(2+4)
+      \item 50 W $\rightarrow$ dBm/dBW, $P_r$(100 m), $P_r$(10 km), unity gains \hfill (1+1+2+2)
+      \item basic propagation models; far-field distance, 1 m antenna@900 MHz \hfill (3+3)
     \end{itemize}
-  \item Propagation mechanisms (3 basic); large- Vs small-scale; path loss + multipath params \hfill (3)(3+6)(8)(2+4)
-  \item Two-ray path/phase difference; Fresnel diffraction; scattering + ground reflection \hfill (6)(8)(2+6)(2+8)
-  \item Log-distance model; link budget design (BTS$\leftrightarrow$mobile reverse link; 10-km AP link) \hfill (4)(10)(12)
-  \item Outdoor models --- Okumura Vs Hata, necessary conditions \hfill (2+2)(3+3)(5)
+  \item Propagation mechanisms (3 basic); large- Vs small-scale model; propagation as large-scale path loss + small-scale fading; define path loss + multipath parameters used to classify fading \hfill (3)(3+6)(8)(2+4)
+  \item Two-ray model --- derive phase difference; derive path \& phase difference, LOS Vs ground-reflected, by geometry; derive path loss equation +Fig with (+) over free space \hfill (8)(6)(2+6)
     \begin{itemize}
-      \item Okumura: $d{=}50$ km, $h_{te}{=}100$ m, $h_{re}{=}10$ m, EIRP 1 kW@900 MHz, $A_{mu}{=}43$, $G_{area}{=}9$ \hfill (4+2+2)
-      \item Okumura: find T--R separation, $L{=}167$ dB@2.1 GHz, $A_{mu}{=}34$, $G_{area}{=}0$ \hfill (8)
-      \item Hata: medium city 950 MHz/45 m/10 km/5 m; large urban 900 MHz/100 m/2 m/4 km \hfill (4+4)(7)
-      \item Hata: max.\ cell radius \& area, 50 W, $-91$ dBm, 900 MHz, 30 m/1 m \hfill (6)
-      \item Two-ray point-to-point 800 MHz/30 m/2 m/10 km; Ericsson Multiple Breakpoint \hfill (4+4)(2)
+      \item diffraction + derive phase difference in Fresnel zone geometry \hfill (2+6)
+      \item scattering + derive the two-ray ground-reflected model \hfill (2+8)
+      \item path loss Vs fading; time-dispersion fading and its types \hfill (2+6)
     \end{itemize}
-  \item Indoor models (any two) + influencing factors \hfill (5)(8)
-  \item Small-scale fading types + influencing factors; Doppler shift derivation \hfill (2+2)(4+4)(2+4+4)
-  \item Doppler spread; coherence BW \& time (I); rms delay spread; fading classification \hfill (4)(2+5)(2+7)(4+4)
+  \item Log-distance path loss model \hfill (4)
+  \item Link budget design --- BTS$\leftrightarrow$mobile reverse-link distance +diagram, Okumura, $A_{mu}{=}43$, $G_{area}{=}9$, 100 m/10 m, 10 dB margin \hfill (10)
     \begin{itemize}
-      \item PDP numericals: $T_s$ without equalizer ($\sigma_\tau/T_s{\le}0.1$); 90\%/50\% coherence BW
-      \item $P_r(\tau){=}(-20,-10,-10,0)$ dB @ $\tau{=}(0,1,2,5)$; $(0,-10,-20,-23)$ dB @ $(0,100,200,400)$ ns
-      \item flat Vs frequency-selective for AMPS (30 kHz) \& GSM (200 kHz) \hfill (6)(8)
+      \item feasibility of a 10 km suburban AP--client link@2.4 GHz, Okumura, $A_{mu}{=}20$, $G_{area}{=}13$ \hfill (12)
     \end{itemize}
-  \item Rayleigh Vs Rician fading distribution; frequency selective fading \hfill (2)(5)(2+4)
+  \item Outdoor models --- any two; Okumura \& Hata necessary conditions; Okumura Vs Hata \hfill (2+2)(3+3)(4)(5)
+    \begin{itemize}
+      \item Okumura: $d{=}50$ km, $h_{te}{=}100$ m, $h_{re}{=}10$ m, suburban, $A_{mu}{=}43$, $G_{area}{=}9$@900 MHz \hfill (4+4)
+      \item same + EIRP 1 kW, $G_R{=}10$ dB $\rightarrow$ EIRP in dBm and $P_r$ \hfill (4+2+2)(5)
+      \item Okumura: find T--R separation, $L{=}167$ dB@2.1 GHz, 40 m/2 m, large city, $A_{mu}{=}34$, $G_{area}{=}0$ \hfill (8)
+      \item Hata: medium city 950 MHz/45 m/10 km/5 m, + compare with free space \hfill (4+4)
+      \item Hata: large urban 900 MHz/100 m/2 m/4 km (formulae printed on the paper) \hfill (7)
+      \item Hata: max.\ cell radius \& cell area, 50 W, $-91$ dBm, 900 MHz, 30 m/1 m, medium city \hfill (6)
+      \item Two-ray point-to-point 800 MHz/30 m/2 m/10 km, + compare with free space \hfill (4+4)
+      \item Ericsson Multiple Breakpoint model \hfill (2)
+    \end{itemize}
+  \item Indoor models (any two); factors influencing the indoor model \hfill (5)(8)
+  \item Small-scale fading --- define, types, influencing factors \hfill (2+2)(4+4)(3+6)(2+4+4)
+    \begin{itemize}
+      \item + derive the relation for Doppler shift \hfill (1+2+5)
+      \item types based on delay spread and Doppler spread \hfill (1+3)
+      \item parameters of the mobile multipath channel \hfill (7)
+    \end{itemize}
+  \item Doppler spread + derive Doppler shift; frequency dispersion (I) + derive Doppler spread; Doppler effect in small-scale fading \hfill (2)(2+4)
+  \item Coherence BW \& coherence time --- definition and significance; Doppler spread + classify fading by rms delay spread and coherence time; frequency-selective fading, coherence BW Vs delay spread \hfill (4)(2+5)(4+4)(2+7)
+    \begin{itemize}
+      \item PDP (70 Ma figure): Doppler spread, fading types by Doppler spread, mean excess \& rms delay spread, 90\% and 50\% coherence BW \hfill (4+4)
+      \item smallest $T_s$ / greatest symbol rate without an equalizer ($\sigma_\tau/T_s{\le}0.1$); PDP $(0,0,-10,-20)$ dB @ $(0,50,75,100)$ µs \hfill (8)
+      \item $P_r(\tau){=}(-20,-10,-10,0)$ dB @ $\tau{=}(0,1,2,5)$ s $\rightarrow$ mean/rms/max.\ excess delay + 50\% coherence BW \hfill (6)
+      \item $(0,-10,-20,-23)$ dB @ $(0,100,200,400)$ ns $\rightarrow$ rms delay spread, 90\% coherence BW; flat Vs frequency-selective for AMPS (30 kHz) \& GSM (200 kHz) \hfill (6)
+    \end{itemize}
+  \item Rayleigh Vs Rician fading channel +expressions; frequency-selective fading + Rayleigh distribution \hfill (2)(5)(2+4)
 \end{itemize}
 
 \section*{4. Modulation--Demodulation}
 \begin{itemize}
-  \item QPSK / OQPSK / $\pi/4$-QPSK --- Tx \& detection +constellation; BPSK Vs QPSK \hfill (6)(7)(8)(5+2)
-  \item DPSK Tx/Rx + PN sequence (I) \hfill (4+2+2)
-  \item MSK Vs GMSK Vs OQPSK (BW/power efficiency, GSM); GMSK Tx \& detection \hfill (3+3+2)(2+6)(8)
-  \item OFDM operation +Fig (Tx and Rx separately); (+)(-); M-ary QAM, 16-QAM Vs 16-PSK \hfill (4)(8)(4+4)(2+6)
-  \item Spread spectrum --- define, DSSS +Fig, FHSS +Fig; (+) and major (-) \hfill (2+5)(2+6)(4)
+  \item QPSK --- transmission \& detection +Fig, equation \& constellation diagram \hfill (6)(7)(8)
+  \item OQPSK Tx \& Rx; why $\pi/4$-QPSK is preferred over OQPSK \hfill (5+2)
+  \item BPSK against QPSK modulation \hfill (5)
+  \item DPSK Tx \& Rx + PN sequence and why it is used \hfill (4+2+2)
+  \item MSK as special CPFSK / OQPSK; OQPSK Vs MSK Vs GMSK (BW \& power efficiency), which suits GSM and why; what is MSK modulation \hfill (2)(4)(3+3+2)
+  \item (+) of digital over analog modulation; GMSK transmission \& detection +block \& constellation diagram; MSK \& GMSK + OFDM modulator/demodulator +Fig \hfill (2+6)(8)
+  \item OFDM operation +Fig (Tx and Rx); generalize modulation \& demodulation; Tx alone; Rx alone; Tx +(+)(-); principle + types of spread spectrum modulation \hfill (4)(8)(4+4)
+  \item M-ary QAM (need); 16-QAM Vs 16-PSK using constellation diagrams \hfill (2+6)
+  \item Spread spectrum --- define + DSSS +Fig; define + FHSS +Fig; DS \& FH techniques \hfill (4)(6)(2+5)(2+6)
+  \item (+) of spread spectrum; major (-) of the spread spectrum system \hfill (2)(4)
 \end{itemize}
 
 \section*{5. Equalization \& Diversity}
 \begin{itemize}
-  \item Equalization (I), signal processing to minimize ISI; linear transversal equalizer \hfill (4)(2+5)(2+1+4)
-  \item Training \& tracking modes; adaptive equalization algorithms; MSE optimal weights \hfill (1+3)(4)(7)(8)
-  \item MLSE +Fig; interleaving --- need, working principle +Fig \hfill (4)(6+1+5)(2+6)
-  \item Diversity (I) + types; combining (max-ratio / feedback / space); antenna diversity Vs \hfill (2+2)(2+6)(4+6)(3+3+2)
-  \item RAKE (RACK) receiver, M-branch +Fig; time diversity \hfill (3)(4)(8)(3+5)
+  \item Equalization (I); the signal processing operation that minimizes ISI \hfill (4)(2+5)(2+6)
+    \begin{itemize}
+      \item + RACK receiver + structure of the linear transversal equalizer +Fig \hfill (2+1+4)
+    \end{itemize}
+  \item Training \& tracking modes of adaptive equalizers; why equalization is needed + both modes in detail \hfill (4)(1+3)
+  \item MSE algorithm --- optimal solution of the weights +diagram +derivation \hfill (7)(8)
+  \item MLSE +Fig; + define time diversity and two implementations of it \hfill (4)(6+1+5)
+  \item Adaptive equalization algorithms (any two) \hfill (4)(5)
+  \item Interleaving --- working principle +Fig; why it is needed; define + how an adaptive equalizer offsets ISI in a multipath time-dispersive channel \hfill (4)(2+6)
+  \item Why equalization \& diversity are needed; space-diversity reception methods, explain any one \hfill (3+3+2)
+  \item Diversity (I) + types / any two in detail; max-ratio combining space diversity; combining methods for space diversity; space diversity techniques +block diagrams; how diversity improves network quality \hfill (2)(4)(2+2)(2+6)(4+4)(4+6)
+  \item Antenna diversity techniques compared; feedback Vs maximum-ratio combining \hfill (4)
+  \item RAKE (RACK) receiver --- M-branch receiver +Fig; how it exploits time diversity \hfill (3)(4)(8)(3+5)
 \end{itemize}
 
 \section*{6. Speech \& Channel Coding}
 \begin{itemize}
-  \item Speech signal characteristics; used in designing coders \hfill (3)(4)(6)(8)
-  \item Vocoders +Fig, kinds; formant vocoder; frequency-domain coding; GSM CODEC \hfill (2+3)(4+4)(3+5)
-  \item LPC +block diagram, types; sub-band coding (Tx/Rx); source coders \hfill (2+6)(3+5)(6)
-  \item Channel coding; 7-bit Hamming +Eg; convolutional encoding/decoding \hfill (2)(5)
-  \item Viterbi decoding; turbo coding \hfill (2)(3)(5)
+  \item Characteristics of the speech signal; how they are used in designing coders \hfill (3)(4)(6)(8)
+  \item Vocoder (I) + any two predictive coders; vocoders +Fig and their kinds; vocoder operation +Fig; formant vocoder + speech characteristics; why speech coding is needed + basic VOCODER concept \hfill (4)(6)(2+3)(2+6)(3+5)(4+4)
+  \item Waveform Vs voice coding, speech characteristics, GSM CODEC +Fig \hfill (4+2+2)
+  \item Any two source coders used in speech coding; types of frequency-domain coding of speech \hfill (4)(6)
+  \item LPC +neat block diagram (with speech characteristics); types of LPC; sub-band coding with Tx \& Rx \hfill (6)(2+6)(3+5)
+  \item What is channel coding; 7-bit Hamming code +Eg; convolutional encoding \& decoding \hfill (2)(5)
+  \item Viterbi decoding algorithm; define turbo coding \hfill (2)(3)(5)
 \end{itemize}
 
 \section*{7. Multiple Access}
 \begin{itemize}
-  \item FDMA --- non-linear effect; no.\ of channels (25 MHz/100 kHz/200 kHz; 12.8 MHz \& 12.5 MHz/10 kHz/30 kHz); (+)(-) \hfill (3+2)(4)
-  \item TDMA --- (+) over FDMA; GSM frame efficiency; N-TDMA users/cluster (25 MHz/30 kHz/$B_g$ 20 kHz) \hfill (4)
-  \item CDMA --- features/(+)(-); design considerations; encoding \& decoding +Eg \hfill (2+6)(4)(7)(8)
-  \item Hadamard $H_8$ / 8$\times$8 Hadamard code (Walsh), conditions \hfill (3)(4)(3+5)
-  \item SSMA (DS \& FH) variants; FHMA +Fig (Tx/Rx) +Eg, types \hfill (4+4)(6)(7)(8)
-  \item Hybrid SS MA (any two, near-far mitigation); self-jamming; near-far effect + solutions \hfill (2+2)(3+4)(5+4)(6)(2+4+6)
-  \item SDMA; multiple access Vs (FDMA/TDMA/CDMA/SDMA, TCDMA, TDFH) \hfill (2+6)(4)(7)
+  \item FDMA --- non-linear effect + 25 MHz spectrum, 100 kHz edge guard band, 200 kHz channel $\rightarrow$ no.\ of channels \hfill (3+2)
+    \begin{itemize}
+      \item 12.8 MHz per simplex band and 12.5 MHz total, 10 kHz guard, 30 kHz channel $\rightarrow$ no.\ of channels; FDMA (+)(-) \hfill (4)
+    \end{itemize}
+  \item TDMA --- (+) over FDMA; GSM frame efficiency (6 trailing, 8.25 guard, 26 training bits, 2 bursts of 58 data bits); N-TDMA users per cluster (25 MHz one-way, 30 kHz channels, $B_g{=}20$ kHz) \hfill (4)
+  \item CDMA --- characteristics, (+) \& limitations; important features; design considerations; (+)(-); (+) over TDMA; merits \& demerits \hfill (2)(4)(6)(2+6)
+  \item CDMA implementation --- encoding \& decoding parts +Eg \hfill (7)(8)(2+6)
+  \item Hadamard $H_8$ / 8$\times$8 Hadamard (Walsh) code; steps satisfying the Hadamard condition + construct \hfill (3)(4)(3+5)
+  \item SSMA --- DS \& FH techniques with (+)(-) of FDMA/TDMA/CDMA; types of SSMA + FDMA Vs CDMA; SSMA variants \& application +Fig \hfill (8)(4+4)(6+2)
+  \item FHMA --- working +Eg; Tx \& Rx +block diagram; operation + types of FHMA; principle + two hybrid SSMA techniques mitigating the near-far problem \hfill (4)(5)(6)(7)(4+2)(4+6)
+  \item Hybrid SS multiple access (any two), with (+)(-); self-jamming in CDMA + FHMA +Fig + two hybrids; FHMA principle + near-far effect and its solution; define near-far + one hybrid SSMA that mitigates it; multiple access + all near-far mitigation techniques \hfill (4)(6)(2+2)(3+4)(5+4)(2+4+6)
+  \item SDMA + two hybrid SSMA techniques minimising the near-far effect \hfill (2+6)
+  \item Multiple access --- define + TDMA/CDMA/SDMA; TCDMA and Time Division Frequency Hopping; define + FDMA Vs CDMA; FDMA Vs TDMA Vs CDMA (+)(-); TDMA Vs FDMA \hfill (4)(7)(2+4)(2+6)
+  \item Duplexing and its different types \hfill (2+4)
   \item WLAN; WiFi \hfill (3)(5)
 \end{itemize}
 
 \section*{8. Wireless Systems \& Standards}
 \begin{itemize}
-  \item GSM architecture (each component, NSS); traffic \& control channels; BCH \& CCCH \hfill (4)(5)(8)(4+4)
-  \item GSM frame structure \& hierarchy; TDMA frame efficiency $<$ 100\%; channel structure \hfill (4+4)(4+6)(6+2)
-  \item GSM signal processing (speech $\leftrightarrow$ radio); GSM specifications \hfill (5)(8)
-  \item CDMA IS-95 forward \& reverse channels (draw); pilot \& sync channels; channelization code \hfill (4)(6)
-  \item GSM Vs CDMA standards; CDMA Vs LTE architecture \hfill (3)(3+5)
-  \item WiMAX; LTE; duplexing + types \hfill (3)(4)(5)(2+4)
-  \item Regulatory issues --- spectrum allocation, licensing, spectrum management \hfill (4)(5)(2+3)(2+4)
+  \item GSM architecture --- draw + operation of each component; components of the Network Switching Subsystem \hfill (4)(5)(8)(4+4)
+  \item GSM traffic \& control channels; BCH \& CCCH; Broadcast Control Channel; operation of the different control channels \hfill (4+4)(5)(8)
+  \item GSM frame structure + why TDMA frame efficiency cannot reach 100\%; + how traffic and control channels are used in a call; frame structure; channel structure; GSM frame hierarchy \hfill (4)(5)(6)(4+4)(4+6)(6+2)
+  \item GSM signal processing, speech $\leftrightarrow$ radio signal; specifications of GSM \hfill (5)(8)
+  \item CDMA IS-95 --- channelization code + forward channels; draw the forward channel; draw the reverse channel; pilot \& sync channels in the forward link +Fig \hfill (4)(6)
+  \item GSM Vs CDMA standards; CDMA Vs LTE system architecture + functions of the entities \hfill (3)(4)(3+5)
+  \item WiMAX; LTE \hfill (3)(4)(5)
+  \item Regulatory issues in wireless communication; spectrum regulations; regulatory issues in licensing \& spectrum allocation \hfill (4)(5)
+  \item Significance of spectrum management; functions of the regulatory body \hfill (2+3)(2+4)
 \end{itemize}
 
 \end{multicols}
