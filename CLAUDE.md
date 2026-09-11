@@ -90,6 +90,16 @@ expensive.
    `tools/ai_qcount.py`, which keys on (code, year, month) because `77 Ch` and
    `\textit{77 Ch}` are different papers.
 
+   A Concise document is checked differently, against the Detailed rather than the archive.
+   It promises "marks in (); unique values only", so `tools/concise_cov.py` reconciles the
+   two both ways per chapter: every `[n]` in a Detailed chapter must appear as `(n)` in the
+   matching Concise chapter, and nothing else may. The Concise documents had all drifted;
+   Wireless was rebuilt to zero on 2026-09-11, the other five are queued in
+   `handoff-current.txt`. The tool cannot see a marks value attached to the wrong bullet
+   inside the right chapter, nor a topic dropped while a common marks value survives on a
+   neighbouring bullet — both were real in Wireless — so still read bullet against
+   subsection by hand.
+
 9. **Bash heredocs on Windows mangle backslashes.** Any file containing LaTeX or a regex
    must be written with the Write tool, never piped through a heredoc. This has silently
    no-op'd edits twice. In Python helpers, build backslashes from `chr(92)`.
