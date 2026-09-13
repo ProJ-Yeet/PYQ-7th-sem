@@ -136,6 +136,21 @@ Tectonic resolves the table of contents in one run. Compile from the folder that
 `images/` so relative paths resolve. `Overfull \hbox` on a few long question lines is
 cosmetic; ignore it.
 
+## Anki
+
+```bash
+python tools/anki_from_notes.py <Subject>        # --report to parse only
+```
+
+Generates `<Subject>/Anki/<Subject>_ExamNotes.apkg` **from `ExamNotes/src/ch*.tex`
+directly** — one card per `\Q`, per `\qq`, and per numerical problem, question to
+answer, with a single card template so Anki makes no reverse cards. Never hand-write
+cards: a deck transcribed by hand drifts from the notes on the next edit. The tool
+converts the preamble's macro set to HTML and MathJax; if a chapter starts using a
+macro it does not know, it prints `UNHANDLED MACROS` rather than dropping content
+silently, so read that line. `_media/` is a build intermediate and is git-ignored;
+the `.apkg` and `.tsv` are committed with the sources, as PDFs are.
+
 ## LaTeX traps that have each cost a build cycle
 
 - `\lb` expands to `\\`, and LaTeX rejects `\\` immediately after `\end{center}`

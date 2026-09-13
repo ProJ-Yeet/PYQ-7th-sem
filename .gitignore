@@ -50,3 +50,8 @@ __pycache__/
 # Raw RapidOCR drafts from tools/ocr_page.py. Intermediate only - the
 # verbatim transcription lands in <Subject>/ocr/*_OCR.md, which IS tracked.
 ocr_raw/
+
+# Anki build intermediates: downscaled copies of ExamNotes figures, packed
+# into the .apkg. The .apkg and its .tsv fallback ARE tracked.
+*/Anki/_media/
+*/Anki/preview.html

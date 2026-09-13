@@ -32,6 +32,8 @@ Two subjects additionally carry a full set of syllabus-order exam notes, with La
 
 The notes are written to be answered from directly: every topic carries the years it was asked and a tier badge counted over that subject's whole paper set, every numerical reproduces the exam question verbatim before working it, and figures are copied from the lecture sources rather than redrawn. In `src/`, `build.py` compiles and deploys, `verify.py` recomputes every published numerical answer independently and asserts it against the printed value, `audit.py` checks that no topic heading is left stranded at the foot of a page, and `figs.py` re-crops the figures from their sources.
 
+Where a subject has exam notes it can also carry an Anki deck, built from those same LaTeX sources by `tools/anki_from_notes.py` so it cannot drift from them — one card per exam question, question to answer, chapter subdecks, and tags for the frequency tier and for every paper the question comes from. So far: `Wireless/Anki/` (177 cards); see its README.
+
 ## Notes
 
 - Questions are grouped by syllabus subsection, not by year.
