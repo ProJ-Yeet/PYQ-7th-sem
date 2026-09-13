@@ -40,7 +40,7 @@
 \begin{itemize}[noitemsep]
   \item Two papers are combined in this one document:
     \begin{itemize}[noitemsep]
-      \item \textbf{CT704} --- \emph{Digital Signal Analysis and Processing}, BEI/BCT, Year/Part IV/I. 27 papers, \bo{2066 Magh} to \bo{2082 Bhadra}. Shown in the \textbf{normal} font. (The three oldest papers carry no subject code; 2069 Bhadra is coded EG774CT.)
+      \item \textbf{CT704} --- \emph{Digital Signal Analysis and Processing}, BEI/BCT, Year/Part IV/I. 28 papers, \bo{2066 Magh} to \bo{2082 Bhadra}. Shown in the \textbf{normal} font. (The three oldest papers carry no subject code; 2069 Bhadra is coded EG774CT.)
       \item \textbf{EX753} --- \emph{Digital Signal Processing}, BEX, Year/Part IV/II. 17 papers, \bo{2069 Bhadra} to \bo{2081 Chaitra}. Shown in \texttt{typewriter}. (2069 Bhadra is coded EG773EX.)
     \end{itemize}
   \item Programme is the \texttt{typewriter} axis, exam type is the bold axis --- the two are independent:\\
@@ -106,6 +106,7 @@
 
       \item Determine the given systems: (a) $y[n]=x[-n]$: time-invariant? (b) $y[n]=x[n^2]$: linear? \hfill [5] (\bo{76 Ch})
         \lb (a) $y[n]=y[n-4]+x[n-4]$: time-invariant? (b) $y[n]=x^2[n]$: linear? \hfill [3+3] (\bo{74 Ch})
+        \lb $y[n]=x[n]+x[-n]$: causal? time invariant? \hfill [2+2] (82 Ba)
         \lb $y[n]=y[n-4]+x[n-4]$: time invariant or not? \hfill [3] (\bo{\texttt{78 Ch}})
         \lb (a) $y[n]=x^2[n]$ (b) $y[n]=\cos(\tfrac{5\pi}{8}n+\tfrac{\pi}{4})$: linear or not? \hfill [3+3] (75 Ash)
         \lb Determine whether the following systems are (a) causal (b) linear: (i) $y[n]=x[n]-3x[n-1]$ \quad (ii) $y[n]=x[n+1]+4x[n]$ \hfill [4] (\bo{\texttt{71 Bh}})
@@ -147,6 +148,7 @@
         \lb $h(n)=\{1,0,1\},\quad x(n)=\{1,-2,-2,3,4\}$ \hfill [2+4] (70 Asa)
         \lb $h(n)=\{2,2,-1,1\},\quad x(n)=\{1,2,1,2\}$ \hfill [6] (\bo{\texttt{74 Bh}})
         \lb $h[n]=\{5,3,4,2,0\},\quad x[n]=\{0,2,4,6\}$ (FIR system response) \hfill [5] (\texttt{74 Ma})
+        \lb $h[n]=(1/2)^n u[n],\quad x[n]=5e^{j\pi n/3}$ (response to a complex exponential) \hfill [5] (82 Ba)
         \lb $h(n)=\{1,3,2,-1,1\}$ for $-1\le n\le3,\quad x(n)=2\delta(n)-\delta(n-1)$ \hfill [6] (\bo{71 Ch})
         \lb $x[n]=\delta[n]+2\delta[n-1]-\delta[n-3],\quad h[n]=2\delta[n+1]+2\delta[n-1]$ \hfill [5] (\bo{79 Bh, 81 Bh})
         \lb $h[n]=(1/2)^n\{u[n+2]-u[n-2]\},\quad x[n]=\{2,1,0,-1,4\}$ \hfill [5] (79 Ba)
@@ -246,6 +248,7 @@
       \item Determine the inverse Z-transform for the given $X(z)$ and ROC. Each line is one paper's parameter set.
         \lb $H(z)=\dfrac{1+2z^{-1}+z^{-2}}{1-0.75z^{-1}+0.125z^{-2}}$, ROC $0.25<|z|<0.5$ \hfill [1+6] (\bo{80 Bh})
         \lb $X(z)=\dfrac{1}{1-0.8z^{-1}+0.12z^{-2}}$ for (i) $|z|>0.6$, (ii) $|z|<0.2$, (iii) $0.2<|z|<0.6$ \hfill [2+2+3] (81 Ba)
+        \lb $X(z)=\dfrac{1}{1-1.5z^{-1}+0.5z^{-2}}$ for (a) $|z|>1$, (b) $|z|<0.5$, (c) $0.5<|z|<1$, by partial fraction; also define the ROC \hfill [1+5] (82 Ba)
         \lb $X(z)=\dfrac{1+2z^{-1}+z^{-2}}{1-1.5z^{-1}+0.5z^{-2}}$, ROC $|z|>1$ \hfill [1+5] (80 Ba)
         \lb $X(z)=\dfrac{1+2z^{-1}+z^{-2}}{1+1.5z^{-1}+0.5z^{-2}}$, $|z|>1$, by partial fractions \hfill [6] (71 Shr)
         \lb $X(z)=\dfrac{1+2z^{-1}+z^{-2}}{1+4z^{-1}+4z^{-2}}$: determine the causal signal $x[n]$ \hfill [6] (\bo{\texttt{80 Ch}, \texttt{70 Bh}}); by long division for all possible ROCs \hfill [6] (\texttt{70 Ma})
@@ -288,6 +291,7 @@
         \lb $y[n]-0.4y[n-1]+0.2y[n-2]=x[n]+0.5x[n-1]+0.6x[n-2]+0.8x[n-3]$ \hfill [3+7] (74 Ash)
         \lb $y[n]-0.5y[n-1]+0.3y[n-2]=x[n]+0.7x[n-1]$ \hfill [6] (72 Ka)
         \lb $y[n]-0.4y[n-1]+0.1y[n-2]=x[n]+0.6x[n-1]$ \hfill [2+4] (\bo{72 Ch})
+        \lb poles given directly at $0.45\pm j1.6$ and zeros at $0.58\pm j2.06$: map them in the $z$-plane and plot the magnitude \emph{and} phase response (not to scale) \hfill [3+7] (82 Ba)
         \lb $y[n]-0.3y[n-1]+0.225y[n-2]=x[n]+0.5x[n-1]$ \hfill [6] (\bo{70 Ch})
         \lb $y[n]-0.3y[n-1]+0.225y[n-2]=x[n]-0.4x[n-1]$ \hfill [6] (\bo{\texttt{71 Bh}})
         \lb $y[n]-0.3y[n-1]+0.2y[n-2]=x[n]+0.7x[n-1]$ \hfill [7] (\texttt{73 Ma})
@@ -371,6 +375,7 @@
         \lb $H(z)=1/(1-0.01z^{-1}-0.23z^{-2}+0.5z^{-3})$, check stability \hfill [4+2+1] (\bo{71 Ch})
         \lb FIR $H(z)=1+(13/24)z^{-1}+(5/8)z^{-2}+(1/3)z^{-3}$, check stability \hfill [5] (81 Ba); Direct Form + Lattice \hfill [3+7] (\bo{78 Bh})
         \lb lattice-ladder $H(z)=(2-0.7z^{-1}+0.5z^{-2})/(1-0.3z^{-1}+0.25z^{-2})$ \hfill [6] (80 Ba, \bo{82 Bh})
+        \lb lattice-ladder, third order low pass $H(z)=\dfrac{0.2759+0.5121z^{-1}+0.5121z^{-2}+0.2759z^{-3}}{1-0.0010z^{-1}+0.6546z^{-2}-0.0775z^{-3}}$ \hfill [10] \mbox{(82 Ba)}
         \lb lattice-ladder $H(z)=(1-0.4z^{-1}+0.25z^{-2})/(1-0.3z^{-1}+0.5z^{-2})$, check stability \hfill [6+1] (79 Ba)
         \lb lattice-ladder $H(z)=\dfrac{1+z^{-1}+z^{-2}}{(1+0.5z^{-1})(1+0.3z^{-1})(1+0.4z^{-1})}$ \hfill [6+4] (\bo{81 Bh})
         \lb lattice-ladder $H(z)=(0.5-2z^{-1}+3z^{-2})/(1-0.5z^{-1}-0.7z^{-2}+0.3z^{-3})$ \hfill [6+4] (\bo{76 Ch})
@@ -430,6 +435,7 @@
         \lb $\omega_p=0.3\pi$, $\omega_s=0.5\pi$, $\alpha_s=40$ dB \hfill [8] (\bo{71 Ch, 69 Ch})
         \lb $\omega_p=0.2\pi$, $\omega_s=0.5\pi$, $\alpha_s=41$ dB --- find the first six coefficients of the impulse response; also, why is Kaiser better than other fixed windows? \hfill [2+6] (74 Ash)
         \lb $\omega_p=0.24\pi$, $\omega_s=0.54\pi$, $\alpha_s=42.2$ dB --- find the first three coefficients of the impulse response \hfill [8] (\bo{\texttt{79 Ch}}); [6] (\bo{\texttt{75 Bh}})
+        \lb $-3$ dB cut-off at $30\pi$ rad/s and attenuation 50 dB at $45\pi$ rad/s, linear phase, sampling rate 100 Hz; prefaced by ``differentiate between analog and digital filter'' \hfill [2+6] (82 Ba)
         \lb $\omega_p=0.35\pi$, $\omega_s=0.45\pi$, stop-band attenuation of at least 54 dB \hfill [8] (\bo{67 Mng})
         \lb Hanning window, $\omega_p=0.25\pi$, $\omega_s=0.35\pi$, main-lobe width $8\pi/M$ where $M$ is the filter length \hfill [9] (70 Asa)
         \lb Hanning window, $\omega_p=0.25\pi$, $\omega_s=0.3\pi$ \hfill [8] (\bo{69 Bh})
@@ -473,6 +479,7 @@
     \begin{enumerate}[topsep=0pt, noitemsep]
       \item What is an optimum filter? Show the mathematical expression / draw the flowchart of the Remez exchange algorithm for FIR filter design (with derivation where asked). \hfill [1+5/1+6/2+6/7/9] (\bo{75 Ch, 72 Ch, 70 Ch, 69 Ch, 73 Ch, 78 Bh, 76 Ch, 82 Bh, 81 Bh}, 76 Ash, 73 Shr, 71 Shr)
         \lb Describe the Remez exchange algorithm for FIR filter design along with the flowchart. \hfill [5/1+6] (\bo{79 Bh}, 79 Ba)
+        \lb Explain the Gibbs phenomenon in FIR filter design, then describe the Remez exchange algorithm along with its flowchart. \hfill [2+5] (82 Ba)
         \lb Why is the Remez exchange algorithm required? Describe it with mathematical derivation / with a flow chart. \hfill [1+5/5] (\bo{\texttt{77 Ch}, \texttt{74 Bh}})
         \lb Explain a Remez exchange algorithm for FIR filter design. \hfill [4/9/5+4/6] (\bo{\texttt{78 Ch}, \texttt{80 Ch}}, \texttt{74 Ma}, \texttt{72 Ma})
         \lb Draw the flow chart of the Remez exchange algorithm for FIR filter design. \hfill [4] (\bo{\texttt{70 Bh}})
@@ -489,7 +496,7 @@
       \item Design a digital IIR / Butterworth low pass filter using the bilinear transformation method for the given specifications. Each line is a separate paper's parameter set.
         \lb $0.9\le|H(e^{jw})|\le1$ for $0\le w\le\pi/2$; $|H(e^{jw})|\le0.2$ for $3\pi/4\le w\le\pi$; sampling frequency 1 Hz \hfill [12] (\bo{80 Bh}); also compare the impulse invariance method with the bilinear transformation method, using Butterworth approximation \hfill [12+3] (\bo{81 Bh})
         \lb $0.6\le|H(e^{j\omega})|\le1$ for $0\le\omega\le0.35\pi$; $|H(e^{j\omega})|\le0.1$ for $0.7\pi\le\omega\le\pi$; $T=0.1$ s. Also differentiate between bilinear transformation and impulse invariance. \hfill [2+10] (81 Ba)
-        \lb $0.8\le|H(e^{jw})|\le1$ for $0\le w\le0.2\pi$; $|H(e^{jw})|\le0.2$ for $0.6\pi\le w\le\pi$ \hfill [10] (\bo{75 Ch, 70 Ch})
+        \lb $0.8\le|H(e^{jw})|\le1$ for $0\le w\le0.2\pi$; $|H(e^{jw})|\le0.2$ for $0.6\pi\le w\le\pi$ \hfill [10] (\bo{75 Ch, 70 Ch}); with sampling frequency 1 Hz, and compare the impulse invariance method with the bilinear transformation technique \hfill [12+3] (82 Ba)
         \lb $0.82\le|H(e^{jw})|\le1$ for $0\le\omega\le0.22\pi$; $|H(e^{jw})|\le0.18$ for $0.58\pi\le\omega\le\pi$ \hfill [10] (\bo{\texttt{78 Ch}})
         \lb $0.707\le|H(e^{jw})|\le1$ for $0\le w\le\pi/2$; $|H(e^{jw})|\le0.2$ for $3\pi/4\le w\le\pi$; $T=1$ s. Realize the filter using the most convenient realization form. \hfill [11+4] (\bo{73 Ch})
         \lb $0.89125\le|H(e^{j\omega})|\le1$ for $0\le\omega\le0.2\pi$; $|H(e^{j\omega})|\le0.17783$ for $0.3\pi\le\omega\le\pi$ \hfill [12] (73 Shr)
@@ -574,6 +581,7 @@
       \item Find the $N$-point DFT of the given sequence using the DIT-FFT or DIF-FFT algorithm (draw the butterfly diagram where asked). Each line is a separate paper's sequence.
         \lb 8-pt DIF, $x(n)=\{2,1,2,1,1,2,1,2\}$ \hfill [8] (\bo{80 Bh})
         \lb 4-pt DIT, $x(n)=\{2,2,4\}$ \hfill [2+6] (81 Ba)
+        \lb 4-pt DIF, $x[n]=\{1,4,-1\}$ --- 3 entries as printed, so the sequence must be zero-padded to length 4; prefaced by ``what is the FFT algorithm'' and ``how does DIF-FFT reduce the calculation complexity of the DFT'' \hfill [1+2+6] (82 Ba)
         \lb 8-pt DIF, $x[n]=\{1,1,0,0,1,1,2\}$ --- 7 entries as printed \hfill [2+6] (80 Ba, \bo{70 Ch})
         \lb 8-pt radix-2 DIT, $x[n]=u[n]-u[n-4]$ \hfill [7] (\bo{78 Bh})
         \lb 8-pt radix-2 DIT --- \textbf{the 2079 Bhadra paper prints no sequence at all}; it says only ``Find the 8-point DFT of the following sequence using radix-2 DITFFT algorithm''. Verified on both available scans. \hfill [2+6] (\bo{79 Bh})
@@ -620,6 +628,7 @@
         \lb $x=\{1,2,4,5\},\quad h=\{2,1,6,8\}$ \hfill [6] (81 Ba)
         \lb $h(n)=\{1,2,1,-1,1\},\quad x(n)=\{1,2,3,1\}$ \hfill [7] (\bo{72 Ch, 82 Bh})
         \lb $x_1=\{1,-1,-2,3,-1\},\quad x_2=\{1,2,3\}$ \hfill [7] (79 Ba)
+        \lb $x_1=\{1,1,-1,-1,2\},\quad x_2=\{1,-1,-2\}$ \hfill [6] (82 Ba)
         \lb $x_1=\{2,1,2,1\},\quad x_2=\{1,2,3,4\}$ \hfill [2+6] (\bo{78 Bh}); [1+5] (\texttt{74 Ma})
         \lb $x_1=\{2,1,2,1\},\quad x_2=\{1,-2,-1,3\}$ \hfill [5] (\bo{\texttt{78 Ch}})
         \lb $x_1=\{1,2,-1,1\},\quad x_2=\{1,3,5,7\}$ \hfill [1+5] (75 Ash)

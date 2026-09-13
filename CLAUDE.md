@@ -28,13 +28,30 @@ expensive.
    python -c "import fitz; print(repr(fitz.open('New PYQ/X.pdf')[0].get_text()[:80]))"
    ```
 
-   `Data Mining/CT-72502_69-82.pdf` (= `New PYQ/DM4.1BCT.pdf`) has one on 26 of its
-   28 pages — the only source scan in this repo that does. It is sloppy machine OCR
-   (`TRIBHUV.AN LNIVERSITY`, `t6l` for `[6]`, `12+6)` for `[2+6]`), but
-   `page.get_text('text', sort=True)` is cheaper than the OCR tool and far cheaper than
-   rendering. Its weakest spot is the marks column, so **reconcile every paper's marks
-   against the printed Full Marks of 80** — that arithmetic is what makes them
-   trustworthy, and it recovered all six new Data Mining papers' marks exactly.
+   **Every `New PYQ/*.pdf` scan carries a substantial machine text layer**, not just
+   Data Mining. Measured 2026-09-13: WC 22/23 pages, DM4.1BCT 26/28, DSAP 42/47,
+   OM 23/27, RF 23/25, 4.1bei_dsap 25/30, rf4.1bei 10/11, wc4.1bei 6/7, AI 17/48.
+   Only the two **older** scans have none at all: `Wireless/EX-715_81-70.pdf` (0/15)
+   and `DSAP/CT-704_69-81.pdf` (0/22). An earlier version of this rule claimed Data
+   Mining was the only one; that was wrong and it cost two whole papers (see below).
+
+   It is sloppy machine OCR (`TRIBHUV.AN LNIVERSITY`, `t6l` for `[6]`, `12+6)` for
+   `[2+6]`), but `page.get_text('text', sort=True)` is cheaper than the OCR tool and far
+   cheaper than rendering. Its weakest spot is the marks column, so **reconcile every
+   paper's marks against the printed Full Marks of 80** — that arithmetic is what makes
+   them trustworthy. It recovered all six new Data Mining papers' marks exactly, and it
+   is what confirmed both 2082 Baishakh papers.
+
+   **Never infer "blank page" from an empty text layer.** A page returning zero
+   characters inside a scan that otherwise has one is usually a *dark* page the
+   embedded OCR gave up on, not a blank sheet. `WC.pdf` p2 and `DSAP.pdf` p2 were both
+   archived as blank for months; each is a whole **2082 Baishakh** paper, recovered
+   2026-09-13. Ink coverage separates the two cases in one line — a real question page
+   runs about 1.4 % dark pixels, those two ran 4.8–5.0 %, a truly blank sheet is near 0:
+
+   ```bash
+   python -c "import fitz; pm=fitz.open('New PYQ/X.pdf')[1].get_pixmap(dpi=36,colorspace=fitz.csGRAY); print(sum(1 for b in pm.samples if b<128)/len(pm.samples))"
+   ```
 
 3. **To transcribe a page that has no text layer and is not yet in an archive, run the OCR
    tool first — do not look at the page image.**
@@ -71,7 +88,9 @@ expensive.
    O&M tagged 2070 **Ashad** as `70 Ash` (Ashwin) for two years; AI's 2072 Magh names two
    different papers, both printing programme BCT, separated only by course code; Data
    Mining's 2079 Baishakh paper is captured as a phone screenshot whose **PDF-viewer title
-   bar reads "2079 Chaitra"** — app chrome is not a header. When a subject has two scans,
+   bar reads "2079 Chaitra"** — app chrome is not a header. A page an archive calls
+   *blank* is a claim to confirm too, not inherit: `WC.pdf` p2 and `DSAP.pdf` p2 each
+   held a whole 2082 Baishakh paper (golden rule 2). When a subject has two scans,
    diff them page by page — each usually holds a paper the other lacks, though AI's new
    scan turned out to be a strict superset. Data Mining is the opposite case: neither of
    its two scans contains the other, so both must stay on disk.

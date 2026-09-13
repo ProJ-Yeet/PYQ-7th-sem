@@ -25,7 +25,7 @@ Page-order table — New PYQ\DSAP.pdf, CT704 section
 | p  | Year / month  | Exam    | Programme | Code  |
 |----|---------------|---------|-----------|-------|
 | 1  | 2082 Bhadra   | Regular | BEI, BCT  | CT704 |
-| 2  | *(blank)*     |         |           |       |
+| 2  | 2082 Baishakh | Back    | BCT, BEI  | CT704 |
 | 3  | 2081 Bhadra   | Regular | BCT, BEI  | CT704 |
 | 4  | 2081 Baishakh | Back    | BEI, BCT  | CT704 |
 | 5  | 2080 Bhadra   | Regular | BEI, BCT  | CT704 |
@@ -95,6 +95,47 @@ p8 and p10 are two scans of the same 2078 Bhadra paper.
     h(n) = {1, 2, 1, −1, 1}   and   x(n) = {1, 2, 3, 1}
 11. Find 8-point DFT using DIF-FFT of the sequence
     x[n] = {1, 1/2, −1, −1/2, 2, −3/2}. [8]
+
+## p2 — 2082 Baishakh, Back, BE, BCT/BEI, IV/I, CT 704 [80 marks, 3 hrs]
+
+1. A discrete time system has input x[n] and output y[n] and its input-output
+   relation is y[n] = x[n] + x[-n]. Is the system causal, time invariant or
+   not? [2+2]
+2. Find the output of an LTI system having impulse response
+   h[n] = (1/2)^n u[n] excited by an input x[n] = 5e^{jπn/3}. [5]
+3. Define ROC of a Z-transform. Determine x[n] for
+   X(z) = 1 / (1 - 1.5z^{-1} + 0.5z^{-2}) if:
+   a) |z| > 1
+   b) |z| < 0.5
+   c) 0.5 < |z| < 1 using partial fraction method. [1+5]
+4. The poles of a system are located at 0.45 ± j1.6 and the zeros at
+   0.58 ± j2.06. Map the poles and zeros in the z-plane and plot the magnitude
+   and phase response (not to scale) of the system. [3+7]
+5. A third order low pass filter has a system function
+   H(z) = (0.2759 + 0.5121z^{-1} + 0.5121z^{-2} + 0.2759z^{-3})
+        / (1 - 0.0010z^{-1} + 0.6546z^{-2} - 0.0775z^{-3}).
+   Implement the filter using lattice-ladder structure. [10]
+6. Differentiate between analog and digital filter. Design an FIR lowpass
+   digital filter that will have a -3dB cut-off at 30π rad/s and an attenuation
+   of 50 dB at 45π rad/s. The filter is required to have a linear phase and the
+   system uses a sampling rate of 100 Hz. [2+6]
+7. Explain Gibbs phenomenon in FIR filter design. Describe Remez exchange
+   algorithm for FIR filter design along with flowchart. [2+5]
+8. Using bilinear transformation technique, design a Butterworth filter which
+   satisfies the following conditions:
+   0.8 ≤ |H(e^{jw})| ≤ 1      for 0 ≤ ω ≤ 0.2π
+   |H(e^{jw})| ≤ 0.2          for 0.6π ≤ ω ≤ π
+   Consider sampling frequency 1 Hz.
+   Compare Impulse Invariance Method and Bilinear Transformation technique for
+   analog filter to digital filter conversion. [12+3]
+9. What is Fast Fourier Transform algorithm? How Decimation in Frequency Fast
+   Fourier Transform algorithm reduces the calculation complexity of DFT? Find
+   4 point DFT of the sequence x[n] = {1, 4, -1} using Decimation in Frequency
+   Fast Fourier Transform algorithm. [1+2+6]
+   > NOTE: the paper asks for a 4-point DFT of a 3-element sequence. Printed
+   > exactly as shown; the sequence has to be zero-padded to length 4.
+10. Find the circular convolution of the sequences x1[n] = {1, 1, -1, -1, 2}
+    and x2[n] = {1, -1, -2}. [6]
 
 ## p3 — 2081 Bhadra, Regular, BE, BCT/BEI, IV/I, CT 704 [80 marks, 3 hrs]
 
