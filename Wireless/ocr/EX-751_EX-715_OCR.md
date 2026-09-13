@@ -30,7 +30,7 @@ documents quote these statements.
 | p | year / month | exam | programme | code | part |
 |---|---|---|---|---|---|
 | 1 | 2082 Bhadra | Regular | BEI | EX 715 | IV/I |
-| 2 | — | — | — | — | BLANK |
+| 2 | 2082 Baishakh | Back | BEI | EX 715 | IV/I |
 | 3 | 2081 Bhadra | Regular | BEI | EX 715 | IV/I |
 | 4 | 2081 Baishakh | Back | BEI | EX 715 | IV/I |
 | 5 | 2080 Bhadra | Regular | BEI | EX 715 | IV/I |
@@ -73,7 +73,7 @@ documents quote these statements.
 | 14 | 2070 Magh | New Back | BEX | EX 751 | p23 |
 | 15 | 2070 Bhadra | Regular | BEX | EX 751 | p22 |
 
-**22 Wireless papers in total: 6 × EX715 (2079–2082) + 16 × EX751 (2070–2080).**
+**23 Wireless papers in total: 7 × EX715 (2079–2082) + 16 × EX751 (2070–2080).**
 
 ---
 
@@ -101,6 +101,17 @@ documents quote these statements.
    (a WiMAX, b Handover, c BPSK against QPSK modulation).
 
 5. **2082 Bhadra Q3 b** prints "an EIRP oh 1 kW" (for "of").
+
+5a. **2082 Baishakh Q4** prints "the median path loss sing Okumura's model"
+   (for "using"). Verified by eye at Matrix(4.0); it is the paper's own typo.
+
+5b. **`WC.pdf` p2 was archived as BLANK until 2026-09-13.** It is the whole
+   **2082 Baishakh** paper. Every other page of `WC.pdf` carries a machine text
+   layer, so a page returning zero characters read as blank — but p2 is simply a
+   dark scan the embedded OCR failed on: ~5.0 % dark pixels at 36 dpi against
+   ~1.4 % for a normal question page. `tools/ocr_page.py` reads it cleanly and the
+   marks reconcile to exactly 80. Never infer "blank" from an empty text layer;
+   measure ink coverage first. `DSAP.pdf` p2 had the identical defect.
 
 6. **2076 Bhadra Q7** prints "near for effect" for "near-far effect"; the same
    typo recurs in 2075 Bhadra Q10.
@@ -131,6 +142,22 @@ documents quote these statements.
 7. a) Explain the implementation of CDMA with its encoding part and decoding part with relevant example. [7]
    b) Explain the block diagram of OFDM transmitting side. Also mention its advantage and disadvantage. [4+4]
 8. Explain the components of Network Switching Subsystem in GSM architecture. Illustrate GSM Frame hierarchy in GSM system. [4+4]
+
+## p2 — 2082 Baishakh, Back, BEI, EX 715, IV/I
+
+1. Briefly explain the evolution of different generations of cellular systems. [6]
+2. What do you mean by frequency reuse? Explain various channel assignment strategies used in mobile communication. [2+4]
+3. Consider a single high-power transmitter that can support 40 voice channels over an area of 140 km² with the available spectrum. If this area is equally divided into seven smaller cells, each supported by lower power transmitters so that each cell supports 30% of the total voice channels, then determine
+   i) Coverage area of each cell [1]
+   ii) Total number of voice channels available in a cellular system compared to a non-cellular system. [3]
+4. Find the median path loss sing Okumura's model for d = 50 km, h_te = 100 m, h_re = 10 m in a suburban environment. If the base station transmitter radiates an EIRP of 1 kW at a carrier frequency of 900 MHz, find the power at the receiver (assume a unity gain receiving antenna). [Assume A_mu = 43 dB, G_AREA = 9 dB] [8]
+5. Define the terms coherence bandwidth and coherence time explaining their significance in mobile radio propagation. Explain fading with its various types. [3+5]
+6. With block diagrams, describe the working principle of OFDM transmitter and receiver. [8]
+7. Describe a signal processing operation that minimizes the effects of ISI. What do you understand by RAKE receiver? Explain the working of a M branch RAKE receiver. [2+2+4]
+8. What are the characteristics of speech signals? Explain the basic working principle of Formant and Channel vocoder. [4+4]
+9. What are the advantages of CDMA over TDMA? Explain the working of the Frequency Hopping Spread Spectrum (FHSS) multiple access technique with an appropriate block diagram. Highlight different types of FHSS. [4+6+2]
+10. List the various types of control channels available in GSM with their purposes. [2+4]
+11. Describe forward CDMA (IS-95) channel with suitable figure. [6]
 
 ## p3 — 2081 Bhadra, Regular, BEI, EX 715, IV/I
 

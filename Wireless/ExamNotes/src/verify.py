@@ -237,6 +237,18 @@ def ch2():
             chk(f"c2 table C={C} gos={gos}", erlang_b_traffic(C, gos), want,
                 tol=max(6e-4, abs(want) * 5e-4))
 
+    # --- P11  82 Ba: cellular Vs non-cellular channel count ---------
+    # 40 voice channels over 140 km2; split into 7 cells, each carrying
+    # 30 % of the *total* channels.
+    area_cell = 140.0 / 7
+    chk("c2 p11 area per cell", area_cell, 20.0)
+    ch_cell = 0.30 * 40
+    chk("c2 p11 channels per cell", ch_cell, 12.0)
+    ch_cellular = 7 * ch_cell
+    chk("c2 p11 cellular total", ch_cellular, 84.0)
+    chk("c2 p11 gain over non-cellular", ch_cellular / 40.0, 2.1)
+    chk("c2 p11 extra channels", ch_cellular - 40.0, 44.0)
+
 
 # =====================================================================
 #  CHAPTER 3
@@ -335,6 +347,11 @@ def ch3():
     pr = 60 - L50 + 10
     chk("c3 p9 Pr dBm", pr, -85.07, tol=0.02)
     chk("c3 p9 Pr pW", watts(pr) * 1e12, 3.11, tol=0.02)
+    # 82 Ba variant: unity gain receiver, so G_r = 0 dB
+    pr_unity = 60 - L50 + 0
+    chk("c3 p9 82Ba Pr dBm", pr_unity, -95.07, tol=0.02)
+    chk("c3 p9 82Ba Pr pW", watts(pr_unity) * 1e12, 0.311, tol=0.003)
+    chk("c3 p9 82Ba delta vs 10 dB case", pr - pr_unity, 10.0, tol=0.01)
 
     # --- P10  Okumura reverse -----------------------------------------
     ghte = 20 * math.log10(40 / 200.0)

@@ -542,6 +542,45 @@ the only computable part, and it is what turns a prose answer into a full-mark o
 
 \hr
 
+\T{Problem 11 \quad Cellular Vs non-cellular channel count}
+{\color{sub}\footnotesize \tP{1} \yr{\texttt{82 Ba} \m{1+3}}
+\gap$\cdot$\gap the cleanest statement of why the cellular idea exists at all}
+
+\begin{asked}{2082 Baishakh \textperiodcentered{} Q3 \textperiodcentered{} [1+3]}
+Consider a single high-power transmitter that can support 40 voice channels over an area of
+140 km² with the available spectrum. If this area is equally divided into seven smaller cells,
+each supported by lower power transmitters so that each cell supports 30\% of the total voice
+channels, then determine
+\begin{enumerate}[label=\roman*), leftmargin=1.9em]
+  \item Coverage area of each cell
+  \item Total number of voice channels available in a cellular system compared to a
+        non-cellular system.
+\end{enumerate}
+\end{asked}
+
+\begin{itemize}
+  \item \textbf{Step 1: coverage area of each cell.} The 140 km² is divided \emph{equally}
+        into seven cells, so
+        \[ A_{\text{cell}} = \frac{140}{7} = \boxed{20\ \text{km}^2} \]
+  \item \textbf{Step 2: channels carried by one cell.} Each cell supports 30\,\% of the
+        \textbf{total} 40 voice channels --- not 30\,\% of a share of them:
+        \[ C_{\text{cell}} = 0.30 \times 40 = 12\ \text{channels} \]
+  \item \textbf{Step 3: total channels in the cellular system.}
+        \[ C_{\text{cellular}} = 7 \times 12 = \boxed{84\ \text{voice channels}} \]
+  \item \textbf{Step 4: compare with the non-cellular system.} The single high-power
+        transmitter carried only its 40 channels over the whole 140 km², so
+        \[ \frac{C_{\text{cellular}}}{C_{\text{non-cellular}}} = \frac{84}{40}
+           = \boxed{2.1\ \text{times}, \text{ ie 44 extra channels}} \]
+  \item \mk{This is frequency reuse in one line:} the same 40 channels, re-used across seven
+        lower-power cells, carry more than twice the traffic \textbf{without one extra hertz
+        of spectrum}. The cost is seven base stations instead of one, plus handoff.
+  \item \textbf{Watch the 30\,\%.} Taking it as 30\,\% of $40/7$ instead of 30\,\% of 40 gives
+        $7 \times 1.71 = 12$ channels total, which would make the cellular system
+        \emph{worse} than the single transmitter --- a clear sign the reading is wrong.
+\end{itemize}
+
+\hr
+
 \T{Erlang B reference table}
 {\color{sub}\footnotesize Values recomputed from
 $\Pr[\text{blocking}] = \dfrac{A^C/C!}{\sum_{k=0}^{C}A^k/k!}$ and cross-checked against the

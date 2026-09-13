@@ -36,7 +36,7 @@
 \vspace{5cm}
 \textbf{Notes}
 \begin{itemize}[noitemsep]
-  \item PYQs from TU, IOE, BEX (EX751) and BEI (EX715) programmes combined, 2070--2082 BS. 22 papers: 16 BEX (2070--2080) and 6 BEI (2079--2082).
+  \item PYQs from TU, IOE, BEX (EX751) and BEI (EX715) programmes combined, 2070--2082 BS. 23 papers: 16 BEX (2070--2080) and 7 BEI (2079--2082).
   \item BEX questions are in normal font; BEI questions are in \texttt{this monospace style}.
   \item Regular exam = \bo{bold}, Back exam = regular font. ``New Back (2066 \& Later Batch)'' counts as Back. Where a paper prints ``Regular / Back'' in one cell (\bo{76 Bh}, \bo{71 Bh}) it is taken as Regular.
   \item So: \bo{72 Ash} = BEX Regular, 73 Ma = BEX Back, \bo{\texttt{79 Bh}} = BEI Regular, \texttt{80 Ba} = BEI Back.
@@ -59,7 +59,7 @@
         \lb Evolution of wireless comm. in terms of technology \& worldwide market penetration \hfill [6] (70 Ma)
         \lb Evolution of cellular radio 1G--3G \hfill [4] (\bo{71 Bh})
         \lb Development of mobile comm., evolution path up to 3G technology \hfill [4] (74 Ma)
-        \lb Evolution of different generations of cellular systems \hfill [4] (\bo{75 Bh})
+        \lb Evolution of different generations of cellular systems \hfill [4] (\bo{75 Bh}) [6] (\texttt{82 Ba})
         \lb Evolution from 1G to 2G, 2.5G in a TDMA-based cellular network \hfill [4] (71 Ma)
         \lb Evolution of wireless comm. from second to third generation \hfill [4] (\bo{73 Bh})
         \lb Evolution of wireless comm. from 1G to 4G, technology advancement \hfill [6] (\bo{76 Bh})
@@ -96,6 +96,8 @@
       \item Frequency reuse concept; co-channel reuse ratio in detail \hfill [6] (72 Ma)
         \lb Minimizing reuse distance maximizes spectral efficiency (I) \hfill [4] (\bo{74 Bh})
         \lb Cellular concept for $N = 7$ \hfill [3] (\bo{76 Bh})
+      \item Frequency reuse; various channel assignment strategies used in mobile
+        communication \hfill [2+4] (\texttt{82 Ba})
       \item Prove co-channel reuse ratio $Q = \sqrt{3N}$, $N = i^2 + ij + j^2$; find optimal $N$ for
         omni-directional, 120° and 60° sectoring, SIR = 15 dB worst case, path loss exponent
         $n = 4$, considering trunking efficiency
@@ -206,6 +208,12 @@
         --- as a cellular planning engineer, which option is best and why? \hfill [5] (\bo{75 Bh}) [4] (\bo{\texttt{81 Bh}})
         \lb How cell splitting and sectoring improve coverage and capacity \hfill [5] (\bo{73 Bh})
       \item Techniques used for enhancing capacity \& coverage in a cellular radio network \hfill [8] (71 Ma)
+      \item A single high-power transmitter supports 40 voice channels over an area of
+        140 km² with the available spectrum. The area is divided equally into seven smaller
+        cells, each served by a lower-power transmitter so that each cell supports 30\% of
+        the total voice channels --- find (i) the coverage area of each cell, (ii) the total
+        number of voice channels available in the cellular system compared with the
+        non-cellular system \enter\hfill [1+3] (\texttt{82 Ba})
     \end{enumerate}
 
 \pagebreak
@@ -301,6 +309,10 @@
         EIRP of 1 kW at 900 MHz --- find EIRP (dBm) and the power at the receiver where the
         receiving antenna gain is 10 dB, medium attenuation factor 43 dB, gain due to area 9 dB
         \enter\hfill [4+2+2] (\bo{\texttt{80 Bh}}) [5] (\bo{\texttt{82 Bh}})
+        \lb Okumura model, suburban, $d{=}50$ km, $h_{te}{=}100$ m, $h_{re}{=}10$ m, BS radiating
+        EIRP of 1 kW at 900 MHz --- find the median path loss and the power at the receiver
+        for a unity-gain receiving antenna, $A_{mu} = 43$ dB, $G_{AREA} = 9$ dB
+        \enter\hfill [8] (\texttt{82 Ba})
         \lb Okumura model: compute the transmitter--receiver separation if median loss is
         167 dB at carrier 2.1 GHz, transmitting antenna 40 m, receiving antenna 2 m,
         large city, $A_{mu} = 34$ dB, $G_{area} = 0$ dB \hfill [8] (\bo{77 Ch})
@@ -348,6 +360,8 @@
         \begin{center}\includegraphics[width=3.2in]{images/wl_70ma_pdp.png}\end{center}
       \item Coherence bandwidth and coherence time --- definitions and significance in
         mobile radio propagation \hfill [4] (73 Ma, \bo{77 Ch}) [2+5] (\bo{\texttt{82 Bh}})
+        \lb Coherence bandwidth and coherence time, and their significance in mobile radio
+        propagation; fading and its various types \hfill [3+5] (\texttt{82 Ba})
         \lb Doppler spread and coherence bandwidth; classify fading on the basis of
         rms delay spread and coherence time \hfill [4+4] (74 Ma)
         \lb Frequency selective fading; relationship between coherence bandwidth and
@@ -417,7 +431,7 @@
   \subsection{M-ary Modulation (MPSK, MFSK, QAM) and OFDM}
     \begin{enumerate}[topsep=0pt, noitemsep]
       \item OFDM operation +Fig (block diagram of transmitter \& receiver)
-        \hfill [8] (\bo{74 Bh}, \bo{\texttt{80 Bh}}, \bo{78 Ch})
+        \hfill [8] (\bo{74 Bh}, \bo{\texttt{80 Bh}}, \bo{78 Ch}, \texttt{82 Ba})
         \lb OFDM: generalize the modulation and demodulation technique \hfill [8] (71 Ma)
         \lb OFDM principle; different types of spread spectrum modulation techniques \hfill [4+4] (\bo{70 Bh})
         \lb OFDM transmitter in brief \hfill [4] (\bo{79 Ch})
@@ -449,6 +463,8 @@
         that minimizes the effects of ISI \hfill [2+6] (\bo{75 Bh}) [2+5] (72 Ma) [4] (73 Ma)
         \lb Signal processing operation that minimizes ISI; RACK receiver; structure of the
         linear transversal equalizer +Fig \hfill [2+1+4] (\bo{\texttt{82 Bh}})
+        \lb Signal processing operation that minimizes ISI; RAKE receiver; working of an
+        M-branch RAKE receiver \hfill [2+2+4] (\texttt{82 Ba})
       \item Training and tracking modes of operation for adaptive equalizers \hfill [4] (\bo{78 Ch})
         \lb Why equalization is needed; training and tracking modes in detail \hfill [1+3] (\bo{73 Bh})
       \item MSE algorithm: determine the optimal solution of the weights, with appropriate
@@ -503,6 +519,8 @@
         \lb Vocoders with block diagram; different kinds of vocoders \hfill [2+3] (73 Ma) [3+5] (\bo{\texttt{81 Bh}})
         \lb Operation of a vocoder with the help of a block diagram \hfill [4] (\bo{73 Bh}) [6] (\texttt{81 Ba})
         \lb Formant vocoder operation; characteristics of the speech signal \hfill [4+4] (\bo{71 Bh})
+        \lb Characteristics of speech signals; basic working principle of the Formant and
+        Channel vocoder \hfill [4+4] (\texttt{82 Ba})
         \lb Why we need speech coding techniques; basic concept of VOCODER \hfill [4+4] (70 Ma) [2+6] (\bo{78 Ch})
         \lb Waveform and voice coding techniques; characteristics of speech;
         GSM CODEC +Fig \hfill [4+2+2] (74 Ma)
@@ -575,6 +593,8 @@
         near-far problem \hfill [4+6] (\bo{74 Bh})
         \lb FHMA \hfill [5] (\bo{75 Bh}, \bo{76 Bh}) [4] (73 Ma)
         \lb FHMA operation; types of FHMA \hfill [4+2] (\bo{\texttt{81 Bh}})
+        \lb (+) of CDMA over TDMA; Frequency Hopping Spread Spectrum (FHSS) multiple access
+        technique +Fig; different types of FHSS \hfill [4+6+2] \mbox{(\texttt{82 Ba})}
       \item Explain any two hybrid multiple access techniques \hfill [4] (\bo{\texttt{80 Bh}}) [6] (\bo{80 Ch})
         \lb Two types of hybrid spread spectrum multiple access techniques with (+) and (-)
         \hfill [6] (\bo{\texttt{81 Bh}})
@@ -624,6 +644,7 @@
         \lb Broadcast Control Channel (BCH) and Common Control Channel (CCCH) in GSM \hfill [4+4] (\bo{\texttt{80 Bh}})
         \lb Broadcast Control Channel of the GSM system \hfill [5] (\bo{79 Ch})
         \lb Operation of the different control channels used in the GSM system \hfill [8] (\bo{\texttt{81 Bh}})
+        \lb Types of control channels available in GSM and their purposes \hfill [2+4] (\texttt{82 Ba})
       \item GSM frame structure; show that TDMA frame efficiency cannot reach 100\% in GSM \hfill [6+2] (74 Ma)
         \lb GSM frame structure; how traffic and control channels are used while making a call
         \hfill [4+4] (\bo{70 Bh}) [4+6] (\bo{77 Ch})
@@ -638,7 +659,7 @@
   \subsection{CDMA Standards: IS-95 Forward and Reverse Channels}
     \begin{enumerate}[topsep=0pt, noitemsep]
       \item Channelization code; forward channels in cdma IS-95 \hfill [4] (73 Ma)
-        \lb Draw the forward CDMA (IS-95) channel \hfill [4] (\bo{\texttt{80 Bh}}) [4] (\bo{78 Ch}) [6] (\bo{80 Ch})
+        \lb Draw the forward CDMA (IS-95) channel \hfill [4] (\bo{\texttt{80 Bh}}) [4] (\bo{78 Ch}) [6] (\bo{80 Ch}, \texttt{82 Ba})
         \lb Draw the reverse CDMA (IS-95) channel \hfill [4] (\texttt{81 Ba})
         \lb Pilot and sync channels in the IS-95 forward link +Fig \hfill [6] (\bo{73 Bh})
       \item GSM Vs CDMA standards \hfill [4] (71 Ma) [3] (\bo{76 Bh})

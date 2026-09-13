@@ -6,7 +6,7 @@
 \vspace{-4pt}{\color{acc}\rule{\textwidth}{1.1pt}}\vspace{4pt}
 
 {\color{sub}\footnotesize \mk{This is the heaviest numerical chapter in the subject.}
-A propagation numerical has appeared in \textbf{every one of the 22 papers}.
+A propagation numerical has appeared in \textbf{every one of the 23 papers}.
 Every problem below is a real PYQ, worked in full.}
 
 \lead{The formula sheet}
@@ -372,9 +372,9 @@ dimension of 1 m and operating frequency of 900 MHz.
 \hr
 
 \T{Problem 9 \quad Okumura model: median path loss and received power}
-{\color{sub}\footnotesize \tF{4} \yr{74 Ma \m{4+4}, \textbf{\texttt{80 Bh}} \m{4+2+2},
-\textbf{\texttt{82 Bh}} \m{5}} \gap$\cdot$\gap \mk{the single most repeated numerical in the
-chapter}}
+{\color{sub}\footnotesize \tF{5} \yr{74 Ma \m{4+4}, \textbf{\texttt{80 Bh}} \m{4+2+2},
+\textbf{\texttt{82 Bh}} \m{5}, \texttt{82 Ba} \m{8}} \gap$\cdot$\gap \mk{the single most
+repeated numerical in the chapter}}
 
 \begin{asked}{2080 Bhadra \textperiodcentered{} Q3 (b) \textperiodcentered{} [4+2+2]}
 Determine the mean path loss using Okumura's model for $d = 50$ km, $h_{te} = 100$ m,
@@ -395,8 +395,15 @@ separation of 50Km, transmit antenna effective height of 100m and receive antenn
 height of 10m in a suburban area with correction factor of 9dB at 900MHz. Assume median
 attenuation relative to free space 43dB.
 \end{asked}
-{\color{sub}\footnotesize One set of numbers, three papers. ``EIRP oh 1 kW'' is the 82 Bh
-paper's own typo.}
+\begin{asked}{2082 Baishakh \textperiodcentered{} Q4 \textperiodcentered{} [8]}
+Find the median path loss sing Okumura's model for $d = 50$ km, $h_{te} = 100$ m,
+$h_{re} = 10$ m in a suburban environment. If the base station transmitter radiates an EIRP of
+1 kW at a carrier frequency of 900 MHz, find the power at the receiver (assume a unity gain
+receiving antenna). [Assume $A_{mu} = 43$ dB, $G_{AREA} = 9$ dB]
+\end{asked}
+{\color{sub}\footnotesize One set of numbers, four papers. ``EIRP oh 1 kW'' is the 82 Bh
+paper's own typo, and ``path loss sing'' is 82 Ba's. \mk{82 Ba is the only one with a
+unity-gain receiver}, and it does not ask for EIRP in dBm --- see Step 4.}
 
 \lead{Step 1: free space path loss at 50 km, 900 MHz}
 \[ \lambda = 0.3333\ \text{m} \]
@@ -431,6 +438,11 @@ paper's own typo.}
   \item \[ = 10^{-85.07/10}\ \text{mW} = 3.11\times10^{-9}\ \text{mW} = 3.11\ \text{pW} \]
   \item \mk{Interpretation:} $-85$ dBm is a usable but not comfortable level. Typical GSM
         sensitivity is around $-104$ dBm, so this link has about 19 dB of margin.
+  \item \textbf{82 Ba variant --- unity gain receiver.} That paper asks only for $P_r$, with
+        $G_r = 1$, ie \textbf{0 dB}:
+        \[ P_r = 60 - 155.07 + 0 = \boxed{-95.07\ \text{dBm}} = 0.311\ \text{pW} \]
+        \mk{Exactly 10 dB below the 80 Bh / 82 Bh answer}, since the only change is dropping
+        the 10 dB receive gain. Margin over $-104$ dBm falls to about 9 dB.
 \end{itemize}
 
 \hr

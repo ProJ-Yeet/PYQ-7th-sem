@@ -40,7 +40,7 @@ Keys: (I)=Importance/Need \quad (+)=Advantage \quad (-)=Disadvantage \quad +Fig=
 
 \section*{2. Cellular Concepts}
 \begin{itemize}
-  \item Frequency reuse; co-channel reuse ratio in detail; minimizing reuse distance maximizes spectral efficiency (I); cellular concept for $N{=}7$ \hfill (6)(4)(3)
+  \item Frequency reuse; co-channel reuse ratio in detail; minimizing reuse distance maximizes spectral efficiency (I); cellular concept for $N{=}7$; various channel assignment strategies \hfill (6)(4)(3)(2+4)
   \item Prove $Q{=}\sqrt{3N}$, $N{=}i^2{+}ij{+}j^2$; optimal $N$ for omni / 120° / 60° sectoring at SIR 15 dB, $n{=}3$ or 4, + comment \hfill (4)(4+4)(3+5)
     \begin{itemize}
       \item with co-channel Vs adjacent channel interference \hfill (3+3)
@@ -63,6 +63,9 @@ Keys: (I)=Importance/Need \quad (+)=Advantage \quad (-)=Disadvantage \quad +Fig=
     \end{itemize}
   \item Microcell zone concept (why needed + explain) \hfill (3)(1+3)
   \item Sectoring Vs cell splitting --- which to choose as planning engineer, and why; how both improve coverage \& capacity \hfill (4)(5)
+    \begin{itemize}
+      \item 40 voice ch over 140 km², split into 7 cells each carrying 30\% $\rightarrow$ coverage area per cell, cellular Vs non-cellular channel count \hfill (1+3)
+    \end{itemize}
   \item Techniques for enhancing capacity \& coverage in a cellular radio network \hfill (8)
 \end{itemize}
 
@@ -95,6 +98,7 @@ Keys: (I)=Importance/Need \quad (+)=Advantage \quad (-)=Disadvantage \quad +Fig=
     \begin{itemize}
       \item Okumura: $d{=}50$ km, $h_{te}{=}100$ m, $h_{re}{=}10$ m, suburban, $A_{mu}{=}43$, $G_{area}{=}9$@900 MHz \hfill (4+4)
       \item same + EIRP 1 kW, $G_R{=}10$ dB $\rightarrow$ EIRP in dBm and $P_r$ \hfill (4+2+2)(5)
+      \item same + EIRP 1 kW, unity-gain receiver $\rightarrow$ median path loss and $P_r$ \hfill (8)
       \item Okumura: find T--R separation, $L{=}167$ dB@2.1 GHz, 40 m/2 m, large city, $A_{mu}{=}34$, $G_{area}{=}0$ \hfill (8)
       \item Hata: medium city 950 MHz/45 m/10 km/5 m, + compare with free space \hfill (4+4)
       \item Hata: large urban 900 MHz/100 m/2 m/4 km (formulae printed on the paper) \hfill (7)
@@ -110,7 +114,7 @@ Keys: (I)=Importance/Need \quad (+)=Advantage \quad (-)=Disadvantage \quad +Fig=
       \item parameters of the mobile multipath channel \hfill (7)
     \end{itemize}
   \item Doppler spread + derive Doppler shift; frequency dispersion (I) + derive Doppler spread; Doppler effect in small-scale fading \hfill (2)(2+4)
-  \item Coherence BW \& coherence time --- definition and significance; Doppler spread + classify fading by rms delay spread and coherence time; frequency-selective fading, coherence BW Vs delay spread \hfill (4)(2+5)(4+4)(2+7)
+  \item Coherence BW \& coherence time --- definition and significance; + fading and its various types; Doppler spread + classify fading by rms delay spread and coherence time; frequency-selective fading, coherence BW Vs delay spread \hfill (4)(2+5)(3+5)(4+4)(2+7)
     \begin{itemize}
       \item PDP (70 Ma figure): Doppler spread, fading types by Doppler spread, mean excess \& rms delay spread, 90\% and 50\% coherence BW \hfill (4+4)
       \item smallest $T_s$ / greatest symbol rate without an equalizer ($\sigma_\tau/T_s{\le}0.1$); PDP $(0,0,-10,-20)$ dB @ $(0,50,75,100)$ µs \hfill (8)
@@ -139,6 +143,7 @@ Keys: (I)=Importance/Need \quad (+)=Advantage \quad (-)=Disadvantage \quad +Fig=
   \item Equalization (I); the signal processing operation that minimizes ISI \hfill (4)(2+5)(2+6)
     \begin{itemize}
       \item + RACK receiver + structure of the linear transversal equalizer +Fig \hfill (2+1+4)
+      \item + RAKE receiver + working of an M-branch RAKE receiver \hfill (2+2+4)
     \end{itemize}
   \item Training \& tracking modes of adaptive equalizers; why equalization is needed + both modes in detail \hfill (4)(1+3)
   \item MSE algorithm --- optimal solution of the weights +diagram +derivation \hfill (7)(8)
@@ -154,7 +159,7 @@ Keys: (I)=Importance/Need \quad (+)=Advantage \quad (-)=Disadvantage \quad +Fig=
 \section*{6. Speech \& Channel Coding}
 \begin{itemize}
   \item Characteristics of the speech signal; how they are used in designing coders \hfill (3)(4)(6)(8)
-  \item Vocoder (I) + any two predictive coders; vocoders +Fig and their kinds; vocoder operation +Fig; formant vocoder + speech characteristics; why speech coding is needed + basic VOCODER concept \hfill (4)(6)(2+3)(2+6)(3+5)(4+4)
+  \item Vocoder (I) + any two predictive coders; vocoders +Fig and their kinds; vocoder operation +Fig; formant \& channel vocoder + speech characteristics; why speech coding is needed + basic VOCODER concept \hfill (4)(6)(2+3)(2+6)(3+5)(4+4)
   \item Waveform Vs voice coding, speech characteristics, GSM CODEC +Fig \hfill (4+2+2)
   \item Any two source coders used in speech coding; types of frequency-domain coding of speech \hfill (4)(6)
   \item LPC +neat block diagram (with speech characteristics); types of LPC; sub-band coding with Tx \& Rx \hfill (6)(2+6)(3+5)
@@ -173,7 +178,7 @@ Keys: (I)=Importance/Need \quad (+)=Advantage \quad (-)=Disadvantage \quad +Fig=
   \item CDMA implementation --- encoding \& decoding parts +Eg \hfill (7)(8)(2+6)
   \item Hadamard $H_8$ / 8$\times$8 Hadamard (Walsh) code; steps satisfying the Hadamard condition + construct \hfill (3)(4)(3+5)
   \item SSMA --- DS \& FH techniques with (+)(-) of FDMA/TDMA/CDMA; types of SSMA + FDMA Vs CDMA; SSMA variants \& application +Fig \hfill (8)(4+4)(6+2)
-  \item FHMA --- working +Eg; Tx \& Rx +block diagram; operation + types of FHMA; principle + two hybrid SSMA techniques mitigating the near-far problem \hfill (4)(5)(6)(7)(4+2)(4+6)
+  \item FHMA --- working +Eg; Tx \& Rx +block diagram; operation + types of FHMA; (+) of CDMA over TDMA + FHSS +Fig + types of FHSS; principle + two hybrid SSMA techniques mitigating the near-far problem \hfill (4)(5)(6)(7)(4+2)(4+6)(4+6+2)
   \item Hybrid SS multiple access (any two), with (+)(-); self-jamming in CDMA + FHMA +Fig + two hybrids; FHMA principle + near-far effect and its solution; define near-far + one hybrid SSMA that mitigates it; multiple access + all near-far mitigation techniques \hfill (4)(6)(2+2)(3+4)(5+4)(2+4+6)
   \item SDMA + two hybrid SSMA techniques minimising the near-far effect \hfill (2+6)
   \item Multiple access --- define + TDMA/CDMA/SDMA; TCDMA and Time Division Frequency Hopping; define + FDMA Vs CDMA; FDMA Vs TDMA Vs CDMA (+)(-); TDMA Vs FDMA \hfill (4)(7)(2+4)(2+6)
@@ -184,7 +189,7 @@ Keys: (I)=Importance/Need \quad (+)=Advantage \quad (-)=Disadvantage \quad +Fig=
 \section*{8. Wireless Systems \& Standards}
 \begin{itemize}
   \item GSM architecture --- draw + operation of each component; components of the Network Switching Subsystem \hfill (4)(5)(8)(4+4)
-  \item GSM traffic \& control channels; BCH \& CCCH; Broadcast Control Channel; operation of the different control channels \hfill (4+4)(5)(8)
+  \item GSM traffic \& control channels; BCH \& CCCH; Broadcast Control Channel; operation of the different control channels; types available + their purposes \hfill (4+4)(5)(8)(2+4)
   \item GSM frame structure + why TDMA frame efficiency cannot reach 100\%; + how traffic and control channels are used in a call; frame structure; channel structure; GSM frame hierarchy \hfill (4)(5)(6)(4+4)(4+6)(6+2)
   \item GSM signal processing, speech $\leftrightarrow$ radio signal; specifications of GSM \hfill (5)(8)
   \item CDMA IS-95 --- channelization code + forward channels; draw the forward channel; draw the reverse channel; pilot \& sync channels in the forward link +Fig \hfill (4)(6)
