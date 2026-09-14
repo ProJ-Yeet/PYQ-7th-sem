@@ -173,7 +173,7 @@ signal}{\m{2}\m{3}\m{4+5}}
 \begin{itemize}
   \item $x[n]=\delta[n]$: $E=1$, $P=0$ $\rightarrow$ energy.
   \item $x[n]=u[n]$: $E=\infty$, $P=\tfrac12$ $\rightarrow$ power.
-        \mk{$P=\frac12$, not 1} --- the sum runs over $2N+1$ samples but only $N+1$ are
+        \mk{$P=\frac12$, not 1}: the sum runs over $2N+1$ samples but only $N+1$ are
         non-zero.
   \item $x[n]=A$ (constant): $E=\infty$, $P=A^2$ $\rightarrow$ power.
   \item $x[n]=a^nu[n]$, $|a|<1$: $E=\dfrac{1}{1-a^2}$ $\rightarrow$ energy.
@@ -208,7 +208,7 @@ it as the second half of the energy/power question \gap$\cdot$\gap worked in \te
 \begin{itemize}
   \item $x[n]$ is periodic with period $N>0$ if $x[n]=x[n+N]$ for \emph{all} $n$.
   \item Smallest such $N$ is the \textbf{fundamental period}. $N$ must be an
-        \mk{integer} --- that is the whole difference from the continuous-time case.
+        \mk{integer}: that is the whole difference from the continuous-time case.
 \end{itemize}
 \lead{The rule, and where it comes from}
 \begin{itemize}
@@ -283,7 +283,7 @@ $u[n]-u[n-3]+5\delta[n-4]+nu[n-6]$}{\m{2}\m{3}\m{3+2}}
     \item $|a|>1$ integer $=$ \textbf{decimation}, keep every $a$-th sample, \mk{samples are
           lost}.
     \item $|a|<1$ $=$ interpolation, new samples must be filled in.
-    \item \mk{Not reversible like the CT case} --- this is why down-sampling needs its own
+    \item \mk{Not reversible like the CT case}: this is why down-sampling needs its own
           treatment.
   \end{itemize}
   \item \textbf{Amplitude operations}: addition, multiplication, scaling act sample by
@@ -434,7 +434,7 @@ Parseval & $\sum_n|x[n]|^2$ & $\frac{1}{2\pi}\int_{2\pi}|X(e^{j\omega})|^2d\omeg
 \par\vspace{2pt}
 {\color{sub}\footnotesize If $x[n]$ is real, $X(e^{j\omega})$ is conjugate symmetric:
 magnitude even, phase odd. Real and even $\rightarrow$ transform real and even; real and odd
-$\rightarrow$ transform imaginary and odd. \mk{Parseval here says energy, not power} --- it
+$\rightarrow$ transform imaginary and odd. \mk{Parseval here says energy, not power}: it
 is the DTFS version that talks about power.}
 
 \hr
@@ -462,7 +462,7 @@ stability}{\m{3}\m{5}\m{10}}
   \item \textbf{Causal}: $y[n]$ uses only present and past inputs.
   \begin{itemize}
     \item Test: look for $x[n+k]$, $k>0$, or a folded index. $y[n]=x[-n]$ is
-          \mk{non-causal} --- at $n=-2$ it needs $x[2]$.
+          \mk{non-causal}: at $n=-2$ it needs $x[2]$.
   \end{itemize}
   \item \textbf{Time invariant}: shift the input, the output shifts identically.
   \item \textbf{Linear}: superposition holds.
@@ -576,7 +576,7 @@ answer's length and position, every time.}}
 \begin{itemize}
   \item \textbf{Identity}: $x[n]*\delta[n]=x[n]$.
   \item \textbf{Shifting}: $x[n]*\delta[n-k]=x[n-k]$.
-  \item \textbf{Commutative}: $x[n]*h[n]=h[n]*x[n]$ --- fold whichever sequence is shorter.
+  \item \textbf{Commutative}: $x[n]*h[n]=h[n]*x[n]$: fold whichever sequence is shorter.
   \item \textbf{Distributive}: $x*(h_1+h_2)=x*h_1+x*h_2$ $\rightarrow$ two systems in
         \textbf{parallel} add their impulse responses.
   \item \textbf{Associative}: $x*(h_1*h_2)=(x*h_1)*h_2$ $\rightarrow$ two systems in
@@ -644,7 +644,7 @@ need infinite memory, so it cannot be implemented directly.}}{%
   \begin{itemize}
     \item Eg $y[n]=x[n]+a\,y[n-1]$.
     \item Recursive form of the moving average (asked in \texttt{70 Ma}):
-          $y[n]=y[n-1]+\frac1M\{x[n]-x[n-M]\}$ --- one add and one subtract per sample
+          $y[n]=y[n-1]+\frac1M\{x[n]-x[n-M]\}$: one add and one subtract per sample
           instead of $M$ adds.
   \end{itemize}
   \item \mk{FIR/IIR is about the impulse response; recursive/non-recursive is about the
@@ -693,7 +693,7 @@ paper}, see the shortcut \gap$\cdot$\gap worked in \textbf{Ch1-num \S3}}
   \item So $y[n]=H(e^{j\omega})\,e^{j\omega n}$: \mk{the input comes out unchanged in shape,
         only scaled}.
   \item $e^{j\omega n}$ is therefore an \textbf{eigenfunction} of every LTI system, and
-        $H(e^{j\omega})$ --- the DTFT of $h[n]$ --- is the \textbf{eigenvalue}, called the
+        $H(e^{j\omega})$, the DTFT of $h[n]$, is the \textbf{eigenvalue}, called the
         \textbf{frequency response}.
   \item $|H(e^{j\omega})|$ is the magnitude response, $\angle H(e^{j\omega})$ the phase
         response. Both are $2\pi$-periodic (\S1.4).
@@ -701,14 +701,14 @@ paper}, see the shortcut \gap$\cdot$\gap worked in \textbf{Ch1-num \S3}}
 \lead{The shortcut \mk{(do not convolve these)}}
 \begin{enumerate}
   \item The question gives $x[n]=Ae^{j\omega_0n}$ over all $n$, so it is
-        \mk{not a finite sequence} --- graphical convolution is the wrong tool.
+        \mk{not a finite sequence}: graphical convolution is the wrong tool.
   \item Compute $H(e^{j\omega})$ once. For $h[n]=a^nu[n]$:
         \[ H(e^{j\omega})=\sum_{n=0}^{\infty}a^ne^{-j\omega n}=\frac{1}{1-ae^{-j\omega}} \]
   \item Evaluate at the $\omega_0$ the question gives.
   \item Answer: $y[n]=A\,H(e^{j\omega_0})\,e^{j\omega_0n}$.
 \end{enumerate}
-{\color{sub}\footnotesize For a sum of sinusoids (73 Shr) do this once per frequency and add
---- superposition. For a real cosine, write it as two exponentials at $\pm\omega_0$ and use
+{\color{sub}\footnotesize For a sum of sinusoids (73 Shr) do this once per frequency and add:
+superposition. For a real cosine, write it as two exponentials at $\pm\omega_0$ and use
 conjugate symmetry.}}
 
 \hr
@@ -756,7 +756,7 @@ $X(e^{j\omega})$. The copies overlap here, so the triangle is distorted:
   \item Aliasing disappears when
         \[ \Omega_s=\frac{2\pi}{T}\ge2W \quad\text{or}\quad F_s\ge2F_{max} \]
   \item $2F_{max}$ is the \textbf{Nyquist rate}; $F_s/2$ is the \textbf{folding frequency}.
-  \item \textbf{Oversampling} means $F_s$ is taken well above the Nyquist rate --- it
+  \item \textbf{Oversampling} means $F_s$ is taken well above the Nyquist rate: it
         pushes the copies further apart, so the anti-aliasing filter can be gentler
         (\texttt{76 Bh} asks exactly this).
   \item When the criterion holds, every copy but $k=0$ is zero in $-\pi\le\omega<\pi$, so
@@ -781,7 +781,7 @@ only, but it is the theory behind every sampling numerical}
   \item A real signal is never perfectly band-limited: noise and harmonics run above
         $F_s/2$.
   \item Those components would fold down into the band of interest and \mk{cannot be
-        removed afterwards} --- once aliased, the damage is permanent.
+        removed afterwards}: once aliased, the damage is permanent.
   \item So an \textbf{analog low pass filter} is placed \emph{before} the sampler, with
         cut-off at or below $F_s/2$.
   \item It is analog by necessity: a digital filter would come after the sampling that
@@ -840,5 +840,5 @@ only, but it is the theory behind every sampling numerical}
   \item Convolution sum, derive and explain \tF{4}
 \end{enumerate}
 {\color{sub}\footnotesize \mk{Q1 and Q2 of the paper come from this chapter in almost every
-year.} If time is short, do \S1.9 and \S1.3 and leave \S1.6 --- the DTFS has been asked
+year.} If time is short, do \S1.9 and \S1.3 and leave \S1.6: the DTFS has been asked
 5 times in 45 papers and never for more than 6 marks.}}

@@ -16,7 +16,7 @@
 \begin{itemize}
   \item Only \textbf{two} things are ever asked, and they are asked \emph{together}:
   \begin{itemize}
-    \item \textbf{state the properties of the ROC} \tS{14} --- a 1 to 5 mark bookwork
+    \item \textbf{state the properties of the ROC} \tS{14}: a 1 to 5 mark bookwork
           question, \mk{same answer every year},
     \item \textbf{find the inverse Z-transform} of a given $X(z)$ with a given ROC
           \tS{32}, for 5 or 6 marks.
@@ -63,7 +63,7 @@ property}{\m{3+3}\m{2}}
   \item In reverse: $X(z)$ is the DTFT of the exponentially weighted sequence
         $x[n]r^{-n}$. The $r^{-n}$ is what lets the Z-transform handle growing sequences
         the DTFT cannot.
-  \item Going round the unit circle once is $\omega$ advancing by $2\pi$ --- the same
+  \item Going round the unit circle once is $\omega$ advancing by $2\pi$: the same
         $2\pi$-periodicity as \S1.4.
 \end{itemize}}
 
@@ -150,7 +150,7 @@ properties 1, 3 and 5 is enough.}}{%
 \figT{c2_roc_right.png}
 \penalty0\vspace{1pt}
 {\color{sub}\footnotesize \textbf{Right-sided} $x[n]=a^nu[n]$: the series
-$\sum(az^{-1})^n$ converges for $|az^{-1}|<1$, i.e.\ \mk{$|z|>|a|$} --- everything
+$\sum(az^{-1})^n$ converges for $|az^{-1}|<1$, i.e.\ \mk{$|z|>|a|$}: everything
 \emph{outside} the pole circle. \yr{BB Sir, deck 2.1}}
 \penalty0\vspace{3pt}
 \figT{c2_roc_left.png}
@@ -183,7 +183,7 @@ contains the unit circle here, so this signal has a DTFT.
   \item The given ROC lies in one of the gaps. Any pole with radius \textbf{below} that
         gap is \mk{right-sided}; any pole \textbf{above} it is \mk{left-sided}.
 \end{enumerate}
-{\color{sub}\footnotesize \mk{A given ROC that contains a pole is impossible} --- two papers
+{\color{sub}\footnotesize \mk{A given ROC that contains a pole is impossible}: two papers
 print exactly that, see Ch2-num \S4.}}
 
 \hr
@@ -229,7 +229,7 @@ Multiplication & $x_1[n]x_2[n]\;\rightarrow\;\dfrac{1}{2\pi j}\oint_C X_1(v)\,
         =z^{-k}X_2(z)$.
         \[ X(z)=X_2(z)\sum_{k}x_1[k]z^{-k}=X_1(z)\,X_2(z) \]
   \item \mk{``At least'' the intersection}: a pole of one can be cancelled by a zero of the
-        other, which makes the ROC larger than the intersection. Say this --- it is the
+        other, which makes the ROC larger than the intersection. Say this: it is the
         part most answers miss.
 \end{itemize}}{%
 \lead{Time shift, proved \m{3} \yr{\textbf{69 Ch}}}
@@ -254,7 +254,7 @@ Multiplication & $x_1[n]x_2[n]\;\rightarrow\;\dfrac{1}{2\pi j}\oint_C X_1(v)\,
   \item Differentiate $X(z)=\sum x[n]z^{-n}$ term by term and multiply by $-z$:
         \[ Z\{n\,x[n]\}=-z\frac{dX(z)}{dz} \]
   \item Applied to $a^nu[n]$ it gives
-        $Z\{na^nu[n]\}=\dfrac{az^{-1}}{(1-az^{-1})^2}$, $|z|>|a|$ ---
+        $Z\{na^nu[n]\}=\dfrac{az^{-1}}{(1-az^{-1})^2}$, $|z|>|a|$:
         \mk{the answer \texttt{78 Ch} and \texttt{70 Ma} both ask for}.
 \end{itemize}}
 
@@ -278,7 +278,7 @@ Multiplication & $x_1[n]x_2[n]\;\rightarrow\;\dfrac{1}{2\pi j}\oint_C X_1(v)\,
           $-\frac{1}{1-bz^{-1}}$.
   \end{itemize}
   \item The ROC of the sum is the \textbf{intersection} of the individual ROCs.
-  \item If the intersection is empty, \mk{the Z-transform does not exist} --- and that is
+  \item If the intersection is empty, \mk{the Z-transform does not exist}: and that is
         the full answer. 70 Ch prints exactly such a signal (Ch2-num \S6).
 \end{enumerate}}{%
 \lead{Why the intersection can be empty}
@@ -294,14 +294,14 @@ Multiplication & $x_1[n]x_2[n]\;\rightarrow\;\dfrac{1}{2\pi j}\oint_C X_1(v)\,
 \lead{Two standard transforms the papers ask for by name}
 \sbs{%
 \begin{itemize}
-  \item $x[n]=na^nu[n]$ (\textbf{\texttt{78 Ch}}, \texttt{70 Ma}) --- use
+  \item $x[n]=na^nu[n]$ (\textbf{\texttt{78 Ch}}, \texttt{70 Ma}): use
         differentiation:
         \[ X(z)=\frac{az^{-1}}{(1-az^{-1})^2},\qquad |z|>|a| \]
   \item Derivation in one line: $-z\dfrac{d}{dz}\dfrac{z}{z-a}
         =-z\cdot\dfrac{(z-a)-z}{(z-a)^2}=\dfrac{az}{(z-a)^2}$.
 \end{itemize}}{%
 \begin{itemize}
-  \item $x[n]=\cos\omega n$ for $n\ge0$ (\texttt{74 Ma}) --- write the cosine as two
+  \item $x[n]=\cos\omega n$ for $n\ge0$ (\texttt{74 Ma}): write the cosine as two
         exponentials and add two geometric series:
         \[ X(z)=\frac{1-z^{-1}\cos\omega}{1-2z^{-1}\cos\omega+z^{-2}},\qquad |z|>1 \]
         \mk{Its two poles are $e^{\pm j\omega}$, on the unit circle}, which is why the
@@ -323,13 +323,13 @@ chapter}, 5 or 6 marks in nearly every paper \gap$\cdot$\gap every instance is w
 \sbs{%
 \lead{Which method, and when}
 \begin{enumerate}
-  \item \textbf{Partial fractions} --- the default. Use unless the question names another
+  \item \textbf{Partial fractions}: the default. Use unless the question names another
         method. Gives a closed form for every $n$.
-  \item \textbf{Long division (power series)} --- use when the question says so
+  \item \textbf{Long division (power series)}: use when the question says so
         (\textbf{\texttt{77 Ch}}, \textbf{\texttt{76 Bh}}, \textbf{\texttt{73 Bh}},
         \texttt{72 Ma}, \texttt{70 Ma}). Gives numbers, \mk{not a closed form}, so give
         4 or 5 terms and the recurrence.
-  \item \textbf{By inspection} --- when $X(z)$ is already a finite polynomial, read the
+  \item \textbf{By inspection}: when $X(z)$ is already a finite polynomial, read the
         coefficients straight off as impulses (74 Ash, \textbf{\texttt{78 Ch}}).
   \item The contour-integral / residue method is never asked in these 45 papers.
 \end{enumerate}}{%
@@ -349,7 +349,7 @@ chapter}, 5 or 6 marks in nearly every paper \gap$\cdot$\gap every instance is w
 \lead{The partial-fraction method, in one fixed order}
 \begin{enumerate}
   \item \textbf{Is $X(z)$ proper?} If the numerator's degree is $\ge$ the denominator's,
-        \mk{long-divide first} and keep the polynomial part aside --- it becomes impulses.
+        \mk{long-divide first} and keep the polynomial part aside: it becomes impulses.
   \item \textbf{Divide by $z$} and expand $X(z)/z$ in partial fractions.
   \item Multiply back by $z$, so every term reads $\dfrac{A\,z}{z-a}$.
   \item \textbf{Assign each pole a side} from the ROC (\S2.2).
@@ -379,7 +379,7 @@ $u[-n-1]$ instead of $u[n]$.} That is the only thing the ROC changes.}}
   \item \textbf{Left-sided} (ROC inside, anticausal): arrange in \mk{ascending powers of
         $z$} instead. The quotient gives $x[-1]z,\,x[-2]z^2,\ldots$
   \item \mk{Dividing the wrong way round gives the other sequence}, which is a valid
-        series for a different ROC --- and scores zero.
+        series for a different ROC: and scores zero.
 \end{itemize}}{%
 \begin{itemize}
   \item Faster than dividing: read the \textbf{recurrence} straight off the denominator.
@@ -404,7 +404,7 @@ $u[-n-1]$ instead of $u[n]$.} That is the only thing the ROC changes.}}
         ROC.}
   \item $na^nu[n]\leftrightarrow\frac{az^{-1}}{(1-az^{-1})^2}$;
         $\frac{z}{(z-a)^2}\leftrightarrow na^{n-1}u[n]$.
-  \item The 8 ROC properties (\S2.2) --- \mk{written out, in order}.
+  \item The 8 ROC properties (\S2.2): \mk{written out, in order}.
   \item Causal $\Rightarrow$ ROC outside the outermost pole. Stable $\Rightarrow$ ROC
         contains the unit circle. \mk{Both $\Rightarrow$ all poles inside the unit circle.}
   \item Convolution $\rightarrow$ product; shift $\rightarrow$ $z^{-k}$; multiply by $a^n$

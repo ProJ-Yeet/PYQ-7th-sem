@@ -13,7 +13,7 @@
 {\color{sub}\footnotesize \mk{Convolution alone is 34 of the 45 papers.} The four convolution
 sections below come first for that reason. Within a section the method is worked once, in
 full, and every other paper that ran the same method is listed under it with its data and its
-answer --- \mk{same process, different numbers, so only the numbers change}.}
+answer: \mk{same process, different numbers, so only the numbers change}.}
 
 \lead{What you need before starting}
 \begin{itemize}
@@ -54,7 +54,7 @@ Find output, $y(n)$ when: $h(n)=\{5,4,3,2\}$ and $x(n)=\{1,0,3,2\}$
   \item \mk{Check}: $\sum y[n]$ must equal $(\sum x[n])(\sum h[n])$.
 \end{enumerate}
 
-\lead{Step 1 --- product table}
+\lead{Step 1: product table}
 \par
 \begin{tabularx}{\textwidth}{@{}L{2.3cm}XXXX@{}}
 \toprule
@@ -66,7 +66,7 @@ $h[3]=2$ & 2 & 0 & 6 & 4 \\
 \bottomrule
 \end{tabularx}
 
-\lead{Step 2 --- sum each anti-diagonal}
+\lead{Step 2: sum each anti-diagonal}
 \par
 \begin{tabularx}{\textwidth}{@{}L{1.3cm}XL{2.2cm}@{}}
 \toprule
@@ -89,7 +89,7 @@ $5+4+18+24+17+12+4=84$ \checkmark}
 
 \lead{Every other paper that runs this same method}
 {\color{sub}\footnotesize A window such as $(1/2)^n\{u[n+2]-u[n-2]\}$ is written out as its
-samples first --- that is the only extra step, and the underlined sample is $n=0$.}
+samples first: that is the only extra step, and the underlined sample is $n=0$.}
 \par
 \begin{tabularx}{\textwidth}{@{}L{2.2cm}XXL{4.6cm}@{}}
 \toprule
@@ -112,7 +112,7 @@ samples first --- that is the only extra step, and the underlined sample is $n=0
 
 \par\vspace{2pt}
 {\color{sub}\footnotesize \mk{The two traps in this table.} (1) A $\delta[n+1]$ or a
-$u[n+2]$ puts samples at \emph{negative} $n$, so the answer starts left of the origin --- mark
+$u[n+2]$ puts samples at \emph{negative} $n$, so the answer starts left of the origin: mark
 $n=0$ or lose the marks. (2) $u[n+2]-u[n-2]$ has \textbf{4} taps ($n=-2,-1,0,1$), not 5:
 the upper limit $u[n-B]$ is exclusive.}
 
@@ -211,7 +211,7 @@ $242$, $127$ rather than $2$, $40$, $121$, $63.5$. Multiply at the end, once.}
 rather than tabulated.}
 
 \sbs{%
-\lead{81 Ba \m{6} --- two different exponentials}
+\lead{81 Ba \m{6}: two different exponentials}
 \begin{itemize}
   \item Given $h(n)=(\frac13)^nu(n-3)$, $x(n)=(\frac16)^{n-6}u(n)$.
   \item First tidy $x$: $(\frac16)^{n-6}=6^6(\frac16)^n=46656\,(\frac16)^n$.
@@ -219,13 +219,13 @@ rather than tabulated.}
         $n\ge3$.
   \item[] \[ y[n]=46656\sum_{k=0}^{n-3}\left(\tfrac16\right)^k\left(\tfrac13\right)^{n-k}
              =46656\left(\tfrac13\right)^n\sum_{k=0}^{n-3}\left(\tfrac12\right)^k \]
-  \item The ratio is $\frac{1/6}{1/3}=\frac12$ --- \mk{two different bases collapse to one
+  \item The ratio is $\frac{1/6}{1/3}=\frac12$: \mk{two different bases collapse to one
         geometric sum}, which is the whole trick here.
   \item[] \[ \boxed{\;y[n]=3456\left(\tfrac13\right)^{n-3}-1728\left(\tfrac16\right)^{n-3},
            \quad n\ge3\;} \]
   \item Check: $y[3]=3456-1728=1728$, $y[4]=1152-288=864$, $y[6]=128-8=120$.
 \end{itemize}}{%
-\lead{\textbf{68 Bh} \m{5} --- both sides infinite, one left-sided}
+\lead{\textbf{68 Bh} \m{5}: both sides infinite, one left-sided}
 \begin{itemize}
   \item Given $x[n]=3^nu[-n-5]$, $h[n]=u[n-5]$.
   \item $u[-n-5]$ is 1 for $n\le-5$: \mk{a left-sided signal}, and $3^n$ \emph{decays} as
@@ -242,10 +242,10 @@ rather than tabulated.}
 \end{itemize}}
 
 \sbs{%
-\lead{\textbf{\texttt{73 Bh}} \m{8} --- finite $\times$ finite, but symbolic}
+\lead{\textbf{\texttt{73 Bh}} \m{8}: finite $\times$ finite, but symbolic}
 \begin{itemize}
   \item Given $x[n]=1$ for $0\le n\le4$, $h[n]=a^n$ for $0\le n\le6$, $a>1$.
-  \item Both finite, so the answer runs $n=0$ to $10$ --- but $a$ is symbolic, so it is
+  \item Both finite, so the answer runs $n=0$ to $10$: but $a$ is symbolic, so it is
         written as sums, not samples.
   \item Overlap needs $0\le k\le4$ and $0\le n-k\le6$, i.e.\
         $\max(0,n-6)\le k\le\min(4,n)$.
@@ -258,7 +258,7 @@ rather than tabulated.}
   \end{cases} \]
   \item Check with $a=2$: $y[0]=1$, $y[4]=31$, $y[6]=127-31=96$, $y[10]=127-63=64$.
 \end{itemize}}{%
-\lead{76 Ash \m{6} --- \mk{the question as printed cannot be solved}}
+\lead{76 Ash \m{6}: \mk{the question as printed cannot be solved}}
 \begin{itemize}
   \item The paper prints $x[n]=2^n4[-n]$, $0<a<1$ and $h[n]=4[n]$: the sequence symbols are
         mangled, and it is meant to read $x[n]=a^nu[-n]$, $h[n]=u[n]$.
@@ -335,7 +335,7 @@ worth a mark on its own.}
 \bottomrule
 \end{tabularx}
 
-\lead{73 Shr \m{3+7} --- a sum of three terms, so use superposition}
+\lead{73 Shr \m{3+7}: a sum of three terms, so use superposition}
 \begin{itemize}
   \item Given $h[n]=(\frac12)^nu[n]$, \;
         $x[n]=10-5\sin(\pi n/2)+20\cos(\pi n)$.
@@ -467,7 +467,7 @@ period.
 \end{enumerate}
 
 \sbs{%
-\lead{Worked --- the 79 Bh signal}
+\lead{Worked: the 79 Bh signal}
 \begin{itemize}
   \item $x[n]=\cos(2\pi n/5)+\sin(\pi n/3)$ is a sum of two sinusoids: bounded,
         never decays.
@@ -480,7 +480,7 @@ period.
         exponential of amplitude $A$ has $P=A^2$ (no factor of 2, because
         $|e^{j\theta}|=1$ rather than an oscillating cosine).
 \end{itemize}}{%
-\lead{\textbf{68 Bh} \m{5} --- ``find the energy and power of $x[n]=u[n]$''}
+\lead{\textbf{68 Bh} \m{5}: ``find the energy and power of $x[n]=u[n]$''}
 \begin{itemize}
   \item \textbf{Energy}: $E=\displaystyle\sum_{n=-\infty}^{\infty}|u[n]|^2
         =\sum_{n=0}^{\infty}1=\boxed{\;\infty\;}$
@@ -515,8 +515,8 @@ period.
 \par\vspace{2pt}
 {\color{sub}\footnotesize \textbf{75 Ch} \m{3+4} and \texttt{74 Ma} \m{3+3} ask the
 \emph{definitions} only (power Vs energy, Fourier series Vs Fourier transform; energy Vs
-power, periodic Vs aperiodic, symmetric Vs antisymmetric), plus ``is $y[n]=x^2[n]$ linear''
---- that last part is \S9. \mk{A constant phase offset like $+\pi/4$ or $+4\pi/7$ changes
+power, periodic Vs aperiodic, symmetric Vs antisymmetric), plus ``is $y[n]=x^2[n]$ linear'':
+that last part is \S9. \mk{A constant phase offset like $+\pi/4$ or $+4\pi/7$ changes
 nothing}: it shifts the signal, and neither power nor period depends on a shift.}
 
 \hr
@@ -545,7 +545,7 @@ periodic, find its fundamental period.
 \end{enumerate}
 
 \sbs{%
-\lead{Worked --- the 80 Bh signal}
+\lead{Worked: the 80 Bh signal}
 \begin{itemize}
   \item First factor $e^{j\pi n/16}$: $\omega_1=\dfrac{\pi}{16}$, so
         $\dfrac{\omega_1}{2\pi}=\dfrac{1}{32}$ $\rightarrow$ $N_1=32$.
@@ -591,7 +591,7 @@ multiplying is only right when the two are coprime.}}{%
 \hrow \textbf{67 Mng} (b) & $\sin(\pi n/\sqrt2+\pi/8)$
  & $\frac{1}{2\sqrt2}$, \mk{irrational} $\rightarrow$ \textbf{aperiodic} \\
 \textbf{66 Ma} (a) \m{4} & $\cos(3\pi n/8+\pi/4)$ & $\frac{3}{16}$ $\rightarrow$ $N=16$ \\
-\hrow \textbf{66 Ma} (b) & $\sin(0.8n)$ --- printed ``sing(0.8n)''
+\hrow \textbf{66 Ma} (b) & $\sin(0.8n)$: printed ``sing(0.8n)''
  & $\frac{0.4}{\pi}$, \mk{irrational} $\rightarrow$ \textbf{aperiodic} \\
 \S5 papers & $\cos(2\pi n/5)+\sin(\pi n/3)$ & $\frac15$, $\frac16$ $\rightarrow$
  $N=\mathrm{LCM}(5,6)=30$ \\
@@ -640,7 +640,7 @@ $x_o[n]=\frac12(x[n]-x[-n])$ & $-0.5$ & $-0.5$ & $-0.5$ & $-0.5$ & 0
   \item[] \[ x_e[n]=\{1.5,1.5,1.5,1.5,\underline{1},1.5,1.5,1.5,1.5\} \]
         \[ x_o[n]=\{-0.5,-0.5,-0.5,-0.5,\underline{0},0.5,0.5,0.5,0.5\} \]
 \end{itemize}
-\lead{\textbf{67 Mng} \m{2} --- $x(n)=2u[n]-2u[n-4]$}
+\lead{\textbf{67 Mng} \m{2}: $x(n)=2u[n]-2u[n-4]$}
 \begin{itemize}
   \item That window is $\{2,2,2,2\}$ for $n=0\ldots3$, zero elsewhere.
   \item $x[-n]=\{2,2,2,2\}$ for $n=-3\ldots0$.
@@ -660,7 +660,7 @@ Read the samples off the plot, then run exactly the same table.
   \item Both are $\{1,1,1\}$ starting at $n=-1$, so the output starts at $-2$ and has
         $3+3-1=5$ samples.
   \item[] \[ y[n]=\{1,2,\underline{3},2,1\}\quad n=-2\ldots2 \]
-  \item \mk{The triangle} is what convolving two equal rectangles always gives --- worth
+  \item \mk{The triangle} is what convolving two equal rectangles always gives: worth
         recognising on sight.
 \end{itemize}}
 
@@ -698,7 +698,7 @@ $1$  & $1$ & $2$  & $2$ \\
 \end{tabular}
 \par\vspace{2pt}
 \[ x[-2n+3]=\{-4,\;\underline{-1},\;2\}\quad n=-1,0,1 \]
-{\color{sub}\footnotesize The even-indexed originals ($x[0],x[2],x[4]$) are lost --- that is
+{\color{sub}\footnotesize The even-indexed originals ($x[0],x[2],x[4]$) are lost: that is
 decimation, and it is not reversible.}}{%
 \lead{The three plotting questions}
 \begin{itemize}
@@ -720,7 +720,7 @@ decimation, and it is not reversible.}}{%
   \item \textbf{69 Bh} \m{3}: $x[n]=u[n+8]-u[n-4]$
   \begin{itemize}
     \item A rectangle of height 1 from $n=-8$ to $n=3$: \textbf{12 samples}.
-    \item \mk{The upper limit is exclusive} --- $u[n-4]$ switches on at $n=4$, so $n=3$ is
+    \item \mk{The upper limit is exclusive}: $u[n-4]$ switches on at $n=4$, so $n=3$ is
           the last non-zero sample.
   \end{itemize}
 \end{itemize}}
@@ -739,7 +739,7 @@ State whether or not the system $y[n]=e^{x[2n]}$ is (a) linear (b) time invarian
 (c) memoryless (d) causal, where $x[n]$ is input to system and $y[n]$ is output of system.
 \end{asked}
 
-\lead{Worked in full --- $y[n]=e^{x[2n]}$}
+\lead{Worked in full: $y[n]=e^{x[2n]}$}
 \sbs{%
 \begin{itemize}
   \item \textbf{(a) Linear?}
@@ -814,7 +814,7 @@ then the verdict with its reason. ``Not linear'' alone gets nothing.}}
  & \textbf{Linear} \checkmark; explicit $n$ \emph{and} scaled index $\rightarrow$
    \mk{time varying}; needs $x[2n-4]$ $\rightarrow$ \mk{not memoryless} \\
 \textbf{66 Ma} \m{10} & $y(n)=2^{\log_2 x(n)}+2^{\log_2 x(n)}$
- & This simplifies to $y(n)=2x(n)$: \textbf{linear, TI, memoryless, causal, stable} ---
+ & This simplifies to $y(n)=2x(n)$: \textbf{linear, TI, memoryless, causal, stable}:
    \mk{simplify before testing} \\
 \hrow \textbf{66 Ma} \m{10} & $y(n)=\sin\{x(n)-x(n-1)\}$
  & \mk{Non-linear} (sine of a sum); \textbf{TI} \checkmark; dynamic; causal \checkmark;
@@ -855,7 +855,7 @@ Consider the analog signal $x_a(t)=3\cos100\pi t$.
   \item Substitute $t=nT=n/F_s$: the digital frequency is
         $\omega=\dfrac{2\pi F}{F_s}$ rad/sample.
   \item \textbf{Fold $\omega$ into $-\pi\le\omega<\pi$} by subtracting multiples of
-        $2\pi$. If you had to subtract anything, \mk{that term has aliased} --- say so.
+        $2\pi$. If you had to subtract anything, \mk{that term has aliased}: say so.
   \item Write the answer as $x[n]=A\cos(\omega n)$ with the folded $\omega$.
 \end{enumerate}
 
@@ -865,7 +865,7 @@ Consider the analog signal $x_a(t)=3\cos100\pi t$.
   \item $F=\dfrac{100\pi}{2\pi}=50$ Hz.
   \item[] \[ F_s\ge2F=\boxed{\;100\text{ Hz}\;} \]
 \end{itemize}
-\lead{(b) $F_s=75$ Hz --- \mk{below Nyquist}}
+\lead{(b) $F_s=75$ Hz: \mk{below Nyquist}}
 \begin{itemize}
   \item $\omega=\dfrac{2\pi\times50}{75}=\dfrac{4\pi}{3}$ rad/sample.
   \item $\frac{4\pi}{3}>\pi$, so fold: $\dfrac{4\pi}{3}-2\pi=-\dfrac{2\pi}{3}$.
@@ -874,7 +874,7 @@ Consider the analog signal $x_a(t)=3\cos100\pi t$.
   \item \mk{Aliased}: this is the same sequence a 25 Hz analog cosine would have given at
         75 Hz. 75 Hz is below the 100 Hz Nyquist rate, exactly as part (a) warned.
 \end{itemize}
-\lead{(c) $F_s=5000$ Hz --- well above Nyquist}
+\lead{(c) $F_s=5000$ Hz: well above Nyquist}
 \begin{itemize}
   \item $\omega=\dfrac{2\pi\times50}{5000}=\dfrac{\pi}{50}$, already inside $[-\pi,\pi)$.
   \item[] \[ \boxed{\;x[n]=3\cos\!\left(\tfrac{\pi n}{50}\right)\;} \] no aliasing.
@@ -892,7 +892,7 @@ Consider the analog signal $x_a(t)=3\cos100\pi t$.
     \item Fold: $2.4\pi-2\pi=0.4\pi$ and $1.2\pi-2\pi=-0.8\pi$.
     \item[] \[ x[n]=\sin(0.4\pi n)-5\cos(0.4\pi n)-10\sin(0.8\pi n) \]
     \item \mk{Two of the three aliased}, and the 6000 Hz term landed on top of the
-          1000 Hz term --- they are now indistinguishable. The sign of the last term
+          1000 Hz term: they are now indistinguishable. The sign of the last term
           flips because $\sin$ is odd.
     \item For $0\le n\le3$: $x[n]=\{-5,\;-6.472,\;14.143,\;-6.053\}$ to 3 dp.
   \end{itemize}
@@ -912,7 +912,7 @@ Consider the analog signal $x_a(t)=3\cos100\pi t$.
     \item $\omega=\frac{\pi}{100},\;\frac{3\pi}{50},\;\frac{\pi}{50}$, no aliasing.
     \item \textbf{Reconstruction}: since $F_s$ is above Nyquist the original
           $x(t)$ comes back exactly, $x_r(t)=x(t)$. \mk{That is the whole answer to
-          part (c)} --- the sampling theorem guarantees it.
+          part (c)}: the sampling theorem guarantees it.
   \end{itemize}
 \end{itemize}}
 

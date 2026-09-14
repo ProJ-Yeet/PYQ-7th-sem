@@ -57,7 +57,7 @@ answer with samples at negative $n$, is wrong on sight.}}}
 \textbf{\texttt{73 Bh}} \m{6}, \texttt{72 Ma} \m{6}, \textbf{71 Ch} \m{1+5},
 \textbf{\texttt{76 Bh}} \m{2+6}, \textbf{\texttt{77 Ch}} \m{6}, \texttt{70 Ma} \m{6},
 \textbf{\texttt{80 Ch}} \m{6}, \textbf{\texttt{70 Bh}} \m{6}}
-\gap$\cdot$\gap \mk{one $X(z)$, three answers} --- the point of the whole chapter}
+\gap$\cdot$\gap \mk{one $X(z)$, three answers}: the point of the whole chapter}
 
 \begin{asked}{2082 Baishakh \textperiodcentered{} Q3 \textperiodcentered{} [1+5]}
 Define the ROC. Find the inverse z-transform of
@@ -65,7 +65,7 @@ $X(z)=\dfrac{1}{1-1.5z^{-1}+0.5z^{-2}}$ using partial fraction method for
 (a) $|z|>1$ \quad (b) $|z|<0.5$ \quad (c) $0.5<|z|<1$.
 \end{asked}
 
-\lead{Step 1 --- factor the denominator and mark the poles}
+\lead{Step 1: factor the denominator and mark the poles}
 \begin{itemize}
   \item $1-1.5z^{-1}+0.5z^{-2}=(1-z^{-1})(1-0.5z^{-1})$, so the poles are at
         \textbf{$z=1$ and $z=0.5$}.
@@ -74,7 +74,7 @@ $X(z)=\dfrac{1}{1-1.5z^{-1}+0.5z^{-2}}$ using partial fraction method for
         $|z|<0.5$, \; $0.5<|z|<1$, \; $|z|>1$.
 \end{itemize}
 
-\lead{Step 2 --- partial fractions, once, for all three parts}
+\lead{Step 2: partial fractions, once, for all three parts}
 \[ \frac{1}{(1-z^{-1})(1-0.5z^{-1})}=\frac{A}{1-z^{-1}}+\frac{B}{1-0.5z^{-1}} \]
 \begin{itemize}
   \item Put $w=z^{-1}$: $1=A(1-0.5w)+B(1-w)$.
@@ -84,7 +84,7 @@ $X(z)=\dfrac{1}{1-1.5z^{-1}+0.5z^{-2}}$ using partial fraction method for
 \end{itemize}
 \[ X(z)=\frac{2}{1-z^{-1}}-\frac{1}{1-0.5z^{-1}} \]
 
-\lead{Step 3 --- the ROC decides each term's side, and \mk{nothing else changes}}
+\lead{Step 3: the ROC decides each term's side, and \mk{nothing else changes}}
 \par
 \begin{tabularx}{\textwidth}{@{}L{2.4cm}L{3.3cm}L{3.3cm}X@{}}
 \toprule
@@ -102,7 +102,7 @@ $X(z)=\dfrac{1}{1-1.5z^{-1}+0.5z^{-2}}$ using partial fraction method for
 \sbs{%
 \begin{itemize}
   \item (a) is \textbf{causal}: $x[0]=1$, $x[1]=1.5$, $x[2]=1.75\ldots$ climbing to 2.
-        Contains the unit circle? \mk{No} --- so this one is not stable.
+        Contains the unit circle? \mk{No}: so this one is not stable.
   \item (b) is \textbf{anticausal}: $x[-1]=0$, $x[-2]=2$, $x[-3]=6$, growing as
         $n\to-\infty$.
   \item (c) is \textbf{two-sided} and is the only one whose ROC contains
@@ -161,7 +161,7 @@ Define ROC. Find the inverse z-transform of
 $H(z)=\dfrac{1+2z^{-1}+z^{-2}}{1-0.75z^{-1}+0.125z^{-2}}$, ROC: $0.25<|z|<0.5$.
 \end{asked}
 
-\lead{Step 1 --- spot that it is improper, and divide}
+\lead{Step 1: spot that it is improper, and divide}
 \begin{itemize}
   \item Both numerator and denominator have degree 2 in $z^{-1}$, so a constant must come
         out first. Divide the \emph{highest} powers: $z^{-2}\div0.125z^{-2}=8$.
@@ -170,7 +170,7 @@ $H(z)=\dfrac{1+2z^{-1}+z^{-2}}{1-0.75z^{-1}+0.125z^{-2}}$, ROC: $0.25<|z|<0.5$.
   \item \mk{The 8 is already an answer}: a constant is $8\delta[n]$.
 \end{itemize}
 
-\lead{Step 2 --- factor, then partial fractions on the remainder}
+\lead{Step 2: factor, then partial fractions on the remainder}
 \begin{itemize}
   \item $1-0.75z^{-1}+0.125z^{-2}=(1-0.5z^{-1})(1-0.25z^{-1})$: poles $0.5$ and $0.25$.
   \item With $w=z^{-1}$: $-7+8w=A(1-0.25w)+B(1-0.5w)$.
@@ -180,7 +180,7 @@ $H(z)=\dfrac{1+2z^{-1}+z^{-2}}{1-0.75z^{-1}+0.125z^{-2}}$, ROC: $0.25<|z|<0.5$.
 \end{itemize}
 \[ H(z)=8+\frac{18}{1-0.5z^{-1}}-\frac{25}{1-0.25z^{-1}} \]
 
-\lead{Step 3 --- the ROC $0.25<|z|<0.5$ splits the two poles}
+\lead{Step 3: the ROC $0.25<|z|<0.5$ splits the two poles}
 \sbs{%
 \begin{itemize}
   \item Pole $0.5$: the ROC lies \emph{inside} it $\rightarrow$ \mk{left-sided}
@@ -193,7 +193,7 @@ $H(z)=\dfrac{1+2z^{-1}+z^{-2}}{1-0.75z^{-1}+0.125z^{-2}}$, ROC: $0.25<|z|<0.5$.
   \item \textbf{Check}: $h[0]=8+0-25=-17$; $h[1]=-25(0.25)=-6.25$;
         $h[-1]=-18(2)=-36$; $h[-2]=-18(4)=-72$.
   \item The ROC is a ring not containing $|z|=1$, so this system is \mk{neither causal nor
-        stable} --- worth one line if the question asks.
+        stable}: worth one line if the question asks.
 \end{itemize}}
 
 \lead{Every other paper that runs this same method}
@@ -243,14 +243,14 @@ Find the inverse z-transform of $X(z)=\dfrac{2z^4+2z^3-3z+2}{z^2-1.5z-1}$,
 ROC: $|z|<0.5$, using partial fraction expansion.
 \end{asked}
 
-\lead{Step 1 --- poles, and what the ROC means}
+\lead{Step 1: poles, and what the ROC means}
 \begin{itemize}
   \item $z^2-1.5z-1=(z-2)(z+0.5)$: poles at \textbf{$z=2$ and $z=-0.5$}, radii 2 and 0.5.
   \item ROC $|z|<0.5$ is inside \emph{both}, so \mk{both poles are left-sided} and the
         whole answer carries $u[-n-1]$.
 \end{itemize}
 
-\lead{Step 2 --- long division in $z$, because the numerator is degree 4}
+\lead{Step 2: long division in $z$, because the numerator is degree 4}
 {\color{sub}\footnotesize Written as ordinary polynomial division, highest power first. The
 missing $z^2$ term is carried as $0z^2$.}
 \par
@@ -265,7 +265,7 @@ $9.5$ & $9.5(z^2-1.5z-1)=9.5z^2-14.25z-9.5$ & $16.25z+11.5$ \\
 \[ X(z)=\underbrace{2z^2+5z+9.5}_{\text{quotient}}
        +\underbrace{\frac{16.25z+11.5}{(z-2)(z+0.5)}}_{G(z),\ \text{proper}} \]
 
-\lead{Step 3 --- divide $G(z)$ by $z$ and expand}
+\lead{Step 3: divide $G(z)$ by $z$ and expand}
 \[ \frac{G(z)}{z}=\frac{16.25z+11.5}{z(z-2)(z+0.5)}
    =\frac{C}{z}+\frac{D}{z-2}+\frac{E}{z+0.5} \]
 \begin{itemize}
@@ -275,7 +275,7 @@ $9.5$ & $9.5(z^2-1.5z-1)=9.5z^2-14.25z-9.5$ & $16.25z+11.5$ \\
 \end{itemize}
 \[ G(z)=-11.5+\frac{8.8\,z}{z-2}+\frac{2.7\,z}{z+0.5} \]
 
-\lead{Step 4 --- apply the pairs}
+\lead{Step 4: apply the pairs}
 \sbs{%
 \begin{itemize}
   \item $2z^2\rightarrow2\delta[n+2]$, \; $5z\rightarrow5\delta[n+1]$, \;
@@ -325,8 +325,8 @@ $Q_0+C$ after $C$ is folded in.}
 
 \par\vspace{3pt}
 \sbs{%
-\lead{\textbf{74 Ch}, \textbf{73 Ch}, \textbf{\texttt{74 Bh}} \m{1+3+5}
---- different denominator}
+\lead{\textbf{74 Ch}, \textbf{73 Ch}, \textbf{\texttt{74 Bh}} \m{1+3+5}:
+different denominator}
 \begin{itemize}
   \item $X(z)=\dfrac{2z^3+2z^2+3z+5}{z^2-0.1z-0.2}$, ROC $|z|<0.4$.
   \item \mk{All three papers misprint the leading term as $2z^2$}, which would make the
@@ -338,7 +338,7 @@ $Q_0+C$ after $C$ is folded in.}
         -\big[16.111(0.5)^n+11.089(-0.4)^n\big]u[-n-1] \]
   \item Check: $x[0]=-25$, $x[-1]=-2.5$, $x[-2]=-133.75$.
 \end{itemize}}{%
-\lead{\textbf{81 Bh} \m{1+5} --- the clean one}
+\lead{\textbf{81 Bh} \m{1+5}: the clean one}
 \begin{itemize}
   \item $X(z)=\dfrac{2z^3-5z^2+z+3}{(z-1)(z-2)}$, ROC $|z|<1$: both poles left-sided.
   \item Denominator $=z^2-3z+2$. Division gives quotient $2z+1$ and \mk{remainder exactly
@@ -407,7 +407,7 @@ long division method, when ROC: $|z|>1$ and when ROC: $|z|<\frac12$.
   \item[] \[ x[n]=\{\ldots,6,\;2,\;0,\;\underline{0}\} \quad\text{for } n=-3,-2,-1,0 \]
   \item \mk{Closed form}: $x[n]=[-2+(0.5)^n]\,u[-n-1]$, so $x[-1]=0$, $x[-2]=2$,
         $x[-3]=6$, $x[-4]=14$.
-  \item \mk{$x[-1]=0$ is not a mistake} --- the two terms cancel exactly at $n=-1$.
+  \item \mk{$x[-1]=0$ is not a mistake}: the two terms cancel exactly at $n=-1$.
 \end{itemize}}
 
 \lead{The other three, and the two ROCs that cannot be right}
@@ -441,7 +441,7 @@ long division method, when ROC: $|z|>1$ and when ROC: $|z|<\frac12$.
         contains the pole at $0.4377$. \mk{An ROC can never contain a pole} (\S2.2,
         property 3), so neither region is a legal ROC.
   \item With $1.5$ instead of $1.58$ the poles are exactly 1 and $0.5$ and both printed
-        ROCs are correct --- and \textbf{\texttt{73 Bh}} asks the identical question with
+        ROCs are correct: and \textbf{\texttt{73 Bh}} asks the identical question with
         $\frac32$. \mk{$1.58$ is a misprint for $1.5$.} \added
   \item In the exam: divide as printed (the division does not care), and add one line
         saying the ROC must be $|z|>1.1423$ or $|z|<0.4377$.
@@ -468,22 +468,22 @@ State Convolution property of Z-transform. Find inverse Z-transform of
 $X(z)=\dfrac{z}{(z-0.6)(z+0.5)^2}$, ROC: $|z|>0.6$.
 \end{asked}
 
-\lead{Step 1 --- divide by $z$, which removes the numerator entirely}
+\lead{Step 1: divide by $z$, which removes the numerator entirely}
 \[ \frac{X(z)}{z}=\frac{1}{(z-0.6)(z+0.5)^2}
    =\frac{A}{z-0.6}+\frac{B}{z+0.5}+\frac{C}{(z+0.5)^2} \]
 \begin{itemize}
-  \item \textbf{$A$} --- cover $(z-0.6)$ and put $z=0.6$:
+  \item \textbf{$A$}: cover $(z-0.6)$ and put $z=0.6$:
         $A=\dfrac{1}{(0.6+0.5)^2}=\dfrac{1}{1.21}=0.8264$.
-  \item \textbf{$C$} --- cover $(z+0.5)^2$ and put $z=-0.5$:
+  \item \textbf{$C$}: cover $(z+0.5)^2$ and put $z=-0.5$:
         $C=\dfrac{1}{-0.5-0.6}=\dfrac{1}{-1.1}=-0.9091$.
-  \item \textbf{$B$} --- clear denominators,
+  \item \textbf{$B$}: clear denominators,
         $1=A(z+0.5)^2+B(z-0.6)(z+0.5)+C(z-0.6)$, and match the $z^2$ coefficient:
         $0=A+B$, so \mk{$B=-A=-0.8264$}.
   \item {\color{sub}\footnotesize Matching one coefficient is faster than differentiating,
         and it is the step to use for every repeated pole.}
 \end{itemize}
 
-\lead{Step 2 --- multiply back by $z$ and apply the pairs}
+\lead{Step 2: multiply back by $z$ and apply the pairs}
 \sbs{%
 \[ X(z)=\frac{0.8264\,z}{z-0.6}-\frac{0.8264\,z}{z+0.5}-\frac{0.9091\,z}{(z+0.5)^2} \]
 \begin{itemize}
@@ -529,7 +529,7 @@ quick sanity check before any arithmetic.}}
 
 \par\vspace{2pt}
 {\color{sub}\footnotesize \mk{Both ROCs lie inside every pole}, so every term flips to
-$u[-n-1]$ with a sign change --- including the repeated one. Check 70 Asa: $x[-1]=-1+0.5+0.25
+$u[-n-1]$ with a sign change: including the repeated one. Check 70 Asa: $x[-1]=-1+0.5+0.25
 =-0.25$, $x[-2]=-1+0.25+0.25=-0.5$, $x[-3]=-0.6875$.}
 
 \hr
@@ -564,24 +564,24 @@ $x[n]=(0.1)^n u[n]+(0.3)^n u[-n-1]$.
 \end{itemize}}{%
 \lead{The siblings}
 \begin{itemize}
-  \item \textbf{75 Ash} \m{3+6}: $x[n]=(0.6)^nu[n]+(0.25)^nu[n]$ --- \mk{both right-sided},
+  \item \textbf{75 Ash} \m{3+6}: $x[n]=(0.6)^nu[n]+(0.25)^nu[n]$: \mk{both right-sided},
         so both ROCs are ``outside'' and the intersection is the larger one:
         \[ X(z)=\frac{1}{1-0.6z^{-1}}+\frac{1}{1-0.25z^{-1}},\qquad |z|>0.6 \]
-  \item \textbf{\texttt{75 Bh}} \m{4+6}: $x[n]=(0.25)^nu[n]+(0.6)^nu[-n-1]$ --- the mirror
+  \item \textbf{\texttt{75 Bh}} \m{4+6}: $x[n]=(0.25)^nu[n]+(0.6)^nu[-n-1]$: the mirror
         of 75 Ch:
         \[ X(z)=\frac{1}{1-0.25z^{-1}}-\frac{1}{1-0.6z^{-1}},\qquad 0.25<|z|<0.6 \]
   \item \texttt{73 Ma} \m{1+4}: $x[n]=(0.5+j0.2)^nu[n]+(-j)^nu[-n-1]$.
   \begin{itemize}
     \item Radii are $|0.5+j0.2|=\sqrt{0.29}=0.5385$ and $|-j|=1$, so
           \mk{ROC $0.5385<|z|<1$}.
-    \item $z=0.4$ is \mk{outside the ROC, so $X(0.4)$ does not converge} --- that is the
+    \item $z=0.4$ is \mk{outside the ROC, so $X(0.4)$ does not converge}: that is the
           answer, not a number.
     \item $z=0.7$ is inside: $X(0.7)=\dfrac{1}{1-\frac{0.5+j0.2}{0.7}}
           -\dfrac{1}{1+\frac{j}{0.7}}=1.4211+j2.2198$.
   \end{itemize}
 \end{itemize}}
 
-\lead{\textbf{70 Ch} and 70 Asa \m{2+4} --- \mk{the ROC comes out empty}}
+\lead{\textbf{70 Ch} and 70 Asa \m{2+4}: \mk{the ROC comes out empty}}
 \begin{asked}{2070 Chaitra \textperiodcentered{} Q3 \textperiodcentered{} [2+4]}
 List out the properties of Region of Convergence. Find the Z-transform and locate the ROC of
 the signal. \; $x[n]=\left(-\tfrac13\right)^n u[n]-\left(\tfrac13\right)^n u[-n-1]$
@@ -616,7 +616,7 @@ the signal. \; $x[n]=\left(-\tfrac13\right)^n u[n]-\left(\tfrac13\right)^n u[-n-
 
 \T{7 \quad Inverse by inspection: $X(z)$ is already a polynomial}
 {\color{sub}\footnotesize \tP{2} \yr{74 Ash \m{3+3}, \textbf{\texttt{78 Ch}} \m{4}}
-\gap$\cdot$\gap \mk{no partial fractions, no ROC decision} --- 30 seconds if you spot it}
+\gap$\cdot$\gap \mk{no partial fractions, no ROC decision}: 30 seconds if you spot it}
 
 \sbs{%
 \lead{74 Ash \m{3+3}}
