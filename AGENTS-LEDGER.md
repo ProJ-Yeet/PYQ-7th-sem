@@ -4,13 +4,13 @@ Written by `tools/session_meter.py --ledger` after each session. One row
 per delegation, in `tools/agent-ledger.tsv`. Never edit by hand except the
 `note` column.
 
-**Totals:** 7 delegations, 140965 units saved, 174450 tokens kept out of the main window.
+**Totals:** 9 delegations, 274756 units saved, 352588 tokens kept out of the main window.
 
 | agent | model | runs | net saved | displaced | repairs | outcome |
 |---|---|---|---|---|---|---|
-| pyq-extract | sonnet | 3 | 56502 | 76216 | 0 | accepted 1, failed 2 |
+| pyq-extract | sonnet | 4 | 118009 | 159231 | 0 | accepted 2, failed 2 |
 | pyq-scout | haiku | 3 | 65802 | 70693 | 0 | accepted 1, failed 2 |
-| pyq-latex | sonnet | 1 | 18661 | 27541 | 0 | accepted 1 |
+| pyq-latex | sonnet | 2 | 90945 | 122664 | 0 | accepted 2 |
 
 Columns: **net saved** is Opus-token-equivalents, delegate spend and the
 main thread's prompt-plus-report overhead already subtracted. **displaced**
