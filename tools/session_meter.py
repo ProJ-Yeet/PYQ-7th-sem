@@ -118,6 +118,13 @@ def agent_label(inp):
 AGENTID_RE = re.compile(r"agentId:{0,1}[ ]+([0-9a-zA-Z]{6,})")
 NOTIF_RE = re.compile(r"<task-id>([^<]+)</task-id>.*?<status>([^<]+)</status>",
                       re.S)
+NOTIF_BLOCK_RE = re.compile(r"<task-notification>(.*?)</task-notification>", re.S)
+TOK_RE = re.compile(r"<subagent_tokens>\s*(\d+)\s*</subagent_tokens>")
+USES_RE = re.compile(r"<tool_uses>\s*(\d+)\s*</tool_uses>")
+DUR_RE = re.compile(r"<duration_ms>\s*(\d+)\s*</duration_ms>")
+RESULT_RE = re.compile(r"<result>(.*?)</result>", re.S)
+TID_RE = re.compile(r"<task-id>([^<]+)</task-id>")
+STATUS_RE = re.compile(r"<status>([^<]+)</status>")
 
 FAIL_MARKS = (
     "agent type", "not found", "terminated early", "rate_limit",
@@ -205,7 +212,7 @@ class Session(object):
         self.spawns = []
         self.by_id = {}
         self.main_file_writes = []      # (ts, path)
-        self.notif_failed = {}          # task-id -> why
+        self.notif = {}                 # task-id -> what it reported
         self.parse()
 
     def parse(self):
@@ -220,6 +227,8 @@ class Session(object):
                     d = json.loads(line)
                 except Exception:
                     continue
+                if "task-notification" in line:
+                    self.scan_text(line)
                 ts = d.get("timestamp")
                 if ts:
                     if self.start is None or ts < self.start:
@@ -325,11 +334,23 @@ class Session(object):
                 sp["async"] = True
                 break
 
-        # a failure reported by task-notification rather than by the tool result
+        # fold in what each background agent reported about itself
         for sp in self.spawns:
-            tid = sp.get("agent_id")
-            if tid and not sp["turns"] and tid in self.notif_failed:
-                sp["failed"] = sp["failed"] or self.notif_failed[tid]
+            rec = self.notif.get(sp.get("agent_id") or "")
+            if not rec:
+                continue
+            if rec.get("reason") and not sp["turns"]:
+                sp["failed"] = sp["failed"] or rec["reason"]
+            if rec.get("tokens"):
+                # one total, no in/out/cache split: priced as input-equivalent, which
+                # understates the delegate's cost and so understates the saving
+                sp["units"] = max(sp["units"], float(rec["tokens"]))
+                sp["notified"] = True
+            if rec.get("tool_uses"):
+                sp["turns"] = max(sp["turns"], rec["tool_uses"])
+            if rec.get("result_chars"):
+                sp["report_chars"] = rec["result_chars"]
+            sp["duration_ms"] = rec.get("duration_ms")
 
         # quality proxy: main-thread rewrites of subagent files, after it returned
         for sp in self.spawns:
@@ -340,23 +361,68 @@ class Session(object):
                     sp["repair_files"].append(os.path.basename(path))
 
     def scan_notifications(self, msg):
+        """A background agent reports itself through a task-notification, and that is
+        the only place its token total appears. Later notifications for the same
+        task-id win, so a resumed agent is scored on its final state."""
         c = msg.get("content")
         chunks = []
         if isinstance(c, str):
             chunks = [c]
         elif isinstance(c, list):
             for b in c:
-                if isinstance(b, dict) and b.get("type") == "text":
+                if not isinstance(b, dict):
+                    continue
+                if b.get("type") == "text":
                     chunks.append(b.get("text") or "")
+                elif b.get("type") == "tool_result":
+                    # a notification that fired while the main thread was mid-call is
+                    # appended to that call's result, not sent as its own message
+                    chunks.append(result_text(b))
         for t in chunks:
-            if "task-notification" not in t:
-                continue
-            for m in NOTIF_RE.finditer(t):
-                tid, status = m.group(1), m.group(2)
-                if status.strip().lower() != "completed":
-                    reason = "rate limit" if "rate_limit" in t or "usage limit" in t \
-                        else status.strip()
-                    self.notif_failed[tid] = reason
+            self.scan_text(t)
+
+    def scan_text(self, t):
+        if "task-notification" not in t:
+            return
+        for block in self.notif_blocks(t):
+            self.scan_block(block)
+
+    def notif_blocks(self, t):
+        """One notification per block where the closing tag survives; otherwise treat
+        each <task-id> as starting a block, so a truncated tail still scores."""
+        found = NOTIF_BLOCK_RE.findall(t)
+        if found:
+            return found
+        parts = t.split("<task-id>")
+        return ["<task-id>" + x for x in parts[1:]] or [t]
+
+    def scan_block(self, block):
+        if True:
+                mt = TID_RE.search(block)
+                if not mt:
+                    return
+                tid = mt.group(1).strip()
+                ms = STATUS_RE.search(block)
+                status = (ms.group(1).strip().lower() if ms else "?")
+                rec = self.notif.setdefault(tid, {})
+                rec["status"] = status
+                mk = TOK_RE.search(block)
+                if mk:
+                    rec["tokens"] = int(mk.group(1))
+                mu = USES_RE.search(block)
+                if mu:
+                    rec["tool_uses"] = int(mu.group(1))
+                md = DUR_RE.search(block)
+                if md:
+                    rec["duration_ms"] = int(md.group(1))
+                mr = RESULT_RE.search(block)
+                if mr:
+                    rec["result_chars"] = len(mr.group(1))
+                if status != "completed":
+                    low = block.lower()
+                    rec["reason"] = ("rate limit"
+                                     if "rate_limit" in low or "usage limit" in low
+                                     else status)
 
     # ---- derived numbers
 
@@ -378,8 +444,14 @@ class Session(object):
         # Opus overhead: the prompt it wrote, and the report it read back
         overhead = (sp["prompt_chars"] / 3.7) * W_OUT + (sp["report_chars"] / 3.7) * W_IN
         net = counterfactual - spent - overhead
-        displaced = max(sp["absorbed"] - sp["report_chars"], 0) / 3.7
-        displaced += sp["absorbed_imgs"] * 2500
+        if sp.get("notified"):
+            # everything the subagent consumed would otherwise have flowed through the
+            # main window: its prompt, its tool results, its own reasoning. What did
+            # enter the main window is the report.
+            displaced = max(sp["units"] - sp["report_chars"] / 3.7, 0)
+        else:
+            displaced = max(sp["absorbed"] - sp["report_chars"], 0) / 3.7
+            displaced += sp["absorbed_imgs"] * 2500
         return spent, counterfactual, overhead, net, displaced
 
     def verdict(self, sp):
@@ -427,9 +499,15 @@ class Session(object):
             print("")
             print("  %-14s %-7s %s" % (sp["agent"], sp["seen_model"] or sp["model"] or "?",
                                        sp["desc"][:52]))
-            print("     turns=%d  absorbed=%dk chars +%d images  report=%d chars"
-                  % (sp["turns"], sp["absorbed"] // 1000, sp["absorbed_imgs"],
-                     sp["report_chars"]))
+            if sp.get("notified"):
+                print("     tool uses=%d  tokens=%d (self-reported)  report=%d chars%s"
+                      % (sp["turns"], int(sp["units"]), sp["report_chars"],
+                         ("  %.0fs" % (sp["duration_ms"] / 1000.0))
+                         if sp.get("duration_ms") else ""))
+            else:
+                print("     turns=%d  absorbed=%dk chars +%d images  report=%d chars"
+                      % (sp["turns"], sp["absorbed"] // 1000, sp["absorbed_imgs"],
+                         sp["report_chars"]))
             print("     priced: spent %d, Opus would be %d, overhead %d  ->  net %+d units"
                   % (spent, cf, oh, net))
             print("     context displaced from the main window: %d tokens" % disp)
