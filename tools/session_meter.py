@@ -115,6 +115,87 @@ def agent_label(inp):
     return st or "claude"
 
 
+AGENTID_RE = re.compile(r"agentId:{0,1}[ ]+([0-9a-zA-Z]{6,})")
+NOTIF_RE = re.compile(r"<task-id>([^<]+)</task-id>.*?<status>([^<]+)</status>",
+                      re.S)
+
+FAIL_MARKS = (
+    "agent type", "not found", "terminated early", "rate_limit",
+    "You've hit your", "hit your session limit", "InputValidationError",
+)
+
+
+def result_text(blk):
+    """Flatten a tool_result's text so it can be pattern-matched."""
+    c = blk.get("content")
+    if isinstance(c, str):
+        return c
+    out = []
+    if isinstance(c, list):
+        for x in c:
+            if isinstance(x, dict) and x.get("type") == "text":
+                out.append(x.get("text") or "")
+    return "NEWLINE".join(out).replace("NEWLINE", chr(10))
+
+
+def fail_reason(txt, blk):
+    """Did this delegation never actually run? A spawn that was refused or killed
+    must not be scored: its prompt cost is real but it did no work, and calling that
+    a saving of minus-N units would libel the lane."""
+    if blk.get("is_error"):
+        return "tool error"
+    low = txt.lower()
+    for mark in FAIL_MARKS:
+        if mark.lower() in low:
+            return mark
+    return None
+
+
+def task_dirs(session_id):
+    """Where a backgrounded agent's own transcript lands."""
+    base = os.path.join(os.environ.get("TEMP") or os.environ.get("TMP") or "",
+                        "claude", "D--College-PYQ", session_id, "tasks")
+    alt = os.path.join(os.path.expanduser("~"), "AppData", "Local", "Temp",
+                       "claude", "D--College-PYQ", session_id, "tasks")
+    return [d for d in (base, alt) if d and os.path.isdir(d)]
+
+
+def tally_task_file(path):
+    """Usage and absorbed tool output from one background-agent transcript. Read by
+    a script, never into a model's context: that is the whole point of the lane."""
+    got = {"units": 0.0, "out": 0, "turns": 0, "absorbed": 0, "absorbed_imgs": 0,
+           "model": None}
+    try:
+        fh = io.open(path, encoding="utf-8", errors="replace")
+    except Exception:
+        return got
+    with fh:
+        for line in fh:
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                d = json.loads(line)
+            except Exception:
+                continue
+            msg = d.get("message")
+            if not isinstance(msg, dict):
+                continue
+            if d.get("type") == "assistant":
+                u = msg.get("usage") or {}
+                got["units"] += units(u)
+                got["out"] += u.get("output_tokens", 0) or 0
+                got["turns"] += 1
+                got["model"] = got["model"] or short(msg.get("model"))
+            elif d.get("type") == "user":
+                for b in blocks(msg):
+                    if isinstance(b, dict) and b.get("type") == "tool_result":
+                        n, im = result_chars(b)
+                        got["absorbed"] += n
+                        got["absorbed_imgs"] += im
+    return got
+
+
 class Session(object):
     def __init__(self, path):
         self.path = path
@@ -124,6 +205,7 @@ class Session(object):
         self.spawns = []
         self.by_id = {}
         self.main_file_writes = []      # (ts, path)
+        self.notif_failed = {}          # task-id -> why
         self.parse()
 
     def parse(self):
@@ -148,6 +230,8 @@ class Session(object):
                 msg = d.get("message")
                 if not isinstance(msg, dict):
                     continue
+                if d.get("type") == "user":
+                    self.scan_notifications(msg)
 
                 spawn = None
                 if side:
@@ -188,7 +272,8 @@ class Session(object):
                                 "units": 0.0, "out": 0, "turns": 0,
                                 "absorbed": 0, "absorbed_imgs": 0,
                                 "report_chars": 0, "files": set(), "repairs": 0,
-                                "repair_files": [],
+                                "repair_files": [], "agent_id": None,
+                                "failed": None,
                             }
                             self.spawns.append(sp)
                             self.by_id[b.get("id")] = sp
@@ -211,10 +296,40 @@ class Session(object):
                             if tgt is not None:
                                 tgt["report_chars"] = n
                                 tgt["done_ts"] = ts
+                                txt = result_text(b)
+                                m = AGENTID_RE.search(txt)
+                                if m:
+                                    tgt["agent_id"] = m.group(1)
+                                tgt["failed"] = fail_reason(txt, b)
                                 cur_spawn[0] = None
                         elif was_side and sp is not None:
                             sp["absorbed"] += n
                             sp["absorbed_imgs"] += im
+
+        # a backgrounded agent's turns are in its own file, not this transcript
+        dirs = task_dirs(self.sid)
+        for sp in self.spawns:
+            if sp["turns"] or not sp.get("agent_id"):
+                continue
+            for d in dirs:
+                f = os.path.join(d, sp["agent_id"] + ".output")
+                if not os.path.exists(f):
+                    continue
+                got = tally_task_file(f)
+                sp["units"] += got["units"]
+                sp["out"] += got["out"]
+                sp["turns"] += got["turns"]
+                sp["absorbed"] += got["absorbed"]
+                sp["absorbed_imgs"] += got["absorbed_imgs"]
+                sp["seen_model"] = sp["seen_model"] or got["model"]
+                sp["async"] = True
+                break
+
+        # a failure reported by task-notification rather than by the tool result
+        for sp in self.spawns:
+            tid = sp.get("agent_id")
+            if tid and not sp["turns"] and tid in self.notif_failed:
+                sp["failed"] = sp["failed"] or self.notif_failed[tid]
 
         # quality proxy: main-thread rewrites of subagent files, after it returned
         for sp in self.spawns:
@@ -223,6 +338,25 @@ class Session(object):
                 if ts and ts > done and path in sp["files"]:
                     sp["repairs"] += 1
                     sp["repair_files"].append(os.path.basename(path))
+
+    def scan_notifications(self, msg):
+        c = msg.get("content")
+        chunks = []
+        if isinstance(c, str):
+            chunks = [c]
+        elif isinstance(c, list):
+            for b in c:
+                if isinstance(b, dict) and b.get("type") == "text":
+                    chunks.append(b.get("text") or "")
+        for t in chunks:
+            if "task-notification" not in t:
+                continue
+            for m in NOTIF_RE.finditer(t):
+                tid, status = m.group(1), m.group(2)
+                if status.strip().lower() != "completed":
+                    reason = "rate limit" if "rate_limit" in t or "usage limit" in t \
+                        else status.strip()
+                    self.notif_failed[tid] = reason
 
     # ---- derived numbers
 
@@ -249,6 +383,10 @@ class Session(object):
         return spent, counterfactual, overhead, net, displaced
 
     def verdict(self, sp):
+        if sp.get("failed") and not sp["turns"]:
+            return "FAILED"
+        if not sp["turns"]:
+            return "UNMEASURED"
         spent, cf, oh, net, disp = self.score(sp)
         if sp["repairs"] >= 3:
             return "REJECT"
@@ -300,17 +438,22 @@ class Session(object):
                     os.path.basename(f) for f in sp["files"])[:6]))
             print("     repairs after it returned: %d %s"
                   % (sp["repairs"], sp["repair_files"][:4] or ""))
-            print("     VERDICT " + self.verdict(sp))
+            print("     VERDICT " + self.verdict(sp)
+                  + ((" -- " + sp["failed"]) if sp.get("failed") else ""))
 
     def ledger_rows(self):
         for sp in self.spawns:
             spent, cf, oh, net, disp = self.score(sp)
+            v = self.verdict(sp)
+            if v in ("FAILED", "UNMEASURED"):
+                spent = cf = net = disp = 0
             yield [
-                str(self.start)[:19], self.sid[:8], sp["agent"],
+                str(sp["ts"] or self.start)[:19], self.sid[:8], sp["agent"],
                 sp["seen_model"] or sp["model"] or "?",
                 sp["desc"][:60].replace("\t", " "),
                 sp["turns"], int(sp["units"]), int(spent), int(cf), int(oh),
-                int(net), int(disp), sp["repairs"], self.verdict(sp), "",
+                int(net), int(disp), sp["repairs"], v,
+                sp.get("failed") or "",
             ]
 
 
@@ -387,14 +530,19 @@ def report_across():
     print("-" * 86)
     for (agent, mdl), c in sorted(per.items(), key=lambda kv: -kv[1]["n"]):
         calls = " ".join("%s=%d" % (v, c[v]) for v in
-                         ("ACCEPTED", "REPAIRED", "NO-SAVING", "REJECT") if c[v])
+                         ("ACCEPTED", "REPAIRED", "NO-SAVING", "REJECT",
+                          "FAILED", "UNMEASURED") if c[v])
         print("%-14s %-7s %4d %12d %12d %8d  %s"
               % (agent, mdl, c["n"], c["net_saved"], c["displaced"], c["repairs"], calls))
     print("")
     print("RECOMMENDATION")
     for (agent, mdl), c in sorted(per.items()):
-        n = c["n"]
+        n = c["n"] - c["FAILED"] - c["UNMEASURED"]
         bad = c["REJECT"] + c["REPAIRED"]
+        if n <= 0:
+            print("  %-14s %-7s no run completed yet (%d failed, %d unmeasured)"
+                  % (agent, mdl, c["FAILED"], c["UNMEASURED"]))
+            continue
         if n < 3:
             verdict = "keep sampling, %d run(s) is not evidence" % n
         elif c["REJECT"] or bad * 2 > n:
@@ -425,7 +573,8 @@ def write_md():
     L.append("|---|---|---|---|---|---|---|")
     for (agent, mdl), c in sorted(per.items(), key=lambda kv: -kv[1]["n"]):
         calls = ", ".join("%s %d" % (v.lower(), c[v]) for v in
-                         ("ACCEPTED", "REPAIRED", "NO-SAVING", "REJECT") if c[v])
+                         ("ACCEPTED", "REPAIRED", "NO-SAVING", "REJECT",
+                          "FAILED", "UNMEASURED") if c[v])
         L.append("| %s | %s | %d | %d | %d | %d | %s |"
                  % (agent, mdl, c["n"], c["net_saved"], c["displaced"],
                     c["repairs"], calls))
