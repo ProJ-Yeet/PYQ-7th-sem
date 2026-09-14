@@ -1,0 +1,321 @@
+%=======================================================================
+%  CHAPTER 5 - NUMERICAL PROBLEMS AND SOLUTIONS
+%  Every length, window choice, beta and coefficient below is produced
+%  by fir.py, which self-tests before it prints, and asserted again by
+%  verify.py ch5.
+%=======================================================================
+\section*{\color{acc}Ch 5 \textperiodcentered{} FIR Filter Design\\[2pt]
+{\large\textcolor{sub}{Numerical Problems \& Solutions}}}
+\vspace{-4pt}{\color{acc}\rule{\textwidth}{1.1pt}}\vspace{4pt}
+
+{\color{sub}\footnotesize \mk{47 of the 70 questions are one design calculation.} The
+other 23 are the Remez algorithm, which asks for a flowchart and never for a number:
+that is \S5.5 of the theory, not here. Every design paper is below.}
+
+\lead{The recipe, used in \S1, \S2 and \S3}
+\begin{enumerate}
+  \item \textbf{Convert the spec} to $\omega$ in radians per sample if it is given in Hz
+        ($\omega=2\pi f/f_s$) or rad/s ($\omega=\Omega/f_s$).
+  \item \textbf{Window} from the stopband attenuation
+        $A_s$, taking the cheapest that clears it.
+        If the paper gives $\delta_s$, first $A_s=-20\log_{10}\delta_s$.
+  \item \textbf{Length} $M=c\pi/\Delta\omega$ with $c$ from the same table, then round up
+        to the next \textbf{odd} $N$.
+  \item \textbf{Cut-off} $\omega_c=\dfrac{\omega_p+\omega_s}{2}$, the middle of the
+        transition band.
+  \item \textbf{Coefficients} $h[n]=h_d[n]\,w[n]$, with
+        $h_d[n]=\dfrac{\sin(\omega_c(n-\alpha))}{\pi(n-\alpha)}$, $\alpha=\dfrac{N-1}{2}$,
+        and the centre tap $h_d[\alpha]=\omega_c/\pi$ done separately.
+\end{enumerate}
+
+\sbs{%
+\lead{The table, again, because everything turns on it}
+\par
+\begin{tabular}{@{}L{2.0cm}L{1.6cm}L{1.9cm}@{}}
+\toprule
+\hrow \thead{Window} & \thead{Stop band} & \thead{Transition} \\
+Rectangular & $21$ dB & $1.8\pi/M$ \\
+Bartlett & $25$ dB & $6.1\pi/M$ \\
+Hann & $44$ dB & $6.2\pi/M$ \\
+Hamming & $53$ dB & $6.6\pi/M$ \\
+Blackman & $74$ dB & $11\pi/M$ \\
+\bottomrule
+\end{tabular}}{%
+\lead{Checks that cost nothing}
+\begin{enumerate}
+  \item The centre tap is always $\omega_c/\pi$ exactly. \mk{If it is not, $\omega_c$ is
+        wrong.}
+  \item $h[n]$ must be \textbf{symmetric} about $\alpha$: compute one half and mirror it.
+  \item A \textbf{Hann}-windowed filter has $h[0]=h[N-1]=0$ exactly, because the window
+        is zero there. So "the first three coefficients" begins with a zero.
+  \item $N$ odd, always, so $\alpha$ is an integer.
+\end{enumerate}}
+
+\hr
+
+\T{1 \quad Fixed-window low-pass designs}
+{\color{sub}\footnotesize \tS{13} \yr{79 Ba \m{5+3}, \textbf{71 Ch}, \textbf{69 Ch} \m{8},
+74 Ash \m{2+6}, \textbf{\texttt{79 Ch}} \m{8}, \textbf{\texttt{75 Bh}} \m{6},
+82 Ba \m{2+6}, \textbf{67 Mng} \m{8}, 70 Asa \m{9}, \textbf{69 Bh} \m{8},
+\textbf{68 Bh} \m{9}, \textbf{76 Ch} \m{6}, \textbf{\texttt{81 Ch}} \m{2+6},
+\texttt{73 Ma} \m{4+5}, \textbf{82 Bh} \m{10}}}
+
+\begin{asked}{2079 Chaitra \textperiodcentered{} 2075 Bhadra \textperiodcentered{} [8] [6]}
+Design a low pass FIR filter using a suitable window for $\omega_p=0.24\pi$,
+$\omega_s=0.54\pi$ and stopband attenuation $\alpha_s=42.2$ dB. Find the first three
+coefficients of the impulse response.
+\end{asked}
+
+\lead{Step 1: the two lookups}
+\begin{itemize}
+  \item $A_s=42.2$ dB. Hann gives \textbf{44 dB}, which clears it; Bartlett's 25 dB does
+        not. \mk{So Hann}, and Hamming would be over-design.
+  \item $\Delta\omega=0.54\pi-0.24\pi=0.30\pi$.
+  \item[] \[ M=\frac{6.2\pi}{\Delta\omega}=\frac{6.2\pi}{0.30\pi}=20.67
+             \ \Rightarrow\ M=21,\quad \boxed{N=23} \]
+        rounding up, then up again to odd.
+  \item $\alpha=\dfrac{N-1}{2}=\mathbf{11}$.
+\end{itemize}
+
+\lead{Step 2: the cut-off, in the middle}
+\begin{itemize}
+  \item[] \[ \omega_c=\frac{0.24\pi+0.54\pi}{2}=\mathbf{0.39\pi}=1.2252
+             \ \text{rad/sample} \]
+  \item[] \[ h_d[n]=\frac{\sin\big(0.39\pi(n-11)\big)}{\pi(n-11)},\qquad
+             h_d[11]=\frac{\omega_c}{\pi}=\mathbf{0.39} \]
+\end{itemize}
+
+\lead{Step 3: the first three coefficients}
+\begin{itemize}
+  \item Hann window, $w[n]=0.5-0.5\cos\dfrac{2\pi n}{22}$:
+  \item[] \[ w[0]=0,\qquad w[1]=0.020254,\qquad w[2]=0.079373 \]
+  \item[] \[ h_d[0]=0.022865,\qquad h_d[1]=-0.009836,\qquad h_d[2]=-0.035350 \]
+  \item[] \[ \boxed{h[0]=0,\quad h[1]=-0.000199,\quad h[2]=-0.002806} \]
+  \item \mk{$h[0]=0$ is not a mistake}: the Hann window is exactly zero at both ends, so
+        the first and last taps of the filter vanish. Say so, because it looks like an
+        error otherwise.
+  \item The rest follows by symmetry, $h[22-n]=h[n]$, with the centre tap $h[11]=0.39$.
+\end{itemize}
+
+\lead{Every other fixed-window design}
+\par\smallskip
+{\footnotesize
+\begin{tabular}{@{}L{3.0cm}L{3.3cm}L{1.5cm}L{2.3cm}L{1.1cm}L{2.6cm}@{}}
+\toprule
+\hrow \thead{Papers} & \thead{Spec} & \thead{$A_s$} & \thead{Window}
+& \thead{$N$} & \thead{$\omega_c$} \\
+79 Ba & $\omega_p=0.2\pi$, $\omega_s=0.45\pi$ & $51$ dB & Hamming & $29$
+  & $0.325\pi$ \\
+\textbf{71 Ch}, \textbf{69 Ch} & $\omega_p=0.3\pi$, $\omega_s=0.5\pi$ & $40$ dB & Hann
+  & $33$ & $0.4\pi$ \\
+74 Ash & $\omega_p=0.2\pi$, $\omega_s=0.5\pi$ & $41$ dB & Hann & $23$ & $0.35\pi$ \\
+\textbf{\texttt{79 Ch}}, \textbf{\texttt{75 Bh}} & $\omega_p=0.24\pi$, $\omega_s=0.54\pi$
+  & $42.2$ dB & Hann & $23$ & $0.39\pi$ \\
+\textbf{67 Mng} & $\omega_p=0.35\pi$, $\omega_s=0.45\pi$ & $54$ dB & \mk{Blackman}
+  & $111$ & $0.4\pi$ \\
+\textbf{76 Ch}, \textbf{\texttt{81 Ch}}, \texttt{73 Ma}
+  & $\delta_p=0.101$, $\delta_s=0.01$, \newline $\omega_p=0.2\pi$, $\omega_s=0.4\pi$
+  & $40$ dB & Hann & $33$ & $0.3\pi$ \\
+\textbf{82 Bh} & $2$ kHz, $5$ kHz at $f_s=20$ kHz \newline
+  ($\omega_p=0.2\pi$, $\omega_s=0.5\pi$) & $42$ dB & Hann & $23$ & $0.35\pi$ \\
+82 Ba & $-3$ dB at $30\pi$, $50$ dB at $45\pi$ \newline rad/s, $f_s=100$ Hz
+  ($0.3\pi$, $0.45\pi$) & $50$ dB & Hamming & $45$ & $0.375\pi$ \\
+70 Asa & Hann named, $0.25\pi$, $0.35\pi$, \newline main lobe $8\pi/M$ & ---
+  & Hann (given) & $81$ & $0.3\pi$ \\
+\textbf{69 Bh} & Hann named, $0.25\pi$, $0.3\pi$ & --- & Hann (given) & $125$
+  & $0.275\pi$ \\
+\textbf{68 Bh} & Blackman named, $0.24\pi$, $0.34\pi$, \newline main lobe $12\pi/M$
+  & --- & Blackman (given) & $121$ & $0.29\pi$ \\
+\bottomrule
+\end{tabular}}
+
+\creamq{67 Mng is the marginal case, and that is the question}{It asks for "at least
+54 dB". Hamming gives \textbf{53}, one decibel short, so it is not allowed and
+\textbf{Blackman} is forced. The cost is brutal: Hamming would have needed
+$M=6.6\pi/0.1\pi=66$, so $N=67$, while Blackman needs $M=11\pi/0.1\pi=110$ and
+$\mathbf{N=111}$. \mk{One decibel of specification nearly doubles the filter.} That
+step, not a slope, is the whole point of the window table, and saying so is worth more
+than the arithmetic.}
+
+\creamq{70 Asa and 68 Bh hand you a main-lobe width instead of a transition figure}{They
+say "main lobe width $8\pi/M$" (Hann) and "$12\pi/M$" (Blackman) and expect you to use
+\emph{that} for the length: $M=8\pi/\Delta\omega$ and $12\pi/\Delta\omega$ rather than
+the exact $6.2$ and $11$. For 70 Asa, $\Delta\omega=0.1\pi$ gives $M=80$, so $N=81$;
+for 68 Bh, $\Delta\omega=0.1\pi$ gives $M=120$, so $N=121$. \mk{Use the constant the
+paper gives you}, and note in one line that the exact figures would give 63 and 111.
+Both conventions are in the textbooks and the marks follow the paper.}
+
+\hr
+
+\T{2 \quad Short designs with the window named}
+{\color{sub}\footnotesize \tP{3} \yr{\textbf{80 Bh} \m{10},
+\textbf{\texttt{73 Bh}} \m{2+7}, \textbf{\texttt{76 Bh}} \m{1+2+7}}
+\gap$\cdot$\gap \mk{no window choice and no length choice}: both are given}
+
+\begin{asked}{2080 Bhadra \textperiodcentered{} [10]}
+Design a symmetric linear-phase FIR low pass filter whose desired frequency response is
+$H_d(\omega)=e^{-j\omega\tau}$ for $|\omega|\le\omega_c$ and $0$ elsewhere. The length
+of the filter should be 7 and $\omega_c=1$ rad/sample. Use the Hanning window.
+\end{asked}
+
+\begin{itemize}
+  \item $N=7$, so $\alpha=\tau=\dfrac{N-1}{2}=\mathbf{3}$, and the design is just
+        "evaluate seven numbers twice and multiply".
+  \item[] \[ h_d[n]=\frac{\sin\big(1\cdot(n-3)\big)}{\pi(n-3)},\qquad
+             h_d[3]=\frac{1}{\pi}=0.31831 \]
+  \item[] \[ w_{\text{Hann}}[n]=0.5-0.5\cos\frac{2\pi n}{6} \]
+\end{itemize}
+\par\smallskip
+{\footnotesize
+\begin{tabular}{@{}L{2.4cm}L{1.55cm}L{1.55cm}L{1.55cm}L{1.55cm}L{1.55cm}L{1.55cm}L{1.55cm}@{}}
+\toprule
+\hrow \thead{$n$} & \thead{0} & \thead{1} & \thead{2} & \thead{3} & \thead{4}
+& \thead{5} & \thead{6} \\
+$h_d[n]$ & $0.01497$ & $0.14472$ & $0.26785$ & $0.31831$ & $0.26785$ & $0.14472$
+  & $0.01497$ \\
+Hann $w[n]$ & $0$ & $0.25$ & $0.75$ & $1$ & $0.75$ & $0.25$ & $0$ \\
+$h[n]$ & $\mathbf{0}$ & $0.03618$ & $0.20089$ & $0.31831$ & $0.20089$ & $0.03618$
+  & $\mathbf{0}$ \\
+Blackman $w[n]$ & $0$ & $0.13$ & $0.63$ & $1$ & $0.63$ & $0.13$ & $0$ \\
+$h[n]$ & $\mathbf{0}$ & $0.01881$ & $0.16874$ & $0.31831$ & $0.16874$ & $0.01881$
+  & $\mathbf{0}$ \\
+\bottomrule
+\end{tabular}}
+\par\smallskip
+\begin{itemize}
+  \item \textbf{73 Bh} is the same question with Hann, and \textbf{76 Bh} the same with
+        \textbf{Blackman}, so the last two rows are that answer.
+  \item Both windows kill the end taps, so a "7-tap" filter really has \textbf{5
+        non-zero coefficients}. \mk{Worth one line}: it is why Hann and Blackman waste
+        two taps on short filters, and why the rectangular window is not always wrong.
+  \item Every row is symmetric about $n=3$, confirming linear phase with a group delay
+        of exactly 3 samples.
+\end{itemize}
+
+{\color{sub}\footnotesize 73 Bh and 76 Bh also ask "what is windowing, list the key
+points". Answer in four: \mk{truncation is unavoidable} because $h_d$ is infinite;
+truncating abruptly causes \textbf{Gibbs ripple}; a tapered window trades \textbf{ripple
+for transition width}; and the window is chosen by \textbf{attenuation}, the length by
+\textbf{transition width}.}
+
+\hr
+
+\T{3 \quad Kaiser window designs}
+{\color{sub}\footnotesize \tS{13} \yr{81 Ba \m{10}, \textbf{81 Bh} \m{8},
+\textbf{80 Bh} \m{2+2+2}, 80 Ba \m{2+8}, \textbf{79 Bh} \m{2+8}, \textbf{78 Bh} \m{8},
+\textbf{74 Ch} \m{9+3}, 75 Ash \m{8+4}, 72 Ka \m{6+8}, 76 Ash \m{2+4+4},
+\textbf{73 Ch} \m{8}, \textbf{\texttt{78 Ch}} \m{8}, \textbf{66 Ma}}}
+
+\begin{asked}{2081 Baishakh \textperiodcentered{} [10]}
+Design a linear phase FIR filter using the Kaiser window for
+$0.99\le|H(e^{j\omega})|\le1.01$ for $0\le|\omega|\le0.3\pi$ and
+$|H(e^{j\omega})|\le0.01$ for $0.35\pi\le|\omega|\le\pi$.
+\end{asked}
+
+\lead{Step 1: read the ripples off the inequalities}
+\begin{itemize}
+  \item Passband $1\pm0.01$, so $\delta_p=0.01$. Stopband $\le0.01$, so
+        $\delta_s=0.01$.
+  \item[] \[ \delta=\min(\delta_p,\delta_s)=0.01,\qquad
+             A=-20\log_{10}(0.01)=\mathbf{40\ \text{dB}} \]
+\end{itemize}
+
+\lead{Step 2: the shape parameter}
+\begin{itemize}
+  \item $21<A\le50$, so the middle branch applies:
+  \item[] \[ \beta=0.5842(40-21)^{0.4}+0.07886(40-21)
+             =0.5842(3.2474)+1.4983=\mathbf{3.3953} \]
+\end{itemize}
+
+\lead{Step 3: the length, and the window}
+\begin{itemize}
+  \item $\Delta\omega=0.35\pi-0.3\pi=0.05\pi=0.15708$.
+  \item[] \[ M=\frac{A-8}{2.285\,\Delta\omega}=\frac{32}{2.285(0.15708)}=89.15
+             \ \Rightarrow\ M=90,\quad \boxed{N=91} \]
+  \item $\omega_c=\dfrac{0.3\pi+0.35\pi}{2}=0.325\pi$, and $\alpha=45$.
+  \item[] \[ w[n]=\frac{I_0\!\left(3.3953\sqrt{1-\left(\frac{2n}{90}-1\right)^{2}}\right)}
+                       {I_0(3.3953)},\qquad h[n]=h_d[n]w[n] \]
+  \item \mk{$\beta$ and $N$ came from different specifications}, which is the whole
+        advantage over a fixed window: the attenuation did not force a longer filter.
+\end{itemize}
+
+\lead{Every other Kaiser paper}
+{\color{sub}\footnotesize \mk{Eight of the ten share $\delta=0.01$}, so they share
+$A=40$ dB and $\beta=3.3953$ exactly. Only the transition width, and therefore $N$,
+changes. Learn one calculation.}
+\par\smallskip
+{\footnotesize
+\begin{tabular}{@{}L{2.6cm}L{4.4cm}L{1.2cm}L{1.3cm}L{1.5cm}L{1.4cm}@{}}
+\toprule
+\hrow \thead{Papers} & \thead{Spec} & \thead{$\delta$} & \thead{$A$}
+& \thead{$\beta$} & \thead{$N$} \\
+81 Ba, \textbf{81 Bh} & $0.3\pi$ / $0.35\pi$, $\delta=0.01$ & $0.01$ & $40$
+  & $3.3953$ & $91$ \\
+\textbf{80 Bh} & $0.19\pi$ / $0.21\pi$, $\delta_p=0.05$ & $0.01$ & $40$ & $3.3953$
+  & $225$ \\
+80 Ba & $0.016\pi$ / $0.08\pi$ & $0.01$ & $40$ & $3.3953$ & $71$ \\
+\textbf{79 Bh} & $0.2\pi$ / $0.4\pi$, $\delta_p=0.101$ & $0.01$ & $40$ & $3.3953$
+  & $25$ \\
+\textbf{78 Bh}, \textbf{74 Ch} & band pass, $0.25\pi$ / $0.35\pi$ \newline
+  and $0.6\pi$ / $0.65\pi$ & $0.01$ & $40$ & $3.3953$ & $47$ \\
+75 Ash, 72 Ka & $0.19\pi$ / $0.21\pi$ & $0.01$ & $40$ & $3.3953$ & $225$ \\
+76 Ash & $0.16\pi$ / $0.18\pi$ & $0.01$ & $40$ & $3.3953$ & $225$ \\
+\textbf{73 Ch} & $0.09\pi$ / $0.14\pi$, $\delta_p=0.02$ & $0.01$ & $40$ & $3.3953$
+  & $91$ \\
+\textbf{\texttt{78 Ch}} & $0.19\pi$ / $0.21\pi$, both $\delta=0.02$ & $0.02$
+  & $33.98$ & $2.6523$ & $183$ \\
+\textbf{66 Ma} & $0.25\pi$ / $0.65\pi$, both $\delta=0.035$ & $0.035$ & $29.12$
+  & $\mathbf{1.9903}$ & $9$ \\
+\bottomrule
+\end{tabular}}
+
+\creamq{66 Ma supplies a Bessel table, and it is mislabelled}{The paper prints a table
+headed $J_0(x)$ with values $1$, $1.4826$, $1.8926$, $2.0508$, $2.1675$, $2.1718$,
+$2.2642$, $2.2796$ at $x=0$, $1.3165$, $1.7237$, $1.8455$, $1.9271$, $1.93$, $1.9903$,
+$2$. \mk{Every one of those eight is $I_0(x)$}, the \textbf{modified} Bessel function,
+not $J_0$: the ordinary $J_0$ oscillates and never exceeds 1, while these climb past 2.
+It is the right table with the wrong name. \mk{And the table gives the answer away}:
+$\delta=0.035$ gives $A=29.12$ dB and $\beta=\mathbf{1.9903}$, which is one of its own
+$x$ entries, so $I_0(\beta)=2.2642$ is supplied ready to use. The remaining entries are
+the $x$ values needed for $n=0\ldots8$ of a 9-tap window.}
+
+\creamq{73 Ch prints a passband that swallows its own stopband}{It gives
+$0.98\le|H|\le1.02$ for $0\le\omega\le0.9\pi$, then $|H|\le0.01$ for
+$0.14\pi\le\omega\le\pi$. \mk{The passband edge is larger than the stopband edge}, so
+the two overlap and no filter exists. Read $0.9\pi$ as $\mathbf{0.09\pi}$: the
+transition $0.09\pi$ to $0.14\pi$ is then sensible and gives $\Delta\omega=0.05\pi$,
+$\beta=3.3953$ and $N=91$. Note the misprint in a line and design the sensible filter.}
+
+\creamq{78 Bh and 74 Ch are band pass, not low pass}{Their spec has three bands: stop up
+to $0.25\pi$, pass from $0.35\pi$ to $0.6\pi$, stop from $0.65\pi$. \mk{Use the
+narrower of the two transitions}, here both $0.1\pi$, so $\Delta\omega=0.1\pi$ and
+$N=47$. The ideal response is the band-pass one,
+$h_d[n]=\dfrac{\sin(\omega_2(n-\alpha))-\sin(\omega_1(n-\alpha))}{\pi(n-\alpha)}$ with
+$\omega_1=0.3\pi$ and $\omega_2=0.625\pi$, each edge again placed in the middle of its
+transition.}
+
+\hr
+
+\T{4 \quad The bookwork, which is a third of the chapter}
+{\color{sub}\footnotesize \tS{31} \gap$\cdot$\gap Gibbs \tS{8} and Remez \tS{23}
+\gap$\cdot$\gap \mk{175 marks of Remez alone, and not one calculation}}
+
+\begin{itemize}
+  \item \textbf{Gibbs} is asked in eight papers for 3 to 6 marks. Three sentences:
+        truncating with a rectangular window convolves the ideal response with a
+        kernel whose sidelobes are only $13$ dB down; the result overshoots the band
+        edge by about \textbf{9 \%} with ringing either side; and \mk{lengthening the
+        filter does not reduce the overshoot}, only narrows the ripples, so the cure is
+        a tapered window.
+  \item \textbf{Remez} is asked in twenty-three, for 4 to 10 marks, and almost always
+        wants \textbf{the flowchart}. Learn the seven boxes in \S5.5 of the theory:
+        input, initial guess of $r+2$ extremal frequencies, solve for $\delta$,
+        interpolate and evaluate $E(\omega)$ on a dense grid, exchange the extrema,
+        test against the alternation theorem, output.
+  \item The three "why is it better" marks: \mk{it wastes no tolerance}, so it gives a
+        \textbf{shorter filter} for the same spec; it allows \textbf{different passband
+        and stopband ripple} through the weight $W(\omega)$; and it ignores the
+        transition band instead of constraining it.
+  \item \mk{Write $\min_h\max_\omega|W(\omega)[H_d(\omega)-H(\omega)]|$ once} and the
+        "mathematical expression" marks are collected.
+\end{itemize}

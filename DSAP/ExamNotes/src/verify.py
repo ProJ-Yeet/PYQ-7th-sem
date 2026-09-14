@@ -20,6 +20,8 @@ OK = [0]
 def chk(tag, got, want, tol=1e-9):
     if got is None or want is None:
         same = got is want                 # "aperiodic" is a real answer, not a number
+    elif isinstance(want, str) or isinstance(got, str):
+        same = got == want                 # a window name is an answer too
     elif isinstance(want, (list, tuple)) and isinstance(got, (list, tuple)):
         same = len(got) == len(want) and all(
             abs(float(a) - float(b)) <= tol for a, b in zip(got, want))
@@ -1049,7 +1051,159 @@ def ch4():
     chk("c4 67Mng q - q_u", bound, Fr(7, 64))
 
 
-CHAPTERS = {"ch1": ch1, "ch2": ch2, "ch3": ch3, "ch4": ch4}
+# ---------------------------------------------------------------- chapter 5
+
+def ch5():
+    """Assert every window choice, length, beta and coefficient in chapter 5."""
+    import math
+    import fir as FI
+    PI = math.pi
+
+    # --- the comparison table, against the figures the sources print
+    for name, atten, trans in (("Rectangular", 21, 1.8), ("Bartlett", 25, 6.1),
+                               ("Hann", 44, 6.2), ("Hamming", 53, 6.6),
+                               ("Blackman", 74, 11.0)):
+        chk("c5 %s attenuation" % name, FI.ATTEN[name], atten)
+        chk("c5 %s transition" % name, FI.TRANS[name], trans)
+
+    # window end values, which is the whole Hann-vs-Hamming difference
+    chk("c5 Hann ends at 0", FI.window("Hann", 21)[0], 0.0, tol=1e-12)
+    chk("c5 Hamming ends at 0.08", FI.window("Hamming", 21)[0], 0.08, tol=1e-12)
+    for name in ("Rectangular", "Bartlett", "Hann", "Hamming", "Blackman"):
+        w = FI.window(name, 15)
+        chk("c5 %s symmetric" % name, w, list(reversed(w)), tol=1e-12)
+
+    # --- section 1, the fixed-window designs
+    DES = [
+        ("79Ba", 0.2, 0.45, 51, "Hamming", 29, 0.325),
+        ("71Ch/69Ch", 0.3, 0.5, 40, "Hann", 33, 0.4),
+        ("74Ash", 0.2, 0.5, 41, "Hann", 23, 0.35),
+        ("79Ch/75Bh", 0.24, 0.54, 42.2, "Hann", 23, 0.39),
+        ("67Mng", 0.35, 0.45, 54, "Blackman", 111, 0.4),
+        ("76Ch/81Ch/73Ma", 0.2, 0.4, 40, "Hann", 33, 0.3),
+        ("82Bh", 0.2, 0.5, 42, "Hann", 23, 0.35),
+        ("82Ba", 0.3, 0.45, 50, "Hamming", 45, 0.375),
+    ]
+    for tag, wp, ws, A, win, N, wc in DES:
+        d = FI.design(wp * PI, ws * PI, atten_db=A)
+        chk("c5 %s window" % tag, d["window"], win)
+        chk("c5 %s N" % tag, d["N"], N)
+        chk("c5 %s wc" % tag, d["wc"] / PI, wc, tol=1e-9)
+        chk("c5 %s N is odd" % tag, d["N"] % 2, 1)
+
+    # the delta-to-dB conversions the papers hide behind inequalities
+    chk("c5 delta 0.01 -> 40 dB", FI.db(0.01), 40.0, tol=1e-12)
+    chk("c5 delta 0.02 -> 33.98 dB", FI.db(0.02), 33.9794, tol=5e-5)
+    chk("c5 delta 0.035 -> 29.12 dB", FI.db(0.035), 29.1186, tol=5e-5)
+
+    # 67 Mng: the marginal decibel, and what it costs
+    chk("c5 54 dB forces Blackman", FI.pick_window(54), "Blackman")
+    chk("c5 53 dB still allows Hamming", FI.pick_window(53), "Hamming")
+    chk("c5 67Mng Hamming would be 67", FI.length_for("Hamming", 0.1 * PI), 67)
+    chk("c5 67Mng Blackman costs 111", FI.length_for("Blackman", 0.1 * PI), 111)
+
+    # papers that name the window and supply a main-lobe constant instead
+    chk("c5 70Asa N from 8pi/dw", int(math.ceil(8 * PI / (0.1 * PI))) + 1, 81)
+    chk("c5 68Bh N from 12pi/dw", int(math.ceil(12 * PI / (0.1 * PI))) + 1, 121)
+    chk("c5 69Bh Hann exact would be", FI.length_for("Hann", 0.05 * PI), 125)
+
+    # --- section 1 worked example, 79 Ch / 75 Bh, first three coefficients
+    N, wc = 23, 0.39 * PI
+    hd = FI.hd_lowpass(N, wc)
+    w = FI.window("Hann", N)
+    h = [hd[i] * w[i] for i in range(N)]
+    chk("c5 79Ch alpha", (N - 1) // 2, 11)
+    chk("c5 79Ch centre tap", hd[11], 0.39, tol=1e-12)
+    chk("c5 79Ch hd[0..2]", hd[:3], [0.022865, -0.009836, -0.035350], tol=5e-6)
+    chk("c5 79Ch w[0..2]", w[:3], [0.0, 0.020254, 0.079373], tol=5e-6)
+    chk("c5 79Ch h[0..2]", h[:3], [0.0, -0.000199, -0.002806], tol=5e-6)
+    chk("c5 79Ch h symmetric", h, list(reversed(h)), tol=1e-12)
+    chk("c5 79Ch h[0] is exactly zero", h[0], 0.0, tol=1e-15)
+
+    # 74 Ash wants six coefficients
+    N, wc = 23, 0.35 * PI
+    hd = FI.hd_lowpass(N, wc)
+    w = FI.window("Hann", N)
+    h = [hd[i] * w[i] for i in range(N)]
+    chk("c5 74Ash centre tap", hd[11], 0.35, tol=1e-12)
+    chk("c5 74Ash h[0..5]", h[:6],
+        [0.0, -0.000645, -0.001274, 0.004036, 0.013128, 0.007030], tol=5e-6)
+
+    # --- section 2, the length-7 designs
+    hd = FI.hd_lowpass(7, 1.0)
+    chk("c5 len7 hd", hd,
+        [0.014975, 0.144717, 0.267849, 0.318310, 0.267849, 0.144717, 0.014975],
+        tol=5e-6)
+    chk("c5 len7 centre is 1/pi", hd[3], 1.0 / PI, tol=1e-12)
+    wh = FI.window("Hann", 7)
+    chk("c5 len7 Hann", wh, [0.0, 0.25, 0.75, 1.0, 0.75, 0.25, 0.0], tol=1e-12)
+    chk("c5 len7 Hann h", [hd[i] * wh[i] for i in range(7)],
+        [0.0, 0.036179, 0.200887, 0.318310, 0.200887, 0.036179, 0.0], tol=5e-6)
+    wb = FI.window("Blackman", 7)
+    chk("c5 len7 Blackman", wb, [0.0, 0.13, 0.63, 1.0, 0.63, 0.13, 0.0], tol=1e-9)
+    chk("c5 len7 Blackman h", [hd[i] * wb[i] for i in range(7)],
+        [0.0, 0.018813, 0.168745, 0.318310, 0.168745, 0.018813, 0.0], tol=5e-6)
+
+    # --- section 3, Kaiser
+    chk("c5 beta at 40 dB", FI.kaiser_beta(40.0), 3.3953, tol=5e-5)
+    chk("c5 beta at 33.98 dB", FI.kaiser_beta(FI.db(0.02)), 2.6523, tol=5e-5)
+    chk("c5 beta at 29.12 dB", FI.kaiser_beta(FI.db(0.035)), 1.9903, tol=5e-5)
+    chk("c5 beta zero below 21 dB", FI.kaiser_beta(20.0), 0.0)
+    chk("c5 beta high branch at 60 dB", FI.kaiser_beta(60.0),
+        0.1102 * (60 - 8.7), tol=1e-12)
+
+    KAI = [
+        ("81Ba/81Bh", 0.3, 0.35, 0.01, 0.01, 3.3953, 91),
+        ("80Bh", 0.19, 0.21, 0.05, 0.01, 3.3953, 225),
+        ("80Ba", 0.016, 0.08, 0.01, 0.01, 3.3953, 71),
+        ("79Bh", 0.2, 0.4, 0.101, 0.01, 3.3953, 25),
+        ("78Bh/74Ch", 0.35, 0.25, 0.05, 0.01, 3.3953, 47),
+        ("75Ash/72Ka", 0.19, 0.21, 0.01, 0.01, 3.3953, 225),
+        ("76Ash", 0.16, 0.18, 0.01, 0.01, 3.3953, 225),
+        ("73Ch", 0.09, 0.14, 0.02, 0.01, 3.3953, 91),
+        ("78Ch", 0.19, 0.21, 0.02, 0.02, 2.6523, 183),
+        ("66Ma", 0.25, 0.65, 0.035, 0.035, 1.9903, 9),
+    ]
+    for tag, wp, ws, dp, ds, beta, N in KAI:
+        d = FI.design(wp * PI, ws * PI, dp=dp, ds=ds)
+        chk("c5 %s beta" % tag, d["beta"], beta, tol=5e-5)
+        chk("c5 %s kaiser N" % tag, d["kaiser_N"], N)
+        chk("c5 %s N odd" % tag, d["kaiser_N"] % 2, 1)
+
+    # eight of the ten share one beta, which is the grouping the notes claim
+    betas = [FI.design(wp * PI, ws * PI, dp=dp, ds=ds)["beta"]
+             for _, wp, ws, dp, ds, _, _ in KAI]
+    chk("c5 eight Kaiser papers share beta",
+        sum(1 for b in betas if abs(b - 3.3953) < 5e-5), 8)
+
+    # 66 Ma's mislabelled table: every entry is I_0, not J_0
+    TAB = [(0, 1), (1.3165, 1.4826), (1.7237, 1.8926), (1.8455, 2.0508),
+           (1.9271, 2.1675), (1.93, 2.1718), (1.9903, 2.2642), (2, 2.2796)]
+    for x, printed in TAB:
+        chk("c5 66Ma table I0(%s)" % x, FI.i0(x), printed, tol=5e-5)
+    chk("c5 66Ma beta is one of its own table entries",
+        FI.kaiser_beta(FI.db(0.035)), 1.9903, tol=5e-5)
+    chk("c5 66Ma I0(beta) supplied", FI.i0(1.9903), 2.2642, tol=5e-5)
+    # J_0 would be nothing like it
+    chk("c5 J0 is not I0", 1.0 if abs(math.cos(2.0) - 2.2796) > 1.0 else 0.0, 1.0)
+
+    # the Kaiser window is rectangular at beta = 0, and peaks at 1 in the middle
+    chk("c5 kaiser beta=0", FI.kaiser_window(9, 0.0), [1.0] * 9, tol=1e-12)
+    kw = FI.kaiser_window(21, 3.3953)
+    chk("c5 kaiser centre is 1", kw[10], 1.0, tol=1e-12)
+    chk("c5 kaiser symmetric", kw, list(reversed(kw)), tol=1e-12)
+
+    # --- 73 Ch prints a passband edge beyond its stopband edge
+    chk("c5 73Ch as printed is impossible", 1.0 if 0.9 > 0.14 else 0.0, 1.0)
+    d = FI.design(0.09 * PI, 0.14 * PI, dp=0.02, ds=0.01)
+    chk("c5 73Ch on the sensible reading", d["kaiser_N"], 91)
+
+    # --- the Remez comparison quoted from the local source
+    chk("c5 Remez M=26 against Kaiser M=38", 38 - 26, 12)
+
+
+CHAPTERS = {"ch1": ch1, "ch2": ch2, "ch3": ch3, "ch4": ch4,
+            "ch5": ch5}
 
 
 def main():

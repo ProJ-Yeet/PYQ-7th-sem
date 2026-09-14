@@ -1,0 +1,346 @@
+%=======================================================================
+%  CHAPTER 5 - FIR FILTER DESIGN  (6 hrs)
+%  Every window value, filter length, beta and Bessel figure quoted here
+%  is produced by fir.py, which self-tests before it prints.
+%  Sources: Chapterwise Ch5 pp.1-27 (windowing pp.1-11, Kaiser pp.12-20
+%           with the design equations on p.17, Parks-McClellan pp.21-27
+%           with the 6-step procedure and the M=26 vs M=38 comparison
+%           on p.27; pp.28-31 are chapter 4 material, not this one);
+%           SPP Sir deck 6 "IIR _ FIR" p.123 for the window comparison
+%           table (an embedded image of Oppenheim Table 7.2) and p.132
+%           for the Kaiser equations, agreeing verbatim with Chapterwise;
+%           SPP Sir "Optimum_FIR_Filters" (17 pp, exported this session)
+%           for the alternation theorem and the Remez flowchart on p.17.
+%           NOTE: DSAP All Chapter Summary p.94 says of Remez only
+%           "read yourself from Proakis book", so it is no use here.
+%  Numericals live in ch5-num.tex.
+%=======================================================================
+\section{FIR Filter Design}
+
+{\color{sub}\footnotesize 6 hrs \gap$\cdot$\gap \mk{70 questions across the 45 papers}
+\gap$\cdot$\gap worth about \mk{12 of 80 marks} \gap$\cdot$\gap 3 syllabus sub-topics
+\gap$\cdot$\gap \mk{4th of the 8 chapters} by weight.}
+
+\lead{Read this first:}
+\begin{itemize}
+  \item Three topics, and they divide cleanly by \emph{what you have to do}:
+  \begin{itemize}
+    \item \textbf{Window method} \tS{28}: a design calculation. Pick a window, get a
+          length, truncate the ideal response.
+    \item \textbf{Kaiser window} \tS{19}: the same calculation with two formulas
+          bolted on, for $\beta$ and for the length.
+    \item \textbf{Remez exchange} \tS{23}: \mk{pure bookwork}. 23 questions, almost
+          always the same flowchart and the same three sentences, and \mk{not one of
+          them asks you to run the algorithm}.
+  \end{itemize}
+  \item So a third of this chapter's marks are free if you memorise one flowchart.
+        Do \S5.6 first.
+  \item \mk{The whole design method is two lines}: the ideal filter has an infinite,
+        non-causal impulse response, so \textbf{truncate it} and \textbf{taper the
+        truncation} so the edges do not ring.
+  \item The window is chosen by \textbf{stopband attenuation} and the length by
+        \textbf{transition width}. Those are two independent lookups and they are the
+        only two numbers a fixed-window question turns on.
+  \item \mk{Gibbs ripple does not shrink when you lengthen the filter.} That single
+        fact is worth 3 to 6 marks in eight papers, and it is the reason Kaiser exists.
+\end{itemize}
+
+\hr
+
+\T{5.1 \quad The window method}
+
+\Q{Describe how a digital FIR filter is designed by the window method, and discuss
+the characteristics of the different window functions}{\m{4+4}\m{5+3}\m{4}\m{5}}
+{\color{sub}\footnotesize \tS{28} \yr{\textbf{70 Ch} \m{4+4}, \textbf{72 Ch} \m{5+3},
+\texttt{72 Ma} \m{4}, \textbf{\texttt{70 Bh}} \m{5}}
+\gap$\cdot$\gap \mk{the answer is the four steps below, then the table in \S5.2}}
+
+\sbsr{0.5}{%
+\lead{Where the ideal response comes from}
+An ideal low-pass filter is a brick wall in frequency. Inverse DTFT it:
+\[ h_d[n]=\frac{1}{2\pi}\int_{-\omega_c}^{\omega_c}e^{j\omega n}\,d\omega
+        =\frac{\sin\omega_c n}{\pi n} \]
+\begin{itemize}
+  \item This is a $\operatorname{sinc}$: \textbf{infinitely long} and
+        \textbf{non-causal}, so it cannot be built.
+  \item Delay it by $\alpha=\dfrac{N-1}{2}$ samples to make it causal, which is also
+        exactly what gives \textbf{linear phase}:
+  \item[] \[ h_d[n]=\frac{\sin\big(\omega_c(n-\alpha)\big)}{\pi(n-\alpha)},\qquad
+             h_d[\alpha]=\frac{\omega_c}{\pi} \]
+  \item The centre tap is a $0/0$ limit, so \mk{evaluate it separately as
+        $\omega_c/\pi$}. Forgetting that is the most common slip in the chapter.
+\end{itemize}}{%
+\lead{The four steps, which are the whole method}
+\begin{enumerate}
+  \item Write $h_d[n]$ for the ideal filter, delayed by $\alpha=(N-1)/2$.
+  \item \textbf{Choose the window} from the required stopband attenuation.
+  \item \textbf{Choose $N$} from the required transition width.
+  \item Multiply: $\;h[n]=h_d[n]\,w[n]$ for $0\le n\le N-1$, zero elsewhere.
+\end{enumerate}
+\lead{Other ideal responses}
+\begin{itemize}
+  \item \textbf{High pass}: $\delta[n-\alpha]-h_{d,\mathrm{LP}}[n]$, an all-pass minus
+        the low pass.
+  \item \textbf{Band pass}: $h_{d}(\omega_2)-h_{d}(\omega_1)$, the wider low pass minus
+        the narrower.
+  \item \mk{Every one of them is symmetric about $\alpha$}, so every windowed FIR
+        filter here has linear phase automatically.
+\end{itemize}}
+
+\lead{Why multiplying by a window is convolving in frequency}
+\begin{itemize}
+  \item $h[n]=h_d[n]w[n]$ becomes, in frequency,
+  \item[] \[ H(e^{j\omega})=\frac{1}{2\pi}\int_{-\pi}^{\pi}
+             H_d(e^{j\theta})\,W(e^{j(\omega-\theta)})\,d\theta \]
+  \item So the brick wall is \textbf{smeared by the window's spectrum}. The result is
+        the sharp edge replaced by a transition, plus ripple from the window's
+        sidelobes.
+  \item \mk{Main lobe width sets the transition; sidelobe height sets the ripple.}
+        That one sentence explains the entire comparison table in \S5.2.
+\end{itemize}
+
+\hr
+
+\T{5.2 \quad The windows, and the Gibbs phenomenon}
+
+\Q{Explain the Gibbs phenomenon: how it arises when the rectangular window is used,
+and how it can be minimized}{\m{3+3}\m{5}\m{6}\m{1+4}\m{2+5}}
+{\color{sub}\footnotesize \tS{8} \yr{81 Ba, 80 Ba, 73 Shr, 71 Shr,
+\textbf{\texttt{79 Ch}}, \textbf{\texttt{74 Bh}}, \textbf{\texttt{71 Bh}},
+\textbf{\texttt{81 Ch}}} \gap$\cdot$\gap \mk{asked in eight papers, always the same
+answer}}
+
+\sbsr{0.46}{%
+\lead{What the Gibbs phenomenon is}
+\begin{itemize}
+  \item Truncating the sinc with a \textbf{rectangular} window convolves $H_d$ with the
+        Dirichlet kernel, whose sidelobes are only \textbf{13 dB} below its main lobe.
+  \item The result overshoots the band edge by about \mk{9 \% of the discontinuity
+        height}, with ringing either side.
+  \item \mk{Increasing $N$ does not help.} The ripples get narrower and more numerous,
+        but the overshoot stays at 9 \%. The series converges in the mean-square sense,
+        \textbf{not uniformly}.
+  \item That is the whole phenomenon, and the fact examiners want stated.
+\end{itemize}
+\lead{How to minimize it}
+\begin{itemize}
+  \item \textbf{Use a tapered window.} Hann, Hamming and Blackman fall smoothly to zero
+        at the ends instead of being cut off, so their sidelobes are far lower and the
+        ripple is far smaller.
+  \item The price is a \textbf{wider main lobe}, hence a wider transition band, hence a
+        longer filter for the same sharpness.
+  \item \mk{Every window is a trade of ripple against transition width.}
+\end{itemize}}{%
+\lead{The comparison table \mk{(learn this: it answers half the chapter)}}
+\par
+\begin{tabular}{@{}L{2.0cm}L{1.4cm}L{1.3cm}L{1.3cm}L{1.5cm}@{}}
+\toprule
+\hrow \thead{Window} & \thead{Main lobe} & \thead{Peak side lobe} &
+\thead{Stop band} & \thead{Transition} \\
+Rectangular & $\frac{4\pi}{M+1}$ & $-13$ dB & $21$ dB & $1.8\pi/M$ \\
+Bartlett & $8\pi/M$ & $-25$ dB & $25$ dB & $6.1\pi/M$ \\
+Hann & $8\pi/M$ & $-31$ dB & $44$ dB & $6.2\pi/M$ \\
+Hamming & $8\pi/M$ & $-41$ dB & $53$ dB & $6.6\pi/M$ \\
+Blackman & $12\pi/M$ & $-57$ dB & $74$ dB & $11\pi/M$ \\
+\bottomrule
+\end{tabular}
+\par\smallskip
+\begin{itemize}
+  \item \mk{Stopband attenuation is a property of the window alone.} It does not depend
+        on $N$ at all, which is exactly why Gibbs ripple cannot be lengthened away.
+  \item $M=N-1$ throughout. Papers sometimes call $M$ the length; read which.
+  \item The two columns you actually use are \textbf{Stop band} (to choose the window)
+        and \textbf{Transition} (to choose $N$).
+\end{itemize}}
+
+\lead{The window formulas, for $0\le n\le M$ with $M=N-1$}
+\begin{itemize}
+  \item[] \[ w_{\text{rect}}[n]=1,\qquad
+             w_{\text{Bart}}[n]=1-\frac{|2n-M|}{M} \]
+  \item[] \[ w_{\text{Hann}}[n]=0.5-0.5\cos\frac{2\pi n}{M},\qquad
+             w_{\text{Hamm}}[n]=0.54-0.46\cos\frac{2\pi n}{M} \]
+  \item[] \[ w_{\text{Black}}[n]=0.42-0.5\cos\frac{2\pi n}{M}
+             +0.08\cos\frac{4\pi n}{M} \]
+  \item \mk{Hann ends at exactly 0; Hamming ends at 0.08.} That is the only difference
+        between them and it buys 9 dB of stopband.
+  \item All five are \textbf{symmetric}, which is what keeps the phase linear.
+\end{itemize}
+
+\hr
+
+\T{5.3 \quad Choosing the window and the length}
+
+\sbs{%
+\lead{The two lookups}
+\begin{enumerate}
+  \item \textbf{Window} $\leftarrow$ stopband attenuation. Take the \emph{cheapest}
+        window whose figure meets the spec. If the paper gives a stopband ripple
+        $\delta_s$ instead, convert first:
+  \item[] \[ A_s=-20\log_{10}\delta_s \ \text{dB} \]
+  \item \textbf{Length} $\leftarrow$ transition width
+        $\Delta\omega=|\omega_s-\omega_p|$, from the same table:
+  \item[] \[ N-1=M=\frac{c\,\pi}{\Delta\omega} \]
+        with $c$ the window's transition constant ($6.6$ for Hamming, and so on).
+  \item Round $N$ \textbf{up}, and up again to the next \textbf{odd} number so
+        $\alpha=(N-1)/2$ is a whole sample.
+\end{enumerate}}{%
+\lead{The cut-off goes in the middle}
+\begin{itemize}
+  \item The window method has no independent control of the band edges, so put the
+        ideal cut-off \textbf{halfway across the transition band}:
+  \item[] \[ \omega_c=\frac{\omega_p+\omega_s}{2} \]
+  \item \mk{Use $\omega_c$, not $\omega_p$, in $h_d[n]$.} Using the passband edge is a
+        guaranteed lost mark.
+  \item If the spec is in Hz, convert first: $\omega=2\pi f/f_s$. If it is in rad/s,
+        $\omega=\Omega/f_s$ (equivalently $\Omega T$).
+\end{itemize}
+{\color{sub}\footnotesize \mk{The window choice is a step, not a slope.} 67 Mng asks
+for 54 dB. Hamming gives 53, one short, so Blackman is forced and the filter jumps
+from 67 taps to 111 for the sake of 1 dB. Say so: it is the point of the question.}}
+
+\hr
+
+\T{5.4 \quad The Kaiser window}
+
+\Q{Why is the Kaiser window better than other fixed windows? Explain the steps to
+design an FIR filter using it}{\m{3}\m{4}\m{7}\m{2+2}}
+{\color{sub}\footnotesize \tS{19} \yr{81 Ba, 74 Ash, \textbf{72 Ch},
+\textbf{\texttt{80 Ch}}, \textbf{\texttt{72 Ash}}, \textbf{\texttt{74 Bh}} \m{2+2}}
+\gap$\cdot$\gap the "why" is one sentence, the design is four lines}
+
+\sbsr{0.46}{%
+\lead{Why it is better \mk{(the whole answer)}}
+\begin{itemize}
+  \item Every fixed window offers \textbf{one} stopband attenuation, take it or leave
+        it. Hann gives 44 dB whether you want 30 or 43.
+  \item Kaiser has a \textbf{shape parameter $\beta$}, so the attenuation is
+        \emph{continuously adjustable}.
+  \item So the two specifications \textbf{decouple}: \mk{$\beta$ buys attenuation,
+        $N$ buys transition width}, and neither is wasted on the other.
+  \item The result is \textbf{the shortest filter} that meets a given spec among all
+        the window methods, because nothing is over-designed.
+  \item It is also very nearly optimal in the energy sense: it maximises the fraction
+        of the window's energy in the main lobe.
+\end{itemize}}{%
+\lead{The design equations}
+\[ w[n]=\frac{I_0\!\left(\beta\sqrt{1-\left(\frac{2n}{M}-1\right)^{2}}\right)}
+              {I_0(\beta)},\qquad 0\le n\le M \]
+\begin{enumerate}
+  \item $\delta=\min(\delta_p,\delta_s)$, then $A=-20\log_{10}\delta$ dB.
+  \item[] \[ \beta=\begin{cases}
+        0 & A\le21\\
+        0.5842(A-21)^{0.4}+0.07886(A-21) & 21<A\le50\\
+        0.1102(A-8.7) & A>50\end{cases} \]
+  \item[] \[ M=\frac{A-8}{2.285\,\Delta\omega},\qquad \text{length}=M+1 \]
+  \item $I_0$ is the \textbf{modified} Bessel function of the first kind, order zero:
+        $I_0(x)=\sum_{k\ge0}\left[\frac{(x/2)^k}{k!}\right]^{2}$, and $I_0(0)=1$.
+\end{enumerate}
+{\color{sub}\footnotesize $\beta=0$ makes the Kaiser window rectangular, and larger
+$\beta$ tapers it harder. \mk{The same $\delta$ gives the same $\beta$}, so most papers
+in \S2 of the companion share one value.}}
+
+\hr
+
+\T{5.5 \quad Optimum filters and the Remez exchange algorithm}
+
+\Q{What is an optimum filter? Explain the Remez exchange algorithm for FIR filter
+design, with its flowchart. Why is it superior to windowing?}{\m{1+5}\m{2+6}\m{4}\m{9}\m{3+10}}
+{\color{sub}\footnotesize \tS{23} \yr{\textbf{75 Ch}, \textbf{72 Ch}, \textbf{70 Ch},
+\textbf{69 Ch}, \textbf{73 Ch}, \textbf{78 Bh}, \textbf{76 Ch}, \textbf{82 Bh},
+\textbf{81 Bh}, 76 Ash, 73 Shr, 71 Shr, \textbf{79 Bh}, 79 Ba, 82 Ba,
+\textbf{\texttt{77 Ch}}, \textbf{\texttt{74 Bh}}, \textbf{\texttt{78 Ch}},
+\textbf{\texttt{80 Ch}}, \texttt{74 Ma}, \texttt{72 Ma}, \textbf{\texttt{70 Bh}},
+\textbf{\texttt{69 Bh}}}
+\gap$\cdot$\gap \mk{23 questions, 175 marks, and no calculation in any of them}}
+
+\sbsr{0.48}{%
+\lead{What "optimum" means}
+\begin{itemize}
+  \item The window method accepts whatever error the window happens to give, and that
+        error is \textbf{largest at the band edges} and small in the middle. Most of the
+        allowed tolerance goes unused.
+  \item An \textbf{optimum} (equiripple, minimax, Parks-McClellan) filter instead
+        spreads the error evenly, so the worst case is as small as possible:
+  \item[] \[ \min_{h}\ \max_{\omega\in S}\ |E(\omega)|,\qquad
+             E(\omega)=W(\omega)\big[H_d(\omega)-H(\omega)\big] \]
+  \item $W(\omega)$ is a \textbf{weight}, which is how passband and stopband ripple can
+        be traded: set $W=\delta_s/\delta_p$ in the passband and $1$ in the stopband.
+  \item $S$ is the bands of interest only, so \mk{the transition band is simply left
+        out} rather than being forced to behave.
+\end{itemize}}{%
+\lead{The alternation theorem, which is why it works}
+\begin{itemize}
+  \item $H$ is the unique best approximation \textbf{if and only if} $E(\omega)$ has at
+        least $\mathbf{r+2}$ \textbf{alternations}: extrema of equal magnitude and
+        alternating sign, where $r$ is the number of free coefficients.
+  \item So the answer is recognisable when you see it: \mk{count the alternations}.
+  \item That is what makes the filter \emph{equiripple}: every ripple in a band reaches
+        exactly the same height.
+\end{itemize}
+\lead{Why it beats windowing}
+\begin{itemize}
+  \item \textbf{Shorter filter} for the same specification. \mk{The local worked
+        comparison is worth quoting}: for $\omega_p=0.4\pi$, $\omega_s=0.6\pi$ and
+        $\delta=0.0116$, the equiripple design needs $M=26$ while a Kaiser window at
+        the same $\delta$ needs $M=38$. \textbf{A third fewer taps.}
+  \item \textbf{Independent control} of passband and stopband ripple through $W$.
+  \item Handles arbitrary multi-band shapes, not just the standard four.
+\end{itemize}}
+
+\lead{The Remez exchange algorithm, as a flowchart \mk{(this is the marks)}}
+\begin{enumerate}
+  \item \textbf{Input} the band edges, the desired response $H_d$, the weights $W$, and
+        the order.
+  \item \textbf{Guess} an initial set of $r+2$ extremal frequencies, usually spaced
+        evenly over the bands.
+  \item \textbf{Solve} for the deviation $\delta$ on that set. It comes out in closed
+        form, with no matrix inversion:
+  \item[] \[ \delta=\frac{\sum_{k}\gamma_k H_d(\omega_k)}
+                       {\sum_{k}(-1)^{k}\gamma_k/W(\omega_k)} \]
+  \item \textbf{Interpolate} the trial response $H$ through the points using Lagrange
+        interpolation, and evaluate $E(\omega)$ on a dense grid.
+  \item \textbf{Exchange}: find the new local extrema of $|E|$ and make them the new
+        extremal set.
+  \item \textbf{Test}: if the largest $|E|$ on the grid no longer exceeds $|\delta|$,
+        the alternation theorem is satisfied, so \textbf{stop}. Otherwise go back to
+        step 3.
+  \item \textbf{Output} the impulse response from the converged frequency response.
+\end{enumerate}
+{\color{sub}\footnotesize Each pass can only increase $|\delta|$ towards its optimum, so
+the iteration always converges. \mk{Draw it as a loop with the test at the bottom},
+label the exchange step, and the flowchart marks are safe. No paper in the 45 asks for
+a numerical iteration.}
+
+\hr
+
+\T{5.6 \quad Last-minute recall}
+
+\sbs{%
+\lead{Say these without thinking}
+\begin{itemize}
+  \item $h_d[n]=\dfrac{\sin(\omega_c(n-\alpha))}{\pi(n-\alpha)}$, centre tap
+        $\omega_c/\pi$, $\alpha=\dfrac{N-1}{2}$.
+  \item $\omega_c=\dfrac{\omega_p+\omega_s}{2}$, and $\Delta\omega=|\omega_s-\omega_p|$.
+  \item Window from \textbf{attenuation}: 21 / 25 / 44 / 53 / 74 dB.
+  \item Length from \textbf{transition}: $1.8$ / $6.1$ / $6.2$ / $6.6$ / $11$, all
+        $\times\pi/\Delta\omega$.
+  \item $A=-20\log_{10}\delta$. Kaiser:
+        $\beta=0.5842(A-21)^{0.4}+0.07886(A-21)$ for $21<A\le50$, and
+        $M=\dfrac{A-8}{2.285\Delta\omega}$.
+  \item Gibbs overshoot is \textbf{9 \%} and \mk{does not depend on $N$}.
+  \item Alternation theorem: \textbf{$r+2$} equal-magnitude alternating extrema.
+  \item $\omega=2\pi f/f_s$ for a spec in Hz.
+\end{itemize}}{%
+\lead{Mistakes that cost marks}
+\begin{itemize}
+  \item Using $\omega_p$ instead of $\omega_c$ in $h_d[n]$.
+  \item \mk{Evaluating the centre tap as $0/0$} instead of $\omega_c/\pi$.
+  \item Choosing the window from the transition width and the length from the
+        attenuation. It is the other way round.
+  \item Taking an even $N$, which puts $\alpha$ half way between samples.
+  \item Saying Gibbs ripple can be fixed by a longer filter. \mk{It cannot.}
+  \item Quoting $\delta_p$ when the spec gives $\delta_s$ smaller: Kaiser uses
+        $\min(\delta_p,\delta_s)$.
+  \item Writing $J_0$ for the Bessel function in the Kaiser window. \mk{It is $I_0$},
+        the \emph{modified} one, and one paper mislabels it.
+\end{itemize}}
