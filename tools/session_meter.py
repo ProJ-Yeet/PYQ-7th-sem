@@ -540,31 +540,61 @@ HEAD = ["when", "session", "agent", "model", "task", "turns", "units",
         "repairs", "verdict", "note"]
 
 
+PROVISIONAL = ("UNMEASURED", "FAILED", "")
+
+
 def append_ledger(sessions):
+    """Add new delegations, and upgrade rows that were logged too early.
+
+    The meter can run while an agent is still working: the row lands as
+    UNMEASURED, the agent finishes, and a plain dedup would then discard the
+    corrected row and leave the lane unmeasured for ever. So a row whose stored
+    verdict is provisional is REPLACED when a real one turns up, keeping any
+    note written by hand."""
     new = []
     for s in sessions:
         new.extend(s.ledger_rows())
     if not new:
         print("nothing to log: no delegations in this session")
         return
-    seen = set()
+
+    rows, order = {}, []
     if os.path.exists(LEDGER_TSV):
         with io.open(LEDGER_TSV, encoding="utf-8") as fh:
-            for line in fh:
-                p = line.rstrip("\n").split("\t")
-                if len(p) > 4:
-                    seen.add((p[0], p[1], p[4]))
-    fresh = [r for r in new if (r[0], r[1], r[4]) not in seen]
-    if not fresh:
-        print("ledger already has every delegation in this session")
+            lines = [l.rstrip("\n").split("\t") for l in fh if l.strip()]
+        for r in lines[1:]:
+            while len(r) < len(HEAD):
+                r.append("")
+            k = (r[0], r[1], r[4])
+            if k not in rows:
+                order.append(k)
+            rows[k] = r
+
+    added = upgraded = 0
+    iv, inote = HEAD.index("verdict"), HEAD.index("note")
+    for r in new:
+        r = [str(x) for x in r]
+        k = (r[0], r[1], r[4])
+        if k not in rows:
+            rows[k] = r
+            order.append(k)
+            added += 1
+            continue
+        old_row = rows[k]
+        if old_row[iv] in PROVISIONAL and r[iv] not in PROVISIONAL:
+            r[inote] = old_row[inote] or r[inote]   # never lose a hand note
+            rows[k] = r
+            upgraded += 1
+
+    with io.open(LEDGER_TSV, "w", encoding="utf-8", newline="\n") as fh:
+        fh.write("\t".join(HEAD) + "\n")
+        for k in order:
+            fh.write("\t".join(rows[k]) + "\n")
+    if not added and not upgraded:
+        print("ledger already current")
         return
-    exists = os.path.exists(LEDGER_TSV)
-    with io.open(LEDGER_TSV, "a", encoding="utf-8", newline="\n") as fh:
-        if not exists:
-            fh.write("\t".join(HEAD) + "\n")
-        for r in fresh:
-            fh.write("\t".join(str(x) for x in r) + "\n")
-    print("ledger: +%d row(s) -> %s" % (len(fresh), LEDGER_TSV))
+    print("ledger: +%d row(s), %d upgraded -> %s"
+          % (added, upgraded, LEDGER_TSV))
     write_md()
 
 
