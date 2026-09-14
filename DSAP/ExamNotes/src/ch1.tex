@@ -1,0 +1,844 @@
+%=======================================================================
+%  CHAPTER 1 — DISCRETE-TIME SIGNALS AND SYSTEMS  (8 hrs)
+%  Sources: BB Sir decks 1.1, 1.5, 1.6, 1.7, 1.7(Next), Chapter 3;
+%           Chapterwise Ch2 (sampling, §2.5); cross-checked against
+%           Oppenheim/Schafer Ch2 and Proakis/Manolakis Ch1-2.
+%  Numericals live in ch1-num.tex.
+%=======================================================================
+\section{Discrete-Time Signals and Systems}
+
+{\color{sub}\footnotesize 8 hrs \gap$\cdot$\gap the largest chapter, \mk{105 questions
+across the 45 papers} \gap$\cdot$\gap worth about \mk{12 of 80 marks} every year
+\gap$\cdot$\gap 10 syllabus sub-topics \gap$\cdot$\gap numericals in the Ch1 companion.}
+
+\lead{Read this first:}
+\begin{itemize}
+  \item \mk{Convolution is the single most-asked question in the whole subject}: some form of
+        ``find $y(n)$ given $h(n)$ and $x(n)$'' appears in \textbf{34 of 45 papers} \tS{34},
+        usually for 5 or 6 marks. If you learn one thing in this chapter, learn that.
+  \item The chapter's other four regulars, in order:
+  \begin{itemize}
+    \item energy Vs power signal $+$ is it periodic \tS{10},
+    \item test a given system for linearity / time-invariance / causality / stability \tF{7},
+    \item find the fundamental period of a given sequence \tF{7},
+    \item sampling an analog signal and writing down $x[n]$ \tF{7}.
+  \end{itemize}
+  \item Counted by \emph{topic} rather than by exact question, system properties come up in
+        \textbf{16} papers and sampling in \textbf{10}, so nothing here is optional.
+  \item \mk{The marks sit in the method, not the answer.} Almost every question in this
+        chapter is a 3-line recipe applied to new numbers. Sections 1.3, 1.4, 1.8 and 1.9 each
+        end with the recipe written out as steps: memorise those, not the worked examples.
+  \item Tier chips count papers out of 45: \tS{n} $\ge10$ papers, \tF{n} 4--9, \tP{n} 1--3.
+        \textbf{Bold} year codes are Regular exams, plain are Back;
+        \texttt{typewriter} codes are \texttt{EX 753} (BEX) papers.
+\end{itemize}
+
+\hr
+
+\T{1.1 What a discrete-time signal is, and how it is classified}
+
+\Q{Define and compare continuous-time and discrete-time signals; classify a given
+signal}{\m{2}\m{3}}
+{\color{sub}\footnotesize \tP{3} \yr{\textbf{69 Bh}, \textbf{73 Ch}, \textbf{76 Ch}}
+\gap$\cdot$\gap never asked alone, always as the 2-mark opening of a bigger question}
+
+\sbs{%
+\lead{By the independent variable}
+\begin{itemize}
+  \item \textbf{Continuous-time (analog)}: $x(t)$ defined for a continuum of $t$.
+  \begin{itemize}
+    \item Eg speech voltage at a microphone, video signal.
+  \end{itemize}
+  \item \textbf{Discrete-time}: $x[n]$ defined only at discrete instants, $n$ integer.
+  \begin{itemize}
+    \item Instants need not be equally spaced, but in practice $t=nT$ is used.
+    \item Eg monthly sales of a corporation, daily stock-market average.
+    \item \mk{$x[3.12]$ does not exist.} A DT signal is a \emph{sequence}, not a function
+          sampled finely.
+  \end{itemize}
+\end{itemize}}{%
+\lead{By the value the signal takes}
+\begin{itemize}
+  \item \textbf{Continuous-valued}: amplitude takes any value in a range.
+  \item \textbf{Discrete-valued}: amplitude comes from a finite set.
+  \item \textbf{Digital signal} $=$ discrete in \emph{time} $+$ discrete in \emph{value}.
+  \begin{itemize}
+    \item This is the only kind a processor can store, so A/D does both steps:
+          sampling (Ch 1.10) then quantization (Ch 8).
+  \end{itemize}
+  \item \mk{Exam trap}: ``discrete-time'' and ``digital'' are not synonyms. Sampling alone
+        gives a discrete-time, continuous-valued signal.
+\end{itemize}}
+
+\Q{Define even and odd discrete-time signals; find the even and odd part of a given
+signal}{\m{2}\m{3}\m{4+5}}
+{\color{sub}\footnotesize \tF{4} \yr{\textbf{71 Ch}, 70 Asa, 71 Shr, \textbf{67 Mng}}
+\gap$\cdot$\gap plus \textbf{76 Ch} which asks the definition then a plot
+\gap$\cdot$\gap worked instances in \textbf{Ch1-num \S1}}
+
+\sbsr{0.44}{%
+\lead{Definitions}
+\begin{itemize}
+  \item \textbf{Even (symmetric)}: $x[-n]=x[n]$.
+  \item \textbf{Odd (antisymmetric)}: $x[-n]=-x[n]$.
+  \item An odd signal must have $x[0]=0$, since $x[0]=-x[0]$.
+  \item Any signal splits into exactly one even $+$ one odd part.
+\end{itemize}
+\lead{The two formulas}
+\[ x_e[n]=\tfrac12\big(x[n]+x[-n]\big),\qquad
+   x_o[n]=\tfrac12\big(x[n]-x[-n]\big) \]}{%
+\lead{Derivation, if the question says ``show that''}
+\begin{itemize}
+  \item Start from $x[n]=x_e[n]+x_o[n]$ \hfill (1)
+  \item Put $n\to-n$: $x[-n]=x_e[-n]+x_o[-n]$ \hfill (2)
+  \item Use $x_e[-n]=x_e[n]$ and $x_o[-n]=-x_o[n]$ in (2):
+        $x[-n]=x_e[n]-x_o[n]$ \hfill (3)
+  \item (1)$+$(3) $\rightarrow$ $x[n]+x[-n]=2x_e[n]$.
+  \item (1)$-$(3) $\rightarrow$ $x[n]-x[-n]=2x_o[n]$.
+\end{itemize}
+\lead{Method, every time}
+\begin{enumerate}
+  \item Write $x[n]$ as a sequence with the $n=0$ sample marked.
+  \item Fold it to get $x[-n]$: same samples, index sign flipped.
+  \item Half the sum, half the difference, aligning on $n$.
+  \item \mk{Check}: $x_e$ must be symmetric about $n=0$ and $x_o[0]=0$.
+\end{enumerate}}
+
+\hr
+
+\T{1.2 Elementary discrete-time signals}
+
+\Q{Define and plot the unit step / unit impulse; explain their relation}{\m{1+2}\m{3}}
+{\color{sub}\footnotesize \tP{3} \yr{\textbf{73 Ch}, \textbf{74 Ch}, \textbf{69 Bh}}
+\gap$\cdot$\gap the plotting half is done in \textbf{Ch1-num \S2}}
+
+\sbsr{0.46}{%
+\figT{c1_elementary.png}
+\penalty0\vspace{1pt}
+{\color{sub}\footnotesize The three building blocks and the chain that links them.
+\yr{BB Sir, deck 1.7}}}{%
+\lead{The five standard sequences}
+\begin{itemize}
+  \item \textbf{Unit impulse} $\delta[n]=1$ at $n=0$, else $0$.
+  \item \textbf{Unit step} $u[n]=1$ for $n\ge0$, else $0$.
+  \item \textbf{Unit ramp} $r[n]=n$ for $n\ge0$, else $0$.
+  \item \textbf{Real exponential} $x[n]=\alpha^n$: decays for $|\alpha|<1$, grows for
+        $|\alpha|>1$, alternates sign when $\alpha<0$.
+  \item \textbf{Complex exponential} $x[n]=r^ne^{j\theta n}
+        =r^n(\cos\theta n+j\sin\theta n)$.
+\end{itemize}
+\lead{Relations worth quoting \mk{(this is the marks)}}
+\[ \delta[n]=u[n]-u[n-1],\qquad u[n]=\sum_{k=-\infty}^{n}\delta[k] \]
+\begin{itemize}
+  \item Step is the running sum of the impulse; impulse is the first difference of the step.
+  \item Ramp is the running sum of the step: $\delta\to u\to r$.
+  \item \textbf{Sifting}: $x[n]\delta[n-k]=x[k]\delta[n-k]$, so
+        $x[n]=\sum_k x[k]\,\delta[n-k]$. \mk{This one line is what makes convolution
+        work} (\S1.9).
+\end{itemize}}
+
+\hr
+
+\T{1.3 Energy and power signals}
+
+\Q{Define / compare energy and power signals, and classify the given signal}{\m{2+2}\m{3}\m{5}}
+{\color{sub}\footnotesize \tS{10} \yr{\textbf{79 Bh}, \textbf{69 Ch}, \textbf{81 Bh}, 74 Ash,
+79 Ba, \textbf{82 Bh}, 72 Ka, \textbf{68 Bh}, \textbf{75 Ch}, \texttt{74 Ma}}
+\gap$\cdot$\gap in \textbf{81 Bh} only the periodicity half is asked
+\gap$\cdot$\gap \textbf{always paired with \S1.4} \gap$\cdot$\gap worked in \textbf{Ch1-num \S3}}
+
+\sbsr{0.5}{%
+\lead{Over a finite interval $n_1\le n\le n_2$}
+\[ E=\sum_{n=n_1}^{n_2}|x[n]|^2,\qquad
+   P_{av}=\frac{1}{n_2-n_1+1}\sum_{n=n_1}^{n_2}|x[n]|^2 \]
+\lead{Over all time}
+\[ E=\lim_{N\to\infty}\sum_{n=-N}^{N}|x[n]|^2,\qquad
+   P=\lim_{N\to\infty}\frac{1}{2N+1}\sum_{n=-N}^{N}|x[n]|^2 \]
+\begin{itemize}
+  \item \textbf{Energy signal}: $0<E<\infty$, and then $P=0$.
+  \item \textbf{Power signal}: $0<P<\infty$, and then $E=\infty$.
+  \item \mk{A signal can be neither} (Eg $x[n]=n$), and \mk{never both}.
+\end{itemize}}{%
+\lead{How to decide in one line}
+\begin{enumerate}
+  \item Finite-length or decaying sequence $\rightarrow$ energy signal.
+  \item Never-ending, bounded, non-decaying $\rightarrow$ power signal.
+  \item \textbf{Every periodic signal is a power signal}, with
+        $P=\frac1N\sum_{n=0}^{N-1}|x[n]|^2$ over one period.
+  \item \textbf{Every complex exponential} $e^{j(\omega_0n+\phi)}$ has $|x[n]|=1$, so
+        $P=1$ and $E=\infty$: \mk{power signal, no calculation needed.}
+        That is the whole answer to 79 Ba and \textbf{82 Bh}.
+\end{enumerate}
+\lead{Standard results to quote}
+\begin{itemize}
+  \item $x[n]=\delta[n]$: $E=1$, $P=0$ $\rightarrow$ energy.
+  \item $x[n]=u[n]$: $E=\infty$, $P=\tfrac12$ $\rightarrow$ power.
+        \mk{$P=\frac12$, not 1} --- the sum runs over $2N+1$ samples but only $N+1$ are
+        non-zero.
+  \item $x[n]=A$ (constant): $E=\infty$, $P=A^2$ $\rightarrow$ power.
+  \item $x[n]=a^nu[n]$, $|a|<1$: $E=\dfrac{1}{1-a^2}$ $\rightarrow$ energy.
+\end{itemize}
+\lead{Units}
+\begin{itemize}
+  \item Follow the signal: a voltage signal gives energy in V$^2$s and power in V$^2$.
+\end{itemize}}
+
+\lead{Sums you will need in every one of these \mk{(learn this block)}}
+\sbs{%
+\[ \sum_{n=-N}^{N}1=2N+1,\qquad \sum_{n=0}^{N}1=N+1 \]
+\[ \sum_{n=0}^{N-1}a^n=\begin{cases} N, & a=1\\[2pt]
+   \dfrac{1-a^N}{1-a}, & a\ne1\end{cases} \]}{%
+\[ \sum_{n=0}^{\infty}a^n=\frac{1}{1-a}\quad (|a|<1),\qquad
+   \sum_{n=k}^{\infty}a^n=\frac{a^k}{1-a} \]
+\[ \cos\theta=\tfrac12(e^{j\theta}+e^{-j\theta}),\quad
+   \sin\theta=\tfrac{1}{2j}(e^{j\theta}-e^{-j\theta}) \]}
+
+\hr
+
+\T{1.4 Periodicity of a discrete-time signal}
+
+\Q{Determine whether the given sequence is periodic; if it is, find the fundamental
+period}{\m{2+2}\m{3}\m{4}\m{5}}
+{\color{sub}\footnotesize \tF{7} \yr{\textbf{80 Bh}, 80 Ba, \textbf{78 Bh}, \textbf{70 Ch},
+\textbf{69 Bh}, \textbf{67 Mng}, \textbf{66 Ma}} \gap$\cdot$\gap another \textbf{10} papers ask
+it as the second half of the energy/power question \gap$\cdot$\gap worked in \textbf{Ch1-num \S4}}
+
+\sbsr{0.5}{%
+\lead{Definition}
+\begin{itemize}
+  \item $x[n]$ is periodic with period $N>0$ if $x[n]=x[n+N]$ for \emph{all} $n$.
+  \item Smallest such $N$ is the \textbf{fundamental period}. $N$ must be an
+        \mk{integer} --- that is the whole difference from the continuous-time case.
+\end{itemize}
+\lead{The rule, and where it comes from}
+\begin{itemize}
+  \item For $x[n]=e^{j\omega_0n}$ to repeat: $e^{j\omega_0(n+N)}=e^{j\omega_0n}$
+        $\rightarrow$ $e^{j\omega_0N}=1$ $\rightarrow$ $\omega_0N=2\pi m$.
+  \item So $\dfrac{\omega_0}{2\pi}=\dfrac{m}{N}$ must be a \textbf{rational number}.
+  \item \mk{A discrete-time sinusoid is periodic only if $\omega_0/2\pi$ is rational.}
+  \item Then $N=\dfrac{2\pi m}{\omega_0}$ with $m$ the smallest integer making $N$ an integer.
+\end{itemize}}{%
+\lead{Method, every time}
+\begin{enumerate}
+  \item Read off $\omega_0$ (the coefficient of $n$ inside $\cos$, $\sin$ or the exponent).
+  \item Form $\omega_0/2\pi$. Irrational $\rightarrow$ \textbf{aperiodic}, stop.
+  \item Rational $=m/N$ in lowest terms $\rightarrow$ fundamental period is $N$.
+  \item Sum of two periodic signals: $N=\mathrm{LCM}(N_1,N_2)$, and it is periodic only
+        if $N_1/N_2$ is rational.
+\end{enumerate}
+\lead{The three traps the papers actually set}
+\begin{itemize}
+  \item $x[n]=\sin(0.8n)$ or $e^{j(7/5)n}$: $\omega_0$ has \mk{no $\pi$ in it}, so
+        $\omega_0/2\pi$ is irrational $\rightarrow$ \textbf{aperiodic}
+        (\textbf{66 Ma}, \textbf{69 Bh}).
+  \item $x[n]=\cos(\pi n^2/8)$: $n^2$, not $n$ $\rightarrow$ not a sinusoid, test
+        $x[n+N]=x[n]$ directly. It \emph{is} periodic, $N=8$ (\textbf{70 Ch}).
+  \item $\sin(\pi n/\sqrt2+\pi/8)$: the $\sqrt2$ makes $\omega_0/2\pi$ irrational
+        $\rightarrow$ aperiodic (\textbf{67 Mng}).
+\end{itemize}}
+
+\Q{Show that a discrete-time signal is periodic in frequency with period $2\pi$}{\m{2}\m{4}}
+{\color{sub}\footnotesize \tP{2} \yr{\textbf{69 Bh}, \textbf{80 Bh}} \gap$\cdot$\gap also the
+reason every DTFT and DFT plot is drawn over one $2\pi$ span}
+
+\sbsr{0.52}{%
+\begin{itemize}
+  \item Raise the frequency by $2\pi$:
+  \[ e^{j(\omega_0+2\pi)n}=e^{j2\pi n}e^{j\omega_0n}=e^{j\omega_0n} \]
+        because $e^{j2\pi n}=1$ for integer $n$.
+  \item So $\omega_0$, $\omega_0\pm2\pi$, $\omega_0\pm4\pi\ldots$ are the
+        \mk{same sequence}, sample for sample.
+  \item Consequences worth one line each:
+  \begin{itemize}
+    \item All distinct DT frequencies lie in one span of $2\pi$, usually
+          $-\pi\le\omega<\pi$.
+    \item $\omega=\pi$ is the \textbf{highest} rate of oscillation
+          (alternating $+1,-1$); $\omega=0$ and $\omega=2\pi$ are both DC.
+    \item In continuous time nothing like this happens: $e^{j\Omega t}$ is distinct for
+          every $\Omega$.
+  \end{itemize}
+\end{itemize}}{%
+\figT{c1_freq_periodic.png}
+\penalty0\vspace{1pt}
+{\color{sub}\footnotesize $\cos(\omega n)$ at $\omega=5$, $5+2\pi$, $5+4\pi$, $5+6\pi$:
+four different formulas, one sequence. \yr{BB Sir, deck 1.1}}}
+
+\hr
+
+\T{1.5 Transformation of the independent variable}
+
+\Q{Plot the transformed sequence, Eg $x[-2n+3]$ or
+$u[n]-u[n-3]+5\delta[n-4]+nu[n-6]$}{\m{2}\m{3}\m{3+2}}
+{\color{sub}\footnotesize \tF{4} \yr{\textbf{76 Ch}, \textbf{74 Ch}, \textbf{66 Ma},
+\textbf{69 Bh}} \gap$\cdot$\gap pure plotting marks \gap$\cdot$\gap every instance is worked in
+\textbf{Ch1-num \S2}}
+
+\sbs{%
+\lead{The three operations}
+\begin{itemize}
+  \item \textbf{Shift} $x[n-k]$: delay by $k$ (move right) for $k>0$; advance for $k<0$.
+  \item \textbf{Fold (time reversal)} $x[-n]$: mirror about $n=0$.
+  \item \textbf{Scale} $x[an]$:
+  \begin{itemize}
+    \item $|a|>1$ integer $=$ \textbf{decimation}, keep every $a$-th sample, \mk{samples are
+          lost}.
+    \item $|a|<1$ $=$ interpolation, new samples must be filled in.
+    \item \mk{Not reversible like the CT case} --- this is why down-sampling needs its own
+          treatment.
+  \end{itemize}
+  \item \textbf{Amplitude operations}: addition, multiplication, scaling act sample by
+        sample on aligned indices.
+\end{itemize}}{%
+\lead{Order of operations for $x[an+b]$ \mk{(where marks are lost)}}
+\begin{enumerate}
+  \item \textbf{Shift first, then scale/fold}, or you will shift by the wrong amount.
+  \item Safer still: work index by index. Set $m=an+b$, then for each sample
+        $x[m]$ of the original, its new position is $n=(m-b)/a$.
+  \item Keep only integer $n$; a non-integer means that sample disappears.
+  \item \mk{Check one point}: put $n=0$ into $an+b$ and confirm the value lands where you
+        drew it.
+\end{enumerate}
+\lead{Worked index map: $x[-2n+3]$, $x[n]=\{1,2,0,-1,-3,-4\}$ starting at $n=0$}
+\begin{itemize}
+  \item $n=0\rightarrow x[3]=-1$; $n=1\rightarrow x[1]=2$;
+        $n=-1\rightarrow x[5]=-4$; $n=2\rightarrow x[-1]=0$.
+  \item Only odd-indexed original samples survive: folding $+$ decimation by 2.
+\end{itemize}}
+
+\hr
+
+\T{1.6 Discrete-time Fourier series (DTFS)}
+
+\Q{Explain how the Fourier series coefficients are calculated}{\m{3}\m{4}}
+{\color{sub}\footnotesize \tP{2} \yr{73 Shr, \textbf{72 Ch}} \gap$\cdot$\gap
+\textbf{76 Ash} adds Dirichlet's conditions, see \S1.7}
+
+\sbsr{0.5}{%
+\lead{The pair}
+\begin{itemize}
+  \item A periodic $x[n]$ of period $N$ has fundamental frequency $\omega_0=2\pi/N$.
+\end{itemize}
+\[ x[n]=\sum_{k=\langle N\rangle}a_k\,e^{jk(2\pi/N)n}
+   \quad\text{(synthesis)} \]
+\[ a_k=\frac1N\sum_{n=\langle N\rangle}x[n]\,e^{-jk(2\pi/N)n}
+   \quad\text{(analysis)} \]
+\begin{itemize}
+  \item $\langle N\rangle$ means \emph{any} $N$ consecutive values, usually $0$ to $N-1$.
+  \item \mk{$a_k=a_{k+N}$}: only $N$ distinct coefficients exist, because
+        $e^{j(k+N)\omega_0n}=e^{jk\omega_0n}$.
+  \item That is the one real difference from the continuous-time Fourier series, which has
+        infinitely many distinct coefficients.
+\end{itemize}}{%
+\lead{Deriving $a_k$, if the question says ``explain the process''}
+\begin{enumerate}
+  \item Start from the synthesis equation.
+  \item Multiply both sides by $e^{-jr(2\pi/N)n}$ and sum over one period.
+  \item Interchange the two summations.
+  \item Use the orthogonality result
+        \[ \sum_{n=\langle N\rangle}e^{j(k-r)(2\pi/N)n}
+           =\begin{cases}N, & k-r=0,\pm N,\pm2N\ldots\\ 0, & \text{otherwise}\end{cases} \]
+  \item Every term dies except $k=r$, leaving $\sum x[n]e^{-jr(2\pi/N)n}=a_rN$.
+\end{enumerate}
+\lead{Method for a numerical \mk{(faster than the integral)}}
+\begin{enumerate}
+  \item Find $N$ first (\S1.4), then $\omega_0=2\pi/N$.
+  \item Expand every $\cos$/$\sin$ with Euler's formula.
+  \item Force each exponent into the form $jk(2\pi/N)n$ and read $a_k$ off by inspection.
+  \item Use $a_k=a_{k+N}$ for anything outside $0\le k\le N-1$.
+\end{enumerate}}
+
+\lead{Properties of the DTFS \mk{(x[n], y[n] both period N)}}
+\par
+\begin{tabularx}{\textwidth}{@{}L{3.5cm}XL{5.4cm}@{}}
+\toprule
+\hrow \thead{Property} & \thead{Signal} & \thead{Coefficient} \\
+Linearity & $Ax[n]+By[n]$ & $Aa_k+Bb_k$ \\
+Time shift & $x[n-n_0]$ & $a_k\,e^{-jk(2\pi/N)n_0}$ \\
+Frequency shift & $e^{jM(2\pi/N)n}x[n]$ & $a_{k-M}$ \\
+Time reversal & $x[-n]$ & $a_{-k}$ \\
+Conjugation & $x^*[n]$ & $a^*_{-k}$ \\
+Periodic convolution & $\sum_{r=\langle N\rangle}x[r]y[n-r]$ & $N\,a_kb_k$ \\
+Multiplication & $x[n]y[n]$ & $\sum_{l=\langle N\rangle}a_l\,b_{k-l}$ \\
+Parseval & $\frac1N\sum_{n=\langle N\rangle}|x[n]|^2$ & $\sum_{k=\langle N\rangle}|a_k|^2$ \\
+\bottomrule
+\end{tabularx}
+\par\vspace{2pt}
+{\color{sub}\footnotesize \textbf{Conjugate symmetry}, asked as a rider: if $x[n]$ is real
+then $a_{-k}=a^*_k$. Real \emph{and even} $\rightarrow$ $a_k$ real and even; real \emph{and
+odd} $\rightarrow$ $a_k$ imaginary and odd with $a_0=0$. Parseval reads: total average power
+in one period $=$ sum of the average powers $|a_k|^2$ of all harmonics.}
+
+\hr
+
+\T{1.7 Discrete-time Fourier transform (DTFT)}
+
+\Q{Explain the Fourier transform multiplication property for two sequences; write
+Dirichlet's conditions}{\m{4+3}}
+{\color{sub}\footnotesize \tP{1} \yr{76 Ash} \gap$\cdot$\gap the DTFT itself is assumed
+knowledge in every Ch 3 question, so this section is a prerequisite more than a target}
+
+\sbsr{0.5}{%
+\lead{The pair}
+\[ X(e^{j\omega})=\sum_{n=-\infty}^{\infty}x[n]e^{-j\omega n},\qquad
+   x[n]=\frac{1}{2\pi}\int_{2\pi}X(e^{j\omega})e^{j\omega n}\,d\omega \]
+\begin{itemize}
+  \item Derived from the DTFS by letting $N\to\infty$: the discrete lines $Na_k$ merge into
+        the continuous envelope $X(e^{j\omega})$.
+  \item \mk{$X(e^{j\omega})$ is periodic in $\omega$ with period $2\pi$}, because
+        $e^{-jn(\omega+2\pi)}=e^{-j\omega n}$. So the inverse integral can be taken over
+        \emph{any} $2\pi$ span.
+  \item Exists when $x[n]$ is absolutely summable, $\sum|x[n]|<\infty$.
+\end{itemize}
+\lead{Dirichlet's conditions \mk{(quote all three)}}
+\begin{enumerate}
+  \item $x[n]$ is absolutely summable, $\sum_n|x[n]|<\infty$.
+  \item $x[n]$ has a finite number of maxima and minima in any finite interval.
+  \item $x[n]$ has a finite number of finite discontinuities in any finite interval.
+\end{enumerate}
+{\color{sub}\footnotesize Sufficient, not necessary: $u[n]$ fails condition 1 yet has a DTFT
+once impulses in $\omega$ are allowed.}}{%
+\lead{Multiplication property, and why it is not a plain product}
+\begin{itemize}
+  \item Convolution in one domain $=$ multiplication in the other, both ways:
+\end{itemize}
+\[ x[n]*h[n]\;\longleftrightarrow\;X(e^{j\omega})H(e^{j\omega}) \]
+\[ x_1[n]\,x_2[n]\;\longleftrightarrow\;
+   \frac{1}{2\pi}\int_{2\pi}X_1(e^{j\theta})X_2(e^{j(\omega-\theta)})\,d\theta \]
+\begin{itemize}
+  \item The second is a \textbf{periodic (circular) convolution} of the two spectra,
+        scaled by $1/2\pi$, integrated over any $2\pi$ interval.
+  \item \mk{It has to be periodic}: both spectra are $2\pi$-periodic, so an ordinary
+        infinite convolution would diverge.
+  \item Proof in one move: substitute the inverse DTFT of $x_1[n]$ into the forward DTFT of
+        the product, then swap the sum and the integral.
+  \item This is the windowing property used to explain Gibbs oscillation in Ch 5:
+        truncating $h[n]$ with a window multiplies in time, so it convolves in frequency
+        and smears the band edge.
+\end{itemize}}
+
+\lead{Properties of the DTFT}
+\par
+\begin{tabularx}{\textwidth}{@{}L{3.6cm}XL{5.6cm}@{}}
+\toprule
+\hrow \thead{Property} & \thead{Signal} & \thead{Transform} \\
+Linearity & $ax_1[n]+bx_2[n]$ & $aX_1(e^{j\omega})+bX_2(e^{j\omega})$ \\
+Time shift & $x[n-n_0]$ & $e^{-j\omega n_0}X(e^{j\omega})$ \\
+Frequency shift & $e^{j\omega_0n}x[n]$ & $X(e^{j(\omega-\omega_0)})$ \\
+Time reversal & $x[-n]$ & $X(e^{-j\omega})$ \\
+Conjugation & $x^*[n]$ & $X^*(e^{-j\omega})$ \\
+Convolution & $x[n]*h[n]$ & $X(e^{j\omega})H(e^{j\omega})$ \\
+Multiplication & $x_1[n]x_2[n]$ & periodic convolution of the spectra, $\div2\pi$ \\
+Parseval & $\sum_n|x[n]|^2$ & $\frac{1}{2\pi}\int_{2\pi}|X(e^{j\omega})|^2d\omega$ \\
+\bottomrule
+\end{tabularx}
+\par\vspace{2pt}
+{\color{sub}\footnotesize If $x[n]$ is real, $X(e^{j\omega})$ is conjugate symmetric:
+magnitude even, phase odd. Real and even $\rightarrow$ transform real and even; real and odd
+$\rightarrow$ transform imaginary and odd. \mk{Parseval here says energy, not power} --- it
+is the DTFS version that talks about power.}
+
+\hr
+
+\T{1.8 Properties of a discrete-time system}
+
+\Q{Test the given system for linearity, time-invariance, causality, memory and BIBO
+stability}{\m{3}\m{5}\m{10}}
+{\color{sub}\footnotesize \tS{12} \yr{\textbf{76 Ch}, \textbf{74 Ch}, 82 Ba,
+\textbf{\texttt{78 Ch}}, 75 Ash, \textbf{\texttt{71 Bh}}, \textbf{\texttt{70 Bh}},
+\textbf{68 Bh}, \textbf{67 Mng}, \textbf{66 Ma}, \textbf{69 Bh}, \textbf{80 Bh}}
+\gap$\cdot$\gap plus 81 Ba on BIBO alone \gap$\cdot$\gap every instance worked in
+\textbf{Ch1-num \S5}}
+
+\sbsr{0.5}{%
+\lead{The six properties, with the test that proves each}
+\begin{itemize}
+  \item \textbf{Static / memoryless}: $y[n]$ depends only on $x[n]$ at the \emph{same} $n$.
+  \begin{itemize}
+    \item Test: does any shifted index $x[n-k]$, $x[2n]$ or past output appear? If yes,
+          \textbf{dynamic}.
+  \end{itemize}
+  \item \textbf{Invertible}: distinct inputs give distinct outputs, so an inverse system
+        exists with $h[n]*h_1[n]=\delta[n]$.
+  \item \textbf{Causal}: $y[n]$ uses only present and past inputs.
+  \begin{itemize}
+    \item Test: look for $x[n+k]$, $k>0$, or a folded index. $y[n]=x[-n]$ is
+          \mk{non-causal} --- at $n=-2$ it needs $x[2]$.
+  \end{itemize}
+  \item \textbf{Time invariant}: shift the input, the output shifts identically.
+  \item \textbf{Linear}: superposition holds.
+  \item \textbf{BIBO stable}: every bounded input gives a bounded output.
+\end{itemize}}{%
+\lead{Linearity, the only reliable way to write it}
+\begin{enumerate}
+  \item $x_1[n]\rightarrow y_1[n]$ and $x_2[n]\rightarrow y_2[n]$.
+  \item Apply $x[n]=a\,x_1[n]+b\,x_2[n]$ and compute $y[n]$ from the system equation.
+  \item Compare against $a\,y_1[n]+b\,y_2[n]$. Equal $\rightarrow$ linear.
+\end{enumerate}
+{\color{sub}\footnotesize Eg $y[n]=nx[n]$: $n(ax_1+bx_2)=a\,nx_1+b\,nx_2$ \checkmark linear.
+$y[n]=x^2[n]$: the cross term $2abx_1x_2$ survives \xmark not linear.}
+\lead{Time invariance, the only reliable way to write it}
+\begin{enumerate}
+  \item Delayed input: put $x_1[n]=x[n-n_0]$ into the equation, call the result $y_1[n]$.
+  \item Delayed output: write $y[n-n_0]$ by replacing every $n$ in $y[n]$, \mk{including
+        the explicit ones}.
+  \item Equal $\rightarrow$ time invariant.
+\end{enumerate}
+{\color{sub}\footnotesize Eg $y[n]=nx[n]$: $y_1[n]=nx[n-n_0]$ but $y[n-n_0]=(n-n_0)x[n-n_0]$
+\xmark time varying. $y[n]=\sin(x[n])$ \checkmark time invariant.
+\mk{An explicit $n$ multiplying the input is the classic time-varying flag}; folding
+$y[n]=x[-n]$ is time varying too.}}
+
+\sbsr{0.5}{%
+\lead{BIBO stability}
+\begin{itemize}
+  \item Bounded means $|x[n]|\le M_x<\infty$ for all $n$.
+  \item \textbf{To disprove}: find one bounded input giving an unbounded output. A constant
+        or $u[n]$ almost always works.
+  \begin{itemize}
+    \item Eg $y[n]=nx[n]$ with $x[n]=1$ gives $y[n]=n\rightarrow\infty$ \xmark unstable.
+    \item Eg $y[n]=\sum_{k=0}^{n}x[k]$ (accumulator) with $x[n]=u[n]$ gives
+          $y[n]=n+1$ \xmark unstable. That is \textbf{80 Bh} in one line.
+  \end{itemize}
+  \item \textbf{To prove} for an LTI system, use the impulse-response test in \S1.9
+        instead: $\sum_k|h[k]|<\infty$.
+  \item Recursive example, 81 Ba: $y[n]=x[n]+e^{a}y[n-1]$ has $h[n]=(e^a)^nu[n]$, so it is
+        stable only if $|e^a|<1$, i.e. \mk{$a<0$}.
+\end{itemize}}{%
+\lead{Answer skeleton \m{5} \m{10}}
+\begin{enumerate}
+  \item State the property in one line.
+  \item Apply its test to \emph{this} system, showing the algebra.
+  \item Give the verdict with the reason attached, Eg ``not time invariant, because the
+        explicit $n$ is not delayed''.
+\end{enumerate}
+{\color{sub}\footnotesize \mk{Marks are awarded per property}, so answer all the parts asked
+even if one is obvious. A bare ``yes/no'' with no working scores nothing.}
+\lead{Results worth memorising}
+\begin{itemize}
+  \item $y[n]=x[-n]$: linear \checkmark, time varying \xmark, non-causal \xmark, stable
+        \checkmark.
+  \item $y[n]=x[n^2]$ or $x[2n]$: linear \checkmark, time varying \xmark.
+  \item $y[n]=x^2[n]$, $e^{x[n]}$, $\log x[n]$: \mk{non-linear} \xmark, but time invariant
+        \checkmark and memoryless \checkmark.
+  \item $y[n]=y[n-4]+x[n-4]$: linear \checkmark, time invariant \checkmark, causal
+        \checkmark, \mk{dynamic and unstable}.
+  \item $y[n]=\cos(\frac{5\pi}{8}n+\frac{\pi}{4})$ has no input at all: not a system
+        response, so it fails linearity trivially.
+\end{itemize}}
+
+\hr
+
+\T{1.9 LTI systems and the convolution sum}
+
+\Q{What is the convolution summation? Derive its equation and explain its
+significance}{\m{1+3}\m{2}\m{3}}
+{\color{sub}\footnotesize \tF{4} \yr{\textbf{\texttt{69 Bh}}, \texttt{73 Ma}, 70 Asa,
+\textbf{\texttt{70 Bh}}} \gap$\cdot$\gap the theory half of the subject's most-asked question}
+
+\sbsr{0.52}{%
+\lead{Derivation, four steps \mk{(this is the full-mark answer)}}
+\begin{enumerate}
+  \item \textbf{Decompose the input into impulses.} By the sifting property,
+        \[ x[n]=\sum_{k=-\infty}^{\infty}x[k]\,\delta[n-k] \]
+        i.e. $\ldots+x[-1]\delta[n+1]+x[0]\delta[n]+x[1]\delta[n-1]+\ldots$
+  \item \textbf{Use time invariance.} If $\delta[n]\rightarrow h[n]$, then
+        $\delta[n-k]\rightarrow h[n-k]$.
+  \item \textbf{Use linearity.} The input is a weighted sum of shifted impulses, so the
+        output is the same weighted sum of shifted impulse responses.
+  \item Therefore
+        \[ y[n]=\sum_{k=-\infty}^{\infty}x[k]\,h[n-k]=x[n]*h[n] \]
+\end{enumerate}
+\lead{Significance, if asked \m{2}}
+\begin{itemize}
+  \item \mk{$h[n]$ alone characterises an LTI system completely.} Know the impulse
+        response, know the output for every possible input.
+  \item It converts a system description into an arithmetic operation, so the response can
+        be computed rather than solved.
+  \item Causality and stability both become simple tests on $h[n]$ (below).
+\end{itemize}}{%
+\figT{c1_conv_shift.png}
+\penalty0\vspace{1pt}
+{\color{sub}\footnotesize Building $h[a-n]$: fold $h[n]$, then slide. Each value of $a$ gives
+one output sample. \yr{BB Sir, deck 3}}
+\lead{The graphical method, four steps}
+\begin{enumerate}
+  \item \textbf{Fold} $h[k]\rightarrow h[-k]$.
+  \item \textbf{Shift} by $n$: $h[n-k]$.
+  \item \textbf{Multiply} with $x[k]$ sample by sample.
+  \item \textbf{Sum} the products. That single number is $y[n]$. Repeat for each $n$.
+\end{enumerate}
+{\color{sub}\footnotesize \mk{Shortcut for two finite sequences}: the output starts at
+$n_x+n_h$ (sum of the starting indices) and has $L_x+L_h-1$ samples. Use it to check your
+answer's length and position, every time.}}
+
+\lead{Properties of LTI systems}
+\sbs{%
+\begin{itemize}
+  \item \textbf{Identity}: $x[n]*\delta[n]=x[n]$.
+  \item \textbf{Shifting}: $x[n]*\delta[n-k]=x[n-k]$.
+  \item \textbf{Commutative}: $x[n]*h[n]=h[n]*x[n]$ --- fold whichever sequence is shorter.
+  \item \textbf{Distributive}: $x*(h_1+h_2)=x*h_1+x*h_2$ $\rightarrow$ two systems in
+        \textbf{parallel} add their impulse responses.
+  \item \textbf{Associative}: $x*(h_1*h_2)=(x*h_1)*h_2$ $\rightarrow$ two systems in
+        \textbf{cascade} convolve their impulse responses, and their order does not matter.
+\end{itemize}}{%
+\begin{itemize}
+  \item \textbf{Memoryless} $\Leftrightarrow$ $h[n]=k\,\delta[n]$, giving $y[n]=kx[n]$.
+  \item \textbf{Invertible} $\Leftrightarrow$ there is $h_1[n]$ with $h[n]*h_1[n]=\delta[n]$.
+  \item \textbf{Causal} $\Leftrightarrow$ \mk{$h[n]=0$ for $n<0$}.
+  \begin{itemize}
+    \item From $y[n]=\sum_k h[k]x[n-k]$: terms with $k<0$ would need future inputs.
+  \end{itemize}
+  \item \textbf{BIBO stable} $\Leftrightarrow$ \mk{$\sum_{k}|h[k]|<\infty$}
+        (absolutely summable).
+  \item \textbf{Step response} $s[n]=h[n]*u[n]=\sum_{k=-\infty}^{n}h[k]$, so
+        $h[n]=s[n]-s[n-1]$.
+\end{itemize}}
+
+\lead{Proof of the stability condition, if asked to derive it}
+\begin{itemize}
+  \item $|y[n]|=\big|\sum_k h[k]x[n-k]\big|\le\sum_k|h[k]|\,|x[n-k]|$ by the triangle
+        inequality and $|ab|=|a||b|$.
+  \item Bound the input, $|x[n-k]|\le M_x$: $|y[n]|\le M_x\sum_k|h[k]|$.
+  \item So the output is bounded whenever $\sum_k|h[k]|<\infty$.
+\end{itemize}
+{\color{sub}\footnotesize Worked cases: $h[n]=\delta[n-n_0]$ gives $\sum|h|=1$, stable.
+$h[n]=u[n-n_0]$ gives $\sum|h|=\infty$, unstable. $h[n]=a^nu[n]$ gives
+$\sum|h|=1/(1-|a|)$, \mk{stable only if $|a|<1$}.}
+
+\Q{Differentiate FIR and IIR systems; define recursive and non-recursive systems with
+examples}{\m{3+3}\m{4}\m{5}}
+{\color{sub}\footnotesize \tF{4} \yr{\textbf{\texttt{74 Bh}}, \texttt{70 Ma},
+\textbf{\texttt{72 Ash}}, 80 Ba} \gap$\cdot$\gap the FIR/IIR comparison is re-used in
+Ch 3 and Ch 4, learn it once}
+
+\sbsr{0.5}{%
+\lead{FIR Vs IIR}
+\par
+% tabularx re-reads its own body, which TeX cannot do inside a macro argument
+% (\TX@get@body fails). Inside an \sbs column always use plain tabular.
+\begin{tabular}{@{}L{1.25cm}L{3.2cm}L{3.2cm}@{}}
+\toprule
+\hrow \thead{} & \thead{FIR} & \thead{IIR} \\
+$h[n]$ & finite, $h[n]=0$ outside $0\le n\le M-1$ & infinite length \\
+Output & $\sum_{k=0}^{M-1}h[k]x[n-k]$ & $\sum_{k=0}^{\infty}h[k]x[n-k]$ \\
+Memory & finite, last $M$ samples & infinite \\
+Built with & convolution directly & difference equation, feedback \\
+Stability & always stable & only if poles are inside the unit circle \\
+Phase & can be exactly linear & cannot be exactly linear \\
+\bottomrule
+\end{tabular}
+\par\vspace{2pt}
+{\color{sub}\footnotesize \mk{The reason IIR needs a difference equation}: convolution would
+need infinite memory, so it cannot be implemented directly.}}{%
+\lead{Recursive Vs non-recursive}
+\begin{itemize}
+  \item \textbf{Non-recursive}: output from present and past \emph{inputs} only,
+        $y[n]=F\{x[n],\ldots,x[n-M]\}$. \mk{No feedback.} A causal FIR system is
+        non-recursive.
+  \begin{itemize}
+    \item Eg moving average $y[n]=\frac13\{x[n]+x[n-1]+x[n-2]\}$.
+  \end{itemize}
+  \item \textbf{Recursive}: output also uses past \emph{outputs},
+        $y[n]=F\{y[n-1],\ldots,y[n-N],x[n],\ldots,x[n-M]\}$. \mk{Has a feedback loop.}
+  \begin{itemize}
+    \item Eg $y[n]=x[n]+a\,y[n-1]$.
+    \item Recursive form of the moving average (asked in \texttt{70 Ma}):
+          $y[n]=y[n-1]+\frac1M\{x[n]-x[n-M]\}$ --- one add and one subtract per sample
+          instead of $M$ adds.
+  \end{itemize}
+  \item \mk{FIR/IIR is about the impulse response; recursive/non-recursive is about the
+        implementation.} They usually coincide but are not the same statement: a recursive
+        structure can still realise an FIR response.
+\end{itemize}}
+
+\Q{State the linear constant-coefficient difference equation; find the zero-input and
+zero-state response}{\m{4}\m{5}}
+{\color{sub}\footnotesize \tF{5} \yr{\textbf{80 Ba}, \textbf{\texttt{76 Bh}},
+\textbf{\texttt{77 Ch}}, \textbf{73 Ch}, 81 Ba} \gap$\cdot$\gap the system-function half is in
+\textbf{Ch 3}, the response half is worked in \textbf{Ch1-num \S6}}
+
+\sbsr{0.52}{%
+\lead{General form}
+\[ \sum_{k=0}^{N}a_k\,y[n-k]=\sum_{k=0}^{M}b_k\,x[n-k],\qquad a_0=1 \]
+\[ \text{or}\quad y[n]=-\sum_{k=1}^{N}a_k\,y[n-k]+\sum_{k=0}^{M}b_k\,x[n-k] \]
+\begin{itemize}
+  \item $N$ is the \textbf{order} of the system.
+  \item $N=0$ $\rightarrow$ non-recursive (FIR); $N\ge1$ $\rightarrow$ recursive.
+\end{itemize}}{%
+\lead{Total response $=$ zero-input $+$ zero-state}
+\begin{itemize}
+  \item Iterating $y[n]=a\,y[n-1]+x[n]$ from $y[-1]$ gives
+        \[ y[n]=\underbrace{a^{n+1}y[-1]}_{\text{zero input}}
+                +\underbrace{\sum_{k=0}^{n}a^kx[n-k]}_{\text{zero state}} \]
+  \item \textbf{Zero-state (forced) response}: set $y[-1]=0$. The part the input forces on
+        the system. A system with zero initial conditions is called \textbf{relaxed}.
+  \item \textbf{Zero-input (natural, free) response}: set $x[n]=0$. Depends only on the
+        system and its initial conditions.
+  \item \mk{An LTI system must be relaxed.} With non-zero initial conditions the system is
+        not linear, which is why questions say ``initially relaxed''.
+\end{itemize}}
+
+\Q{Find the frequency response of an LTI system / its response to a complex
+exponential}{\m{4}\m{5}}
+{\color{sub}\footnotesize \tF{7} \yr{\textbf{70 Ch}, 72 Ka, 80 Ba, 71 Shr,
+\textbf{\texttt{69 Bh}}, 73 Shr, 82 Ba} \gap$\cdot$\gap \textbf{the cheapest 5 marks in the
+paper}, see the shortcut \gap$\cdot$\gap worked in \textbf{Ch1-num \S7}}
+
+\sbs{%
+\begin{itemize}
+  \item Feed $x[n]=e^{j\omega n}$ into the convolution sum:
+        \[ y[n]=\sum_k h[k]e^{j\omega(n-k)}
+              =e^{j\omega n}\underbrace{\sum_k h[k]e^{-j\omega k}}_{H(e^{j\omega})} \]
+  \item So $y[n]=H(e^{j\omega})\,e^{j\omega n}$: \mk{the input comes out unchanged in shape,
+        only scaled}.
+  \item $e^{j\omega n}$ is therefore an \textbf{eigenfunction} of every LTI system, and
+        $H(e^{j\omega})$ --- the DTFT of $h[n]$ --- is the \textbf{eigenvalue}, called the
+        \textbf{frequency response}.
+  \item $|H(e^{j\omega})|$ is the magnitude response, $\angle H(e^{j\omega})$ the phase
+        response. Both are $2\pi$-periodic (\S1.4).
+\end{itemize}}{%
+\lead{The shortcut \mk{(do not convolve these)}}
+\begin{enumerate}
+  \item The question gives $x[n]=Ae^{j\omega_0n}$ over all $n$, so it is
+        \mk{not a finite sequence} --- graphical convolution is the wrong tool.
+  \item Compute $H(e^{j\omega})$ once. For $h[n]=a^nu[n]$:
+        \[ H(e^{j\omega})=\sum_{n=0}^{\infty}a^ne^{-j\omega n}=\frac{1}{1-ae^{-j\omega}} \]
+  \item Evaluate at the $\omega_0$ the question gives.
+  \item Answer: $y[n]=A\,H(e^{j\omega_0})\,e^{j\omega_0n}$.
+\end{enumerate}
+{\color{sub}\footnotesize For a sum of sinusoids (73 Shr) do this once per frequency and add
+--- superposition. For a real cosine, write it as two exponentials at $\pm\omega_0$ and use
+conjugate symmetry.}}
+
+\hr
+
+\T{1.10 Sampling of continuous-time signals}
+
+\Q{What is sampling? How is the spectrum of the sampled signal related to that of the
+continuous-time signal? Explain aliasing}{\m{6}\m{8}}
+{\color{sub}\footnotesize \tP{2} \yr{\textbf{69 Bh}, \textbf{68 Bh}} \gap$\cdot$\gap the
+numerical form, ``write $x[n]$ after sampling'', is asked by \textbf{7} more papers,
+worked in \textbf{Ch1-num \S8}}
+
+\sbsr{0.46}{%
+\figT{c1_sampling_spectra.png}
+\penalty0\vspace{1pt}
+{\color{sub}\footnotesize Shifted copies, their sum, and the resulting
+$X(e^{j\omega})$. The copies overlap here, so the triangle is distorted:
+\mk{this is aliasing}. \yr{Chapterwise Ch2 p43}}}{%
+\lead{The relation \mk{(quote this equation)}}
+\begin{itemize}
+  \item Sampling means $x[n]=x_c(nT)$, with $T$ the sampling period and $F_s=1/T$ the
+        sampling rate.
+  \item Substituting into the inverse CTFT and regrouping gives
+\end{itemize}
+\[ X(e^{j\omega})=\frac1T\sum_{k=-\infty}^{\infty}
+   X_c\!\left(j\frac{\omega}{T}+j\frac{2\pi k}{T}\right) \]
+\begin{itemize}
+  \item In words: \mk{the spectrum of the sampled signal is the spectrum of the analog
+        signal, scaled by $1/T$, repeated every $\Omega_s=2\pi/T$}, with the analog
+        frequency mapped to $\omega=\Omega T$.
+  \item Three-step recipe for the diagram: (1) cut $X_c(j\Omega)$ into bands of width
+        $2\pi/T$; (2) shift every band to the centre; (3) add.
+\end{itemize}
+\lead{Aliasing}
+\begin{itemize}
+  \item If the copies are spaced closer than the signal is wide, they \textbf{overlap} and
+        add. The overlapped region can no longer be separated.
+  \item A high frequency then reappears as, and is indistinguishable from, a lower one.
+  \item \mk{Cure}: sample faster, or band-limit the input first.
+\end{itemize}}
+
+\sbsr{0.54}{%
+\lead{Sampling theorem}
+\begin{itemize}
+  \item Aliasing disappears when
+        \[ \Omega_s=\frac{2\pi}{T}\ge2W \quad\text{or}\quad F_s\ge2F_{max} \]
+  \item $2F_{max}$ is the \textbf{Nyquist rate}; $F_s/2$ is the \textbf{folding frequency}.
+  \item \textbf{Oversampling} means $F_s$ is taken well above the Nyquist rate --- it
+        pushes the copies further apart, so the anti-aliasing filter can be gentler
+        (\texttt{76 Bh} asks exactly this).
+  \item When the criterion holds, every copy but $k=0$ is zero in $-\pi\le\omega<\pi$, so
+        $X(e^{j\omega})=\frac1T X_c(j\omega/T)$: \mk{the shape is preserved}, only scaled.
+        That is why perfect reconstruction is possible.
+  \item The relative width of the digital spectrum is $\rho=2W/\Omega_s$: the faster you
+        sample, the narrower the signal sits inside the $2\pi$ span.
+\end{itemize}}{%
+\figT{c1_sampling_rates.png}
+\penalty0\vspace{1pt}
+{\color{sub}\footnotesize Same signal at the Nyquist rate, twice it, three times it. The
+copies pull apart and the gap between them grows. \yr{Chapterwise Ch2 p45}}}
+
+\Q{Why is an anti-aliasing filter needed? Describe the effect of the sample-and-hold
+circuit at the input of an A/D converter}{\m{2+5}}
+{\color{sub}\footnotesize \tP{1} \yr{\textbf{\texttt{69 Bh}}} \gap$\cdot$\gap \texttt{EX 753}
+only, but it is the theory behind every sampling numerical}
+
+\sbs{%
+\lead{Anti-aliasing filter}
+\begin{itemize}
+  \item A real signal is never perfectly band-limited: noise and harmonics run above
+        $F_s/2$.
+  \item Those components would fold down into the band of interest and \mk{cannot be
+        removed afterwards} --- once aliased, the damage is permanent.
+  \item So an \textbf{analog low pass filter} is placed \emph{before} the sampler, with
+        cut-off at or below $F_s/2$.
+  \item It is analog by necessity: a digital filter would come after the sampling that
+        caused the problem.
+  \item Practical filters are not brickwall, which is the second reason to oversample: it
+        widens the transition band the filter is allowed to use.
+\end{itemize}}{%
+\lead{Sample-and-hold}
+\begin{itemize}
+  \item An A/D converter needs a \mk{constant} input during its conversion time. A signal
+        still moving would be converted to a wrong, smeared value.
+  \item The S/H circuit tracks the input, then freezes it at the sampling instant and
+        holds it flat until the conversion finishes.
+  \item Effects to state:
+  \begin{itemize}
+    \item Holding is a zero-order hold: it multiplies the spectrum by a
+          $\mathrm{sinc}$-shaped envelope, so high frequencies droop.
+    \item That droop is corrected later by a digital $\times1/\mathrm{sinc}$ equaliser.
+    \item Real S/H adds aperture jitter, droop during hold and a small pedestal error.
+  \end{itemize}
+  \item \textbf{Reconstruction} at the output is the mirror image: D/A holds each sample
+        flat, then an analog \emph{smoothing} low pass filter removes the spectral images.
+\end{itemize}}
+
+\hr
+
+\T{1.11 Last-minute recall for this chapter}
+
+\sbs{%
+\lead{Must memorise}
+\begin{itemize}
+  \item $x_e=\frac12(x[n]+x[-n])$, $x_o=\frac12(x[n]-x[-n])$.
+  \item Periodic $\Leftrightarrow$ $\omega_0/2\pi$ rational; then $N=2\pi m/\omega_0$.
+        \mk{No $\pi$ in $\omega_0$ means aperiodic.}
+  \item Energy signal: $0<E<\infty$, $P=0$. Power signal: $0<P<\infty$, $E=\infty$.
+        Periodic $\rightarrow$ power. $|e^{j\theta}|=1\rightarrow$ power, $P=1$.
+  \item $E$ for $a^nu[n]$ is $1/(1-a^2)$; $P$ for $u[n]$ is $\frac12$.
+  \item $y[n]=\sum_k x[k]h[n-k]$. Output starts at $n_x+n_h$, length $L_x+L_h-1$.
+  \item LTI causal $\Leftrightarrow h[n]=0,\ n<0$. LTI stable
+        $\Leftrightarrow\sum|h[k]|<\infty$.
+  \item $e^{j\omega n}$ in $\rightarrow$ $H(e^{j\omega})e^{j\omega n}$ out. Never convolve
+        these.
+  \item $X(e^{j\omega})=\frac1T\sum_k X_c(j\frac{\omega+2\pi k}{T})$, and $F_s\ge2F_{max}$.
+\end{itemize}}{%
+\lead{Most repeated, in order}
+\begin{enumerate}
+  \item Convolution, find $y[n]$ \tS{34}
+  \item Energy Vs power $+$ periodicity \tS{10}
+  \item Test a system for linearity / TI / causality / stability \tS{12}
+  \item Find the fundamental period \tF{7}
+  \item Response to a complex exponential \tF{7}
+  \item Sample an analog signal, write $x[n]$ \tF{7}
+  \item Convolution from tabulated or stem-plot data \tF{4}
+  \item Even and odd parts \tF{4}
+  \item FIR Vs IIR, recursive Vs non-recursive \tF{4}
+  \item Convolution sum, derive and explain \tF{4}
+\end{enumerate}
+{\color{sub}\footnotesize \mk{Q1 and Q2 of the paper come from this chapter in almost every
+year.} If time is short, do \S1.9 and \S1.3 and leave \S1.6 --- the DTFS has been asked
+5 times in 45 papers and never for more than 6 marks.}}

@@ -1,0 +1,90 @@
+%=======================================================================
+%  ABBREVIATION CHART  (shared, appended to every chapter)
+%  tabularx is written out literally here, never through the preamble's
+%  abbrtable environment: tabularx re-reads its own body by scanning for
+%  the literal \end{tabularx}, which an environment wrapper hides from it
+%  (\TX@get@body then runs off the end of the file).
+%=======================================================================
+\needspace{6\baselineskip}
+\T{Abbreviations used in these notes}
+
+{\color{sub}\footnotesize Only these are ever shortened. Anything not on this list is written
+out in full. $\rightarrow$ reads ``leads to / therefore'', $+$ reads ``and'', $=$ reads
+``is''. \checkmark means the property holds, \xmark that it does not.}
+
+\vspace{2pt}
+\begin{tabularx}{\textwidth}{@{}L{1.75cm}X@{\hspace{8pt}}L{1.75cm}X@{}}
+\toprule
+\hrow \thead{Short} & \thead{Means} & \thead{Short} & \thead{Means} \\
+\midrule
+DSP     & digital signal processing          & DSAP    & digital signal analysis and processing \\
+DT      & discrete-time                      & CT      & continuous-time \\
+LTI     & linear time-invariant              & LSI     & linear shift-invariant, the same thing \\
+TI      & time-invariant                     & BIBO    & bounded input, bounded output \\
+LCCDE   & linear constant-coefficient difference equation & ROC & region of convergence \\
+DTFS    & discrete-time Fourier series       & DTFT    & discrete-time Fourier transform \\
+CTFT    & continuous-time Fourier transform  & DFS     & discrete Fourier series \\
+DFT     & discrete Fourier transform         & IDFT    & inverse DFT \\
+FFT     & fast Fourier transform             & DIT     & decimation in time \\
+DIF     & decimation in frequency            & MAC     & multiply and accumulate \\
+FIR     & finite impulse response            & IIR     & infinite impulse response \\
+LPF     & low pass filter                    & HPF     & high pass filter \\
+BPF     & band pass filter                   & BSF     & band stop filter \\
+BLT     & bilinear transformation            & II      & impulse invariance \\
+A/D     & analog to digital                  & D/A     & digital to analog \\
+S/H     & sample and hold                    & ZOH     & zero-order hold \\
+SNR     & signal to noise ratio              & PYQ     & past-year question \\
+coeff   & coefficient                        & freq    & frequency \\
+eqn     & equation                           & no.     & number \\
+ops     & operations                         & attr    & attribute \\
+w/      & with                               & w/o     & without \\
+Eg      & for example                        & Vs      & compare / differentiate \\
++Fig    & a figure is wanted                 & (I)     & importance / need \\
+(+)     & advantage                          & (-)     & disadvantage \\
+\bottomrule
+\end{tabularx}
+
+\T{Exam paper codes}
+
+\sbs{%
+\lead{Month codes}
+\begin{itemize}
+  \item \textbf{Ba} Baishakh \gap \textbf{Jth} Jestha \gap \textbf{Asa} Ashad
+  \item \textbf{Shr} Shrawan \gap \textbf{Bh} Bhadra \gap \textbf{Ash} Ashwin
+  \item \textbf{Ka} Kartik \gap \textbf{Mng} Mangsir \gap \textbf{Po} Poush
+  \item \textbf{Ma} Magh \gap \textbf{Ch} Chaitra
+  \item \mk{Ash and Asa are different months} --- 2075 Ashwin and 2070 Ashad are
+        separate papers.
+\end{itemize}}{%
+\lead{How a year code is written}
+\begin{itemize}
+  \item \textbf{Bold} $=$ \textbf{Regular} exam. Plain $=$ Back exam.
+  \begin{itemize}
+    \item ``New Back (2066 \& Later Batch)'' counts as Back.
+    \item A header printing ``Regular / Back'' in one box counts as Regular.
+  \end{itemize}
+  \item \texttt{Typewriter} $=$ the \texttt{EX 753} paper (DSP, BEX, IV/II).
+        Normal font $=$ \textbf{CT 704} (DSAP, BEI/BCT, IV/I).
+  \item The two axes are independent: \textbf{76 Ch} is CT 704 Regular,
+        76 Ash is CT 704 Back, \textbf{\texttt{76 Bh}} is EX 753 Regular,
+        \texttt{74 Ma} is EX 753 Back.
+  \item \mk{\texttt{69 Bh} and \textbf{69 Bh} are two different papers}, one in each course.
+\end{itemize}}
+
+\T{Frequency chips}
+
+\sbs{%
+\begin{itemize}
+  \item \tS{n} \quad asked in \textbf{10 or more} of the 45 papers.
+  \item \tF{n} \quad asked in \textbf{4 to 9} papers.
+  \item \tP{n} \quad asked in \textbf{1 to 3} papers.
+  \item \added \quad written or corrected against a reference because the source notes did
+        not cover it, or covered it wrongly.
+\end{itemize}}{%
+\begin{itemize}
+  \item \m{5} \quad marks the question has actually carried. Several chips mean the same
+        question has been set at different marks in different years.
+  \item The count is over \textbf{45 papers}: 28 CT 704 (2066 Magh to 2082 Bhadra) and
+        17 EX 753 (2069 Bhadra to 2081 Chaitra).
+  \item Counts come from the Detailed PYQ document, which reproduces every question in full.
+\end{itemize}}
