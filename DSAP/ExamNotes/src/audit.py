@@ -102,6 +102,12 @@ def audit(path, cut):
 
 
 def main():
+    # the console here is cp1252; a topic line carrying a math glyph such as
+    # <= used to crash the report after printing most of it
+    try:
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    except AttributeError:
+        pass
     cut = float(sys.argv[1]) if len(sys.argv) > 1 else 0.33
     stranded, gaps = [], []
     for fn in sorted(os.listdir(OUT)):

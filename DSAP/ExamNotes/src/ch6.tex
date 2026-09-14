@@ -1,0 +1,553 @@
+%=======================================================================
+%  CHAPTER 6 - IIR FILTER DESIGN  (6 hrs)
+%  Every order, cut-off, pole, H(s) and H(z) quoted here is produced by
+%  iir.py, which self-tests against the published Oppenheim examples 7.2,
+%  7.3 and 7.6 before it prints, and is asserted again by verify.py ch6.
+%  Sources: Chapterwise Ch6 "Design of IIR Filters", 36 pp, the closest
+%           thing the subject has to a chapter-native text: pp.2-15 impulse
+%           invariance with the Butterworth and Chebyshev worked examples,
+%           pp.16-22 bilinear, pp.23-30 frequency transformation of low-pass
+%           IIR filters, pp.30-36 structures (which is chapter 4 material).
+%           SPP Sir deck 6 "IIR _ FIR" pp.1-105 (pp.106-155 are chapter 5):
+%           pp.19-25 the three reasons for designing through an analog
+%           prototype, pp.36-47 impulse invariance, pp.48-56 bilinear and
+%           the comparison, pp.57-62 the prototype families, pp.100-105
+%           the frequency-transformation table.
+%           DSAP All Chapter Summary pp.72-85 for the LOCAL convention: the
+%           order and cut-off formulas written in dB attenuation, which is
+%           how every one of the 45 papers states its specification, and the
+%           digital spectral-transformation table with its alpha and k.
+%  NOTE the syllabus file's chapter 6 is corrupt (it repeats the
+%  RF-Microwave antenna topics). The reconstruction used here is in
+%  DSAP/NOTES-BUILD-PROGRESS.md 5.1 and matches what the papers ask.
+%  Numericals live in ch6-num.tex.
+%=======================================================================
+\section{IIR Filter Design}
+
+{\color{sub}\footnotesize 6 hrs \gap$\cdot$\gap \mk{50 questions across the 45 papers}
+\gap$\cdot$\gap worth about \mk{13 of 80 marks} \gap$\cdot$\gap 4 syllabus sub-topics
+\gap$\cdot$\gap \mk{2nd of the 8 chapters} by weight, behind only the DFT.}
+
+\lead{Read this first:}
+\begin{itemize}
+  \item \mk{36 of the 50 questions are one calculation}: design an analog Butterworth
+        low-pass filter, then map it to digital. Learn that one procedure and the
+        chapter is mostly done.
+  \item The whole subject of IIR design is \textbf{two sentences}. There is no good
+        direct method in the $z$ domain, but analog filter design is a solved,
+        closed-form art. So \textbf{design in $s$, then map $s\to z$}.
+  \item \textbf{Only two maps exist} in this syllabus, and they split the chapter:
+  \begin{itemize}
+    \item \textbf{Bilinear} \tS{36}: $s=\dfrac{2}{T}\dfrac{1-z^{-1}}{1+z^{-1}}$. One to
+          one, so \textbf{no aliasing}, but the frequency axis is \textbf{warped}, so
+          the edges must be pre-warped first.
+    \item \textbf{Impulse invariance} \tS{11}: $h[n]=h_a(nT)$. The frequency axis is
+          \textbf{linear}, so no warping, but sampling an unbandlimited analog response
+          \textbf{aliases}.
+  \end{itemize}
+  \item \mk{Everything else is the analog half}: which prototype (Butterworth or
+        Chebyshev), what order, what cut-off. That part is identical for both maps.
+  \item \mk{The sampling period cancels.} When the spec is given in rad/sample, pre-warp
+        by $\Omega=\frac{2}{T}\tan\frac{\omega}{2}$ and map back by $s=\frac{2}{T}\cdots$
+        and \textbf{every $2/T$ divides out}: $H(z)$ is the same for $T=1$, $T=2$ or
+        $T=0.1$. Nine papers give a sampling frequency purely as a distraction.
+        \mk{Set $T=1$ and write one line saying why} (\S6.5).
+  \item The other 14 questions are bookwork: why transform at all, the two methods
+        compared, pre-warping, and spectral transformation. All short, all below.
+\end{itemize}
+
+\hr
+
+\T{6.1 \quad Why design through an analog prototype}
+
+\Q{Why do we use transformation of continuous time filter design methods to design
+discrete time IIR filters?}{\m{3+6}\m{3}}
+{\color{sub}\footnotesize \tP{2} \yr{\texttt{70 Ma} \m{3+6}, 73 Shr \m{3}}
+\gap$\cdot$\gap \mk{three reasons, one line each, then move on}}
+
+\sbs{%
+\lead{The three reasons}
+\begin{enumerate}
+  \item \textbf{The analog art is mature.} Continuous-time IIR design is a century old
+        and its results are tabulated. Reusing it is free.
+  \item \textbf{Closed-form formulas exist.} Butterworth, Chebyshev and elliptic
+        prototypes all have closed-form order, cut-off and pole expressions, so the
+        design is arithmetic, not search.
+  \item \textbf{No such formulas exist in the $z$ domain.} The same approximation
+        methods applied directly to a discrete-time filter do \emph{not} give closed
+        forms, because a digital frequency response is \mk{periodic} and an analog one
+        is not.
+\end{enumerate}}{%
+\lead{The three steps that follow from it}
+\begin{enumerate}
+  \item \textbf{Translate the spec} from digital $\omega$ to analog $\Omega$, by the
+        rule that belongs to the map being used.
+  \item \textbf{Design $H_a(s)$}: choose the prototype family, find $N$ and
+        $\Omega_c$, place the poles, write $H_a(s)$.
+  \item \textbf{Map back} to $H(z)$ with the same rule.
+\end{enumerate}
+\lead{What the map must preserve}
+\begin{itemize}
+  \item The \textbf{$j\Omega$ axis} of the $s$ plane must land on the \textbf{unit
+        circle} of the $z$ plane, or the frequency response is not preserved.
+  \item The \textbf{left half plane} must land \textbf{inside} the unit circle, or a
+        stable analog filter becomes an unstable digital one.
+  \item \mk{Both maps below satisfy both conditions.} That is the whole reason there
+        are only two of them.
+\end{itemize}}
+
+\hr
+
+\T{6.2 \quad The analog prototypes}
+
+\Q{Compare the Butterworth approximation with the Chebyshev approximation}{\m{1+10}\m{3}}
+{\color{sub}\footnotesize \tP{2} \yr{\textbf{\texttt{76 Bh}} \m{1+10}, \textbf{82 Bh}}
+\gap$\cdot$\gap \mk{a table, not prose}}
+
+\sbsr{0.5}{%
+\lead{Butterworth: maximally flat}
+\[ |H_a(j\Omega)|^2=\frac{1}{1+\left(\dfrac{\Omega}{\Omega_c}\right)^{2N}} \]
+\begin{itemize}
+  \item \textbf{All pole.} Every zero is at $\Omega\to\infty$.
+  \item $|H_a(j0)|=1$ for every $N$, and
+        $|H_a(j\Omega_c)|=\frac{1}{\sqrt2}$, i.e. \mk{$\Omega_c$ is the 3 dB point
+        whatever the order}.
+  \item \textbf{Monotonic} in both bands: no ripple anywhere.
+  \item Poles lie on a \textbf{circle} of radius $\Omega_c$, equally spaced, none on
+        the $j\Omega$ axis.
+\end{itemize}}{%
+\lead{Chebyshev type I: equiripple passband}
+\[ |H_a(j\Omega)|^2=\frac{1}{1+\varepsilon^2V_N^2(\Omega/\Omega_c)} \]
+\begin{itemize}
+  \item $V_N(x)=\cos(N\cos^{-1}x)$ for $|x|\le1$, which oscillates between $\pm1$, and
+        $\cosh(N\cosh^{-1}x)$ for $x>1$, which climbs fast.
+  \item So the passband \textbf{ripples} between $1$ and $1/\sqrt{1+\varepsilon^2}$, and
+        the stopband falls monotonically and \textbf{steeply}.
+  \item \textbf{Type II} puts the ripple in the stopband instead, by using
+        $V_N^{-1}$; \textbf{elliptic} ripples in both and is steeper still.
+  \item \mk{$|H_a(j0)|=1$ for $N$ odd but $1/\sqrt{1+\varepsilon^2}$ for $N$ even.}
+        An even-order Chebyshev filter does \textbf{not} have unity DC gain.
+\end{itemize}}
+
+\lead{The comparison, as the answer}
+\par\smallskip
+\begin{tabular}{@{}L{2.6cm}L{5.4cm}L{6.9cm}@{}}
+\toprule
+\hrow \thead{} & \thead{Butterworth} & \thead{Chebyshev I} \\
+Passband & monotonic, maximally flat & equiripple between $1$ and
+  $1/\sqrt{1+\varepsilon^2}$ \\
+Stopband & monotonic & monotonic \\
+Transition & \textbf{widest} of the three families & narrower for the same order \\
+Order for a given spec & \textbf{highest} & \mk{lower, typically by a third} \\
+Poles lie on & a circle, radius $\Omega_c$ & an \textbf{ellipse}, semi-axes
+  $a\Omega_c$ and $b\Omega_c$ \\
+Phase & most nearly linear of the three & worse, and worst near the band edge \\
+Use when & flatness matters more than sharpness & a short filter matters more than
+  flatness \\
+\bottomrule
+\end{tabular}
+\par\smallskip
+{\color{sub}\footnotesize The standing example: $\Omega_p=1$, $\Omega_s=3.33$,
+$\alpha_p=0.3$ dB, $\alpha_s=22$ dB needs \textbf{$N=5$ Butterworth} but only
+\textbf{$N=3$ Chebyshev}. On the 45 papers' own recurring spec ($0.2\pi$, $0.3\pi$,
+1 dB, 15 dB) it is \mk{$N=6$ against $N=4$}. That single sentence answers "compare"
+better than a paragraph.}
+
+\Q{The design formulas, in the form every paper's specification uses}{\m{core}}
+{\color{sub}\footnotesize \mk{these four lines carry 36 questions}
+\gap$\cdot$\gap memorise them exactly}
+
+\sbsr{0.44}{%
+\figT{c6_tolerance.png}
+{\color{sub}\footnotesize The tolerance scheme that every paper states in words.
+$\delta_1$ is the passband deviation, $\delta_2$ the stopband gain, and \mk{only the
+magnitude is ever specified}: an IIR filter's phase is whatever the poles give.}}{%
+\lead{Attenuation is always positive dB}
+\[ \alpha=-20\log_{10}|H| \]
+\begin{itemize}
+  \item "maximum deviation $1$ dB below 0 dB gain" $\Rightarrow\alpha_p=1$.
+  \item "maximum gain $-15$ dB in the stopband" $\Rightarrow\alpha_s=15$.
+  \item a gain $0.89125$ given directly $\Rightarrow\alpha_p=-20\log_{10}0.89125=1$ dB.
+  \item a ripple $\delta_p=\delta_1=0.11$ $\Rightarrow$ the edge gain is
+        $1-\delta_p=0.89$, so $\alpha_p=1.0122$ dB; but $\delta_s=\delta_2=0.21$ is a
+        gain already, so $\alpha_s=13.5556$ dB.
+  \item \mk{Those four phrasings are the same spec four ways.} Converting first, before
+        anything else, is what makes the rest mechanical.
+\end{itemize}}
+
+\sbs{%
+\lead{Order and cut-off}
+\[ N\ \ge\ \frac{\log_{10}\!\left[\dfrac{10^{0.1\alpha_s}-1}
+                                        {10^{0.1\alpha_p}-1}\right]}
+                {2\log_{10}(\Omega_s/\Omega_p)}
+   \qquad\text{(Butterworth)} \]
+\[ N\ \ge\ \frac{\cosh^{-1}\!\sqrt{\dfrac{10^{0.1\alpha_s}-1}
+                                         {10^{0.1\alpha_p}-1}}}
+                {\cosh^{-1}(\Omega_s/\Omega_p)}
+   \qquad\text{(Chebyshev)} \]
+\[ \Omega_c=\frac{\Omega_p}{\left(10^{0.1\alpha_p}-1\right)^{1/2N}},\qquad
+   \varepsilon=\sqrt{10^{0.1\alpha_p}-1} \]
+\begin{itemize}
+  \item \mk{Always round $N$ UP.} The fractional $N$ meets the spec exactly and is not
+        realisable.
+  \item That $\Omega_c$ makes the \textbf{passband} exact and leaves the stopband
+        over-satisfied. Using $\Omega_s$ and $\alpha_s$ instead makes the stopband
+        exact. Both are legal; \textbf{state which you used}.
+  \item Chebyshev needs no separate $\Omega_c$: the passband is equiripple right up to
+        $\Omega_p$, so \mk{$\Omega_c=\Omega_p$}.
+\end{itemize}}{%
+\lead{Butterworth poles}
+\[ s_k=\Omega_c\,e^{\,j\pi\frac{N+2k+1}{2N}},\qquad k=0,1,\dots,N-1 \]
+\begin{itemize}
+  \item These are the $N$ left-half-plane roots of
+        $1+(s/j\Omega_c)^{2N}=0$; the other $N$ belong to $H_a(-s)$ and are discarded.
+  \item Equally spaced by $\pi/N$ on the circle of radius $\Omega_c$, symmetric about
+        the real axis, \mk{never on the $j\Omega$ axis}.
+  \item A real pole at $-\Omega_c$ appears \textbf{only for odd $N$}.
+  \item[] \[ H_a(s)=\frac{\Omega_c^{\,N}}{\prod_{k}(s-s_k)} \]
+  \item The numerator $\Omega_c^N$ is fixed by $H_a(0)=1$, not chosen.
+\end{itemize}}
+
+\sbs{%
+\lead{Chebyshev poles}
+\[ \alpha=\frac1\varepsilon+\sqrt{1+\frac1{\varepsilon^2}},\quad
+   a=\frac{\alpha^{1/N}-\alpha^{-1/N}}{2},\quad
+   b=\frac{\alpha^{1/N}+\alpha^{-1/N}}{2} \]
+\[ s_k=-a\Omega_c\sin\theta_k+j\,b\Omega_c\cos\theta_k,\quad
+   \theta_k=\frac{(2k+1)\pi}{2N} \]
+\begin{itemize}
+  \item The poles sit on the \textbf{ellipse} $\dfrac{\sigma^2}{a^2\Omega_c^2}
+        +\dfrac{\Omega^2}{b^2\Omega_c^2}=1$, at the same angles a Butterworth filter
+        would use, squashed towards the $j\Omega$ axis.
+  \item $b>1>a$ always, so the ellipse is \textbf{taller than wide}: the poles crowd
+        the imaginary axis, which is what sharpens the cut-off.
+\end{itemize}}{%
+\lead{Chebyshev gain, and the even-order trap}
+\begin{itemize}
+  \item $H_a(s)=\dfrac{K}{\prod_k(s-s_k)}$ with $K=\prod_k(-s_k)$ for \textbf{odd} $N$,
+        which makes $H_a(0)=1$.
+  \item For \textbf{even} $N$ the equiripple passband starts at its \emph{lower} edge, so
+        $H_a(0)=\dfrac{1}{\sqrt{1+\varepsilon^2}}$ and \mk{$K$ is divided by
+        $\sqrt{1+\varepsilon^2}$}.
+  \item Worked instance: 72 Ma has $\varepsilon=1$, so its $N=2$ filter has a DC gain of
+        $1/\sqrt2=0.707$, \mk{not 1}. It looks like an arithmetic error and is not.
+  \item $\varepsilon$ and $\Omega_c$ come entirely from the passband. \textbf{Only $N$}
+        uses the stopband at all.
+\end{itemize}}
+
+\hr
+
+\T{6.3 \quad The impulse invariance method}
+
+\Q{Describe digital Butterworth filter design using the impulse invariance technique.
+What are the limitations of the impulse invariance technique?}{\m{15}\m{12+3}}
+{\color{sub}\footnotesize \tS{11} \yr{\textbf{69 Bh} \m{15}, \textbf{78 Bh} \m{12+3},
+\textbf{72 Ch} \m{3+12}, \textbf{\texttt{81 Ch}}, \textbf{\texttt{80 Ch}},
+\textbf{\texttt{69 Bh}} \m{12}, 70 Asa \m{13}, \textbf{74 Ch} \m{12},
+\textbf{67 Mng} \m{15}} \gap$\cdot$\gap \mk{the limitations are half the marks}}
+
+{\color{sub}\footnotesize In one line: \mk{make the digital impulse response the sampled
+analog one}, $h[n]=h_a(nT)$. Everything below follows from that single sentence, and so
+does everything wrong with the method.}
+
+\sbsr{0.54}{%
+\lead{The idea, and the whole derivation}
+\begin{itemize}
+  \item \textbf{Sample the analog impulse response}: $h[n]=h_a(nT)$. Nothing else is
+        assumed.
+  \item Expand $H_a(s)$ in partial fractions over its $N$ simple poles $p_k$:
+  \item[] \[ H_a(s)=\sum_{k=1}^{N}\frac{A_k}{s-p_k}
+             \ \Longrightarrow\ h_a(t)=\sum_k A_k e^{p_kt}u(t) \]
+  \item Sample it and take the $z$ transform, which is just a geometric series in
+        $e^{p_kT}z^{-1}$:
+  \item[] \[ H(z)=\sum_{n=0}^{\infty}\!\Big(\sum_k A_ke^{p_knT}\Big)z^{-n}
+                 =\boxed{\sum_{k=1}^{N}\frac{A_k}{1-e^{p_kT}z^{-1}}} \]
+  \item So the rule is \mk{term by term}:
+        $\dfrac{1}{s-p_k}\longrightarrow\dfrac{1}{1-e^{p_kT}z^{-1}}$. That is the only
+        thing to remember.
+  \item \textbf{Spec translation is linear}: $\Omega=\omega/T$. \mk{No pre-warping.}
+  \item \textbf{The $T$ convention.} Some texts set $h[n]=T\,h_a(nT)$ instead, which
+        multiplies every $A_k$ by $T$. Without it the filter's gain comes out near
+        $1/T$, so with $T\ne1$ you must say which you used. \mk{With $T=1$ s the two
+        are identical}, and 8 of these 11 papers set $T=1$.
+\end{itemize}}{%
+\lead{What the map does to the planes}
+\begin{itemize}
+  \item Each pole moves as $\;p_k\to e^{p_kT}$, so
+        $|z|=e^{\sigma_kT}$ and $\angle z=\Omega_kT$.
+  \item $\sigma_k<0\Rightarrow|z|<1$: \mk{a stable analog filter always gives a stable
+        digital one}.
+  \item But $z=e^{sT}$ is \textbf{many to one}: every horizontal strip of width
+        $2\pi/T$ in the $s$ plane maps onto the whole $z$ plane.
+  \item \mk{This applies to the POLES only, not to $H$.} $H(z)\ne H_a(s)|_{s}$ under
+        any substitution; only the pole positions transform that simply.
+\end{itemize}}
+
+\sbsr{0.54}{%
+\lead{The limitations (say all four)}
+\begin{enumerate}
+  \item \textbf{Aliasing.} Sampling gives
+        $H(e^{j\omega})=\frac1T\sum_{k}H_a\!\left(j\frac{\omega+2\pi k}{T}\right)$.
+        No practical analog prototype is band-limited, so the tails fold back and the
+        response is \mk{never exactly the analog one}.
+  \item \textbf{Low pass and band pass only.} A high-pass or band-stop prototype has
+        an infinite high-frequency tail, so it aliases catastrophically.
+        \mk{Impulse invariance cannot make a high-pass filter.}
+  \item \textbf{Needs a partial fraction expansion} of $H_a(s)$, and it assumes the
+        poles are \textbf{simple}. Repeated poles need a separate rule.
+  \item \textbf{Gain depends on $T$}, so the result must be rescaled.
+\end{enumerate}}{%
+\lead{The spec translation, which is all of step 1}
+\begin{itemize}
+  \item Take the tolerance scheme of \S6.2 and \mk{divide every frequency edge by $T$}.
+        Nothing else changes: the bands $1-\delta_1$ and $\delta_2$ are untouched.
+  \item The prototype is then specified only up to $\pi/T$, above which it is
+        \emph{assumed} negligible. \mk{That assumption is exactly what aliasing
+        violates}, which is why the design is checked at the end rather than trusted.
+  \item Contrast \S6.4, where the axis is \textbf{bent} rather than merely rescaled.
+  \item Practical consequence: \textbf{over-design the stopband}. Extra attenuation
+        there is what buys back the margin that the folded tails eat.
+\end{itemize}}
+
+\hr
+
+\T{6.4 \quad The bilinear transformation}
+
+\Q{Explain briefly the bilinear transformation method of IIR filter design, with its
+advantages and disadvantages}{\m{3}\m{3+6}\m{2+10}}
+{\color{sub}\footnotesize \tS{36} \yr{73 Shr \m{3}, \texttt{70 Ma} \m{3+6},
+81 Ba \m{2+10}, and the 32 design papers in \S6.5}}
+
+\sbsr{0.52}{%
+\lead{Where the formula comes from}
+\begin{itemize}
+  \item Take the simplest analog filter, $H_a(s)=\dfrac{b}{s+a}$, i.e.
+        $\dfrac{dy}{dt}+ay(t)=bx(t)$.
+  \item Integrate over one sample interval and apply the \textbf{trapezoidal rule}:
+  \item[] \[ y(nT)-y(nT-T)=\frac{T}{2}\big[g(nT)+g(nT-T)\big],\quad g=bx-ay \]
+  \item Take $z$ transforms and solve. The result is $H_a(s)$ with
+  \item[] \[ \boxed{\;s=\frac{2}{T}\,\frac{1-z^{-1}}{1+z^{-1}}\;} \]
+  \item So \mk{the bilinear transformation IS trapezoidal integration}, which is why it
+        is stable and one to one. That sentence is worth stating: it is the only
+        derivation in the chapter and papers ask for it.
+  \item Inverting, $\;z=\dfrac{1+sT/2}{1-sT/2}$.
+\end{itemize}}{%
+\lead{What it does to the planes}
+\begin{itemize}
+  \item Put $s=\sigma+j\Omega$. Then
+  \item[] \[ |z|^2=\frac{(1+\sigma T/2)^2+(\Omega T/2)^2}
+                        {(1-\sigma T/2)^2+(\Omega T/2)^2} \]
+  \item $\sigma<0\Rightarrow|z|<1$, $\sigma=0\Rightarrow|z|=1$,
+        $\sigma>0\Rightarrow|z|>1$. \mk{The entire left half plane maps into the unit
+        disc, exactly once.}
+  \item So stability is preserved, and \textbf{there is no aliasing}: the map is one to
+        one, not many to one.
+  \item On the axis, $s=j\Omega$ gives $z=e^{j\omega}$ with
+  \item[] \[ \omega=2\tan^{-1}\!\frac{\Omega T}{2},\qquad
+             \boxed{\;\Omega=\frac{2}{T}\tan\frac{\omega}{2}\;} \]
+\end{itemize}}
+
+\Q{What is frequency warping, what is pre-warping, and why is it necessary}{\m{3+12}\m{3}}
+{\color{sub}\footnotesize \tF{4} \yr{\textbf{78 Bh} \m{3}, \textbf{82 Bh} \m{3+12},
+\textbf{72 Ch} \m{3}, 79 Ba \m{3}} \gap$\cdot$\gap \mk{the figure below is the answer}}
+
+\sbsr{0.45}{%
+\figT{c6_warping.png}
+{\color{sub}\footnotesize Digital $\omega$ against analog $\Omega T_d$. The curve is
+$\omega=2\tan^{-1}(\Omega T_d/2)$: a straight line through the origin at low frequency,
+flattening to the horizontal asymptotes $\pm\pi$.}}{%
+\lead{Warping}
+\begin{itemize}
+  \item $\Omega$ runs over all of $(-\infty,\infty)$ but $\omega$ only over
+        $(-\pi,\pi)$, so \mk{the infinite analog axis is compressed into a finite
+        digital one}. That compression is the warping.
+  \item It is \textbf{almost linear for small $\omega$} ($\tan x\approx x$) and
+        \textbf{severely non-linear near $\omega=\pi$}.
+  \item Consequence: a shape defined by more than its band edges, such as a
+        differentiator or an arbitrary magnitude curve, comes out \mk{distorted}.
+        Bilinear design is only safe for \textbf{piecewise-constant} magnitude
+        responses: low pass, high pass, band pass, band stop.
+\end{itemize}
+\lead{Pre-warping}
+\begin{itemize}
+  \item Because the map bends the axis, designing the analog filter at the \emph{stated}
+        edges puts the digital edges somewhere else.
+  \item So \textbf{push the edges through the same bend first}:
+        $\Omega_p=\frac{2}{T}\tan\frac{\omega_p}{2}$,
+        $\Omega_s=\frac{2}{T}\tan\frac{\omega_s}{2}$.
+  \item The warp then undoes the pre-warp exactly, and \mk{the critical frequencies land
+        where the specification asked}. Everything between them is still bent, which is
+        why only the edges can be guaranteed.
+  \item \mk{Skipping the pre-warp is the single most common lost mark in the chapter.}
+\end{itemize}}
+
+\hr
+
+\T{6.5 \quad Impulse invariance against bilinear}
+
+\Q{Compare the impulse invariance method with the bilinear transformation method}%
+{\m{12+3}\m{11+3}\m{3+12}\m{2+10}}
+{\color{sub}\footnotesize \tF{6} \yr{\textbf{81 Bh} \m{12+3}, 79 Ba \m{11+3},
+82 Ba \m{12+3}, \textbf{72 Ch} \m{3+12}, 81 Ba \m{2+10}, \texttt{70 Ma} \m{3+6}}
+\gap$\cdot$\gap \mk{asked as a rider on a design question six times}}
+
+\par\smallskip
+\begin{tabular}{@{}L{3.0cm}L{5.7cm}L{6.2cm}@{}}
+\toprule
+\hrow \thead{} & \thead{Impulse invariance} & \thead{Bilinear} \\
+Basis & $h[n]=h_a(nT)$, a time-domain match &
+  trapezoidal integration, a frequency-domain map \\
+$s\to z$ & poles only: $p_k\to e^{p_kT}$ &
+  $s=\dfrac{2}{T}\dfrac{1-z^{-1}}{1+z^{-1}}$ throughout \\
+Frequency map & $\Omega=\omega/T$, \textbf{linear} &
+  $\Omega=\frac{2}{T}\tan\frac{\omega}{2}$, \textbf{non-linear} \\
+Mapping type & many to one & \mk{one to one} \\
+Aliasing & \mk{yes}, and unavoidable & \mk{none} \\
+Warping & none, shape preserved & yes, needs pre-warping \\
+Filter types & low pass, band pass only & \textbf{all four} \\
+Non-constant shapes & can do a band-limited differentiator & cannot \\
+Needs & partial fractions, simple poles & algebraic substitution only \\
+Order needed & higher, to absorb the aliasing & lower \\
+\bottomrule
+\end{tabular}
+
+\sbs{%
+\lead{The one-sentence verdict}
+\begin{itemize}
+  \item \mk{Bilinear trades shape fidelity for the absence of aliasing; impulse
+        invariance does the reverse.}
+  \item Since almost every filter wanted is piecewise constant, where shape fidelity
+        between the edges is worth nothing, \textbf{bilinear wins almost always}, and
+        36 of this chapter's 50 questions use it.
+  \item The exception is a filter whose \emph{shape} matters across the band. Only
+        impulse invariance can make a band-limited differentiator.
+\end{itemize}}{%
+\lead{Why $T$ cancels in a bilinear design \added}
+\begin{itemize}
+  \item Pre-warping gives $\Omega_p=\frac{2}{T}\tan\frac{\omega_p}{2}$, so
+        $\Omega_s/\Omega_p$ is \textbf{free of $T$} and so is $N$.
+  \item $\Omega_c$ then carries one factor $\frac{2}{T}$, so every pole does, so
+        $H_a(s)$ is a function of $sT/2$ alone.
+  \item Substituting $s=\frac{2}{T}\frac{1-z^{-1}}{1+z^{-1}}$ cancels it.
+        \mk{$H(z)$ is identical for every $T$.}
+  \item So a paper's "sampling frequency 0.5 Hz" changes nothing in the answer. Use
+        $T=1$, and \textbf{say in one line that it cancels} to show it was not ignored.
+  \item \mk{This is false for impulse invariance}, where $\Omega=\omega/T$ scales the
+        poles but $e^{p_kT}$ does not cancel it.
+\end{itemize}}
+
+\hr
+
+\T{6.6 \quad Spectral transformation in the digital domain}
+
+\Q{Why is spectral transformation required, and what are its features and parameters
+for low pass to high pass conversion}{\m{2}\m{4}\m{11+4}}
+{\color{sub}\footnotesize \tF{6} \yr{70 Asa \m{2}, 80 Ba \m{4}, \textbf{70 Ch} \m{5},
+\textbf{79 Bh}, \textbf{71 Ch}, \textbf{69 Ch} \m{11+4}}}
+
+\sbs{%
+\lead{Why it is required}
+\begin{itemize}
+  \item Every design procedure above produces a \textbf{low pass} filter. High pass,
+        band pass and band stop have to come from somewhere.
+  \item The analog route (transform $H_a(s)$ into a high pass, \emph{then} discretise)
+        works for bilinear but \mk{fails for impulse invariance}, because a high-pass
+        analog filter is not band-limited and aliases.
+  \item So do it the other way: \textbf{discretise the low pass first}, then transform
+        \textbf{inside the $z$ domain}. Aliasing is then impossible, because nothing is
+        sampled.
+  \item \mk{For bilinear designs the two routes give the identical filter}; for impulse
+        invariance only the digital route exists. That is the answer to "why required".
+\end{itemize}}{%
+\lead{What the map must satisfy}
+\begin{itemize}
+  \item $p^{-1}=G(z^{-1})$ must be \textbf{rational} in $z^{-1}$.
+  \item It must take the unit circle to the unit circle, and the inside to the inside,
+        so that \textbf{stability survives}.
+  \item The general form that does both is an \textbf{all-pass} function,
+        $\prod_k\dfrac{z^{-1}-\alpha_k}{1-\alpha_kz^{-1}}$ with every $|\alpha_k|<1$.
+  \item \mk{$N$ all-pass factors give an $N$-fold map}, which is why the two band cases
+        below need $z^{-2}$ and the two low-pass-like ones need only $z^{-1}$.
+\end{itemize}}
+
+\sbsr{0.56}{%
+\lead{The four transformations \mk{(this is the table they want)}}
+\par\smallskip
+{\footnotesize
+\begin{tabular}{@{}L{1.5cm}L{3.5cm}L{2.6cm}@{}}
+\toprule
+\hrow \thead{To} & \thead{Substitute $z^{-1}\to$} & \thead{Parameters} \\
+Low pass & $\dfrac{z^{-1}-\alpha}{1-\alpha z^{-1}}$
+  & $\alpha=\dfrac{\sin\frac{\omega_p-\omega'_p}{2}}
+                  {\sin\frac{\omega_p+\omega'_p}{2}}$ \\[6pt]
+High pass & $-\dfrac{z^{-1}+\alpha}{1+\alpha z^{-1}}$
+  & $\alpha=-\dfrac{\cos\frac{\omega_p+\omega'_p}{2}}
+                   {\cos\frac{\omega_p-\omega'_p}{2}}$ \\[6pt]
+Band pass & $-\dfrac{z^{-2}-a_1z^{-1}+a_2}{a_2z^{-2}-a_1z^{-1}+1}$
+  & $a_1=\dfrac{2\alpha k}{k+1}$, $a_2=\dfrac{k-1}{k+1}$ \\[6pt]
+Band stop & $\dfrac{z^{-2}-a_1z^{-1}+a_2}{a_2z^{-2}-a_1z^{-1}+1}$
+  & $a_1=\dfrac{2\alpha}{k+1}$, $a_2=\dfrac{1-k}{1+k}$ \\
+\bottomrule
+\end{tabular}}
+\par\smallskip
+{\color{sub}\footnotesize For the two band cases
+$\alpha=\dfrac{\cos\frac{\omega_u+\omega_L}{2}}{\cos\frac{\omega_u-\omega_L}{2}}$, and
+$k=\cot\frac{\omega_u-\omega_L}{2}\tan\frac{\omega_p}{2}$ for band pass,
+$\tan\frac{\omega_u-\omega_L}{2}\tan\frac{\omega_p}{2}$ for band stop. $\omega_p$ is
+the prototype's edge, $\omega'_p$ the new one.}}{%
+\lead{Reading the table without mistakes}
+\begin{itemize}
+  \item \mk{Only the low-pass row keeps the sign}; the high-pass row carries a leading
+        minus, and that minus is the whole reason the passband moves to $\omega=\pi$.
+  \item The substitution goes into $H_{lp}(p)$ \textbf{written in $p^{-1}$}, not in $p$.
+        Every published prototype already is.
+  \item \textbf{Every zero at $z=-1$ becomes a zero at $z=+1$}, so a high pass built this
+        way has $H(1)=0$ exactly: it kills DC. \mk{Free check on the answer.}
+  \item $|\alpha|<1$ always. If it comes out bigger, the two edge frequencies have been
+        swapped in the cosine.
+  \item Both band rows raise the order: an $N$th-order low pass becomes a
+        \textbf{$2N$th-order} band pass or band stop.
+\end{itemize}}
+
+\hr
+
+\T{6.7 \quad Last-minute recall}
+
+\sbs{%
+\lead{Say these without thinking}
+\begin{itemize}
+  \item $\alpha=-20\log_{10}|H|$, and $\delta_p$ means an edge gain of $1-\delta_p$.
+  \item $N=\dfrac{\log\left[(10^{0.1\alpha_s}-1)/(10^{0.1\alpha_p}-1)\right]}
+                  {2\log(\Omega_s/\Omega_p)}$, \mk{round up}.
+  \item $\Omega_c=\Omega_p\big/(10^{0.1\alpha_p}-1)^{1/2N}$.
+  \item Bilinear: pre-warp $\Omega=\frac2T\tan\frac\omega2$, map back
+        $s=\frac2T\frac{1-z^{-1}}{1+z^{-1}}$, and \mk{$T$ cancels}.
+  \item Impulse invariance: $\Omega=\omega/T$, and
+        $\frac{1}{s-p_k}\to\frac{1}{1-e^{p_kT}z^{-1}}$.
+  \item Butterworth poles: radius $\Omega_c$, angles
+        $\pi\frac{N+2k+1}{2N}$, spacing $\pi/N$.
+  \item Chebyshev: $\varepsilon=\sqrt{10^{0.1\alpha_p}-1}$, $\Omega_c=\Omega_p$, poles on
+        an ellipse.
+  \item LP$\to$HP: $z^{-1}\to-\frac{z^{-1}+\alpha}{1+\alpha z^{-1}}$,
+        $\alpha=-\frac{\cos\frac{\omega_p+\omega'_p}{2}}
+                      {\cos\frac{\omega_p-\omega'_p}{2}}$.
+  \item $\omega=2\pi f/f_s$ when the spec is in Hz.
+\end{itemize}}{%
+\lead{Mistakes that cost marks}
+\begin{itemize}
+  \item \mk{Forgetting to pre-warp} in a bilinear design, or pre-warping in an
+        impulse-invariance one.
+  \item Rounding $N$ down, or to nearest.
+  \item Taking $\alpha_s$ as negative because the paper prints $-15$ dB. The formula
+        wants $+15$.
+  \item Reading $\delta_p=0.11$ as a gain of $0.11$. It is a \textbf{deviation}: the
+        gain is $0.89$.
+  \item Using all $2N$ roots of the Butterworth equation. \mk{Only the left half}.
+  \item Substituting $z=e^{sT}$ into $H_a(s)$ for impulse invariance. That is not the
+        method; only the \textbf{poles} move that way.
+  \item Giving an even-order Chebyshev filter a DC gain of 1. It is
+        $1/\sqrt{1+\varepsilon^2}$.
+  \item Claiming impulse invariance can make a high-pass filter. \mk{It cannot.}
+  \item Carrying $T$ through a bilinear design and getting a $T$-dependent answer.
+        \mk{If $T$ survives, there is an arithmetic error.}
+\end{itemize}}

@@ -1,0 +1,800 @@
+%=======================================================================
+%  CHAPTER 6 - NUMERICAL PROBLEMS AND SOLUTIONS
+%  Every order, cut-off, pole, H(s), H(z) and cascade below is produced by
+%  iir.py, which self-tests against Oppenheim examples 7.2, 7.3 and 7.6
+%  before it prints, and is asserted again by verify.py ch6.
+%  Grouping follows the standing rule: one method, one full solution, then
+%  the sibling papers as a data-and-answer table. A paper is split out only
+%  where the calculation itself differs.
+%=======================================================================
+\section*{\color{acc}Ch 6 \textperiodcentered{} IIR Filter Design\\[2pt]
+{\large\textcolor{sub}{Numerical Problems \& Solutions}}}
+\vspace{-4pt}{\color{acc}\rule{\textwidth}{1.1pt}}\vspace{4pt}
+
+{\color{sub}\footnotesize \mk{47 of the 50 questions are one of three calculations} and
+the other 3 are the spectral transformation, which is also below. Every design paper in
+the 45 is here: 32 bilinear Butterworth, 4 bilinear Chebyshev, 11 impulse invariance
+(two of them sharing a statement with a bilinear paper), 3 spectral transformation.}
+
+\lead{The seven steps, used by every problem in \S1, \S2 and \S3}
+\begin{enumerate}
+  \item \textbf{Get $\omega_p$, $\omega_s$ in rad/sample.} If the paper gives Hz, use
+        $\omega=2\pi f/f_s$. If it gives them in $\pi$ already, do nothing.
+  \item \textbf{Get $\alpha_p$, $\alpha_s$ in positive dB.} From a gain,
+        $\alpha=-20\log_{10}|H|$. From a ripple $\delta_p$, the edge gain is
+        $1-\delta_p$ first. A deviation already in dB is used as printed.
+  \item \textbf{Translate to the analog domain}, by the rule of the method:
+        \mk{bilinear} $\Omega=\frac{2}{T}\tan\frac{\omega}{2}$ (\textbf{pre-warp}),
+        \mk{impulse invariance} $\Omega=\omega/T$.
+  \item \textbf{Order}
+        $N=\left\lceil\dfrac{\log\left[(10^{0.1\alpha_s}-1)/(10^{0.1\alpha_p}-1)\right]}
+        {2\log(\Omega_s/\Omega_p)}\right\rceil$, and
+        \textbf{cut-off} $\Omega_c=\Omega_p/(10^{0.1\alpha_p}-1)^{1/2N}$.
+  \item \textbf{Poles} $s_k=\Omega_c e^{\,j\pi(N+2k+1)/2N}$, $k=0\dots N-1$, then
+        $H_a(s)=\Omega_c^N\big/\prod_k(s-s_k)$, written as real quadratic sections.
+  \item \textbf{Map back}: substitute $s=\frac{2}{T}\frac{1-z^{-1}}{1+z^{-1}}$, or
+        expand in partial fractions and use
+        $\frac{1}{s-p_k}\to\frac{1}{1-e^{p_kT}z^{-1}}$.
+  \item \textbf{Check} $|H(e^{j\omega_p})|$ and $|H(e^{j\omega_s})|$ against the
+        specification. Two substitutions, and they catch almost every slip.
+\end{enumerate}
+
+\sbs{%
+\lead{Checks that cost nothing}
+\begin{enumerate}
+  \item \mk{$H(z)$ from a bilinear design has all its zeros at $z=-1$}, so its numerator
+        is $K(1+z^{-1})^N$ and its coefficients are $K$ times the binomials
+        $1,N,\binom{N}{2},\dots$ \textbf{Anything else is an algebra error.}
+  \item $|H(e^{j0})|=1$ exactly for a Butterworth design, either method. Set $z=1$, i.e.
+        add up the coefficients: $\sum b_k/\sum a_k=1$.
+  \item $|H(e^{j\omega_p})|$ must come out at exactly $10^{-\alpha_p/20}$, because
+        $\Omega_c$ was chosen to make the passband exact.
+  \item Every pole must satisfy $|z|<1$, and they come in conjugate pairs, so all the
+        printed coefficients are real.
+\end{enumerate}}{%
+\lead{The three shortcuts worth taking in the exam}
+\begin{enumerate}
+  \item \mk{Set $T=1$ in any bilinear design and say why.} The $2/T$ from the pre-warp
+        and the $2/T$ from the substitution cancel, so $H(z)$ does not depend on $T$
+        (\S6.5 of the theory). Nine papers give a sampling frequency that changes
+        nothing.
+  \item \textbf{Do not expand $\prod(s-s_k)$ into a single polynomial} unless asked.
+        Leave $H_a(s)$ as a product of quadratics; the bilinear substitution then runs
+        one quadratic at a time and the arithmetic stays small.
+  \item For $N=2$ use the tabulated normalised form
+        $H_a(s)=\frac{1}{s^2+\sqrt2\,s+1}$ with $s\to s/\Omega_c$; for $N=3$,
+        $\frac{1}{(s+1)(s^2+s+1)}$. \mk{Both are just the pole formula pre-computed.}
+\end{enumerate}}
+
+\hr
+
+\T{1 \quad Bilinear transformation, Butterworth prototype}
+{\color{sub}\footnotesize \tS{32} \yr{\textbf{80 Bh} \m{12}, \textbf{81 Bh} \m{12+3},
+81 Ba \m{2+10}, \textbf{75 Ch}, \textbf{70 Ch} \m{10}, 82 Ba \m{12+3},
+\textbf{\texttt{78 Ch}} \m{10}, \textbf{73 Ch} \m{11+4}, 73 Shr \m{12}, 80 Ba \m{11},
+79 Ba \m{11+3}, \textbf{\texttt{79 Ch}} \m{15}, \textbf{\texttt{72 Ash}} \m{12},
+\textbf{\texttt{73 Bh}} \m{11}, \textbf{\texttt{71 Bh}} \m{9}, 72 Ka \m{15},
+71 Shr \m{15}, \textbf{\texttt{77 Ch}} \m{10}, \texttt{73 Ma} \m{11}, \textbf{79 Bh},
+\textbf{71 Ch}, \textbf{69 Ch} \m{11+4}, 76 Ash \m{12}, 74 Ash \m{15},
+\textbf{66 Ma} \m{15}, \textbf{68 Bh} \m{18}, 75 Ash \m{12}, \textbf{\texttt{74 Bh}}
+\m{9}, \textbf{\texttt{76 Bh}} \m{1+10}, \textbf{76 Ch} \m{10},
+\textbf{\texttt{70 Bh}} \m{9}, \textbf{82 Bh} \m{3+12}}
+\gap$\cdot$\gap \mk{405 marks, the single biggest question in the subject}}
+
+\begin{asked}{2079 Bhadra \textperiodcentered{} 2071 Chaitra \textperiodcentered{} 2069 Chaitra \textperiodcentered{} [11+4]}
+Design a digital Butterworth low pass filter using the bilinear transformation method
+for $W_p=0.25\pi$ rad, $W_s=0.55\pi$ rad, $\delta_p=0.11$, $\delta_s=0.21$, sampling
+frequency 0.5 Hz. Then convert the obtained digital low-pass filter to a high-pass
+filter with new pass band frequency $W'_p=0.45\pi$ using the digital domain
+transformation.
+\end{asked}
+
+\lead{Step 1: the specification in dB}
+\begin{itemize}
+  \item $\delta_p=0.11$ is a \textbf{deviation}, so the passband edge gain is
+        $1-0.11=0.89$. $\delta_s=0.21$ is already a \textbf{gain}.
+  \item[] \[ \alpha_p=-20\log_{10}0.89=\mathbf{1.0122}\ \text{dB},\qquad
+             \alpha_s=-20\log_{10}0.21=\mathbf{13.5556}\ \text{dB} \]
+  \item Sampling frequency $0.5$ Hz means $T=2$ s. \mk{It will cancel}, so take $T=1$
+        and note it. (Working it through with $T=2$ gives the identical $H(z)$; only the
+        intermediate $\Omega$ values change, by a factor of 2.)
+\end{itemize}
+
+\lead{Step 2: pre-warp the band edges}
+\begin{itemize}
+  \item[] \[ \Omega_p=2\tan\frac{0.25\pi}{2}=2\tan(22.5^\circ)=\mathbf{0.828427},\qquad
+             \Omega_s=2\tan\frac{0.55\pi}{2}=2\tan(49.5^\circ)=\mathbf{2.341699} \]
+  \item \mk{This is the step that is skipped}, and skipping it puts the finished band
+        edges in the wrong place.
+\end{itemize}
+
+\lead{Step 3: order and cut-off}
+\begin{itemize}
+  \item[] \[ 10^{0.1\alpha_p}-1=10^{0.10122}-1=0.262467,\qquad
+             10^{0.1\alpha_s}-1=10^{1.35556}-1=21.675737 \]
+  \item[] \[ N\ \ge\ \frac{\log_{10}(21.675737/0.262467)}{2\log_{10}(2.341699/0.828427)}
+             =\frac{\log_{10}82.5847}{2\log_{10}2.82668}
+             =\frac{1.91690}{2(0.45128)}=2.1239 \]
+  \item[] \[ \boxed{N=3} \qquad\text{(round \emph{up}, always)} \]
+  \item[] \[ \Omega_c=\frac{\Omega_p}{(10^{0.1\alpha_p}-1)^{1/2N}}
+             =\frac{0.828427}{(0.262467)^{1/6}}=\frac{0.828427}{0.800164}
+             =\mathbf{1.035321} \]
+\end{itemize}
+
+\lead{Step 4: the poles, and $H_a(s)$}
+\begin{itemize}
+  \item $N=3$, so three left-half-plane poles at radius $\Omega_c$, spaced $\pi/3$,
+        at angles $\pi\frac{3+2k+1}{6}$ for $k=0,1,2$, i.e. $120^\circ$, $180^\circ$,
+        $240^\circ$:
+\end{itemize}
+\par\smallskip
+{\footnotesize
+\begin{tabular}{@{}L{1.0cm}L{2.4cm}L{4.6cm}L{4.4cm}@{}}
+\toprule
+\hrow \thead{$k$} & \thead{Angle} & \thead{$s_k=\Omega_c e^{j\theta}$}
+& \thead{Factor} \\
+0 & $120^\circ$ & $-0.517661+j0.896615$ & \\
+2 & $240^\circ$ & $-0.517661-j0.896615$ & \raisebox{1.2ex}[0pt][0pt]
+  {$s^2+1.035321\,s+1.071891$} \\
+1 & $180^\circ$ & $-1.035321$ & $s+1.035321$ \\
+\bottomrule
+\end{tabular}}
+\par\smallskip
+\begin{itemize}
+  \item The conjugate pair multiplies to a real quadratic: sum of roots $-1.035321$, and
+        product $=\Omega_c^2=1.071891$. \mk{For a Butterworth filter every quadratic
+        section has constant term $\Omega_c^2$}, which is a free check.
+  \item[] \[ H_a(s)=\frac{\Omega_c^3}{(s+1.035321)(s^2+1.035321\,s+1.071891)}
+             =\frac{1.109751}{(s+1.035321)(s^2+1.035321\,s+1.071891)} \]
+\end{itemize}
+
+\lead{Step 5: the bilinear substitution}
+\begin{itemize}
+  \item Put $s=2\dfrac{1-z^{-1}}{1+z^{-1}}$ into each factor, multiplying numerator and
+        denominator of the whole expression by $(1+z^{-1})^3$:
+  \item[] \[ s+1.035321\ \longrightarrow\
+             \frac{2(1-z^{-1})+1.035321(1+z^{-1})}{1+z^{-1}}
+             =\frac{3.035321-0.964679z^{-1}}{1+z^{-1}} \]
+  \item[] \[ s^2+1.035321s+1.071891\ \longrightarrow\
+             \frac{4(1-z^{-1})^2+2.070642(1-z^{-2})+1.071891(1+z^{-1})^2}
+                  {(1+z^{-1})^2} \]
+  \item[] \[ =\frac{7.142534-5.856219z^{-1}+3.001248z^{-2}}{(1+z^{-1})^2} \]
+  \item Multiply the two denominators:
+  \item[] \[ 21.679886-24.665755z^{-1}+14.759120z^{-2}-2.895239z^{-3} \]
+  \item Divide through by the constant term $21.679886$, and the $(1+z^{-1})^3$ left
+        over on top carries $\Omega_c^3$, giving
+        $K=1.109751/21.679886=0.051188$:
+  \item[] \[ \boxed{\,H(z)=\frac{0.051188\,(1+z^{-1})^3}
+             {1-1.137725z^{-1}+0.680775z^{-2}-0.133545z^{-3}}\,} \]
+  \item[] \[ =\frac{0.051188+0.153564z^{-1}+0.153564z^{-2}+0.051188z^{-3}}
+                   {1-1.137725z^{-1}+0.680775z^{-2}-0.133545z^{-3}} \]
+  \item \mk{The numerator coefficients are $0.051188\times(1,3,3,1)$.} If they are not
+        the binomials, the substitution went wrong.
+\end{itemize}
+
+\lead{Step 6: check, before writing anything else}
+\begin{itemize}
+  \item At $z=1$ every $z^{-1}$ becomes 1, so $H(1)$ is just the sum of the numerator
+        coefficients over the sum of the denominator's:
+  \item[] \[ H(1)=\frac{0.051188(1+3+3+1)}{1-1.137725+0.680775-0.133545}
+             =\frac{0.409504}{0.409505}=\mathbf{1.0000} \]
+        \checkmark \mk{Two additions, and they catch a wrong $K$ instantly.}
+  \item $|H(e^{j0.25\pi})|=\mathbf{0.8900}$, which is $1-\delta_p$ \textbf{exactly}, as
+        the choice of $\Omega_c$ guaranteed. \checkmark
+  \item $|H(e^{j0.55\pi})|=\mathbf{0.0861}\le0.21$. \checkmark \mk{Comfortably
+        over-satisfied}, which is what rounding $N$ up from 2.12 to 3 bought.
+\end{itemize}
+
+\lead{Step 7: the low pass to high pass conversion \mk{(the 4 marks)}}
+\begin{itemize}
+  \item Prototype edge $\omega_p=0.25\pi$, new edge $\omega'_p=0.45\pi$:
+  \item[] \[ \alpha=-\frac{\cos\frac{\omega_p+\omega'_p}{2}}
+                          {\cos\frac{\omega_p-\omega'_p}{2}}
+             =-\frac{\cos(0.35\pi)}{\cos(0.10\pi)}
+             =-\frac{0.45399}{0.95106}=\mathbf{-0.47735} \]
+  \item Substitute $z^{-1}\to-\dfrac{z^{-1}+\alpha}{1+\alpha z^{-1}}
+        =-\dfrac{z^{-1}-0.47735}{1-0.47735z^{-1}}$ into $H(z)$ above:
+  \item[] \[ \boxed{\,H_{hp}(z)=\frac{0.276238\,(1-z^{-1})^3}
+             {1-0.683740z^{-1}+0.457627z^{-2}-0.068533z^{-3}}\,} \]
+  \item[] \[ =\frac{0.276238-0.828713z^{-1}+0.828713z^{-2}-0.276238z^{-3}}
+                   {1-0.683740z^{-1}+0.457627z^{-2}-0.068533z^{-3}} \]
+  \item Checks: $|H_{hp}(e^{j0})|=\mathbf{0}$ exactly, because every zero moved from
+        $z=-1$ to $z=+1$; and $|H_{hp}(e^{j0.45\pi})|=\mathbf{0.8900}$, the same
+        $1-\delta_p$ the prototype had at its own edge. \mk{Both checks are free and
+        both are worth writing down.}
+\end{itemize}
+
+\creamq{Every other bilinear Butterworth paper}{}
+{\color{sub}\footnotesize Same seven steps, different numbers. \mk{$T$ is taken as 1
+throughout}, since it cancels, so a paper's own sampling frequency changes the
+$\Omega_c$ column but not the $H(z)$ column. $\Omega_p$, $\Omega_s$ are the
+\emph{pre-warped} edges. Every numerator is $K(1+z^{-1})^N$ with
+$K=\big(\sum a_k\big)/2^N$.}
+\par\smallskip
+{\footnotesize
+\begin{tabular}{@{}L{2.9cm}L{3.3cm}L{1.6cm}L{1.6cm}L{0.6cm}L{1.6cm}L{2.3cm}@{}}
+\toprule
+\hrow \thead{Papers} & \thead{Spec, as printed} & \thead{$\alpha_p$}
+& \thead{$\alpha_s$} & \thead{$N$} & \thead{$\Omega_c$} & \thead{$H(z)$ denominator} \\
+\textbf{80 Bh}, \textbf{81 Bh} & $0.9$ to $0.5\pi$; $0.2$ from $0.75\pi$
+  & $0.9151$ & $13.9794$ & 3 & $2.54674$
+  & $1{+}0.43938z^{-1}$ \newline $+0.38450z^{-2}$ \newline $+0.041621z^{-3}$ \\
+81 Ba & $0.6$ to $0.35\pi$; $0.1$ from $0.7\pi$
+  & $4.4370$ & $20$ & 2 & $1.06140$
+  & $1{-}0.70699z^{-1}$ \newline $+0.26136z^{-2}$ \\
+\textbf{75 Ch}, \textbf{70 Ch}, 82 Ba & $0.8$ to $0.2\pi$; $0.2$ from $0.6\pi$
+  & $1.9382$ & $13.9794$ & 2 & $0.75037$
+  & $1{-}1.02819z^{-1}$ \newline $+0.36508z^{-2}$ \\
+\textbf{\texttt{78 Ch}} & $0.82$ to $0.22\pi$; $0.18$ from $0.58\pi$
+  & $1.7237$ & $14.8945$ & 2 & $0.86185$
+  & $1{-}0.90725z^{-1}$ \newline $+0.32103z^{-2}$ \\
+73 Shr, \textbf{\texttt{77 Ch}}, \textbf{\texttt{76 Bh}}
+  & $0.89125$ to $0.2\pi$; $0.17783$ from $0.3\pi$ \newline (= 1 dB and 15 dB)
+  & $1$ & $15$ & 6 & $0.72729$
+  & see the cascade in \S1.2 \\
+\bottomrule
+\end{tabular}}
+\par\smallskip
+{\footnotesize
+\begin{tabular}{@{}L{2.9cm}L{3.3cm}L{1.6cm}L{1.6cm}L{0.6cm}L{1.6cm}L{2.3cm}@{}}
+\toprule
+\hrow \thead{Papers} & \thead{Spec, as printed} & \thead{$\alpha_p$}
+& \thead{$\alpha_s$} & \thead{$N$} & \thead{$\Omega_c$} & \thead{$H(z)$ denominator} \\
+80 Ba & $0.26\pi$, $0.99$ dB; $-14.99$ dB at $0.58\pi$
+  & $0.99$ & $14.99$ & 3 & $1.08611$
+  & $1{-}1.06340z^{-1}$ \newline $+0.63628z^{-2}$ \newline $-0.12114z^{-3}$ \\
+79 Ba & $0.24\pi$, $0.98$ dB; $-14.95$ dB at $0.57\pi$
+  & $0.98$ & $14.95$ & 3 & $0.99560$
+  & $1{-}1.19710z^{-1}$ \newline $+0.71861z^{-2}$ \newline $-0.14406z^{-3}$ \\
+\textbf{\texttt{79 Ch}}, \textbf{\texttt{72 Ash}}
+  & $0.24\pi$, 1 dB; $-14.9$ dB at $0.57\pi$
+  & $1$ & $14.9$ & 3 & $0.99186$
+  & $1{-}1.20280z^{-1}$ \newline $+0.72232z^{-2}$ \newline $-0.14509z^{-3}$ \\
+\textbf{\texttt{73 Bh}} & $0.25\pi$, $0.99$ dB; $-14.85$ dB at $0.59\pi$
+  & $0.99$ & $14.85$ & 3 & $1.03961$
+  & $1{-}1.13140z^{-1}$ \newline $+0.67685z^{-2}$ \newline $-0.13245z^{-3}$ \\
+\textbf{\texttt{71 Bh}} & $0.25\pi$, 1 dB; $-15$ dB at $0.55\pi$
+  & $1$ & $15$ & 3 & $1.03767$
+  & $1{-}1.13430z^{-1}$ \newline $+0.67862z^{-2}$ \newline $-0.13295z^{-3}$ \\
+72 Ka & $0.25\pi$, 1 dB; $-15$ dB at $0.45\pi$
+  & $1$ & $15$ & 4 & $0.98086$
+  & $1{-}1.64760z^{-1}$ \newline $+1.35630z^{-2}$ \newline $-0.52524z^{-3}$ \newline
+    $+0.083384z^{-4}$ \\
+71 Shr & $0.2\pi$, 1 dB; $-15$ dB at $0.4\pi$
+  & $1$ & $15$ & 3 & $0.81397$
+  & $1{-}1.48260z^{-1}$ \newline $+0.92964z^{-2}$ \newline $-0.20333z^{-3}$ \\
+\texttt{73 Ma} & $0.2\pi$, $0.98$ dB; 20 dB at $0.5\pi$
+  & $0.98$ & $20$ & 3 & $0.81704$
+  & $1{-}1.47760z^{-1}$ \newline $+0.92551z^{-2}$ \newline $-0.20214z^{-3}$ \\
+\textbf{79 Bh}, \textbf{71 Ch}, \textbf{69 Ch} & worked in full above
+  & $1.0122$ & $13.5556$ & 3 & $1.03532$
+  & $1{-}1.13773z^{-1}$ \newline $+0.68078z^{-2}$ \newline $-0.13355z^{-3}$ \\
+\bottomrule
+\end{tabular}}
+\par\smallskip
+{\footnotesize
+\begin{tabular}{@{}L{2.9cm}L{3.3cm}L{1.6cm}L{1.6cm}L{0.6cm}L{1.6cm}L{2.3cm}@{}}
+\toprule
+\hrow \thead{Papers} & \thead{Spec, as printed} & \thead{$\alpha_p$}
+& \thead{$\alpha_s$} & \thead{$N$} & \thead{$\Omega_c$} & \thead{$H(z)$ denominator} \\
+76 Ash & $0.22\pi$, $0.54\pi$; $\delta_p{=}0.11$, $\delta_s{=}0.22$
+  & $1.0122$ & $13.1515$ & 2 & $1.00598$
+  & $1{-}0.76056z^{-1}$ \newline $+0.27575z^{-2}$ \\
+74 Ash & $0.27\pi$, $0.58\pi$; $\delta_p{=}0.11$, $\delta_s{=}0.21$
+  & $1.0122$ & $13.5556$ & 3 & $1.12856$
+  & $1{-}1.00260z^{-1}$ \newline $+0.60224z^{-2}$ \newline $-0.11157z^{-3}$ \\
+\textbf{68 Bh} & $0.25\pi$, $0.45\pi$; $\delta_p{=}0.17$, $\delta_s{=}0.27$
+  & $1.6184$ & $11.3727$ & 3 & $0.94579$
+  & $1{-}1.27310z^{-1}$ \newline $+0.77005z^{-2}$ \newline $-0.15836z^{-3}$ \\
+75 Ash, \textbf{\texttt{74 Bh}} & $0.7$ dB to $0.15\pi$; 14 dB from $0.6\pi$
+  & $0.7$ & $14$ & 2 & $0.74249$
+  & $1{-}1.03700z^{-1}$ \newline $+0.36853z^{-2}$ \\
+\bottomrule
+\end{tabular}}
+\par\smallskip
+{\color{sub}\footnotesize Every numerator is $K(1+z^{-1})^N$ with $K$ fixed by
+$|H(e^{j0})|=1$, i.e. $K=\big(\sum a_k\big)/2^N$. The four papers whose calculation
+genuinely differs are split out below.}
+
+\T{1.1 \quad Three papers whose specification is given in Hz}
+{\color{sub}\footnotesize \tF{3} \yr{\textbf{76 Ch} \m{10}, \textbf{82 Bh} \m{3+12},
+\textbf{\texttt{70 Bh}} \m{9}} \gap$\cdot$\gap \mk{only step 1 changes}}
+
+\begin{asked}{2076 Chaitra \textperiodcentered{} [10]}
+Design a digital Butterworth low pass filter using the bilinear transformation method
+for passband peak-to-peak ripple $\le1$ dB and passband edge frequency $1.2$ kHz;
+stopband attenuation $\ge40$ dB and stopband edge frequency $2.5$ kHz; sample rate
+8 kHz.
+\end{asked}
+
+\begin{itemize}
+  \item[] \[ \omega_p=\frac{2\pi(1200)}{8000}=\mathbf{0.3\pi},\qquad
+             \omega_s=\frac{2\pi(2500)}{8000}=\mathbf{0.625\pi} \]
+  \item Pre-warp: $\Omega_p=2\tan(0.15\pi)=1.01905$,
+        $\Omega_s=2\tan(0.3125\pi)=2.99321$.
+  \item $\alpha_p=1$, $\alpha_s=40$. $N=4.9010\Rightarrow\boxed{N=5}$,
+        $\Omega_c=1.16648$.
+  \item Sections of $H_a(s)$: $(s+1.16648)$,
+        $(s^2+0.72093s+1.36068)$, $(s^2+1.88741s+1.36068)$, constant term
+        $\Omega_c^2=1.36068$ in both quadratics.
+  \item[] \[ H(z)=\frac{0.010975\,(1+z^{-1})^5}
+             {(1-0.26323z^{-1})(1-0.77598z^{-1}+0.57608z^{-2})
+              (1-0.57782z^{-1}+0.17359z^{-2})} \]
+  \item Check: $|H(e^{j0.3\pi})|=0.89125$ (exactly $-1$ dB) and
+        $|H(e^{j0.625\pi})|=0.00899\le0.01$. \checkmark
+\end{itemize}
+
+\creamq{82 Bh}{\m{3+12}}
+{\color{sub}\footnotesize 350 Hz and 1000 Hz, $-3$ dB and $-10$ dB, $f_s=5000$ Hz, plus
+"explain the frequency warping effect in detail" (\S6.4 of the theory).}
+\begin{itemize}
+  \item $\omega_p=2\pi(350)/5000=0.14\pi$, $\omega_s=2\pi(1000)/5000=0.4\pi$;
+        $\Omega_p=0.44705$, $\Omega_s=1.45309$; $\alpha_p=3$, $\alpha_s=10$.
+  \item $N=0.9340\Rightarrow\boxed{N=1}$, $\Omega_c=0.44812$. \mk{The smallest filter in
+        the chapter}: one real pole, no quadratic section at all.
+  \item[] \[ H_a(s)=\frac{0.44812}{s+0.44812}
+             \quad\Longrightarrow\quad
+             H(z)=\frac{0.183045\,(1+z^{-1})}{1-0.633910z^{-1}} \]
+  \item Check $|H(e^{j0.14\pi})|=0.70795\approx10^{-3/20}=0.70795$. \checkmark
+        With $\alpha_p=3$ dB the passband edge \emph{is} the 3 dB point, so
+        $\Omega_c\approx\Omega_p$ and the order formula barely clears 1.
+\end{itemize}
+
+\creamq{70 Bh}{\m{9}} {\color{sub}\footnotesize \mk{defective as printed}}
+\begin{asked}{2070 Bhadra \textperiodcentered{} [9]}
+Design a digital low pass Butterworth filter by applying bilinear transformation
+technique for: pass band edge $=120$ Hz, pass band attenuation $=1$ dB, stop band edge
+$=170$ Hz, stop band attenuation $=16$ dB. Assume sampling frequency of 256 Hz.
+\end{asked}
+\begin{itemize}
+  \item With $f_s=256$ Hz the \textbf{Nyquist frequency is 128 Hz}. The stopband edge of
+        170 Hz is \mk{above it}, so it does not exist as a digital frequency:
+        $\omega_s=2\pi(170)/256=1.3281\pi>\pi$.
+  \item Pre-warping it gives $\tan(0.664\pi)<0$, a \textbf{negative} $\Omega_s$, and the
+        order formula takes the logarithm of a negative number. \mk{No filter meets this
+        specification, because the specification is not a specification.}
+  \item Aliased, 170 Hz lands at $256-170=86$ Hz, which is \emph{below} the 120 Hz
+        passband edge. The stopband would sit inside the passband.
+  \item \textbf{Say that, then solve the workable reading}: treat the two edges as
+        \emph{analog} frequencies, skip the pre-warp, and map with $T=1/256$.
+  \item[] \[ \Omega_p=2\pi(120)=753.98,\quad \Omega_s=2\pi(170)=1068.14,\quad
+             N=7.19\Rightarrow\boxed{N=8},\quad \Omega_c=820.42 \]
+  \item An 8th-order filter for a 9-mark question is itself a sign the paper is wrong.
+        \mk{The marks are in naming the defect}, not in grinding out eight poles.
+\end{itemize}
+
+\T{1.2 \quad The textbook filter: 73 Shr, 77 Ch and 76 Bh}
+{\color{sub}\footnotesize \tF{3} \yr{73 Shr \m{12}, \textbf{\texttt{77 Ch}} \m{10},
+\textbf{\texttt{76 Bh}} \m{1+10}} \gap$\cdot$\gap \mk{one spec stated three ways}}
+
+\begin{itemize}
+  \item 73 Shr prints gains: $0.89125$ to $0.2\pi$, $0.17783$ from $0.3\pi$.
+        77 Ch and 76 Bh print the same thing in dB: 1 dB and 15 dB. \mk{They are the
+        same filter}, and it is Oppenheim's own worked example.
+  \item $\Omega_p=0.64984$, $\Omega_s=1.01905$, $N=5.3044\Rightarrow\boxed{N=6}$,
+        $\Omega_c=0.72729$.
+  \item $H_a(s)$, three quadratics, each with constant term $\Omega_c^2=0.52895$:
+  \item[] \[ \frac{0.147944}
+             {(s^2+0.37647s+0.52895)(s^2+1.02854s+0.52895)(s^2+1.40502s+0.52895)} \]
+  \item[] \[ H(z)=\frac{0.00057969\,(1+z^{-1})^6}
+             {(1-1.31432z^{-1}+0.71490z^{-2})(1-1.05406z^{-1}+0.37532z^{-2})
+              (1-0.94592z^{-1}+0.23422z^{-2})} \]
+  \item Check: $|H(e^{j0.2\pi})|=0.89125$ exactly, $|H(e^{j0.3\pi})|=0.13101\le0.17783$.
+        \checkmark
+  \item \mk{A textbook difference worth knowing.} Oppenheim places the 3 dB point so the
+        \emph{stopband} is met exactly, giving $\Omega_c=0.76627$ and a different
+        (equally valid) $H(z)$. The local formula meets the \emph{passband} exactly, as
+        above. \textbf{State which convention you used} and either is right.
+  \item 76 Bh's extra mark is the Butterworth/Chebyshev comparison: on this very spec
+        Chebyshev needs $N=4$ against Butterworth's $N=6$.
+\end{itemize}
+
+\T{1.3 \quad Two papers where the arithmetic collapses}
+{\color{sub}\footnotesize \tP{2} \yr{\textbf{73 Ch} \m{11+4}, \textbf{66 Ma} \m{15}}}
+
+\creamq{73 Ch}{\m{11+4}}
+\begin{asked}{2073 Chaitra \textperiodcentered{} [11+4]}
+Design a digital Butterworth low pass filter using bilinear transformation for
+$0.707\le|H(e^{jw})|\le1$ for $0\le w\le\pi/2$; $|H(e^{jw})|\le0.2$ for
+$3\pi/4\le w\le\pi$; $T=1$ s. Realize the filter using the most convenient realization
+form.
+\end{asked}
+\begin{itemize}
+  \item \mk{$0.707$ is $1/\sqrt2$}, so the passband edge is the \textbf{3 dB point} and
+        $\Omega_c=\Omega_p$ with no formula at all:
+  \item[] \[ \Omega_p=2\tan\frac{\pi}{4}=\mathbf{2},\qquad
+             \Omega_s=2\tan\frac{3\pi}{8}=4.82843,\qquad \Omega_c=\Omega_p=2 \]
+  \item $\alpha_p=3.0103$ dB, $\alpha_s=13.9794$ dB, $N=1.8026\Rightarrow\boxed{N=2}$.
+  \item[] \[ H_a(s)=\frac{\Omega_c^2}{s^2+\sqrt2\,\Omega_c s+\Omega_c^2}
+             =\frac{4}{s^2+2\sqrt2\,s+4} \]
+  \item Substituting $s=2\frac{1-z^{-1}}{1+z^{-1}}$ the whole thing stays
+        \textbf{exact}:
+  \item[] \[ H(z)=\frac{4(1+z^{-1})^2}{(8+4\sqrt2)+(8-4\sqrt2)z^{-2}}
+             =\boxed{\frac{\tfrac{1}{2+\sqrt2}(1+z^{-1})^2}
+                          {1+\tfrac{2-\sqrt2}{2+\sqrt2}z^{-2}}}
+             =\frac{0.292893(1+z^{-1})^2}{1+0.171573z^{-2}} \]
+  \item \mk{The $z^{-1}$ term vanishes identically.} That happens only because
+        $\omega_p=\pi/2$ puts the poles at $\pm135^\circ$, symmetric about the imaginary
+        axis, so their sum is purely imaginary and cancels.
+  \item Taking $0.707$ literally instead of $1/\sqrt2$ gives $\Omega_c=1.99970$ and a
+        residual $-0.000177z^{-1}$. \mk{That is rounding, not a term.} Write the exact
+        form.
+  \item \textbf{The 4 marks for realization}: with one quadratic section, direct form II
+        is the most convenient, and it needs 2 delays, 3 multipliers (the numerator's
+        $1,2,1$ are shifts and adds) and 4 adders. Cross-reference chapter 4.
+\end{itemize}
+
+\creamq{66 Ma}{\m{15}}
+{\color{sub}\footnotesize $\omega_p=0.3\pi$, $\omega_s=0.4\pi$, $\delta_p=0.11$,
+$\delta_s=0.21$, and the paper asks for all five parts by name.}
+\begin{itemize}
+  \item \textbf{(a)} $\Omega_p=1.01905$, $\Omega_s=1.45309$, $\alpha_p=1.0122$,
+        $\alpha_s=13.5556$; $N=6.2199\Rightarrow\boxed{N=7}$. \mk{The narrowest
+        transition in the chapter} ($0.3\pi$ to $0.4\pi$) buys the highest order.
+  \item \textbf{(b)} $\Omega_c=1.01905/(0.262467)^{1/14}=\mathbf{1.12122}$.
+  \item \textbf{(c)} The paper asks for the poles \emph{of the squared magnitude
+        response}, which is the full set of \textbf{$2N=14$}:
+        $s_k=\Omega_c e^{j\pi(2k+1)/14}$ for $k=0\dots13$, equally spaced by
+        $\pi/7=25.71^\circ$ on the circle of radius $1.12122$. \mk{Half are discarded};
+        only the 7 with $\sigma<0$ belong to $H_a(s)$.
+  \item \textbf{(d)} $H_a(s)=\dfrac{\Omega_c^7}{(s+1.12122)\prod_{i=1}^{3}
+        (s^2+b_is+1.25713)}$ with $b_i=0.49899$, $1.39814$, $2.02037$ and
+        $\Omega_c^2=1.25713$ throughout.
+  \item \textbf{(e)} $H(z)=\dfrac{0.0015237\,(1+z^{-1})^7}{(1-0.28155z^{-1})
+        (1-0.87700z^{-1}+0.68091z^{-2})(1-0.68117z^{-1}+0.30557z^{-2})
+        (1-0.59000z^{-1}+0.13083z^{-2})}$
+  \item Check $|H(e^{j0.3\pi})|=0.8900$ and $|H(e^{j0.4\pi})|=0.16074\le0.21$.
+        \checkmark
+\end{itemize}
+
+\hr
+
+\T{2 \quad Impulse invariance}
+{\color{sub}\footnotesize \tS{11} \yr{\textbf{78 Bh} \m{12+3}, \textbf{72 Ch} \m{3+12},
+\textbf{\texttt{81 Ch}}, \textbf{\texttt{80 Ch}}, \textbf{\texttt{69 Bh}} \m{12},
+70 Asa \m{13}, \textbf{74 Ch} \m{12}, \textbf{67 Mng} \m{15}, \textbf{69 Bh} \m{15},
+73 Shr \m{3}, \texttt{70 Ma} \m{3+6}} \gap$\cdot$\gap \mk{133 marks}}
+
+{\color{sub}\footnotesize Steps 1, 4 and 5 are unchanged from \S1. \textbf{Step 3
+becomes $\Omega=\omega/T$ with no pre-warp}, and step 6 becomes a partial fraction
+expansion. \mk{$T$ no longer cancels}, so it must be carried.}
+
+% holdspace{6} inside \creamq does not cover the three-line note plus the
+% asked block that follow it, so the heading stranded at the foot of a page.
+\Needspace{14\baselineskip}
+\creamq{The pair that answers "compare the two methods"}{\m{12}}
+{\color{sub}\footnotesize \mk{75 Ash and 74 Bh print exactly the same specification as
+74 Ch, and ask for the other method.} Nothing else in the 45 papers demonstrates the
+difference so cleanly, so solve them together.}
+
+\begin{asked}{2075 Ashwin / 2074 Bhadra (bilinear) \textperiodcentered{} 2074 Chaitra (impulse invariance) \textperiodcentered{} [12] [9] [12]}
+Design a digital Butterworth low pass filter whose passband magnitude is constant to
+$0.7$ dB below the frequency $0.15\pi$ and whose stopband attenuation is at least 14 dB
+for frequencies between $0.6\pi$ and $\pi$.
+\end{asked}
+
+\par\smallskip
+{\footnotesize
+\begin{tabular}{@{}L{3.6cm}L{5.4cm}L{5.4cm}@{}}
+\toprule
+\hrow \thead{Step} & \thead{75 Ash / \texttt{74 Bh}: bilinear}
+& \thead{74 Ch: impulse invariance} \\
+Spec in dB & \multicolumn{2}{l}{$\alpha_p=0.7$, $\alpha_s=14$, so
+  $10^{0.07}-1=0.174898$ and $10^{1.4}-1=24.118864$} \\
+Analog edges & pre-warp: \newline $\Omega_p=2\tan(0.075\pi)=0.480158$ \newline
+  $\Omega_s=2\tan(0.30\pi)=2.752764$
+  & linear: \newline $\Omega_p=0.15\pi=0.471239$ \newline
+  $\Omega_s=0.6\pi=1.884956$ \\
+$\Omega_s/\Omega_p$ & $5.733043$ & $4.000000$ \\
+$N$ exact & $1.4106$ & $1.7769$ \\
+$N$ & \textbf{2} & \textbf{2} \\
+$\Omega_c$ & $0.742485$ & $0.728694$ \\
+Poles & $-0.52502\pm j0.52502$ & $-0.51526\pm j0.51526$ \\
+$H_a(s)$ & $\dfrac{0.551284}{s^2+1.050033s+0.551284}$
+  & $\dfrac{0.530995}{s^2+1.030529s+0.530995}$ \\
+Residues & not needed & $A_{1,2}=\pm j0.51526$ \\
+$z$ poles & from the substitution & $e^{p_kT}=0.51979\mp j0.29435$ \\
+$H(z)$ & $\dfrac{0.082883(1+z^{-1})^2}{1-1.036997z^{-1}+0.368530z^{-2}}$
+  & $\dfrac{0.303336\,z^{-1}}{1-1.039570z^{-1}+0.356818z^{-2}}$ \\
+$|H|$ at $\omega_p$ & $0.922571$ (spec $\ge0.922571$) \checkmark
+  & $0.898611$ (spec $\ge0.922571$) \mk{fails} \\
+$|H|$ at $\omega_s$ & $0.072559$ (spec $\le0.199526$) \checkmark
+  & $0.191753$ (spec $\le0.199526$) \mk{barely} \\
+$|H|$ at DC & $1.000000$ exactly & $0.956147$ \\
+\bottomrule
+\end{tabular}}
+
+\begin{itemize}
+  \item \mk{Read the last three rows: that is the whole comparison, in numbers.} The
+        bilinear filter meets the passband exactly and clears the stopband by a factor
+        of three. The impulse-invariant filter of the same order misses the passband
+        edge, scrapes the stopband, and does not even have unity DC gain.
+  \item Every one of those shortfalls is \textbf{aliasing}: the analog tail beyond
+        $\pi/T$ folds back and adds to the response. It is worst where the response is
+        smallest, which is why the stopband suffers most.
+  \item The cure is to \textbf{over-design}: raise $N$ or tighten $\alpha_s$ before
+        designing. Nothing can remove the aliasing itself.
+  \item \mk{Note $b_0=0$}: the numerator starts at $z^{-1}$. That is general, not
+        specific: when $H_a(s)$ is strictly proper by two or more degrees,
+        $h[0]=h_a(0)=0$, so the impulse-invariant filter always has a one-sample delay
+        built in. \textbf{It is not a dropped term.}
+\end{itemize}
+
+\creamq{81 Ch, 80 Ch, 69 Bh}{\m{12}}
+{\color{sub}\footnotesize $\omega_p=0.25\pi$ at $0.5$ dB; $-15$ dB at $\omega_s=0.55\pi$;
+$f_s=1$ Hz so $T=1$.}
+\begin{itemize}
+  \item $\Omega_p=0.25\pi=0.78540$, $\Omega_s=0.55\pi=1.72788$ (\mk{no pre-warp}).
+  \item $\alpha_p=0.5$, $\alpha_s=15$; $N=3.5039\Rightarrow\boxed{N=4}$,
+        $\Omega_c=1.02161$.
+  \item $H_a(s)=\dfrac{\Omega_c^4}{(s^2+0.78191s+1.04369)(s^2+1.88770s+1.04369)}$,
+        constant term $\Omega_c^2=1.04369$ in both.
+  \item[] \[ H(z)=\frac{0.088750z^{-1}+0.174840z^{-2}+0.023521z^{-3}}
+             {1-1.513201z^{-1}+1.180022z^{-2}-0.449386z^{-3}+0.069280z^{-4}} \]
+  \item Checks: $|H(e^{j0.25\pi})|=0.94338$ against a required $10^{-0.5/20}=0.94406$,
+        so it \mk{misses the passband by 0.0007}; $|H(e^{j0.55\pi})|=0.11982\le0.17783$
+        \checkmark; and $|H(e^{j0})|=1.00139$, \mk{slightly above 1}.
+  \item Both anomalies are aliasing, and both are worth one line in the answer.
+        \textbf{A DC gain above 1 is the signature of impulse invariance} and never
+        happens with the bilinear method.
+\end{itemize}
+
+\creamq{70 Asa}{\m{13}}
+{\color{sub}\footnotesize $\omega_p=0.2\pi$ at $0.5$ dB; $-15$ dB at $0.35\pi$; $T=1$.}
+\begin{itemize}
+  \item $\Omega_p=0.62832$, $\Omega_s=1.09956$; $N=4.9367\Rightarrow\boxed{N=5}$,
+        $\Omega_c=0.77542$.
+  \item $N$ odd, so there is a real pole at $-\Omega_c$ and two quadratic sections,
+        $(s+0.77542)(s^2+0.47924s+0.60128)(s^2+1.25466s+0.60128)$.
+  \item[] \[ H(z)=\frac{0.0069166z^{-1}+0.044472z^{-2}+0.027021z^{-3}+0.0015381z^{-4}}
+             {1-2.584442z^{-1}+2.999693z^{-2}-1.857044z^{-3}+0.603063z^{-4}
+              -0.081324z^{-5}} \]
+  \item $|H(e^{j0.2\pi})|=0.94403$ (need $0.94406$), $|H(e^{j0.35\pi})|=0.17189$
+        (need $\le0.17783$), $|H(e^{j0})|=1.00002$. \mk{The same three aliasing
+        signatures}, smaller because $\Omega_s/\Omega_p$ is smaller here.
+\end{itemize}
+
+\creamq{78 Bh, 72 Ch}{\m{12+3}}
+{\color{sub}\footnotesize 200 Hz and 500 Hz, 5 dB and 12 dB, $f_s=5000$ Hz.
+\mk{The only impulse-invariance paper where $T\ne1$}, so the one where the convention
+matters. 78 Bh's rider is pre-warping, 72 Ch's is the bilinear/impulse-invariance
+comparison.}
+\begin{itemize}
+  \item $T=1/5000$. $\Omega_p=2\pi(200)=1256.64$, $\Omega_s=2\pi(500)=3141.59$
+        (rad/s, \textbf{not} divided by anything: $\Omega=\omega/T=2\pi f$).
+  \item $10^{0.5}-1=2.1623$, $10^{1.2}-1=14.849$, ratio $6.8672$;
+        $N=1.0514\Rightarrow\boxed{N=2}$, $\Omega_c=1036.29$.
+  \item Poles $-732.769\pm j732.769$; residues $A_{1,2}=\mp j732.769$;
+        $e^{p_kT}=0.854421\mp j0.126123$.
+  \item[] \[ H(z)=\frac{184.838\,z^{-1}}{1-1.708842z^{-1}+0.745942z^{-2}}
+             \qquad\text{(Proakis, } h[n]=h_a(nT)\text{)} \]
+  \item[] \[ H(z)=\frac{0.0369676\,z^{-1}}{1-1.708842z^{-1}+0.745942z^{-2}}
+             \qquad\text{(Oppenheim, } h[n]=T\,h_a(nT)\text{)} \]
+  \item \mk{The first has a DC gain of 4982.} That is $\approx1/T=5000$, and it is
+        exactly why the second convention exists. The poles are identical; only the
+        numerator scales.
+  \item With the $T$ scaling: $|H(e^{j0.08\pi})|=0.5633$ against a required
+        $10^{-5/20}=0.5623$ \checkmark (by a hair), and $|H(e^{j0.2\pi})|=0.1114$
+        against $10^{-12/20}=0.2512$ \checkmark.
+  \item \textbf{With $T=1$ the two conventions coincide}, which is why the other eight
+        impulse-invariance papers never raise the question. \mk{Here you must say which
+        you used.}
+\end{itemize}
+
+\creamq{67 Mng}{\m{15}}
+\begin{asked}{2067 Mangsir \textperiodcentered{} [15]}
+Find the system function for a digital filter using the impulse invariance technique
+from the analog Butterworth filter transfer function
+$H(s)=\dfrac{1}{(s+1.3)(s-1.3e^{j2\pi/3})(s-1.3e^{-j2\pi/3})}$ with $T=1$ second, and
+draw the block diagram of the system function $H(z)$ realized in terms of second order
+sections.
+\end{asked}
+\begin{itemize}
+  \item \mk{Recognise it before computing.} $1.3e^{\pm j2\pi/3}=-0.65\pm j1.12583$, so
+        the three poles sit at $120^\circ$, $180^\circ$, $240^\circ$ on a circle of
+        radius $1.3$. \textbf{This is a third-order Butterworth filter with
+        $\Omega_c=1.3$}, already designed. Steps 1 to 4 are done for you.
+  \item Expanded: $H_a(s)=\dfrac{1}{s^3+2.6s^2+3.38s+2.197}$, and $2.197=1.3^3$, which
+        confirms the reading.
+  \item Residues $A_k=1/\prod_{j\ne k}(p_k-p_j)$:
+\end{itemize}
+\par\smallskip
+{\footnotesize
+\begin{tabular}{@{}L{3.6cm}L{4.0cm}L{4.4cm}@{}}
+\toprule
+\hrow \thead{Pole $p_k$} & \thead{Residue $A_k$} & \thead{$z$ pole $e^{p_kT}$, $T=1$} \\
+$-1.30000$ & $+0.591716$ & $0.272532$ \\
+$-0.65000+j1.12583$ & $-0.295858+j0.170814$ & $0.224701-j0.471212$ \\
+$-0.65000-j1.12583$ & $-0.295858-j0.170814$ & $0.224701+j0.471212$ \\
+\bottomrule
+\end{tabular}}
+\begin{itemize}
+  \item The residues sum to zero, which is the general reason $b_0=0$ below.
+  \item[] \[ H(z)=\frac{0.591716}{1-0.272532z^{-1}}
+             +\frac{-0.591716+0.293938z^{-1}}{1-0.449403z^{-1}+0.272532z^{-2}} \]
+  \item[] \[ =\frac{0.189281z^{-1}+0.081154z^{-2}}
+                   {1-0.721935z^{-1}+0.395008z^{-2}-0.074274z^{-3}} \]
+  \item \textbf{The block diagram the paper asks for is the parallel form}, and it falls
+        out of the partial fraction expansion with no extra work: one first-order
+        section and one second-order section, both fed by $x[n]$, their outputs summed.
+  \item \mk{Draw it as two direct-form-II boxes in parallel}: the real section has one
+        delay and one feedback multiplier $0.272532$; the quadratic section has two
+        delays, feedback multipliers $0.449403$ and $-0.272532$, and feedforward
+        multipliers $-0.591716$ and $0.293938$.
+  \item Why parallel and not cascade: impulse invariance \emph{produces} a sum of terms.
+        Forcing it into a cascade means factorising the numerator for no reason.
+        Cross-reference chapter 4 for the structures themselves.
+\end{itemize}
+
+\hr
+
+\T{3 \quad Bilinear transformation, Chebyshev prototype}
+{\color{sub}\footnotesize \tF{4} \yr{\texttt{72 Ma} \m{11}, \texttt{74 Ma} \m{9},
+\texttt{70 Ma} \m{9}, \textbf{\texttt{75 Bh}} \m{10}} \gap$\cdot$\gap \mk{39 marks, all
+four on the EX 753 papers}}
+
+{\color{sub}\footnotesize Steps 1, 2, 6 and 7 are identical to \S1. \mk{Only steps 3
+to 5 change}: a different order formula, $\Omega_c=\Omega_p$ with no formula, and poles
+on an ellipse instead of a circle.}
+
+\begin{asked}{2072 Magh \textperiodcentered{} [11]}
+Design a low pass discrete time Chebyshev filter by applying bilinear transformation for
+$0.707\le|H(e^{jw})|\le1$ for $|w|\le0.2\pi$ and $|H(e^{jw})|\le0.1$ for
+$0.5\pi\le|w|\le\pi$.
+\end{asked}
+
+\lead{Step 1 to 3: spec, pre-warp, ripple factor}
+\begin{itemize}
+  \item $\alpha_p=-20\log_{10}0.707=3.0116$ dB, $\alpha_s=-20\log_{10}0.1=20$ dB.
+  \item $\Omega_p=2\tan(0.1\pi)=\mathbf{0.64984}$,
+        $\Omega_s=2\tan(0.25\pi)=\mathbf{2}$ exactly.
+  \item[] \[ \varepsilon=\sqrt{10^{0.1\alpha_p}-1}=\sqrt{10^{0.30116}-1}
+             =\mathbf{1.00030}\approx1 \]
+  \item \mk{$\varepsilon=1$ because $0.707$ is the 3 dB point}, the same coincidence
+        73 Ch exploits in \S1.3.
+  \item \mk{$\Omega_c=\Omega_p=0.64984$.} A Chebyshev filter ripples right up to the
+        passband edge, so there is no separate cut-off to compute.
+\end{itemize}
+
+\lead{Step 4: order, by the $\cosh^{-1}$ formula}
+\begin{itemize}
+  \item[] \[ N\ \ge\ \frac{\cosh^{-1}\sqrt{(10^{2}-1)/(10^{0.30116}-1)}}
+                          {\cosh^{-1}(2/0.64984)}
+             =\frac{\cosh^{-1}(9.94687)}{\cosh^{-1}(3.07769)}=1.6694 \]
+  \item[] \[ \boxed{N=2} \]
+  \item Use $\cosh^{-1}x=\ln\!\left(x+\sqrt{x^2-1}\right)$ if the calculator lacks the
+        key: $\ln(19.8433)=2.98787$ and $\ln(5.9884)=1.78982$.
+  \item \mk{Compare: a Butterworth filter on this same spec needs $N=3$.} That one
+        saved order is the whole argument for Chebyshev.
+\end{itemize}
+
+\lead{Step 5: the pole ellipse}
+\begin{itemize}
+  \item[] \[ \alpha=\frac{1}{\varepsilon}+\sqrt{1+\frac{1}{\varepsilon^2}}
+             =1.0003+1.4145=\mathbf{2.41370} \]
+  \item[] \[ a=\tfrac12\!\left(\alpha^{1/2}-\alpha^{-1/2}\right)=\mathbf{0.45497},
+             \qquad
+             b=\tfrac12\!\left(\alpha^{1/2}+\alpha^{-1/2}\right)=\mathbf{1.09864} \]
+  \item Semi-axes: $a\Omega_c=0.29566$ (real direction),
+        $b\Omega_c=0.71394$ (imaginary direction). \mk{Taller than wide, always.}
+  \item $N=2$, so $\theta_k=\frac{(2k+1)\pi}{4}=45^\circ,135^\circ$:
+  \item[] \[ s_k=-a\Omega_c\sin\theta_k+j\,b\Omega_c\cos\theta_k
+             =\mathbf{-0.20906\pm j0.50483} \]
+  \item[] \[ H_a(s)=\frac{K}{s^2+0.418125s+0.298560},\qquad
+             K=\frac{|s_k|^2}{\sqrt{1+\varepsilon^2}}
+              =\frac{0.298560}{1.41443}=\mathbf{0.211082} \]
+  \item \mk{The $\sqrt{1+\varepsilon^2}$ divisor is because $N$ is even.} Omit it and the
+        passband sits a factor of $1.414$ too high everywhere.
+\end{itemize}
+
+\lead{Step 6 and 7: map back and check}
+\begin{itemize}
+  \item[] \[ \boxed{\,H(z)=\frac{0.041108\,(1+z^{-1})^2}
+             {1-1.441705z^{-1}+0.674282z^{-2}}\,} \]
+  \item $|H(e^{j0.2\pi})|=\mathbf{0.70700}$, exactly the specified $0.707$.
+        \checkmark
+  \item $|H(e^{j0.5\pi})|=\mathbf{0.05563}\le0.1$. \checkmark
+  \item $|H(e^{j0})|=\mathbf{0.70700}$, \mk{not 1}. The passband oscillates between
+        $0.707$ and $1$ and, with $N$ even, it \textbf{starts at the bottom of the
+        ripple}. This is correct and looks wrong: say so in the answer.
+\end{itemize}
+
+\creamq{The other three Chebyshev papers}{}
+\par\smallskip
+{\footnotesize
+\begin{tabular}{@{}L{1.6cm}L{3.5cm}L{1.4cm}L{0.6cm}L{3.2cm}L{3.4cm}@{}}
+\toprule
+\hrow \thead{Paper} & \thead{Spec} & \thead{$\varepsilon$} & \thead{$N$}
+& \thead{Poles} & \thead{$H(z)$} \\
+\texttt{74 Ma} & $0.2\pi$, 1 dB; $-15$ dB at $0.3\pi$; $T{=}1$
+  & $0.50885$ & 4 & $-0.0907\pm j0.6390$ \newline $-0.2189\pm j0.2647$
+  & $K=0.0018356$, \newline numerator $K(1+z^{-1})^4$, \newline denominator
+    $1-3.054340z^{-1}$ \newline $+3.828999z^{-2}$ \newline $-2.292452z^{-3}$ \newline
+    $+0.550745z^{-4}$ \\
+\texttt{70 Ma} & $0.25\pi$, $0.55\pi$; $\alpha_{\max}{=}1.01$,
+  $\alpha_{\min}{=}13.55$; $f_s{=}0.5$ Hz
+  & $0.51169$ & 2 & $-0.45286\pm j0.74042$
+  & $K=0.102154$, \newline numerator $K(1+z^{-1})^2$, \newline denominator
+    $1-0.989132z^{-1}$ \newline $+0.448133z^{-2}$ \\
+\bottomrule
+\end{tabular}}
+\begin{itemize}
+  \item 74 Ma is the \S1.2 spec again ($0.2\pi$/$0.3\pi$, 1 dB/15 dB) done with
+        Chebyshev: $N=4$ where Butterworth needed $N=6$. \mk{That is the comparison
+        76 Bh asks for, with real numbers.}
+  \item 70 Ma prints $\alpha_{\max}$ for the passband and $\alpha_{\min}$ for the
+        stopband, which is the reverse of the usual naming. It means
+        $\alpha_p=1.01$, $\alpha_s=13.55$: the $\delta_p=0.11$, $\delta_s=0.21$ spec
+        yet again, in a third notation.
+  \item Both have even $N$, so both have DC gain $1/\sqrt{1+\varepsilon^2}$, not 1.
+\end{itemize}
+
+\creamq{75 Bh}{\m{10}} {\color{sub}\footnotesize \mk{an analog design first}}
+\begin{asked}{2075 Bhadra \textperiodcentered{} [10]}
+Design an \emph{analog} filter using Chebyshev approximation with maximum passband
+attenuation 5 dB at 20 rad/sec and stopband attenuation 20 dB at 50 rad/sec; then,
+taking a sampling frequency of 0.5 Hz, convert the obtained analog filter to digital
+using the bilinear transformation method.
+\end{asked}
+\begin{itemize}
+  \item \mk{The edges are already analog}, in rad/s. \textbf{Do not pre-warp}: the
+        question specifies the analog filter directly, so pre-warping would design the
+        wrong one. This is the only paper in the chapter where the pre-warp is skipped
+        legitimately.
+  \item $\Omega_p=20$, $\Omega_s=50$, $\alpha_p=5$, $\alpha_s=20$,
+        $\varepsilon=\sqrt{10^{0.5}-1}=\mathbf{1.47047}$.
+  \item[] \[ N\ge\frac{\cosh^{-1}(6.76647)}{\cosh^{-1}(2.5)}=1.6592
+             \Rightarrow\boxed{N=2} \]
+  \item $\alpha=1.88938$, $a=0.32352$, $b=1.05103$; semi-axes $6.47037$ and $21.02060$;
+        poles $\mathbf{-4.57524\pm j14.86381}$.
+  \item[] \[ H_a(s)=\frac{136.011}{s^2+9.15049s+241.866} \]
+  \item Now $T=2$ s, and \mk{here $T$ does NOT cancel}, because the analog filter was
+        fixed before the mapping instead of being derived through a pre-warp. Substitute
+        $s=\frac{2}{2}\frac{1-z^{-1}}{1+z^{-1}}=\frac{1-z^{-1}}{1+z^{-1}}$:
+  \item[] \[ H(z)=\frac{0.539692\,(1+z^{-1})^2}{1+1.911510z^{-1}+0.927382z^{-2}} \]
+  \item \mk{Both denominator coefficients are positive}, which in \S1 never happened.
+        The poles are at $-0.956\pm j0.110$, near $z=-1$: sampling a 20 rad/s filter at
+        $0.5$ Hz is sampling far below Nyquist, and the filter that results is a
+        high-frequency one. \textbf{Say that the sampling rate is inconsistent with the
+        analog design} rather than presenting the answer as a good low-pass filter.
+\end{itemize}
+
+\hr
+
+\T{4 \quad Spectral transformation}
+{\color{sub}\footnotesize \tF{6} \yr{\textbf{70 Ch} \m{5}, 80 Ba \m{4}, 70 Asa \m{2},
+\textbf{79 Bh}, \textbf{71 Ch}, \textbf{69 Ch} \m{4}}
+\gap$\cdot$\gap the 79 Bh family's 4 marks are worked at the end of \S1}
+
+\begin{asked}{2070 Chaitra \textperiodcentered{} [5]}
+A digital LPF with cut off frequency $w_c=0.2575\pi$ is given as
+$H(z)=\dfrac{0.1+0.4z^{-1}}{1-0.6z^{-1}+0.1z^{-2}}$. Design a digital high pass filter
+with $w'_c=0.3567\pi$.
+\end{asked}
+
+\begin{itemize}
+  \item \textbf{Sanity check the data first}, because it is free:
+        $|H(e^{j0.2575\pi})|=0.70789\approx1/\sqrt2$, so $0.2575\pi$ really is this
+        filter's 3 dB point. \mk{The paper's numbers are consistent.}
+  \item[] \[ \alpha=-\frac{\cos\frac{\omega_c+\omega'_c}{2}}
+                          {\cos\frac{\omega_c-\omega'_c}{2}}
+             =-\frac{\cos(0.3071\pi)}{\cos(0.0496\pi)}
+             =-\frac{0.56928}{0.98788}=\mathbf{-0.57658} \]
+  \item $|\alpha|<1$ \checkmark, so the map is stable.
+  \item Substitute $z^{-1}\to-\dfrac{z^{-1}+\alpha}{1+\alpha z^{-1}}
+        =-\dfrac{z^{-1}-0.57658}{1-0.57658z^{-1}}$, multiplying top and bottom by
+        $(1-0.57658z^{-1})^2$ to clear the fractions:
+  \item[] \[ \boxed{\,H_{hp}(z)=\frac{0.48106-0.94325z^{-1}+0.38393z^{-2}}
+             {1-0.68240z^{-1}+0.12585z^{-2}}\,} \]
+  \item Check: $|H_{hp}(e^{j0.3567\pi})|=\mathbf{0.70789}$, \mk{the same value the low
+        pass had at its own cut-off}. That is exactly what the transformation promises,
+        and it is the one line that proves the answer.
+  \item \mk{Note the numerator's signs alternate} where the prototype's did not. A high
+        pass built this way pushes the zeros towards $z=+1$.
+\end{itemize}
+
+\creamq{80 Ba, 70 Asa}{\m{4}\m{2}}
+{\color{sub}\footnotesize Both are bookwork, answered in \S6.6 of the theory: why the
+transformation is required (impulse invariance cannot make a high pass; doing it in the
+$z$ domain avoids aliasing entirely), the all-pass form the map must take, and the
+LP\,$\to$\,HP row of the table with its $\alpha$.}

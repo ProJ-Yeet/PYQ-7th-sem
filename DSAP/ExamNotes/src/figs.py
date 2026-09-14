@@ -30,6 +30,7 @@ NOTES = os.path.normpath(os.path.join(HERE, "..", "..", "Notes"))
 
 BB = "Notes by BB Sir"
 CW = "Chapterwise"
+SPP = "SPP Sir Slides"
 
 SPECS = [
     # ---- chapter 1
@@ -52,6 +53,22 @@ SPECS = [
     ("c2_roc_left.png", BB + r"\Chapter 2.1.pdf", 5,
      {"box": (0.56, 0.36, 0.95, 0.85), "zoom": 4.0}),
     ("c2_roc_props.png", CW + r"\Chapter 3. Z Transform.pdf", 5, {}),
+    # ---- chapter 6
+    # the frequency-warping curve Omega = (2/T) tan(w/2).  82 Bh asks for it
+    # by name ("explain the frequency warping effect in detail"), and no
+    # amount of prose replaces the picture of the compression.
+    # NB the curve sits at the TOP of p19, not on p18 where its sentence is
+    ("c6_warping.png", CW + r"\Chapter 6. Design of IIR Filters.pdf", 19,
+     {"drop_bot": 0.50}),
+    # The tolerance scheme: 1, 1-delta_1, delta_2, omega_p, omega_s, pi.
+    # p3 stacks the digital spec over its analog prototype; the two panels
+    # are identical in shape and the pair crops 1558 px tall, which ate half
+    # a page for one sentence of content. Top panel only.
+    ("c6_tolerance.png", CW + r"\Chapter 6. Design of IIR Filters.pdf", 3,
+     {"box": (0.10, 0.25, 0.88, 0.58)}),
+    # REJECTED: SPP deck p53's s-plane/z-plane picture crops with two
+    # overlapping "S plane" labels and an unreadable squashed axis. A figure
+    # that has to be explained is worse than the sentence it replaces.
 ]
 
 
@@ -138,7 +155,9 @@ def main():
     for name, rel, pageno, opt in SPECS:
         if want and not name.startswith(want):
             continue
-        made.append(cut(name, rel, pageno, opt))
+        got = cut(name, rel, pageno, opt)
+        if got:                                # a spec that found no ink
+            made.append(got)
     if "--sheet" in sys.argv:
         sheet(made, os.path.join(FIGS, "_sheet.png"))
 
