@@ -622,7 +622,254 @@ def ch2():
     chkseq("c2 cos wn", X, 1.5, lambda n: math.cos(w * n) * u(n), range(0, 9))
 
 
-CHAPTERS = {"ch1": ch1, "ch2": ch2}
+# ---------------------------------------------------------------- chapter 3
+
+def _roots(c):
+    """Roots in z of a polynomial given in powers of z^-1, highest power last.
+    numpy is available here (figs.py already depends on it)."""
+    import numpy as np
+    c = list(c)
+    while len(c) > 1 and abs(c[-1]) < 1e-15:
+        c.pop()
+    if len(c) == 1:
+        return []
+    return sorted(np.roots(c).tolist(), key=lambda z: (round(z.real, 9),
+                                                       round(z.imag, 9)))
+
+
+def _H(b, a, w):
+    """H(e^jw) from coefficient lists in z^-1."""
+    import cmath
+    z = cmath.exp(1j * w)
+    num = sum(c * z ** (-i) for i, c in enumerate(b))
+    den = sum(c * z ** (-i) for i, c in enumerate(a))
+    return num / den
+
+
+def chkroots(tag, coeffs, want):
+    """Assert the published root set, in any order, to 4 decimals."""
+    got = _roots(coeffs)
+    g = sorted((round(z.real, 4), round(z.imag, 4)) for z in got)
+    wnt = sorted((round(complex(z).real, 4), round(complex(z).imag, 4)) for z in want)
+    chk(tag, [x for pair in g for x in pair], [x for pair in wnt for x in pair],
+        tol=2e-4)
+
+
+def chkmag(tag, b, a, want, tol=5e-3):
+    """Assert |H| at w = 0, pi/2, pi against the three published anchor values."""
+    import math
+    got = [abs(_H(b, a, w)) for w in (0.0, math.pi / 2, math.pi)]
+    chk(tag, got, want, tol=tol)
+
+
+def chkpeak(tag, b, a, want_mag, want_deg, tol=5e-3):
+    import math
+    ws = [math.pi * k / 4000 for k in range(4001)]
+    ms = [abs(_H(b, a, w)) for w in ws]
+    i = max(range(len(ms)), key=lambda k: ms[k])
+    chk(tag + " peak", ms[i], want_mag, tol=tol)
+    chk(tag + " peak angle", math.degrees(ws[i]), want_deg, tol=0.6)
+
+
+def ch3():
+    import math
+
+    # --- section 1, the lead worked example and its twin
+    chkroots("c3 80Ch zeros", [1, 0.5], [-0.5])
+    chkroots("c3 80Ch poles", [1, -0.4, 0.25], [0.2 + 0.4583j, 0.2 - 0.4583j])
+    chk("c3 80Ch |p|", abs(complex(0.2, 0.4582576)), 0.5, tol=1e-6)
+    chk("c3 80Ch pole angle",
+        math.degrees(math.atan2(0.4582576, 0.2)), 66.4, tol=0.05)
+    chkmag("c3 80Ch |H|", [1, 0.5], [1, -0.4, 0.25], [1.765, 1.315, 0.303])
+    chkpeak("c3 80Ch", [1, 0.5], [1, -0.4, 0.25], 1.96, 50.9)
+
+    chkmag("c3 78Bh |H|", [1, -0.4], [1, -0.4, 0.25], [0.706, 1.267, 0.849])
+    chkpeak("c3 78Bh", [1, -0.4], [1, -0.4, 0.25], 1.34, 73.9)
+
+    # --- section 1 table, every remaining paper
+    T = [
+        ("80Bh", [1, 0.8, 0.8], [1, 0, -0.49],
+         [-0.4 + 0.8j, -0.4 - 0.8j], [0.7, -0.7], [5.10, 0.55, 1.96]),
+        ("79Bh", [1, -0.75], [1, -0.35, 0.25],
+         [0.75], [0.175 + 0.4684j, 0.175 - 0.4684j], [0.28, 1.51, 1.09]),
+        ("79Ba", [1, -0.5], [1, -0.3, 0.2],
+         [0.5], [0.15 + 0.4213j, 0.15 - 0.4213j], [0.56, 1.31, 1.00]),
+        ("74Ash", [1, 0.5, 0.6, 0.8], [1, -0.4, 0.2],
+         [0.1845 + 0.9416j, 0.1845 - 0.9416j, -0.8690],
+         [0.2 + 0.4j, 0.2 - 0.4j], [3.63, 0.56, 0.19]),
+        ("72Ka", [1, 0.7], [1, -0.5, 0.3],
+         [-0.7], [0.25 + 0.4873j, 0.25 - 0.4873j], [2.13, 1.42, 0.17]),
+        ("72Ch", [1, 0.6], [1, -0.4, 0.1],
+         [-0.6], [0.2 + 0.2449j, 0.2 - 0.2449j], [2.29, 1.18, 0.27]),
+        ("70Ch", [1, 0.5], [1, -0.3, 0.225],
+         [-0.5], [0.15 + 0.45j, 0.15 - 0.45j], [1.62, 1.35, 0.33]),
+        ("71Bh", [1, -0.4], [1, -0.3, 0.225],
+         [0.4], [0.15 + 0.45j, 0.15 - 0.45j], [0.65, 1.30, 0.92]),
+        ("73Ma", [1, 0.7], [1, -0.3, 0.2],
+         [-0.7], [0.15 + 0.4213j, 0.15 - 0.4213j], [1.89, 1.43, 0.20]),
+        ("69Ch", [1, 0.1, -0.06], [1, -0.4, 0.2],
+         [-0.3, 0.2], [0.2 + 0.4j, 0.2 - 0.4j], [1.30, 1.19, 0.53]),
+        ("76Bh", [1, -0.1, -0.2], [1, -0.6, 0.35],
+         [0.5, -0.4], [0.3 + 0.5099j, 0.3 - 0.5099j], [0.93, 1.36, 0.46]),
+        ("75Ch", [4, 0.7, 2], [1, -0.3],
+         [-0.0875 + 0.7017j, -0.0875 - 0.7017j], [0.3], [9.57, 2.03, 4.08]),
+        ("69Bh-tt", [1, 0, 1.21], [1, 0.8],
+         [1.1j, -1.1j], [-0.8], [1.23, 0.16, 11.05]),
+        ("70Asa", [1, 0, 1], [1],
+         [1j, -1j], [], [2.00, 0.0, 2.00]),
+    ]
+    for tag, b, a, zs, ps, mags in T:
+        chkroots("c3 %s zeros" % tag, b, zs)
+        chkroots("c3 %s poles" % tag, a, ps)
+        chkmag("c3 %s |H|" % tag, b, a, mags)
+
+    chkpeak("c3 80Bh", [1, 0.8, 0.8], [1, 0, -0.49], 5.098, 0.0)
+    chkpeak("c3 79Bh", [1, -0.75], [1, -0.35, 0.25], 1.53, 83.4)
+    chkpeak("c3 79Ba", [1, -0.5], [1, -0.3, 0.2], 1.31, 85.0)
+    chkpeak("c3 72Ka", [1, 0.7], [1, -0.5, 0.3], 2.44, 50.3)
+    chkpeak("c3 70Ch", [1, 0.5], [1, -0.3, 0.225], 1.80, 54.5)
+    chkpeak("c3 71Bh", [1, -0.4], [1, -0.3, 0.225], 1.32, 81.3)
+    chkpeak("c3 73Ma", [1, 0.7], [1, -0.3, 0.2], 2.00, 48.0)
+    chkpeak("c3 69Ch", [1, 0.1, -0.06], [1, -0.4, 0.2], 1.51, 54.9)
+    chkpeak("c3 76Bh", [1, -0.1, -0.2], [1, -0.6, 0.35], 1.91, 60.9)
+
+    # 70 Asa / 70 Ma: |H| = 2|cos w| exactly, and h is finite so it is stable
+    for k in range(13):
+        w = math.pi * k / 12
+        chk("c3 70Asa |H|=2|cos w| at k=%d" % k,
+            abs(_H([1, 0, 1], [1], w)), 2 * abs(math.cos(w)), tol=1e-9)
+    chk("c3 70Asa sum|h|", 1 + 0 + 1, 2)
+
+    # 81 Ba / 76 Ash: the pole really is at 2.75, so a causal ROC excludes |z|=1
+    chkroots("c3 81Ba poles", [1, -2.75], [2.75])
+    chkroots("c3 81Ba zeros", [0.67, -0.3], [0.3 / 0.67])
+    chk("c3 81Ba pole outside unit circle", 1.0 if 2.75 > 1 else 0.0, 1.0)
+    chkmag("c3 81Ba |H| anticausal", [0.67, -0.3], [1, -2.75],
+           [0.2114, 0.2509, 0.2587])
+
+    # --- section 2, poles and zeros given directly
+    def frompz(poles, zeros):
+        """Coefficient lists in z^-1 for a monic ratio with these roots."""
+        import numpy as np
+        a = np.poly(poles).real.tolist() if poles else [1.0]
+        b = np.poly(zeros).real.tolist() if zeros else [1.0]
+        return b, a
+
+    b, a = frompz([0.45 + 1.6j, 0.45 - 1.6j], [0.58 + 2.06j, 0.58 - 2.06j])
+    chk("c3 80Ba |p|", abs(complex(0.45, 1.6)), 1.6621, tol=5e-5)
+    chk("c3 80Ba |z|", abs(complex(0.58, 2.06)), 2.1401, tol=5e-5)
+    chk("c3 80Ba pole angle", math.degrees(math.atan2(1.6, 0.45)), 74.3, tol=0.05)
+    chk("c3 80Ba zero angle", math.degrees(math.atan2(2.06, 0.58)), 74.3, tol=0.05)
+    chk("c3 80Ba denom", a, [1.0, -0.9, 2.7625], tol=1e-9)
+    chk("c3 80Ba numer", b, [1.0, -1.16, 4.5800], tol=1e-3)
+    chkmag("c3 80Ba |H|", b, a, [1.544, 1.902, 1.446])
+    chkpeak("c3 80Ba", b, a, 2.04, 74.0)
+
+    b, a = frompz([0.45 + 1.06j, 0.45 - 1.06j], [0.58 + 2.06j, 0.58 - 2.06j])
+    chk("c3 76Ch |p|", abs(complex(0.45, 1.06)), 1.1516, tol=5e-5)
+    chkmag("c3 76Ch |H|", b, a, [3.10, 3.93, 2.09], tol=6e-3)
+    chkpeak("c3 76Ch", b, a, 11.50, 66.7, tol=2e-2)
+
+    b, a = frompz([0.45 - 0.77j, -2 + 0.3j, -2 - 0.3j], [])
+    chk("c3 74Ch |p1|", abs(complex(0.45, 0.77)), 0.8919, tol=5e-5)
+    chk("c3 74Ch |p2|", abs(complex(-2, 0.3)), 2.0224, tol=5e-5)
+    chkmag("c3 74Ch |H| as printed", b, a, [0.20, 0.18, 0.63], tol=6e-3)
+    b, a = frompz([0.45 + 0.77j, 0.45 - 0.77j, -2 + 0.3j, -2 - 0.3j], [])
+    chkmag("c3 74Ch |H| conjugate restored", b, a, [0.12, 0.21, 0.34], tol=6e-3)
+    chkpeak("c3 74Ch restored", b, a, 0.80, 59.9, tol=6e-3)
+
+    b, a = frompz([0.45 - 0.77j, -2 + 0.3j, -2 - 0.3j], [1.2 + 3j, 1.2 - 3j])
+    chk("c3 75Bh |z|", abs(complex(1.2, 3.0)), 3.2311, tol=5e-5)
+    chkmag("c3 75Bh |H|", b, a, [1.81, 1.76, 8.76], tol=6e-3)
+    b2, a2 = frompz([0.45 + 0.77j, -2 + 0.3j, -2 - 0.3j], [1.2 + 3j, 1.2 - 3j])
+    chkmag("c3 71Ch |H| equals 75Bh", b2, a2, [1.81, 1.76, 8.76], tol=6e-3)
+
+    b, a = frompz([0.45 + 0.77j, 2 + 0.7j, 2 - 0.7j], [1.2 + 0.43j, 1.2 - 0.43j])
+    chk("c3 73Ch |p2|", abs(complex(2, 0.7)), 2.1190, tol=5e-5)
+    chk("c3 73Ch |z|", abs(complex(1.2, 0.43)), 1.2747, tol=5e-5)
+    chkmag("c3 73Ch |H|", b, a, [0.27, 0.43, 0.37], tol=6e-3)
+
+    # polar forms the papers reuse
+    # the source rounds: the exact conversion is 0.4575 + j0.7745
+    chk("c3 polar 0.9 at 1.0376 rad -> real",
+        0.9 * math.cos(1.0376), 0.4575, tol=5e-4)
+    chk("c3 polar 0.9 at 1.0376 rad -> imag",
+        0.9 * math.sin(1.0376), 0.7751, tol=5e-4)
+    chk("c3 polar rounds to the printed 0.45",
+        round(0.9 * math.cos(1.0376), 2), 0.46, tol=1e-9)
+    chk("c3 polar 0.892 at 2.5158 rad -> real",
+        0.892 * math.cos(2.5158), -0.728, tol=6e-3)
+    chk("c3 polar 0.892 at 2.5158 rad -> imag",
+        0.892 * math.sin(2.5158), 0.522, tol=6e-3)
+
+    # --- section 3, all-pole systems
+    chkroots("c3 68Bh poles", [1, -10.0 / 24, 1.0 / 24], [0.25, 1.0 / 6])
+    chkmag("c3 68Bh |H|", [1], [1, -10.0 / 24, 1.0 / 24], [1.600, 0.957, 0.686])
+    for w, mag, ang in ((math.pi / 3, 1.1955, -0.3987),
+                        (math.pi / 5, 1.4159, -0.2949)):
+        import cmath
+        H = _H([1], [1, -10.0 / 24, 1.0 / 24], w)
+        chk("c3 68Bh |H| at w=%.4f" % w, abs(H), mag, tol=5e-4)
+        chk("c3 68Bh argH at w=%.4f" % w, cmath.phase(H), ang, tol=5e-4)
+
+    chkroots("c3 69Bh poles", [1, -0.8, 0.15], [0.5, 0.3])
+    chkmag("c3 69Bh |H|", [1], [1, -0.8, 0.15], [2.857, 0.857, 0.513])
+
+    chkroots("c3 67Mng poles as printed", [1, -5.0 / 6, -1.0 / 6], [1.0, -1.0 / 6])
+    chkroots("c3 67Mng poles sign fixed", [1, -5.0 / 6, 1.0 / 6], [0.5, 1.0 / 3])
+    chk("c3 67Mng fixed |H(1)|", abs(_H([1], [1, -5.0 / 6, 1.0 / 6], 0.0)), 3.0,
+        tol=1e-6)
+
+    # --- section 4, zero input and zero state
+    r1, r2 = (1 + 5 ** 0.5) / 4, (1 - 5 ** 0.5) / 4
+    chkroots("c3 66Ma poles", [1, -0.5, -0.25], [r1, r2])
+    chk("c3 66Ma p1", r1, 0.8090, tol=5e-5)
+    chk("c3 66Ma p2", r2, -0.3090, tol=5e-5)
+    C1, C2 = 1 + 2 / 5 ** 0.5, 1 - 2 / 5 ** 0.5
+    chk("c3 66Ma C1", C1, 1.8944, tol=5e-5)
+    chk("c3 66Ma C2", C2, 0.1056, tol=5e-5)
+    # the constants must reproduce the stated initial conditions
+    chk("c3 66Ma y(-1)", C1 * r1 ** -1 + C2 * r2 ** -1, 2.0, tol=1e-9)
+    chk("c3 66Ma y(-2)", C1 * r1 ** -2 + C2 * r2 ** -2, 4.0, tol=1e-9)
+    A = r1 ** 2 / ((r1 - r2) * (r1 - 0.2))
+    Bb = r2 ** 2 / ((r2 - r1) * (r2 - 0.2))
+    D = 0.2 ** 2 / ((0.2 - r1) * (0.2 - r2))
+    chk("c3 66Ma zsr A", A, 0.9612, tol=5e-5)
+    chk("c3 66Ma zsr B", Bb, 0.1678, tol=5e-5)
+    chk("c3 66Ma zsr D", D, -4.0 / 31, tol=1e-9)
+    chk("c3 66Ma residues sum to y[0]=1", A + Bb + D, 1.0, tol=1e-9)
+    chk("c3 66Ma total C1", C1 + A, 2.8557, tol=5e-5)
+    chk("c3 66Ma total C2", C2 + Bb, 0.2734, tol=5e-5)
+    # and the closed forms must match the raw recurrence
+    hist = {-1: 2.0, -2: 4.0}
+    for n in range(0, 7):
+        hist[n] = 0.5 * hist[n - 1] + 0.25 * hist[n - 2] + 0.2 ** n
+    for n, want in ((0, 3.0), (1, 2.2), (2, 1.89), (3, 1.503), (4, 1.2256)):
+        chk("c3 66Ma total y[%d]" % n, hist[n], want, tol=1e-9)
+        closed = ((C1 + A) * r1 ** n + (C2 + Bb) * r2 ** n - (4.0 / 31) * 0.2 ** n)
+        chk("c3 66Ma closed form y[%d]" % n, closed, hist[n], tol=1e-6)
+
+    chkroots("c3 78Bh ZIR roots", [1, -3, -4], [4.0, -1.0])
+
+    # --- section 5, linear phase
+    import cmath
+    h = [-1, 0, 1]
+    for k in range(1, 12):
+        w = math.pi * k / 12
+        H = sum(c * cmath.exp(-1j * w * n) for n, c in enumerate(h))
+        chk("c3 70Asa |H|=2|sin w| k=%d" % k, abs(H), 2 * abs(math.sin(w)),
+            tol=1e-9)
+        # arg H = -w - pi/2 leaves the principal range once w > pi/2, so the
+        # comparison has to be modulo 2 pi: the notes state the unwrapped phase,
+        # which is the one whose slope is the group delay.
+        d = (cmath.phase(H) - (-w - math.pi / 2)) % (2 * math.pi)
+        chk("c3 70Asa phase = -w-pi/2 (mod 2pi) k=%d" % k,
+            min(d, 2 * math.pi - d), 0.0, tol=1e-9)
+    chk("c3 70Asa antisymmetric", [h[0] + h[2], h[1]], [0, 0])
+    chk("c3 70Asa grd", 1.0, (3 - 1) / 2.0)
+
+
+CHAPTERS = {"ch1": ch1, "ch2": ch2, "ch3": ch3}
 
 
 def main():

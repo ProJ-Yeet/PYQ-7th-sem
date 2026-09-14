@@ -1,0 +1,504 @@
+%=======================================================================
+%  CHAPTER 3 - NUMERICAL PROBLEMS AND SOLUTIONS
+%  Every pole, zero and magnitude value printed here is recomputed by
+%  verify.py ch3, which roots the polynomials and evaluates H on the
+%  unit circle without reference to anything written below.
+%  Grouped by METHOD, not by paper: one full worked instance, then the
+%  sibling papers as a data-and-answer table.
+%=======================================================================
+\section*{\color{acc}Ch 3 \textperiodcentered{} Analysis of LTI Systems in the Frequency
+Domain\\[2pt]
+{\large\textcolor{sub}{Numerical Problems \& Solutions}}}
+\vspace{-4pt}{\color{acc}\rule{\textwidth}{1.1pt}}\vspace{4pt}
+
+{\color{sub}\footnotesize \mk{35 of the 56 questions in this chapter are the same
+question}: plot the poles and zeros, then sketch the magnitude response. All of them are
+below. They split into two shapes, according to whether the paper gives you a difference
+equation or the pole and zero locations themselves, and the second half of the work is
+identical in both.}
+
+\lead{The one procedure, used in \S1 and \S2}
+\begin{enumerate}
+  \item \textbf{Get $H(z)$.} From an LCCDE, Z-transform both sides and divide. Multiply
+        top and bottom by $z^{N}$ so both are polynomials in $z$, not in $z^{-1}$.
+  \item \textbf{Factor.} Numerator roots are zeros, denominator roots are poles. These
+        are almost always quadratics, so the quadratic formula finishes it, and complex
+        roots always arrive in conjugate pairs.
+  \item \textbf{Plot}: unit circle, $\circ$ for each zero, $\times$ for each pole, and
+        the zeros at the origin if the numerator is the shorter polynomial.
+  \item \textbf{Three anchor values}, which is all a not-to-scale sketch needs:
+        $|H(1)|$ at $\omega=0$, $|H(j)|$ at $\omega=\pi/2$, $|H(-1)|$ at $\omega=\pi$.
+  \item \textbf{Peak at the pole angle, dip at the zero angle.} Join smoothly, then say
+        in words whether it is low-pass, high-pass, band-pass or a notch.
+\end{enumerate}
+
+\sbs{%
+\lead{The geometry, in one line}
+\[ |H(e^{j\omega})|=|K|\,
+   \frac{\prod_k|e^{j\omega}-z_k|}{\prod_k|e^{j\omega}-p_k|} \]
+\begin{itemize}
+  \item Distances from the zeros multiply on top, distances from the poles divide
+        underneath.
+  \item A pole at radius $r$ and angle $\theta$ makes $|H|$ peak at $\omega=\theta$, and
+        the peak is sharper the closer $r$ is to 1.
+  \item A zero \emph{on} the circle forces $|H|$ to \textbf{exactly zero} at its angle.
+\end{itemize}}{%
+\lead{The checks that cost nothing}
+\begin{enumerate}
+  \item $|H(1)|$ is the sum of the coefficients over the sum of the denominator
+        coefficients; $|H(-1)|$ is the same with alternating signs. Two lines.
+  \item Complex roots must be \textbf{conjugate pairs}. A lone complex pole is an
+        arithmetic slip, every time.
+  \item Product of the roots of $z^2+\alpha z+\beta$ is $\beta$, sum is $-\alpha$. Check
+        your factorisation against the coefficients before plotting.
+  \item \mk{If any pole has $|p|\ge1$ and the system is stated causal, stop}: the ROC
+        excludes the unit circle and there is no frequency response to draw.
+\end{enumerate}}
+
+\hr
+
+\T{1 \quad Difference equation given: find $H(z)$, plot, sketch $|H|$}
+{\color{sub}\footnotesize \tS{24} \yr{\textbf{\texttt{80 Ch}} \m{8}, \textbf{\texttt{72 Ash}} \m{7},
+\textbf{78 Bh} \m{2+4}, \textbf{81 Bh} \m{3+7}, \textbf{80 Bh} \m{3+7}, 81 Ba \m{3+7},
+76 Ash \m{2+8}, \textbf{79 Bh} \m{3+7}, 79 Ba \m{3+7}, 74 Ash \m{3+7}, 72 Ka \m{6},
+\textbf{72 Ch} \m{2+4}, \textbf{70 Ch} \m{6}, \textbf{\texttt{71 Bh}} \m{6},
+\texttt{73 Ma} \m{7}, \textbf{69 Ch} \m{2+2+6}, \textbf{\texttt{76 Bh}} \m{2+5},
+\textbf{75 Ch} \m{2+7}, \textbf{\texttt{69 Bh}} \m{3+3+2+4}, 70 Asa \m{2+6+2},
+\texttt{70 Ma} \m{8}}}
+
+\begin{asked}{2080 Chaitra \textperiodcentered{} 2072 Ashwin \textperiodcentered{} [8/7]}
+Plot the pole-zero in the z-plane and draw the magnitude response (not to scale) of the
+system described by the difference equation
+$y[n]-0.4y[n-1]+0.25y[n-2]=x[n]+0.5x[n-1]$ (magnitude response only).
+\end{asked}
+
+\lead{Step 1: transform and divide}
+\begin{itemize}
+  \item Z-transform term by term, using $y[n-k]\leftrightarrow z^{-k}Y(z)$:
+  \item[] \[ Y(z)\big(1-0.4z^{-1}+0.25z^{-2}\big)=X(z)\big(1+0.5z^{-1}\big) \]
+  \item[] \[ H(z)=\frac{1+0.5z^{-1}}{1-0.4z^{-1}+0.25z^{-2}}
+             =\frac{z(z+0.5)}{z^{2}-0.4z+0.25} \]
+  \item Multiplying by $z^{2}/z^{2}$ is what exposes the zero at the origin. \mk{Do it
+        before factoring, every time.}
+\end{itemize}
+
+\lead{Step 2: factor}
+\sbs{%
+\begin{itemize}
+  \item \textbf{Zeros}, from the numerator $z(z+0.5)$:
+  \item[] \[ z=0 \quad\text{and}\quad z=-0.5 \]
+  \item \textbf{Poles}, from $z^{2}-0.4z+0.25=0$:
+  \item[] \[ z=\frac{0.4\pm\sqrt{0.16-1}}{2}=0.2\pm j0.4583 \]
+  \item Check: product of the poles is $0.04+0.21=0.25$, the constant term. Sum is $0.4$.
+        Both agree.
+\end{itemize}}{%
+\begin{itemize}
+  \item In polar form the pole pair is
+  \item[] \[ |p|=\sqrt{0.2^{2}+0.4583^{2}}=\mathbf{0.5},\qquad
+             \theta=\arctan\frac{0.4583}{0.2}=66.4^{\circ}=1.159\ \text{rad} \]
+  \item $|p|=0.5<1$, so the causal system is \textbf{stable} and the frequency response
+        exists.
+  \item \mk{$|p|=0.5$ exactly}, because the constant term of a monic quadratic is the
+        product of the roots, and here that product is $|p|^2=0.25$.
+\end{itemize}}
+
+\lead{Step 3: the three anchor values}
+\begin{itemize}
+  \item At $\omega=0$, put $z=1$:
+        $\;|H|=\left|\dfrac{1+0.5}{1-0.4+0.25}\right|=\dfrac{1.5}{0.85}=\mathbf{1.765}$
+  \item At $\omega=\pi/2$, put $z=j$:
+        $\;|H|=\left|\dfrac{1-0.5j}{1+0.4j-0.25}\right|
+        =\dfrac{1.118}{0.850}=\mathbf{1.315}$
+  \item At $\omega=\pi$, put $z=-1$:
+        $\;|H|=\left|\dfrac{1-0.5}{1+0.4+0.25}\right|=\dfrac{0.5}{1.65}=\mathbf{0.303}$
+\end{itemize}
+
+\lead{Step 4: read the shape off the plot}
+\begin{itemize}
+  \item The pole pair sits at $66.4^{\circ}$, so $|H|$ \textbf{peaks} near there. The
+        true peak is $\mathbf{1.96}$ at $\mathbf{50.9^{\circ}}$, pulled back towards
+        $\omega=0$ by the zero at $z=-0.5$ sitting on the far side.
+  \item The zero at $z=-0.5$ lies at angle $180^{\circ}$, so $|H|$ is \textbf{smallest at
+        $\omega=\pi$}, and $0.303$ is the minimum.
+  \item The zero at the origin is equidistant from every point of the circle and
+        \textbf{does not shape the response at all}. It still belongs on the plot.
+  \item Verdict: a \textbf{low-pass} response, rising a little to a broad hump around
+        $50^{\circ}$ before falling to $0.303$ at $\omega=\pi$.
+\end{itemize}
+
+\lead{The same poles with the zero moved: 78 Bh and 81 Bh}
+{\color{sub}\footnotesize Two more papers ask the identical question with
+$x[n]-0.4x[n-1]$ on the right instead of $x[n]+0.5x[n-1]$. \mk{The denominator is
+unchanged, so the poles are the same $0.2\pm j0.4583$}; only the zero moves, from $-0.5$
+to $+0.4$, that is from angle $180^{\circ}$ to angle $0^{\circ}$.}
+\begin{itemize}
+  \item The zero now sits nearest $\omega=0$, so it \textbf{pulls DC down} instead of
+        $\omega=\pi$: $|H(1)|=0.6/0.85=\mathbf{0.706}$,
+        $|H(j)|=\mathbf{1.267}$, $|H(-1)|=1.4/1.65=\mathbf{0.849}$.
+  \item Peak $\mathbf{1.34}$ at $\mathbf{73.9^{\circ}}$, and the response is now
+        \textbf{high-pass} in character.
+  \item \mk{One sign in the numerator flips the filter from low-pass to high-pass, with
+        the poles untouched.} That is the lesson of the whole section.
+\end{itemize}
+
+\lead{Every other paper in this group}
+{\color{sub}\footnotesize Same five steps. Poles from the $y$ coefficients, zeros from
+the $x$ coefficients, then the three anchor values.}
+\par\smallskip
+{\footnotesize
+\begin{tabular}{@{}L{2.45cm}L{4.45cm}L{2.55cm}L{2.35cm}L{1.5cm}L{1.85cm}@{}}
+\toprule
+\hrow \thead{Papers} & \thead{Difference equation} & \thead{Zeros} & \thead{Poles ($|p|$)}
+& \thead{$|H|$ at $0,\frac{\pi}{2},\pi$} & \thead{Character} \\
+\textbf{80 Bh} & $y(n)=x(n)+0.8x(n{-}1)$ \newline $+\,0.8x(n{-}2)+0.49y(n{-}2)$
+  & $-0.4\pm j0.8$ \newline $(0.894)$ & $\pm0.7$ \newline $(0.7)$
+  & $5.10$ \newline $0.55$ \newline $1.96$ & low-pass, dip at $116^{\circ}$ \\
+\textbf{79 Bh} & $y[n]-0.35y[n{-}1]+0.25y[n{-}2]$ \newline $=x[n]-0.75x[n{-}1]$
+  & $0.75$, $0$ & $0.175\pm j0.468$ \newline $(0.5)$
+  & $0.28$ \newline $1.51$ \newline $1.09$ & high-pass, peak $1.53$ at $83^{\circ}$ \\
+79 Ba & $y[n]-0.3y[n{-}1]+0.2y[n{-}2]$ \newline $=x[n]-0.5x[n{-}1]$
+  & $0.5$, $0$ & $0.15\pm j0.421$ \newline $(0.447)$
+  & $0.56$ \newline $1.31$ \newline $1.00$ & high-pass, peak $1.31$ at $85^{\circ}$ \\
+74 Ash & $y[n]-0.4y[n{-}1]+0.2y[n{-}2]=x[n]$ \newline $+0.5x[n{-}1]+0.6x[n{-}2]+0.8x[n{-}3]$
+  & $0.185\pm j0.942$ \newline $(0.96)$, $-0.869$ & $0.2\pm j0.4$ \newline $(0.447)$
+  & $3.63$ \newline $0.56$ \newline $0.19$ & low-pass, dip at $79^{\circ}$ \\
+72 Ka & $y[n]-0.5y[n{-}1]+0.3y[n{-}2]$ \newline $=x[n]+0.7x[n{-}1]$
+  & $-0.7$, $0$ & $0.25\pm j0.487$ \newline $(0.548)$
+  & $2.13$ \newline $1.42$ \newline $0.17$ & low-pass, peak $2.44$ at $50^{\circ}$ \\
+\textbf{72 Ch} & $y[n]-0.4y[n{-}1]+0.1y[n{-}2]$ \newline $=x[n]+0.6x[n{-}1]$
+  & $-0.6$, $0$ & $0.2\pm j0.245$ \newline $(0.316)$
+  & $2.29$ \newline $1.18$ \newline $0.27$ & low-pass \\
+\textbf{70 Ch} & $y[n]-0.3y[n{-}1]+0.225y[n{-}2]$ \newline $=x[n]+0.5x[n{-}1]$
+  & $-0.5$, $0$ & $0.15\pm j0.45$ \newline $(0.474)$
+  & $1.62$ \newline $1.35$ \newline $0.33$ & low-pass, peak $1.80$ at $55^{\circ}$ \\
+\bottomrule
+\end{tabular}}
+\par\smallskip
+{\footnotesize
+\begin{tabular}{@{}L{2.45cm}L{4.45cm}L{2.55cm}L{2.35cm}L{1.5cm}L{1.85cm}@{}}
+\toprule
+\hrow \thead{Papers} & \thead{Difference equation} & \thead{Zeros} & \thead{Poles ($|p|$)}
+& \thead{$|H|$ at $0,\frac{\pi}{2},\pi$} & \thead{Character} \\
+\textbf{\texttt{71 Bh}} & $y[n]-0.3y[n{-}1]+0.225y[n{-}2]$ \newline $=x[n]-0.4x[n{-}1]$
+  & $0.4$, $0$ & $0.15\pm j0.45$ \newline $(0.474)$
+  & $0.65$ \newline $1.30$ \newline $0.92$ & high-pass, peak $1.32$ at $81^{\circ}$ \\
+\texttt{73 Ma} & $y[n]-0.3y[n{-}1]+0.2y[n{-}2]$ \newline $=x[n]+0.7x[n{-}1]$
+  & $-0.7$, $0$ & $0.15\pm j0.421$ \newline $(0.447)$
+  & $1.89$ \newline $1.43$ \newline $0.20$ & low-pass, peak $2.00$ at $48^{\circ}$ \\
+\textbf{69 Ch} & $y[n]-0.4y[n{-}1]+0.2y[n{-}2]=x[n]$ \newline $+0.1x[n{-}1]-0.06x[n{-}2]$
+  & $-0.3$, $0.2$ & $0.2\pm j0.4$ \newline $(0.447)$
+  & $1.30$ \newline $1.19$ \newline $0.53$ & low-pass, peak $1.51$ at $55^{\circ}$ \\
+\textbf{\texttt{76 Bh}} & $y[n]-0.6y[n{-}1]+0.35y[n{-}2]=x[n]$ \newline $-0.1x[n{-}1]-0.2x[n{-}2]$
+  & $0.5$, $-0.4$ & $0.3\pm j0.510$ \newline $(0.592)$
+  & $0.93$ \newline $1.36$ \newline $0.46$ & band-pass, peak $1.91$ at $61^{\circ}$ \\
+\textbf{75 Ch} & $y(n)-0.3y(n{-}1)=4x(n)$ \newline $+0.7x(n{-}1)+2x(n{-}2)$
+  & $-0.0875\pm j0.702$ \newline $(0.707)$ & $0.3$ \newline $(0.3)$
+  & $9.57$ \newline $2.03$ \newline $4.08$ & low-pass, dip at $99^{\circ}$ \\
+\textbf{\texttt{69 Bh}} & $y[n]=x[n]+1.21x[n{-}2]$ \newline $-\,0.8y[n{-}1]$
+  & $\pm j1.1$ \newline $(1.1)$ & $-0.8$ \newline $(0.8)$
+  & $1.23$ \newline $0.16$ \newline $11.05$ & high-pass, deep dip at $90^{\circ}$ \\
+70 Asa, \texttt{70 Ma} & $y(n)=x(n)+x(n{-}2)$ \newline (FIR, no feedback)
+  & $\pm j$ \newline \mk{on the circle} & none \newline (all-zero)
+  & $2.00$ \newline $\mathbf{0}$ \newline $2.00$ & $|H|=2|\cos\omega|$, exact null \\
+\bottomrule
+\end{tabular}}
+
+\creamq{75 Ch prints $2x(n-2)+0.7x(n-1)+4x(n)$ in that order}{Read the delays, not the
+position on the page. The constant term is $4$, so $H(z)=(4+0.7z^{-1}+2z^{-2})/(1-0.3z^{-1})$
+and $|H(1)|=6.7/0.7=9.57$. Writing it as $2+0.7z^{-1}+4z^{-2}$ instead gives $9.57$ as
+well, because the coefficients still sum to $6.7$, \mk{but every other value is wrong}
+and the zeros move from $-0.0875\pm j0.702$ to $-0.0875\pm j0.351$.}
+
+\creamq{70 Asa and 70 Ma also ask whether the system is causal and stable}{Yes to both,
+and the reason is one line: $y(n)=x(n)+x(n-2)$ uses only present and past inputs, so it
+is causal; its impulse response is $h=\{1,0,1\}$, a finite sum, so
+$\sum|h[n]|=2<\infty$ and it is stable. \mk{Every FIR system is stable}, which is why the
+question is worth only 2 marks.}
+
+\creamq{81 Ba and 76 Ash: the pole is at $z=2.75$}{$y(n)=0.67x(n)-0.3x(n-1)+2.75y(n-1)$
+rearranges to $y(n)-2.75y(n-1)=0.67x(n)-0.3x(n-1)$, so
+$H(z)=(0.67z-0.3)/(z-2.75)$: one zero at $z=0.448$ and \mk{one pole at $z=2.75$, far
+outside the unit circle}. If the system is causal its ROC is $|z|>2.75$, which does not
+contain the unit circle, so \textbf{the frequency response does not exist} and neither
+the magnitude (81 Ba) nor the phase (76 Ash) can be drawn. Only the anticausal reading,
+ROC $|z|<2.75$, is stable; on that reading $|H|$ climbs gently from $0.211$ at
+$\omega=0$ to $0.259$ at $\omega=\pi$. \mk{State which reading you are using.} A pole at
+$0.275$ rather than $2.75$ would make the causal system stable, and is the likeliest
+intended value.}
+
+\hr
+
+\T{2 \quad Poles and zeros given directly}
+{\color{sub}\footnotesize \tS{11} \yr{82 Ba \m{3+7}, 80 Ba \m{4+6}, \textbf{82 Bh} \m{2+8},
+\textbf{76 Ch} \m{2+6}, 75 Ash \m{2+8}, \textbf{\texttt{81 Ch}} \m{8},
+\textbf{\texttt{73 Bh}} \m{8}, \textbf{74 Ch} \m{2+8}, \textbf{\texttt{75 Bh}} \m{2+6},
+\textbf{73 Ch} \m{2+8}, \textbf{71 Ch} \m{2+8}}
+\gap$\cdot$\gap \mk{no algebra at all}: the factoring is done for you}
+
+\begin{asked}{2080 Baishakh \textperiodcentered{} 2082 Bhadra \textperiodcentered{} [4+6]}
+A filter has poles at $0.45\pm j1.6$ and zeros at $0.58\pm j2.06$. Map them in the
+$z$-plane and plot the magnitude response (not to scale).
+\end{asked}
+
+\lead{Step 1: radii and angles, which is all the geometry needs}
+\sbs{%
+\begin{itemize}
+  \item \textbf{Poles} $0.45\pm j1.6$:
+  \item[] \[ |p|=\sqrt{0.45^{2}+1.6^{2}}=\mathbf{1.662},\qquad
+             \theta_p=\arctan\frac{1.6}{0.45}=74.3^{\circ} \]
+  \item \textbf{Zeros} $0.58\pm j2.06$:
+  \item[] \[ |z|=\sqrt{0.58^{2}+2.06^{2}}=\mathbf{2.140},\qquad
+             \theta_z=\arctan\frac{2.06}{0.58}=74.3^{\circ} \]
+\end{itemize}}{%
+\begin{itemize}
+  \item \mk{Poles and zeros share the same angle}, $74.3^{\circ}$, and the zeros sit
+        further out. So they partly cancel: the peak the poles want to make is flattened
+        by the dip the zeros want to make.
+  \item Both lie \textbf{outside} the unit circle, so nothing is close to the circle and
+        \mk{the response is gentle, with no sharp feature anywhere}.
+  \item That is the answer the 6 marks are for. The sketch is nearly flat.
+\end{itemize}}
+
+\lead{Step 2: the three anchor values}
+\begin{itemize}
+  \item Build $H(z)=\dfrac{(z-0.58-j2.06)(z-0.58+j2.06)}{(z-0.45-j1.6)(z-0.45+j1.6)}
+        =\dfrac{z^{2}-1.16z+4.578}{z^{2}-0.9z+2.763}$, using
+        (sum, product) of each conjugate pair.
+  \item $|H(1)|=\left|\dfrac{1-1.16+4.578}{1-0.9+2.763}\right|
+        =\dfrac{4.418}{2.863}=\mathbf{1.544}$
+  \item $|H(j)|=\mathbf{1.902}$, \quad
+        $|H(-1)|=\left|\dfrac{1+1.16+4.578}{1+0.9+2.763}\right|
+        =\dfrac{6.738}{4.663}=\mathbf{1.446}$
+  \item Peak $\mathbf{2.04}$ at $\mathbf{74^{\circ}}$, exactly the pole angle. Range
+        $1.45$ to $2.04$: \mk{a shallow bump, not a resonance}.
+\end{itemize}
+
+\lead{Step 3: the phase, when asked}
+{\color{sub}\footnotesize 82 Ba asks for the phase as well. Add the angle of each vector
+from a zero and subtract the angle of each vector from a pole:
+$\arg H=\sum_k\arg(e^{j\omega}-z_k)-\sum_k\arg(e^{j\omega}-p_k)$. With conjugate pairs
+the imaginary parts cancel at $\omega=0$ and $\omega=\pi$, so \mk{the phase is zero at
+both ends} and odd in between.}
+
+\lead{The rest of the family}
+\par\smallskip
+{\footnotesize
+\begin{tabular}{@{}L{3.3cm}L{3.9cm}L{3.5cm}L{1.6cm}L{3.0cm}@{}}
+\toprule
+\hrow \thead{Papers} & \thead{Poles ($|p|$)} & \thead{Zeros ($|z|$)}
+& \thead{$|H|$ at $0,\frac{\pi}{2},\pi$} & \thead{Shape} \\
+82 Ba, 80 Ba, \textbf{82 Bh} & $0.45\pm j1.6$ \newline $(1.662)$
+  & $0.58\pm j2.06$ \newline $(2.140)$ & $1.54$ \newline $1.90$ \newline $1.45$
+  & shallow bump, peak $2.04$ at $74^{\circ}$ \\
+\textbf{76 Ch}, 75 Ash, \textbf{\texttt{81 Ch}}, \textbf{\texttt{73 Bh}}
+  & $0.45\pm j1.06$ \newline $(1.152)$ & $0.58\pm j2.06$ \newline $(2.140)$
+  & $3.10$ \newline $3.93$ \newline $2.09$ & \mk{real peak} $11.50$ at $67^{\circ}$ \\
+\textbf{74 Ch} & $0.45-j0.77$ \newline $(0.892)$, $-2\pm j0.3$ \newline $(2.022)$
+  & none & $0.20$ \newline $0.18$ \newline $0.63$ & rises towards $\omega=\pi$ \\
+\textbf{\texttt{75 Bh}}, \textbf{71 Ch} & $0.45\mp j0.77$ \newline $(0.892)$,
+  $-2\pm j0.3$ \newline $(2.022)$ & $1.2\pm j3$ \newline $(3.231)$
+  & $1.81$ \newline $1.76$ \newline $8.76$ & high-pass, peak $8.76$ at $\pi$ \\
+\textbf{73 Ch} & $0.45+j0.77$ \newline $(0.892)$, $2\pm j0.7$ \newline $(2.119)$
+  & $1.2\pm j0.43$ \newline $(1.275)$ & $0.27$ \newline $0.43$ \newline $0.37$
+  & broad bump at $72^{\circ}$ \\
+\bottomrule
+\end{tabular}}
+
+\creamq{Every pole in this section except $0.45\pm j0.77$ lies outside the unit
+circle}{$|p|$ runs $1.152$, $1.662$, $2.022$, $2.119$. So \mk{none of these systems is
+both causal and stable}. The questions only ask you to map the points and sketch $|H|$,
+which is legitimate as long as the ROC is taken to be an annulus that contains the unit
+circle, making the system stable but \textbf{not causal}. \mk{Say so in one line and the
+mark is safe.} The $0.45\pm j0.77$ pair, at $|p|=0.892$, is the only one inside.}
+
+\creamq{74 Ch, 75 Bh, 73 Ch and 71 Ch each print a lone complex pole}{They give
+$0.45-0.77i$ or $0.45+0.77i$ with \textbf{no conjugate}, alongside a pair
+$-2\pm0.3i$ or $2\pm0.7i$ that is properly conjugate. \mk{A difference equation with real
+coefficients cannot have an unpaired complex pole}, so the intended pole is the pair
+$0.45\pm j0.77$ and the printed sign is a dropped $\pm$. Restoring the conjugate changes
+the numbers, so \textbf{state which reading you used}: with the pair restored, 74 Ch has
+$|H|=0.12$, $0.21$, $0.34$ at $0$, $\pi/2$, $\pi$ and peaks at $0.80$ near
+$60^{\circ}$. The values tabulated above are for the question exactly as printed.}
+
+\creamq{Where $0.45\pm j0.77$ comes from}{The local worked example these questions are
+built on specifies its poles and zeros as a \emph{radius and an angle}: a zero of radius
+$0.9$ at $1.0376$ rad is $0.9\cos(1.0376)+j0.9\sin(1.0376)=0.4575+j0.7751$,
+\mk{which the source rounds to $0.45+j0.77$}, and a pole of radius $0.892$ at
+$2.5158$ rad is $-0.728+j0.522$. \mk{Recognising the pair saves a
+conversion}, and it explains why the same two decimals keep reappearing across six
+different papers.}
+
+\hr
+
+\T{3 \quad All-pole systems, and the steady-state response to a sinusoid}
+{\color{sub}\footnotesize \tP{3} \yr{\textbf{69 Bh} \m{6}, \textbf{67 Mng} \m{10},
+\textbf{68 Bh} \m{7}}}
+
+\begin{asked}{2068 Bhadra \textperiodcentered{} [7]}
+For the system $y[n]-\tfrac{10}{24}y[n-1]+\tfrac{1}{24}y[n-2]=x[n]$, find the frequency
+response, then determine $y[n]$ for the input
+$x[n]=\sin\!\big(\tfrac{\pi}{3}n\big)+\sin\!\big(\tfrac{\pi}{5}n\big)$.
+\end{asked}
+
+\lead{Step 1: the frequency response}
+\begin{itemize}
+  \item There is no $x$ delay, so the numerator is $1$: the system is \textbf{all-pole}.
+  \item[] \[ H(z)=\frac{1}{1-\tfrac{10}{24}z^{-1}+\tfrac{1}{24}z^{-2}}
+             =\frac{z^{2}}{z^{2}-\tfrac{5}{12}z+\tfrac{1}{24}} \]
+  \item Factor: $z^{2}-\tfrac{5}{12}z+\tfrac{1}{24}=(z-\tfrac14)(z-\tfrac16)$, so the
+        \textbf{poles are $\tfrac14$ and $\tfrac16$}, both real, both well inside the
+        circle. Two zeros sit at the origin.
+  \item[] \[ H(e^{j\omega})=\frac{1}{\big(1-\tfrac14e^{-j\omega}\big)
+             \big(1-\tfrac16e^{-j\omega}\big)} \]
+  \item $|H|$ falls from $1.60$ at $\omega=0$ to $0.686$ at $\omega=\pi$: a gentle
+        \textbf{low-pass}, with no peak because both poles are far from the circle.
+\end{itemize}
+
+\lead{Step 2: use the eigenfunction result, do not convolve}
+\begin{itemize}
+  \item A sinusoid in gives the same sinusoid out, scaled by $|H|$ and shifted by
+        $\angle H$ at \emph{that} frequency. Evaluate $H$ twice and stop.
+  \item At $\omega=\pi/3$: $\;|H|=\mathbf{1.1955}$, $\;\angle H=\mathbf{-0.3987}$ rad
+        $=-22.85^{\circ}$.
+  \item At $\omega=\pi/5$: $\;|H|=\mathbf{1.4159}$, $\;\angle H=\mathbf{-0.2949}$ rad
+        $=-16.90^{\circ}$.
+  \item[] \[ y[n]=1.1955\sin\!\Big(\frac{\pi}{3}n-0.3987\Big)
+             +1.4159\sin\!\Big(\frac{\pi}{5}n-0.2949\Big) \]
+  \item \mk{The lower frequency is amplified more}, which is the low-pass character
+        showing up in the answer.
+\end{itemize}
+
+\lead{69 Bh: the same method, one line shorter}
+\begin{itemize}
+  \item $y[n]-0.8y[n-1]+0.15y[n-2]=x[n]$ gives
+        $z^{2}-0.8z+0.15=(z-0.5)(z-0.3)$, so the \textbf{poles are $0.5$ and $0.3$} with
+        a double zero at the origin.
+  \item $|H|$: $\mathbf{2.857}$ at $\omega=0$, $0.857$ at $\pi/2$, $\mathbf{0.513}$ at
+        $\pi$. Monotonically falling, so \textbf{low-pass}, peak at DC.
+\end{itemize}
+
+\creamq{67 Mng as printed has a pole exactly on the unit circle}{The paper writes
+$y[n]-\tfrac56y[n-1]-\tfrac16y[n-2]-x[n]=0$. That denominator factors as
+$z^{2}-\tfrac56z-\tfrac16=(z-1)(z+\tfrac16)$, putting \mk{a pole at $z=1$}. A pole on the
+circle means $|H(e^{j0})|$ is infinite, the system is only marginally stable and it is
+not BIBO stable, so strictly \textbf{there is no frequency response to plot}. Change the
+one sign, $-\tfrac16\to+\tfrac16$, and the poles become $\tfrac12$ and $\tfrac13$, giving
+an ordinary low-pass with $|H(1)|=1/[(1-\tfrac12)(1-\tfrac13)]=3$. \mk{68 Bh asks the identical question with the
+$+$ sign} and poles $\tfrac14$, $\tfrac16$, which is strong evidence that the minus is a
+misprint. Answer the $+$ version and note the printed one in a line.}
+
+\hr
+
+\T{4 \quad Zero-input, zero-state and total response}
+{\color{sub}\footnotesize \tP{2} \yr{\textbf{78 Bh} \m{4}, \textbf{66 Ma} \m{10}}}
+
+\begin{asked}{2066 Magh \textperiodcentered{} [10]}
+A system is characterized by $y(n)-0.5y(n-1)-0.25y(n-2)-x(n)=0$, the input is
+$x(n)=0.2^{n}u(n)$ and the initial conditions are $y(-1)=2$, $y(-2)=4$. Find (a) the zero
+input response, (b) the zero state response, (c) the total response, (d) the system
+function $H(z)$, (e) the poles of $H(z)$.
+\end{asked}
+
+\lead{(d) and (e) first, because everything else uses them}
+\begin{itemize}
+  \item[] \[ H(z)=\frac{1}{1-0.5z^{-1}-0.25z^{-2}}
+             =\frac{z^{2}}{z^{2}-0.5z-0.25} \]
+  \item Roots: $z=\dfrac{0.5\pm\sqrt{0.25+1}}{2}=\dfrac{1\pm\sqrt5}{4}$, that is
+        \[ p_1=\mathbf{0.8090},\qquad p_2=\mathbf{-0.3090} \]
+  \item Both have $|p|<1$, so the causal system is \textbf{stable}.
+\end{itemize}
+
+\lead{(a) Zero-input response: the input is switched off, the initial conditions drive it}
+\begin{itemize}
+  \item The form is fixed by the poles: $\;y_{zi}[n]=C_1(0.8090)^{n}+C_2(-0.3090)^{n}$.
+  \item Impose $y(-1)=2$ and $y(-2)=4$ on that form and solve the pair:
+  \item[] \[ C_1=1+\frac{2}{\sqrt5}=\mathbf{1.8944},\qquad
+             C_2=1-\frac{2}{\sqrt5}=\mathbf{0.1056} \]
+  \item[] \[ y_{zi}[n]=1.8944\,(0.8090)^{n}+0.1056\,(-0.3090)^{n},\quad n\ge0 \]
+  \item Quick check by running the recurrence $y[n]=0.5y[n-1]+0.25y[n-2]$ with no input:
+        $y[0]=0.5(2)+0.25(4)=2$, $y[1]=1.5$, $y[2]=1.25$, $y[3]=1$. The closed form gives
+        the same four numbers.
+\end{itemize}
+
+\lead{(b) Zero-state response: the initial conditions are zero, the input drives it}
+\begin{itemize}
+  \item $X(z)=\dfrac{1}{1-0.2z^{-1}}$, so $Y_{zs}(z)=H(z)X(z)$ has three poles:
+        $0.8090$, $-0.3090$ and $0.2$.
+  \item Partial-fraction $Y_{zs}(z)/z$ and multiply back:
+  \item[] \[ y_{zs}[n]=0.9612\,(0.8090)^{n}+0.1678\,(-0.3090)^{n}
+             -0.1290\,(0.2)^{n},\quad n\ge0 \]
+  \item The three residues sum to $1$, which must happen because $y_{zs}[0]=1$.
+        \mk{That is the free check.} The last residue is exactly $-\tfrac{4}{31}$.
+\end{itemize}
+
+\lead{(c) Total response}
+\begin{itemize}
+  \item[] \[ y[n]=y_{zi}[n]+y_{zs}[n]
+             =2.8557\,(0.8090)^{n}+0.2734\,(-0.3090)^{n}-0.1290\,(0.2)^{n} \]
+  \item First few values: $3$, $2.2$, $1.89$, $1.503$, $1.2256$. Running the original
+        recurrence with $y(-1)=2$, $y(-2)=4$ and $x(n)=0.2^{n}$ gives the same sequence.
+  \item \mk{Natural against forced is a different split from zero-input against
+        zero-state.} The natural part is everything in $(0.8090)^n$ and $(-0.3090)^n$,
+        which draws from both; the forced part is only the $(0.2)^n$ term.
+\end{itemize}
+
+\creamq{78 Bh gives no initial conditions}{$y[n]-3y[n-1]-4y[n-2]=x[n]$ has
+$z^{2}-3z-4=(z-4)(z+1)$, so the zero-input response is
+$y_{zi}[n]=C_1(4)^{n}+C_2(-1)^{n}$ and \mk{that form is the whole answer}, since no
+$y(-1)$ or $y(-2)$ is printed to pin $C_1$ and $C_2$ down. Worth adding: $|4|>1$ and
+$|-1|=1$, so the zero-input response \textbf{never decays} and the system is unstable.
+Say it, because the 4 marks are for recognising the form and its behaviour.}
+
+\hr
+
+\T{5 \quad Linear phase}
+{\color{sub}\footnotesize \tP{3} \yr{70 Asa \m{2+4}, \textbf{67 Mng} \m{6},
+\textbf{69 Bh} \m{6}} \gap$\cdot$\gap the derivation for general $M$ is in \S3.6}
+
+\begin{asked}{2070 Ashad \textperiodcentered{} [2+4]}
+What is the condition satisfied by a linear phase FIR filter? Show that the filter with
+$h(n)=\{-1,0,1\}$ is a linear phase filter.
+\end{asked}
+
+\sbsr{0.46}{%
+\lead{The condition, for the 2 marks}
+\[ h[n]=\pm h[M-1-n],\qquad 0\le n\le M-1 \]
+\begin{itemize}
+  \item The impulse response must be \textbf{symmetric} ($+$) or \textbf{antisymmetric}
+        ($-$) about its midpoint $\alpha=\dfrac{M-1}{2}$.
+  \item That $\alpha$ is then the constant group delay in samples.
+\end{itemize}}{%
+\lead{Check the given $h(n)$}
+\begin{itemize}
+  \item $M=3$, so $M-1-n$ maps $0\leftrightarrow2$ and fixes $1$.
+  \item $h[0]=-1$ and $h[2]=+1$, so $h[0]=-h[2]$; and $h[1]=0=-h[1]$.
+  \item So $h[n]=-h[2-n]$: the sequence is \textbf{antisymmetric}, and the condition is
+        met with the minus sign.
+\end{itemize}}
+
+\lead{Now show the phase really is linear}
+\begin{itemize}
+  \item[] \[ H(e^{j\omega})=\sum_{n=0}^{2}h[n]e^{-j\omega n}=-1+e^{-2j\omega} \]
+  \item Factor out the midpoint delay $e^{-j\omega}$, which is the standard trick:
+  \item[] \[ H(e^{j\omega})=e^{-j\omega}\big(e^{-j\omega}-e^{+j\omega}\big)
+             =e^{-j\omega}\big(-2j\sin\omega\big)
+             =2\sin\omega\;e^{-j(\omega+\pi/2)} \]
+  \item[] \[ \big|H(e^{j\omega})\big|=2|\sin\omega|,\qquad
+             \arg H(e^{j\omega})=-\omega-\frac{\pi}{2} \]
+  \item The phase is a \textbf{straight line} in $\omega$ with slope $-1$, so
+        \[ \operatorname{grd}H=-\frac{d}{d\omega}\Big(-\omega-\frac{\pi}{2}\Big)=1
+           \ \text{sample}=\alpha=\frac{M-1}{2}=1 \ \checkmark \]
+  \item \mk{The constant $-\pi/2$ is why this is \emph{generalized} linear phase.} It
+        comes from the $j$ in $-2j\sin\omega$, that is from the antisymmetry, and it does
+        not affect the group delay, so it causes no distortion.
+  \item The magnitude $2|\sin\omega|$ is zero at $\omega=0$: an antisymmetric filter
+        always kills DC, which is why this one is a differencer.
+\end{itemize}
+
+\creamq{67 Mng: show that $h[n]=h[N-1-n]$, $0\le n\le N-1$, is linear phase}{This is the
+general case of the same argument and it is worked in full in \S3.6: pair each term with
+its mirror, factor out $e^{-j\omega\alpha}$ with $\alpha=(N-1)/2$, and what is left is a
+real cosine sum. \mk{Real bracket, so the whole phase is the exponential}, giving
+$\arg H=-\alpha\omega$. 69 Bh asks for the same derivation restricted to odd $M$, which
+is the easier case because the midpoint sample $h[\alpha]$ stands alone instead of
+pairing.}

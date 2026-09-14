@@ -1,0 +1,437 @@
+%=======================================================================
+%  CHAPTER 3 - ANALYSIS OF LTI SYSTEMS IN THE FREQUENCY DOMAIN  (6 hrs)
+%  Sources: SPP Sir deck 4 "Transform Analysis of LTI" (40 slides,
+%           exported from the legacy .ppt, Oppenheim ch5 material:
+%           single pole/zero magnitude and phase, group delay,
+%           multiple poles and zeros);
+%           DSAP All Chapter Summary pp.50-61 (H(z) from an LCCDE, BIBO
+%           via the ROC, two full pole-zero worked examples) and pp.85-87
+%           (linear phase);
+%           NAC Sir Ch-2 pp.17-24, pp.112-115 (generalized linear phase).
+%           The Chapterwise set has NO file for this chapter.
+%  Numericals live in ch3-num.tex.
+%=======================================================================
+\section{Analysis of LTI Systems in the Frequency Domain}
+
+{\color{sub}\footnotesize 6 hrs \gap$\cdot$\gap \mk{56 questions across the 45 papers}
+\gap$\cdot$\gap worth about \mk{9.7 of 80 marks} \gap$\cdot$\gap 2 syllabus sub-topics
+\gap$\cdot$\gap \mk{the heaviest chapter in the subject}.}
+
+\lead{Read this first:}
+\begin{itemize}
+  \item \textbf{35 of the 56 questions are one question}, asked again and again with the
+        numbers changed: \emph{plot the poles and zeros in the $z$-plane, then sketch the
+        magnitude response, not to scale} \tS{35}. It is worth 6 to 10 marks and it is
+        the single most valuable thing in this chapter.
+  \item It arrives in two disguises. Either a \textbf{difference equation} is given and
+        you must find $H(z)$ first, or the \textbf{poles and zeros are handed to you}
+        directly, sometimes in polar form. The second half of the work is identical.
+  \item The remaining 21 questions are short bookwork worth 2 to 4 marks each:
+        causality and stability from the impulse response and the ROC \tF{7}, the LCCDE
+        and its system function \tF{6}, FIR against IIR \tP{3}, linear phase \tP{3},
+        zero-input and zero-state response \tP{2}.
+  \item \mk{Sketching does not mean guessing.} Three numbers, $|H|$ at $\omega=0$,
+        $\pi/2$ and $\pi$, plus the pole and zero angles, fix the shape completely.
+        \S3.3 gives the recipe.
+  \item The cheapest check in the chapter: $H(e^{j0})=H(1)$ is the sum of all
+        coefficients and $H(e^{j\pi})=H(-1)$ is their alternating sum. Both are one
+        line of arithmetic, and both are marks.
+\end{itemize}
+
+\hr
+
+\T{3.1 \quad Frequency response of an LTI system}
+
+\Q{Derive the expression for the frequency response of an LTI system. Show that a
+complex exponential is an eigenfunction of an LTI system}{\m{6}}
+{\color{sub}\footnotesize \tP{2} \yr{\textbf{69 Bh}, \textbf{67 Mng}}
+\gap$\cdot$\gap the opening paragraph of most answers in this chapter}
+
+\sbsr{0.54}{%
+\lead{The eigenfunction property}
+Feed a complex exponential into an LTI system with impulse response $h[n]$ and convolve:
+\[ y[n]=\sum_{k=-\infty}^{\infty}h[k]\,e^{j\omega(n-k)}
+       =e^{j\omega n}\underbrace{\sum_{k=-\infty}^{\infty}h[k]e^{-j\omega k}}_{H(e^{j\omega})} \]
+\begin{itemize}
+  \item The input comes out unchanged in \emph{shape}, scaled by a complex number. So
+        $e^{j\omega n}$ is an \textbf{eigenfunction} of every LTI system and
+        $H(e^{j\omega})$ is the \textbf{eigenvalue}.
+  \item $H(e^{j\omega})$ is the \textbf{frequency response}: the DTFT of $h[n]$, and
+        equally $H(z)$ evaluated on the unit circle.
+  \item[] \[ H(e^{j\omega})=H(z)\Big|_{z=e^{j\omega}} \]
+  \item \mk{This substitution is legal only if the ROC contains the unit circle.} If it
+        does not, the system has no frequency response at all, however neatly $H(z)$
+        factors. See \S3.4.
+\end{itemize}}{%
+\lead{Response to a real sinusoid}
+For $x[n]=A\cos(\omega_0 n+\phi)$ and a real $h[n]$, superposing the two exponentials gives
+\[ y[n]=A\,|H(e^{j\omega_0})|\cos\!\big(\omega_0 n+\phi+\angle H(e^{j\omega_0})\big) \]
+\begin{itemize}
+  \item The system can only do two things to a sinusoid: \textbf{scale it} by $|H|$ and
+        \textbf{shift it} by $\angle H$. It can never change its frequency.
+  \item That is the whole reason the magnitude and phase responses are worth plotting.
+\end{itemize}
+\lead{Three properties that halve the work}
+\begin{itemize}
+  \item $H(e^{j\omega})$ is \textbf{periodic in $\omega$ with period $2\pi$}, because
+        $e^{j\omega n}$ is.
+  \item For real $h[n]$, $|H|$ is \textbf{even} and $\angle H$ is \textbf{odd} in
+        $\omega$.
+  \item So \mk{everything is known from $0\le\omega\le\pi$}, and that is the only range
+        any paper asks you to draw.
+\end{itemize}}
+
+\lead{Magnitude, phase and group delay}
+\begin{itemize}
+  \item Writing $H(e^{j\omega})=|H(e^{j\omega})|\,e^{j\arg H(e^{j\omega})}$, the three
+        standard plots are the \textbf{magnitude response} $|H|$, the \textbf{phase
+        response} $\arg H$, and the \textbf{group delay}
+  \item[] \[ \operatorname{grd}H(e^{j\omega})=-\frac{d}{d\omega}\arg H(e^{j\omega}) \]
+  \item Group delay is the delay the system applies to the envelope of a narrow band of
+        frequencies. \mk{Constant group delay means linear phase means no phase
+        distortion}: see \S3.6.
+  \item Log magnitude is quoted in dB as $20\log_{10}|H(e^{j\omega})|$.
+\end{itemize}
+
+\hr
+
+\T{3.2 \quad The LCCDE and its system function}
+
+\Q{State the linear constant coefficient difference equation and the corresponding
+system function. Why do we need a difference equation?}{\m{3}\m{2}}
+{\color{sub}\footnotesize \tF{6} \yr{73 Shr \m{3}, 71 Shr \m{3+2},
+\textbf{69 Ch} \m{2}, \textbf{\texttt{69 Bh}} \m{2}, \textbf{73 Ch} \m{2}}
+\gap$\cdot$\gap pure bookwork, \mk{same answer every year}}
+
+\sbsr{0.5}{%
+\lead{The equation}
+An $N$th-order linear constant-coefficient difference equation relates the output samples
+to the input samples with coefficients that do not change with $n$:
+\[ \sum_{k=0}^{N}a_k\,y[n-k]=\sum_{k=0}^{M}b_k\,x[n-k] \]
+\begin{itemize}
+  \item \textbf{Linear}: no products or powers of $x$ or $y$, no $\sin y[n]$.
+  \item \textbf{Constant coefficient}: $a_k$ and $b_k$ are numbers, not functions of $n$.
+        This is what makes the system time-invariant.
+  \item \textbf{Order} $N$: how many past outputs are fed back.
+  \item Normalising $a_0=1$ gives the recursive computing form, which is how it is
+        actually run on hardware:
+  \item[] \[ y[n]=\sum_{k=0}^{M}b_k x[n-k]-\sum_{k=1}^{N}a_k y[n-k] \]
+\end{itemize}}{%
+\lead{The system function}
+Z-transform both sides, using linearity and the time-shift property
+$y[n-k]\leftrightarrow z^{-k}Y(z)$:
+\[ Y(z)\sum_{k=0}^{N}a_k z^{-k}=X(z)\sum_{k=0}^{M}b_k z^{-k} \]
+\[ H(z)=\frac{Y(z)}{X(z)}
+      =\frac{\displaystyle\sum_{k=0}^{M}b_k z^{-k}}{\displaystyle\sum_{k=0}^{N}a_k z^{-k}}
+      =\frac{B(z)}{A(z)} \]
+\begin{itemize}
+  \item \mk{An LCCDE always gives a rational $H(z)$}, and every rational $H(z)$ comes from
+        some LCCDE. The two descriptions are the same object.
+  \item \textbf{Zeros} come from the $x$ side (feedforward), \textbf{poles} from the $y$
+        side (feedback). Read them straight off the two coefficient lists.
+  \item Multiply top and bottom by $z^{N}$ to clear the negative powers before factoring.
+\end{itemize}}
+
+\lead{Why we need a difference equation \mk{(a 2 mark question, asked five times)}}
+\begin{itemize}
+  \item It is a \textbf{complete description} of an LTI system in the time domain, finite
+        and exact, whereas $h[n]$ may be an infinitely long list.
+  \item It is \textbf{recursive}: each output uses a handful of stored past values, so an
+        IIR response of infinite length costs finite memory and finite arithmetic.
+  \item It maps \textbf{directly onto hardware}: every term is one delay, one multiplier
+        and one adder, which is exactly what a realisation structure draws (Ch 4).
+  \item It gives \textbf{$H(z)$ by inspection}, so the frequency response, the poles, the
+        zeros and the stability all follow from the same few coefficients.
+  \item It carries \textbf{initial conditions}, which is what separates the zero-input
+        from the zero-state response.
+\end{itemize}
+
+{\color{sub}\footnotesize A degree count worth remembering: if $M<N$, then $B(z)$ written
+in positive powers is short by $N-M$, so \mk{$H(z)$ has $N-M$ zeros at the origin}. They
+are real zeros and they belong on the plot, but being at $z=0$ they are equidistant from
+every point of the unit circle and so \mk{contribute nothing to the magnitude shape}.}
+
+\hr
+
+\T{3.3 \quad Pole-zero plot to magnitude response}
+
+\Q{Plot the poles and zeros in the $z$-plane and sketch the magnitude response (not to
+scale) of the system described by the given difference equation}{\m{3+7}\m{2+8}\m{6}}
+{\color{sub}\footnotesize \tS{35} \yr{\textbf{80 Bh}, 81 Ba, 76 Ash,
+\textbf{79 Bh}, 79 Ba, \textbf{78 Bh}, \textbf{81 Bh}, \textbf{\texttt{80 Ch}},
+\textbf{\texttt{72 Ash}}, 74 Ash, 72 Ka, \textbf{72 Ch}, 82 Ba, \textbf{70 Ch},
+\textbf{\texttt{71 Bh}}, \texttt{73 Ma}, \textbf{69 Ch}, \textbf{\texttt{76 Bh}},
+\textbf{75 Ch}, \textbf{69 Bh}, \textbf{67 Mng}, \textbf{68 Bh}, 70 Asa, \texttt{70 Ma},
+80 Ba, \textbf{82 Bh}, \textbf{76 Ch}, 75 Ash, \textbf{\texttt{81 Ch}},
+\textbf{\texttt{73 Bh}}, \textbf{74 Ch}, \textbf{\texttt{75 Bh}}, \textbf{73 Ch},
+\textbf{71 Ch}}
+\gap$\cdot$\gap \mk{worked in full in the numerical companion, \S1 and \S2}}
+
+\sbsr{0.46}{%
+\lead{The geometric idea, which is the whole method}
+Factor $H(z)$ into its zeros $z_k$ and poles $p_k$:
+\[ H(z)=K\,\frac{\prod_{k=1}^{M}(z-z_k)}{\prod_{k=1}^{N}(z-p_k)} \]
+Now put $z=e^{j\omega}$, a point walking round the unit circle. Taking magnitudes turns
+the product into distances:
+\[ |H(e^{j\omega})|=|K|\,
+   \frac{\prod_k\,\big|e^{j\omega}-z_k\big|}{\prod_k\,\big|e^{j\omega}-p_k\big|} \]
+\begin{itemize}
+  \item Every factor is the \textbf{length of the vector} drawn from a zero or a pole to
+        the point $e^{j\omega}$.
+  \item \mk{Zero distances multiply on top, pole distances divide underneath.}
+  \item So as $\omega$ sweeps $0$ to $\pi$: passing \textbf{near a pole} makes a
+        denominator distance small, and $|H|$ \textbf{peaks}; passing \textbf{near a
+        zero} makes a numerator distance small, and $|H|$ \textbf{dips}.
+  \item A zero exactly \emph{on} the unit circle gives a distance of zero, so $|H|$ is
+        \textbf{exactly zero} there: a perfect null.
+  \item The closer a pole sits to the circle, the taller and narrower its peak.
+\end{itemize}}{%
+\lead{The exam recipe}
+\begin{enumerate}
+  \item From the LCCDE write $H(z)=B(z)/A(z)$ in $z^{-1}$, then multiply top and bottom
+        by $z^{N}$ so both are polynomials in $z$.
+  \item \textbf{Factor}. Roots of the numerator are zeros, roots of the denominator are
+        poles. Use the quadratic formula: these are almost always second order and the
+        roots almost always come out complex conjugate.
+  \item \textbf{Plot} the unit circle, mark each zero $\circ$ and each pole $\times$, and
+        do not forget the zeros at the origin.
+  \item \textbf{Evaluate three points}, which is all a not-to-scale sketch needs:
+  \item[] \[ |H(e^{j0})|=\left|\frac{B(1)}{A(1)}\right|,\quad
+             \left|H(e^{j\pi/2})\right|=\left|\frac{B(j)}{A(j)}\right|,\quad
+             |H(e^{j\pi})|=\left|\frac{B(-1)}{A(-1)}\right| \]
+  \item \textbf{Locate the peak} at the angle of the pole, and the dip at the angle of
+        the zero. Join the points smoothly.
+  \item State the character in words: low-pass, high-pass, band-pass or notch.
+\end{enumerate}
+{\color{sub}\footnotesize $B(1)/A(1)$ is just the sum of the coefficients, and
+$B(-1)/A(-1)$ the alternating sum. \mk{Two lines of arithmetic for two anchor points of
+the sketch.}}}
+
+\lead{The algebraic form, for when a paper wants the expression and not only the picture}
+Each first-order factor, written with the pole or zero at radius $r$ and angle $\theta$,
+contributes
+\[ \big|1-re^{j\theta}e^{-j\omega}\big|^{2}=1+r^{2}-2r\cos(\omega-\theta) \]
+\begin{itemize}
+  \item In dB: $\;20\log_{10}\big|1-re^{j\theta}e^{-j\omega}\big|
+        =10\log_{10}\!\big(1+r^{2}-2r\cos(\omega-\theta)\big)$,
+        \textbf{added} for a zero factor and \textbf{subtracted} for a pole factor.
+  \item Phase: $\;\arg\big(1-re^{j\theta}e^{-j\omega}\big)
+        =\arctan\dfrac{r\sin(\omega-\theta)}{1-r\cos(\omega-\theta)}$,
+        again $+$ for a zero and $-$ for a pole.
+  \item Group delay of the same factor:
+        $\;\dfrac{r^{2}-r\cos(\omega-\theta)}{1+r^{2}-2r\cos(\omega-\theta)}$.
+  \item \mk{The minimum of $1+r^2-2r\cos(\omega-\theta)$ is at $\omega=\theta$}, where it
+        equals $(1-r)^2$. That is why a pole at angle $\theta$ puts the peak of $|H|$ at
+        $\omega=\theta$, and why $r\to1$ makes it sharp.
+\end{itemize}
+
+\lead{Poles and zeros given in polar form}
+{\color{sub}\footnotesize Several papers, and the local worked example the family is
+copied from, specify a radius and an angle instead of a complex number. Convert first:}
+\[ z=re^{j\theta}=r\cos\theta+jr\sin\theta \]
+For example radius $0.9$ at angle $1.0376$ rad gives $0.45+j0.77$, and radius $0.892$ at
+$2.5158$ rad gives $-0.728+j0.522$. \mk{Those are the exact numbers the papers reuse}, so
+recognising them saves a conversion.
+
+\hr
+
+\T{3.4 \quad Causality and stability, from $h[n]$ and from the ROC}
+
+\Q{Describe the stability and causality characteristics of an LTI system in terms of its
+impulse response and the ROC of its transfer function, with suitable examples}{\m{4+3}\m{4}\m{2}\m{3}}
+{\color{sub}\footnotesize \tF{7} \yr{76 Ash \m{4+3}, \textbf{72 Ch} \m{4},
+\textbf{\texttt{81 Ch}} \m{2}, \textbf{\texttt{80 Ch}} \m{2}, \texttt{73 Ma} \m{2},
+\textbf{\texttt{73 Bh}} \m{3}, \textbf{\texttt{77 Ch}} \m{3}}
+\gap$\cdot$\gap \mk{learn the four-line table and the one-line rule}}
+
+\sbs{%
+\lead{In terms of the impulse response}
+\par
+\begin{tabular}{@{}L{2.1cm}L{5.3cm}@{}}
+\toprule
+\hrow \thead{Property} & \thead{Condition on $h[n]$} \\
+Causal & $h[n]=0$ for all $n<0$ \\
+Stable (BIBO) & $\displaystyle\sum_{n=-\infty}^{\infty}|h[n]|<\infty$ \\
+\bottomrule
+\end{tabular}
+\par\smallskip
+\begin{itemize}
+  \item Causality says the output cannot anticipate the input: it is a statement about
+        \emph{when} $h[n]$ is allowed to be non-zero.
+  \item Stability says a bounded input always gives a bounded output, and the necessary
+        and sufficient test is that $h[n]$ be \textbf{absolutely summable}.
+  \item The two are independent. A system can be either, both or neither.
+\end{itemize}}{%
+\lead{In terms of the ROC}
+\par
+\begin{tabular}{@{}L{2.1cm}L{5.3cm}@{}}
+\toprule
+\hrow \thead{Property} & \thead{Condition on the ROC} \\
+Causal & exterior of the outermost pole, and includes $z=\infty$ \\
+Stable & the ROC \textbf{contains the unit circle} \\
+Both & \textbf{all poles strictly inside} $|z|=1$ \\
+\bottomrule
+\end{tabular}
+\par\smallskip
+\begin{itemize}
+  \item The last line is the one to quote: \mk{a causal system is stable if and only if
+        every pole has $|p|<1$}.
+  \item A pole exactly \emph{on} the circle is marginally stable, which is \textbf{not}
+        BIBO stable: the frequency response blows up there.
+  \item Stability is also why the frequency response may not exist. If the ROC misses the
+        unit circle, $H(e^{j\omega})$ is undefined, so \mk{no magnitude response can be
+        drawn at all}.
+\end{itemize}}
+
+\lead{One $H(z)$, three systems \mk{(the standard worked example, and a favourite trap)}}
+Take $H(z)$ with poles at $z=\tfrac12$ and $z=3$. The algebra is identical in all three
+cases; only the ROC differs, and the ROC is a separate piece of information the question
+must supply.
+\par\smallskip
+\begin{tabular}{@{}L{2.2cm}L{4.4cm}L{2.0cm}L{2.4cm}@{}}
+\toprule
+\hrow \thead{ROC} & \thead{$h[n]$} & \thead{Causal?} & \thead{Stable?} \\
+$\tfrac12<|z|<3$ & $(\tfrac12)^nu[n]-2(3)^nu[-n-1]$ & no & \textbf{yes} \\
+$|z|>3$ & $(\tfrac12)^nu[n]+2(3)^nu[n]$ & \textbf{yes} & no \\
+$|z|<\tfrac12$ & $(\tfrac12)^nu[-n-1]+2(3)^nu[-n-1]$ & no & no \\
+\bottomrule
+\end{tabular}
+\par\smallskip
+{\color{sub}\footnotesize The middle row is the point: \mk{a causal system with a pole
+outside the unit circle is unstable}, no matter how ordinary $H(z)$ looks. The top row is
+the only stable reading, and it is not causal.}
+
+\hr
+
+\T{3.5 \quad FIR against IIR}
+
+\Q{Differentiate between an FIR system and an IIR system}{\m{4}}
+{\color{sub}\footnotesize \tP{3} \yr{80 Ba \m{4}, \textbf{\texttt{76 Bh}} \m{4},
+\textbf{67 Mng}} \gap$\cdot$\gap a table answer, four or five rows is enough}
+
+\par
+\begin{tabular}{@{}L{3.4cm}L{5.2cm}L{5.2cm}@{}}
+\toprule
+\hrow \thead{} & \thead{FIR} & \thead{IIR} \\
+Impulse response & finite length, $h[n]=0$ outside $0\le n\le M-1$ & infinite length, decays but never ends \\
+Difference equation & non-recursive, output from inputs only & recursive, past outputs fed back \\
+$H(z)$ & all zeros, poles only at the origin & has poles away from the origin \\
+Stability & \textbf{always stable}, a finite sum is always bounded & stable only if every pole is inside $|z|=1$ \\
+Linear phase & \textbf{easy}, exact, by making $h[n]$ symmetric & not achievable exactly \\
+Order needed & high, for a sharp response & low, for the same sharpness \\
+Memory, arithmetic & more & less \\
+\bottomrule
+\end{tabular}
+\par\smallskip
+\begin{itemize}
+  \item The two rows examiners look for are \mk{FIR is always stable} and \mk{FIR can have
+        exactly linear phase}. Those are the reasons to pay for its higher order.
+  \item An FIR system's $H(z)=b_0+b_1z^{-1}+\dots+b_{M-1}z^{-(M-1)}$ written over $z^{M-1}$
+        has all its poles at $z=0$, which is inside the unit circle: the stability claim
+        needs no further argument.
+\end{itemize}
+
+\hr
+
+\T{3.6 \quad Linear phase}
+
+\Q{What is the condition satisfied by a linear phase FIR filter? Derive the frequency
+response of a symmetric linear phase filter of length $M$, $M$ odd}{\m{2+4}\m{6}}
+{\color{sub}\footnotesize \tP{3} \yr{70 Asa \m{2+4}, \textbf{67 Mng} \m{6},
+\textbf{69 Bh} \m{6}} \gap$\cdot$\gap \mk{the only chapter source is FIR-design
+material}: this topic is taught again in Ch 5}
+
+\sbsr{0.5}{%
+\lead{What linear phase means, and why it is wanted}
+\begin{itemize}
+  \item Phase is \textbf{linear} when $\arg H(e^{j\omega})=-\alpha\omega$, a straight line
+        through the origin.
+  \item Then the group delay $-\dfrac{d}{d\omega}\arg H=\alpha$ is \textbf{constant}:
+        every frequency is held up by the same $\alpha$ samples.
+  \item A common delay shifts the signal but does not deform it. \mk{Linear phase means
+        no phase distortion}, which matters wherever shape carries the information:
+        speech, ECG, data pulses, images.
+  \item If the phase were curved, different frequency components would arrive with
+        different delays and a pulse would spread out, even with a perfectly flat $|H|$.
+  \item \textbf{Generalized} linear phase allows a constant offset,
+        $\arg H=\beta-\alpha\omega$. The group delay is still constant, so it still does
+        not distort; $\beta=\pm\pi/2$ is what an antisymmetric $h[n]$ produces.
+\end{itemize}}{%
+\lead{The condition}
+An FIR filter of length $M$ has linear phase if its impulse response is symmetric or
+antisymmetric about its midpoint:
+\[ h[n]=\pm\,h[M-1-n],\qquad 0\le n\le M-1 \]
+\begin{itemize}
+  \item $+$ gives \textbf{symmetric} $h[n]$ and phase $-\alpha\omega$ with
+        $\alpha=\dfrac{M-1}{2}$.
+  \item $-$ gives \textbf{antisymmetric} $h[n]$ and phase $\dfrac{\pi}{2}-\alpha\omega$,
+        with the same $\alpha$.
+  \item \mk{$\alpha=(M-1)/2$ is the centre of the sequence}, and it is the delay in
+        samples. For odd $M$ it is an integer; for even $M$ it is a half-integer, so the
+        filter delays by half a sample.
+  \item In the $z$-plane the condition forces zeros to occur in conjugate reciprocal
+        groups: if $z_0$ is a zero, so are $z_0^{*}$, $1/z_0$ and $1/z_0^{*}$.
+\end{itemize}}
+
+\lead{Derivation for symmetric $h[n]$ with $M$ odd \mk{(the 6 mark answer)}}
+\begin{itemize}
+  \item Start from the definition and pull out the centre term at $n=\alpha=(M-1)/2$:
+  \item[] \[ H(e^{j\omega})=\sum_{n=0}^{M-1}h[n]e^{-j\omega n} \]
+  \item Substitute $n\to M-1-n$ in the sum and use $h[n]=h[M-1-n]$ to pair each term with
+        its mirror image. Each pair contributes
+  \item[] \[ h[n]\big(e^{-j\omega n}+e^{-j\omega(M-1-n)}\big)
+             =2h[n]\,e^{-j\omega\alpha}\cos\!\big(\omega(\alpha-n)\big) \]
+  \item Summing the $\alpha$ pairs and the lone centre term factors the whole response:
+  \item[] \[ H(e^{j\omega})=e^{-j\omega\alpha}
+             \underbrace{\left[h[\alpha]+2\sum_{n=0}^{\alpha-1}h[n]
+             \cos\!\big(\omega(\alpha-n)\big)\right]}_{\text{real, call it }H_r(\omega)} \]
+  \item The bracket is \textbf{purely real}, so the entire phase is the exponential in
+        front:
+  \item[] \[ |H(e^{j\omega})|=|H_r(\omega)|,\qquad
+             \arg H(e^{j\omega})=-\alpha\omega\ \ (\text{plus }\pi\text{ wherever }H_r<0) \]
+  \item \mk{That is the proof}: the phase is a straight line of slope $-\alpha$, so the
+        group delay is $\alpha$ samples at every frequency.
+\end{itemize}
+
+{\color{sub}\footnotesize The antisymmetric case runs identically but the mirror pair
+subtracts, giving $2jh[n]\sin(\omega(\alpha-n))$ and hence
+$H=je^{-j\omega\alpha}H_i(\omega)$. The extra $j$ is the constant $\pi/2$ in the phase,
+which is why an antisymmetric filter has \mk{generalized} linear phase rather than the
+plain kind. See \S5 of the numerical companion for $h[n]=\{-1,0,1\}$, which is this
+case.}
+
+\hr
+
+\T{3.7 \quad Last-minute recall}
+
+\sbs{%
+\lead{Say these without thinking}
+\begin{itemize}
+  \item $H(e^{j\omega})=H(z)|_{z=e^{j\omega}}$, \textbf{provided the ROC contains the
+        unit circle}.
+  \item $|H|=\dfrac{\text{product of distances from the zeros}}{\text{product of
+        distances from the poles}}$.
+  \item Pole near the circle $\rightarrow$ peak; zero near the circle $\rightarrow$ dip;
+        zero on the circle $\rightarrow$ exact null.
+  \item Peak sits at the \textbf{angle of the pole}, dip at the \textbf{angle of the
+        zero}.
+  \item $|H(e^{j0})|=|B(1)/A(1)|$, $\ |H(e^{j\pi})|=|B(-1)/A(-1)|$.
+  \item Causal and stable $\Leftrightarrow$ \textbf{all poles inside} $|z|=1$.
+  \item FIR: always stable, exactly linear phase possible, all poles at the origin.
+  \item Linear phase $\Leftrightarrow$ $h[n]=\pm h[M-1-n]$, delay $\alpha=(M-1)/2$.
+\end{itemize}}{%
+\lead{Mistakes that cost marks}
+\begin{itemize}
+  \item \mk{Forgetting the zeros at the origin} when $M<N$. They belong on the plot even
+        though they do not shape $|H|$.
+  \item Drawing a magnitude response for a system whose ROC excludes the unit circle. If
+        a pole lies outside and the system is stated causal, \mk{the correct answer is
+        that no frequency response exists}.
+  \item Reading the poles off the $x$ coefficients. \textbf{Poles come from the $y$
+        side.}
+  \item Losing the conjugate. A real difference equation can only have complex roots in
+        \textbf{conjugate pairs}; a lone complex pole means an arithmetic slip.
+  \item Sketching a peak at the pole's \emph{radius} instead of its \emph{angle}.
+  \item Quoting $\omega$ in Hz. It is in radians per sample, and the plot runs $0$ to
+        $\pi$.
+\end{itemize}}
