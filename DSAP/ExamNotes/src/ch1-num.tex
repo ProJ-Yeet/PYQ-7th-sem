@@ -1,0 +1,964 @@
+%=======================================================================
+%  CHAPTER 1 — NUMERICAL PROBLEMS AND SOLUTIONS
+%  Every printed answer is recomputed and asserted by verify.py ch1.
+%  Problems that run the SAME calculation are grouped: one instance is
+%  worked in full, the rest appear as a data-and-answer table with their
+%  own citations. A sibling is split out only where the calculation
+%  itself differs (a new range, a boundary, a divergent case).
+%=======================================================================
+\section*{\color{acc}Ch 1 \textperiodcentered{} Discrete-Time Signals and Systems\\[2pt]
+{\large\textcolor{sub}{Numerical Problems \& Solutions}}}
+\vspace{-4pt}{\color{acc}\rule{\textwidth}{1.1pt}}\vspace{4pt}
+
+{\color{sub}\footnotesize \mk{Convolution alone is 34 of the 45 papers.} The four convolution
+sections below come first for that reason. Within a section the method is worked once, in
+full, and every other paper that ran the same method is listed under it with its data and its
+answer --- \mk{same process, different numbers, so only the numbers change}.}
+
+\lead{What you need before starting}
+\begin{itemize}
+  \item $y[n]=\displaystyle\sum_{k=-\infty}^{\infty}x[k]\,h[n-k]$, and it is commutative, so
+        fold whichever sequence is shorter.
+  \item \textbf{Length and position check, use it every time}: for two finite sequences the
+        output starts at $n_x+n_h$ and has $L_x+L_h-1$ samples.
+  \item $\displaystyle\sum_{k=0}^{N-1}a^k=\frac{1-a^N}{1-a}$, \quad
+        $\displaystyle\sum_{k=0}^{\infty}a^k=\frac{1}{1-a}$, \quad
+        $\displaystyle\sum_{k=m}^{p}a^k=\frac{a^m-a^{p+1}}{1-a}$ \; $(a\ne1)$.
+  \item $u[n+A]-u[n-B]$ is a \textbf{window}: it is 1 for $-A\le n\le B-1$ and 0 elsewhere,
+        so it has $A+B$ taps. \mk{Getting these two limits right is most of the marks.}
+\end{itemize}
+
+\hr
+
+\T{1 \quad Convolution of two finite sequences}
+{\color{sub}\footnotesize \tS{16} \yr{\textbf{70 Ch} \m{6}, 73 Shr \m{6},
+\textbf{\texttt{70 Bh}} \m{2+4}, 70 Asa \m{2+4}, \textbf{\texttt{74 Bh}} \m{6},
+\texttt{74 Ma} \m{5}, \textbf{71 Ch} \m{6}, \textbf{79 Bh} \m{5}, \textbf{81 Bh} \m{5},
+79 Ba \m{5}, 74 Ash \m{3+2}, \textbf{82 Bh} \m{5}, 72 Ka \m{5}, 75 Ash \m{5},
+\textbf{\texttt{79 Ch}} \m{4+6}, \textbf{\texttt{75 Bh}} \m{4+6}}
+\gap$\cdot$\gap \mk{one method, sixteen papers}}
+
+\begin{asked}{2070 Chaitra \textperiodcentered{} Q2 \textperiodcentered{} [6]}
+Find output, $y(n)$ when: $h(n)=\{5,4,3,2\}$ and $x(n)=\{1,0,3,2\}$
+\end{asked}
+
+\lead{Method \mk{(the tabular method, used for every problem in this section)}}
+\begin{enumerate}
+  \item Write both sequences with their starting index. Here neither is marked, so both
+        start at $n=0$.
+  \item \textbf{Predict the answer's shape first}: start $=n_x+n_h=0+0=0$, length
+        $=4+4-1=7$, so $y[n]$ runs $n=0$ to $6$.
+  \item Build the product table: $x$ across the top, $h$ down the side, each cell
+        $=x[i]\,h[j]$.
+  \item $y[n]$ is the sum of the cells on the anti-diagonal $i+j=n$ (shaded steps below).
+  \item \mk{Check}: $\sum y[n]$ must equal $(\sum x[n])(\sum h[n])$.
+\end{enumerate}
+
+\lead{Step 1 --- product table}
+\par
+\begin{tabularx}{\textwidth}{@{}L{2.3cm}XXXX@{}}
+\toprule
+\hrow & \thead{$x[0]=1$} & \thead{$x[1]=0$} & \thead{$x[2]=3$} & \thead{$x[3]=2$} \\
+$h[0]=5$ & 5 & 0 & 15 & 10 \\
+$h[1]=4$ & 4 & 0 & 12 & 8 \\
+$h[2]=3$ & 3 & 0 & 9 & 6 \\
+$h[3]=2$ & 2 & 0 & 6 & 4 \\
+\bottomrule
+\end{tabularx}
+
+\lead{Step 2 --- sum each anti-diagonal}
+\par
+\begin{tabularx}{\textwidth}{@{}L{1.3cm}XL{2.2cm}@{}}
+\toprule
+\hrow \thead{$n$} & \thead{cells with $i+j=n$} & \thead{$y[n]$} \\
+0 & $5$ & \textbf{5} \\
+1 & $4+0$ & \textbf{4} \\
+2 & $3+0+15$ & \textbf{18} \\
+3 & $2+0+12+10$ & \textbf{24} \\
+4 & $0+9+8$ & \textbf{17} \\
+5 & $6+6$ & \textbf{12} \\
+6 & $4$ & \textbf{4} \\
+\bottomrule
+\end{tabularx}
+
+\lead{Final answer}
+\[ \boxed{\;y[n]=\{\underline{5},\,4,\,18,\,24,\,17,\,12,\,4\}\;}\qquad n=0\ldots6 \]
+{\color{sub}\footnotesize The underline marks $n=0$. Check:
+$\sum x=6$, $\sum h=14$, $6\times14=84$ and
+$5+4+18+24+17+12+4=84$ \checkmark}
+
+\lead{Every other paper that runs this same method}
+{\color{sub}\footnotesize A window such as $(1/2)^n\{u[n+2]-u[n-2]\}$ is written out as its
+samples first --- that is the only extra step, and the underlined sample is $n=0$.}
+\par
+\begin{tabularx}{\textwidth}{@{}L{2.2cm}XXL{4.6cm}@{}}
+\toprule
+\hrow \thead{Paper} & \thead{$h[n]$} & \thead{$x[n]$} & \thead{$y[n]$} \\
+73 Shr \m{6} & $\{1,1,1\}$ & $\{1,1,1,1\}$ & $\{\underline{1},2,3,3,2,1\}$ \\
+\hrow \textbf{\texttt{70 Bh}} \m{2+4} & $\{1,1,1\}$ & $\{1,-2,2,3,4\}$ & $\{\underline{1},-1,1,3,9,7,4\}$ \\
+70 Asa \m{2+4} & $\{1,0,1\}$ & $\{1,-2,-2,3,4\}$ & $\{\underline{1},-2,-1,1,2,3,4\}$ \\
+\hrow \textbf{\texttt{74 Bh}} \m{6} & $\{2,2,-1,1\}$ & $\{1,2,1,2\}$ & $\{\underline{2},6,5,5,5,-1,2\}$ \\
+\texttt{74 Ma} \m{5} & $\{5,3,4,2,0\}$ & $\{0,2,4,6\}$ & $\{\underline{0},10,26,50,38,32,12,0\}$ \\
+\hrow \textbf{71 Ch} \m{6} & $\{\underline{1},3,2,-1,1\}$ at $n=-1$ & $2\delta[n]-\delta[n-1]=\{2,-1\}$ & $\{2,\underline{5},1,-4,3,-1\}$, from $n=-1$ \\
+\textbf{79 Bh}, \textbf{81 Bh} \m{5} & $2\delta[n{+}1]+2\delta[n{-}1]=\{2,0,2\}$ at $n=-1$ & $\delta[n]+2\delta[n{-}1]-\delta[n{-}3]$ & $\{2,\underline{4},2,2,0,-2\}$, from $n=-1$ \\
+\hrow 79 Ba \m{5} & $(\frac12)^n\{u[n{+}2]-u[n{-}2]\}=\{4,2,1,\frac12\}$ at $n=-2$ & $\{2,1,0,-1,4\}$ & $\{8,8,\underline{4},-2,14.5,7,3.5,2\}$, from $n=-2$ \\
+74 Ash \m{3+2} & same $h$ as 79 Ba & $\{2,1,0.5,-1\}$ & $\{8,8,\underline{6},-1,-1,-0.75,-0.5\}$, from $n=-2$ \\
+\hrow \textbf{82 Bh} \m{5} & $(0.5)^n\{u[n]-u[n{-}3]\}=\{1,\frac12,\frac14\}$ & $\{2,1,0.5,-1\}$ & $\{\underline{2},2,1.5,-0.5,-0.375,-0.25\}$ \\
+72 Ka \m{5} & $(\frac13)^n\{u[n{+}1]-u[n{-}2]\}=\{3,1,\frac13\}$ at $n=-1$ & $\{2,1,0.5,3\}$ & $\{6,\underline{5},\frac{19}{6},\frac{59}{6},\frac{19}{6},1\}$, from $n=-1$ \\
+\hrow 75 Ash \m{5} & $2^n\{u[n]-u[n{-}3]\}=\{1,2,4\}$ & $\delta[n]+\delta[n{-}1]+\delta[n{-}2]$ & $\{\underline{1},3,7,6,4\}$ \\
+\textbf{\texttt{79 Ch}}, \textbf{\texttt{75 Bh}} \m{4+6} & same $h$ as 75 Ash & $\delta[n]+\delta[n{-}1]-\delta[n{-}3]$ & $\{\underline{1},3,6,3,-2,-4\}$ \\
+\bottomrule
+\end{tabularx}
+
+\par\vspace{2pt}
+{\color{sub}\footnotesize \mk{The two traps in this table.} (1) A $\delta[n+1]$ or a
+$u[n+2]$ puts samples at \emph{negative} $n$, so the answer starts left of the origin --- mark
+$n=0$ or lose the marks. (2) $u[n+2]-u[n-2]$ has \textbf{4} taps ($n=-2,-1,0,1$), not 5:
+the upper limit $u[n-B]$ is exclusive.}
+
+\hr
+
+\T{2 \quad Convolution where one sequence is infinite}
+{\color{sub}\footnotesize \tS{12} \yr{\textbf{78 Bh} \m{5}, \texttt{73 Ma} \m{2+6},
+\textbf{\texttt{78 Ch}} \m{6}, \textbf{76 Ch} \m{6}, \textbf{69 Ch} \m{1+4},
+\textbf{\texttt{81 Ch}} \m{2+2+6}, \textbf{\texttt{80 Ch}} \m{2+2+6}, \texttt{72 Ma} \m{8},
+\textbf{\texttt{76 Bh}} \m{2+6}, \textbf{\texttt{77 Ch}} \m{3+7}, 81 Ba \m{6},
+\textbf{68 Bh} \m{5}, 76 Ash \m{6}, \textbf{\texttt{73 Bh}} \m{8}}
+\gap$\cdot$\gap \mk{the answer is a formula per range, not a list of samples}}
+
+\begin{asked}{2078 Bhadra \textperiodcentered{} Q2 \textperiodcentered{} [5]}
+Find the output of LTI system having impulse response $h[n]=u[n]-u[n-4]$ and input signal
+$x[n]=(1/2)^n\,u[n]$.
+\end{asked}
+
+\lead{Method \mk{(used for every problem in this section)}}
+\begin{enumerate}
+  \item \textbf{Turn the window into limits.} $h[n]=u[n]-u[n-4]$ is 1 for $0\le n\le3$,
+        so $h[n-k]=1$ for $0\le n-k\le3$, i.e.\ \mk{$n-3\le k\le n$}.
+  \item \textbf{Combine with the other sequence's own limits.} $x[k]=(1/2)^k$ needs
+        $k\ge0$. So $k$ runs from $\max(0,n-3)$ to $n$.
+  \item \textbf{The $\max$ is why there are two ranges.} Solve $\max(0,n-3)$:
+  \begin{itemize}
+    \item $0\le n\le3$: lower limit is $0$ (the window hangs off the left of $x$),
+    \item $n\ge4$: lower limit is $n-3$ (the window is fully inside $x$),
+    \item $n<0$: no overlap at all, $y[n]=0$.
+  \end{itemize}
+  \item Sum the geometric series on each range separately.
+  \item \mk{Check}: the two formulas must agree in value at the last sample of the first
+        range against a direct count.
+\end{enumerate}
+
+\lead{Range A, $0\le n\le3$}
+\[ y[n]=\sum_{k=0}^{n}\left(\tfrac12\right)^k
+       =\frac{1-\left(\frac12\right)^{n+1}}{1-\frac12}
+       =2\left[1-\left(\tfrac12\right)^{n+1}\right]
+       =\boxed{\;2-\left(\tfrac12\right)^{n}\;} \]
+{\color{sub}\footnotesize Sample values: $y[0]=1$, $y[1]=1.5$, $y[2]=1.75$, $y[3]=1.875$.}
+
+\lead{Range B, $n\ge4$}
+\[ y[n]=\sum_{k=n-3}^{n}\left(\tfrac12\right)^k
+       =\frac{\left(\frac12\right)^{n-3}-\left(\frac12\right)^{n+1}}{1-\frac12}
+       =2\left(\tfrac12\right)^{n-3}\left[1-\left(\tfrac12\right)^{4}\right]
+       =\boxed{\;15\left(\tfrac12\right)^{n}\;} \]
+{\color{sub}\footnotesize Sample values: $y[4]=0.9375$, $y[5]=0.46875$, and it decays by half
+each step. \mk{Why the peak is at $n=3$}: that is the last $n$ at which the whole window still
+sits over the large early samples of $x$.}
+
+\lead{Final answer}
+\[ y[n]=\begin{cases}
+   0, & n<0\\[2pt]
+   2-\left(\frac12\right)^{n}, & 0\le n\le3\\[2pt]
+   15\left(\frac12\right)^{n}, & n\ge4
+\end{cases} \]
+
+\lead{Every other paper that runs this same method}
+{\color{sub}\footnotesize Read the table as: window limits $\rightarrow$ two ranges
+$\rightarrow$ two geometric sums. Only the numbers move.}
+\par
+\begin{tabularx}{\textwidth}{@{}L{2.3cm}XX@{}}
+\toprule
+\hrow \thead{Paper} & \thead{Given} & \thead{Answer} \\
+\texttt{73 Ma} \m{2+6} & $h=u[n{+}1]-u[n{-}4]$ (5 taps, $-1\ldots3$), $x=(\frac12)^nu[n]$
+ & $y=2-(\frac12)^{n+1}$ for $-1\le n\le3$; \; $y=31(\frac12)^{n+1}$ for $n\ge4$ \\
+\hrow \textbf{\texttt{78 Ch}} \m{6} & $h=u[n{+}1]-u[n{-}3]$ (4 taps, $-1\ldots2$),
+ $x=(0.5)^nu[n]$
+ & $y=2-(\frac12)^{n+1}$ for $-1\le n\le2$; \; $y=15(\frac12)^{n+1}$ for $n\ge3$ \\
+\textbf{76 Ch} \m{6} & $h=(\frac12)^nu[n{-}1]$, $x=u[n{+}1]-u[n{-}4]$ (5 taps, $-1\ldots3$)
+ & $y=1-(\frac12)^{n+1}$ for $0\le n\le4$; \; $y=31(\frac12)^{n+1}$ for $n\ge5$ \\
+\hrow \textbf{69 Ch} \m{1+4} & $h=2u[n]-2u[n{-}4]$, $x=(\frac13)^nu[n]$
+ & $y=3\left[1-(\frac13)^{n+1}\right]$ for $0\le n\le3$; \; $y=80(\frac13)^{n}$ for $n\ge4$ \\
+\textbf{\texttt{81 Ch}}, \textbf{\texttt{80 Ch}}, \texttt{72 Ma} & $h=2u[n]-2u[n{-}5]$,
+ $x=(\frac13)^nu[n]$
+ & $y=3\left[1-(\frac13)^{n+1}\right]$ for $0\le n\le4$; \; $y=242(\frac13)^{n}$ for $n\ge5$ \\
+\hrow \textbf{\texttt{76 Bh}} \m{2+6} & $h=2u[n{+}2]-2u[n{-}3]$ (5 taps, $-2\ldots2$),
+ $x=(\frac13)^nu[n{-}1]$
+ & $y=1-(\frac13)^{n+2}$ for $-1\le n\le3$; \; $y=242(\frac13)^{n+2}$ for $n\ge4$ \\
+\textbf{\texttt{77 Ch}} \m{3+7} & $h=2u[n{+}3]-2u[n{-}4]$ (7 taps, $-3\ldots3$),
+ $x=(\frac12)^nu[n{+}1]$
+ & $y=8-(\frac12)^{n+2}$ for $-4\le n\le2$; \; $y=127(\frac12)^{n+2}$ for $n\ge3$ \\
+\bottomrule
+\end{tabularx}
+
+\par\vspace{3pt}
+{\color{sub}\footnotesize \mk{Where the $2$ in front goes}: an amplitude of 2 on the window
+(69 Ch, 81 Ch, 76 Bh, 77 Ch) multiplies every term, which is why those constants are $3$, $80$,
+$242$, $127$ rather than $2$, $40$, $121$, $63.5$. Multiply at the end, once.}
+
+\hr
+
+\T{2b \quad The four that do \emph{not} fit the pattern}
+{\color{sub}\footnotesize Each of these changes the calculation, so each is worked separately
+rather than tabulated.}
+
+\sbs{%
+\lead{81 Ba \m{6} --- two different exponentials}
+\begin{itemize}
+  \item Given $h(n)=(\frac13)^nu(n-3)$, $x(n)=(\frac16)^{n-6}u(n)$.
+  \item First tidy $x$: $(\frac16)^{n-6}=6^6(\frac16)^n=46656\,(\frac16)^n$.
+  \item Overlap needs $k\ge0$ and $n-k\ge3$, so $0\le k\le n-3$: \mk{one range only},
+        $n\ge3$.
+  \item \[ y[n]=46656\sum_{k=0}^{n-3}\left(\tfrac16\right)^k\left(\tfrac13\right)^{n-k}
+             =46656\left(\tfrac13\right)^n\sum_{k=0}^{n-3}\left(\tfrac12\right)^k \]
+  \item The ratio is $\frac{1/6}{1/3}=\frac12$ --- \mk{two different bases collapse to one
+        geometric sum}, which is the whole trick here.
+  \item \[ \boxed{\;y[n]=3456\left(\tfrac13\right)^{n-3}-1728\left(\tfrac16\right)^{n-3},
+           \quad n\ge3\;} \]
+  \item Check: $y[3]=3456-1728=1728$, $y[4]=1152-288=864$, $y[6]=128-8=120$.
+\end{itemize}}{%
+\lead{\textbf{68 Bh} \m{5} --- both sides infinite, one left-sided}
+\begin{itemize}
+  \item Given $x[n]=3^nu[-n-5]$, $h[n]=u[n-5]$.
+  \item $u[-n-5]$ is 1 for $n\le-5$: \mk{a left-sided signal}, and $3^n$ \emph{decays} as
+        $n\to-\infty$, so the sum converges.
+  \item Overlap needs $k\le-5$ and $n-k\ge5$ i.e.\ $k\le n-5$. Upper limit is
+        $\min(-5,\,n-5)$, lower limit $-\infty$.
+  \item $n\le0$: upper limit $n-5$, so
+        \[ y[n]=\sum_{k=-\infty}^{n-5}3^k=\frac{3^{n-5}}{1-\frac13}
+             =\boxed{\;\tfrac12\,3^{\,n-4}\;} \]
+  \item $n\ge0$: upper limit is fixed at $-5$, so $y[n]$ stops changing:
+        \[ y[n]=\sum_{k=-\infty}^{-5}3^k=\tfrac32\cdot3^{-5}=\boxed{\;\tfrac{1}{162}\;} \]
+  \item \mk{Running the series backwards} is the only new idea: for a left-sided sum put
+        $k=-m$ and it is an ordinary $\sum(1/3)^m$.
+\end{itemize}}
+
+\sbs{%
+\lead{\textbf{\texttt{73 Bh}} \m{8} --- finite $\times$ finite, but symbolic}
+\begin{itemize}
+  \item Given $x[n]=1$ for $0\le n\le4$, $h[n]=a^n$ for $0\le n\le6$, $a>1$.
+  \item Both finite, so the answer runs $n=0$ to $10$ --- but $a$ is symbolic, so it is
+        written as sums, not samples.
+  \item Overlap needs $0\le k\le4$ and $0\le n-k\le6$, i.e.\
+        $\max(0,n-6)\le k\le\min(4,n)$.
+  \item \mk{Two $\min/\max$ switches means three ranges}, not two. With
+        $S(k)=\dfrac{a^{k+1}-1}{a-1}$:
+  \[ y[n]=\begin{cases}
+     S(n), & 0\le n\le4\\
+     S(n)-S(n-5), & 5\le n\le6\\
+     S(6)-S(n-5), & 7\le n\le10
+  \end{cases} \]
+  \item Check with $a=2$: $y[0]=1$, $y[4]=31$, $y[6]=127-31=96$, $y[10]=127-63=64$.
+\end{itemize}}{%
+\lead{76 Ash \m{6} --- \mk{the question as printed cannot be solved}}
+\begin{itemize}
+  \item The paper prints $x[n]=2^n4[-n]$, $0<a<1$ and $h[n]=4[n]$: the sequence symbols are
+        mangled, and it is meant to read $x[n]=a^nu[-n]$, $h[n]=u[n]$.
+  \item \mk{With $0<a<1$ that diverges.} $a^nu[-n]$ \emph{grows} without bound as
+        $n\to-\infty$, so $\sum_{k\le\min(0,n)}a^k$ is infinite for every $n$.
+  \item \textbf{Reading A}, the standard textbook problem and the one that fits the printed
+        $0<a<1$: $x[n]=a^nu[n]$, $h[n]=u[n]$.
+        \[ y[n]=\sum_{k=0}^{n}a^k=\boxed{\;\frac{1-a^{n+1}}{1-a}\;}\quad n\ge0 \]
+        As $n\to\infty$ this tends to $1/(1-a)$: a running sum that settles.
+  \item \textbf{Reading B}, keeping $u[-n]$ literally, which needs $a>1$ instead:
+        \[ y[n]=\frac{a^{\,n+1}}{a-1}\ (n\le0),\qquad y[n]=\frac{a}{a-1}\ (n\ge0) \]
+  \item \mk{In the exam}: state the inconsistency in one line, then solve reading A.
+        \added
+\end{itemize}}
+
+\hr
+
+\T{3 \quad Response to a complex exponential}
+{\color{sub}\footnotesize \tS{10} \yr{\textbf{70 Ch} \m{4}, 72 Ka \m{4}, 80 Ba \m{5},
+82 Ba \m{5}, 71 Shr \m{2+3+5}, \textbf{\texttt{69 Bh}} \m{2+4}, 73 Shr \m{3+7}}
+\gap$\cdot$\gap \mk{never convolve these} \gap$\cdot$\gap 5 marks in about 90 seconds}
+
+\begin{asked}{2080 Baishakh \textperiodcentered{} Q2 \textperiodcentered{} [5]}
+Find the output of LTI system having impulse response $h[n]=(1/2)^n*u[n]$ and input
+$x[n]=5e^{j\pi n/3}$ for $-\infty<n<\infty$.
+\end{asked}
+{\color{sub}\footnotesize The paper prints a stray ``$*$'' between $(1/2)^n$ and $u[n]$; it is
+a product, not a convolution.}
+
+\lead{Method \mk{(used for every problem in this section)}}
+\begin{enumerate}
+  \item Recognise the input: a \mk{single complex exponential running over all $n$} is an
+        eigenfunction, so $y[n]=H(e^{j\omega_0})\,x[n]$ and no convolution is needed.
+  \item Find the frequency response once:
+        \[ H(e^{j\omega})=\sum_{n=0}^{\infty}\left(\tfrac12\right)^ne^{-j\omega n}
+          =\sum_{n=0}^{\infty}\left(\tfrac12 e^{-j\omega}\right)^n
+          =\frac{1}{1-\frac12e^{-j\omega}} \]
+        converging because $|\frac12e^{-j\omega}|=\frac12<1$.
+  \item Substitute $\omega_0$ from the input, here $\omega_0=\pi/3$.
+  \item Put the denominator into rectangular form, then into polar form.
+  \item Answer $=$ input $\times$ that complex number.
+\end{enumerate}
+
+\lead{Step-by-step}
+\begin{itemize}
+  \item $e^{-j\pi/3}=\cos60^\circ-j\sin60^\circ=0.5-j0.866$.
+  \item Denominator $=1-\frac12(0.5-j0.866)=1-0.25+j0.433=0.75+j0.433$.
+  \item $|0.75+j0.433|=\sqrt{0.5625+0.1875}=\sqrt{0.75}=0.8660$, \quad
+        $\angle=\tan^{-1}\!\frac{0.433}{0.75}=30^\circ$.
+  \item So $H(e^{j\pi/3})=\dfrac{1}{0.866\angle30^\circ}=1.1547\angle-30^\circ$.
+\end{itemize}
+\[ \boxed{\;y[n]=5\times1.1547\,e^{-j\pi/6}\,e^{j\pi n/3}
+   =5.7735\,e^{j(\pi n/3-\pi/6)}\;} \]
+{\color{sub}\footnotesize \mk{Read the answer}: the sinusoid keeps its frequency, its
+amplitude is multiplied by $1.1547$ and it is delayed in phase by $30^\circ$. That sentence is
+worth a mark on its own.}
+
+\lead{Every other paper that runs this same method}
+\par
+\begin{tabularx}{\textwidth}{@{}L{2.5cm}L{3.1cm}XX@{}}
+\toprule
+\hrow \thead{Paper} & \thead{$h[n]$, $x[n]$} & \thead{$H(e^{j\omega_0})$} & \thead{$y[n]$} \\
+\textbf{70 Ch} \m{4} & $(\frac13)^nu[n]$, \; $5e^{j\pi n/2}$
+ & $\frac{1}{1+j/3}=0.9-j0.3=0.9487\angle-18.43^\circ$
+ & $4.7434\,e^{j(\pi n/2-0.3217)}$ \\
+\hrow 72 Ka, 80 Ba, 82 Ba \m{4}\m{5} & $(\frac12)^nu[n]$, \; $5e^{j\pi n/3}$
+ & $1.1547\angle-30^\circ$ & $5.7735\,e^{j(\pi n/3-\pi/6)}$ \\
+\textbf{\texttt{69 Bh}} \m{2+4} & $(\frac12)^nu[n]$, \; $Ae^{j\pi n/2}$
+ & $\frac{1}{1+j0.5}=0.8944\angle-26.57^\circ$
+ & $0.8944A\,e^{j(\pi n/2-0.4636)}$ \\
+\hrow 71 Shr \m{2+3+5} & $(\frac12)^nu[n]$, \; $Ae^{j\pi n}$
+ & $\frac{1}{1+\frac12}=\frac23$ (real, $e^{-j\pi}=-1$)
+ & $\frac23A\,e^{j\pi n}$ \\
+\bottomrule
+\end{tabularx}
+
+\lead{73 Shr \m{3+7} --- a sum of three terms, so use superposition}
+\begin{itemize}
+  \item Given $h[n]=(\frac12)^nu[n]$, \;
+        $x[n]=10-5\sin(\pi n/2)+20\cos(\pi n)$.
+  \item \mk{Do not convolve.} Split into frequencies and scale each by $H$ at that
+        frequency.
+  \item $\omega=0$ (the constant 10): $H(e^{j0})=\frac{1}{1-\frac12}=2$
+        $\rightarrow$ contributes $20$.
+  \item $\omega=\pi$ (the $20\cos\pi n$): $H(e^{j\pi})=\frac{1}{1+\frac12}=\frac23$
+        $\rightarrow$ contributes $\frac{40}{3}\cos(\pi n)=13.333\cos(\pi n)$.
+  \item $\omega=\pi/2$ (the $-5\sin$): $H(e^{j\pi/2})=0.8944\angle-26.57^\circ$
+        $\rightarrow$ contributes $-4.472\sin(\pi n/2-26.57^\circ)$.
+        \[ y[n]=20+13.333\cos(\pi n)-4.472\sin\!\left(\tfrac{\pi n}{2}-26.57^\circ\right) \]
+  \item \mk{Why a real sinusoid keeps its shape}: $\cos\omega_0n$ is two exponentials at
+        $\pm\omega_0$, and for real $h[n]$ the two responses are conjugates, so they
+        recombine into one real sinusoid with the magnitude and phase of $H$.
+\end{itemize}
+
+\hr
+
+\T{4 \quad Convolution from tabulated or stem-plot data}
+{\color{sub}\footnotesize \tF{4} \yr{\textbf{73 Ch} \m{6}, \textbf{75 Ch} \m{5+2},
+\textbf{72 Ch} \m{3+2}, \textbf{\texttt{71 Bh}} \m{7}}
+\gap$\cdot$\gap same arithmetic as \S1, \mk{the marks are in the index bookkeeping}}
+
+\begin{asked}{2073 Chaitra \textperiodcentered{} Q2 \textperiodcentered{} [6]}
+Calculate $y[n]$, if $x[n]$ is $x[-2]=0.5$, $x[0]=1$, $x[1]=0.75$, $x[3]=0.5$ and $n[n]$ is
+$n[0]=1$, $n[1]=0.75$ and $n[2]=0.5$ and verify your result.
+\end{asked}
+{\color{sub}\footnotesize The paper writes the impulse response as ``$n[n]$''; it means
+$h[n]$.}
+
+\lead{Method \mk{(the only difference from \S1)}}
+\begin{enumerate}
+  \item \textbf{Fill in the gaps with zeros.} The question lists only the non-zero samples,
+        and a missing index is a zero, not an absent sample.
+  \begin{itemize}
+    \item $x[n]=\{\,0.5,\;0,\;\underline{1},\;0.75,\;0,\;0.5\,\}$ for $n=-2\ldots3$
+    \item $h[n]=\{\,\underline{1},\;0.75,\;0.5\,\}$ for $n=0\ldots2$
+  \end{itemize}
+  \item Predict the shape: start $=-2+0=-2$, length $=6+3-1=8$, so $n=-2\ldots5$.
+  \item Product table and anti-diagonals, exactly as in \S1.
+  \item \textbf{``Verify your result''} is worth marks: use the sum check.
+\end{enumerate}
+
+\lead{Product table}
+\par
+\begin{tabularx}{\textwidth}{@{}L{2.2cm}XXXXXX@{}}
+\toprule
+\hrow & \thead{$x[-2]$ $0.5$} & \thead{$x[-1]$ $0$} & \thead{$x[0]$ $1$}
+      & \thead{$x[1]$ $0.75$} & \thead{$x[2]$ $0$} & \thead{$x[3]$ $0.5$} \\
+$h[0]=1$    & 0.5   & 0 & 1    & 0.75   & 0 & 0.5   \\
+$h[1]=0.75$ & 0.375 & 0 & 0.75 & 0.5625 & 0 & 0.375 \\
+$h[2]=0.5$  & 0.25  & 0 & 0.5  & 0.375  & 0 & 0.25  \\
+\bottomrule
+\end{tabularx}
+
+\lead{Anti-diagonal sums}
+\par
+\begin{tabularx}{\textwidth}{@{}L{1.4cm}XL{2.4cm}@{}}
+\toprule
+\hrow \thead{$n$} & \thead{terms} & \thead{$y[n]$} \\
+$-2$ & $0.5$ & \textbf{0.5} \\
+$-1$ & $0.375+0$ & \textbf{0.375} \\
+$0$ & $0.25+0+1$ & \textbf{1.25} \\
+$1$ & $0+0.75+0.75$ & \textbf{1.5} \\
+$2$ & $0.5+0.5625+0$ & \textbf{1.0625} \\
+$3$ & $0.375+0+0.5$ & \textbf{0.875} \\
+$4$ & $0+0.375$ & \textbf{0.375} \\
+$5$ & $0.25$ & \textbf{0.25} \\
+\bottomrule
+\end{tabularx}
+
+\lead{Final answer and the verification the question asks for}
+\[ \boxed{\;y[n]=\{0.5,\;0.375,\;\underline{1.25},\;1.5,\;1.0625,\;0.875,\;0.375,\;0.25\}\;}
+   \qquad n=-2\ldots5 \]
+{\color{sub}\footnotesize $\sum x=2.75$, $\sum h=2.25$, product $=6.1875$; and
+$0.5+0.375+1.25+1.5+1.0625+0.875+0.375+0.25=6.1875$ \checkmark
+\mk{This sum check is the standard way to ``verify your result''} and takes one line.}
+
+\lead{Every other paper that runs this same method}
+\par
+\begin{tabularx}{\textwidth}{@{}L{2.3cm}XXX@{}}
+\toprule
+\hrow \thead{Paper} & \thead{$h[n]$} & \thead{$x[n]$} & \thead{$y[n]$} \\
+\textbf{75 Ch} \m{5+2} & $h[-2]=3$, $h[0]=2$, $h[1]=1$
+ & $x[n]=2^n$ for $-1\le n\le3$
+ & $\{1.5,3,7,\underline{14.5},29,10,20,8\}$, from $n=-3$ \\
+\hrow \textbf{72 Ch} \m{3+2} & $h[-2]=1$, $h[0]=2$, $h[1]=3$
+ & $x[0]=0.5$, $x[2]=2$, $x[3]=3$
+ & $\{0.5,0,\underline{3},4.5,4,12,9\}$, from $n=-2$ \\
+\textbf{\texttt{71 Bh}} \m{7} & $h[0]=0.5$, $h[1]=0.75$, $h[2]=1$ (given as a stem plot)
+ & $x[-2]=1$, $x[0]=0.5$, $x[2]=1$, $x[3]=0.75$
+ & $\{0.5,0.75,\underline{1.25},0.375,1,1.125,1.5625,0.75\}$, from $n=-2$ \\
+\bottomrule
+\end{tabularx}
+
+\par\vspace{2pt}
+{\color{sub}\footnotesize \mk{75 Ch is the one people get wrong}: $x[n]=2^n$ for
+$-1\le n\le3$ starts at $n=-1$ with the value $0.5$, not at $n=0$ with the value 1. With
+$h$ starting at $-2$, the output starts at $-3$.}
+
+\hr
+
+\T{5 \quad Energy and power of a given signal}
+{\color{sub}\footnotesize \tS{10} \yr{\textbf{79 Bh}, \textbf{69 Ch}, \textbf{81 Bh},
+74 Ash, 79 Ba, \textbf{82 Bh}, 72 Ka, \textbf{68 Bh}, \textbf{75 Ch}, \texttt{74 Ma}}
+\gap$\cdot$\gap \mk{almost always the same question as \S6}, asked as one 4-mark part}
+
+\begin{asked}{2079 Bhadra \textperiodcentered{} Q1 \textperiodcentered{} [2+2]}
+Define energy and power signal. Determine whether the signal
+$x[n]=\cos(2\pi n/5)+\sin(\pi n/3)$ is periodic or not. If periodic, find its fundamental
+period.
+\end{asked}
+
+\lead{Method \mk{(used for every problem in this section)}}
+\begin{enumerate}
+  \item \textbf{Look at $|x[n]|$ before computing anything.}
+  \begin{itemize}
+    \item Bounded and never dying away $\rightarrow$ power signal, $E=\infty$.
+    \item Dying away or finite length $\rightarrow$ energy signal, $P=0$.
+  \end{itemize}
+  \item Only then evaluate the one quantity that is finite. Computing both wastes time.
+  \item For a \textbf{periodic} signal use one period:
+        $P=\dfrac1N\displaystyle\sum_{n=0}^{N-1}|x[n]|^2$.
+  \item For a \textbf{decaying} signal use $E=\displaystyle\sum_n|x[n]|^2$ and the
+        geometric sum.
+  \item State the verdict as a sentence: ``$E=\infty$ and $P$ is finite and non-zero, so it
+        is a \textbf{power} signal.''
+\end{enumerate}
+
+\sbs{%
+\lead{Worked --- the 79 Bh signal}
+\begin{itemize}
+  \item $x[n]=\cos(2\pi n/5)+\sin(\pi n/3)$ is a sum of two sinusoids: bounded,
+        never decays.
+  \item Both parts are periodic (\S6 gives $N=30$), so the sum is periodic $\rightarrow$
+        \mk{power signal}, $E=\infty$.
+  \item Power without summing: two sinusoids at \emph{different} frequencies are
+        orthogonal over the common period, so their powers add.
+        \[ P=\frac{A_1^2}{2}+\frac{A_2^2}{2}=\frac12+\frac12=\boxed{\;1\;} \]
+  \item \mk{Quotable}: a real sinusoid of amplitude $A$ has $P=A^2/2$; a complex
+        exponential of amplitude $A$ has $P=A^2$ (no factor of 2, because
+        $|e^{j\theta}|=1$ rather than an oscillating cosine).
+\end{itemize}}{%
+\lead{\textbf{68 Bh} \m{5} --- ``find the energy and power of $x[n]=u[n]$''}
+\begin{itemize}
+  \item \textbf{Energy}: $E=\displaystyle\sum_{n=-\infty}^{\infty}|u[n]|^2
+        =\sum_{n=0}^{\infty}1=\boxed{\;\infty\;}$
+  \item \textbf{Power}: the limit runs over $2N+1$ samples but only $N+1$ of them are
+        non-zero:
+        \[ P=\lim_{N\to\infty}\frac{1}{2N+1}\sum_{n=0}^{N}1
+             =\lim_{N\to\infty}\frac{N+1}{2N+1}=\boxed{\;\tfrac12\;} \]
+  \item \mk{$P=\frac12$, not 1.} This is the single most common slip in the chapter, and
+        72 Ka asks the same thing beside $\delta[n]$.
+  \item $x[n]=\delta[n]$ (72 Ka): $E=1$, and $P=\lim\frac{1}{2N+1}=0$ $\rightarrow$
+        \textbf{energy} signal.
+\end{itemize}}
+
+\lead{Every other paper that runs this same method}
+\par
+\begin{tabularx}{\textwidth}{@{}L{2.6cm}XL{5.4cm}@{}}
+\toprule
+\hrow \thead{Paper} & \thead{$x[n]$} & \thead{Answer} \\
+\textbf{79 Bh}, \textbf{69 Ch}, \textbf{81 Bh} \m{2+2}\m{4}
+ & $\cos(2\pi n/5)+\sin(\pi n/3)$
+ & power signal, $P=1$, $E=\infty$; periodic, $N=30$ \\
+\hrow 74 Ash \m{2+2} & $e^{j(\pi n/3+\pi/4)}$
+ & $|x[n]|=1$ $\rightarrow$ power signal, $P=1$, $E=\infty$; periodic, $N=6$ \\
+79 Ba, \textbf{82 Bh} \m{2+2} & $e^{j(\pi n/2+4\pi/7)}$
+ & power signal, $P=1$, $E=\infty$; periodic, $N=4$ \\
+\hrow 72 Ka \m{2+3} & $u[n]$ and $\delta[n]$
+ & $u[n]$: power, $P=\frac12$. \; $\delta[n]$: energy, $E=1$ \\
+\textbf{68 Bh} \m{5} & $u[n]$ & $E=\infty$, $P=\frac12$ \\
+\bottomrule
+\end{tabularx}
+
+\par\vspace{2pt}
+{\color{sub}\footnotesize \textbf{75 Ch} \m{3+4} and \texttt{74 Ma} \m{3+3} ask the
+\emph{definitions} only (power Vs energy, Fourier series Vs Fourier transform; energy Vs
+power, periodic Vs aperiodic, symmetric Vs antisymmetric), plus ``is $y[n]=x^2[n]$ linear''
+--- that last part is \S9. \mk{A constant phase offset like $+\pi/4$ or $+4\pi/7$ changes
+nothing}: it shifts the signal, and neither power nor period depends on a shift.}
+
+\hr
+
+\T{6 \quad Periodicity and fundamental period}
+{\color{sub}\footnotesize \tS{17} \yr{\textbf{80 Bh} \m{5}, 80 Ba \m{2+2},
+\textbf{78 Bh} \m{4}, \textbf{70 Ch} \m{3}, \textbf{69 Bh} \m{4}, \textbf{67 Mng} \m{4},
+\textbf{66 Ma} \m{4}, and the 10 papers of \S5}
+\gap$\cdot$\gap \mk{the most reliable 4 marks in the paper}}
+
+\begin{asked}{2080 Bhadra \textperiodcentered{} Q1 \textperiodcentered{} [5]}
+Determine whether the signal $x[n]=e^{j\pi n/16}\cos(n\pi/17)$ is periodic or not. If
+periodic, find its fundamental period.
+\end{asked}
+
+\lead{Method \mk{(used for every problem in this section)}}
+\begin{enumerate}
+  \item Read off $\omega_0$ for each factor or term.
+  \item Form $\dfrac{\omega_0}{2\pi}$. \mk{Irrational $\rightarrow$ aperiodic, stop there.}
+  \item Rational: write it as $\dfrac{m}{N}$ in \textbf{lowest terms}; $N$ is that term's
+        period.
+  \item Combine: for a sum \emph{or} a product of periodic terms, the overall period is
+        $\mathrm{LCM}(N_1,N_2)$.
+  \item \mk{Check by substitution} if unsure: confirm $x[n+N]=x[n]$ and that no smaller
+        divisor of $N$ works.
+\end{enumerate}
+
+\sbs{%
+\lead{Worked --- the 80 Bh signal}
+\begin{itemize}
+  \item First factor $e^{j\pi n/16}$: $\omega_1=\dfrac{\pi}{16}$, so
+        $\dfrac{\omega_1}{2\pi}=\dfrac{1}{32}$ $\rightarrow$ $N_1=32$.
+  \item Second factor $\cos(n\pi/17)$: $\omega_2=\dfrac{\pi}{17}$, so
+        $\dfrac{\omega_2}{2\pi}=\dfrac{1}{34}$ $\rightarrow$ $N_2=34$.
+  \item Both rational, so the product is periodic.
+  \item $32=2^5$, $34=2\times17$, so $\mathrm{LCM}=2^5\times17$.
+\end{itemize}
+\[ \boxed{\;N=544\;} \]
+{\color{sub}\footnotesize \mk{Do not multiply $32\times34=1088$.} The LCM is the answer;
+multiplying is only right when the two are coprime.}}{%
+\lead{The three traps, each a real paper}
+\begin{itemize}
+  \item \textbf{70 Ch (i)} $\cos(\pi n^2/8)$: $n^2$, so it is \mk{not a sinusoid in $n$} and
+        the $\omega_0/2\pi$ rule does not apply. Test directly:
+        \[ \cos\!\left(\tfrac{\pi(n+8)^2}{8}\right)
+           =\cos\!\left(\tfrac{\pi n^2}{8}+2\pi n+8\pi\right)
+           =\cos\!\left(\tfrac{\pi n^2}{8}\right) \]
+        since $2\pi n$ and $8\pi$ are whole multiples of $2\pi$. $N=4$ fails, so
+        \mk{$N=8$}.
+  \item \textbf{70 Ch (ii)} $\cos(n/2)\cos(\pi n/4)$: the first factor has
+        $\omega=\frac12$ with \mk{no $\pi$}, so $\omega/2\pi=1/4\pi$ is irrational
+        $\rightarrow$ the product is \textbf{aperiodic}. One irrational factor is enough.
+  \item \textbf{80 Ba (a)} $\sin(n\pi)+\cos(n\pi)$: \mk{$\sin(n\pi)=0$ for every integer
+        $n$}, so the signal is just $\cos(n\pi)=(-1)^n$ and $N=2$. Treating it as
+        $\mathrm{LCM}(2,2)$ gives the same answer, but say why the sine vanished.
+\end{itemize}}
+
+\lead{Every other paper that runs this same method}
+\par
+\begin{tabularx}{\textwidth}{@{}L{2.5cm}XL{5.0cm}@{}}
+\toprule
+\hrow \thead{Paper} & \thead{$x[n]$} & \thead{$\omega_0/2\pi$ and answer} \\
+\textbf{78 Bh} \m{4} & $\cos(\pi n/2)\cos(\pi n/4)$
+ & $\frac14$ and $\frac18$ $\rightarrow$ $N_1=4$, $N_2=8$, \; $N=\mathrm{LCM}=8$ \\
+\hrow 80 Ba (b) \m{2} & $\sin(3\pi n/5)+\cos(4\pi n/7)$
+ & $\frac{3}{10}$ and $\frac{2}{7}$ $\rightarrow$ $N_1=10$, $N_2=7$, \; $N=70$ \\
+\textbf{69 Bh} (a) \m{4} & $\cos(11\pi n/3)$
+ & $\frac{11}{6}$ $\rightarrow$ $N=6$ \\
+\hrow \textbf{69 Bh} (b) & $e^{j(7/5)n}$
+ & $\frac{7}{10\pi}$, \mk{irrational} $\rightarrow$ \textbf{aperiodic} \\
+\textbf{67 Mng} (a) \m{4} & $\cos(5\pi n/3)$ & $\frac56$ $\rightarrow$ $N=6$ \\
+\hrow \textbf{67 Mng} (b) & $\sin(\pi n/\sqrt2+\pi/8)$
+ & $\frac{1}{2\sqrt2}$, \mk{irrational} $\rightarrow$ \textbf{aperiodic} \\
+\textbf{66 Ma} (a) \m{4} & $\cos(3\pi n/8+\pi/4)$ & $\frac{3}{16}$ $\rightarrow$ $N=16$ \\
+\hrow \textbf{66 Ma} (b) & $\sin(0.8n)$ --- printed ``sing(0.8n)''
+ & $\frac{0.4}{\pi}$, \mk{irrational} $\rightarrow$ \textbf{aperiodic} \\
+\S5 papers & $\cos(2\pi n/5)+\sin(\pi n/3)$ & $\frac15$, $\frac16$ $\rightarrow$
+ $N=\mathrm{LCM}(5,6)=30$ \\
+\hrow \S5 papers & $e^{j(\pi n/3+\pi/4)}$, \; $e^{j(\pi n/2+4\pi/7)}$
+ & $\frac16\rightarrow N=6$; \; $\frac14\rightarrow N=4$ \\
+\bottomrule
+\end{tabularx}
+
+\par\vspace{2pt}
+{\color{sub}\footnotesize \mk{The rule in one line}: a $\pi$ in $\omega_0$ that cancels
+against the $2\pi$ leaves a ratio of whole numbers and the signal is periodic. No $\pi$, or a
+$\sqrt{\ }$ left over, and it is not.}
+
+\hr
+
+\T{7 \quad Even and odd parts}
+{\color{sub}\footnotesize \tF{4} \yr{\textbf{71 Ch} \m{3}, 70 Asa \m{3}, 71 Shr \m{4+5},
+\textbf{67 Mng} \m{2}}}
+
+\begin{asked}{2071 Chaitra \textperiodcentered{} Q1 \textperiodcentered{} [3]}
+Find the even and odd part of the signal $x[n]=1$ for $-4\le n\le0$; $2$ for $1\le n\le4$.
+\end{asked}
+
+\lead{Worked, in the tabular form \mk{(use this layout every time)}}
+\par
+\begin{tabularx}{\textwidth}{@{}L{2.0cm}XXXXXXXXX@{}}
+\toprule
+\hrow \thead{$n$} & \thead{$-4$} & \thead{$-3$} & \thead{$-2$} & \thead{$-1$}
+ & \thead{$0$} & \thead{$1$} & \thead{$2$} & \thead{$3$} & \thead{$4$} \\
+$x[n]$            & 1 & 1 & 1 & 1 & 1 & 2 & 2 & 2 & 2 \\
+$x[-n]$           & 2 & 2 & 2 & 2 & 1 & 1 & 1 & 1 & 1 \\
+\hrow $x_e[n]=\frac12(x[n]+x[-n])$ & 1.5 & 1.5 & 1.5 & 1.5 & 1 & 1.5 & 1.5 & 1.5 & 1.5 \\
+$x_o[n]=\frac12(x[n]-x[-n])$ & $-0.5$ & $-0.5$ & $-0.5$ & $-0.5$ & 0
+ & 0.5 & 0.5 & 0.5 & 0.5 \\
+\bottomrule
+\end{tabularx}
+
+\par\vspace{2pt}
+\sbs{%
+\lead{Reading the table}
+\begin{itemize}
+  \item Row 2 is row 1 \textbf{reversed about $n=0$}: $x[-4]$ takes the old $x[4]$, and so on.
+  \item \mk{Checks that cost nothing}: $x_e$ is symmetric about $n=0$ \checkmark, and
+        $x_o[0]=0$ \checkmark
+  \item Add the last two rows back together and row 1 must reappear \checkmark
+  \item \[ x_e[n]=\{1.5,1.5,1.5,1.5,\underline{1},1.5,1.5,1.5,1.5\} \]
+        \[ x_o[n]=\{-0.5,-0.5,-0.5,-0.5,\underline{0},0.5,0.5,0.5,0.5\} \]
+\end{itemize}
+\lead{\textbf{67 Mng} \m{2} --- $x(n)=2u[n]-2u[n-4]$}
+\begin{itemize}
+  \item That window is $\{2,2,2,2\}$ for $n=0\ldots3$, zero elsewhere.
+  \item $x[-n]=\{2,2,2,2\}$ for $n=-3\ldots0$.
+  \item $x_e=\{1,1,1,\underline{2},1,1,1\}$ and
+        $x_o=\{-1,-1,-1,\underline{0},1,1,1\}$ for $n=-3\ldots3$.
+  \item \mk{The $n=0$ sample doubles in $x_e$}, because it overlaps itself.
+\end{itemize}}{%
+\figT{c1_71shr_stem.png}
+\penalty0\vspace{1pt}
+{\color{sub}\footnotesize 71 Shr \m{4+5} gives the signal as a stem plot instead of a formula.
+Read the samples off the plot, then run exactly the same table.
+\yr{CT 704 2071 Shrawan Q1}}
+\lead{Second half of 71 Shr}
+\begin{itemize}
+  \item The same paper then gives $x[n]=h[n]=1$ for $-1\le n\le1$, zero elsewhere, and asks
+        for the output by the graphical method.
+  \item Both are $\{1,1,1\}$ starting at $n=-1$, so the output starts at $-2$ and has
+        $3+3-1=5$ samples.
+  \item \[ y[n]=\{1,2,\underline{3},2,1\}\quad n=-2\ldots2 \]
+  \item \mk{The triangle} is what convolving two equal rectangles always gives --- worth
+        recognising on sight.
+\end{itemize}}
+
+\hr
+
+\T{8 \quad Plotting and transformation of the independent variable}
+{\color{sub}\footnotesize \tF{4} \yr{\textbf{76 Ch} \m{2+3}, \textbf{74 Ch} \m{3+2},
+\textbf{66 Ma} \m{2}, \textbf{69 Bh} \m{3}}
+\gap$\cdot$\gap \mk{pure marks}: no formula to recall, only care with indices}
+
+\begin{asked}{2076 Chaitra \textperiodcentered{} Q1 \textperiodcentered{} [2+3]}
+Define even and odd type discrete time signals with suitable example. Plot the signal
+$x[-2n+3]$ where $x[n]=\{1,2,0,-1,-3,-4\}$.
+\end{asked}
+
+\sbs{%
+\lead{Method for $x[an+b]$ \mk{(index map, never ``shift then scale'')}}
+\begin{enumerate}
+  \item Take $x[n]=\{1,2,0,-1,-3,-4\}$ starting at $n=0$, so
+        $x[0]=1,\ldots,x[5]=-4$.
+  \item For each output index $n$, compute the argument $m=-2n+3$ and copy $x[m]$.
+  \item Keep only those $n$ for which $m$ lands on an existing sample, $0\le m\le5$:
+        \[ 0\le-2n+3\le5 \;\Rightarrow\; -1\le n\le1.5 \;\Rightarrow\; n=-1,0,1 \]
+  \item \mk{Only three samples survive}, because scaling by 2 throws away every second
+        one.
+\end{enumerate}
+\par
+\begin{tabular}{@{}L{1.1cm}L{1.8cm}L{1.5cm}L{2.2cm}@{}}
+\toprule
+\hrow \thead{$n$} & \thead{$m=-2n+3$} & \thead{$x[m]$} & \thead{$y[n]$} \\
+$-1$ & $5$ & $-4$ & $-4$ \\
+$0$  & $3$ & $-1$ & $-1$ \\
+$1$  & $1$ & $2$  & $2$ \\
+\bottomrule
+\end{tabular}
+\par\vspace{2pt}
+\[ x[-2n+3]=\{-4,\;\underline{-1},\;2\}\quad n=-1,0,1 \]
+{\color{sub}\footnotesize The even-indexed originals ($x[0],x[2],x[4]$) are lost --- that is
+decimation, and it is not reversible.}}{%
+\lead{The three plotting questions}
+\begin{itemize}
+  \item \textbf{74 Ch} \m{3+2}: $x[n]=u[n]-u[n-3]+5\delta[n-4]+nu[n-6]$
+  \begin{itemize}
+    \item $u[n]-u[n-3]=1$ for $n=0,1,2$
+    \item $5\delta[n-4]=5$ at $n=4$
+    \item $nu[n-6]=n$ for $n\ge6$: $6,7,8,\ldots$ \mk{a ramp that never stops}
+    \item $x[n]=\{\underline{1},1,1,0,5,0,6,7,8,\ldots\}$
+  \end{itemize}
+  \item \textbf{66 Ma} \m{2}: $x(n)=u(n)-u(n-5)+5\delta(n-6)+nu(n-7)-nu(n-9)$
+  \begin{itemize}
+    \item $1$ for $n=0\ldots4$; $5$ at $n=6$; the two ramps leave only
+          $n=7$ and $n=8$ $\rightarrow$ values $7$ and $8$.
+    \item $x[n]=\{\underline{1},1,1,1,1,0,5,7,8\}$, zero after.
+    \item \mk{$nu(n-7)-nu(n-9)$ is a windowed ramp}, not an infinite one: the second term
+          cancels everything from $n=9$ on.
+  \end{itemize}
+  \item \textbf{69 Bh} \m{3}: $x[n]=u[n+8]-u[n-4]$
+  \begin{itemize}
+    \item A rectangle of height 1 from $n=-8$ to $n=3$: \textbf{12 samples}.
+    \item \mk{The upper limit is exclusive} --- $u[n-4]$ switches on at $n=4$, so $n=3$ is
+          the last non-zero sample.
+  \end{itemize}
+\end{itemize}}
+
+\hr
+
+\T{9 \quad Testing a system for its properties}
+{\color{sub}\footnotesize \tS{12} \yr{\textbf{76 Ch} \m{5}, \textbf{74 Ch} \m{3+3},
+82 Ba \m{2+2}, \textbf{\texttt{78 Ch}} \m{3}, 75 Ash \m{3+3},
+\textbf{\texttt{71 Bh}} \m{4}, \textbf{\texttt{70 Bh}} \m{5}, \textbf{68 Bh} \m{5},
+\textbf{67 Mng}, \textbf{66 Ma} \m{10}, \textbf{69 Bh} \m{5}, \textbf{80 Bh} \m{2+2+2},
+81 Ba \m{5}}}
+
+\begin{asked}{2068 Bhadra \textperiodcentered{} Q1 \textperiodcentered{} [5]}
+State whether or not the system $y[n]=e^{x[2n]}$ is (a) linear (b) time invariant
+(c) memoryless (d) causal, where $x[n]$ is input to system and $y[n]$ is output of system.
+\end{asked}
+
+\lead{Worked in full --- $y[n]=e^{x[2n]}$}
+\sbs{%
+\begin{itemize}
+  \item \textbf{(a) Linear?}
+  \begin{itemize}
+    \item $x_1\rightarrow e^{x_1[2n]}$, \; $x_2\rightarrow e^{x_2[2n]}$.
+    \item Input $ax_1+bx_2$ gives $e^{a x_1[2n]+b x_2[2n]}
+          =e^{ax_1[2n]}\cdot e^{bx_2[2n]}$.
+    \item Required: $a\,e^{x_1[2n]}+b\,e^{x_2[2n]}$. A product is not a weighted sum.
+    \item \mk{Not linear} \xmark
+  \end{itemize}
+  \item \textbf{(b) Time invariant?}
+  \begin{itemize}
+    \item Delayed input: $x_1[n]=x[n-n_0]$ gives $y_1[n]=e^{x[2n-n_0]}$.
+    \item Delayed output: $y[n-n_0]=e^{x[2(n-n_0)]}=e^{x[2n-2n_0]}$.
+    \item $2n-n_0\ne2n-2n_0$, so \mk{not time invariant} \xmark
+    \item \mk{This is the general rule}: any time-scaled index $x[2n]$, $x[n^2]$, $x[-n]$
+          makes a system time varying.
+  \end{itemize}
+\end{itemize}}{%
+\begin{itemize}
+  \item \textbf{(c) Memoryless?}
+  \begin{itemize}
+    \item At $n=3$ the output needs $x[6]$, a different instant.
+    \item \mk{Not memoryless} \xmark (it is dynamic).
+  \end{itemize}
+  \item \textbf{(d) Causal?}
+  \begin{itemize}
+    \item For $n>0$, $2n>n$: the output at $n=3$ needs $x[6]$, a \emph{future} input.
+    \item \mk{Not causal} \xmark
+  \end{itemize}
+  \item \textbf{Stable?} (not asked here, but 66 Ma asks it)
+  \begin{itemize}
+    \item $|x[n]|\le M$ gives $|y[n]|\le e^{M}$, finite $\rightarrow$ \textbf{BIBO
+          stable} \checkmark
+  \end{itemize}
+\end{itemize}
+{\color{sub}\footnotesize \mk{Answer shape that scores}: one line of algebra per property,
+then the verdict with its reason. ``Not linear'' alone gets nothing.}}
+
+\lead{Every other system the papers set, with the working reduced to its deciding line}
+\par
+\begin{tabularx}{\textwidth}{@{}L{2.6cm}L{3.4cm}X@{}}
+\toprule
+\hrow \thead{Paper} & \thead{System} & \thead{Verdict, and the line that decides it} \\
+\textbf{76 Ch} \m{5} & $y[n]=x[-n]$ (TI?)
+ & Delayed input $x[-n-n_0]$; delayed output $x[-(n-n_0)]=x[-n+n_0]$. Different
+   $\rightarrow$ \mk{time varying} \\
+\hrow \textbf{76 Ch} \m{5} & $y[n]=x[n^2]$ (linear?)
+ & $a x_1[n^2]+b x_2[n^2]$ is exactly what superposition demands $\rightarrow$
+   \textbf{linear} \checkmark (but time varying) \\
+\textbf{74 Ch}, \textbf{\texttt{78 Ch}} \m{3} & $y[n]=y[n-4]+x[n-4]$ (TI?)
+ & Every index is a plain delay, no explicit $n$ $\rightarrow$ \textbf{time invariant}
+   \checkmark \\
+\hrow \textbf{74 Ch}, 75 Ash \m{3} & $y[n]=x^2[n]$ (linear?)
+ & $(ax_1+bx_2)^2$ leaves the cross term $2abx_1x_2$ $\rightarrow$ \mk{not linear} \\
+82 Ba \m{2+2} & $y[n]=x[n]+x[-n]$ (causal? TI?)
+ & At $n=-2$ it needs $x[2]$ $\rightarrow$ \mk{non-causal}; the fold makes it
+   \mk{time varying} \\
+\hrow 75 Ash \m{3} & $y[n]=\cos(\frac{5\pi}{8}n+\frac{\pi}{4})$
+ & \mk{No $x[n]$ anywhere}: zero input gives non-zero output $\rightarrow$ \textbf{not
+   linear} \\
+\textbf{\texttt{71 Bh}} \m{4} & $y[n]=x[n]-3x[n-1]$; \; $y[n]=x[n+1]+4x[n]$
+ & Both \textbf{linear} \checkmark; first \textbf{causal} \checkmark, second needs
+   $x[n+1]$ $\rightarrow$ \mk{non-causal} \\
+\hrow \textbf{\texttt{70 Bh}} \m{5} & $y(n)=\log_{10}[x(n)]$
+ & $\log(ax_1+bx_2)\ne a\log x_1+b\log x_2$ $\rightarrow$ \mk{non-linear}; TI \checkmark;
+   causal \checkmark \\
+\textbf{\texttt{70 Bh}} \m{5} & $y(n)=x(-n-2)$
+ & \textbf{Linear} \checkmark; fold $\rightarrow$ \mk{time varying}; at $n=-3$ needs
+   $x[1]$ $\rightarrow$ \mk{non-causal} \\
+\hrow \textbf{67 Mng} & $y(n)=n\,x[2(n-2)]$, $n>0$
+ & \textbf{Linear} \checkmark; explicit $n$ \emph{and} scaled index $\rightarrow$
+   \mk{time varying}; needs $x[2n-4]$ $\rightarrow$ \mk{not memoryless} \\
+\textbf{66 Ma} \m{10} & $y(n)=2^{\log_2 x(n)}+2^{\log_2 x(n)}$
+ & This simplifies to $y(n)=2x(n)$: \textbf{linear, TI, memoryless, causal, stable} ---
+   \mk{simplify before testing} \\
+\hrow \textbf{66 Ma} \m{10} & $y(n)=\sin\{x(n)-x(n-1)\}$
+ & \mk{Non-linear} (sine of a sum); \textbf{TI} \checkmark; dynamic; causal \checkmark;
+   \textbf{stable} \checkmark since $|\sin|\le1$ \\
+\textbf{80 Bh} \m{2+2+2} & $y(n)=\sum_{k=0}^{n}x(k)$ (accumulator)
+ & Needs all past inputs $\rightarrow$ \mk{not memoryless}; \textbf{TI} \checkmark;
+   $x[n]=u[n]$ gives $y[n]=n+1\rightarrow\infty$ $\rightarrow$ \mk{unstable} \\
+\hrow 81 Ba \m{5} & $y(n)=x(n)+e^{a}y(n-1)$
+ & $h[n]=(e^a)^nu[n]$, so $\sum|h|$ converges only for $|e^a|<1$ $\rightarrow$
+   \mk{BIBO stable iff $a<0$} \\
+\bottomrule
+\end{tabularx}
+
+\hr
+
+\T{10 \quad Sampling an analog signal}
+{\color{sub}\footnotesize \tF{7} \yr{\textbf{\texttt{81 Ch}} \m{1+3+3}, \texttt{74 Ma} \m{7},
+\textbf{\texttt{78 Ch}} \m{2+2+3}, \textbf{\texttt{80 Ch}} \m{3+4},
+\textbf{\texttt{73 Bh}} \m{3+4}, \texttt{73 Ma} \m{4}, \textbf{\texttt{76 Bh}}
+\m{2+1+1+2+2}} \gap$\cdot$\gap \mk{\texttt{EX 753} sets this nearly every year}}
+
+\begin{asked}{2081 Chaitra \textperiodcentered{} Q1 \textperiodcentered{} [1+3+3]}
+Consider the analog signal $x_a(t)=3\cos100\pi t$.
+\begin{enumerate}[label=(\alph*), leftmargin=1.9em]
+  \item Determine the minimum sampling rate required to avoid aliasing.
+  \item Suppose that signal is sampled at $F_s=75$ Hz. What is the discrete time signal
+        obtained after sampling?
+  \item Assume now that we sample this signal using a sampling rate $F_s=5{,}000$
+        samples/sec. What is discrete time signal after sampling?
+\end{enumerate}
+\end{asked}
+
+\lead{Method \mk{(used for every problem in this section)}}
+\begin{enumerate}
+  \item \textbf{Read the analog frequency off the argument}: $\cos(2\pi Ft)$, so
+        $2\pi F=100\pi$ gives $F=50$ Hz. \mk{Divide by $2\pi$, not by $\pi$.}
+  \item Nyquist rate $=2F_{max}$.
+  \item Substitute $t=nT=n/F_s$: the digital frequency is
+        $\omega=\dfrac{2\pi F}{F_s}$ rad/sample.
+  \item \textbf{Fold $\omega$ into $-\pi\le\omega<\pi$} by subtracting multiples of
+        $2\pi$. If you had to subtract anything, \mk{that term has aliased} --- say so.
+  \item Write the answer as $x[n]=A\cos(\omega n)$ with the folded $\omega$.
+\end{enumerate}
+
+\sbs{%
+\lead{(a) Minimum sampling rate}
+\begin{itemize}
+  \item $F=\dfrac{100\pi}{2\pi}=50$ Hz.
+  \item \[ F_s\ge2F=\boxed{\;100\text{ Hz}\;} \]
+\end{itemize}
+\lead{(b) $F_s=75$ Hz --- \mk{below Nyquist}}
+\begin{itemize}
+  \item $\omega=\dfrac{2\pi\times50}{75}=\dfrac{4\pi}{3}$ rad/sample.
+  \item $\frac{4\pi}{3}>\pi$, so fold: $\dfrac{4\pi}{3}-2\pi=-\dfrac{2\pi}{3}$.
+  \item Cosine is even, so
+        \[ \boxed{\;x[n]=3\cos\!\left(\tfrac{2\pi n}{3}\right)\;} \]
+  \item \mk{Aliased}: this is the same sequence a 25 Hz analog cosine would have given at
+        75 Hz. 75 Hz is below the 100 Hz Nyquist rate, exactly as part (a) warned.
+\end{itemize}
+\lead{(c) $F_s=5000$ Hz --- well above Nyquist}
+\begin{itemize}
+  \item $\omega=\dfrac{2\pi\times50}{5000}=\dfrac{\pi}{50}$, already inside $[-\pi,\pi)$.
+  \item \[ \boxed{\;x[n]=3\cos\!\left(\tfrac{\pi n}{50}\right)\;} \] no aliasing.
+\end{itemize}}{%
+\lead{Every other paper that runs this same method}
+\begin{itemize}
+  \item \textbf{\texttt{78 Ch}} \m{2+2+3}: same signal, $F_s=200$ Hz.
+        $\omega=\frac{2\pi\cdot50}{200}=\frac{\pi}{2}$ $\rightarrow$
+        $x[n]=3\cos(\pi n/2)$, no aliasing.
+  \item \textbf{\texttt{80 Ch}} \m{3+4}:
+        $x(t)=\sin2000\pi t-5\cos12000\pi t+10\sin6000\pi t$, $F_s=5000$.
+  \begin{itemize}
+    \item $F=1000,\,6000,\,3000$ Hz $\rightarrow$
+          $\omega=0.4\pi,\;2.4\pi,\;1.2\pi$.
+    \item Fold: $2.4\pi-2\pi=0.4\pi$ and $1.2\pi-2\pi=-0.8\pi$.
+    \item \[ x[n]=\sin(0.4\pi n)-5\cos(0.4\pi n)-10\sin(0.8\pi n) \]
+    \item \mk{Two of the three aliased}, and the 6000 Hz term landed on top of the
+          1000 Hz term --- they are now indistinguishable. The sign of the last term
+          flips because $\sin$ is odd.
+    \item For $0\le n\le3$: $x[n]=\{-5,\;-6.472,\;14.143,\;-6.053\}$ to 3 dp.
+  \end{itemize}
+  \item \textbf{\texttt{73 Bh}} \m{3+4}: identical but with $+5\cos12000\pi t$, so the
+        middle term keeps its $+$ sign.
+  \item \texttt{73 Ma} \m{4}: $x(t)=\cos1000\pi t+3\sin3000\pi t+5\cos5000\pi t$,
+        $F_s=6000$.
+  \begin{itemize}
+    \item $F=500,\,1500,\,2500$ $\rightarrow$ $\omega=\frac{\pi}{6},\frac{\pi}{2},
+          \frac{5\pi}{6}$: \mk{all already inside $[-\pi,\pi)$, no aliasing},
+          because $F_s=6000>2\times2500$.
+  \end{itemize}
+  \item \textbf{\texttt{76 Bh}} \m{2+1+1+2+2}:
+        $x(t)=3\cos50\pi t+10\sin300\pi t-0.7\cos100\pi t$, $F_s=5000$.
+  \begin{itemize}
+    \item $F=25,\,150,\,50$ $\rightarrow$ $F_{max}=150$, \textbf{Nyquist $=300$ Hz}.
+    \item $\omega=\frac{\pi}{100},\;\frac{3\pi}{50},\;\frac{\pi}{50}$, no aliasing.
+    \item \textbf{Reconstruction}: since $F_s$ is above Nyquist the original
+          $x(t)$ comes back exactly, $x_r(t)=x(t)$. \mk{That is the whole answer to
+          part (c)} --- the sampling theorem guarantees it.
+  \end{itemize}
+\end{itemize}}
+
+\hr
+
+\T{11 \quad Difference equation: zero-input and zero-state response}
+{\color{sub}\footnotesize \tP{1} \yr{\textbf{78 Bh} \m{4}} \gap$\cdot$\gap the LCCDE theory
+is in \textbf{Ch 1 \S1.9}; the transform route to the same answer is \textbf{Ch 2}}
+
+\begin{asked}{2078 Bhadra \textperiodcentered{} Q4 \textperiodcentered{} [4]}
+Determine the zero-input response for a second order system given by:
+$y[n]-3y[n-1]-4y[n-2]=x[n]$
+\end{asked}
+
+\sbs{%
+\lead{Method}
+\begin{enumerate}
+  \item \textbf{Zero input} means set $x[n]=0$, leaving the homogeneous equation
+        $y[n]-3y[n-1]-4y[n-2]=0$.
+  \item Try $y[n]=\lambda^n$ and divide through by $\lambda^{n-2}$ to get the
+        \textbf{characteristic equation}.
+  \item Solve for the roots.
+  \item The response is a weighted sum of $\lambda_i^{\,n}$; fix the weights from the
+        initial conditions.
+\end{enumerate}
+\lead{Step-by-step}
+\begin{itemize}
+  \item $\lambda^n-3\lambda^{n-1}-4\lambda^{n-2}=0
+        \;\Rightarrow\;\lambda^2-3\lambda-4=0$
+  \item $(\lambda-4)(\lambda+1)=0\;\Rightarrow\;\lambda_1=4,\;\lambda_2=-1$
+  \item \[ \boxed{\;y_{zi}[n]=C_1(4)^n+C_2(-1)^n\;} \]
+\end{itemize}}{%
+\lead{Fixing the constants}
+\begin{itemize}
+  \item \mk{The paper gives no initial conditions}, so the boxed form above is the full
+        answer. If $y[-1]$ and $y[-2]$ are supplied, solve
+        \[ \tfrac{C_1}{4}-C_2=y[-1],\qquad \tfrac{C_1}{16}+C_2=y[-2] \]
+  \item \[ C_1=\frac{16\,(y[-1]+y[-2])}{5},\qquad
+           C_2=\frac{4y[-2]-y[-1]}{5} \] \added
+  \item \textbf{Read the roots}: $|\lambda_1|=4>1$, so the natural response \mk{grows
+        without bound} and the system is unstable. Saying that earns the last mark.
+\end{itemize}
+\lead{The other half, if asked}
+\begin{itemize}
+  \item \textbf{Zero-state} response: set the initial conditions to zero and convolve,
+        $y_{zs}[n]=x[n]*h[n]$, or use $H(z)$ (Ch 2).
+  \item \textbf{Total} $=y_{zi}+y_{zs}$. An LTI system must be relaxed, so a question that
+        gives non-zero initial conditions is not asking about an LTI system.
+\end{itemize}}
