@@ -47,6 +47,26 @@ def win(expr, lo, hi):
     return [expr(n) for n in range(lo, hi + 1)], lo
 
 
+def izt(X, r, ns, N=8192):
+    """Numerical inverse Z-transform on the circle |z| = r, which must lie in
+    the ROC:  x[n] ~ (r^n / N) sum_k X(r e^{j2pi k/N}) e^{j2pi kn/N}.
+    Exact up to aliasing of x[n + mN] r^(-mN), negligible at N = 8192."""
+    import cmath
+    vals = [X(r * cmath.exp(2j * cmath.pi * k / N)) for k in range(N)]
+    out = {}
+    for n in ns:
+        acc = sum(vals[k] * cmath.exp(2j * cmath.pi * k * n / N) for k in range(N))
+        out[n] = ((r ** n) * acc / N).real
+    return out
+
+
+def chkseq(tag, X, r, closed, ns, tol=1e-6):
+    """Assert a published closed form against the numerical inversion."""
+    got = izt(X, r, ns)
+    for n in ns:
+        chk("%s n=%d" % (tag, n), got[n], closed(n), tol)
+
+
 # =====================================================================
 #  CHAPTER 1
 # =====================================================================
@@ -407,7 +427,202 @@ def ch1():
     chk("c1 76 Bh w3", 2 * math.pi * 50 / 5000, math.pi / 50, 1e-12)
 
 
-CHAPTERS = {"ch1": ch1}
+# =====================================================================
+#  CHAPTER 2 — Z-TRANSFORM
+#  Every inverse is checked against izt(), which knows nothing about the
+#  published partial fractions: it integrates X(z) on a circle in the ROC.
+# =====================================================================
+def ch2():
+    u = lambda n: 1.0 if n >= 0 else 0.0
+    un1 = lambda n: 1.0 if n <= -1 else 0.0          # u[-n-1]
+    d = lambda n: 1.0 if n == 0 else 0.0
+
+    # ---- proper rational, partial fractions -------------------------
+    # 80 Bh: (1+2z^-1+z^-2)/(1-0.75z^-1+0.125z^-2), ROC 0.25<|z|<0.5
+    #   = 8 + 18/(1-0.5z^-1) - 25/(1-0.25z^-1); pole .5 left, pole .25 right
+    X = lambda z: (1 + 2 / z + 1 / z ** 2) / (1 - 0.75 / z + 0.125 / z ** 2)
+    f = lambda n: 8 * d(n) - 18 * 0.5 ** n * un1(n) - 25 * 0.25 ** n * u(n)
+    chkseq("c2 80 Bh", X, 0.35, f, range(-5, 6))
+
+    # 81 Ba: 1/(1-0.8z^-1+0.12z^-2) = 1.5/(1-0.6z^-1) - 0.5/(1-0.2z^-1)
+    X = lambda z: 1 / (1 - 0.8 / z + 0.12 / z ** 2)
+    chkseq("c2 81 Ba (i)", X, 0.9,
+           lambda n: (1.5 * 0.6 ** n - 0.5 * 0.2 ** n) * u(n), range(0, 8))
+    chkseq("c2 81 Ba (ii)", X, 0.1,
+           lambda n: (-1.5 * 0.6 ** n + 0.5 * 0.2 ** n) * un1(n), range(-6, 1))
+    chkseq("c2 81 Ba (iii)", X, 0.4,
+           lambda n: -1.5 * 0.6 ** n * un1(n) - 0.5 * 0.2 ** n * u(n), range(-5, 6))
+
+    # 82 Ba / 73 Bh / 72 Ma: 1/(1-1.5z^-1+0.5z^-2) = 2/(1-z^-1) - 1/(1-0.5z^-1)
+    X = lambda z: 1 / (1 - 1.5 / z + 0.5 / z ** 2)
+    chkseq("c2 82 Ba (a)", X, 1.6, lambda n: (2 - 0.5 ** n) * u(n), range(0, 8))
+    chkseq("c2 82 Ba (b)", X, 0.3, lambda n: (-2 + 0.5 ** n) * un1(n), range(-6, 1))
+    chkseq("c2 82 Ba (c)", X, 0.75,
+           lambda n: -2 * un1(n) - 0.5 ** n * u(n), range(-5, 6))
+
+    # 80 Ba: (1+2z^-1+z^-2)/(1-1.5z^-1+0.5z^-2) = 2 + 8/(1-z^-1) - 9/(1-0.5z^-1)
+    X = lambda z: (1 + 2 / z + 1 / z ** 2) / (1 - 1.5 / z + 0.5 / z ** 2)
+    chkseq("c2 80 Ba", X, 1.6,
+           lambda n: 2 * d(n) + (8 - 9 * 0.5 ** n) * u(n), range(0, 8))
+
+    # 71 Shr: (1+2z^-1+z^-2)/(1+1.5z^-1+0.5z^-2) = 2 - 1/(1+0.5z^-1)
+    #   the numerator's (1+z^-1) cancels one factor: worth the note in the text
+    X = lambda z: (1 + 2 / z + 1 / z ** 2) / (1 + 1.5 / z + 0.5 / z ** 2)
+    chkseq("c2 71 Shr", X, 1.6,
+           lambda n: 2 * d(n) - (-0.5) ** n * u(n), range(0, 8))
+
+    # 80 Ch / 70 Bh: (1+2z^-1+z^-2)/(1+4z^-1+4z^-2), causal; double pole -2
+    X = lambda z: (1 + 2 / z + 1 / z ** 2) / (1 + 4 / z + 4 / z ** 2)
+    chkseq("c2 80 Ch", X, 3.0,
+           lambda n: 0.25 * d(n) + (0.25 * n + 0.75) * (-2.0) ** n * u(n), range(0, 8))
+
+    # 69 Bh: (1-0.5z^-2)/((1-0.5z^-1)(1-0.25z^-1)), |z|>0.5
+    X = lambda z: (1 - 0.5 / z ** 2) / ((1 - 0.5 / z) * (1 - 0.25 / z))
+    chkseq("c2 69 Bh", X, 0.9,
+           lambda n: -4 * d(n) + (-2 * 0.5 ** n + 7 * 0.25 ** n) * u(n), range(0, 8))
+
+    # ---- improper: long-divide to a polynomial in z, then X(z)/z -----
+    # denominator z^2-1.5z-1 = (z-2)(z+0.5), ROC |z|<0.5 -> both poles left-sided
+    fam = [
+        # (tag, numerator coeffs z^4..z^0, Q coeffs z^2,z^1,z^0, D, E)
+        ("79 Bh", (2, 2, 0, -3, 2), (2, 5, 9.5), -11.5, 8.8, 2.7),
+        ("76 Ch", (1, 5, 0, -3, 4), (1, 6.5, 10.75), -14.75, 10.8, 3.95),
+        ("81 Ch", (1, 1, 0, -3, 5), (1, 2.5, 4.75), -9.75, 4.6, 5.15),
+        ("79 Ch", (1, -2, 0, -1, 4), (1, -0.5, 0.25), -4.25, 0.4, 3.85),
+        ("72 Ash", (1, 2, 0, -1, 4), (1, 3.5, 6.25), -10.25, 6.8, 3.45),
+    ]
+    for tag, num, Q, C, D, E in fam:
+        Xf = (lambda num: lambda z: sum(c * z ** (4 - i) for i, c in enumerate(num))
+              / (z ** 2 - 1.5 * z - 1))(num)
+        cf = (lambda Q, C, D, E: lambda n:
+              Q[0] * d(n + 2) + Q[1] * d(n + 1) + (Q[2] + C) * d(n)
+              - (D * 2.0 ** n + E * (-0.5) ** n) * un1(n))(Q, C, D, E)
+        chkseq("c2 " + tag, Xf, 0.3, cf, range(-5, 4))
+
+    # 74 Ch / 73 Ch / 74 Bh: (2z^3+2z^2+3z+5)/(z^2-0.1z-0.2), ROC |z|<0.4
+    X = lambda z: (2 * z ** 3 + 2 * z ** 2 + 3 * z + 5) / (z ** 2 - 0.1 * z - 0.2)
+    D, E = 7.25 / 0.45, 3.992 / 0.36
+    chkseq("c2 74 Ch", X, 0.3,
+           lambda n: 2 * d(n + 1) + (2.2 - 27.2) * d(n)
+           - (D * 0.5 ** n + E * (-0.4) ** n) * un1(n), range(-5, 4))
+
+    # 81 Bh: (2z^3-5z^2+z+3)/((z-1)(z-2)), ROC |z|<1
+    X = lambda z: (2 * z ** 3 - 5 * z ** 2 + z + 3) / ((z - 1) * (z - 2))
+    chkseq("c2 81 Bh", X, 0.6,
+           lambda n: 2 * d(n + 1) + 1.5 * d(n) + (1 - 0.5 * 2.0 ** n) * un1(n),
+           range(-5, 4))
+
+    # ---- X(z)/z with a repeated pole --------------------------------
+    # 76 Ash: z/((z-0.6)(z+0.5)^2), ROC |z|>0.6, causal
+    A = 1 / 1.21
+    X = lambda z: z / ((z - 0.6) * (z + 0.5) ** 2)
+    chkseq("c2 76 Ash", X, 1.2,
+           lambda n: (A * 0.6 ** n + ((20.0 / 11) * n - A) * (-0.5) ** n) * u(n),
+           range(0, 9))
+
+    # 73 Shr: z/((z-0.4)(z+1.5)^2), ROC |z|<0.4, all left-sided
+    A = 1 / 3.61
+    X = lambda z: z / ((z - 0.4) * (z + 1.5) ** 2)
+    chkseq("c2 73 Shr", X, 0.25,
+           lambda n: (-A * 0.4 ** n + A * (-1.5) ** n
+                      + (1 / 1.9) * n * (-1.5) ** (n - 1)) * un1(n),
+           range(-6, 1), tol=1e-5)
+
+    # 70 Asa: z/((z-1)(z-2)^2), ROC |z|<1, all left-sided
+    X = lambda z: z / ((z - 1) * (z - 2) ** 2)
+    chkseq("c2 70 Asa", X, 0.7,
+           lambda n: (-1 + 2.0 ** n - n * 2.0 ** (n - 1)) * un1(n), range(-7, 1))
+
+    # ---- long division (power series) -------------------------------
+    # 77 Ch: 1/(1-0.5z^-1+1.5z^-2), right-sided.  x[n]=0.5x[n-1]-1.5x[n-2]
+    X = lambda z: 1 / (1 - 0.5 / z + 1.5 / z ** 2)
+    seq = [1.0, 0.5]
+    while len(seq) < 8:
+        seq.append(0.5 * seq[-1] - 1.5 * seq[-2])
+    chkseq("c2 77 Ch", X, 1.8, lambda n: seq[n] if 0 <= n < len(seq) else 0.0,
+           range(0, 8))
+    chk("c2 77 Ch terms", seq[:6], [1, 0.5, -1.25, -1.375, 1.1875, 2.65625])
+    # its poles sit at |z| = sqrt(1.5), so the printed ROC |z|>1 contains them
+    chk("c2 77 Ch pole radius", 1.5 ** 0.5, 1.2247448714, 1e-9)
+
+    # 76 Bh as printed: 1/(1-1.58z^-1+0.5z^-2).  Poles are NOT 1 and 0.5.
+    disc = (1.58 ** 2 - 4 * 0.5) ** 0.5
+    chk("c2 76 Bh pole hi", (1.58 + disc) / 2, 1.1422782991, 1e-9)
+    chk("c2 76 Bh pole lo", (1.58 - disc) / 2, 0.4377217009, 1e-9)
+    X = lambda z: 1 / (1 - 1.58 / z + 0.5 / z ** 2)
+    seq = [1.0, 1.58]
+    while len(seq) < 7:
+        seq.append(1.58 * seq[-1] - 0.5 * seq[-2])
+    chkseq("c2 76 Bh printed", X, 1.6,
+           lambda n: seq[n] if 0 <= n < len(seq) else 0.0, range(0, 7))
+    chk("c2 76 Bh terms", [round(v, 4) for v in seq[:5]],
+        [1.0, 1.58, 1.9964, 2.3643, 2.7374], 1e-3)
+
+    # 71 Ch: 1/((z-0.5)(z+2)) = -1 + 0.8 z/(z-0.5) + 0.2 z/(z+2)
+    X = lambda z: 1 / ((z - 0.5) * (z + 2))
+    chkseq("c2 71 Ch (i)", X, 1.0,
+           lambda n: -d(n) + 0.8 * 0.5 ** n * u(n) - 0.2 * (-2.0) ** n * un1(n),
+           range(-5, 6))
+    chkseq("c2 71 Ch (ii)", X, 0.3,
+           lambda n: -d(n) - (0.8 * 0.5 ** n + 0.2 * (-2.0) ** n) * un1(n),
+           range(-6, 2))
+    chkseq("c2 71 Ch (iii)", X, 3.0,
+           lambda n: -d(n) + (0.8 * 0.5 ** n + 0.2 * (-2.0) ** n) * u(n),
+           range(0, 8))
+
+    # ---- finite polynomials, read straight off ----------------------
+    # 74 Ash: z^2(1-1.5z^-1)(1+z^-1)(1-z^-1) = z^2 -1.5z -1 +1.5z^-1
+    X = lambda z: z ** 2 * (1 - 1.5 / z) * (1 + 1 / z) * (1 - 1 / z)
+    chkseq("c2 74 Ash", X, 1.0,
+           lambda n: d(n + 2) - 1.5 * d(n + 1) - d(n) + 1.5 * d(n - 1), range(-3, 4))
+    # 78 Ch: z^2(1-1.5z^-1)(1-z^-1)(1+z^-2)
+    X = lambda z: z ** 2 * (1 - 1.5 / z) * (1 - 1 / z) * (1 + 1 / z ** 2)
+    chkseq("c2 78 Ch", X, 1.0,
+           lambda n: d(n + 2) - 2.5 * d(n + 1) + 2.5 * d(n)
+           - 2.5 * d(n - 1) + 1.5 * d(n - 2), range(-3, 5))
+
+    # ---- forward Z-transforms and their ROCs ------------------------
+    # 70 Ch / 70 Asa as printed: both radii are 1/3, so the two ROCs
+    # (|z|>1/3 and |z|<1/3) do not intersect -> X(z) does not exist.
+    chk("c2 70 Ch radii equal", abs(-1.0 / 3), abs(1.0 / 3), 1e-15)
+    # the intended (BB Sir's) version, second term (1/2)^n -> ROC 1/3<|z|<1/2
+    X = lambda z: 1 / (1 + (1.0 / 3) / z) + 1 / (1 - 0.5 / z)
+    chkseq("c2 70 Ch intended", X, 0.4,
+           lambda n: (-1.0 / 3) ** n * u(n) - 0.5 ** n * un1(n), range(-5, 6))
+    # 75 Ash: (0.6)^n u[n] + (0.25)^n u[n], ROC |z|>0.6
+    X = lambda z: 1 / (1 - 0.6 / z) + 1 / (1 - 0.25 / z)
+    chkseq("c2 75 Ash", X, 0.9,
+           lambda n: (0.6 ** n + 0.25 ** n) * u(n), range(0, 8))
+    # 75 Ch: (0.1)^n u[n] + (0.3)^n u[-n-1], ROC 0.1<|z|<0.3
+    X = lambda z: 1 / (1 - 0.1 / z) - 1 / (1 - 0.3 / z)
+    chkseq("c2 75 Ch", X, 0.2,
+           lambda n: 0.1 ** n * u(n) + 0.3 ** n * un1(n), range(-5, 6))
+    # 75 Bh: (0.25)^n u[n] + (0.6)^n u[-n-1], ROC 0.25<|z|<0.6
+    X = lambda z: 1 / (1 - 0.25 / z) - 1 / (1 - 0.6 / z)
+    chkseq("c2 75 Bh", X, 0.4,
+           lambda n: 0.25 ** n * u(n) + 0.6 ** n * un1(n), range(-5, 6))
+    # 73 Ma: (0.5+j0.2)^n u[n] + (-j)^n u[-n-1] -> ROC sqrt(0.29)<|z|<1
+    import cmath
+    chk("c2 73 Ma inner radius", abs(0.5 + 0.2j), 0.5385164807, 1e-9)
+    chk("c2 73 Ma outer radius", abs(-1j), 1.0, 1e-12)
+    #   z=0.4 lies OUTSIDE the ROC, so X(0.4) does not converge; z=0.7 is inside
+    Xv = 1 / (1 - (0.5 + 0.2j) / 0.7) - 1 / (1 + 1j / 0.7)
+    chk("c2 73 Ma X(0.7) re", Xv.real, 1.4211409396, 1e-9)
+    chk("c2 73 Ma X(0.7) im", Xv.imag, 2.2197986577, 1e-9)
+
+    # 78 Ch / 70 Ma: Z{n a^n u[n]} = a z^-1 / (1 - a z^-1)^2, |z|>|a|
+    a = 0.7
+    X = lambda z: a / z / (1 - a / z) ** 2
+    chkseq("c2 na^n", X, 1.4, lambda n: n * a ** n * u(n), range(0, 9))
+    # 74 Ma: Z{cos(w n) u[n]} = (1 - z^-1 cos w)/(1 - 2 z^-1 cos w + z^-2)
+    import math
+    w = 0.6
+    X = lambda z: ((1 - math.cos(w) / z)
+                   / (1 - 2 * math.cos(w) / z + 1 / z ** 2))
+    chkseq("c2 cos wn", X, 1.5, lambda n: math.cos(w * n) * u(n), range(0, 9))
+
+
+CHAPTERS = {"ch1": ch1, "ch2": ch2}
 
 
 def main():

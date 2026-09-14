@@ -43,6 +43,15 @@ SPECS = [
      43, {"drop_top": 0.05, "drop_bot": 0.08}),
     ("c1_sampling_rates.png", CW + r"\Chapter 2. Discrete Time Signals and Systems.pdf",
      45, {"drop_top": 0.05, "drop_bot": 0.10}),
+    # ---- chapter 2
+    # every slide carries a full-page background rectangle, so ink detection
+    # returns the whole slide; these three want just the z-plane picture,
+    # so give the box explicitly (read off the drawing/image bboxes).
+    ("c2_roc_right.png", BB + r"\Chapter 2.1.pdf", 4,
+     {"box": (0.60, 0.24, 0.93, 0.715), "zoom": 4.0}),
+    ("c2_roc_left.png", BB + r"\Chapter 2.1.pdf", 5,
+     {"box": (0.56, 0.36, 0.95, 0.85), "zoom": 4.0}),
+    ("c2_roc_props.png", CW + r"\Chapter 3. Z Transform.pdf", 5, {}),
 ]
 
 

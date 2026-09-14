@@ -1,0 +1,428 @@
+%=======================================================================
+%  CHAPTER 2 — Z-TRANSFORM  (4 hrs)
+%  Sources: BB Sir decks 2.1, 2.2 (ROC properties, all seven transform
+%           properties with proofs); Chapterwise Ch3; NAC Sir CH-3.
+%           Cross-checked against Proakis/Manolakis Ch3 and
+%           Oppenheim/Schafer Ch3.
+%  Numericals live in ch2-num.tex.
+%=======================================================================
+\section{Z-Transform}
+
+{\color{sub}\footnotesize 4 hrs \gap$\cdot$\gap \mk{61 questions across the 45 papers}
+\gap$\cdot$\gap worth about \mk{7 of 80 marks} \gap$\cdot$\gap 3 syllabus sub-topics
+\gap$\cdot$\gap the shortest chapter, and \mk{the best marks-per-hour in the subject}.}
+
+\lead{Read this first:}
+\begin{itemize}
+  \item Only \textbf{two} things are ever asked, and they are asked \emph{together}:
+  \begin{itemize}
+    \item \textbf{state the properties of the ROC} \tS{14} --- a 1 to 5 mark bookwork
+          question, \mk{same answer every year},
+    \item \textbf{find the inverse Z-transform} of a given $X(z)$ with a given ROC
+          \tS{32}, for 5 or 6 marks.
+  \end{itemize}
+  \item Those two appear as \textbf{one} question, Q3, in almost every paper. Learn
+        \S2.2 and \S2.5 and the chapter is finished.
+  \item \mk{The ROC is not decoration.} The same $X(z)$ has a different $x[n]$ for every
+        ROC, and papers exploit that: 81 Ba, 82 Ba and 71 Ch each ask for
+        \textbf{three} answers from one $X(z)$.
+  \item Properties with proofs (convolution \tF{5}, time shift, scaling) are worth 3 to 6
+        marks and come from \S2.4.
+  \item \mk{Use one method for every inverse}: divide by $z$, partial-fraction
+        $X(z)/z$, multiply back so every term reads $z/(z-a)$. \S2.5 explains why.
+\end{itemize}
+
+\hr
+
+\T{2.1 Definition, and how it relates to the DTFT}
+
+\Q{Define the Z-transform. How is it related to the DTFT? Explain the scaling
+property}{\m{3+3}\m{2}}
+{\color{sub}\footnotesize \tP{3} \yr{\textbf{\texttt{74 Bh}}, \textbf{\texttt{76 Bh}},
+\texttt{73 Ma}} \gap$\cdot$\gap the definition is the opening line of most Ch 2 answers}
+
+\sbsr{0.52}{%
+\lead{Bilateral (two-sided) Z-transform}
+\[ X(z)=\sum_{n=-\infty}^{\infty}x[n]\,z^{-n},\qquad z=re^{j\omega} \]
+\begin{itemize}
+  \item $z$ is a \textbf{complex} variable, so $X(z)$ is defined on a plane, not a line.
+  \item The sum exists only where it converges: that region is the \textbf{ROC}, and
+        \mk{$X(z)$ without its ROC is only half an answer}.
+  \item Splitting the sum shows where the two halves live:
+        \[ X(z)=\underbrace{\sum_{n=-\infty}^{-1}x[n]z^{-n}}_{\text{left-sided part}}
+                +\underbrace{\sum_{n=0}^{\infty}x[n]z^{-n}}_{\text{right-sided part}} \]
+        The right half needs $|z|$ \emph{large}, the left half needs $|z|$ \emph{small};
+        an ROC is where both hold at once.
+\end{itemize}}{%
+\lead{Relation to the DTFT \mk{(quote this)}}
+\[ X(e^{j\omega})=X(z)\Big|_{z=e^{j\omega}} \]
+\begin{itemize}
+  \item Put $r=1$: the Z-transform evaluated \textbf{on the unit circle} is the DTFT.
+  \item So the DTFT exists \mk{if and only if the ROC contains the unit circle}. That one
+        sentence answers half the theory questions in this chapter.
+  \item In reverse: $X(z)$ is the DTFT of the exponentially weighted sequence
+        $x[n]r^{-n}$. The $r^{-n}$ is what lets the Z-transform handle growing sequences
+        the DTFT cannot.
+  \item Going round the unit circle once is $\omega$ advancing by $2\pi$ --- the same
+        $2\pi$-periodicity as \S1.4.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+\lead{Unilateral (one-sided) Z-transform}
+\sbsr{0.42}{%
+\[ X^{+}(z)=\sum_{n=0}^{\infty}x[n]\,z^{-n} \]
+\begin{itemize}
+  \item Ignores $n<0$ entirely, so its ROC is always the outside of a circle and
+        \mk{need not be stated}.
+  \item \textbf{Importance}: it is the only version that can carry \textbf{initial
+        conditions}, so it is what solves a difference equation for a system that is not
+        relaxed.
+\end{itemize}}{%
+\begin{itemize}
+  \item \textbf{Time delay property} of the one-sided transform (\texttt{73 Ma} asks this):
+        \[ Z^{+}\{x[n-k]\}=z^{-k}X^{+}(z)+\sum_{m=1}^{k}x[-m]\,z^{-(k-m)} \]
+  \item \mk{The extra sum is the initial conditions}; the bilateral version has no such
+        term, which is exactly why the one-sided transform is the one that solves a
+        difference equation with given $y[-1]$, $y[-2]$.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+\lead{Standard pairs \mk{(memorise these five)}}
+\par
+\begin{tabularx}{\textwidth}{@{}L{3.4cm}L{4.0cm}L{2.0cm}X@{}}
+\toprule
+\hrow \thead{$x[n]$} & \thead{$X(z)$} & \thead{ROC} & \thead{Note} \\
+$\delta[n]$ & $1$ & all $z$ & finite duration \\
+$u[n]$ & $\dfrac{1}{1-z^{-1}}=\dfrac{z}{z-1}$ & $|z|>1$
+ & pole on the unit circle, so \mk{not stable} \\
+$a^nu[n]$ & $\dfrac{1}{1-az^{-1}}=\dfrac{z}{z-a}$ & $|z|>|a|$
+ & right-sided, causal \\
+$-a^nu[-n-1]$ & $\dfrac{1}{1-az^{-1}}=\dfrac{z}{z-a}$ & $|z|<|a|$
+ & left-sided, anticausal \\
+$n\,a^nu[n]$ & $\dfrac{az^{-1}}{(1-az^{-1})^2}$ & $|z|>|a|$
+ & repeated pole; also $\dfrac{az}{(z-a)^2}$ \\
+\bottomrule
+\end{tabularx}
+\par\vspace{2pt}
+{\color{sub}\footnotesize \mk{Rows 3 and 4 have the identical $X(z)$ and differ only in the
+ROC.} That is the whole reason the ROC must be given, and the reason an inverse cannot be
+started until you have read it.}
+
+\hr
+
+\T{2.2 Region of convergence}
+
+\Q{Define the ROC. State and explain the properties of the region of
+convergence}{\m{1}\m{2}\m{3}\m{4}\m{5}}
+{\color{sub}\footnotesize \tS{14} \yr{\textbf{80 Bh}, \textbf{73 Ch}, \textbf{72 Ch},
+\textbf{81 Bh}, \textbf{\texttt{77 Ch}}, \textbf{\texttt{71 Bh}}, \textbf{\texttt{70 Bh}},
+79 Ba, 72 Ka, 71 Shr, \textbf{\texttt{73 Bh}}, \textbf{\texttt{78 Ch}}, \texttt{70 Ma},
+\texttt{74 Ma}} \gap$\cdot$\gap \mk{pure bookwork, and it is asked every single year}}
+
+\sbsr{0.56}{%
+\lead{Definition}
+\begin{itemize}
+  \item The \textbf{ROC} is the set of values of $z$ for which
+        $\sum_n|x[n]||z|^{-n}$ converges, i.e.\ where $X(z)$ actually exists.
+  \item It depends only on $|z|=r$, never on the angle, which is why it is always drawn as
+        circles.
+\end{itemize}
+\lead{The eight properties \mk{(this is the answer, in this order)}}
+\begin{enumerate}
+  \item The ROC is a \textbf{ring or a disc} in the $z$-plane, centred on the origin.
+  \item The \textbf{DTFT of $x[n]$ converges absolutely if and only if the ROC includes
+        the unit circle.}
+  \item \mk{The ROC cannot contain any pole.} $X(z)$ is infinite at a pole, so the sum
+        cannot converge there.
+  \item If $x[n]$ is \textbf{finite duration}, the ROC is the entire $z$-plane, possibly
+        except $z=0$ and/or $z=\infty$.
+  \item If $x[n]$ is \textbf{right-sided} ($x[n]=0$ for $n<N_1$), the ROC extends
+        \textbf{outward} from the outermost finite pole, possibly including $z=\infty$.
+  \item If $x[n]$ is \textbf{left-sided} ($x[n]=0$ for $n>N_2$), the ROC extends
+        \textbf{inward} from the innermost non-zero pole, possibly including $z=0$.
+  \item If $x[n]$ is \textbf{two-sided}, the ROC is a \textbf{ring} bounded inside and
+        outside by a pole, containing none.
+  \item The ROC must be a \textbf{connected region}.
+\end{enumerate}
+{\color{sub}\footnotesize For a 4 or 5 mark answer add one line of \emph{why} to properties
+3, 5 and 6, and sketch the three cases. For 1 or 2 marks, the definition plus
+properties 1, 3 and 5 is enough.}}{%
+\figT{c2_roc_right.png}
+\penalty0\vspace{1pt}
+{\color{sub}\footnotesize \textbf{Right-sided} $x[n]=a^nu[n]$: the series
+$\sum(az^{-1})^n$ converges for $|az^{-1}|<1$, i.e.\ \mk{$|z|>|a|$} --- everything
+\emph{outside} the pole circle. \yr{BB Sir, deck 2.1}}
+\penalty0\vspace{3pt}
+\figT{c2_roc_left.png}
+\penalty0\vspace{1pt}
+{\color{sub}\footnotesize \textbf{Left-sided} $x[n]=-a^nu[-n-1]$: same
+$X(z)=z/(z-a)$, but the ROC is \mk{$|z|<|a|$}, the disc \emph{inside} the pole circle.
+\yr{BB Sir, deck 2.1}}}
+
+\sbsr{0.42}{%
+\figT{c2_roc_props.png}
+\penalty0\vspace{1pt}
+{\color{sub}\footnotesize \textbf{Two-sided}: the ROC is the ring between two poles. It
+contains the unit circle here, so this signal has a DTFT.
+\yr{Chapterwise Ch3}}}{%
+\lead{Stability and causality from the ROC \mk{(asked with the properties)}}
+\begin{itemize}
+  \item \textbf{Causal} $\Leftrightarrow$ $h[n]=0$ for $n<0$ $\Leftrightarrow$ the ROC is
+        the \mk{outside of the outermost pole}, and includes $z=\infty$.
+  \item \textbf{BIBO stable} $\Leftrightarrow$ $\sum|h[n]|<\infty$ $\Leftrightarrow$ the
+        \mk{ROC contains the unit circle}.
+  \item \textbf{Causal and stable together} $\Leftrightarrow$ \mk{every pole lies strictly
+        inside the unit circle}. This is the single most quoted line in Chapters 2, 3 and 6.
+  \item A stable but non-causal system is possible: the ROC is a ring that contains the
+        unit circle but does not reach $z=\infty$.
+\end{itemize}
+\lead{Reading the ROC off a question \mk{(the skill the numericals need)}}
+\begin{enumerate}
+  \item Find the poles.
+  \item Mark their radii on a line.
+  \item The given ROC lies in one of the gaps. Any pole with radius \textbf{below} that
+        gap is \mk{right-sided}; any pole \textbf{above} it is \mk{left-sided}.
+\end{enumerate}
+{\color{sub}\footnotesize \mk{A given ROC that contains a pole is impossible} --- two papers
+print exactly that, see Ch2-num \S4.}}
+
+\hr
+
+\T{2.3 Properties of the Z-transform}
+
+\Q{State and prove the convolution property; describe causality and stability in terms of
+the ROC}{\m{2+4}\m{3+3}\m{1+3+3}}
+{\color{sub}\footnotesize \tF{5} \yr{76 Ash, 72 Ka, 70 Asa, \texttt{72 Ma},
+\textbf{\texttt{72 Ash}}} \gap$\cdot$\gap \mk{the most-asked property by far}}
+
+\par
+\begin{tabularx}{\textwidth}{@{}L{4.0cm}XL{4.6cm}@{}}
+\toprule
+\hrow \thead{Property} & \thead{Transform} & \thead{ROC} \\
+Linearity & $a\,x_1[n]+b\,x_2[n]\;\rightarrow\;aX_1(z)+bX_2(z)$
+ & at least $R_{x_1}\cap R_{x_2}$ \\
+Time shift & $x[n-k]\;\rightarrow\;z^{-k}X(z)$
+ & $R_x$, except possibly $z=0$ or $z=\infty$ \\
+Scaling in $z$ (multiply by $a^n$) & $a^n x[n]\;\rightarrow\;X(a^{-1}z)$
+ & $|a|r_1<|z|<|a|r_2$ \\
+Differentiation & $n\,x[n]\;\rightarrow\;-z\dfrac{dX(z)}{dz}$ & $R_x$ \\
+Time reversal & $x[-n]\;\rightarrow\;X(z^{-1})$
+ & $\dfrac{1}{r_2}<|z|<\dfrac{1}{r_1}$ \\
+Convolution & $x_1[n]*x_2[n]\;\rightarrow\;X_1(z)X_2(z)$
+ & at least $R_{x_1}\cap R_{x_2}$ \\
+Multiplication & $x_1[n]x_2[n]\;\rightarrow\;\dfrac{1}{2\pi j}\oint_C X_1(v)\,
+   X_2\!\left(\dfrac{z}{v}\right)v^{-1}dv$ & at least $r_{1_1}r_{1_2}<|z|<r_{2_1}r_{2_2}$ \\
+\bottomrule
+\end{tabularx}
+
+\par\vspace{3pt}
+\sbs{%
+\lead{Convolution, proved \mk{(the 3 to 6 mark answer)}}
+\begin{itemize}
+  \item Start from the definition of the convolution sum:
+        $x[n]=\sum_{k}x_1[k]\,x_2[n-k]$.
+  \item Transform both sides:
+        \[ X(z)=\sum_{n}\Big[\sum_{k}x_1[k]x_2[n-k]\Big]z^{-n} \]
+  \item \textbf{Interchange the order of summation} (the step that earns the mark):
+        \[ X(z)=\sum_{k}x_1[k]\sum_{n}x_2[n-k]z^{-n} \]
+  \item The inner sum is the \textbf{time-shift property}: $\sum_n x_2[n-k]z^{-n}
+        =z^{-k}X_2(z)$.
+        \[ X(z)=X_2(z)\sum_{k}x_1[k]z^{-k}=X_1(z)\,X_2(z) \]
+  \item \mk{``At least'' the intersection}: a pole of one can be cancelled by a zero of the
+        other, which makes the ROC larger than the intersection. Say this --- it is the
+        part most answers miss.
+\end{itemize}}{%
+\lead{Time shift, proved \m{3} \yr{\textbf{69 Ch}}}
+\begin{itemize}
+  \item Let $y[n]=x[n-k]$, so
+        $Y(z)=\sum_n x[n-k]z^{-n}$.
+  \item Substitute $m=n-k$, so $n=m+k$:
+        \[ Y(z)=\sum_m x[m]z^{-(m+k)}=z^{-k}\sum_m x[m]z^{-m}=z^{-k}X(z) \]
+  \item \mk{Why the ROC can change}: $z^{-k}$ adds poles at $z=0$ (for $k>0$) or at
+        $z=\infty$ (for $k<0$), so those two points may drop out.
+\end{itemize}
+\lead{Scaling, proved \m{3} \yr{\textbf{\texttt{74 Bh}}}}
+\begin{itemize}
+  \item \[ Z\{a^nx[n]\}=\sum_n a^nx[n]z^{-n}=\sum_n x[n](a^{-1}z)^{-n}=X(a^{-1}z) \]
+  \item The ROC $r_1<|z|<r_2$ becomes $r_1<|a^{-1}z|<r_2$, i.e.\
+        $|a|r_1<|z|<|a|r_2$: \mk{every pole is scaled by $a$}.
+  \item Example: $u[n]\rightarrow\frac{1}{1-z^{-1}}$, so
+        $a^nu[n]\rightarrow\frac{1}{1-az^{-1}}$, pole moved from 1 to $a$.
+\end{itemize}
+\lead{Differentiation, used in every $na^n$ question}
+\begin{itemize}
+  \item Differentiate $X(z)=\sum x[n]z^{-n}$ term by term and multiply by $-z$:
+        \[ Z\{n\,x[n]\}=-z\frac{dX(z)}{dz} \]
+  \item Applied to $a^nu[n]$ it gives
+        $Z\{na^nu[n]\}=\dfrac{az^{-1}}{(1-az^{-1})^2}$, $|z|>|a|$ ---
+        \mk{the answer \texttt{78 Ch} and \texttt{70 Ma} both ask for}.
+\end{itemize}}
+
+\hr
+
+\T{2.4 Finding $X(z)$ and locating the ROC}
+
+\Q{Find the Z-transform of the given signal and locate its ROC}{\m{2+4}\m{3+6}\m{4+6}}
+{\color{sub}\footnotesize \tF{6} \yr{\textbf{70 Ch}, 70 Asa, 75 Ash, \textbf{75 Ch},
+\textbf{\texttt{75 Bh}}, \texttt{73 Ma}} \gap$\cdot$\gap worked in \textbf{Ch2-num \S6}}
+
+\sbs{%
+\lead{Method}
+\begin{enumerate}
+  \item Split $x[n]$ into its terms.
+  \item Transform each with a standard pair, \mk{writing its own ROC beside it}.
+  \begin{itemize}
+    \item $a^nu[n]\rightarrow\frac{1}{1-az^{-1}}$, ROC $|z|>|a|$ (outside).
+    \item $-b^nu[-n-1]\rightarrow\frac{1}{1-bz^{-1}}$, ROC $|z|<|b|$ (inside).
+    \item \mk{Watch the sign}: a $+b^nu[-n-1]$ term transforms to
+          $-\frac{1}{1-bz^{-1}}$.
+  \end{itemize}
+  \item The ROC of the sum is the \textbf{intersection} of the individual ROCs.
+  \item If the intersection is empty, \mk{the Z-transform does not exist} --- and that is
+        the full answer. 70 Ch prints exactly such a signal (Ch2-num \S6).
+\end{enumerate}}{%
+\lead{Why the intersection can be empty}
+\begin{itemize}
+  \item A right-sided term needs $|z|>R_1$; a left-sided term needs $|z|<R_2$.
+  \item The ring $R_1<|z|<R_2$ exists \mk{only if $R_1<R_2$}: the right-sided pole must be
+        the \emph{inner} one.
+  \item $R_1=R_2$ or $R_1>R_2$ leaves nothing, so $X(z)$ does not exist even though each
+        term separately transforms perfectly well.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+\lead{Two standard transforms the papers ask for by name}
+\sbs{%
+\begin{itemize}
+  \item $x[n]=na^nu[n]$ (\textbf{\texttt{78 Ch}}, \texttt{70 Ma}) --- use
+        differentiation:
+        \[ X(z)=\frac{az^{-1}}{(1-az^{-1})^2},\qquad |z|>|a| \]
+  \item Derivation in one line: $-z\dfrac{d}{dz}\dfrac{z}{z-a}
+        =-z\cdot\dfrac{(z-a)-z}{(z-a)^2}=\dfrac{az}{(z-a)^2}$.
+\end{itemize}}{%
+\begin{itemize}
+  \item $x[n]=\cos\omega n$ for $n\ge0$ (\texttt{74 Ma}) --- write the cosine as two
+        exponentials and add two geometric series:
+        \[ X(z)=\frac{1-z^{-1}\cos\omega}{1-2z^{-1}\cos\omega+z^{-2}},\qquad |z|>1 \]
+        \mk{Its two poles are $e^{\pm j\omega}$, on the unit circle}, which is why the
+        ROC excludes it and why a pure sinusoid is not BIBO stable.
+\end{itemize}}
+
+\penalty0\vspace{1pt}
+
+\hr
+
+\T{2.5 Inverse Z-transform: the three methods}
+
+\Q{Determine the inverse Z-transform of the given $X(z)$ for the stated
+ROC}{\m{5}\m{6}\m{1+5}\m{2+6}}
+{\color{sub}\footnotesize \tS{32} \gap$\cdot$\gap \mk{the single biggest question in this
+chapter}, 5 or 6 marks in nearly every paper \gap$\cdot$\gap every instance is worked in
+\textbf{Ch2-num}}
+
+\sbs{%
+\lead{Which method, and when}
+\begin{enumerate}
+  \item \textbf{Partial fractions} --- the default. Use unless the question names another
+        method. Gives a closed form for every $n$.
+  \item \textbf{Long division (power series)} --- use when the question says so
+        (\textbf{\texttt{77 Ch}}, \textbf{\texttt{76 Bh}}, \textbf{\texttt{73 Bh}},
+        \texttt{72 Ma}, \texttt{70 Ma}). Gives numbers, \mk{not a closed form}, so give
+        4 or 5 terms and the recurrence.
+  \item \textbf{By inspection} --- when $X(z)$ is already a finite polynomial, read the
+        coefficients straight off as impulses (74 Ash, \textbf{\texttt{78 Ch}}).
+  \item The contour-integral / residue method is never asked in these 45 papers.
+\end{enumerate}}{%
+\lead{\mk{Why divide by $z$ first}}
+\begin{itemize}
+  \item The standard pairs are $\dfrac{z}{z-a}\leftrightarrow a^nu[n]$, with a $z$
+        \emph{on top}.
+  \item Expanding $X(z)$ directly gives terms $\dfrac{A}{z-a}$ with no $z$ on top, and
+        each then needs an extra time shift. Expanding $X(z)/z$ puts the $z$ back for
+        free.
+  \item \mk{Use it every single time}, including the repeated-pole cases. One idiom, no
+        decisions.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+\sbs{%
+\lead{The partial-fraction method, in one fixed order}
+\begin{enumerate}
+  \item \textbf{Is $X(z)$ proper?} If the numerator's degree is $\ge$ the denominator's,
+        \mk{long-divide first} and keep the polynomial part aside --- it becomes impulses.
+  \item \textbf{Divide by $z$} and expand $X(z)/z$ in partial fractions.
+  \item Multiply back by $z$, so every term reads $\dfrac{A\,z}{z-a}$.
+  \item \textbf{Assign each pole a side} from the ROC (\S2.2).
+  \item Write the answer term by term with the pairs opposite.
+\end{enumerate}}{%
+\lead{The pair table, both sides}
+\par
+\begin{tabular}{@{}L{2.4cm}L{2.9cm}L{2.6cm}@{}}
+\toprule
+\hrow \thead{Term} & \thead{ROC $|z|>|a|$} & \thead{ROC $|z|<|a|$} \\
+$\dfrac{z}{z-a}$ & $a^n u[n]$ & $-a^n u[-n-1]$ \\
+$\dfrac{z}{(z-a)^2}$ & $n\,a^{n-1}u[n]$ & $-n\,a^{n-1}u[-n-1]$ \\
+constant $C$ & $C\delta[n]$ & $C\delta[n]$ \\
+$z^k$ & \multicolumn{2}{l}{$\delta[n+k]$, an \emph{advance}} \\
+\bottomrule
+\end{tabular}
+\par\vspace{2pt}
+{\color{sub}\footnotesize \mk{The right-hand column is just the left with a minus sign and
+$u[-n-1]$ instead of $u[n]$.} That is the only thing the ROC changes.}}
+
+\lead{Long division: which way to divide \mk{(where the marks are lost)}}
+\sbs{%
+\begin{itemize}
+  \item \textbf{Right-sided} (ROC outside, causal): arrange both polynomials in
+        \mk{ascending powers of $z^{-1}$} and divide. The quotient
+        $x[0]+x[1]z^{-1}+x[2]z^{-2}+\ldots$ is read off directly.
+  \item \textbf{Left-sided} (ROC inside, anticausal): arrange in \mk{ascending powers of
+        $z$} instead. The quotient gives $x[-1]z,\,x[-2]z^2,\ldots$
+  \item \mk{Dividing the wrong way round gives the other sequence}, which is a valid
+        series for a different ROC --- and scores zero.
+\end{itemize}}{%
+\begin{itemize}
+  \item Faster than dividing: read the \textbf{recurrence} straight off the denominator.
+        For $X(z)=\dfrac{1}{1-a_1z^{-1}-a_2z^{-2}}$,
+        \[ x[n]=a_1x[n-1]+a_2x[n-2],\quad x[0]=1 \]
+        and then just iterate. This is the same difference equation the filter implements
+        (Ch 4).
+  \item \mk{Always give the recurrence as well as the terms}: it shows the pattern
+        continues and it is what a 6-mark answer wants.
+\end{itemize}}
+
+\hr
+
+\T{2.6 Last-minute recall for this chapter}
+
+\sbs{%
+\lead{Must memorise}
+\begin{itemize}
+  \item $X(z)=\sum_n x[n]z^{-n}$; the DTFT is $X(z)$ on the unit circle.
+  \item $a^nu[n]\leftrightarrow\frac{z}{z-a}$, $|z|>|a|$; \;
+        $-a^nu[-n-1]\leftrightarrow\frac{z}{z-a}$, $|z|<|a|$. \mk{Same $X(z)$, different
+        ROC.}
+  \item $na^nu[n]\leftrightarrow\frac{az^{-1}}{(1-az^{-1})^2}$;
+        $\frac{z}{(z-a)^2}\leftrightarrow na^{n-1}u[n]$.
+  \item The 8 ROC properties (\S2.2) --- \mk{written out, in order}.
+  \item Causal $\Rightarrow$ ROC outside the outermost pole. Stable $\Rightarrow$ ROC
+        contains the unit circle. \mk{Both $\Rightarrow$ all poles inside the unit circle.}
+  \item Convolution $\rightarrow$ product; shift $\rightarrow$ $z^{-k}$; multiply by $a^n$
+        $\rightarrow$ $X(a^{-1}z)$; multiply by $n$ $\rightarrow$ $-z\,dX/dz$.
+  \item Inverse: proper? $\rightarrow$ divide by $z$ $\rightarrow$ partial fractions
+        $\rightarrow$ assign sides from the ROC.
+\end{itemize}}{%
+\lead{Most repeated, in order}
+\begin{enumerate}
+  \item Inverse Z-transform with a given ROC \tS{32}
+  \item Properties of the ROC \tS{14}
+  \item Find $X(z)$ and locate its ROC \tF{6}
+  \item Convolution property, stated and proved \tF{5}
+  \item Z-transform of $na^nu[n]$ \tP{3}
+  \item One-sided Z-transform and its time-delay property \tP{2}
+  \item Time-shift property, derived \tP{1}
+  \item Scaling property with an example \tP{1}
+\end{enumerate}
+{\color{sub}\footnotesize \mk{Q3 of the paper is the ROC properties plus an inverse
+Z-transform in 30 of the 45 papers.} If you prepare one question in this subject, prepare
+that one.}}
