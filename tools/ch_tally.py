@@ -152,16 +152,37 @@ def main():
     chs = chapters(path)
     want = int(args[1]) if len(args) > 1 else None
     print("source: " + os.path.relpath(path, REPO))
-    grand = 0
-    for i, (title, body) in enumerate(chs, 1):
+
+    # Always tally every chapter, even when only one is being printed: a chapter
+    # header claims a RANK ("second heaviest"), and a rank cannot be known from
+    # one chapter's numbers. Getting that wrong twice is what put this here.
+    allrows = [(i, title, tally(body)[0], tally(body)[1])
+               for i, (title, body) in enumerate(chs, 1)]
+    weights = sorted(((sum(r["marks"] for r in rows), i)
+                      for i, _, rows, _ in allrows), reverse=True)
+    rank = {i: n for n, (_, i) in enumerate(weights, 1)}
+    npapers = 45
+
+    for i, title, rows, noted in allrows:
         if want and i != want:
             continue
-        rows, noted = tally(body)
+        mk = sum(r["marks"] for r in rows)
         report("Chapter %d: %s" % (i, title), rows, noted, show_rows=show)
-        grand += sum(r["marks"] for r in rows)
+        print("   about %.1f marks in an 80 mark paper   RANK %d of %d by weight"
+              % (mk / float(npapers), rank[i], len(allrows)))
+
     if want is None:
         print("")
-        print("all chapters, total marks: %d" % grand)
+        print("%-4s %-46s %6s %6s %5s" % ("rank", "chapter", "marks", "/80", "q"))
+        for n, (mk, i) in enumerate(weights, 1):
+            title = allrows[i - 1][1]
+            q = len(allrows[i - 1][2])
+            print("%-4d %-46s %6d %6.1f %5d"
+                  % (n, title[:46], mk, mk / float(npapers), q))
+        print("")
+        print("all chapters, total marks: %d  (%.1f per paper against a printed 80)"
+              % (sum(w for w, _ in weights),
+                 sum(w for w, _ in weights) / float(npapers)))
 
 
 if __name__ == "__main__":
