@@ -126,6 +126,61 @@ expensive.
 10. **Rebuild, verify, then commit sources and PDFs together.** A `.tex` committed without
    its rebuilt `.pdf` leaves the published document stale.
 
+## Model routing
+
+Everything in this repo's recorded history ran on Opus in one thread: 18 sessions,
+5,016 turns, 0 delegations, 187 M weighted token-units. Measured 2026-09-14. Most of
+that spend is not authoring. 1,947 Bash calls pulled 1.03 M tokens of output into the
+window, and 61 % of that volume was plain inspection -- greps, dumps, page censuses --
+with another 17 % in patch-script echoes and 8 % in PDF extraction. That is the work
+worth moving off the expensive model.
+
+**The lanes live in `tools/route.py`** -- run it bare to print the table, or pass a task
+description for a suggestion. Four lanes, cheapest first:
+
+- **script** -- no model at all. `build.py`, `verify.py`, `audit.py`, `check.py`,
+  `anki_from_notes.py` and a one-line `fitz` census are deterministic. Reaching for a
+  model where a tool already answers is the most expensive mistake available.
+- **haiku** (`pyq-scout`) -- retrieval and tallying. Returns tables and verbatim quotes.
+- **sonnet** (`pyq-extract`, `pyq-latex`, `pyq-figure`, `pyq-crosscheck`) -- bounded
+  mechanical work **behind a machine-checkable exit test**: marks reconciling to 80, a
+  clean tectonic run, `audit.py` at zero, a non-blank crop, a quote located or its
+  absence proven.
+- **opus** -- chapter prose, numerical answers, frequency tiers, paper-defect diagnosis,
+  grouping numericals, house style, and every word the user reads.
+
+The dividing line is the exit test: **delegate work whose correctness a script can
+prove, keep work whose correctness only a reader can judge.** A task with no exit test
+is not a Sonnet task.
+
+**Authoring stays on Opus because it was tried the other way and cost more.**
+RF-Microwave Ch1 was drafted by a weaker model and needed a repair pass: it cited three
+papers that ask no Chapter-1 question at all, four tier chips disagreed with their own
+year lists, it had no PYQ-mapping band, and it carried a physics misconception. The
+draft built cleanly, which is exactly why that class of defect is expensive -- nothing
+catches it but reading. See `rf-microwave-notes-build` in memory.
+
+**Measure after every session.** `.claude/settings.json` runs
+`python tools/session_meter.py --ledger` on SessionEnd, which appends one row per
+delegation to `tools/agent-ledger.tsv` and rewrites `AGENTS-LEDGER.md`. Run it by hand
+any time:
+
+```bash
+python tools/session_meter.py              # the session that just ended
+python tools/session_meter.py --all        # the whole-history baseline
+python tools/session_meter.py --report     # per-agent verdict, keep or stop
+```
+
+Three numbers decide whether a lane keeps its work. **net saved**, in
+Opus-token-equivalents, with the delegate's own spend and the main thread's
+prompt-plus-report overhead already subtracted. **displaced**, the tool output the
+subagent absorbed that never entered the main window -- the one that matters most here,
+because cache reads are about 95 % of raw input, so a token kept out is paid once while
+a token let in is re-read every later turn. **repairs**, main-thread rewrites of files
+the subagent wrote, which is the quality signal: a delegation whose output has to be
+rewritten saved nothing. `--report` turns three or more runs of a lane into a verdict;
+under three runs it says so rather than pretending to know.
+
 ## Build
 
 ```bash
