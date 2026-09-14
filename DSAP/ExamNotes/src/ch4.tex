@@ -1,0 +1,460 @@
+%=======================================================================
+%  CHAPTER 4 - DISCRETE FILTER STRUCTURES  (8 hrs)
+%  Every reflection and ladder coefficient quoted here is produced by
+%  lattice.py, in exact rational arithmetic, and every quantization
+%  answer by quant.py. Both self-test before they print.
+%  Numericals live in ch4-num.tex.
+%=======================================================================
+\section{Discrete Filter Structures}
+
+{\color{sub}\footnotesize 8 hrs \gap$\cdot$\gap \mk{68 questions across the 45 papers}
+\gap$\cdot$\gap worth about \mk{10 of 80 marks} \gap$\cdot$\gap 3 syllabus sub-topics
+\gap$\cdot$\gap \mk{5th of the 8 chapters} by weight, and tied with Ch 1 as the longest
+at 8 hours.}
+
+\lead{Read this first:}
+\begin{itemize}
+  \item \textbf{42 of the 68 questions are the lattice} \tS{42}, worth 314 of the
+        chapter's 449 marks. It is one calculation, the \textbf{step-down recursion},
+        run on whatever polynomial the paper prints. Learn it once and two thirds of
+        the chapter is finished.
+  \item The other two topics are \textbf{realization structures} \tS{16} (direct form I
+        and II, cascade, parallel) and \textbf{quantization} \tS{10} (number formats,
+        round-off, limit cycles).
+  \item \mk{Nothing in this chapter changes what the filter does.} Every structure here
+        realizes the \emph{same} $H(z)$. They differ in how much memory they need, how
+        many multiplies, and how badly finite word length hurts them. That sentence is
+        the answer to "why do we need different structures".
+  \item \mk{The lattice is stable exactly when every $|k_m|<1$.} That single line
+        answers the "check stability" half of a dozen questions, and it needs no
+        root finding at all.
+  \item A trap worth knowing before you start: a \textbf{symmetric} polynomial gives
+        $|k_N|=1$, and the recursion divides by $1-k_N^2$. \mk{A linear-phase FIR filter
+        has no lattice realization.} Five papers ask for one anyway; see \S4.4.
+\end{itemize}
+
+\hr
+
+\T{4.1 \quad Why there is more than one structure}
+
+\Q{Why do we need different realization structures for the same system?}{\m{2}\m{4}}
+{\color{sub}\footnotesize the opening paragraph for any structure question}
+
+\sbs{%
+\lead{What is the same}
+\begin{itemize}
+  \item Every structure in this chapter realizes the \textbf{same $H(z)$}, so it has the
+        same impulse response, the same poles and zeros, and the same frequency
+        response. With infinite precision they are indistinguishable.
+  \item So a question that asks you to "realize" a system is asking for a \textbf{block
+        diagram or signal flow graph}, not for new mathematics.
+\end{itemize}}{%
+\lead{What differs, and why it matters}
+\begin{itemize}
+  \item \textbf{Memory}: how many delay elements. Direct Form II uses the minimum
+        possible, $\max(M,N)$.
+  \item \textbf{Arithmetic}: how many multiplies and adds per output sample.
+  \item \textbf{Finite word length}: how far the poles move when the coefficients are
+        rounded to $b$ bits, and how much round-off noise accumulates. \mk{This is the
+        real reason} cascade and parallel forms are preferred in practice: a direct form
+        of high order is extremely sensitive, because every pole depends on every
+        coefficient.
+  \item \textbf{Modularity}: cascade and lattice are built from identical sections.
+\end{itemize}}
+
+\lead{The three building blocks, and the two ways to draw them}
+\begin{itemize}
+  \item Every structure is made of \textbf{unit delays} $z^{-1}$, \textbf{multipliers}
+        (a constant on an arrow) and \textbf{adders}.
+  \item A \textbf{block diagram} draws adders as circles with $+$; a \textbf{signal flow
+        graph} draws nodes and directed branches, with the gain written on the branch.
+        They carry the same information, and papers ask for either.
+  \item \textbf{Transposition}: reverse every arrow, swap adders with branch nodes, and
+        exchange input with output. The transposed structure has the \emph{same} $H(z)$.
+        \mk{No paper in the 45 asks for a transposed form}, and no source in the subject
+        covers it, but it is worth one line because it explains how two diagrams that
+        look nothing alike can be the same filter.
+\end{itemize}
+
+\hr
+
+\T{4.2 \quad Direct Form I and Direct Form II}
+
+\Q{Obtain the Direct Form I and Direct Form II realization of the given system}{\m{2+2}\m{4}\m{5}}
+{\color{sub}\footnotesize \tS{16} \yr{\textbf{79 Bh} \m{2+2}, 79 Ba \m{4},
+\textbf{82 Bh} \m{2+2}, \textbf{74 Ch} \m{5}, \textbf{72 Ch} \m{5}, 72 Ka \m{4},
+\textbf{69 Ch} \m{4}, \textbf{68 Bh} \m{9}, \textbf{70 Ch} \m{4}}
+\gap$\cdot$\gap worked in \S1 of the numerical companion}
+
+\sbsr{0.5}{%
+\lead{Direct Form I: the difference equation, drawn}
+Start from
+\[ y[n]=\sum_{k=0}^{M}b_k x[n-k]-\sum_{k=1}^{N}a_k y[n-k] \]
+\begin{itemize}
+  \item Draw the \textbf{feedforward} part first: a chain of $M$ delays down the input,
+        each tapped by $b_k$ into a summing node.
+  \item Then the \textbf{feedback} part: a chain of $N$ delays down the output, each
+        tapped by $-a_k$ into the same node.
+  \item \mk{It is the equation copied onto paper}, which is why it is the easy 2 marks.
+  \item Cost: $M+N$ delays, $M+N+1$ multiplies.
+  \item Read it as $H(z)=B(z)\cdot\dfrac{1}{A(z)}$: all-zero section first, all-pole
+        section second.
+\end{itemize}}{%
+\lead{Direct Form II: swap the halves and share the delays}
+Because the two sections are LTI, they commute:
+\[ H(z)=\frac{1}{A(z)}\cdot B(z) \]
+\begin{itemize}
+  \item Put the \textbf{all-pole section first}. Its output is an intermediate signal
+        $w[n]$:
+  \item[] \[ w[n]=x[n]-\sum_{k=1}^{N}a_k w[n-k],\qquad
+             y[n]=\sum_{k=0}^{M}b_k w[n-k] \]
+  \item Now \emph{both} chains delay the same signal $w[n]$, so \mk{one chain of delays
+        serves both}.
+  \item Cost: $\max(M,N)$ delays, which is the fewest any structure can use. A structure
+        with the minimum number of delays is called \textbf{canonic}.
+  \item \mk{This is the only reason Direct Form II exists}: same arithmetic, half the
+        memory.
+\end{itemize}}
+
+\lead{Drawing it, in four steps}
+\begin{enumerate}
+  \item Write the equation with $y[n]$ alone on the left and \textbf{watch the signs}:
+        every $a_k$ crosses over and becomes $-a_k$.
+  \item Count $N$ (highest $y$ delay) and $M$ (highest $x$ delay). The chain has
+        $\max(M,N)$ delays.
+  \item Down the left of the chain put $-a_1,-a_2,\dots$ feeding back into the top
+        adder. Down the right put $b_0,b_1,\dots$ feeding forward into the output adder.
+  \item Label $w[n]$ at the top of the chain. A missing coefficient is a \textbf{missing
+        branch}, not a zero multiplier: if the paper's equation skips $x[n-1]$, leave
+        that tap out.
+\end{enumerate}
+
+{\color{sub}\footnotesize If $a_0\ne1$, \mk{divide the whole equation by $a_0$ first}.
+74 Ch prints $3y[n]+y[n-1]+2y[n-4]=2x[n]+x[n-3]$, and every coefficient must be divided
+by 3 before drawing. Forgetting this is the most common lost mark in \S4.2.}
+
+\hr
+
+\T{4.3 \quad Cascade and parallel forms}
+
+\Q{Realize the given $H(z)$ in cascade form of second-order sections, and in parallel
+form}{\m{4}\m{5}\m{6}\m{7}}
+{\color{sub}\footnotesize \tS{16} \yr{81 Ba \m{5}, \texttt{74 Ma} \m{7}, 80 Ba \m{4},
+\textbf{76 Ch} \m{4}, \textbf{\texttt{77 Ch}} \m{7}, \textbf{69 Bh} \m{6},
+\textbf{67 Mng}, \textbf{\texttt{78 Ch}} \m{6}}}
+
+\sbsr{0.5}{%
+\lead{Cascade: multiply the sections}
+\[ H(z)=b_0\prod_{k=1}^{K}\frac{1+b_{1k}z^{-1}+b_{2k}z^{-2}}
+                                {1+a_{1k}z^{-1}+a_{2k}z^{-2}} \]
+\begin{itemize}
+  \item Group the poles and zeros into \textbf{second-order sections}, each realized in
+        Direct Form II, and chain them output to input.
+  \item \mk{A complex pole must be paired with its conjugate} in the same section. That
+        is the whole point: the section then has \textbf{real} coefficients,
+        $a_{1k}=-2\mathrm{Re}(p)$ and $a_{2k}=|p|^2$.
+\end{itemize}}{%
+\lead{Parallel: add the sections}
+\[ H(z)=C+\sum_{k=1}^{K}\frac{\gamma_{0k}+\gamma_{1k}z^{-1}}
+                              {1+a_{1k}z^{-1}+a_{2k}z^{-2}} \]
+\begin{itemize}
+  \item Get here by \textbf{partial fractions}, exactly as in Chapter 2, then recombine
+        each conjugate pair into one real second-order section.
+  \item $C$ is the constant from the division when $H(z)$ is improper; it is a direct
+        path from input to output.
+\end{itemize}}
+
+\sbsr{0.5}{%
+\begin{itemize}
+  \item Real poles pair with real poles, or sit alone as a first-order section.
+  \item An odd number of real poles leaves one first-order section; that is normal, not
+        an error.
+\end{itemize}}{%
+\begin{itemize}
+  \item \mk{Cascade needs factors, parallel needs partial fractions.} That is the only
+        difference in the work.
+  \item Parallel has the best round-off behaviour of the three: an error in one section
+        cannot propagate into the others, because they do not feed each other.
+\end{itemize}}
+
+\lead{Turning a conjugate pair into real coefficients}
+\begin{itemize}
+  \item A pair of poles at $re^{\pm j\theta}$ multiplies out to
+  \item[] \[ (1-re^{j\theta}z^{-1})(1-re^{-j\theta}z^{-1})
+             =1-2r\cos\theta\,z^{-1}+r^{2}z^{-2} \]
+  \item So a section written $1-2r\cos\theta\,z^{-1}+r^{2}z^{-2}$ needs only $r$ and
+        $\theta$, both of which the papers usually hand you directly.
+  \item For a pair given in rectangular form $\sigma\pm j\omega$, it is
+        $1-2\sigma z^{-1}+(\sigma^{2}+\omega^{2})z^{-2}$.
+  \item \mk{Check every section has real coefficients before drawing.} A surviving $j$
+        means a pole was left unpaired.
+\end{itemize}
+
+\hr
+
+\T{4.4 \quad The FIR lattice}
+
+\Q{Compute the lattice coefficients and draw the structure for the given $H(z)$; check
+stability}{\m{5}\m{6}\m{8}\m{10}}
+{\color{sub}\footnotesize \tS{42} \yr{\textbf{80 Bh} \m{10},
+\textbf{\texttt{81 Ch}}, \textbf{\texttt{72 Ash}} \m{4+2+1}, \textbf{\texttt{79 Ch}},
+\textbf{\texttt{69 Bh}} \m{8}, \textbf{\texttt{71 Bh}} \m{6+2}, \texttt{70 Ma} \m{6},
+\textbf{71 Ch} \m{4+2+1}, 81 Ba \m{5}, \textbf{78 Bh} \m{3+7}, \textbf{79 Bh} \m{6},
+71 Shr \m{5}, \textbf{\texttt{80 Ch}}, \texttt{74 Ma} \m{7}, and 25 more}
+\gap$\cdot$\gap \mk{the single most valuable calculation in the subject}}
+
+\sbsr{0.52}{%
+\lead{What the structure is}
+An $M$-stage lattice chains identical two-input two-output sections. Stage $m$ takes a
+forward signal $f_{m-1}$ and a backward signal $g_{m-1}$ and produces
+\[ f_m[n]=f_{m-1}[n]+k_m\,g_{m-1}[n-1] \]
+\[ g_m[n]=k_m\,f_{m-1}[n]+g_{m-1}[n-1] \]
+with $f_0[n]=g_0[n]=x[n]$ and $y[n]=f_M[n]$.
+\begin{itemize}
+  \item The $k_m$ are the \textbf{reflection coefficients}, one per stage.
+  \item The forward path realizes $A_M(z)$; \mk{the backward path realizes its reverse}
+        $z^{-M}A_M(z^{-1})$, which is what makes the all-pass of \S4.5 so tidy.
+  \item Only \textbf{one} multiplier value per stage, used twice. That symmetry is why
+        the lattice is far less sensitive to coefficient quantization than a direct
+        form, and why it is used for speech.
+\end{itemize}}{%
+\lead{The step-down recursion \mk{(direct form $\rightarrow$ lattice)}}
+Given $A_M(z)=1+a_M(1)z^{-1}+\dots+a_M(M)z^{-M}$:
+\[ k_m=a_m(m) \]
+\[ a_{m-1}(i)=\frac{a_m(i)-k_m\,a_m(m-i)}{1-k_m^{2}},\quad i=1,\dots,m-1 \]
+\begin{enumerate}
+  \item \textbf{Read off $k_M$}: it is the last coefficient, free.
+  \item Fold $A_M$ against its own reverse, divide by $1-k_M^{2}$, and you have
+        $A_{M-1}$, one degree lower.
+  \item Repeat down to $A_1$, whose single coefficient is $k_1$.
+\end{enumerate}
+\lead{The step-up recursion \mk{(lattice $\rightarrow$ direct form)}}
+\[ a_m(i)=a_{m-1}(i)+k_m\,a_{m-1}(m-i),\qquad a_m(m)=k_m \]
+{\color{sub}\footnotesize Same relation, rearranged. Papers ask in both directions:
+79 Bh and 71 Shr give $k=\{\tfrac14,\tfrac12,\tfrac13\}$ and want the FIR coefficients.}}
+
+\lead{Stability, in one line}
+\begin{itemize}
+  \item \mk{The system is stable if and only if $|k_m|<1$ for every $m$.}
+  \item No root finding, no Jury table. The step-down \emph{is} the Schur-Cohn test: it
+        is testing whether every root of $A(z)$ lies inside the unit circle.
+  \item A question that says "check stability" after asking for the lattice is asking
+        you to \textbf{look at the numbers you already computed}. It is a free mark.
+\end{itemize}
+
+\creamq{The symmetric trap: why five papers ask for an impossible lattice}{If $A(z)$ is
+\textbf{symmetric}, meaning its coefficient list reads the same backwards, then
+$a_M(M)=a_M(0)=1$, so $k_M=1$ and the step-down divides by $1-k_M^{2}=0$. \mk{A
+symmetric polynomial has no lattice realization.} And symmetry is exactly the
+linear-phase condition $h[n]=h[M-n]$ from Chapter 3, so \textbf{a linear-phase FIR
+filter can never be put in lattice form}. The papers that hit this are
+\textbf{72 Ch} ($1+2z^{-1}+z^{-2}$), \textbf{\texttt{73 Bh}} ($1+2z^{-1}+2z^{-2}+z^{-3}$),
+\textbf{75 Ch} and \textbf{73 Ch} (both with $1+\tfrac23z^{-1}+\tfrac58z^{-2}
++\tfrac23z^{-3}+z^{-4}$), and 74 Ash, whose last coefficient is $-1$. Say so, show the
+division by zero, and note that the zeros sit \emph{on} the unit circle. It is a better
+answer than a page of arithmetic that cannot finish.}
+
+\hr
+
+\T{4.5 \quad Lattice-ladder, for a pole-zero system}
+
+\sbsr{0.5}{%
+\lead{Why a ladder is needed}
+\begin{itemize}
+  \item The plain lattice realizes an \textbf{all-zero} $A_M(z)$, or upside down an
+        \textbf{all-pole} $1/A_N(z)$.
+  \item A general $H(z)=B(z)/A(z)$ needs one more piece: tap every backward signal
+        $g_m[n]$ through a weight $C_m$ and sum them.
+  \item[] \[ y[n]=\sum_{m=0}^{M}C_m\,g_m[n] \]
+  \item The lattice supplies the poles, \mk{the ladder taps supply the zeros}.
+\end{itemize}}{%
+\lead{Getting the ladder coefficients}
+Run the step-down on the \textbf{denominator} $A(z)$ and keep every intermediate
+polynomial $A_i(z)$. Then, working \textbf{downwards} from $m=M$:
+\[ C_m=b_m-\sum_{i=m+1}^{M}C_i\,a_i(i-m) \]
+\begin{enumerate}
+  \item $C_M=b_M$, because the sum is empty.
+  \item Each lower $C$ subtracts what the higher taps already contribute.
+  \item \mk{The $k$'s come only from $A(z)$}, so two papers with the same denominator
+        have the same lattice and differ only in the ladder. 76 Ch and 76 Ash are such a
+        pair, and so are 74 Bh and 75 Bh.
+\end{enumerate}}
+
+\creamq{The all-pass result, and why it is worth remembering}{\textbf{\texttt{70 Bh}}
+gives $H(z)=\dfrac{1+0.4z^{-1}-1.2z^{-2}+2z^{-3}}{2-1.2z^{-1}+0.4z^{-2}+z^{-3}}$ and asks
+how a lattice implements it. Look at the coefficients: \mk{the numerator is the
+denominator reversed}. That is the definition of an all-pass,
+$H(z)=z^{-N}A(z^{-1})/A(z)$, and the backward path of a lattice already computes exactly
+$z^{-N}A(z^{-1})$. So the ladder collapses: every $C_m$ is zero except $C_N=1$. \mk{An
+all-pass filter is just a lattice with the output taken from the last backward node},
+no ladder taps at all. The reflection coefficients are $k=\{-0.56,\ \tfrac23,\
+\tfrac12\}$, all less than 1 in magnitude, so it is stable.}
+
+\hr
+
+\T{4.6 \quad Number representation and quantization}
+
+\Q{Write about the sign magnitude and 2's complement representation of a binary
+fractional number. Write about truncation error and rounding error}{\m{6}\m{3+4}}
+{\color{sub}\footnotesize \tS{10} \yr{\textbf{69 Bh} \m{6}, \textbf{\texttt{69 Bh}} \m{3+4},
+75 Ash \m{3}, \textbf{67 Mng}, 71 Shr \m{1+1}}}
+
+\sbs{%
+\lead{The three fixed-point codes}
+A fraction in $[-1,1)$ with $b$ bits after the binary point. Positive numbers look the
+same in all three; only negatives differ.
+\par\smallskip
+\begin{tabular}{@{}L{2.5cm}L{5.0cm}@{}}
+\toprule
+\hrow \thead{Code} & \thead{How a negative is formed} \\
+Sign magnitude & sign bit $1$, magnitude bits unchanged \\
+1's complement & invert every magnitude bit \\
+2's complement & invert every bit, add $1$ in the last place \\
+\bottomrule
+\end{tabular}
+\par\smallskip
+\begin{itemize}
+  \item Worked, for $\pm5/8$ in 3 bits, $5/8=0.101_2$:
+  \item[] $+5/8=\mathtt{0.101}$ in all three.
+  \item[] $-5/8=\mathtt{1.101}$ (SM), $\mathtt{1.010}$ (1's), $\mathtt{1.011}$ (2's).
+  \item \mk{2's complement is used in practice} because addition needs no special case
+        and overflows in a partial sum cancel out.
+\end{itemize}}{%
+\lead{Rounding against truncation}
+With step $q=2^{-b}$ and error $e=Q(x)-x$:
+\par\smallskip
+\begin{tabular}{@{}L{3.2cm}L{4.3cm}@{}}
+\toprule
+\hrow \thead{Scheme} & \thead{Error range} \\
+Rounding, any code & $-q/2\le e\le q/2$ \\
+Truncation, sign mag. & $-(q-q_u)\le e\le(q-q_u)$ \\
+Truncation, 2's comp. & $-(q-q_u)\le e\le0$ \\
+\bottomrule
+\end{tabular}
+\par\smallskip
+\begin{itemize}
+  \item \mk{Rounding is better}, and this table is why: its error is centred on zero, so
+        it has \textbf{no bias}, and its range is half as wide.
+  \item Truncating a \textbf{sign magnitude} number always shrinks the magnitude, so the
+        error is symmetric about zero but takes the sign of $x$.
+  \item Truncating a \textbf{2's complement} number always moves the value \emph{down},
+        never up, so the error is \textbf{one-sided and negative}: a systematic bias, a
+        DC offset that accumulates through a filter.
+  \item $q_u=2^{-b_u}$ is the step before quantization, with $b_u>b$.
+\end{itemize}}
+
+\lead{The three places quantization bites}
+\begin{itemize}
+  \item \textbf{Input (A/D) quantization}: modelled as additive white noise of variance
+        $q^{2}/12$ for rounding.
+  \item \textbf{Coefficient quantization}: the $a_k$ and $b_k$ are stored in $b$ bits, so
+        \mk{the poles move}. A high-order direct form is the worst case, because every
+        pole depends on every coefficient; cascade and parallel forms confine the damage
+        to one section, which is the practical argument for \S4.3.
+  \item \textbf{Product round-off}: each multiply doubles the word length and must be
+        shortened again. In a recursive filter this feeds back, which is \S4.7.
+\end{itemize}
+
+\hr
+
+\T{4.7 \quad Limit cycles and the dead band}
+
+\Q{What is the limit cycle effect in a recursive system? Describe it with an example.
+Define dead band}{\m{3}\m{5}\m{1+3}}
+{\color{sub}\footnotesize \tS{10} \yr{\textbf{71 Ch} \m{3}, 70 Asa \m{1+3},
+\texttt{72 Ma} \m{5}, \textbf{\texttt{81 Ch}}, \textbf{\texttt{80 Ch}},
+\textbf{\texttt{70 Bh}} \m{3+4}, \textbf{66 Ma} \m{4}, 71 Shr \m{1+1+2+1}}}
+
+\sbsr{0.5}{%
+\lead{What a limit cycle is}
+\begin{itemize}
+  \item In a \textbf{recursive} filter the rounded product is fed back and rounded again.
+        Once the signal is small enough, rounding can return the \emph{same magnitude} it
+        started from.
+  \item The filter then never decays: after the input stops it sits in a
+        \textbf{self-sustaining oscillation} of fixed amplitude. That is a
+        \textbf{zero-input limit cycle}.
+  \item It happens only with quantization. \mk{The ideal infinite-precision filter is
+        perfectly stable}; the limit cycle is created by the arithmetic, not by the poles.
+\end{itemize}}{%
+\lead{The dead band}
+For the first-order $y[n]=Q\{a\,y[n-1]\}+x[n]$ with rounding, the filter cannot escape
+once
+\[ |y[n]|\le\frac{q}{2\,(1-|a|)} \]
+\begin{itemize}
+  \item That interval is the \textbf{dead band}: inside it, quantization exactly undoes
+        the decay that $a$ should have produced.
+  \item The oscillation amplitude is bounded by the dead band, so a longer word (smaller
+        $q$) makes it smaller but never removes it.
+\end{itemize}}
+
+\sbsr{0.5}{%
+\begin{itemize}
+  \item FIR filters cannot have them: no feedback, nothing to sustain.
+\end{itemize}}{%
+\begin{itemize}
+  \item If $a>0$ the trapped value holds \textbf{constant}, period 1. If $a<0$ it
+        \textbf{alternates in sign}, period 2.
+\end{itemize}}
+
+\lead{The worked example, 66 Ma \mk{(and the shape of every limit-cycle answer)}}
+$y[n]=Q\{-0.5\,y[n-1]\}+x[n]$, rounded to 3 bits so $q=\tfrac18$, with $y[-1]=0$ and
+$x[n]=0.875\,\delta[n]$:
+\par\smallskip
+\begin{tabular}{@{}L{1.0cm}L{2.0cm}L{2.6cm}L{2.6cm}L{4.0cm}@{}}
+\toprule
+\hrow \thead{$n$} & \thead{$-0.5\,y[n-1]$} & \thead{rounded to $\tfrac18$}
+& \thead{$+\,x[n]$} & \thead{} \\
+0 & $0$ & $0$ & $0.875$ & the impulse arrives \\
+1 & $-0.4375$ & $-0.5$ & $-0.5$ & \\
+2 & $0.25$ & $0.25$ & $0.25$ & \\
+3 & $-0.125$ & $-0.125$ & $-0.125$ & now inside the dead band \\
+4 & $0.0625$ & $\mathbf{0.125}$ & $\mathbf{0.125}$ & \mk{rounding put it back up} \\
+5 & $-0.0625$ & $\mathbf{-0.125}$ & $\mathbf{-0.125}$ & \\
+\bottomrule
+\end{tabular}
+\par\smallskip
+\begin{itemize}
+  \item From $n=3$ on it alternates $\pm\tfrac18$ for ever: a limit cycle of amplitude
+        $\tfrac18$ and \textbf{period 2}, the period coming from $a<0$.
+  \item Dead band: $\dfrac{q}{2(1-|a|)}=\dfrac{1/8}{2(1-0.5)}=\dfrac18$, which is exactly
+        the amplitude observed. \mk{Quote the formula and the table agrees with it.}
+  \item Step 4 is the whole mechanism in one line: $-0.5\times(-0.125)=0.0625$, which is
+        \emph{half} a step, and rounding carries it up to a full $0.125$ instead of down
+        to $0$.
+\end{itemize}
+
+\hr
+
+\T{4.8 \quad Last-minute recall}
+
+\sbs{%
+\lead{Say these without thinking}
+\begin{itemize}
+  \item Direct Form II is \textbf{canonic}: $\max(M,N)$ delays, the fewest possible.
+  \item Divide through by $a_0$ before drawing anything.
+  \item Cascade needs \textbf{factors}; parallel needs \textbf{partial fractions}.
+  \item A complex pole always sits with its conjugate, giving
+        $1-2r\cos\theta\,z^{-1}+r^{2}z^{-2}$.
+  \item Step-down: $k_m=a_m(m)$, then
+        $a_{m-1}(i)=\dfrac{a_m(i)-k_m a_m(m-i)}{1-k_m^{2}}$.
+  \item Step-up: $a_m(i)=a_{m-1}(i)+k_m a_{m-1}(m-i)$.
+  \item \textbf{Stable} $\Leftrightarrow$ every $|k_m|<1$.
+  \item Ladder: $C_m=b_m-\sum_{i>m}C_i\,a_i(i-m)$, downwards from $C_M=b_M$.
+  \item Dead band $=\dfrac{q}{2(1-|a|)}$; $a<0$ gives period 2.
+\end{itemize}}{%
+\lead{Mistakes that cost marks}
+\begin{itemize}
+  \item \mk{Forgetting to divide by $a_0$} when the paper prints $3y[n]+\dots$.
+  \item Sign errors moving $a_k$ across the equals sign: the feedback taps are
+        $\mathbf{-a_k}$.
+  \item Running the step-down on the \textbf{numerator} of a lattice-ladder question.
+        The $k$'s come from $A(z)$, always.
+  \item Grinding through a step-down that has already produced $|k|=1$. Stop and say the
+        polynomial is symmetric.
+  \item Reporting $k$ to two decimals and then calling $|k|=0.99$ stable without saying
+        so. Keep fractions where the paper gives fractions.
+  \item Claiming an FIR filter can have a limit cycle. It cannot: no feedback.
+  \item Saying truncation error is symmetric for 2's complement. \mk{It is one-sided},
+        and that is the point of the question.
+\end{itemize}}

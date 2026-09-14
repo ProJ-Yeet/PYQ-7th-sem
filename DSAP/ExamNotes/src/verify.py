@@ -869,7 +869,187 @@ def ch3():
     chk("c3 70Asa grd", 1.0, (3 - 1) / 2.0)
 
 
-CHAPTERS = {"ch1": ch1, "ch2": ch2, "ch3": ch3}
+# ---------------------------------------------------------------- chapter 4
+
+def ch4():
+    """Assert every k, C and quantization value printed in ch4-num.tex."""
+    from fractions import Fraction as Fr
+    import lattice as L
+    import quant as Q
+
+    def close(seq, want, tol=6e-5):
+        chk("c4 " + close.tag, [float(x) for x in seq], want, tol=tol)
+
+    # --- section 3, the FIR lattices, against the published k lists
+    FIR = [
+        ("81Ba/78Bh/74Ch", [1, Fr(13, 24), Fr(5, 8), Fr(1, 3)],
+         [0.25, 0.5, 1.0 / 3]),
+        ("73Shr", [1, Fr(9, 10), Fr(-4, 5), Fr(1, 2)], [-2.6, -1.66667, 0.5]),
+        ("76Bh", [1, 2, "0.62", "0.8"], [-2.42581, -2.72222, 0.8]),
+        ("72Ka/69Ch", [1, 2, -3, 4], [-0.53846, 0.73333, 4.0]),
+        ("70Ch", [1, "3.1", "5.5", "4.2", "2.3"],
+         [0.33814, 1.16636, 0.68298, 2.3]),
+    ]
+    for tag, a, want in FIR:
+        ks, _ = L.stepdown(a)
+        close.tag = tag + " k"
+        close(ks, want)
+        # the round trip is the independent check
+        chk("c4 %s round trip" % tag, [float(x) for x in L.stepup(ks)],
+            [float(L.fr(x)) for x in a], tol=1e-9)
+
+    # 74 Ch prints the same filter with unreduced fractions
+    chk("c4 74Ch 52/96 = 13/24", Fr(52, 96), Fr(13, 24))
+    chk("c4 74Ch 25/40 = 5/8", Fr(25, 40), Fr(5, 8))
+
+    # --- the symmetric papers: a lattice must NOT exist
+    for tag, a in (("72Ch", [1, 2, 1]),
+                   ("73Bh", [1, 2, 2, 1]),
+                   ("75Ch/73Ch", [1, Fr(2, 3), Fr(5, 8), Fr(2, 3), 1]),
+                   ("74Ash", [1, "0.7", "1.2", -1])):
+        try:
+            L.stepdown(a)
+            FAIL.append("c4 %s should have no lattice" % tag)
+        except L.Unstable:
+            OK[0] += 1
+    # and the reason: four of them are symmetric
+    for tag, a in (("72Ch", [1, 2, 1]), ("73Bh", [1, 2, 2, 1]),
+                   ("75Ch", [1, Fr(2, 3), Fr(5, 8), Fr(2, 3), 1])):
+        chk("c4 %s is symmetric" % tag, list(a), list(reversed(list(a))))
+
+    # --- section 4, the step-up direction
+    chk("c4 79Bh/71Shr k->h",
+        [float(x) for x in L.stepup([Fr(1, 4), Fr(1, 2), Fr(1, 3)])],
+        [1.0, 13 / 24.0, 0.625, 1 / 3.0], tol=1e-9)
+    chk("c4 80Ch/74Ma k->h",
+        [float(x) for x in L.stepup([Fr(1, 4), Fr(1, 4), Fr(1, 3)])],
+        [1.0, 19 / 48.0, 17 / 48.0, 1 / 3.0], tol=1e-9)
+    # the two middle terms are NOT equal, which is the trap the notes flag
+    up = L.stepup([Fr(1, 4), Fr(1, 4), Fr(1, 3)])
+    chk("c4 80Ch middle terms differ", 1.0 if up[1] != up[2] else 0.0, 1.0)
+
+    # --- section 5, all-pole and lattice-ladder
+    ALLPOLE = [
+        ("80Bh", [1, "-0.2", "0.4", "0.6"], [-0.37931, 0.8125, 0.6]),
+        ("81Ch/72Ash", [1, "-0.525", "0.6125", "0.3"], [-0.42188, 0.84615, 0.3]),
+        ("79Ch/69Bh", [1, "-0.9", "0.64", "-0.576"], [-0.67276, 0.18197, -0.576]),
+        ("71Bh", [1, "-0.3", "0.5", "0.25"], [-0.28099, 0.61333, 0.25]),
+        ("70Ma", [1, 2, -3, 4], [-0.53846, 0.73333, 4.0]),
+        ("71Ch", [1, "-0.01", "-0.23", "0.5"], [0.2, -0.3, 0.5]),
+    ]
+    for tag, a, want in ALLPOLE:
+        ks, _ = L.stepdown(a)
+        close.tag = tag + " k"
+        close(ks, want)
+        chk("c4 %s stability" % tag, 1.0 if L.stable(ks) else 0.0,
+            0.0 if tag == "70Ma" else 1.0)
+
+    # 80 Bh in exact fractions, which is what the worked example prints
+    ks, _ = L.stepdown([1, "-0.2", "0.4", "0.6"])
+    chk("c4 80Bh k1 exact", ks[0], Fr(-11, 29))
+    chk("c4 80Bh k2 exact", ks[1], Fr(13, 16))
+    chk("c4 80Bh k3 exact", ks[2], Fr(3, 5))
+
+    LAD = [
+        ("80Ba/82Bh", [2, "-0.7", "0.5"], [1, "-0.3", "0.25"],
+         [-0.24, 0.25], [1.743, -0.55, 0.5]),
+        ("79Ba", [1, "-0.4", "0.25"], [1, "-0.3", "0.5"],
+         [-0.2, 0.5], [0.81, -0.325, 0.25]),
+        ("76Ch", ["0.5", -2, 3], [1, "-0.5", "-0.7", "0.3"],
+         [-0.80556, -0.60440, 0.3], [1.47222, -1.04396, 3.0]),
+        ("76Ash", ["0.7", "-1.5", "0.5"], [1, "-0.5", "-0.7", "0.3"],
+         [-0.80556, -0.60440, 0.3], [-0.07778, -1.34066, 0.5]),
+        ("74Bh", ["0.62", "0.42", "-0.25"], [1, "0.27", "0.06", "-0.75"],
+         [0.45, 0.6, -0.75], [0.5, 0.6, -0.25]),
+        ("75Bh", ["0.6", "-0.45", "-0.25"], [1, "0.27", "0.06", "-0.75"],
+         [0.45, 0.6, -0.75], [0.8715, -0.27, -0.25]),
+        ("77Ch", ["0.5", "-0.4", "-0.2"], [1, "0.2", "0.7", "-0.75"],
+         [0.56311, 1.94286, -0.75], [0.92718, -0.06857, -0.2]),
+        ("73Ma", ["0.5", "0.65", "0.2"], [1, "-0.45", "0.3", "0.5"],
+         [-0.47059, 0.7, 0.5], [0.74118, 0.81, 0.2]),
+        ("78Ch", [1, -1, "0.5"], [1, "0.2", "-0.15"],
+         [0.23529, -0.15], [1.33382, -1.1, 0.5]),
+        ("70Asa", ["0.5", 2, "0.6"], [1, "-0.3", "0.4"],
+         [-0.21429, 0.4], [0.72714, 2.18, 0.6]),
+        ("66Ma", [Fr(1, 2), Fr(1, 3), Fr(1, 4), Fr(1, 5)],
+         [1, Fr(1, 5), Fr(2, 5), Fr(3, 5)],
+         [-0.04348, 0.4375, 0.6], [0.29971, 0.26646, 0.21, 0.2]),
+        ("82Ba", ["0.2759", "0.5121", "0.5121", "0.2759"],
+         [1, "-0.0010", "0.6546", "-0.0775"],
+         [0.03017, 0.65848, -0.0775], [-0.04933, 0.30589, 0.51236, 0.2759]),
+    ]
+    for tag, b, a, wk, wc in LAD:
+        ks, C = L.ladder(b, a)
+        close.tag = tag + " k"
+        close(ks, wk)
+        close.tag = tag + " C"
+        close(C, wc)
+
+    # papers sharing a denominator must share their lattice
+    k1, _ = L.stepdown([1, "-0.5", "-0.7", "0.3"])
+    k2, _ = L.stepdown([1, "-0.5", "-0.7", "0.3"])
+    chk("c4 76Ch and 76Ash share k", [float(x) for x in k1],
+        [float(x) for x in k2], tol=0)
+    k3, _ = L.stepdown([1, "0.27", "0.06", "-0.75"])
+    chk("c4 74Bh and 75Bh share k", [float(x) for x in k3],
+        [0.45, 0.6, -0.75], tol=1e-9)
+
+    # 81 Bh: the denominator is printed factored and must be multiplied out
+    import numpy as np
+    poly = np.polynomial.polynomial.polymul(
+        np.polynomial.polynomial.polymul([1, 0.5], [1, 0.3]), [1, 0.4])
+    chk("c4 81Bh expanded denominator", list(poly), [1.0, 1.2, 0.47, 0.06],
+        tol=1e-12)
+
+    # 70 Bh: the all-pass ladder collapses to [0, 0, 0, 1]
+    ks, C = L.ladder([Fr(1, 2), Fr(1, 5), Fr(-3, 5), 1],
+                     [1, Fr(-3, 5), Fr(1, 5), Fr(1, 2)])
+    chk("c4 70Bh all-pass ladder", [float(x) for x in C], [0.0, 0.0, 0.0, 1.0])
+    chk("c4 70Bh k", [float(x) for x in ks], [-0.56, 2 / 3.0, 0.5], tol=6e-5)
+    chk("c4 70Bh stable", 1.0 if L.stable(ks) else 0.0, 1.0)
+
+    # --- section 6, quantization
+    chk("c4 75Ash +5/8", list(Q.codes(Fr(5, 8), 3)),
+        ["0.101", "0.101", "0.101"])
+    chk("c4 75Ash -5/8", list(Q.codes(Fr(-5, 8), 3)),
+        ["1.101", "1.010", "1.011"])
+    chk("c4 69Bh -192/256", list(Q.codes(Fr(-192, 256), 8)),
+        ["1.11000000", "1.00111111", "1.01000000"])
+    chk("c4 69Bh -192/220 is not dyadic",
+        1.0 if Fr(192, 220).denominator & (Fr(192, 220).denominator - 1) else 0.0,
+        1.0)
+    rounded = Q.q_round(Fr(-192, 220), 8)
+    chk("c4 69Bh rounded to 8 bits", rounded, Fr(-223, 256))
+    chk("c4 69Bh rounded codes", list(Q.codes(rounded, 8)),
+        ["1.11011111", "1.00100000", "1.00100001"])
+
+    ys = Q.limit_cycle(Fr(-1, 2), Fr(7, 8), 3, 8)
+    chk("c4 66Ma sequence", [float(y) for y in ys[:6]],
+        [0.875, -0.5, 0.25, -0.125, 0.125, -0.125], tol=1e-12)
+    chk("c4 66Ma amplitude", abs(ys[5]), Fr(1, 8))
+    chk("c4 66Ma period 2", ys[4], -ys[5])
+    chk("c4 66Ma dead band", Fr(1, 8) / (2 * (1 - Fr(1, 2))), Fr(1, 8))
+
+    # 67 Mng, both truncation bounds, swept exhaustively
+    bu, b = 6, 3
+    bound = Fr(1, 1 << b) - Fr(1, 1 << bu)
+    hi_sm = lo_2c = hi_2c = Fr(0)
+    for num in range(-(1 << bu) + 1, (1 << bu)):
+        x = Fr(num, 1 << bu)
+        mag = abs(x) * (1 << b)
+        tsm = Fr(int(mag), 1 << b) * (1 if x >= 0 else -1)
+        hi_sm = max(hi_sm, abs(tsm - x))
+        sc = x * (1 << b)
+        t2c = Fr(sc.numerator // sc.denominator, 1 << b)
+        lo_2c = min(lo_2c, t2c - x)
+        hi_2c = max(hi_2c, t2c - x)
+    chk("c4 67Mng sign-mag bound", hi_sm, bound)
+    chk("c4 67Mng 2s-comp upper bound is zero", hi_2c, Fr(0))
+    chk("c4 67Mng 2s-comp lower bound", lo_2c, -bound)
+    chk("c4 67Mng q - q_u", bound, Fr(7, 64))
+
+
+CHAPTERS = {"ch1": ch1, "ch2": ch2, "ch3": ch3, "ch4": ch4}
 
 
 def main():

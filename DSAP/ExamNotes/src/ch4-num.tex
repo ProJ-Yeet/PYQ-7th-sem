@@ -1,0 +1,484 @@
+%=======================================================================
+%  CHAPTER 4 - NUMERICAL PROBLEMS AND SOLUTIONS
+%  Every k and C below comes from lattice.py in exact rational
+%  arithmetic, and every quantization answer from quant.py. Both
+%  self-test before they print, and verify.py ch4 asserts the published
+%  values against them.
+%  Grouped by METHOD: one worked instance, then the sibling papers as a
+%  data-and-answer table.
+%=======================================================================
+\section*{\color{acc}Ch 4 \textperiodcentered{} Discrete Filter Structures\\[2pt]
+{\large\textcolor{sub}{Numerical Problems \& Solutions}}}
+\vspace{-4pt}{\color{acc}\rule{\textwidth}{1.1pt}}\vspace{4pt}
+
+{\color{sub}\footnotesize \mk{42 of the 68 questions are the lattice}, and they are all
+one recursion. Every paper is below, grouped by what the recursion is run on. Sections 3
+to 5 share a single calculation; learn it once.}
+
+\lead{The step-down, which is \S3, \S4 and \S5}
+\begin{enumerate}
+  \item Take the polynomial $A_M(z)=1+a_M(1)z^{-1}+\dots+a_M(M)z^{-M}$. For an FIR
+        $H(z)=B(z)$ it is the numerator; for an all-pole or pole-zero $H(z)$ it is
+        \textbf{always the denominator}.
+  \item \textbf{$k_M=a_M(M)$}, read straight off the last coefficient.
+  \item \[ a_{m-1}(i)=\frac{a_m(i)-k_m\,a_m(m-i)}{1-k_m^{2}},\qquad i=1,\dots,m-1 \]
+        which folds the polynomial against its reverse and drops the degree by one.
+  \item Repeat until $A_1$, whose one coefficient is $k_1$.
+  \item \textbf{Stable} if and only if every $|k_m|<1$. Nothing else to compute.
+\end{enumerate}
+
+\sbs{%
+\lead{Two shortcuts worth having}
+\begin{itemize}
+  \item The last step is always
+        $k_1=\dfrac{a_2(1)}{1+k_2}$, because $a_2(2-1)=a_2(1)$ makes the numerator
+        $a_2(1)(1-k_2)$ and $1-k_2^2=(1-k_2)(1+k_2)$.
+  \item \mk{Keep fractions.} $1-k^2$ breeds denominators, and a decimal answer is
+        visibly wrong by the third stage.
+\end{itemize}}{%
+\lead{The two checks}
+\begin{enumerate}
+  \item \textbf{Step back up}: $a_m(i)=a_{m-1}(i)+k_m a_{m-1}(m-i)$ must return the
+        polynomial you started from. Two lines, and it catches every arithmetic slip.
+  \item If any $|k_m|=1$ exactly, \mk{stop}: the polynomial is symmetric and no lattice
+        exists. See the box in \S3.
+\end{enumerate}}
+
+\hr
+
+\T{1 \quad Direct Form I and Direct Form II}
+{\color{sub}\footnotesize \tS{9} \yr{\textbf{79 Bh} \m{2+2}, 79 Ba \m{4},
+\textbf{82 Bh} \m{2+2}, \textbf{74 Ch} \m{5}, \textbf{72 Ch} \m{5}, 72 Ka \m{4},
+\textbf{69 Ch} \m{4}, \textbf{68 Bh} \m{9}, \textbf{70 Ch} \m{4}}}
+
+\begin{asked}{2079 Bhadra \textperiodcentered{} [2+2]}
+Obtain the Direct Form I and Direct Form II realization of the system
+$y[n]-0.25y[n-2]=x[n]+0.4x[n-1]+0.5x[n-2]$.
+\end{asked}
+
+\lead{Step 1: put it in computing form and read off the taps}
+\begin{itemize}
+  \item[] \[ y[n]=x[n]+0.4x[n-1]+0.5x[n-2]+0.25y[n-2] \]
+  \item Feedforward $b=\{1,\ 0.4,\ 0.5\}$, feedback $a=\{1,\ 0,\ -0.25\}$, so the taps
+        are $-a_1=0$ and $-a_2=+0.25$.
+  \item \mk{$a_1=0$, so there is no $y[n-1]$ branch at all.} Leave the tap out; do not
+        draw a multiplier by zero.
+  \item $M=N=2$, so Direct Form I needs $2+2=4$ delays and Direct Form II needs
+        $\max(2,2)=2$.
+\end{itemize}
+
+\lead{Step 2: Direct Form I}
+\begin{itemize}
+  \item Input into a chain of two delays, tapped $1$, $0.4$, $0.5$ into an adder.
+  \item That adder's output goes into a second chain of two delays, tapped $0$ and
+        $0.25$ back into the same adder.
+  \item Reading left to right it is $B(z)$ then $1/A(z)$.
+\end{itemize}
+
+\lead{Step 3: Direct Form II}
+\begin{itemize}
+  \item Swap the two halves and share one chain of two delays carrying $w[n]$:
+  \item[] \[ w[n]=x[n]+0.25w[n-2],\qquad y[n]=w[n]+0.4w[n-1]+0.5w[n-2] \]
+  \item Left of the chain: one branch, $0.25$ from $w[n-2]$ back to the top adder.
+        Right of the chain: three branches, $1$, $0.4$, $0.5$ into the output adder.
+  \item \mk{Two delays instead of four, same arithmetic.} That is the entire answer to
+        "why Direct Form II".
+\end{itemize}
+
+\lead{Every other paper in this group}
+\par\smallskip
+{\footnotesize
+\begin{tabular}{@{}L{2.2cm}L{6.2cm}L{3.3cm}L{3.5cm}@{}}
+\toprule
+\hrow \thead{Papers} & \thead{System} & \thead{Taps} & \thead{Watch for} \\
+79 Ba, \textbf{82 Bh} & $y[n]-0.75y[n{-}1]-0.25y[n{-}2]$ \newline $=x[n]+0.5x[n{-}1]$
+  & $b=\{1,0.5\}$ \newline $-a=\{0.75,0.25\}$ & both feedback taps positive \\
+\textbf{74 Ch} & $3y[n]+y[n{-}1]+2y[n{-}4]$ \newline $=2x[n]+x[n{-}3]$
+  & $b=\{\tfrac23,0,0,\tfrac13\}$ \newline $-a=\{-\tfrac13,0,0,-\tfrac23\}$
+  & \mk{divide by $a_0=3$ first}; 4 delays, most taps zero \\
+\textbf{72 Ch} & $y(n)=-0.1y(n{-}1)+0.2y(n{-}2)$ \newline $+3x(n)+3.6x(n{-}2)+0.6x(n{-}2)$
+  & $b=\{3,0,4.2\}$ \newline $-a=\{-0.1,0.2\}$
+  & \mk{$x(n{-}2)$ is printed twice}; add them, $3.6+0.6=4.2$ \\
+72 Ka, \textbf{69 Ch} & $y(n)=-0.1y(n{-}1)+0.72y(n{-}2)$ \newline $+0.7x(n)-0.252x(n{-}2)$
+  & $b=\{0.7,0,-0.252\}$ \newline $-a=\{-0.1,0.72\}$ & Direct Form II only \\
+\textbf{70 Ch} & $y[n]-\tfrac34y[n{-}1]+\tfrac18y[n{-}2]$ \newline $-x[n]-2x[n{-}1]=0$
+  & $b=\{1,2\}$ \newline $-a=\{\tfrac34,-\tfrac18\}$
+  & move the $x$ terms across: they are \textbf{positive} on the right \\
+\textbf{68 Bh} & $H(z)$ given factored, 3 zeros over 4 poles
+  & multiply out first & see the box below \\
+\bottomrule
+\end{tabular}}
+
+\creamq{68 Bh gives $H(z)$ already factored, and wants Direct Form I and II}{The zeros
+are $\tfrac15e^{\pm j\pi/5}$ and $\tfrac13$; the poles are $\tfrac45$, $\tfrac15$ and
+$\tfrac17e^{\pm j\pi/7}$. \mk{A direct form needs the expanded polynomials, not the
+factors}, so multiply each conjugate pair out first using
+$(1-re^{j\theta}z^{-1})(1-re^{-j\theta}z^{-1})=1-2r\cos\theta\,z^{-1}+r^{2}z^{-2}$:
+the zero pair gives $1-\tfrac25\cos36^{\circ}z^{-1}+\tfrac1{25}z^{-2}$ and the pole pair
+$1-\tfrac27\cos(180/7)^{\circ}z^{-1}+\tfrac1{49}z^{-2}$. Multiply through and you have a
+3rd-order numerator over a 4th-order denominator, so Direct Form II needs
+\textbf{4 delays}. \mk{The same factored form is exactly what \S2 wants left alone},
+which is the joke of this chapter: cascade wants factors, direct form wants them
+multiplied out.}
+
+\hr
+
+\T{2 \quad Cascade and parallel realizations}
+{\color{sub}\footnotesize \tS{8} \yr{81 Ba \m{5}, \texttt{74 Ma} \m{7}, 80 Ba \m{4},
+\textbf{76 Ch} \m{4}, \textbf{\texttt{77 Ch}} \m{7}, \textbf{69 Bh} \m{6},
+\textbf{67 Mng}, \textbf{\texttt{78 Ch}} \m{6}}}
+
+\begin{asked}{2081 Baishakh \textperiodcentered{} [5]}
+Realize the following system in cascade form of second-order sections (signal flow
+graph): $H(z)=\dfrac{10(1-0.25z^{-1})(1-0.667z^{-1})(1+2z^{-1})}
+{(1-0.75z^{-1})(1-0.125z^{-1})\{1-(0.5+j0.5)z^{-1}\}\{1-(0.5-j0.5)z^{-1}\}}$.
+\end{asked}
+
+\lead{Step 1: pair the poles, then pair the zeros to match}
+\begin{itemize}
+  \item \textbf{The conjugate pair must stay together.} With $\sigma=0.5$ and
+        $\omega=0.5$:
+  \item[] \[ \{1-(0.5+j0.5)z^{-1}\}\{1-(0.5-j0.5)z^{-1}\}
+             =1-z^{-1}+0.5z^{-2} \]
+        using $-2\sigma=-1$ and $\sigma^{2}+\omega^{2}=0.5$.
+  \item The two real poles pair with each other:
+        $(1-0.75z^{-1})(1-0.125z^{-1})=1-0.875z^{-1}+0.09375z^{-2}$.
+  \item Three zeros over four poles, so one section's numerator is first order. Pair the
+        two "small" zeros and leave $(1+2z^{-1})$ to ride with the real-pole section:
+        $(1-0.25z^{-1})(1-0.667z^{-1})=1-0.917z^{-1}+0.167z^{-2}$.
+\end{itemize}
+
+\lead{Step 2: write the two sections and place the gain}
+\begin{itemize}
+  \item[] \[ H(z)=10\cdot
+             \underbrace{\frac{1-0.917z^{-1}+0.167z^{-2}}{1-0.875z^{-1}+0.09375z^{-2}}}
+             _{\text{section 1}}\cdot
+             \underbrace{\frac{1+2z^{-1}}{1-z^{-1}+0.5z^{-2}}}_{\text{section 2}} \]
+  \item Draw each section in \textbf{Direct Form II} and chain them. The gain $10$ goes
+        on the input branch, or is split between sections to keep the internal signals
+        from overflowing.
+  \item \mk{Every coefficient is real.} If a $j$ survives, a pair was split.
+\end{itemize}
+
+\lead{The rest of the cascade family}
+{\color{sub}\footnotesize All the same two steps. Only 74 Ma also wants the parallel
+form, which needs partial fractions instead of factors.}
+\par\smallskip
+{\footnotesize
+\begin{tabular}{@{}L{2.3cm}L{5.4cm}L{7.4cm}@{}}
+\toprule
+\hrow \thead{Papers} & \thead{Poles} & \thead{Sections} \\
+\texttt{74 Ma} & same as 81 Ba, gain $5$ & identical sections, gain $5$; \mk{parallel
+  form also asked}, so partial-fraction the expanded $H(z)$ \\
+80 Ba & $0.5e^{\pm j\pi/3}$, $-0.7e^{\pm j\pi/4}$
+  & $1-0.5z^{-1}+0.25z^{-2}$ and $1+0.99z^{-1}+0.49z^{-2}$ \\
+\textbf{76 Ch} & $0.6e^{\pm jn\pi/3}$, $-0.5e^{\pm j2n\pi/7}$
+  & \mk{the paper prints a stray $n$} in every exponent; read it as $n=1$ \\
+\textbf{\texttt{77 Ch}} & $-0.2$, $0.25$, $-0.5\pm j0.15$
+  & real pair $1-0.05z^{-1}-0.05z^{-2}$, complex pair $1+z^{-1}+0.2725z^{-2}$ \\
+\textbf{69 Bh} & $0.5$, $0.3$, $0.7e^{\pm j\pi/4}$
+  & $1-0.8z^{-1}+0.15z^{-2}$ and $1-0.99z^{-1}+0.49z^{-2}$; all-pole, numerator $1$ \\
+\textbf{67 Mng} & $\tfrac56$, $\tfrac16$, $\tfrac34e^{\pm j\pi/4}$
+  & $1-z^{-1}+\tfrac5{36}z^{-2}$ and $1-1.0607z^{-1}+0.5625z^{-2}$ \\
+\bottomrule
+\end{tabular}}
+
+\creamq{78 Ch asks for the parallel form from an impulse response}{$h[n]=(0.5)^nu[n]
++n(0.2)^nu[n]$. Transform each term with the standard pairs:
+$\dfrac{1}{1-0.5z^{-1}}$ and $\dfrac{0.2z^{-1}}{(1-0.2z^{-1})^{2}}$. \mk{Parallel form
+is what partial fractions already give you}, so no further work is needed: two sections
+added, the first a one-pole section, the second a repeated-pole section needing two
+delays. The repeated pole is the only wrinkle: it cannot be split further, so that
+section is second order with denominator $1-0.4z^{-1}+0.04z^{-2}$.}
+
+\creamq{67 Mng prints the same exponent twice}{Its last two denominator factors both
+read $e^{-j\pi/4}$. A real filter needs the conjugate, so the second is
+$e^{+j\pi/4}$, and the pair multiplies to $1-\tfrac32\cos45^{\circ}z^{-1}
++\tfrac9{16}z^{-2}=1-1.0607z^{-1}+0.5625z^{-2}$. Note it in one line and continue.}
+
+\hr
+
+\T{3 \quad The step-down, run on an FIR numerator}
+{\color{sub}\footnotesize \tS{9} \yr{81 Ba \m{5}, \textbf{78 Bh} \m{3+7},
+\textbf{72 Ch} \m{5}, \textbf{\texttt{73 Bh}} \m{6}, \textbf{74 Ch} \m{5},
+74 Ash \m{3+7}, 73 Shr \m{3+7}, \textbf{\texttt{76 Bh}} \m{2+5}, 72 Ka \m{6},
+\textbf{69 Ch} \m{6}, \textbf{70 Ch} \m{6}}}
+
+\begin{asked}{2081 Baishakh \textperiodcentered{} 2078 Bhadra \textperiodcentered{} [5]}
+Determine the lattice coefficients corresponding to the FIR filter with system function
+$H(z)=A_3(z)=1+\tfrac{13}{24}z^{-1}+\tfrac58 z^{-2}+\tfrac13 z^{-3}$, and check its
+stability.
+\end{asked}
+
+\lead{Stage 3}
+\begin{itemize}
+  \item $k_3=a_3(3)=\mathbf{\tfrac13}$, free.
+  \item $1-k_3^{2}=1-\tfrac19=\tfrac89$.
+  \item[] \[ a_2(1)=\frac{a_3(1)-k_3a_3(2)}{8/9}
+             =\frac{\tfrac{13}{24}-\tfrac13\cdot\tfrac58}{8/9}
+             =\frac{\tfrac{13}{24}-\tfrac5{24}}{8/9}
+             =\frac{\tfrac13}{8/9}=\frac38 \]
+  \item[] \[ a_2(2)=\frac{a_3(2)-k_3a_3(1)}{8/9}
+             =\frac{\tfrac58-\tfrac13\cdot\tfrac{13}{24}}{8/9}
+             =\frac{\tfrac{45}{72}-\tfrac{13}{72}}{8/9}
+             =\frac{\tfrac{32}{72}}{8/9}=\frac12 \]
+\end{itemize}
+
+\lead{Stage 2, then stage 1}
+\begin{itemize}
+  \item $k_2=a_2(2)=\mathbf{\tfrac12}$.
+  \item Use the shortcut $k_1=\dfrac{a_2(1)}{1+k_2}=\dfrac{3/8}{3/2}=\mathbf{\tfrac14}$.
+  \item[] \[ \boxed{k=\left\{\tfrac14,\ \tfrac12,\ \tfrac13\right\}} \]
+  \item \textbf{Stable}: every $|k_m|<1$.
+  \item Check by stepping back up: $a_2(1)=k_1+k_2k_1=\tfrac14+\tfrac18=\tfrac38$
+        \checkmark, and $a_3(1)=a_2(1)+k_3a_2(2)=\tfrac38+\tfrac13\cdot\tfrac12
+        =\tfrac{13}{24}$ \checkmark.
+\end{itemize}
+
+{\color{sub}\footnotesize \mk{74 Ch is the identical question} with the coefficients
+written as $\tfrac{52}{96}$ and $\tfrac{25}{40}$, which reduce to $\tfrac{13}{24}$ and
+$\tfrac58$. Same answer, $k=\{\tfrac14,\tfrac12,\tfrac13\}$. So is 79 Bh, backwards:
+see \S4.}
+
+\lead{The other FIR papers}
+\par\smallskip
+{\footnotesize
+\begin{tabular}{@{}L{2.6cm}L{5.4cm}L{5.3cm}L{1.9cm}@{}}
+\toprule
+\hrow \thead{Papers} & \thead{$H(z)$} & \thead{$k=\{k_1,k_2,k_3,\dots\}$}
+& \thead{Stable?} \\
+81 Ba, \textbf{78 Bh}, \textbf{74 Ch}
+  & $1+\tfrac{13}{24}z^{-1}+\tfrac58z^{-2}+\tfrac13z^{-3}$
+  & $\{\tfrac14,\ \tfrac12,\ \tfrac13\}$ & \textbf{yes} \\
+73 Shr & $2+1.8z^{-1}-1.6z^{-2}+z^{-3}$ \newline (divide by 2 first)
+  & $\{-2.6,\ -1.6667,\ 0.5\}$ & \textbf{no} \\
+\textbf{\texttt{76 Bh}} & $1+2z^{-1}+0.62z^{-2}+0.8z^{-3}$
+  & $\{-2.4258,\ -2.7222,\ 0.8\}$ & \textbf{no} \\
+72 Ka, \textbf{69 Ch} & $1+2z^{-1}-3z^{-2}+4z^{-3}$
+  & $\{-0.5385,\ 0.7333,\ 4\}$ & \textbf{no} \\
+\textbf{70 Ch} & $1+3.1z^{-1}+5.5z^{-2}$ \newline $+\,4.2z^{-3}+2.3z^{-4}$
+  & $\{0.3381,\ 1.1664,\ 0.6830,\ 2.3\}$ & \textbf{no} \\
+\bottomrule
+\end{tabular}}
+
+\creamq{Five papers ask for a lattice that does not exist}{\textbf{72 Ch}
+($1+2z^{-1}+z^{-2}$), \textbf{\texttt{73 Bh}} ($1+2z^{-1}+2z^{-2}+z^{-3}$), 74 Ash
+($1+0.7z^{-1}+1.2z^{-2}-z^{-3}$), \textbf{75 Ch} and \textbf{73 Ch} (both containing
+$1+\tfrac23z^{-1}+\tfrac58z^{-2}+\tfrac23z^{-3}+z^{-4}$). In each the last coefficient
+has magnitude $1$, so $k_M=\pm1$ and the step-down must divide by $1-k_M^{2}=0$.
+\mk{Four of the five are symmetric polynomials}, that is linear-phase filters, and
+symmetry forces $a_M(M)=a_M(0)=1$. \textbf{A linear-phase FIR filter has no lattice
+realization}, and that is the answer: show $k_M=1$, show the division by zero, and note
+that the zeros lie on the unit circle. For 72 Ch it is visible without any recursion,
+since $1+2z^{-1}+z^{-2}=(1+z^{-1})^{2}$ is a double zero at $z=-1$.}
+
+\hr
+
+\T{4 \quad The reverse: lattice coefficients to direct form}
+{\color{sub}\footnotesize \tP{4} \yr{\textbf{79 Bh} \m{6}, 71 Shr \m{5},
+\textbf{\texttt{80 Ch}}, \texttt{74 Ma} \m{7}}}
+
+\begin{asked}{2079 Bhadra \textperiodcentered{} [6]}
+Given a 3-stage lattice filter with coefficients $K_1=\tfrac14$, $K_2=\tfrac12$,
+$K_3=\tfrac13$, obtain the system function and the FIR filter coefficients.
+\end{asked}
+
+\begin{itemize}
+  \item Step up, one stage at a time, with
+        $a_m(i)=a_{m-1}(i)+k_m\,a_{m-1}(m-i)$ and $a_m(m)=k_m$.
+  \item $A_1(z)=1+\tfrac14z^{-1}$.
+  \item $a_2(1)=a_1(1)+k_2a_1(1)=\tfrac14+\tfrac12\cdot\tfrac14=\tfrac38$, and
+        $a_2(2)=k_2=\tfrac12$, so $A_2(z)=1+\tfrac38z^{-1}+\tfrac12z^{-2}$.
+  \item $a_3(1)=a_2(1)+k_3a_2(2)=\tfrac38+\tfrac13\cdot\tfrac12=\tfrac{13}{24}$;
+        $a_3(2)=a_2(2)+k_3a_2(1)=\tfrac12+\tfrac13\cdot\tfrac38=\tfrac58$;
+        $a_3(3)=k_3=\tfrac13$.
+  \item[] \[ \boxed{H(z)=A_3(z)=1+\tfrac{13}{24}z^{-1}+\tfrac58z^{-2}+\tfrac13z^{-3}} \]
+  \item So $h[n]=\{1,\ \tfrac{13}{24},\ \tfrac58,\ \tfrac13\}$.
+  \item \mk{This is \S3 run backwards}, on the same numbers. 71 Shr asks it identically.
+\end{itemize}
+
+\creamq{80 Ch and 74 Ma change one coefficient}{They give $K_1=\tfrac14$,
+$K_2=\tfrac14$, $K_3=\tfrac13$. The same recursion gives
+$a_2(1)=\tfrac14+\tfrac14\cdot\tfrac14=\tfrac5{16}$, $a_2(2)=\tfrac14$, then
+$a_3(1)=\tfrac5{16}+\tfrac13\cdot\tfrac14=\mathbf{\tfrac{19}{48}}$,
+$a_3(2)=\tfrac14+\tfrac13\cdot\tfrac5{16}=\mathbf{\tfrac{17}{48}}$,
+$a_3(3)=\tfrac13$. So $h[n]=\{1,\ \tfrac{19}{48},\ \tfrac{17}{48},\ \tfrac13\}$.
+\mk{The two thirds in the answer look alike but are not}: $\tfrac{19}{48}$ and
+$\tfrac{17}{48}$ differ, and writing both as $\tfrac{18}{48}=\tfrac38$ is the easy
+mistake.}
+
+\hr
+
+\T{5 \quad All-pole and lattice-ladder}
+{\color{sub}\footnotesize \tS{21} \yr{\textbf{80 Bh} \m{10}, \textbf{\texttt{81 Ch}},
+\textbf{\texttt{72 Ash}} \m{4+2+1}, \textbf{\texttt{79 Ch}} \m{4+2+1},
+\textbf{\texttt{69 Bh}} \m{8}, \textbf{\texttt{71 Bh}} \m{6+2}, \texttt{70 Ma} \m{6},
+\textbf{71 Ch} \m{4+2+1}, 80 Ba, \textbf{82 Bh} \m{6}, 82 Ba \m{10}, 79 Ba \m{6+1},
+\textbf{81 Bh} \m{6+4}, \textbf{76 Ch} \m{6+4}, 76 Ash \m{6+3},
+\textbf{\texttt{74 Bh}} \m{5+1}, \textbf{\texttt{75 Bh}} \m{7+1},
+\textbf{\texttt{77 Ch}} \m{7+2}, \texttt{73 Ma} \m{6+1}, \textbf{\texttt{78 Ch}} \m{6+2},
+70 Asa \m{6}, \textbf{66 Ma} \m{6}, \textbf{\texttt{70 Bh}} \m{8}}}
+
+\begin{asked}{2080 Bhadra \textperiodcentered{} [10]}
+Determine the lattice coefficients and draw the lattice structure for the system
+$H(z)=\dfrac{1}{1-0.2z^{-1}+0.4z^{-2}+0.6z^{-3}}$.
+\end{asked}
+
+\lead{The denominator is the polynomial: everything else is identical to \S3}
+\begin{itemize}
+  \item $A_3(z)=1-0.2z^{-1}+0.4z^{-2}+0.6z^{-3}$, so $k_3=\mathbf{0.6}$ and
+        $1-k_3^{2}=0.64$.
+  \item[] \[ a_2(1)=\frac{-0.2-0.6(0.4)}{0.64}=\frac{-0.44}{0.64}=-\frac{11}{16},\qquad
+             a_2(2)=\frac{0.4-0.6(-0.2)}{0.64}=\frac{0.52}{0.64}=\frac{13}{16} \]
+  \item $k_2=a_2(2)=\mathbf{\tfrac{13}{16}}=0.8125$.
+  \item $k_1=\dfrac{a_2(1)}{1+k_2}=\dfrac{-11/16}{29/16}=\mathbf{-\tfrac{11}{29}}
+        =-0.3793$.
+  \item[] \[ \boxed{k=\left\{-\tfrac{11}{29},\ \tfrac{13}{16},\ \tfrac35\right\}} \]
+  \item All $|k_m|<1$, so the system is \textbf{stable}. \mk{An all-pole $H(z)$ is drawn
+        as the lattice run in reverse}: the same stages, with the forward path fed from
+        the output end.
+\end{itemize}
+
+\lead{Adding the ladder, when the numerator is not 1}
+\begin{itemize}
+  \item Run the step-down on $A(z)$ exactly as above and \textbf{keep every intermediate
+        $A_i(z)$}.
+  \item Then work down from $C_M=b_M$ with
+        $C_m=b_m-\sum_{i=m+1}^{M}C_i\,a_i(i-m)$.
+  \item \mk{The $k$'s never depend on the numerator}, so papers sharing a denominator
+        share their lattice: 76 Ch with 76 Ash, and 74 Bh with 75 Bh.
+\end{itemize}
+
+\par\smallskip
+{\footnotesize
+\begin{tabular}{@{}L{2.6cm}L{4.6cm}L{4.2cm}L{3.6cm}@{}}
+\toprule
+\hrow \thead{Papers} & \thead{$H(z)$ denominator} & \thead{$k$} & \thead{$C$ (ladder)} \\
+\textbf{80 Bh} & $1-0.2z^{-1}+0.4z^{-2}+0.6z^{-3}$
+  & $\{-0.3793,\ 0.8125,\ 0.6\}$ & all-pole \\
+\textbf{\texttt{81 Ch}}, \textbf{\texttt{72 Ash}} & $1-0.525z^{-1}+0.6125z^{-2}+0.3z^{-3}$
+  & $\{-0.4219,\ 0.8462,\ 0.3\}$ & all-pole, \textbf{stable} \\
+\textbf{\texttt{79 Ch}}, \textbf{\texttt{69 Bh}} & $1-0.9z^{-1}+0.64z^{-2}-0.576z^{-3}$
+  & $\{-0.6728,\ 0.1820,\ -0.576\}$ & all-pole, \textbf{stable} \\
+\textbf{\texttt{71 Bh}} & $1-0.3z^{-1}+0.5z^{-2}+0.25z^{-3}$
+  & $\{-0.2810,\ 0.6133,\ 0.25\}$ & all-pole \\
+\texttt{70 Ma} & $1+2z^{-1}-3z^{-2}+4z^{-3}$
+  & $\{-0.5385,\ 0.7333,\ 4\}$ & \mk{unstable}, same as 72 Ka \\
+\textbf{71 Ch} & $1-0.01z^{-1}-0.23z^{-2}+0.5z^{-3}$
+  & $\{0.2,\ -0.3,\ 0.5\}$ & all-pole, \textbf{stable} \\
+80 Ba, \textbf{82 Bh} & $1-0.3z^{-1}+0.25z^{-2}$, \newline $B=2-0.7z^{-1}+0.5z^{-2}$
+  & $\{-0.24,\ 0.25\}$ & $\{1.743,\ -0.55,\ 0.5\}$ \\
+79 Ba & $1-0.3z^{-1}+0.5z^{-2}$, \newline $B=1-0.4z^{-1}+0.25z^{-2}$
+  & $\{-0.2,\ 0.5\}$ & $\{0.81,\ -0.325,\ 0.25\}$ \\
+\textbf{76 Ch} & $1-0.5z^{-1}-0.7z^{-2}+0.3z^{-3}$, \newline $B=0.5-2z^{-1}+3z^{-2}$
+  & $\{-0.8056,\ -0.6044,\ 0.3\}$ & $\{1.4722,\ -1.0440,\ 3\}$ \\
+76 Ash & \mk{same denominator}, \newline $B=0.7-1.5z^{-1}+0.5z^{-2}$
+  & $\{-0.8056,\ -0.6044,\ 0.3\}$ & $\{-0.0778,\ -1.3407,\ 0.5\}$ \\
+\textbf{\texttt{74 Bh}} & $1+0.27z^{-1}+0.06z^{-2}-0.75z^{-3}$, \newline
+  $B=0.62+0.42z^{-1}-0.25z^{-2}$
+  & $\{0.45,\ 0.6,\ -0.75\}$ & $\{0.5,\ 0.6,\ -0.25\}$ \\
+\textbf{\texttt{75 Bh}} & \mk{same denominator}, \newline $B=0.6-0.45z^{-1}-0.25z^{-2}$
+  & $\{0.45,\ 0.6,\ -0.75\}$ & $\{0.8715,\ -0.27,\ -0.25\}$ \\
+\textbf{\texttt{77 Ch}} & $1+0.2z^{-1}+0.7z^{-2}-0.75z^{-3}$, \newline
+  $B=0.5-0.4z^{-1}-0.2z^{-2}$
+  & $\{0.5631,\ \mathbf{1.9429},\ -0.75\}$ & \mk{unstable}, $|k_2|>1$ \\
+\texttt{73 Ma} & $1-0.45z^{-1}+0.3z^{-2}+0.5z^{-3}$, \newline $B=0.5+0.65z^{-1}+0.2z^{-2}$
+  & $\{-0.4706,\ 0.7,\ 0.5\}$ & $\{0.7412,\ 0.81,\ 0.2\}$ \\
+\textbf{\texttt{78 Ch}} & $1+0.2z^{-1}-0.15z^{-2}$, \newline $B=1-z^{-1}+0.5z^{-2}$
+  & $\{0.2353,\ -0.15\}$ & $\{1.3338,\ -1.1,\ 0.5\}$ \\
+70 Asa & $1-0.3z^{-1}+0.4z^{-2}$, \newline $B=0.5+2z^{-1}+0.6z^{-2}$
+  & $\{-0.2143,\ 0.4\}$ & $\{0.7271,\ 2.18,\ 0.6\}$ \\
+\textbf{66 Ma} & $1+\tfrac15z^{-1}+\tfrac25z^{-2}+\tfrac35z^{-3}$, \newline
+  $B=\tfrac12+\tfrac13z^{-1}+\tfrac14z^{-2}+\tfrac15z^{-3}$
+  & $\{-0.0435,\ 0.4375,\ 0.6\}$ & $\{0.2997,\ 0.2665,\ 0.21,\ 0.2\}$ \\
+82 Ba & $1-0.001z^{-1}+0.6546z^{-2}-0.0775z^{-3}$
+  & $\{0.0302,\ 0.6585,\ -0.0775\}$ & $\{-0.0493,\ 0.3059,\ 0.5124,\ 0.2759\}$ \\
+\textbf{81 Bh} & $(1+0.5z^{-1})(1+0.3z^{-1})(1+0.4z^{-1})$ \newline
+  $=1+1.2z^{-1}+0.47z^{-2}+0.06z^{-3}$ & \mk{multiply out first}
+  & $B=1+z^{-1}+z^{-2}$ \\
+\bottomrule
+\end{tabular}}
+
+\creamq{70 Bh: the all-pass, and the tidiest result in the chapter}{$H(z)=
+\dfrac{1+0.4z^{-1}-1.2z^{-2}+2z^{-3}}{2-1.2z^{-1}+0.4z^{-2}+z^{-3}}$. Look before
+calculating: \mk{the numerator is the denominator written backwards}. That is the
+definition of an \textbf{all-pass}, $H(z)=z^{-N}A(z^{-1})/A(z)$. The backward path of a
+lattice already computes $z^{-N}A(z^{-1})$, so the ladder collapses completely: every
+$C_m=0$ except $\mathbf{C_3=1}$. \mk{An all-pass is a plain lattice with the output
+taken from the last backward node.} Normalising by $a_0=2$ gives
+$A(z)=1-0.6z^{-1}+0.2z^{-2}+0.5z^{-3}$ and
+$k=\{-0.56,\ \tfrac23,\ \tfrac12\}$, all inside the unit circle, so it is stable.}
+
+\hr
+
+\T{6 \quad Quantization, number formats and limit cycles}
+{\color{sub}\footnotesize \tS{10} \yr{\textbf{71 Ch} \m{3}, 70 Asa \m{1+3},
+\texttt{72 Ma} \m{5}, \textbf{\texttt{81 Ch}}, \textbf{\texttt{80 Ch}},
+\textbf{\texttt{70 Bh}} \m{3+4}, \textbf{66 Ma} \m{4}, 71 Shr \m{1+1+2+1},
+\textbf{69 Bh} \m{6}, \textbf{\texttt{69 Bh}} \m{3+4}, 75 Ash \m{3}, \textbf{67 Mng}}}
+
+\begin{asked}{2066 Magh \textperiodcentered{} [4]}
+For the first order filter $y(n)=Q\{a\,y(n-1)\}+x(n)$, the product term $a\,y(n-1)$ has
+been quantized by rounding it to 3 bits, with $y(-1)=0$, $x(n)=0.875\,\delta(n)$ and
+$a=-0.5$. Show whether the filter goes into a limit cycle. What is the period?
+\end{asked}
+
+\lead{Just run it. Three bits after the point means the step is $q=2^{-3}=\tfrac18$}
+\par\smallskip
+{\footnotesize
+\begin{tabular}{@{}L{1.0cm}L{2.6cm}L{2.6cm}L{2.2cm}L{5.6cm}@{}}
+\toprule
+\hrow \thead{$n$} & \thead{$a\,y(n{-}1)$} & \thead{$Q\{\cdot\}$ to $\tfrac18$}
+& \thead{$y(n)$} & \thead{} \\
+0 & $-0.5\times0=0$ & $0$ & $0.875$ & the impulse arrives \\
+1 & $-0.4375$ & $-0.5$ & $-0.5$ & rounds \emph{away} from zero \\
+2 & $0.25$ & $0.25$ & $0.25$ & exact, no rounding needed \\
+3 & $-0.125$ & $-0.125$ & $-0.125$ & exact; now at the dead-band edge \\
+4 & $0.0625$ & $\mathbf{0.125}$ & $\mathbf{0.125}$ & \mk{half a step, rounded up} \\
+5 & $-0.0625$ & $\mathbf{-0.125}$ & $\mathbf{-0.125}$ & and back again \\
+6 & $0.0625$ & $\mathbf{0.125}$ & $\mathbf{0.125}$ & \\
+\bottomrule
+\end{tabular}}
+\par\smallskip
+\begin{itemize}
+  \item \textbf{Yes, it enters a limit cycle}, amplitude $\tfrac18$, and it never leaves.
+  \item \textbf{Period 2}, because $a<0$ flips the sign each step.
+  \item Confirm with the dead band:
+        $\dfrac{q}{2(1-|a|)}=\dfrac{1/8}{2(1-0.5)}=\dfrac18$, \mk{exactly the amplitude
+        observed}. Quote the formula and the table together.
+  \item The mechanism is row 4 alone: $-0.5\times(-0.125)=0.0625$ is \emph{half} a step,
+        and rounding lifts it back to a whole one instead of letting it fall to zero.
+\end{itemize}
+
+\lead{75 Ash: $\pm\tfrac58$ in the three fixed-point codes}
+\begin{itemize}
+  \item $\tfrac58=0.101_2$, so with a sign bit and 3 fraction bits:
+  \item[] $+\tfrac58=\mathtt{0.101}$ in sign magnitude, 1's complement and 2's
+        complement alike.
+  \item[] $-\tfrac58$: sign magnitude $\mathtt{1.101}$ (flip the sign bit only),
+        1's complement $\mathtt{1.010}$ (invert the fraction bits),
+        2's complement $\mathtt{1.011}$ (invert and add $1$ in the last place).
+  \item \mk{Check: 1's complement plus 1 ulp is 2's complement.}
+        $\mathtt{1.010}+\mathtt{0.001}=\mathtt{1.011}$ \checkmark.
+\end{itemize}
+
+\creamq{69 Bh asks for $-192/220$ in 8-bit form, which cannot be done}{$192/220=0.87273$,
+and $220$ is not a power of two, so \mk{the number has no exact binary fraction} in 8
+bits or any other number of bits. Rounded to 8 bits it is $-\tfrac{223}{256}=-0.871094$,
+giving sign magnitude $\mathtt{1.11011111}$, 1's complement $\mathtt{1.00100000}$ and
+2's complement $\mathtt{1.00100001}$. \mk{Almost certainly $220$ is a misprint for
+$256$}, the natural 8-bit scale: $-192/256=-0.75$ exactly, sign magnitude
+$\mathtt{1.11000000}$, 1's complement $\mathtt{1.00111111}$, 2's complement
+$\mathtt{1.01000000}$. Give the clean version and note the other in a line.}
+
+\creamq{67 Mng: show the two truncation error ranges by example}{Take $b_u=6$ bits
+truncated to $b=3$, so $q=\tfrac18$ and $q_u=\tfrac1{64}$, and $q-q_u=\tfrac7{64}$.
+Sweeping every 6-bit fraction confirms both bounds exactly. \textbf{Sign magnitude}:
+truncating shortens the \emph{magnitude}, so a positive number falls and a negative
+number rises, and $e$ runs from $-\tfrac7{64}$ to $+\tfrac7{64}$, \mk{symmetric}.
+\textbf{2's complement}: truncating always drops the value towards $-\infty$ whatever
+the sign, so $e$ runs from $-\tfrac7{64}$ to $0$ and \mk{never exceeds zero}. One
+example each way is enough: $+0.828125\to0.75$ (error $-\tfrac7{64}$ in both codes) and
+$-0.828125\to-0.75$ in sign magnitude (error $+\tfrac7{64}$) but $\to-0.875$ in 2's
+complement (error $-\tfrac{3}{64}$). \mk{That asymmetry is why 2's complement truncation
+adds a DC bias} and rounding is preferred.}
