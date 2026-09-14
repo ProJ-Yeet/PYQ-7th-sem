@@ -27,7 +27,7 @@
         ROC, and papers exploit that: 81 Ba, 82 Ba and 71 Ch each ask for
         \textbf{three} answers from one $X(z)$.
   \item Properties with proofs (convolution \tF{5}, time shift, scaling) are worth 3 to 6
-        marks and come from \S2.4.
+        marks and come from \S2.3.
   \item \mk{Use one method for every inverse}: divide by $z$, partial-fraction
         $X(z)/z$, multiply back so every term reads $z/(z-a)$. \S2.5 explains why.
 \end{itemize}
@@ -243,7 +243,7 @@ Multiplication & $x_1[n]x_2[n]\;\rightarrow\;\dfrac{1}{2\pi j}\oint_C X_1(v)\,
 \end{itemize}
 \lead{Scaling, proved \m{3} \yr{\textbf{\texttt{74 Bh}}}}
 \begin{itemize}
-  \item \[ Z\{a^nx[n]\}=\sum_n a^nx[n]z^{-n}=\sum_n x[n](a^{-1}z)^{-n}=X(a^{-1}z) \]
+  \item[] \[ Z\{a^nx[n]\}=\sum_n a^nx[n]z^{-n}=\sum_n x[n](a^{-1}z)^{-n}=X(a^{-1}z) \]
   \item The ROC $r_1<|z|<r_2$ becomes $r_1<|a^{-1}z|<r_2$, i.e.\
         $|a|r_1<|z|<|a|r_2$: \mk{every pole is scaled by $a$}.
   \item Example: $u[n]\rightarrow\frac{1}{1-z^{-1}}$, so

@@ -217,11 +217,11 @@ rather than tabulated.}
   \item First tidy $x$: $(\frac16)^{n-6}=6^6(\frac16)^n=46656\,(\frac16)^n$.
   \item Overlap needs $k\ge0$ and $n-k\ge3$, so $0\le k\le n-3$: \mk{one range only},
         $n\ge3$.
-  \item \[ y[n]=46656\sum_{k=0}^{n-3}\left(\tfrac16\right)^k\left(\tfrac13\right)^{n-k}
+  \item[] \[ y[n]=46656\sum_{k=0}^{n-3}\left(\tfrac16\right)^k\left(\tfrac13\right)^{n-k}
              =46656\left(\tfrac13\right)^n\sum_{k=0}^{n-3}\left(\tfrac12\right)^k \]
   \item The ratio is $\frac{1/6}{1/3}=\frac12$ --- \mk{two different bases collapse to one
         geometric sum}, which is the whole trick here.
-  \item \[ \boxed{\;y[n]=3456\left(\tfrac13\right)^{n-3}-1728\left(\tfrac16\right)^{n-3},
+  \item[] \[ \boxed{\;y[n]=3456\left(\tfrac13\right)^{n-3}-1728\left(\tfrac16\right)^{n-3},
            \quad n\ge3\;} \]
   \item Check: $y[3]=3456-1728=1728$, $y[4]=1152-288=864$, $y[6]=128-8=120$.
 \end{itemize}}{%
@@ -637,7 +637,7 @@ $x_o[n]=\frac12(x[n]-x[-n])$ & $-0.5$ & $-0.5$ & $-0.5$ & $-0.5$ & 0
   \item \mk{Checks that cost nothing}: $x_e$ is symmetric about $n=0$ \checkmark, and
         $x_o[0]=0$ \checkmark
   \item Add the last two rows back together and row 1 must reappear \checkmark
-  \item \[ x_e[n]=\{1.5,1.5,1.5,1.5,\underline{1},1.5,1.5,1.5,1.5\} \]
+  \item[] \[ x_e[n]=\{1.5,1.5,1.5,1.5,\underline{1},1.5,1.5,1.5,1.5\} \]
         \[ x_o[n]=\{-0.5,-0.5,-0.5,-0.5,\underline{0},0.5,0.5,0.5,0.5\} \]
 \end{itemize}
 \lead{\textbf{67 Mng} \m{2} --- $x(n)=2u[n]-2u[n-4]$}
@@ -659,7 +659,7 @@ Read the samples off the plot, then run exactly the same table.
         for the output by the graphical method.
   \item Both are $\{1,1,1\}$ starting at $n=-1$, so the output starts at $-2$ and has
         $3+3-1=5$ samples.
-  \item \[ y[n]=\{1,2,\underline{3},2,1\}\quad n=-2\ldots2 \]
+  \item[] \[ y[n]=\{1,2,\underline{3},2,1\}\quad n=-2\ldots2 \]
   \item \mk{The triangle} is what convolving two equal rectangles always gives --- worth
         recognising on sight.
 \end{itemize}}
@@ -863,7 +863,7 @@ Consider the analog signal $x_a(t)=3\cos100\pi t$.
 \lead{(a) Minimum sampling rate}
 \begin{itemize}
   \item $F=\dfrac{100\pi}{2\pi}=50$ Hz.
-  \item \[ F_s\ge2F=\boxed{\;100\text{ Hz}\;} \]
+  \item[] \[ F_s\ge2F=\boxed{\;100\text{ Hz}\;} \]
 \end{itemize}
 \lead{(b) $F_s=75$ Hz --- \mk{below Nyquist}}
 \begin{itemize}
@@ -877,7 +877,7 @@ Consider the analog signal $x_a(t)=3\cos100\pi t$.
 \lead{(c) $F_s=5000$ Hz --- well above Nyquist}
 \begin{itemize}
   \item $\omega=\dfrac{2\pi\times50}{5000}=\dfrac{\pi}{50}$, already inside $[-\pi,\pi)$.
-  \item \[ \boxed{\;x[n]=3\cos\!\left(\tfrac{\pi n}{50}\right)\;} \] no aliasing.
+  \item[] \[ \boxed{\;x[n]=3\cos\!\left(\tfrac{\pi n}{50}\right)\;} \] no aliasing.
 \end{itemize}}{%
 \lead{Every other paper that runs this same method}
 \begin{itemize}
@@ -890,7 +890,7 @@ Consider the analog signal $x_a(t)=3\cos100\pi t$.
     \item $F=1000,\,6000,\,3000$ Hz $\rightarrow$
           $\omega=0.4\pi,\;2.4\pi,\;1.2\pi$.
     \item Fold: $2.4\pi-2\pi=0.4\pi$ and $1.2\pi-2\pi=-0.8\pi$.
-    \item \[ x[n]=\sin(0.4\pi n)-5\cos(0.4\pi n)-10\sin(0.8\pi n) \]
+    \item[] \[ x[n]=\sin(0.4\pi n)-5\cos(0.4\pi n)-10\sin(0.8\pi n) \]
     \item \mk{Two of the three aliased}, and the 6000 Hz term landed on top of the
           1000 Hz term --- they are now indistinguishable. The sign of the last term
           flips because $\sin$ is odd.
@@ -943,14 +943,14 @@ $y[n]-3y[n-1]-4y[n-2]=x[n]$
   \item $\lambda^n-3\lambda^{n-1}-4\lambda^{n-2}=0
         \;\Rightarrow\;\lambda^2-3\lambda-4=0$
   \item $(\lambda-4)(\lambda+1)=0\;\Rightarrow\;\lambda_1=4,\;\lambda_2=-1$
-  \item \[ \boxed{\;y_{zi}[n]=C_1(4)^n+C_2(-1)^n\;} \]
+  \item[] \[ \boxed{\;y_{zi}[n]=C_1(4)^n+C_2(-1)^n\;} \]
 \end{itemize}}{%
 \lead{Fixing the constants}
 \begin{itemize}
   \item \mk{The paper gives no initial conditions}, so the boxed form above is the full
         answer. If $y[-1]$ and $y[-2]$ are supplied, solve
         \[ \tfrac{C_1}{4}-C_2=y[-1],\qquad \tfrac{C_1}{16}+C_2=y[-2] \]
-  \item \[ C_1=\frac{16\,(y[-1]+y[-2])}{5},\qquad
+  \item[] \[ C_1=\frac{16\,(y[-1]+y[-2])}{5},\qquad
            C_2=\frac{4y[-2]-y[-1]}{5} \] \added
   \item \textbf{Read the roots}: $|\lambda_1|=4>1$, so the natural response \mk{grows
         without bound} and the system is unstable. Saying that earns the last mark.

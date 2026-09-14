@@ -1,0 +1,644 @@
+%=======================================================================
+%  CHAPTER 2 — NUMERICAL PROBLEMS AND SOLUTIONS
+%  Every published sequence is asserted by verify.py ch2, which inverts
+%  X(z) numerically on a circle inside the ROC and knows nothing about
+%  the partial fractions printed here.
+%  Grouped by METHOD, not by paper: one full worked instance, then the
+%  sibling papers as a data-and-answer table.
+%=======================================================================
+\section*{\color{acc}Ch 2 \textperiodcentered{} Z-Transform\\[2pt]
+{\large\textcolor{sub}{Numerical Problems \& Solutions}}}
+\vspace{-4pt}{\color{acc}\rule{\textwidth}{1.1pt}}\vspace{4pt}
+
+{\color{sub}\footnotesize \mk{32 of the 45 papers ask for an inverse Z-transform.} Every one
+of them is below. They split into five methods; the method is worked once in full and the
+other papers follow with their own data and answer.}
+
+\lead{The one procedure, used in \S1, \S2, \S3 and \S5}
+\begin{enumerate}
+  \item \textbf{Proper?} If the numerator's degree is $\ge$ the denominator's, divide first.
+        The quotient is a polynomial and becomes impulses; the remainder is proper.
+  \item \textbf{Divide by $z$}, expand $X(z)/z$ in partial fractions, multiply back by $z$.
+        Every term then reads $\dfrac{Az}{z-a}$, which is a standard pair.
+  \item \textbf{Assign each pole a side} from the ROC: pole radius \emph{below} the ROC
+        $\rightarrow$ right-sided; \emph{above} $\rightarrow$ left-sided.
+  \item Write the answer term by term.
+\end{enumerate}
+
+\sbs{%
+\lead{The pairs \mk{(the whole table)}}
+\par
+\begin{tabular}{@{}L{2.3cm}L{2.9cm}L{2.7cm}@{}}
+\toprule
+\hrow \thead{Term} & \thead{$|z|>|a|$} & \thead{$|z|<|a|$} \\
+$\dfrac{z}{z-a}$ & $a^nu[n]$ & $-a^nu[-n-1]$ \\
+$\dfrac{z}{(z-a)^2}$ & $n\,a^{n-1}u[n]$ & $-n\,a^{n-1}u[-n-1]$ \\
+$C$ & \multicolumn{2}{l}{$C\delta[n]$} \\
+$z^{k}$ & \multicolumn{2}{l}{$\delta[n+k]$} \\
+$z^{-k}$ & \multicolumn{2}{l}{$\delta[n-k]$} \\
+\bottomrule
+\end{tabular}}{%
+\lead{The three checks that cost nothing}
+\begin{enumerate}
+  \item \textbf{Initial value}: for a causal $x[n]$, $x[0]=\lim_{z\to\infty}X(z)$.
+  \item \textbf{Sum of residues}: the partial-fraction constants must add back to the
+        original numerator's leading coefficient.
+  \item \textbf{Substitute one number}: compute $x[0]$ or $x[1]$ from your answer and from
+        a direct long division of $X(z)$. If they disagree, the ROC assignment is the
+        usual culprit.
+\end{enumerate}
+{\color{sub}\footnotesize \mk{A right-sided answer that contains $u[-n-1]$, or a causal
+answer with samples at negative $n$, is wrong on sight.}}}
+
+\hr
+
+\T{1 \quad Partial fractions, and how the ROC picks the answer}
+{\color{sub}\footnotesize \tS{10} \yr{82 Ba \m{1+5}, 81 Ba \m{2+2+3},
+\textbf{\texttt{73 Bh}} \m{6}, \texttt{72 Ma} \m{6}, \textbf{71 Ch} \m{1+5},
+\textbf{\texttt{76 Bh}} \m{2+6}, \textbf{\texttt{77 Ch}} \m{6}, \texttt{70 Ma} \m{6},
+\textbf{\texttt{80 Ch}} \m{6}, \textbf{\texttt{70 Bh}} \m{6}}
+\gap$\cdot$\gap \mk{one $X(z)$, three answers} --- the point of the whole chapter}
+
+\begin{asked}{2082 Baishakh \textperiodcentered{} Q3 \textperiodcentered{} [1+5]}
+Define the ROC. Find the inverse z-transform of
+$X(z)=\dfrac{1}{1-1.5z^{-1}+0.5z^{-2}}$ using partial fraction method for
+(a) $|z|>1$ \quad (b) $|z|<0.5$ \quad (c) $0.5<|z|<1$.
+\end{asked}
+
+\lead{Step 1 --- factor the denominator and mark the poles}
+\begin{itemize}
+  \item $1-1.5z^{-1}+0.5z^{-2}=(1-z^{-1})(1-0.5z^{-1})$, so the poles are at
+        \textbf{$z=1$ and $z=0.5$}.
+  \item Numerator degree 0 $<$ denominator degree 2, so it is already proper: no division.
+  \item Three ROCs are possible, and the question asks for all three:
+        $|z|<0.5$, \; $0.5<|z|<1$, \; $|z|>1$.
+\end{itemize}
+
+\lead{Step 2 --- partial fractions, once, for all three parts}
+\[ \frac{1}{(1-z^{-1})(1-0.5z^{-1})}=\frac{A}{1-z^{-1}}+\frac{B}{1-0.5z^{-1}} \]
+\begin{itemize}
+  \item Put $w=z^{-1}$: $1=A(1-0.5w)+B(1-w)$.
+  \item $w=1$ kills $B$: $1=A(1-0.5)\Rightarrow \boxed{A=2}$.
+  \item $w=2$ kills $A$: $1=B(1-2)\Rightarrow \boxed{B=-1}$.
+  \item Check: $A+B=1$, the numerator's constant term \checkmark
+\end{itemize}
+\[ X(z)=\frac{2}{1-z^{-1}}-\frac{1}{1-0.5z^{-1}} \]
+
+\lead{Step 3 --- the ROC decides each term's side, and \mk{nothing else changes}}
+\par
+\begin{tabularx}{\textwidth}{@{}L{2.4cm}L{3.3cm}L{3.3cm}X@{}}
+\toprule
+\hrow \thead{Part} & \thead{pole $z=1$} & \thead{pole $z=0.5$} & \thead{$x[n]$} \\
+(a) $|z|>1$ & outside both $\rightarrow$ right & right
+ & $\big[2-(0.5)^n\big]u[n]$ \\
+\hrow (b) $|z|<0.5$ & inside both $\rightarrow$ left & left
+ & $\big[-2+(0.5)^n\big]u[-n-1]$ \\
+(c) $0.5<|z|<1$ & ROC is inside it $\rightarrow$ left & ROC is outside it $\rightarrow$ right
+ & $-2u[-n-1]-(0.5)^nu[n]$ \\
+\bottomrule
+\end{tabularx}
+
+\lead{Reading the three answers}
+\sbs{%
+\begin{itemize}
+  \item (a) is \textbf{causal}: $x[0]=1$, $x[1]=1.5$, $x[2]=1.75\ldots$ climbing to 2.
+        Contains the unit circle? \mk{No} --- so this one is not stable.
+  \item (b) is \textbf{anticausal}: $x[-1]=0$, $x[-2]=2$, $x[-3]=6$, growing as
+        $n\to-\infty$.
+  \item (c) is \textbf{two-sided} and is the only one whose ROC contains
+        $|z|=1$, so \mk{(c) is the stable one}: $x[0]=-1$, $x[1]=-0.5$, and
+        $x[n]=-2$ for every $n\le-1$.
+\end{itemize}}{%
+\begin{itemize}
+  \item \mk{All three come from the same two fractions.} Only the choice of pair changes.
+        That is the whole examinable idea.
+  \item If the question gives \emph{one} ROC, do steps 1 and 2 identically and read one
+        row of the table.
+  \item If it says ``\textbf{causal}'' instead of giving an ROC, that means the outermost
+        row: every pole right-sided.
+\end{itemize}}
+
+\lead{Every other paper that runs this same method}
+\par
+\begin{tabularx}{\textwidth}{@{}L{2.4cm}L{3.4cm}XL{4.4cm}@{}}
+\toprule
+\hrow \thead{Paper} & \thead{$X(z)$} & \thead{ROC} & \thead{$x[n]$} \\
+81 Ba \m{2+2+3} & $\dfrac{1}{1-0.8z^{-1}+0.12z^{-2}}$, poles $0.6,\,0.2$;
+ $A=1.5$, $B=-0.5$ & (i) $|z|>0.6$ \newline (ii) $|z|<0.2$ \newline
+ (iii) $0.2<|z|<0.6$
+ & (i) $[1.5(0.6)^n-0.5(0.2)^n]u[n]$ \newline
+   (ii) $[-1.5(0.6)^n+0.5(0.2)^n]u[-n-1]$ \newline
+   (iii) $-1.5(0.6)^nu[-n-1]-0.5(0.2)^nu[n]$ \\
+\hrow \textbf{\texttt{73 Bh}} \m{6}, \texttt{72 Ma} \m{6}
+ & same as 82 Ba & $|z|>1$ \newline $|z|<0.5$
+ & $[2-(0.5)^n]u[n]$ \newline $[-2+(0.5)^n]u[-n-1]$ \\
+\textbf{71 Ch} \m{1+5} & $\dfrac{1}{(z-0.5)(z+2)}$; divide by $z$ first, giving
+ $-1+\dfrac{0.8z}{z-0.5}+\dfrac{0.2z}{z+2}$
+ & (i) $0.5<|z|<2$ \newline (ii) $|z|<0.5$ \newline (iii) $|z|>2$
+ & (i) $-\delta[n]+0.8(0.5)^nu[n]-0.2(-2)^nu[-n-1]$ \newline
+   (ii) $-\delta[n]-[0.8(0.5)^n+0.2(-2)^n]u[-n-1]$ \newline
+   (iii) $-\delta[n]+[0.8(0.5)^n+0.2(-2)^n]u[n]$ \\
+\bottomrule
+\end{tabularx}
+
+\par\vspace{2pt}
+{\color{sub}\footnotesize \mk{71 Ch is the one that needs the $X(z)/z$ step}: its numerator
+has no $z$, so expanding directly would leave $\frac{A}{z-a}$ terms. Dividing by $z$ first
+produces the constant $-1$ (an impulse) plus two proper $\frac{Az}{z-a}$ terms. \texttt{72 Ma}
+prints its first ROC as $|z|>1.5$; for this $X(z)$ that is the same region as $|z|>1$, since
+both lie outside every pole, so the answer is unchanged.}
+
+\hr
+
+\T{2 \quad Improper in $z^{-1}$: divide first, the quotient becomes impulses}
+{\color{sub}\footnotesize \tS{7} \yr{\textbf{80 Bh} \m{1+6}, 80 Ba \m{1+5}, 71 Shr \m{6},
+\textbf{\texttt{69 Bh}} \m{6}, \textbf{\texttt{80 Ch}} \m{6}, \textbf{\texttt{70 Bh}} \m{6},
+\texttt{70 Ma} \m{6}} \gap$\cdot$\gap \mk{numerator and denominator both degree 2 in
+$z^{-1}$}}
+
+\begin{asked}{2080 Bhadra \textperiodcentered{} Q3 \textperiodcentered{} [1+6]}
+Define ROC. Find the inverse z-transform of
+$H(z)=\dfrac{1+2z^{-1}+z^{-2}}{1-0.75z^{-1}+0.125z^{-2}}$, ROC: $0.25<|z|<0.5$.
+\end{asked}
+
+\lead{Step 1 --- spot that it is improper, and divide}
+\begin{itemize}
+  \item Both numerator and denominator have degree 2 in $z^{-1}$, so a constant must come
+        out first. Divide the \emph{highest} powers: $z^{-2}\div0.125z^{-2}=8$.
+  \item[] \[ N-8D=(1-8)+(2+6)z^{-1}+(1-1)z^{-2}=-7+8z^{-1} \]
+  \item[] \[ H(z)=8+\frac{-7+8z^{-1}}{1-0.75z^{-1}+0.125z^{-2}} \]
+  \item \mk{The 8 is already an answer}: a constant is $8\delta[n]$.
+\end{itemize}
+
+\lead{Step 2 --- factor, then partial fractions on the remainder}
+\begin{itemize}
+  \item $1-0.75z^{-1}+0.125z^{-2}=(1-0.5z^{-1})(1-0.25z^{-1})$: poles $0.5$ and $0.25$.
+  \item With $w=z^{-1}$: $-7+8w=A(1-0.25w)+B(1-0.5w)$.
+  \item $w=2$: $-7+16=9=A(0.5)\Rightarrow A=18$. \qquad
+        $w=4$: $-7+32=25=B(-1)\Rightarrow B=-25$.
+  \item Check $A+B=-7$ \checkmark
+\end{itemize}
+\[ H(z)=8+\frac{18}{1-0.5z^{-1}}-\frac{25}{1-0.25z^{-1}} \]
+
+\lead{Step 3 --- the ROC $0.25<|z|<0.5$ splits the two poles}
+\sbs{%
+\begin{itemize}
+  \item Pole $0.5$: the ROC lies \emph{inside} it $\rightarrow$ \mk{left-sided}
+        $\rightarrow$ $-18(0.5)^nu[-n-1]$.
+  \item Pole $0.25$: the ROC lies \emph{outside} it $\rightarrow$ \mk{right-sided}
+        $\rightarrow$ $-25(0.25)^nu[n]$.
+  \item[] \[ \boxed{\;h[n]=8\delta[n]-18(0.5)^nu[-n-1]-25(0.25)^nu[n]\;} \]
+\end{itemize}}{%
+\begin{itemize}
+  \item \textbf{Check}: $h[0]=8+0-25=-17$; $h[1]=-25(0.25)=-6.25$;
+        $h[-1]=-18(2)=-36$; $h[-2]=-18(4)=-72$.
+  \item The ROC is a ring not containing $|z|=1$, so this system is \mk{neither causal nor
+        stable} --- worth one line if the question asks.
+\end{itemize}}
+
+\lead{Every other paper that runs this same method}
+\par
+\begin{tabularx}{\textwidth}{@{}L{2.4cm}L{3.6cm}XL{4.6cm}@{}}
+\toprule
+\hrow \thead{Paper} & \thead{$X(z)$ and ROC} & \thead{After dividing} & \thead{$x[n]$} \\
+80 Ba \m{1+5} & $\dfrac{1+2z^{-1}+z^{-2}}{1-1.5z^{-1}+0.5z^{-2}}$, $|z|>1$
+ & $2+\dfrac{8}{1-z^{-1}}-\dfrac{9}{1-0.5z^{-1}}$
+ & $2\delta[n]+\big[8-9(0.5)^n\big]u[n]$ \\
+\hrow 71 Shr \m{6} & $\dfrac{1+2z^{-1}+z^{-2}}{1+1.5z^{-1}+0.5z^{-2}}$, $|z|>1$
+ & $2-\dfrac{1}{1+0.5z^{-1}}$ \newline \mk{one factor cancels}
+ & $2\delta[n]-(-0.5)^nu[n]$ \\
+\textbf{\texttt{69 Bh}} \m{6} & $\dfrac{1-\frac12z^{-2}}
+ {(1-\frac12z^{-1})(1-\frac14z^{-1})}$, $|z|>\frac12$
+ & $-4+\dfrac{-2}{1-0.5z^{-1}}+\dfrac{7}{1-0.25z^{-1}}$
+ & $-4\delta[n]+\big[-2(0.5)^n+7(0.25)^n\big]u[n]$ \\
+\hrow \textbf{\texttt{80 Ch}}, \textbf{\texttt{70 Bh}} \m{6}
+ & $\dfrac{1+2z^{-1}+z^{-2}}{1+4z^{-1}+4z^{-2}}$, \textbf{causal}
+ & $0.25+\dfrac{0.5}{1+2z^{-1}}+\dfrac{0.25}{(1+2z^{-1})^2}$
+ & $0.25\delta[n]+(0.25n+0.75)(-2)^nu[n]$ \\
+\bottomrule
+\end{tabularx}
+
+\par\vspace{2pt}
+\sbs{%
+{\color{sub}\footnotesize \mk{71 Shr is the free one.} Its numerator is
+$(1+z^{-1})^2$ and its denominator $(1+z^{-1})(1+0.5z^{-1})$, so after the division the
+remainder $-1-z^{-1}$ is exactly $-(1+z^{-1})$ and \textbf{one factor cancels}. Look for a
+common factor before grinding through partial fractions.}}{%
+{\color{sub}\footnotesize \mk{80 Ch / 70 Bh has a repeated pole.} Its denominator is
+$(1+2z^{-1})^2$, a double pole at $z=-2$. Match $0.75+w=A(1+2w)+B$ to get $A=0.5$, $B=0.25$,
+then use $\frac{1}{(1-az^{-1})^2}\leftrightarrow(n+1)a^nu[n]$. ``Causal'' in the question
+replaces a stated ROC and means $|z|>2$.}}
+
+\hr
+
+\T{3 \quad Improper in $z$: the $z^4/z^2$ family}
+{\color{sub}\footnotesize \tS{11} \yr{\textbf{79 Bh} \m{6}, \textbf{76 Ch} \m{2+6},
+\textbf{\texttt{81 Ch}} \m{6}, \textbf{\texttt{71 Bh}} \m{6}, \textbf{\texttt{79 Ch}} \m{6},
+\textbf{\texttt{72 Ash}} \m{5}, \textbf{81 Bh} \m{1+5}, \textbf{74 Ch} \m{1+3+5},
+\textbf{73 Ch} \m{1+3+5}, \textbf{\texttt{74 Bh}} \m{1+3+5}}
+\gap$\cdot$\gap \mk{the same question with the numerator changed, eleven times}}
+
+\begin{asked}{2079 Bhadra \textperiodcentered{} Q3 \textperiodcentered{} [6]}
+Find the inverse z-transform of $X(z)=\dfrac{2z^4+2z^3-3z+2}{z^2-1.5z-1}$,
+ROC: $|z|<0.5$, using partial fraction expansion.
+\end{asked}
+
+\lead{Step 1 --- poles, and what the ROC means}
+\begin{itemize}
+  \item $z^2-1.5z-1=(z-2)(z+0.5)$: poles at \textbf{$z=2$ and $z=-0.5$}, radii 2 and 0.5.
+  \item ROC $|z|<0.5$ is inside \emph{both}, so \mk{both poles are left-sided} and the
+        whole answer carries $u[-n-1]$.
+\end{itemize}
+
+\lead{Step 2 --- long division in $z$, because the numerator is degree 4}
+{\color{sub}\footnotesize Written as ordinary polynomial division, highest power first. The
+missing $z^2$ term is carried as $0z^2$.}
+\par
+\begin{tabularx}{\textwidth}{@{}L{2.2cm}XL{4.0cm}@{}}
+\toprule
+\hrow \thead{Quotient term} & \thead{subtract} & \thead{new remainder} \\
+$2z^2$ & $2z^2(z^2-1.5z-1)=2z^4-3z^3-2z^2$ & $5z^3+2z^2-3z+2$ \\
+$5z$ & $5z(z^2-1.5z-1)=5z^3-7.5z^2-5z$ & $9.5z^2+2z+2$ \\
+$9.5$ & $9.5(z^2-1.5z-1)=9.5z^2-14.25z-9.5$ & $16.25z+11.5$ \\
+\bottomrule
+\end{tabularx}
+\[ X(z)=\underbrace{2z^2+5z+9.5}_{\text{quotient}}
+       +\underbrace{\frac{16.25z+11.5}{(z-2)(z+0.5)}}_{G(z),\ \text{proper}} \]
+
+\lead{Step 3 --- divide $G(z)$ by $z$ and expand}
+\[ \frac{G(z)}{z}=\frac{16.25z+11.5}{z(z-2)(z+0.5)}
+   =\frac{C}{z}+\frac{D}{z-2}+\frac{E}{z+0.5} \]
+\begin{itemize}
+  \item $C=\dfrac{11.5}{(-2)(0.5)}=-11.5$
+  \item $D=\dfrac{16.25(2)+11.5}{2(2.5)}=\dfrac{44}{5}=8.8$
+  \item $E=\dfrac{16.25(-0.5)+11.5}{(-0.5)(-2.5)}=\dfrac{3.375}{1.25}=2.7$
+\end{itemize}
+\[ G(z)=-11.5+\frac{8.8\,z}{z-2}+\frac{2.7\,z}{z+0.5} \]
+
+\lead{Step 4 --- apply the pairs}
+\sbs{%
+\begin{itemize}
+  \item $2z^2\rightarrow2\delta[n+2]$, \; $5z\rightarrow5\delta[n+1]$, \;
+        $9.5\rightarrow9.5\delta[n]$ \; (\mk{powers of $z$ are advances}).
+  \item $-11.5\rightarrow-11.5\delta[n]$, which merges with the $9.5$ to give
+        $-2\delta[n]$.
+  \item Both poles left-sided, so $\dfrac{Az}{z-a}\rightarrow-A\,a^nu[-n-1]$.
+\end{itemize}
+\[ \boxed{\;x[n]=2\delta[n+2]+5\delta[n+1]-2\delta[n]
+   -\big[8.8(2)^n+2.7(-0.5)^n\big]u[-n-1]\;} \]}{%
+\lead{Check, sample by sample}
+\par
+\begin{tabular}{@{}L{1.1cm}L{5.2cm}L{1.6cm}@{}}
+\toprule
+\hrow \thead{$n$} & \thead{from the answer} & \thead{$x[n]$} \\
+$1$ & nothing is non-zero & $0$ \\
+$0$ & $-2$ & $-2$ \\
+$-1$ & $5-[8.8(0.5)+2.7(-2)]$ & $6$ \\
+$-2$ & $2-[8.8(0.25)+2.7(4)]$ & $-11$ \\
+$-3$ & $0-[8.8(0.125)+2.7(-8)]$ & $20.5$ \\
+\bottomrule
+\end{tabular}
+\par\vspace{2pt}
+{\color{sub}\footnotesize \mk{$x[n]=0$ for all $n\ge1$}, as a purely left-sided answer must
+be. If your answer has a tail to the right, the ROC was read backwards.}}
+
+\lead{Every other paper in this family}
+{\color{sub}\footnotesize Identical denominator $(z-2)(z+0.5)$ and identical ROC $|z|<0.5$;
+only the numerator changes. $Q$ is the quotient, and the impulse at $n=0$ is
+$Q_0+C$ after $C$ is folded in.}
+\par
+\begin{tabularx}{\textwidth}{@{}L{2.8cm}L{3.0cm}XX@{}}
+\toprule
+\hrow \thead{Paper} & \thead{Numerator} & \thead{Quotient $Q(z)$, and $C$}
+ & \thead{$x[n]$} \\
+\textbf{76 Ch} \m{2+6} & $z^4+5z^3-3z+4$ & $z^2+6.5z+10.75$; $C=-14.75$
+ & $\delta[n{+}2]+6.5\delta[n{+}1]-4\delta[n]-[10.8(2)^n+3.95(-0.5)^n]u[-n-1]$ \\
+\hrow \textbf{\texttt{81 Ch}}, \textbf{\texttt{71 Bh}} \m{6} & $z^4+z^3-3z+5$
+ & $z^2+2.5z+4.75$; $C=-9.75$
+ & $\delta[n{+}2]+2.5\delta[n{+}1]-5\delta[n]-[4.6(2)^n+5.15(-0.5)^n]u[-n-1]$ \\
+\textbf{\texttt{79 Ch}} \m{6} & $z^4-2z^3-z+4$ & $z^2-0.5z+0.25$; $C=-4.25$
+ & $\delta[n{+}2]-0.5\delta[n{+}1]-4\delta[n]-[0.4(2)^n+3.85(-0.5)^n]u[-n-1]$ \\
+\hrow \textbf{\texttt{72 Ash}} \m{5} & $z^4+2z^3-z+4$ & $z^2+3.5z+6.25$; $C=-10.25$
+ & $\delta[n{+}2]+3.5\delta[n{+}1]-4\delta[n]-[6.8(2)^n+3.45(-0.5)^n]u[-n-1]$ \\
+\bottomrule
+\end{tabularx}
+
+\par\vspace{3pt}
+\sbs{%
+\lead{\textbf{74 Ch}, \textbf{73 Ch}, \textbf{\texttt{74 Bh}} \m{1+3+5}
+--- different denominator}
+\begin{itemize}
+  \item $X(z)=\dfrac{2z^3+2z^2+3z+5}{z^2-0.1z-0.2}$, ROC $|z|<0.4$.
+  \item \mk{All three papers misprint the leading term as $2z^2$}, which would make the
+        fraction proper and the question trivial. Solved here as $2z^3$. \added
+  \item $z^2-0.1z-0.2=(z-0.5)(z+0.4)$, both left-sided under $|z|<0.4$.
+  \item Division gives $Q=2z+2.2$, remainder $\dfrac{3.62z+5.44}{(z-0.5)(z+0.4)}$.
+  \item $C=-27.2$, $D=16.111$, $E=11.089$.
+  \item[] \[ x[n]=2\delta[n{+}1]-25\delta[n]
+        -\big[16.111(0.5)^n+11.089(-0.4)^n\big]u[-n-1] \]
+  \item Check: $x[0]=-25$, $x[-1]=-2.5$, $x[-2]=-133.75$.
+\end{itemize}}{%
+\lead{\textbf{81 Bh} \m{1+5} --- the clean one}
+\begin{itemize}
+  \item $X(z)=\dfrac{2z^3-5z^2+z+3}{(z-1)(z-2)}$, ROC $|z|<1$: both poles left-sided.
+  \item Denominator $=z^2-3z+2$. Division gives quotient $2z+1$ and \mk{remainder exactly
+        $1$}:
+        \[ X(z)=2z+1+\frac{1}{(z-1)(z-2)} \]
+  \item $\dfrac{1}{z(z-1)(z-2)}=\dfrac{0.5}{z}-\dfrac{1}{z-1}+\dfrac{0.5}{z-2}$, so
+        \[ \frac{1}{(z-1)(z-2)}=0.5-\frac{z}{z-1}+\frac{0.5z}{z-2} \]
+  \item[] \[ \boxed{\;x[n]=2\delta[n{+}1]+1.5\delta[n]
+        +\big[1-0.5(2)^n\big]u[-n-1]\;} \]
+  \item Check: $x[0]=1.5$, $x[-1]=2.75$, $x[-2]=0.875$, $x[-3]=0.9375$.
+\end{itemize}}
+
+\hr
+
+\T{4 \quad Inverse by long division (power series)}
+{\color{sub}\footnotesize \tF{5} \yr{\textbf{\texttt{73 Bh}} \m{6}, \texttt{72 Ma} \m{6},
+\textbf{\texttt{76 Bh}} \m{2+6}, \textbf{\texttt{77 Ch}} \m{6}, \texttt{70 Ma} \m{6}}
+\gap$\cdot$\gap \mk{only when the question names the method}}
+
+\begin{asked}{2073 Bhadra \textperiodcentered{} Q3 \textperiodcentered{} [6]}
+Determine the inverse z-transform of $X(z)=\dfrac{1}{1-\frac32z^{-1}+\frac12z^{-2}}$ using
+long division method, when ROC: $|z|>1$ and when ROC: $|z|<\frac12$.
+\end{asked}
+
+\lead{Method \mk{(the direction of the division is the whole question)}}
+\begin{enumerate}
+  \item \textbf{ROC outside} $\rightarrow$ right-sided $\rightarrow$ arrange both
+        polynomials in \mk{ascending powers of $z^{-1}$} and divide.
+  \item \textbf{ROC inside} $\rightarrow$ left-sided $\rightarrow$ rewrite in
+        \mk{ascending powers of $z$} first, then divide.
+  \item Read the quotient's coefficients off as $x[0],x[1],x[2]\ldots$ (or
+        $x[-1],x[-2]\ldots$).
+  \item \mk{Give the recurrence too}: a division gives numbers, and the recurrence is what
+        shows the pattern continues.
+\end{enumerate}
+
+\sbs{%
+\lead{(a) ROC $|z|>1$, right-sided}
+\begin{itemize}
+  \item Divide $1$ by $1-1.5z^{-1}+0.5z^{-2}$ in ascending $z^{-1}$:
+\end{itemize}
+\par
+\begin{tabular}{@{}L{1.2cm}L{3.2cm}L{3.4cm}@{}}
+\toprule
+\hrow \thead{step} & \thead{quotient term} & \thead{remainder} \\
+1 & $1$ & $1.5z^{-1}-0.5z^{-2}$ \\
+2 & $1.5z^{-1}$ & $1.75z^{-2}-0.75z^{-3}$ \\
+3 & $1.75z^{-2}$ & $1.875z^{-3}-0.875z^{-4}$ \\
+4 & $1.875z^{-3}$ & $\ldots$ \\
+\bottomrule
+\end{tabular}
+\par\vspace{2pt}
+\begin{itemize}
+  \item[] \[ x[n]=\{\underline{1},\;1.5,\;1.75,\;1.875,\;1.9375,\ldots\} \]
+  \item Recurrence from the denominator: $x[n]=1.5x[n-1]-0.5x[n-2]$, $x[0]=1$.
+  \item \mk{Closed form, if you want it}: partial fractions give
+        $x[n]=[2-(0.5)^n]u[n]$, which matches every term. This is 82 Ba part (a).
+\end{itemize}}{%
+\lead{(b) ROC $|z|<\frac12$, left-sided}
+\begin{itemize}
+  \item Rewrite with $z$ ascending: multiply top and bottom by $z^2$,
+        \[ X(z)=\frac{z^2}{z^2-1.5z+0.5}=\frac{z^2}{0.5-1.5z+z^2} \]
+        and divide $z^2$ by $0.5-1.5z+z^2$.
+  \item First term $\dfrac{z^2}{0.5}=2z^2$, and the division continues in rising powers
+        of $z$.
+  \item[] \[ x[n]=\{\ldots,6,\;2,\;0,\;\underline{0}\} \quad\text{for } n=-3,-2,-1,0 \]
+  \item \mk{Closed form}: $x[n]=[-2+(0.5)^n]\,u[-n-1]$, so $x[-1]=0$, $x[-2]=2$,
+        $x[-3]=6$, $x[-4]=14$.
+  \item \mk{$x[-1]=0$ is not a mistake} --- the two terms cancel exactly at $n=-1$.
+\end{itemize}}
+
+\lead{The other three, and the two ROCs that cannot be right}
+\par
+\begin{tabularx}{\textwidth}{@{}L{2.4cm}L{3.4cm}XX@{}}
+\toprule
+\hrow \thead{Paper} & \thead{$X(z)$} & \thead{Printed ROC} & \thead{Answer} \\
+\texttt{72 Ma} \m{6} & $\dfrac{1}{1-1.5z^{-1}+0.5z^{-2}}$
+ & (a) $|z|>1.5$ \newline (b) $|z|<0.5$
+ & Same as 73 Bh: $|z|>1.5$ is outside every pole, so it is the same region as $|z|>1$ \\
+\hrow \textbf{\texttt{76 Bh}} \m{2+6} & $\dfrac{1}{1-1.58z^{-1}+0.5z^{-2}}$
+ & $|z|>1$ and $|z|<\frac12$
+ & Right-sided division gives $\{\underline{1},\;1.58,\;1.9964,\;2.3643,\;2.7374,\ldots\}$
+   with $x[n]=1.58x[n-1]-0.5x[n-2]$ \\
+\textbf{\texttt{77 Ch}} \m{6} & $\dfrac{1}{1-0.5z^{-1}+1.5z^{-2}}$ & $|z|>1$
+ & $\{\underline{1},\;0.5,\;-1.25,\;-1.375,\;1.1875,\;2.65625\}$, \;
+   $x[n]=0.5x[n-1]-1.5x[n-2]$ \\
+\hrow \texttt{70 Ma} \m{6} & $\dfrac{1+2z^{-1}+z^{-2}}{1+4z^{-1}+4z^{-2}}$
+ & all possible ROCs
+ & $|z|>2$: the causal answer of \S2. \; $|z|<2$: the same partial fractions with
+   $u[-n-1]$ and a sign change \\
+\bottomrule
+\end{tabularx}
+
+\par\vspace{3pt}
+\sbs{%
+\lead{\mk{\texttt{76 Bh}: the printed ROCs are impossible}}
+\begin{itemize}
+  \item $1.58$ puts the poles at $z=1.1423$ and $z=0.4377$, not at 1 and $0.5$.
+  \item So ``$|z|>1$'' \textbf{contains} the pole at $1.1423$, and ``$|z|<\frac12$''
+        contains the pole at $0.4377$. \mk{An ROC can never contain a pole} (\S2.2,
+        property 3), so neither region is a legal ROC.
+  \item With $1.5$ instead of $1.58$ the poles are exactly 1 and $0.5$ and both printed
+        ROCs are correct --- and \textbf{\texttt{73 Bh}} asks the identical question with
+        $\frac32$. \mk{$1.58$ is a misprint for $1.5$.} \added
+  \item In the exam: divide as printed (the division does not care), and add one line
+        saying the ROC must be $|z|>1.1423$ or $|z|<0.4377$.
+\end{itemize}}{%
+\lead{\mk{\texttt{77 Ch}: same defect, different cause}}
+\begin{itemize}
+  \item $z^2-0.5z+1.5$ has complex roots, $z=0.25\pm j1.198$, both of modulus
+        $\sqrt{1.5}=1.2247$.
+  \item ``ROC $|z|>1$'' again contains them, so it is not a legal ROC; the causal ROC is
+        $|z|>1.2247$. \added
+  \item The poles are outside the unit circle, so this sequence \mk{grows}: the printed
+        terms alternate and increase in size, which is correct, not an arithmetic slip.
+  \item \mk{Long division is unaffected} by all of this: it only needs to know the sequence
+        is right-sided.
+\end{itemize}}
+
+\hr
+
+\T{5 \quad Repeated poles: the $X(z)/z$ method earning its keep}
+{\color{sub}\footnotesize \tF{3} \yr{76 Ash \m{3+6}, 73 Shr \m{1+5}, 70 Asa \m{1+5}}}
+
+\begin{asked}{2076 Ashwin \textperiodcentered{} Q3 \textperiodcentered{} [3+6]}
+State Convolution property of Z-transform. Find inverse Z-transform of
+$X(z)=\dfrac{z}{(z-0.6)(z+0.5)^2}$, ROC: $|z|>0.6$.
+\end{asked}
+
+\lead{Step 1 --- divide by $z$, which removes the numerator entirely}
+\[ \frac{X(z)}{z}=\frac{1}{(z-0.6)(z+0.5)^2}
+   =\frac{A}{z-0.6}+\frac{B}{z+0.5}+\frac{C}{(z+0.5)^2} \]
+\begin{itemize}
+  \item \textbf{$A$} --- cover $(z-0.6)$ and put $z=0.6$:
+        $A=\dfrac{1}{(0.6+0.5)^2}=\dfrac{1}{1.21}=0.8264$.
+  \item \textbf{$C$} --- cover $(z+0.5)^2$ and put $z=-0.5$:
+        $C=\dfrac{1}{-0.5-0.6}=\dfrac{1}{-1.1}=-0.9091$.
+  \item \textbf{$B$} --- clear denominators,
+        $1=A(z+0.5)^2+B(z-0.6)(z+0.5)+C(z-0.6)$, and match the $z^2$ coefficient:
+        $0=A+B$, so \mk{$B=-A=-0.8264$}.
+  \item {\color{sub}\footnotesize Matching one coefficient is faster than differentiating,
+        and it is the step to use for every repeated pole.}
+\end{itemize}
+
+\lead{Step 2 --- multiply back by $z$ and apply the pairs}
+\sbs{%
+\[ X(z)=\frac{0.8264\,z}{z-0.6}-\frac{0.8264\,z}{z+0.5}-\frac{0.9091\,z}{(z+0.5)^2} \]
+\begin{itemize}
+  \item ROC $|z|>0.6$ is outside both poles, so \mk{every term is right-sided}.
+  \item $\dfrac{z}{z-a}\rightarrow a^nu[n]$ and
+        $\dfrac{z}{(z-a)^2}\rightarrow n\,a^{n-1}u[n]$, here with $a=-0.5$.
+\end{itemize}
+\[ x[n]=\Big[0.8264(0.6)^n-0.8264(-0.5)^n
+        -0.9091\,n(-0.5)^{n-1}\Big]u[n] \]
+\begin{itemize}
+  \item Tidier, using $(-0.5)^{n-1}=-2(-0.5)^n$:
+\end{itemize}
+\[ \boxed{\;x[n]=\Big[0.8264(0.6)^n+(1.8182n-0.8264)(-0.5)^n\Big]u[n]\;} \]}{%
+\lead{Check}
+\par
+\begin{tabular}{@{}L{1.0cm}L{5.4cm}L{1.4cm}@{}}
+\toprule
+\hrow \thead{$n$} & \thead{substitution} & \thead{$x[n]$} \\
+0 & $0.8264-0.8264$ & $0$ \\
+1 & $0.4959+(1.8182-0.8264)(-0.5)$ & $0$ \\
+2 & $0.2975+(3.6364-0.8264)(0.25)$ & $1$ \\
+3 & $0.1785+(5.4545-0.8264)(-0.125)$ & $-0.4$ \\
+\bottomrule
+\end{tabular}
+\par\vspace{2pt}
+{\color{sub}\footnotesize \mk{$x[0]=x[1]=0$ is correct, not a slip.} $X(z)$ has one $z$ on
+top and a cubic underneath, so the first non-zero sample cannot appear before $n=2$: a
+quick sanity check before any arithmetic.}}
+
+\lead{The two left-sided siblings}
+\par
+\begin{tabularx}{\textwidth}{@{}L{2.2cm}L{3.0cm}XX@{}}
+\toprule
+\hrow \thead{Paper} & \thead{$X(z)$, ROC} & \thead{Constants} & \thead{$x[n]$} \\
+73 Shr \m{1+5} & $\dfrac{z}{(z-0.4)(z+1.5)^2}$, $|z|<0.4$
+ & $A=\frac{1}{3.61}=0.2770$, $B=-0.2770$, $C=\frac{1}{-1.9}=-0.5263$
+ & $\big[-0.2770(0.4)^n+0.2770(-1.5)^n+0.5263\,n(-1.5)^{n-1}\big]u[-n-1]$ \\
+\hrow 70 Asa \m{1+5} & $\dfrac{z}{(z-1)(z-2)^2}$, $|z|<1$
+ & $A=1$, $B=-1$, $C=1$
+ & $\big[-1+(2)^n-n(2)^{n-1}\big]u[-n-1]$ \\
+\bottomrule
+\end{tabularx}
+
+\par\vspace{2pt}
+{\color{sub}\footnotesize \mk{Both ROCs lie inside every pole}, so every term flips to
+$u[-n-1]$ with a sign change --- including the repeated one. Check 70 Asa: $x[-1]=-1+0.5+0.25
+=-0.25$, $x[-2]=-1+0.25+0.25=-0.5$, $x[-3]=-0.6875$.}
+
+\hr
+
+\T{6 \quad Finding $X(z)$ and locating the ROC}
+{\color{sub}\footnotesize \tF{6} \yr{\textbf{70 Ch} \m{2+4}, 70 Asa \m{2+4},
+75 Ash \m{3+6}, \textbf{75 Ch} \m{4+6}, \textbf{\texttt{75 Bh}} \m{4+6},
+\texttt{73 Ma} \m{1+4}}}
+
+\begin{asked}{2075 Chaitra \textperiodcentered{} Q3 \textperiodcentered{} [4+6]}
+State the properties of ROC. Find the Z-transform and locate the ROC of the signal
+$x[n]=(0.1)^n u[n]+(0.3)^n u[-n-1]$.
+\end{asked}
+
+\sbs{%
+\lead{Method}
+\begin{enumerate}
+  \item Transform each term with its \emph{own} ROC.
+  \item \mk{Mind the sign on the left-sided term}: the standard pair is
+        $-b^nu[-n-1]\leftrightarrow\frac{1}{1-bz^{-1}}$, so a $+b^nu[-n-1]$ in the question
+        picks up a minus.
+  \item Intersect the two ROCs.
+\end{enumerate}
+\lead{Worked}
+\begin{itemize}
+  \item $(0.1)^nu[n]\rightarrow\dfrac{1}{1-0.1z^{-1}}$, ROC $|z|>0.1$.
+  \item $(0.3)^nu[-n-1]\rightarrow-\dfrac{1}{1-0.3z^{-1}}$, ROC $|z|<0.3$.
+  \item[] \[ \boxed{\;X(z)=\frac{1}{1-0.1z^{-1}}-\frac{1}{1-0.3z^{-1}},
+          \qquad 0.1<|z|<0.3\;} \]
+  \item The ring is non-empty because the right-sided pole (0.1) is the \emph{inner} one.
+        It does not contain $|z|=1$, so this signal has \mk{no DTFT}.
+\end{itemize}}{%
+\lead{The siblings}
+\begin{itemize}
+  \item \textbf{75 Ash} \m{3+6}: $x[n]=(0.6)^nu[n]+(0.25)^nu[n]$ --- \mk{both right-sided},
+        so both ROCs are ``outside'' and the intersection is the larger one:
+        \[ X(z)=\frac{1}{1-0.6z^{-1}}+\frac{1}{1-0.25z^{-1}},\qquad |z|>0.6 \]
+  \item \textbf{\texttt{75 Bh}} \m{4+6}: $x[n]=(0.25)^nu[n]+(0.6)^nu[-n-1]$ --- the mirror
+        of 75 Ch:
+        \[ X(z)=\frac{1}{1-0.25z^{-1}}-\frac{1}{1-0.6z^{-1}},\qquad 0.25<|z|<0.6 \]
+  \item \texttt{73 Ma} \m{1+4}: $x[n]=(0.5+j0.2)^nu[n]+(-j)^nu[-n-1]$.
+  \begin{itemize}
+    \item Radii are $|0.5+j0.2|=\sqrt{0.29}=0.5385$ and $|-j|=1$, so
+          \mk{ROC $0.5385<|z|<1$}.
+    \item $z=0.4$ is \mk{outside the ROC, so $X(0.4)$ does not converge} --- that is the
+          answer, not a number.
+    \item $z=0.7$ is inside: $X(0.7)=\dfrac{1}{1-\frac{0.5+j0.2}{0.7}}
+          -\dfrac{1}{1+\frac{j}{0.7}}=1.4211+j2.2198$.
+  \end{itemize}
+\end{itemize}}
+
+\lead{\textbf{70 Ch} and 70 Asa \m{2+4} --- \mk{the ROC comes out empty}}
+\begin{asked}{2070 Chaitra \textperiodcentered{} Q3 \textperiodcentered{} [2+4]}
+List out the properties of Region of Convergence. Find the Z-transform and locate the ROC of
+the signal. \; $x[n]=\left(-\tfrac13\right)^n u[n]-\left(\tfrac13\right)^n u[-n-1]$
+\end{asked}
+\sbs{%
+\begin{itemize}
+  \item First term: $\dfrac{1}{1+\frac13z^{-1}}$, ROC $\left|z\right|>\frac13$.
+  \item Second term is already in the $-b^nu[-n-1]$ form, so
+        $\dfrac{1}{1-\frac13z^{-1}}$, ROC $\left|z\right|<\frac13$.
+  \item \mk{Both radii are $\frac13$.} The intersection of $|z|>\frac13$ and
+        $|z|<\frac13$ is \textbf{empty}.
+  \item[] \[ \boxed{\;\text{The Z-transform of this } x[n] \text{ does not exist.}\;} \]
+  \item That is a complete, correct answer, and it is the point property 8 of \S2.2 is
+        making: an ROC must be a connected, non-empty region.
+\end{itemize}}{%
+\lead{The intended question \added}
+\begin{itemize}
+  \item This is BB Sir's worked example with one digit changed: his version is
+        $x[n]=\left(-\frac13\right)^nu[n]-\left(\frac12\right)^nu[-n-1]$.
+  \item Then the radii are $\frac13$ and $\frac12$, the right-sided pole is the inner one,
+        and
+        \[ X(z)=\frac{1}{1+\frac13z^{-1}}+\frac{1}{1-\frac12z^{-1}}
+             =\frac{2z\left(z-\frac{1}{12}\right)}
+                   {\left(z+\frac13\right)\left(z-\frac12\right)} \]
+        with \mk{ROC $\frac13<|z|<\frac12$}.
+  \item \mk{In the exam}: give the empty-ROC answer for the signal as printed, in two
+        lines, then solve the $\frac12$ version. Both halves earn marks; neither alone is
+        the full answer.
+\end{itemize}}
+
+\hr
+
+\T{7 \quad Inverse by inspection: $X(z)$ is already a polynomial}
+{\color{sub}\footnotesize \tP{2} \yr{74 Ash \m{3+3}, \textbf{\texttt{78 Ch}} \m{4}}
+\gap$\cdot$\gap \mk{no partial fractions, no ROC decision} --- 30 seconds if you spot it}
+
+\sbs{%
+\lead{74 Ash \m{3+3}}
+\begin{itemize}
+  \item $X(z)=z^2\left[1-\tfrac32z^{-1}\right](1+z^{-1})(1-z^{-1})$.
+  \item $(1+z^{-1})(1-z^{-1})=1-z^{-2}$, so
+        \[ X(z)=z^2\left(1-\tfrac32z^{-1}\right)\left(1-z^{-2}\right) \]
+  \item Expand: $z^2\left(1-\tfrac32z^{-1}-z^{-2}+\tfrac32z^{-3}\right)
+        =z^2-1.5z-1+1.5z^{-1}$.
+  \item Read the coefficients as impulses, \mk{a power of $z$ is an advance}:
+        \[ \boxed{\;x[n]=\delta[n{+}2]-1.5\delta[n{+}1]-\delta[n]+1.5\delta[n{-}1]\;} \]
+  \item As a sequence: $x[n]=\{1,\,-1.5,\,\underline{-1},\,1.5\}$ for $n=-2\ldots1$.
+\end{itemize}}{%
+\lead{\textbf{\texttt{78 Ch}} \m{4}}
+\begin{itemize}
+  \item $X(z)=z^2(1-1.5z^{-1})(1-z^{-1})(1+z^{-2})$.
+  \item $(1-1.5z^{-1})(1-z^{-1})=1-2.5z^{-1}+1.5z^{-2}$.
+  \item Times $(1+z^{-2})$:
+        $1-2.5z^{-1}+2.5z^{-2}-2.5z^{-3}+1.5z^{-4}$.
+  \item Times $z^2$: $z^2-2.5z+2.5-2.5z^{-1}+1.5z^{-2}$.
+  \item[] \[ \boxed{\;x[n]=\{1,\,-2.5,\,\underline{2.5},\,-2.5,\,1.5\},\quad n=-2\ldots2\;} \]
+\end{itemize}
+{\color{sub}\footnotesize \mk{Why there is no ROC to worry about}: a finite-length sequence
+converges everywhere except possibly $z=0$ and $z=\infty$ (\S2.2, property 4). Both of these
+have positive and negative powers, so their ROC is $0<|z|<\infty$.}}
