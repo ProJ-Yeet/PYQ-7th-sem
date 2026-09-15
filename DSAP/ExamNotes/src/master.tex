@@ -1,0 +1,115 @@
+%=======================================================================
+%  Digital Signal Analysis and Processing — Complete Exam Notes (master)
+%  Chapters 1-7 in syllabus order, then the abbreviation chart. The seven
+%  numerical companions are collected in master-num.tex, exactly as AI,
+%  Wireless and Data Mining do.
+%
+%  CHAPTER 8 IS DELIBERATELY ABSENT. It is the EX 753 (BEX) material that
+%  sits outside the CT 704 syllabus and it was never written; the user
+%  ruled it out on 2026-09-15. build.py still lists ch8 in CH, which is
+%  harmless - it simply has no source file. Do not "restore" a \input{ch8}
+%  here without writing the chapter first.
+%=======================================================================
+\documentclass[10pt]{article}
+\input{preamble}
+\usepackage{bookmark}
+
+\begin{document}
+
+% ------------------------------------------------ title page
+\thispagestyle{empty}
+\vspace*{1.6cm}
+\begin{center}
+  {\Huge\bfseries\color{acc} Digital Signal Analysis and Processing}\\[6pt]
+  {\LARGE\bfseries Complete Exam Notes}\\[14pt]
+  {\large\color{sub} CT 704 (BEI/BCT, IV/I) \quad$\cdot$\quad EX 753 (BEX, IV/II)}\\[3pt]
+  {\color{sub} Institute of Engineering, Tribhuvan University}\\[18pt]
+  \begin{minipage}{0.80\textwidth}
+    \color{sub}\small
+    The \textbf{whole CT 704 syllabus}, all seven chapters and all 45 lecture hours,
+    built from the syllabus, five lecturers' note sets and \textbf{all 45 past papers
+    (2066--2082 BS)} across both course codes. Every topic carries a frequency tier
+    counted from those papers, and every count comes from
+    \code{tools/ch\_tally.py} reading the Sorted PYQ document, not from memory.\\[8pt]
+    Worked problems live in the companion volume, \textbf{Digital Signal Analysis and
+    Processing --- Complete Numerical Problems \& Solutions}: \textbf{48 worked
+    families} over the same seven chapters, each opening with the question exactly as
+    its paper prints it.\\[8pt]
+    \mk{Chapter 8 of the PYQ document is not here.} That chapter is the EX 753 extras
+    --- DSP fundamentals, A/D quantization error, bit-serial and distributed arithmetic,
+    pipelining, DSP processor chips --- which lie \emph{outside} the CT 704 syllabus and
+    are asked only in the 17 EX 753 papers. It is \textbf{3.4 of 80 marks} overall.
+    These notes are the other \textbf{78 of 80}.
+  \end{minipage}
+\end{center}
+
+\vfill
+\begin{center}
+\begin{tabularx}{0.96\textwidth}{@{}L{0.8cm}XL{1.1cm}L{1.3cm}L{1.5cm}L{1.4cm}L{1.6cm}@{}}
+\toprule
+\hrow \thead{Ch} & \thead{Topic} & \thead{Hours} & \thead{Papers} & \thead{Questions} &
+  \thead{Marks} & \thead{Worked} \\
+1 & Discrete-Time Signals and Systems & 8 & \textbf{44/45} & \textbf{104} & 12.8 & 12 \\
+2 & Z-Transform & 4 & 40/45 & 51 & 7.4 & 7 \\
+3 & Analysis of LTI Systems in the Frequency Domain & 6 & 38/45 & 55 & 8.4 & 5 \\
+4 & Discrete Filter Structures & 8 & 43/45 & 68 & 10.0 & 6 \\
+5 & FIR Filter Design & 6 & 42/45 & 70 & 12.0 & 4 \\
+6 & IIR Filter Design & 6 & \textbf{44/45} & 50 & 13.1 & 7 \\
+7 & Discrete Fourier Transform and FFT & 7 & \textbf{44/45} & \textbf{99} &
+  \textbf{14.3} & 7 \\
+\midrule
+& \textbf{Total} & \textbf{45} & & \textbf{497} & \textbf{78.0} &
+  \textbf{48 families} \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\par\penalty0\vspace{10pt}
+\begin{center}
+\begin{minipage}{0.88\textwidth}\small\color{sub}
+\mk{The marks column is normalised to one 80-mark paper}, so it reads directly as ``what
+this chapter is worth on the day''. \textbf{Six procedures carry the subject}: the
+convolution sum (45 questions), the DIT/DIF FFT (41 papers), the lattice step-down (38),
+the inverse Z-transform (32), the bilinear Butterworth design (32) and the circular
+convolution (35). Chapters 7, 6, 1 and 5 together are \textbf{52 of the 80 marks}, and
+\textbf{Chapter 2 is the best marks-per-hour in the subject} $-$ 7.4 marks for 4 hours,
+from two questions that are always asked together.
+\end{minipage}
+\end{center}
+\vspace{1.0cm}
+
+% ------------------------------------------------ contents
+\clearpage
+\pagestyle{fancy}
+{\Large\bfseries\color{acc} Contents}
+\vspace{-6pt}{\color{acc}\rule{\textwidth}{1.1pt}}\vspace{4pt}
+\begingroup
+\renewcommand{\contentsname}{}
+\setcounter{tocdepth}{1}
+\vspace{-24pt}
+\tableofcontents
+\endgroup
+
+% ------------------------------------------------ chapters
+\clearpage
+\input{ch1}
+\clearpage
+\input{ch2}
+\clearpage
+\input{ch3}
+\clearpage
+\input{ch4}
+\clearpage
+\input{ch5}
+\clearpage
+\input{ch6}
+\clearpage
+\input{ch7}
+
+% ------------------------------------------------ abbreviations
+\clearpage
+\phantomsection
+\addcontentsline{toc}{section}{Abbreviations}
+\input{abbrev}
+
+\end{document}

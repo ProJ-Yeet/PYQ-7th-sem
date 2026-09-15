@@ -1,0 +1,139 @@
+%=======================================================================
+%  Digital Signal Analysis and Processing — Complete Numerical Problems
+%  The seven numerical companions (ch 1-7) in syllabus order, then the
+%  abbreviation chart. Companion volume to master.tex; the per-chapter
+%  standalones stay exactly as they are.
+%
+%  Unlike AI, every ch<N>-num.tex here heads itself with an UNNUMBERED
+%  \section*, so there is no section counter to set - but nothing reaches
+%  the table of contents on its own either. Each \input is therefore
+%  preceded by its own \phantomsection + \addcontentsline.
+%
+%  Chapter 8 has no companion: it is theory, its one quantization-error
+%  numerical is folded into the chapter, and the chapter itself is not
+%  part of these notes. See the header of master.tex.
+%=======================================================================
+\documentclass[10pt]{article}
+\input{preamble}
+\usepackage{bookmark}
+
+\begin{document}
+
+% ------------------------------------------------ title page
+\thispagestyle{empty}
+\vspace*{1.6cm}
+\begin{center}
+  {\Huge\bfseries\color{acc} Digital Signal Analysis and Processing}\\[6pt]
+  {\LARGE\bfseries Complete Numerical Problems \& Solutions}\\[14pt]
+  {\large\color{sub} CT 704 (BEI/BCT, IV/I) \quad$\cdot$\quad EX 753 (BEX, IV/II)}\\[3pt]
+  {\color{sub} Institute of Engineering, Tribhuvan University}\\[18pt]
+  \begin{minipage}{0.80\textwidth}
+    \color{sub}\small
+    Every computational question in \textbf{all 45 past papers (2066--2082 BS)}, worked,
+    in one volume. \textbf{48 worked families} over the seven CT 704 chapters.\\[8pt]
+    \mk{The grouping is the point.} This subject asks the same six procedures thirty to
+    forty times each, so a family is worked \textbf{once in full} $-$ opening with the
+    question exactly as its paper prints it, the paper's own spelling and slips included
+    $-$ and the sibling papers that ask the same thing then follow as a
+    \textbf{data-and-answer table}, split out only where the calculation genuinely
+    differs. Nothing is dropped: every computational paper of the 45 is below.\\[8pt]
+    Theory lives in the companion volume, \textbf{Digital Signal Analysis and Processing
+    --- Complete Exam Notes}. \mk{Chapter 8 is not in either volume}: it is the EX 753
+    material outside the CT 704 syllabus.
+  \end{minipage}
+\end{center}
+
+\vspace{10pt}
+\begin{center}
+\begin{tabularx}{0.96\textwidth}{@{}L{0.8cm}L{5.6cm}L{1.6cm}X@{}}
+\toprule
+\hrow \thead{Ch} & \thead{Topic} & \thead{Families} & \thead{Biggest family} \\
+1 & Discrete-Time Signals and Systems & \textbf{12} &
+  Convolution sum, \textbf{45 questions, 277 marks} \\
+2 & Z-Transform & 7 & Inverse Z-transform, \textbf{32 questions} \\
+3 & Analysis of LTI Systems in the Frequency Domain & 5 &
+  Pole-zero plot and magnitude response, \textbf{24 papers} \\
+4 & Discrete Filter Structures & 6 &
+  Lattice step-down, \textbf{38 papers, 314 of 449 marks} \\
+5 & FIR Filter Design & 4 & Kaiser-window and optimum/Remez designs \\
+6 & IIR Filter Design & 7 &
+  Digital Butterworth by bilinear transformation, \textbf{32 papers} \\
+7 & Discrete Fourier Transform and FFT & 7 &
+  8-point DFT by DIT/DIF (41 papers) and circular convolution (35) \\
+\midrule
+& \textbf{Total} & \textbf{48} & \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\par\penalty0\vspace{12pt}
+\begin{center}
+\begin{minipage}{0.90\textwidth}\small\color{sub}
+\mk{Every answer in this volume is machine checked.}
+\code{src/verify.py} recomputes each published result independently from the problem
+statement and asserts it against the printed value $-$ convolutions and correlations,
+ROC-aware inverse Z-transforms, pole-zero and magnitude responses, the lattice step-down
+in \textbf{exact rational arithmetic} (\code{lattice.py}) and the quantization figures
+(\code{quant.py}), every window value, filter length, Kaiser $\beta$ and Bessel figure
+(\code{fir.py}), every order, cut-off, pole, $H(s)$ and $H(z)$ (\code{iir.py}, itself
+self-tested against Oppenheim examples 7.2, 7.3 and 7.6), and every DFT, butterfly stage
+and circular convolution (\code{dft.py}, which checks DIT and DIF against the direct DFT
+on nine sequences before it prints). \textbf{1743 checks, all passing.}
+\end{minipage}
+\end{center}
+
+% ------------------------------------------------ contents
+\clearpage
+\pagestyle{fancy}
+{\Large\bfseries\color{acc} Contents}
+\vspace{-6pt}{\color{acc}\rule{\textwidth}{1.1pt}}\vspace{4pt}
+\begingroup
+\renewcommand{\contentsname}{}
+\setcounter{tocdepth}{1}
+\vspace{-24pt}
+\tableofcontents
+\endgroup
+
+% ------------------------------------------------ chapters
+\clearpage
+\phantomsection
+\addcontentsline{toc}{section}{Ch 1 \textperiodcentered{} Discrete-Time Signals and Systems}
+\input{ch1-num}
+
+\clearpage
+\phantomsection
+\addcontentsline{toc}{section}{Ch 2 \textperiodcentered{} Z-Transform}
+\input{ch2-num}
+
+\clearpage
+\phantomsection
+\addcontentsline{toc}{section}{Ch 3 \textperiodcentered{} Analysis of LTI Systems in the Frequency Domain}
+\input{ch3-num}
+
+\clearpage
+\phantomsection
+\addcontentsline{toc}{section}{Ch 4 \textperiodcentered{} Discrete Filter Structures}
+\input{ch4-num}
+
+\clearpage
+\phantomsection
+\addcontentsline{toc}{section}{Ch 5 \textperiodcentered{} FIR Filter Design}
+\input{ch5-num}
+
+\clearpage
+\phantomsection
+\addcontentsline{toc}{section}{Ch 6 \textperiodcentered{} IIR Filter Design}
+\input{ch6-num}
+
+\clearpage
+\phantomsection
+\addcontentsline{toc}{section}{Ch 7 \textperiodcentered{} Discrete Fourier Transform and FFT}
+\input{ch7-num}
+
+% ------------------------------------------------ abbreviations
+\clearpage
+\phantomsection
+\addcontentsline{toc}{section}{Abbreviations}
+\input{abbrev}
+
+\end{document}
