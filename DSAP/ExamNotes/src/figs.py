@@ -69,6 +69,20 @@ SPECS = [
     # REJECTED: SPP deck p53's s-plane/z-plane picture crops with two
     # overlapping "S plane" labels and an unreadable squashed axis. A figure
     # that has to be explained is worse than the sentence it replaces.
+    # ---- chapter 7
+    # Every SPP slide carries a full-page background rectangle, so ink
+    # detection returns the whole slide; these three need explicit boxes.
+    # The flow graphs are the one thing in this chapter that MUST be cropped:
+    # the papers ask for them by name and house style forbids redrawing.
+    ("c7_butterfly.png", SPP + r"\DSAP_Sanjeeb_8(FFT).pdf", 14,
+     {"box": (0.03, 0.22, 0.98, 0.62), "zoom": 4.0}),
+    ("c7_dit_flow.png", SPP + r"\DSAP_Sanjeeb_8(FFT).pdf", 16,
+     {"box": (0.235, 0.197, 0.99, 0.90), "zoom": 4.0}),
+    ("c7_dif_flow.png", SPP + r"\DSAP_Sanjeeb_8(FFT).pdf", 26,
+     {"box": (0.202, 0.175, 0.99, 0.897), "zoom": 4.0}),
+    # NOT cropped: deck 7 p31 is an image of Oppenheim Table 8.2, the DFT
+    # property summary. House style typesets a table rather than cropping it,
+    # and ch5 set the same precedent for the window comparison table.
 ]
 
 
