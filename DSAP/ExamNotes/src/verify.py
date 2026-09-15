@@ -2238,10 +2238,13 @@ def ch7():
                 return None          # \tfrac, a formula, anything symbolic
         return out
 
-    body = tex.split("Question as printed", 1)
+    # Layout-independent on purpose: walk EVERY "Question as printed"
+    # tabular and classify each row by its cell count, so splitting a table
+    # in two for pagination (which these need, a tabular being an unbreakable
+    # box) cannot quietly drop rows out of the check.
     q_rows = 0
-    if len(body) > 1:
-        body = body[1].split("\\bottomrule", 1)[0]
+    for chunk in tex.split("Question as printed")[1:]:
+        body = chunk.split("\\bottomrule", 1)[0]
         for row in body.split("\\\\"):
             cells = [c.strip() for c in row.split("&")]
             if len(cells) != 3:
@@ -2252,6 +2255,52 @@ def ch7():
                 continue
             chk("c7 tex question-row %s" % tag, X, D.dft(x, 8), 5e-4)
             q_rows += 1
+    # --- sections 2 and 2.1 were restyled the same way, to
+    # (papers, question as printed, N, answer). Pull BOTH sequences out of
+    # the question and recompute the answer as a circular convolution.
+    def two_seqs(cell):
+        """the first two \\{...\\} or [...] lists the question prints."""
+        found = []
+        for m in re.finditer(r"\\\{([^{}]*?)\\\}|\[([-\d.,\s{}\\]+?)\]", cell):
+            raw = m.group(1) if m.group(1) is not None else m.group(2)
+            raw = raw.replace("{-}", "-").replace("\\ ", " ").strip()
+            if not raw or re.search(r"[a-zA-Z]", raw):
+                continue
+            toks = [t for t in re.split(r"[,\s]+", raw) if t]
+            try:
+                found.append([float(t) for t in toks])
+            except ValueError:
+                continue
+            if len(found) == 2:
+                return found
+        return None
+
+    cc_rows = 0
+    for chunk in tex.split("Question as printed")[1:]:
+        chunk = chunk.split("\\bottomrule", 1)[0]
+        for row in chunk.split("\\\\"):
+            cells = [c.strip() for c in row.split("&")]
+            if len(cells) != 4 or not cells[2].strip().isdigit():
+                continue
+            N = int(cells[2])
+            tag = re.sub(r"\\text(bf|tt)|[{}]", "", cells[0]).strip()
+            pair, y = two_seqs(cells[1]), parse(cells[3])
+            if pair is None or y is None:
+                continue
+            chk("c7 tex question-conv %s (N=%d)" % (tag, N), y,
+                D.circconv(pair[0], pair[1], N), 5e-4)
+            cc_rows += 1
+    # 24 of the 25 rows recompute from their own printed wording. The one
+    # that cannot is 81 Bh / 81 Ch / 75 Bh, whose sequences are given as
+    # 3^n and 2^n rather than as lists; it is asserted by name below, as is
+    # the step difference in 71 Ch / 70 Asa / 79 Ch.
+    chk("c7 tex question-conv rows found", cc_rows, 24)
+    chk("c7 71Ch step expands to four ones",
+        D.circconv([1, 2], [1, 1, 1, 1], 4), [3, 3, 3, 3], 1e-9)
+    chk("c7 81Bh 3^n against 2^n",
+        D.circconv([3 ** n for n in range(4)], [2 ** n for n in range(5)], 5),
+        [229, 365, 451, 65, 130], 1e-9)
+
     # 19 of the 21 data rows are recomputed here. Exactly three are skipped,
     # and each is asserted by name in the block further up instead:
     #   82 Bh        prints its sequence as \tfrac fractions
@@ -2266,7 +2315,8 @@ def ch7():
 
     # the old 5-column FFT tabulars are gone, replaced by the above
     chk("c7 old 5-column FFT rows are retired", fft_rows, 0)
-    chk("c7 tex convolution rows found", conv_rows, 25)
+    # the old 5-column convolution tabulars are gone too
+    chk("c7 old 5-column convolution rows are retired", conv_rows, 0)
     chk("c7 tex linear rows found", lin_rows, 4)
 
 

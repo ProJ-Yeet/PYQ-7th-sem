@@ -203,6 +203,13 @@ padded; \mk{the padding is never stated by the paper} and is the first mark.}
   $x[n]=\{\tfrac12,\tfrac12,\tfrac12,\tfrac12,0,0,0,0\}$ using DIF-FFT. \m{7} \newline
   {\color{sub}70 Bh prints the same four values as $0.5$ and says "radix-2 DIF"} \m{8}
   & \{$2$, $0.5{-}j1.207$, $0$, $0.5{-}j0.2071$, $0$, $0.5{+}j0.2071$, $0$, $0.5{+}j1.207$\} \\
+\bottomrule
+\end{tabular}}
+\par\smallskip
+{\footnotesize
+\begin{tabular}{@{}L{1.45cm}L{8.1cm}L{7.5cm}@{}}
+\toprule
+\hrow \thead{Papers} & \thead{Question as printed} & \thead{$X(k)$} \\
 \texttt{81 Ch} & Why we need FFT? Compute the 8-point DFT of sequence
   $x(n)=\{-0.5,-0.5,0.5,0.5,0,0,0,0)$ using Decimation in Frequency Fast Fourier
   Transform (DIFFFT) algorithm. \m{2+6} \newline {\color{sub}the paper closes the brace
@@ -395,39 +402,80 @@ Compute the circular convolution of $x_1=\{1,2,3,1\}$ and $x_2=\{4,3,2,2\}$.
         table.} Use it only when the question names the DFT.
 \end{itemize}
 
-\creamq{Every other direct circular convolution}{}
+\lead{Every other direct circular convolution, question as printed}
+{\color{sub}\footnotesize Build the circulant of the second sequence and multiply. The
+only decision is $N$, and \mk{when the paper does not say, $N=\max(L,M)$}, with the
+shorter sequence zero padded up to it.}
 \par\smallskip
 {\footnotesize
-\begin{tabular}{@{}L{3.3cm}L{0.5cm}L{3.3cm}L{3.5cm}L{3.6cm}@{}}
+\begin{tabular}{@{}L{2.5cm}L{10.3cm}L{0.5cm}L{3.4cm}@{}}
 \toprule
-\hrow \thead{Papers} & \thead{$N$} & \thead{$x_1$} & \thead{$x_2$} & \thead{$y[n]$} \\
-81 Ba & 4 & \{$1$, $2$, $4$, $5$\} & \{$2$, $1$, $6$, $8$\} & \{$47$, $67$, $56$, $34$\} \\
-\textbf{72 Ch}, \textbf{82 Bh} & 5 & \{$1$, $2$, $3$, $1$\} & \{$1$, $2$, $1$, $-1$, $1$\} & \{$1$, $6$, $9$, $8$, $4$\} \\
-79 Ba & 5 & \{$1$, $-1$, $-2$, $3$, $-1$\} & \{$1$, $2$, $3$\} & \{$8$, $-2$, $-1$, $-4$, $-1$\} \\
-82 Ba & 5 & \{$1$, $1$, $-1$, $-1$, $2$\} & \{$1$, $-1$, $-2$\} & \{$1$, $-4$, $-4$, $-2$, $5$\} \\
-\textbf{78 Bh}, \texttt{74 Ma} & 4 & \{$2$, $1$, $2$, $1$\} & \{$1$, $2$, $3$, $4$\} & \{$14$, $16$, $14$, $16$\} \\
-\textbf{\texttt{78 Ch}} & 4 & \{$2$, $1$, $2$, $1$\} & \{$1$, $-2$, $-1$, $3$\} & \{$1$, $2$, $1$, $2$\} \\
-75 Ash & 4 & \{$1$, $2$, $-1$, $1$\} & \{$1$, $3$, $5$, $7$\} & \{$13$, $3$, $17$, $15$\} \\
-\textbf{75 Ch} & 4 & \{$0$, $0$, $1$, $1$\} & \{$1$, $1$, $1$, $1$\} & \{$2$, $2$, $2$, $2$\} \\
-\textbf{\texttt{76 Bh}} & 4 & \{$1$, $0.5$, $1$, $0.5$\} & \{$0$, $1$, $2$, $3$\} & \{$4$, $5$, $4$, $5$\} \\
-\textbf{\texttt{71 Bh}} & 5 & \{$1$, $2$, $0$, $3$, $4$\} & \{$2$, $-1$, $2$, $-1$, $2$\} & \{$8$, $8$, $2$, $17$, $5$\} \\
-\textbf{67 Mng} & 4 & \{$1$, $2$, $1$\} & \{$1$, $2$, $0$, $1$\} & \{$3$, $5$, $5$, $3$\} \\
-\textbf{66 Ma} & 4 & \{$1$, $2$\} & \{$1$, $3$, $4$, $5$\} & \{$11$, $5$, $10$, $13$\} \\
-\textbf{69 Bh} & 4 & \{$1$, $0$, $1$\} & \{$1$, $0$, $2$, $1$\} & \{$3$, $1$, $3$, $1$\} \\
-\textbf{71 Ch}, 70 Asa, \textbf{\texttt{79 Ch}} & 4 & \{$1$, $2$\} & \{$1$, $1$, $1$, $1$\} & \{$3$, $3$, $3$, $3$\} \\
+\hrow \thead{Papers} & \thead{Question as printed} & \thead{$N$} & \thead{$y[n]$} \\
+81 Ba & Compute circular convolution of the following two sequences using DFT.
+  $x(n)=\{1,2,4,5\}$ and $h(n)=\{2,1,6,8\}$ \m{6} & 4 & \{$47$, $67$, $56$, $34$\} \\
+\textbf{72 Ch}, \textbf{82 Bh} & Compute Circular Convolution of $h(n)=\{1,2,1,-1,1\}$
+  and $x[n]=\{1,2,3,1\}$ \m{7} \newline {\color{sub}82 Bh prints the same pair, $h$
+  first again} \m{7} & 5 & \{$1$, $6$, $9$, $8$, $4$\} \\
+79 Ba & Find the circular convolution of the sequences $x_1[n]=\{1,-1,-2,3,-1\}$ and
+  $x_2[n]=\{1,2,3\}$. \m{7} & 5 & \{$8$, $-2$, $-1$, $-4$, $-1$\} \\
+82 Ba & Find the circular convolution of the sequences $x_1[n]=\{1,1,-1,-1,2\}$ and
+  $x_2[n]=\{1,-1,-2\}$. \m{6} & 5 & \{$1$, $-4$, $-4$, $-2$, $5$\} \\
+\textbf{78 Bh}, \texttt{74 Ma} & Differentiate between DFT and DTFT. Find the circular
+  convolution of $x_1[n]=\{2,1,2,1\}$ and $x_2[n]=\{1,2,3,4\}$ \m{2+6}\m{1+5}
+  & 4 & \{$14$, $16$, $14$, $16$\} \\
+\textbf{\texttt{78 Ch}} & Find the circular convolution for $x_1[n]=\{2,1,2,1\}$ and
+  $x_2[n]=\{1,-2,-1,3\}$. \m{5} & 4 & \{$1$, $2$, $1$, $2$\} \\
 \bottomrule
 \end{tabular}}
 \par\smallskip
-{\color{sub}\footnotesize \mk{75 Ch's answer is constant} because $x_2$ is constant:
-convolving anything with a flat sequence circularly gives $\sum x_1$ in every position.
-Same reason 71 Ch's answer is $\{3,3,3,3\}$ with $\sum x_1=3$. Both are free marks once
-you see it.}
+{\footnotesize
+\begin{tabular}{@{}L{2.5cm}L{10.3cm}L{0.5cm}L{3.4cm}@{}}
+\toprule
+\hrow \thead{Papers} & \thead{Question as printed} & \thead{$N$} & \thead{$y[n]$} \\
+75 Ash & State the circular convolution property of DFT. Find the circular convolution
+  of: $x_1(n)=\{1,2,-1,1\}$ and $x_2(n)=\{1,3,5,7\}$ \m{1+5}
+  & 4 & \{$13$, $3$, $17$, $15$\} \\
+\textbf{75 Ch} & Differentiate between linear convolution and circular convolution
+  compute circular convolution of signals $X_1[n]=\{0,0,1,1\}$ and $X_2[n]=\{1,1,1,1\}$
+  \m{3+7} & 4 & \{$2$, $2$, $2$, $2$\} \\
+\textbf{\texttt{76 Bh}} & Determine the circular convolution of the following sequences
+  $x_1[n]=\{1,0.5,1,0.5\}$ and $x_2[n]=\{0,1,2,3\}$. \m{6}
+  & 4 & \{$4$, $5$, $4$, $5$\} \\
+\textbf{\texttt{71 Bh}} & Perform circular convolution of: $x_1[n]=[1\ 2\ 0\ 3\ 4]$,
+  $x_2[n]=[2\ {-}1\ 2\ {-}1\ 2]$ \m{5} \newline {\color{sub}square brackets and no
+  commas, which is this paper's house style} & 5
+  & \{$8$, $8$, $2$, $17$, $5$\} \\
+\textbf{67 Mng} & Perform circular convolution of the sequences $x_1[n]=[1,2,1]$,
+  $0\le n\le2$ and $x_2[n]=[1,2,0,1]$, $0\le n\le3$. \m{5} & 4
+  & \{$3$, $5$, $5$, $3$\} \\
+\textbf{66 Ma} & Perform circular convolution of the sequences $x_1(n)=[1,2]$,
+  $0\le n\le1$ and $x_2(n)=[1,3,4,5]$, $0\le n\le3$. \m{4} & 4
+  & \{$11$, $5$, $10$, $13$\} \\
+\textbf{69 Bh} & Perform circular convolution of the sequences $x[n]=[1\ 0\ 1]$ and
+  $h[n]=[1\ 0\ 2\ 1]$. \m{5} & 4 & \{$3$, $1$, $3$, $1$\} \\
+\textbf{71 Ch}, 70 Asa, \textbf{\texttt{79 Ch}} & Why do we need DFT although we have
+  DTFT? Find circular convolution between $x[n]=\{1,2\}$ and \mk{$y[n]=u[n]-u[n-4]$}
+  \m{2+5}\m{2+5}\m{3+5} \newline {\color{sub}$y$ is a formula: it is
+  $\{1,1,1,1\}$} & 4 & \{$3$, $3$, $3$, $3$\} \\
+\bottomrule
+\end{tabular}}
+\par\smallskip
+\begin{itemize}
+  \item \mk{Three of these hand you $N$ implicitly.} 67 Mng, 66 Ma and 69 Bh print
+        $0\le n\le3$ on the longer sequence, so $N=4$; 71 Ch, 70 Asa and 79 Ch print a
+        step difference that has to be expanded to $\{1,1,1,1\}$ first.
+  \item \mk{75 Ch's and 71 Ch's answers are constant} because their second sequence is
+        constant: convolving anything with a flat sequence circularly puts $\sum x_1$ in
+        every position. $\sum\{0,0,1,1\}=2$ and $\sum\{1,2\}=3$. Free marks once seen.
+  \item \mk{82 Bh and 72 Ch print $h$ before $x$.} Circular convolution commutes, so it
+        changes nothing, but say so rather than silently swapping them.
+\end{itemize}
 
 \T{2.1 \quad "Find $x_3[n]$ if $X_3(k)=X_1(k)X_2(k)$"}
 {\color{sub}\footnotesize \tS{12} \yr{\textbf{76 Ch}, \textbf{69 Ch}, \texttt{72 Ma},
 \textbf{79 Bh}, \textbf{81 Bh}, \textbf{\texttt{81 Ch}}, \textbf{\texttt{75 Bh}},
 \textbf{73 Ch}, 73 Shr, \textbf{\texttt{80 Ch}}, \textbf{\texttt{73 Bh}}, \texttt{73 Ma},
-\textbf{74 Ch}, 72 Ka, 71 Shr}
+74 Ash, 72 Ka, 71 Shr}
 \gap$\cdot$\gap \mk{this IS the circular convolution; take no transform at all}}
 
 {\color{sub}\footnotesize By the convolution property of \S7.2, multiplying the DFTs is
@@ -436,31 +484,76 @@ $x_3[n]=x_1[n]\circledast x_2[n]$"}, then build the matrix. \mk{One line of theo
 replaces three DFTs and an IDFT.}}
 \par\smallskip
 {\footnotesize
-\begin{tabular}{@{}L{3.0cm}L{0.5cm}L{3.1cm}L{3.3cm}L{4.3cm}@{}}
+\begin{tabular}{@{}L{2.4cm}L{10.4cm}L{0.5cm}L{3.4cm}@{}}
 \toprule
-\hrow \thead{Papers} & \thead{$N$} & \thead{$x_1$} & \thead{$x_2$} & \thead{$x_3[n]$} \\
-\textbf{76 Ch}, \textbf{69 Ch} & 4 & \{$1$, $2$, $-2$\} & \{$1$, $2$, $3$, $-1$\} & \{$-7$, $6$, $5$, $1$\} \\
-\texttt{72 Ma} & 4 & \{$1$, $2$, $3$, $-1$\} & \{$2$, $1$, $-3$\} & \{$-8$, $8$, $5$, $-5$\} \\
-\textbf{79 Bh} & 4 & \{$1$, $0$, $0$, $1$\} & \{$2$, $0$, $2$\} & \{$2$, $2$, $2$, $2$\} \\
-72 Ka & 4 & \{$1$, $2$, $4$\} & \{$-1$, $2$, $3$, $1$\} & \{$13$, $4$, $3$, $15$\} \\
-71 Shr & 4 & \{$1$, $2$, $3$, $4$\} & \{$1$, $3$, $5$, $7$\} & \{$42$, $46$, $42$, $30$\} \\
-\textbf{81 Bh}, \textbf{\texttt{81 Ch}}, \textbf{\texttt{75 Bh}} & 5 & \{$1$, $3$, $9$, $27$\} & \{$1$, $2$, $4$, $8$, $16$\} & \{$229$, $365$, $451$, $65$, $130$\} \\
-\textbf{73 Ch} & 5 & \{$1$, $-2$, $5$, $1$, $2$\} & \{$1$, $2$, $-3$, $-2$\} & \{$-8$, $-8$, $-6$, $15$, $-7$\} \\
-73 Shr & 5 & \{$1$, $-2$, $2$, $1$, $4$\} & \{$2$, $1$, $-3$, $-1$\} & \{$1$, $-16$, $-5$, $9$, $5$\} \\
-\textbf{\texttt{80 Ch}}, \textbf{\texttt{73 Bh}} & 5 & \{$1$, $2$, $3$, $-1$, $5$\} & \{$2$, $1$, $-3$\} & \{$10$, $-10$, $5$, $-5$, $0$\} \\
-\texttt{73 Ma} & 5 & \{$3$, $2$, $1$, $-1$, $-2$\} & \{$1$, $2$, $3$\} & \{$-4$, $2$, $14$, $7$, $-1$\} \\
-\textbf{74 Ch} & 5 & \{$1$, $2$, $0$, $1$, $-2$\} & \{$1$, $0$, $1$, $1$, $2$\} & \{$6$, $1$, $1$, $0$, $2$\} \\
+\hrow \thead{Papers} & \thead{Question as printed} & \thead{$N$} & \thead{$x_3[n]$} \\
+\textbf{76 Ch}, \textbf{69 Ch} & Find $x_3[n]$ if DFT of $x_3[n]$ is given by
+  $X_3(k)=X_1(k)*X_2(k)$ where $X_1(k)$ and $X_2(k)$ are 4-point DFT of
+  $x_1[n]=\{1,2,-2\}$ and $x_2[n]=\{1,2,3,-1\}$ respectively. \m{5}\m{6} \newline
+  {\color{sub}76 Ch prints a $*$ between the two DFTs; it means the ordinary product,
+  not convolution} & 4 & \{$-7$, $6$, $5$, $1$\} \\
+\texttt{72 Ma} & Find $x_3[n]$ if DFT of $x_3[n]$ is given by $X_3(k)=X_1(k)X_2(k)$
+  where $X_1(k)$ and $X_2(k)$ are 4-point DFT of $x_1[n]=\{1,2,3,-1\}$ and
+  $x_2[n]=\{2,1,-3\}$ respectively. \m{2+4} & 4 & \{$-8$, $8$, $5$, $-5$\} \\
+\textbf{79 Bh} & If $X_1(k)$ and $X_2(k)$ are DFT of sequence $x_1[n]=\{1,0,0,1\}$ and
+  $x_2[n]=\{2,0,2\}$ respectively then find the sequence $x_3[n]$; if DFT of $x_3[n]$
+  is given by $X_3(k)=X_1(k)\cdot X_2(k)$ \m{7} & 4 & \{$2$, $2$, $2$, $2$\} \\
+72 Ka & Why we need DFT? If $X_1(k)$ and $X_2(k)$ are DFT of sequence
+  $x_1[n]=\{1,2,4\}$ and $x_2[n]=\{-1,2,3,1\}$ respectively, then find the sequence
+  $x_3[n]$, if DFT of $x_3[n]$ is given by $X_3(k)=X_1(k)X_2(k)$. \m{2+6}
+  & 4 & \{$13$, $4$, $3$, $15$\} \\
+74 Ash & What is a zero padding? If $X_1(k)$ and $X_2(k)$ are DFT of sequence
+  $x_1[n]=\{1,2,0,1,-2\}$ and $x_2[n]=\{1,0,1,1,2\}$ respectively then find the
+  sequence $x_3[n]$; If DFT of $x_3[n]$ is given by $X_3(k)=X_1(k),X_2(k)$. \m{1+7}
+  \newline {\color{sub}the comma between the two DFTs is a printing slip for a product}
+  & 5 & \{$6$, $1$, $1$, $0$, $2$\} \\
+71 Shr & A system has input signal $x[n]=\{1,2,3,4\}$ and impulse response
+  $h[n]=\{1,3,5,7\}$ and the DFT of $x[n]$ is $X[k]$ and the DFT of $h[n]$ is $H[k]$.
+  Find the output of the system $y[n]$ if $G[k]=X[k].H[k]$ \m{7} \newline
+  {\color{sub}\mk{the same question wearing a system's clothes}} & 4
+  & \{$42$, $46$, $42$, $30$\} \\
+\bottomrule
+\end{tabular}}
+\par\smallskip
+{\footnotesize
+\begin{tabular}{@{}L{2.4cm}L{10.4cm}L{0.5cm}L{3.4cm}@{}}
+\toprule
+\hrow \thead{Papers} & \thead{Question as printed} & \thead{$N$} & \thead{$x_3[n]$} \\
+\textbf{81 Bh}, \textbf{\texttt{81 Ch}}, \textbf{\texttt{75 Bh}} & If $X_1(k)$ and
+  $X_2(k)$ are the 5-point DFT of $x_1(n)=3^n$ $0\le n\le3$ and $x_2(n)=2^n$
+  $0\le n\le4$. Find $x_3(n)$ if $X_3(k)=X_1(k)X_2(k)$ \m{6} \newline
+  {\color{sub}\mk{81 Ch says 4-point and 75 Bh says nothing}; see the defect note
+  below} \m{1+6}\m{1+5} & 5 & \{$229$, $365$, $451$, $65$, $130$\} \\
+\textbf{73 Ch} & Find $x_3[n]$ if DFT of $x_3[n]$ is given by $X_3(k)=X_1(k)X_2(k)$
+  where $X_1(k)$ and $X_2(k)$ are 5-point DFT of $x_1[n]=\{1,-2,5,1,2\}$ and
+  $x_2[n]=\{1,2,-3,-2\}$ respectively. \m{7} & 5
+  & \{$-8$, $-8$, $-6$, $15$, $-7$\} \\
+73 Shr & Find $x_3[n]$ if DFT of $x_3[n]$ is given by $X_3(k)=X_1(k)X_2(k)$ where
+  $X_1(k)$ and $X_2(k)$ are 5-point DFT of $x_1[n]=\{1,-2,2,1,4\}$ and
+  $x_2[n]=\{2,1,-3,-1\}$ respectively. \m{7} & 5
+  & \{$1$, $-16$, $-5$, $9$, $5$\} \\
+\textbf{\texttt{80 Ch}}, \textbf{\texttt{73 Bh}} & Find $x_3[n]$ if DFT of $x_3[n]$ is
+  given by $X_3(k)=X_1(k)X_2(k)$ where $X_1(k)$ and $X_2(k)$ are 5-point DFT of
+  $x_1[n]=\{1,2,3,-1,5\}$ and $x_2[n]=\{2,1,-3\}$ respectively. \m{7}\m{1+5} \newline
+  {\color{sub}73 Bh prefixes "State Multiplication of two DFTs property of DFT"}
+  & 5 & \{$10$, $-10$, $5$, $-5$, $0$\} \\
+\texttt{73 Ma} & Find $x_3[n]$ if DFT is given by $x_3(k)=x_1(k)x_2(k)$ where
+  $x_1[n]=\{3,2,1,-1,-2\}$ and $x_2[n]=\{1,2,3\}$ for 5 points DFT. \m{6}
+  & 5 & \{$-4$, $2$, $14$, $7$, $-1$\} \\
 \bottomrule
 \end{tabular}}
 
 \begin{itemize}
-  \item \mk{71 Shr is the same question in disguise again}: "input $x[n]$, impulse
-        response $h[n]$, find $y[n]$ if $G[k]=X[k]H[k]$". It is the 4-point circular
+  \item \mk{71 Shr is the same question in disguise}: "input $x[n]$, impulse response
+        $h[n]$, find $y[n]$ if $G[k]=X[k]H[k]$". It is the 4-point \textbf{circular}
         convolution, $\{42,46,42,30\}$, and \textbf{not} the linear one, because no
         padding was asked for.
   \item \mk{79 Bh's answer is constant} for the same reason as \S2: $x_1$ padded is
         $\{1,0,0,1\}$ and $x_2$ is $\{2,0,2,0\}$; every output picks up
         $\sum x_1\cdot$ the same pairing.
+  \item \mk{74 Ash, not 74 Ch.} This question is 2074 \textbf{Ashwin} Q10, a Back paper.
+        Both this chapter and the Sorted PYQ document tagged it 74 Ch for years; 2074
+        Chaitra asks no product-of-DFTs question at all. Corrected 2026-09-15.
 \end{itemize}
 
 \creamq{The defect: 81 Ch asks for a 4-point DFT of a 5-point sequence}%
