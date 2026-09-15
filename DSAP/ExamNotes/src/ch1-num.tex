@@ -91,22 +91,56 @@ $5+4+18+24+17+12+4=84$ \checkmark}
 {\color{sub}\footnotesize A window such as $(1/2)^n\{u[n+2]-u[n-2]\}$ is written out as its
 samples first: that is the only extra step, and the underlined sample is $n=0$.}
 \par
-\begin{tabularx}{\textwidth}{@{}L{2.2cm}XXL{4.6cm}@{}}
+\begin{tabularx}{\textwidth}{@{}L{2.0cm}XL{4.4cm}@{}}
 \toprule
-\hrow \thead{Paper} & \thead{$h[n]$} & \thead{$x[n]$} & \thead{$y[n]$} \\
-73 Shr \m{6} & $\{1,1,1\}$ & $\{1,1,1,1\}$ & $\{\underline{1},2,3,3,2,1\}$ \\
-\hrow \textbf{\texttt{70 Bh}} \m{2+4} & $\{1,1,1\}$ & $\{1,-2,2,3,4\}$ & $\{\underline{1},-1,1,3,9,7,4\}$ \\
-70 Asa \m{2+4} & $\{1,0,1\}$ & $\{1,-2,-2,3,4\}$ & $\{\underline{1},-2,-1,1,2,3,4\}$ \\
-\hrow \textbf{\texttt{74 Bh}} \m{6} & $\{2,2,-1,1\}$ & $\{1,2,1,2\}$ & $\{\underline{2},6,5,5,5,-1,2\}$ \\
-\texttt{74 Ma} \m{5} & $\{5,3,4,2,0\}$ & $\{0,2,4,6\}$ & $\{\underline{0},10,26,50,38,32,12,0\}$ \\
-\hrow \textbf{71 Ch} \m{6} & $\{\underline{1},3,2,-1,1\}$ at $n=-1$ & $2\delta[n]-\delta[n-1]=\{2,-1\}$ & $\{2,\underline{5},1,-4,3,-1\}$, from $n=-1$ \\
-\textbf{79 Bh}, \textbf{81 Bh} \m{5} & $2\delta[n{+}1]+2\delta[n{-}1]=\{2,0,2\}$ at $n=-1$ & $\delta[n]+2\delta[n{-}1]-\delta[n{-}3]$ & $\{2,\underline{4},2,2,0,-2\}$, from $n=-1$ \\
-\hrow 79 Ba \m{5} & $(\frac12)^n\{u[n{+}2]-u[n{-}2]\}=\{4,2,1,\frac12\}$ at $n=-2$ & $\{2,1,0,-1,4\}$ & $\{8,8,\underline{4},-2,14.5,7,3.5,2\}$, from $n=-2$ \\
-74 Ash \m{3+2} & same $h$ as 79 Ba & $\{2,1,0.5,-1\}$ & $\{8,8,\underline{6},-1,-1,-0.75,-0.5\}$, from $n=-2$ \\
-\hrow \textbf{82 Bh} \m{5} & $(0.5)^n\{u[n]-u[n{-}3]\}=\{1,\frac12,\frac14\}$ & $\{2,1,0.5,-1\}$ & $\{\underline{2},2,1.5,-0.5,-0.375,-0.25\}$ \\
-72 Ka \m{5} & $(\frac13)^n\{u[n{+}1]-u[n{-}2]\}=\{3,1,\frac13\}$ at $n=-1$ & $\{2,1,0.5,3\}$ & $\{6,\underline{5},\frac{19}{6},\frac{59}{6},\frac{19}{6},1\}$, from $n=-1$ \\
-\hrow 75 Ash \m{5} & $2^n\{u[n]-u[n{-}3]\}=\{1,2,4\}$ & $\delta[n]+\delta[n{-}1]+\delta[n{-}2]$ & $\{\underline{1},3,7,6,4\}$ \\
-\textbf{\texttt{79 Ch}}, \textbf{\texttt{75 Bh}} \m{4+6} & same $h$ as 75 Ash & $\delta[n]+\delta[n{-}1]-\delta[n{-}3]$ & $\{\underline{1},3,6,3,-2,-4\}$ \\
+\hrow \thead{Paper} & \thead{Question as printed} & \thead{$y[n]$} \\
+73 Shr \m{6} & Determine the system output $y(n)$ of the following signals:
+ $h(n)=\{1,1,1\}$ and $x(n)=\{1,1,1,1\}$ & $\{\underline{1},2,3,3,2,1\}$ \\
+\hrow \textbf{\texttt{70 Bh}} \m{2+4} & Illustrate the significance of convolution
+ summation in digital signal analysis. Find the output sequence $y(n)$ if:
+ $h(n)=\{1,1,1\}$ and \mk{$x(n)=\{1{-}2,2,3,4\}$} \newline
+ {\color{sub}the comma after the 1 is missing; it is $\{1,-2,2,3,4\}$}
+ & $\{\underline{1},-1,1,3,9,7,4\}$ \\
+70 Asa \m{2+4} & Illustrate the significance of convolution summation in digital signal
+ analysis. Compute the convolution of the following signals: $h(n)=\{1,0,1\}$ and
+ $x(n)=\{1,-2,-2,3,4\}$ & $\{\underline{1},-2,-1,1,2,3,4\}$ \\
+\hrow \textbf{\texttt{74 Bh}} \m{6} & Impulse response of an LTI system is given as
+ $h(n)=\{2,2,-1,1\}$. Find the output $y(n)$ of the system to an input
+ $x(n)=\{1,2,1,2\}$. & $\{\underline{2},6,5,5,5,-1,2\}$ \\
+\texttt{74 Ma} \m{5} & Find the response of an \mk{FIR system} with input
+ $x[n]=\{0,2,4,6\}$ and impulse response $h[n]=\{5,3,4,2,0\}$. \newline
+ {\color{sub}$h$ and $x$ are named the other way round from every sibling}
+ & $\{\underline{0},10,26,50,38,32,12,0\}$ \\
+\hrow \textbf{71 Ch} \m{6} & A discrete time LTI system has impulse response
+ $h(n)=\{1,3,2,-1,1\}$ \mk{for $-1\le n\le3$}. Determine the system output $y(n)$ if the
+ input $x(n)$ is given by $x(n)=2\delta(n)-\delta(n-1)$.
+ & $\{2,\underline{5},1,-4,3,-1\}$, from $n=-1$ \\
+\textbf{79 Bh}, \textbf{81 Bh} \m{5} & Find the output of LTI system having input signal
+ $x[n]=\delta[n]+2\delta[n{-}1]-\delta[n{-}3]$ and $h[n]=2\delta[n{+}1]+2\delta[n{-}1]$.
+ \newline {\color{sub}81 Bh prints the same pair, leading with $h$}
+ & $\{2,\underline{4},2,2,0,-2\}$, from $n=-1$ \\
+\hrow 79 Ba \m{5} & Find the output of LTI system having impulse response
+ $h[n]=(\frac12)^n\{u[n{+}2]-u[n{-}2]\}$ to the input $x[n]=\{2,1,0,-1,4\}$.
+ & $\{8,8,\underline{4},-2,14.5,7,3.5,2\}$, from $n=-2$ \\
+74 Ash \m{3+2} & Find the output of LTI system having impulse response
+ $h[n]=(\frac12)^n\{u[n{+}2]-u[n{-}2]\}$ and input signal $x[n]=\{2,1,0.5,-1\}$.
+ \mk{Also check the answer.} \newline {\color{sub}same $h$ as 79 Ba, different $x$}
+ & $\{8,8,\underline{6},-1,-1,-0.75,-0.5\}$, from $n=-2$ \\
+\hrow \textbf{82 Bh} \m{5} & Find the output of an LTI system whose impulse response is
+ given by $0.5^n\{u[n]-u[n{-}3]\}$ and input is given by $\{2,1,0.5,-1\}$.
+ & $\{\underline{2},2,1.5,-0.5,-0.375,-0.25\}$ \\
+72 Ka \m{5} & Find the output of LTI system having impulse response
+ $h[n]=(\frac13)^n\{u[n{+}1]-u[n{-}2]\}$ and input signal $x[n]=\{2,1,0.5,3\}$.
+ & $\{6,\underline{5},\frac{19}{6},\frac{59}{6},\frac{19}{6},1\}$, from $n=-1$ \\
+\hrow 75 Ash \m{5} & Find the output of LTI system having impulse response
+ $h[n]=2^n\{u[n]-u[n{-}3]\}$ and input signal
+ $x[n]=\delta[n]+\delta[n{-}1]+\delta[n{-}2]$. & $\{\underline{1},3,7,6,4\}$ \\
+\textbf{\texttt{79 Ch}}, \textbf{\texttt{75 Bh}} \m{4+6} & Define the recursive and
+ non-recursive systems with examples. Find the output of LTI system having impulse
+ response $h[n]=2^n\{u[n]-u[n{-}3]\}$ and input signal
+ $x[n]=\delta[n]+\delta[n{-}1]-\delta[n{-}3]$. \newline {\color{sub}79 Ch prints
+ \mk{"$2n$"} for $2^n$}
+ & $\{\underline{1},3,6,3,-2,-4\}$ \\
 \bottomrule
 \end{tabularx}
 
@@ -175,26 +209,42 @@ sits over the large early samples of $x$.}
 {\color{sub}\footnotesize Read the table as: window limits $\rightarrow$ two ranges
 $\rightarrow$ two geometric sums. Only the numbers move.}
 \par
-\begin{tabularx}{\textwidth}{@{}L{2.3cm}XX@{}}
+\begin{tabularx}{\textwidth}{@{}L{2.1cm}XL{6.1cm}@{}}
 \toprule
-\hrow \thead{Paper} & \thead{Given} & \thead{Answer} \\
-\texttt{73 Ma} \m{2+6} & $h=u[n{+}1]-u[n{-}4]$ (5 taps, $-1\ldots3$), $x=(\frac12)^nu[n]$
+\hrow \thead{Paper} & \thead{Question as printed} & \thead{Answer} \\
+\texttt{73 Ma} \m{2+6} & Define a Causal and Stable system in terms of impulse response.
+ Find the output of LTI system having impulse response $h[n]=u[n{+}1]-u[n{-}4]$ and
+ input signal $x[n]=(\frac12)^nu[n]$. \newline {\color{sub}5 taps, $-1\ldots3$}
  & $y=2-(\frac12)^{n+1}$ for $-1\le n\le3$; \; $y=31(\frac12)^{n+1}$ for $n\ge4$ \\
-\hrow \textbf{\texttt{78 Ch}} \m{6} & $h=u[n{+}1]-u[n{-}3]$ (4 taps, $-1\ldots2$),
- $x=(0.5)^nu[n]$
+\hrow \textbf{\texttt{78 Ch}} \m{6} & Find the output of LTI system having impulse
+ response $h[n]=u[n{+}1]-u[n{-}3]$ and input signal $x[n]=(0.5)^nu[n]$. \newline
+ {\color{sub}4 taps, $-1\ldots2$}
  & $y=2-(\frac12)^{n+1}$ for $-1\le n\le2$; \; $y=15(\frac12)^{n+1}$ for $n\ge3$ \\
-\textbf{76 Ch} \m{6} & $h=(\frac12)^nu[n{-}1]$, $x=u[n{+}1]-u[n{-}4]$ (5 taps, $-1\ldots3$)
+\textbf{76 Ch} \m{6} & Find the output of LTI system having input signal
+ $x[n]=u[n{+}1]-u[n{-}4]$ and impulse response $h[n]=(\frac12)^nu[n{-}1]$. \newline
+ {\color{sub}\mk{the roles are swapped}: here the step is $x$, not $h$}
  & $y=1-(\frac12)^{n+1}$ for $0\le n\le4$; \; $y=31(\frac12)^{n+1}$ for $n\ge5$ \\
-\hrow \textbf{69 Ch} \m{1+4} & $h=2u[n]-2u[n{-}4]$, $x=(\frac13)^nu[n]$
- & $y=3\left[1-(\frac13)^{n+1}\right]$ for $0\le n\le3$; \; $y=80(\frac13)^{n}$ for $n\ge4$ \\
-\textbf{\texttt{81 Ch}}, \textbf{\texttt{80 Ch}}, \texttt{72 Ma} & $h=2u[n]-2u[n{-}5]$,
- $x=(\frac13)^nu[n]$
- & $y=3\left[1-(\frac13)^{n+1}\right]$ for $0\le n\le4$; \; $y=242(\frac13)^{n}$ for $n\ge5$ \\
-\hrow \textbf{\texttt{76 Bh}} \m{2+6} & $h=2u[n{+}2]-2u[n{-}3]$ (5 taps, $-2\ldots2$),
- $x=(\frac13)^nu[n{-}1]$
+\hrow \textbf{69 Ch} \m{1+4} & Define LTI system. Find the output of LTI system having
+ impulse response $h[n]=2u[n]-2u[n{-}4]$ and input signal $x[n]=(\frac13)^nu[n]$.
+ & $y=3\left[1-(\frac13)^{n+1}\right]$ for $0\le n\le3$; \; $y=80(\frac13)^{n}$ for
+ $n\ge4$ \\
+\textbf{\texttt{81 Ch}} \m{2+2+6}, \textbf{\texttt{80 Ch}} \m{2+2+6},
+ \texttt{72 Ma} \m{8} & Define a Causal and Stable system in terms of impulse response.
+ Find the output of LTI system having impulse response $h[n]=2u[n]-2u[n{-}5]$ and input
+ signal $x[n]=(\frac13)^nu[n]$. \newline {\color{sub}72 Ma prints the design alone, for
+ all 8 marks}
+ & $y=3\left[1-(\frac13)^{n+1}\right]$ for $0\le n\le4$; \; $y=242(\frac13)^{n}$ for
+ $n\ge5$ \\
+\hrow \textbf{\texttt{76 Bh}} \m{2+6} & Differentiate between FIR and IIR system. Find
+ the output of LTI system having impulse response $h[n]=2u[n{+}2]-2u[n{-}3]$ and input
+ signal $x[n]=(\frac13)^nu[n{-}1]$. \newline {\color{sub}5 taps, $-2\ldots2$, and $x$
+ starts at $n=1$}
  & $y=1-(\frac13)^{n+2}$ for $-1\le n\le3$; \; $y=242(\frac13)^{n+2}$ for $n\ge4$ \\
-\textbf{\texttt{77 Ch}} \m{3+7} & $h=2u[n{+}3]-2u[n{-}4]$ (7 taps, $-3\ldots3$),
- $x=(\frac12)^nu[n{+}1]$
+\textbf{\texttt{77 Ch}} \m{3+7} & Define causality and stability of LTI system in terms
+ of impulse response with a suitable example. Find the output of LTI system having
+ impulse response $h[n]=2u[n{+}3]-2u[n{-}4]$ and input signal
+ $x[n]=(\frac12)^nu[n{+}1]$. \newline {\color{sub}7 taps, $-3\ldots3$, and $x$ starts at
+ $n=-1$: \mk{the widest of the family}}
  & $y=8-(\frac12)^{n+2}$ for $-4\le n\le2$; \; $y=127(\frac12)^{n+2}$ for $n\ge3$ \\
 \bottomrule
 \end{tabularx}
@@ -318,19 +368,31 @@ worth a mark on its own.}
 
 \lead{Every other paper that runs this same method}
 \par
-\begin{tabularx}{\textwidth}{@{}L{2.5cm}L{3.1cm}XX@{}}
+\begin{tabularx}{\textwidth}{@{}L{2.2cm}XL{3.0cm}L{3.3cm}@{}}
 \toprule
-\hrow \thead{Paper} & \thead{$h[n]$, $x[n]$} & \thead{$H(e^{j\omega_0})$} & \thead{$y[n]$} \\
-\textbf{70 Ch} \m{4} & $(\frac13)^nu[n]$, \; $5e^{j\pi n/2}$
- & $\frac{1}{1+j/3}=0.9-j0.3=0.9487\angle-18.43^\circ$
+\hrow \thead{Paper} & \thead{Question as printed} & \thead{$H(e^{j\omega_0})$}
+& \thead{$y[n]$} \\
+\textbf{70 Ch} \m{4} & Find the output of LTI System having impulse response
+ $h[n]=(\frac13)^nu[n]$ and input signal $x[n]=5e^{j\pi n/2}$ for
+ $-\infty<n<\infty$.
+ & $\frac{1}{1+j/3}=0.9-j0.3$ \newline $=0.9487\angle-18.43^\circ$
  & $4.7434\,e^{j(\pi n/2-0.3217)}$ \\
-\hrow 72 Ka, 80 Ba, 82 Ba \m{4}\m{5} & $(\frac12)^nu[n]$, \; $5e^{j\pi n/3}$
+\hrow 72 Ka \m{4}, 80 Ba \m{5}, 82 Ba \m{5} & Find the output of LTI system having
+ impulse response $h[n]=(\frac12)^n\,u[n]$ and input $x[n]=5e^{j\pi n/3}$
+ \newline {\color{sub}80 Ba adds "for $-\infty<n<\infty$"; 82 Ba says "excited by an
+ input"}
  & $1.1547\angle-30^\circ$ & $5.7735\,e^{j(\pi n/3-\pi/6)}$ \\
-\textbf{\texttt{69 Bh}} \m{2+4} & $(\frac12)^nu[n]$, \; $Ae^{j\pi n/2}$
- & $\frac{1}{1+j0.5}=0.8944\angle-26.57^\circ$
+\textbf{\texttt{69 Bh}} \m{2+4} & Why do you need \mk{different equation}? Consider an
+ LTI system with impulse response $h[n]=(\frac12)^nu[n]$. Determine $y[n]$, the output
+ of this system, if the input is $x[n]=Ae^{jn\pi/2}$ \newline
+ {\color{sub}"different" for "difference"}
+ & $\frac{1}{1+j0.5}$ \newline $=0.8944\angle-26.57^\circ$
  & $0.8944A\,e^{j(\pi n/2-0.4636)}$ \\
-\hrow 71 Shr \m{2+3+5} & $(\frac12)^nu[n]$, \; $Ae^{j\pi n}$
- & $\frac{1}{1+\frac12}=\frac23$ (real, $e^{-j\pi}=-1$)
+\hrow 71 Shr \m{2+3+5} & Why do we need difference equation? State linear constant
+ coefficient difference equation and corresponding system function. Consider an LTI
+ system with impulse response $h[n]=(\frac12)^nu[n]$. Determine $y[n]$, if the input is
+ $x[n]=Ae^{jn\pi}$
+ & $\frac{1}{1+\frac12}=\frac23$ \newline (real, $e^{-j\pi}=-1$)
  & $\frac23A\,e^{j\pi n}$ \\
 \bottomrule
 \end{tabularx}
@@ -417,17 +479,21 @@ $0.5+0.375+1.25+1.5+1.0625+0.875+0.375+0.25=6.1875$ \checkmark
 
 \lead{Every other paper that runs this same method}
 \par
-\begin{tabularx}{\textwidth}{@{}L{2.3cm}XXX@{}}
+\begin{tabularx}{\textwidth}{@{}L{2.0cm}XL{5.5cm}@{}}
 \toprule
-\hrow \thead{Paper} & \thead{$h[n]$} & \thead{$x[n]$} & \thead{$y[n]$} \\
-\textbf{75 Ch} \m{5+2} & $h[-2]=3$, $h[0]=2$, $h[1]=1$
- & $x[n]=2^n$ for $-1\le n\le3$
+\hrow \thead{Paper} & \thead{Question as printed} & \thead{$y[n]$} \\
+\textbf{75 Ch} \m{5+2} & Find the output of LTI system having impulse response $h[n]$
+ with $h[-2]=3$, $h[0]=2$, $h[1]=1$ and input signal $x[n]=(2)^n$, for
+ $-1\le n\le3$. \mk{Also check the answer.}
  & $\{1.5,3,7,\underline{14.5},29,10,20,8\}$, from $n=-3$ \\
-\hrow \textbf{72 Ch} \m{3+2} & $h[-2]=1$, $h[0]=2$, $h[1]=3$
- & $x[0]=0.5$, $x[2]=2$, $x[3]=3$
+\hrow \textbf{72 Ch} \m{3+2} & Find the output of LTI system having impulse response
+ $h[n]$ with $h[-2]=1$, $h[0]=2$, $h[1]=3$ and input signal $x[n]$ with $x[0]=1/2$,
+ $x[2]=2$, $x[3]=3$. \mk{Also check the answer.} \newline {\color{sub}\mk{every
+ unlisted sample is zero}, including $x[1]$}
  & $\{0.5,0,\underline{3},4.5,4,12,9\}$, from $n=-2$ \\
-\textbf{\texttt{71 Bh}} \m{7} & $h[0]=0.5$, $h[1]=0.75$, $h[2]=1$ (given as a stem plot)
- & $x[-2]=1$, $x[0]=0.5$, $x[2]=1$, $x[3]=0.75$
+\textbf{\texttt{71 Bh}} \m{7} & Find the output sequence $y[n]$ \mk{and verify it} for
+ the two stem plots given: $h[0]=0.5$, $h[1]=0.75$, $h[2]=1$; $x[-2]=1$, $x[0]=0.5$,
+ $x[2]=1$, $x[3]=0.75$. \newline {\color{sub}both sequences are drawn, not written}
  & $\{0.5,0.75,\underline{1.25},0.375,1,1.125,1.5625,0.75\}$, from $n=-2$ \\
 \bottomrule
 \end{tabularx}
@@ -496,6 +562,14 @@ period.
 
 \lead{Every other paper that runs this same method}
 \par
+{\color{sub}\footnotesize \mk{The instruction varies and the marks follow it.}
+Papers print one of: "Compare between energy signal and power signal. Determine whether
+the signal \ldots is energy signal or power signal"; "Define energy and power signal.
+Check the signal \ldots is Energy or Power type"; or "Define energy and power signal.
+Determine whether the signal \ldots is periodic or non-periodic and if it is periodic,
+find its fundamental period". \mk{The last one is two questions}, and its second half is
+\S6. The definition is always worth 2 marks on its own.}
+\par\smallskip
 \begin{tabularx}{\textwidth}{@{}L{2.6cm}XL{5.4cm}@{}}
 \toprule
 \hrow \thead{Paper} & \thead{$x[n]$} & \thead{Answer} \\
@@ -576,6 +650,14 @@ multiplying is only right when the two are coprime.}}{%
 
 \lead{Every other paper that runs this same method}
 \par
+{\color{sub}\footnotesize \mk{Every one of these prints the same two-part
+instruction}, in one of these forms: "Determine if the signal \ldots is periodic or not.
+If the signal is periodic, find its fundamental period"; "Determine whether the given
+signal is periodic or not. If the signal is periodic, determine the fundamental period";
+"Check whether following signals are periodic or not. If yes, state their periodic
+time"; or "Determine which of the following signals are periodic and compute their
+fundamental period". \mk{Answering only "periodic" loses half the marks} every time.}
+\par\smallskip
 \begin{tabularx}{\textwidth}{@{}L{2.5cm}XL{5.0cm}@{}}
 \toprule
 \hrow \thead{Paper} & \thead{$x[n]$} & \thead{$\omega_0/2\pi$ and answer} \\
@@ -781,6 +863,13 @@ then the verdict with its reason. ``Not linear'' alone gets nothing.}}
 
 \lead{Every other system the papers set, with the working reduced to its deciding line}
 \par
+{\color{sub}\footnotesize The instruction, as the papers print it: "State whether
+or not the system \ldots is (a) linear (b) time invariant (c) memoryless (d) causal
+(e) stable", or "Determine whether the following systems are (a) causal (b) linear", or
+"Check whether the following system is linear or non-linear, time variant or
+invariant". \mk{Name every property the paper lists and no more}: the marks are split
+one per property, so a full proof of two of five is worth two marks.}
+\par\smallskip
 \begin{tabularx}{\textwidth}{@{}L{2.6cm}L{3.4cm}X@{}}
 \toprule
 \hrow \thead{Paper} & \thead{System} & \thead{Verdict, and the line that decides it} \\
