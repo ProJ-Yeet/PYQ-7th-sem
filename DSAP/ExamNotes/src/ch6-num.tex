@@ -82,11 +82,14 @@ the 45 is here: 32 bilinear Butterworth, 4 bilinear Chebyshev, 11 impulse invari
 \gap$\cdot$\gap \mk{405 marks, the single biggest question in the subject}}
 
 \begin{asked}{2079 Bhadra \textperiodcentered{} 2071 Chaitra \textperiodcentered{} 2069 Chaitra \textperiodcentered{} [11+4]}
-Design a digital Butterworth low pass filter using the bilinear transformation method
-for $W_p=0.25\pi$ rad, $W_s=0.55\pi$ rad, $\delta_p=0.11$, $\delta_s=0.21$, sampling
-frequency 0.5 Hz. Then convert the obtained digital low-pass filter to a high-pass
-filter with new pass band frequency $W'_p=0.45\pi$ using the digital domain
-transformation.
+Design a low pass discrete time Butterworth filter using bilinear transformation having
+following specifications: Passband frequency $(W_p)=0.25\pi$ radians. Stopband frequency
+$(W_s)=0.55\pi$ radians. Passband ripple $(\delta_P)=0.11$. Stopband ripple
+$(\delta_S)=0.21$. Consider sampling frequency of 0.5 Hz. Also, \mk{covert} the obtained
+digital low pass filter to high pass filter with new pass band frequency,
+$W'_P=0.45\pi$ using digital domain transformation.\\
+\textit{71 Ch and 69 Ch print the same filter, each opening} "What is the advantage of
+bilinear transformation?"\textit{, and spell "convert".}
 \end{asked}
 
 \lead{Step 1: the specification in dB}
@@ -212,81 +215,186 @@ $\Omega_c$ column but not the $H(z)$ column. $\Omega_p$, $\Omega_s$ are the
 $K=\big(\sum a_k\big)/2^N$.}
 \par\smallskip
 {\footnotesize
-\begin{tabular}{@{}L{2.9cm}L{3.3cm}L{1.6cm}L{1.6cm}L{0.6cm}L{1.6cm}L{2.3cm}@{}}
+\begin{tabular}{@{}L{2.2cm}L{6.5cm}L{1.1cm}L{1.1cm}L{0.5cm}L{1.4cm}L{2.4cm}@{}}
 \toprule
-\hrow \thead{Papers} & \thead{Spec, as printed} & \thead{$\alpha_p$}
-& \thead{$\alpha_s$} & \thead{$N$} & \thead{$\Omega_c$} & \thead{$H(z)$ denominator} \\
-\textbf{80 Bh}, \textbf{81 Bh} & $0.9$ to $0.5\pi$; $0.2$ from $0.75\pi$
+\hrow \thead{Papers} & \thead{Question as printed} & \thead{$\alpha_p$} & \thead{$\alpha_s$} & \thead{$N$} & \thead{$\Omega_c$} & \thead{$H(z)$ denominator} \\
+\textbf{80 Bh} \m{12}, \textbf{81 Bh} \m{12+3} & \textbf{80 Bh}: Using
+  Bilinear transformation, design a Butterworth low pass filter which satisfies
+  following conditions: $0.9\le|H(e^{jw})|\le1$, for $0\le w\le\pi/2$;
+  $|H(e^{jw})|\ 0.2$, for $3\pi/4\le w\le\pi$. Consider sampling frequency of 1 Hz.
+  \newline {\color{sub}\mk{the second line is missing its $\le$}} \newline
+  \textbf{81 Bh} prints the same filter and adds "Compare Impulse Invariance Method and
+  Bilinear Transformation method"
   & $0.9151$ & $13.9794$ & 3 & $2.54674$
   & $1{+}0.43938z^{-1}$ \newline $+0.38450z^{-2}$ \newline $+0.041621z^{-3}$ \\
-81 Ba & $0.6$ to $0.35\pi$; $0.1$ from $0.7\pi$
+\hrow 81 Ba \m{2+10} & Differentiate between bilinear transformation and impulse
+  invariance. Design a Butterworth digital IIR lowpass filter using bilinear
+  transformation \mk{by taking $T=0.1$ second}, to satisfy the following
+  specifications. $0.6\le|H(e^{j\omega})|\le1$, $0\le\omega\le0.35\pi$;
+  $|H(e^{j\omega})|\le0.1$, $0.7\pi\le\omega\le\pi$ \newline {\color{sub}$T$ cancels in
+  the bilinear map, so $H(z)$ is the same for any $T$; say so in a line}
   & $4.4370$ & $20$ & 2 & $1.06140$
   & $1{-}0.70699z^{-1}$ \newline $+0.26136z^{-2}$ \\
-\textbf{75 Ch}, \textbf{70 Ch}, 82 Ba & $0.8$ to $0.2\pi$; $0.2$ from $0.6\pi$
+\textbf{75 Ch} \m{10}, \textbf{70 Ch} \m{10}, 82 Ba \m{12+3} & Using bilinear
+  transformation, design a digital filter using Butterworth approximation which
+  satisfies the following conditions $0.8\le|H(e^{jw})|\le1$ for $0\le w\le0.2\pi$;
+  $|H(e^{jw})|\le0.2$ for $0.6\pi\le w\le\pi$ \newline {\color{sub}82 Ba adds "Consider
+  sampling frequency 1 Hz" and a comparison of the two methods}
   & $1.9382$ & $13.9794$ & 2 & $0.75037$
   & $1{-}1.02819z^{-1}$ \newline $+0.36508z^{-2}$ \\
-\textbf{\texttt{78 Ch}} & $0.82$ to $0.22\pi$; $0.18$ from $0.58\pi$
+\bottomrule
+\end{tabular}}
+\par\smallskip
+{\footnotesize
+\begin{tabular}{@{}L{2.2cm}L{6.5cm}L{1.1cm}L{1.1cm}L{0.5cm}L{1.4cm}L{2.4cm}@{}}
+\toprule
+\hrow \thead{Papers} & \thead{Question as printed} & \thead{$\alpha_p$} & \thead{$\alpha_s$} & \thead{$N$} & \thead{$\Omega_c$} & \thead{$H(z)$ denominator} \\
+\hrow \textbf{\texttt{78 Ch}} \m{10} & Using Bilinear transformation, design a
+  Butterworth filter which satisfies the following conditions:
+  $0.82\le|H(e^{jw})|\le1$; $0\le\omega\le0.22\pi$; $|H(e^{jw})|\le0.18$;
+  $0.58\pi\le\omega\le\pi$
   & $1.7237$ & $14.8945$ & 2 & $0.86185$
   & $1{-}0.90725z^{-1}$ \newline $+0.32103z^{-2}$ \\
-73 Shr, \textbf{\texttt{77 Ch}}, \textbf{\texttt{76 Bh}}
-  & $0.89125$ to $0.2\pi$; $0.17783$ from $0.3\pi$ \newline (= 1 dB and 15 dB)
+73 Shr \m{12}, \textbf{\texttt{77 Ch}} \m{10}, \textbf{\texttt{76 Bh}} \m{1+10}
+  & \textbf{73 Shr}: Using bilinear transformation, design a butterworth low pass filter
+  which satisfies the following Magnitude Response. $0.89125\le|H(e^{jw})|\le1$ for
+  $0\le\omega\le0.2\pi$; $|H(e^{iw})|\le0.17783$ for $0.3\pi\le\omega\le\pi$ \newline
+  {\color{sub}\mk{$0.89125$ is 1 dB and $0.17783$ is 15 dB}; 77 Ch and 76 Bh print the
+  same filter in decibels instead}
   & $1$ & $15$ & 6 & $0.72729$
   & see the cascade in \S1.2 \\
 \bottomrule
 \end{tabular}}
 \par\smallskip
 {\footnotesize
-\begin{tabular}{@{}L{2.9cm}L{3.3cm}L{1.6cm}L{1.6cm}L{0.6cm}L{1.6cm}L{2.3cm}@{}}
+\begin{tabular}{@{}L{2.2cm}L{6.5cm}L{1.1cm}L{1.1cm}L{0.5cm}L{1.4cm}L{2.4cm}@{}}
 \toprule
-\hrow \thead{Papers} & \thead{Spec, as printed} & \thead{$\alpha_p$}
-& \thead{$\alpha_s$} & \thead{$N$} & \thead{$\Omega_c$} & \thead{$H(z)$ denominator} \\
-80 Ba & $0.26\pi$, $0.99$ dB; $-14.99$ dB at $0.58\pi$
+\hrow \thead{Papers} & \thead{Question as printed} & \thead{$\alpha_p$} & \thead{$\alpha_s$} & \thead{$N$} & \thead{$\Omega_c$} & \thead{$H(z)$ denominator} \\
+80 Ba \m{11} & Design a low pass digital IIR filter by Billinear
+  Tranformation method to an approximate Butterworth low pass filter, if passband edge
+  frequency is $0.26\pi$ radians and maximum deviation of $0.99$ dB below 0 dB gain in
+  the passband. The maximum gain of $-14.99$ dB and frequency is $0.58\pi$ radians in
+  stopband, Consider sampling frequency 0.5 Hz. \newline {\color{sub}"Billinear
+  Tranformation", as printed}
   & $0.99$ & $14.99$ & 3 & $1.08611$
   & $1{-}1.06340z^{-1}$ \newline $+0.63628z^{-2}$ \newline $-0.12114z^{-3}$ \\
-79 Ba & $0.24\pi$, $0.98$ dB; $-14.95$ dB at $0.57\pi$
+\hrow 79 Ba \m{11+3} & Design a low pass digital IIR filter by Bilinear Transformation
+  method to an approximate Butterworth low pass filter, if passband edge frequency is
+  $0.24\pi$ radians and maximum deviation of $0.98$ dB below 0 dB gain in the passband.
+  The maximum gain of $-14.95$ dB and frequency is $0.57\pi$ radians in stopband,
+  consider sampling frequency 0.5 Hz. Compare impulse invariance method with bilinear
+  transformation method.
   & $0.98$ & $14.95$ & 3 & $0.99560$
   & $1{-}1.19710z^{-1}$ \newline $+0.71861z^{-2}$ \newline $-0.14406z^{-3}$ \\
-\textbf{\texttt{79 Ch}}, \textbf{\texttt{72 Ash}}
-  & $0.24\pi$, 1 dB; $-14.9$ dB at $0.57\pi$
+\textbf{\texttt{79 Ch}} \m{15}, \textbf{\texttt{72 Ash}} \m{12} & Design a low pass
+  discrete IIR filter by Bilinear Transformation method to an approximate Butterworth
+  filter, if pass band edge frequency $(\omega_p)=0.24\pi$ radians and maximum deviation
+  of 1 dB below 0 dB gain in the pass band. The maximum gain of $-14.9$ dB and Stop band
+  edge frequency $(\omega_s)=0.57\pi$ radians. Consider the sampling frequency of 0.5 Hz.
   & $1$ & $14.9$ & 3 & $0.99186$
   & $1{-}1.20280z^{-1}$ \newline $+0.72232z^{-2}$ \newline $-0.14509z^{-3}$ \\
-\textbf{\texttt{73 Bh}} & $0.25\pi$, $0.99$ dB; $-14.85$ dB at $0.59\pi$
+\bottomrule
+\end{tabular}}
+\par\smallskip
+{\footnotesize
+\begin{tabular}{@{}L{2.2cm}L{6.5cm}L{1.1cm}L{1.1cm}L{0.5cm}L{1.4cm}L{2.4cm}@{}}
+\toprule
+\hrow \thead{Papers} & \thead{Question as printed} & \thead{$\alpha_p$} & \thead{$\alpha_s$} & \thead{$N$} & \thead{$\Omega_c$} & \thead{$H(z)$ denominator} \\
+\hrow \textbf{\texttt{73 Bh}} \m{11} & Design a low pass digital filter by Bilinear
+  Transformation method to an approximate Butterworth filter, if passband edge frequency
+  is $0.25\pi$ radians and maximum deviation of $0.99$ dB below 0 dB gain in the
+  passband. The maximum gain of $-14.85$ dB and frequency is $0.59\pi$ radians in
+  stopband, Consider sampling frequency 0.5 Hz.
   & $0.99$ & $14.85$ & 3 & $1.03961$
   & $1{-}1.13140z^{-1}$ \newline $+0.67685z^{-2}$ \newline $-0.13245z^{-3}$ \\
-\textbf{\texttt{71 Bh}} & $0.25\pi$, 1 dB; $-15$ dB at $0.55\pi$
+\textbf{\texttt{71 Bh}} \m{9} & Design a low pass digital filter by Bilinear
+  Transformation method to an approximate Butterworth filter, if passband edge frequency
+  is $0.25\pi$ radians and maximum deviation of 1 dB below 0 dB gain in the passband.
+  The maximum gain of $-15$ dB and frequency is $0.55\pi$ radians in stopband, consider
+  sampling frequency 0.5 Hz.
   & $1$ & $15$ & 3 & $1.03767$
   & $1{-}1.13430z^{-1}$ \newline $+0.67862z^{-2}$ \newline $-0.13295z^{-3}$ \\
-72 Ka & $0.25\pi$, 1 dB; $-15$ dB at $0.45\pi$
+\bottomrule
+\end{tabular}}
+\par\smallskip
+{\footnotesize
+\begin{tabular}{@{}L{2.2cm}L{6.5cm}L{1.1cm}L{1.1cm}L{0.5cm}L{1.4cm}L{2.4cm}@{}}
+\toprule
+\hrow \thead{Papers} & \thead{Question as printed} & \thead{$\alpha_p$} & \thead{$\alpha_s$} & \thead{$N$} & \thead{$\Omega_c$} & \thead{$H(z)$ denominator} \\
+72 Ka \m{15} & Design a low pass digital filter by Bilinear
+  Transformation method to an approximate Butterworth filter, if passband edge frequency
+  is $0.25\pi$ radians and maximum deviation of 1 dB below 0 dB gain in the passband.
+  The maximum gain of $-15$ dB and frequency is $0.45\pi$ radians in stopband, Consider
+  sampling frequency 1Hz. \newline {\color{sub}\mk{the only one of these that needs
+  $N=4$}: a $0.2\pi$ transition rather than $0.3\pi$}
   & $1$ & $15$ & 4 & $0.98086$
   & $1{-}1.64760z^{-1}$ \newline $+1.35630z^{-2}$ \newline $-0.52524z^{-3}$ \newline
     $+0.083384z^{-4}$ \\
-71 Shr & $0.2\pi$, 1 dB; $-15$ dB at $0.4\pi$
+\hrow 71 Shr \m{15} & Design a low pass digital filter by Bilinear Transformation method
+  to an approximate Butter worth filter it passband frequency is $0.2\pi$ radians and
+  maximum deviation of 1 db below 0 dB gain in the pass band. The maximum gain of $-15$
+  db and frequency is $0.4\pi$ radians in stop band, consider sampling frequency 1 Hz.
   & $1$ & $15$ & 3 & $0.81397$
   & $1{-}1.48260z^{-1}$ \newline $+0.92964z^{-2}$ \newline $-0.20333z^{-3}$ \\
-\texttt{73 Ma} & $0.2\pi$, $0.98$ dB; 20 dB at $0.5\pi$
+\bottomrule
+\end{tabular}}
+\par\smallskip
+{\footnotesize
+\begin{tabular}{@{}L{2.2cm}L{6.5cm}L{1.1cm}L{1.1cm}L{0.5cm}L{1.4cm}L{2.4cm}@{}}
+\toprule
+\hrow \thead{Papers} & \thead{Question as printed} & \thead{$\alpha_p$} & \thead{$\alpha_s$} & \thead{$N$} & \thead{$\Omega_c$} & \thead{$H(z)$ denominator} \\
+\texttt{73 Ma} \m{11} & Design a low pass Butterworth filter using bilinear method to
+  meet the following specifications: Maximum deviation of $0.98$dB below 0dB gain in the
+  pass band. Stop band attenuation $=20$dB. Pass band edge frequency $=0.2\pi$ radian.
+  Stop band edge frequency $=0.5\pi$ radian. Sampling frequency $=1$Hz.
   & $0.98$ & $20$ & 3 & $0.81704$
   & $1{-}1.47760z^{-1}$ \newline $+0.92551z^{-2}$ \newline $-0.20214z^{-3}$ \\
-\textbf{79 Bh}, \textbf{71 Ch}, \textbf{69 Ch} & worked in full above
+\hrow \textbf{79 Bh} \m{11+4}, \textbf{71 Ch} \m{2+9+4}, \textbf{69 Ch} \m{2+9+4}
+  & worked in full above, from 79 Bh's own wording
   & $1.0122$ & $13.5556$ & 3 & $1.03532$
   & $1{-}1.13773z^{-1}$ \newline $+0.68078z^{-2}$ \newline $-0.13355z^{-3}$ \\
 \bottomrule
 \end{tabular}}
 \par\smallskip
 {\footnotesize
-\begin{tabular}{@{}L{2.9cm}L{3.3cm}L{1.6cm}L{1.6cm}L{0.6cm}L{1.6cm}L{2.3cm}@{}}
+\begin{tabular}{@{}L{2.2cm}L{6.5cm}L{1.1cm}L{1.1cm}L{0.5cm}L{1.4cm}L{2.4cm}@{}}
 \toprule
-\hrow \thead{Papers} & \thead{Spec, as printed} & \thead{$\alpha_p$}
-& \thead{$\alpha_s$} & \thead{$N$} & \thead{$\Omega_c$} & \thead{$H(z)$ denominator} \\
-76 Ash & $0.22\pi$, $0.54\pi$; $\delta_p{=}0.11$, $\delta_s{=}0.22$
+\hrow \thead{Papers} & \thead{Question as printed} & \thead{$\alpha_p$} & \thead{$\alpha_s$} & \thead{$N$} & \thead{$\Omega_c$} & \thead{$H(z)$ denominator} \\
+76 Ash \m{12} & Design a low pass discrete IIR filter by Bilinear
+  Transformation method to an approximate Butterworth filter having specifications as
+  below: Pass bandedge frequency $(\omega_p)=0.22\pi$ radians. Stop bandedge frequency
+  $(\omega_s)=0.54\pi$ radians. Passband ripple $(\delta_p)=0.11$. Stopband ripple
+  $(\delta_s)=0.22$, Consider sampling frequency 0.5 Hz.
   & $1.0122$ & $13.1515$ & 2 & $1.00598$
   & $1{-}0.76056z^{-1}$ \newline $+0.27575z^{-2}$ \\
-74 Ash & $0.27\pi$, $0.58\pi$; $\delta_p{=}0.11$, $\delta_s{=}0.21$
+\hrow 74 Ash \m{15} & Design a low pass discrete IIR filter by Bilinear Transformation
+  method to an approximate Butterworth filter having specifications as below: Pass
+  bandedge frequency $(\omega_p)=0.27\pi$ radians. Stop bandedge frequency
+  $(\omega_s)=0.58\pi$ radians. Passband ripple $(\delta_p)=0.11$. Stopband ripple
+  $(\delta_s)=0.21$, Consider sampling frequency 0.5 Hz.
   & $1.0122$ & $13.5556$ & 3 & $1.12856$
   & $1{-}1.00260z^{-1}$ \newline $+0.60224z^{-2}$ \newline $-0.11157z^{-3}$ \\
-\textbf{68 Bh} & $0.25\pi$, $0.45\pi$; $\delta_p{=}0.17$, $\delta_s{=}0.27$
+\bottomrule
+\end{tabular}}
+\par\smallskip
+{\footnotesize
+\begin{tabular}{@{}L{2.2cm}L{6.5cm}L{1.1cm}L{1.1cm}L{0.5cm}L{1.4cm}L{2.4cm}@{}}
+\toprule
+\hrow \thead{Papers} & \thead{Question as printed} & \thead{$\alpha_p$} & \thead{$\alpha_s$} & \thead{$N$} & \thead{$\Omega_c$} & \thead{$H(z)$ denominator} \\
+\textbf{68 Bh} \m{18} & If passband edge frequency $\omega_p=0.25\pi$, stopband edge
+  frequency $\omega_s=0.45\pi$, passband ripple $\delta_p=0.17$ and stopband ripple
+  \mk{$\delta_p=0.27$} then design a digital lowpass Butterworth filter using bilinear
+  transformation technique. \newline {\color{sub}\mk{it prints $\delta_p$ twice}; the
+  second is plainly $\delta_s$}
   & $1.6184$ & $11.3727$ & 3 & $0.94579$
   & $1{-}1.27310z^{-1}$ \newline $+0.77005z^{-2}$ \newline $-0.15836z^{-3}$ \\
-75 Ash, \textbf{\texttt{74 Bh}} & $0.7$ dB to $0.15\pi$; 14 dB from $0.6\pi$
+\hrow 75 Ash \m{12}, \textbf{\texttt{74 Bh}} \m{9} & Design a digital low-pass filter
+  with the following specification: i) Pass-band magnitude constant to $0.7$ dB below
+  the frequency of $0.15\pi$ ii) Stop-band attenuation at least 14 dB for the
+  frequencies between $0.6\pi$ to $\pi$. Use Butterworth approximation as a prototype
+  and use bilinear transformation method to obtain the digital filter. \newline
+  {\color{sub}\mk{74 Ch prints this word for word but says impulse invariance}, which
+  is why it lands in \S2 and not here}
   & $0.7$ & $14$ & 2 & $0.74249$
   & $1{-}1.03700z^{-1}$ \newline $+0.36853z^{-2}$ \\
 \bottomrule
@@ -301,10 +409,10 @@ genuinely differs are split out below.}
 \textbf{\texttt{70 Bh}} \m{9}} \gap$\cdot$\gap \mk{only step 1 changes}}
 
 \begin{asked}{2076 Chaitra \textperiodcentered{} [10]}
-Design a digital Butterworth low pass filter using the bilinear transformation method
-for passband peak-to-peak ripple $\le1$ dB and passband edge frequency $1.2$ kHz;
-stopband attenuation $\ge40$ dB and stopband edge frequency $2.5$ kHz; sample rate
-8 kHz.
+Design a digital low pass Butterworth filter by applying bilinear transformation
+techniques for the given specifications: Passband peak to peak ripple $\le$ 1dB.
+Passband edge frequency $=1.2$KHz. Stopband Attenuation $\ge$ 40dB. Stopband edge
+frequency $=2.5$ KHz. Sample rate $=8$KHz.
 \end{asked}
 
 \begin{itemize}
@@ -342,9 +450,10 @@ stopband attenuation $\ge40$ dB and stopband edge frequency $2.5$ kHz; sample ra
 
 \creamq{70 Bh}{\m{9}} {\color{sub}\footnotesize \mk{defective as printed}}
 \begin{asked}{2070 Bhadra \textperiodcentered{} [9]}
-Design a digital low pass Butterworth filter by applying bilinear transformation
-technique for: pass band edge $=120$ Hz, pass band attenuation $=1$ dB, stop band edge
-$=170$ Hz, stop band attenuation $=16$ dB. Assume sampling frequency of 256 Hz.
+Design a digital low pass butterworth filter by applying bilinear transformation
+technique for the given specifications: Pass band edge $=120$ Hz. Pass band attenuation
+$=1$ dB. Stop band edge $=170$ Hz. Stop band attenuation $=16$ dB. Assume sampling
+frequency of 256 Hz.
 \end{asked}
 \begin{itemize}
   \item With $f_s=256$ Hz the \textbf{Nyquist frequency is 128 Hz}. The stopband edge of
@@ -394,10 +503,10 @@ $=170$ Hz, stop band attenuation $=16$ dB. Assume sampling frequency of 256 Hz.
 
 \creamq{73 Ch}{\m{11+4}}
 \begin{asked}{2073 Chaitra \textperiodcentered{} [11+4]}
-Design a digital Butterworth low pass filter using bilinear transformation for
-$0.707\le|H(e^{jw})|\le1$ for $0\le w\le\pi/2$; $|H(e^{jw})|\le0.2$ for
-$3\pi/4\le w\le\pi$; $T=1$ s. Realize the filter using the most convenient realization
-form.
+Design a digital Butterworth low pass filter satisfying the constraints
+$0.707\le|H(e^{jw})|\le1$, $0\le w\le\pi/2$; $|H(e^{jw})|\le0.2$, $3\pi/4\le w\le\pi$
+With $T=1$sec using bilinear transformation method. Realize the filter using the most
+convenient realization form.
 \end{asked}
 \begin{itemize}
   \item \mk{$0.707$ is $1/\sqrt2$}, so the passband edge is the \textbf{3 dB point} and
@@ -468,9 +577,14 @@ expansion. \mk{$T$ no longer cancels}, so it must be carried.}
 difference so cleanly, so solve them together.}
 
 \begin{asked}{2075 Ashwin / 2074 Bhadra (bilinear) \textperiodcentered{} 2074 Chaitra (impulse invariance) \textperiodcentered{} [12] [9] [12]}
-Design a digital Butterworth low pass filter whose passband magnitude is constant to
-$0.7$ dB below the frequency $0.15\pi$ and whose stopband attenuation is at least 14 dB
-for frequencies between $0.6\pi$ and $\pi$.
+Design a digital low-pass filter with the following specification: i) Pass-band
+magnitude constant to $0.7$ dB below the frequency of $0.15\pi$ ii) Stop-band
+attenuation at least 14 dB for the frequencies between $0.6\pi$ to $\pi$. Use Butterworth
+approximation as a prototype and use \mk{bilinear transformation} method to obtain the
+digital filter.\\
+\textit{74 Ch prints the identical specification and asks for} \mk{impulse invariance}
+\textit{instead, which is the only difference between them and the reason it is worked
+in \S2.}
 \end{asked}
 
 \par\smallskip
@@ -583,10 +697,10 @@ comparison.}
 
 \creamq{67 Mng}{\m{15}}
 \begin{asked}{2067 Mangsir \textperiodcentered{} [15]}
-Find the system function for a digital filter using the impulse invariance technique
+Find the system function for digital filter using \mk{impulsive invariance} technique
 from the analog Butterworth filter transfer function
-$H(s)=\dfrac{1}{(s+1.3)(s-1.3e^{j2\pi/3})(s-1.3e^{-j2\pi/3})}$ with $T=1$ second, and
-draw the block diagram of the system function $H(z)$ realized in terms of second order
+$H(s)=\dfrac{1}{(s+1.3)(s-1.3e^{j2\pi/3})(s-1.3e^{-j2\pi/3})}$ $T=1$ second, and draw
+the block diagram of the system function, $H(z)$, realized in terms of second order
 sections.
 \end{asked}
 \begin{itemize}
@@ -638,9 +752,9 @@ to 5 change}: a different order formula, $\Omega_c=\Omega_p$ with no formula, an
 on an ellipse instead of a circle.}
 
 \begin{asked}{2072 Magh \textperiodcentered{} [11]}
-Design a low pass discrete time Chebyshev filter by applying bilinear transformation for
-$0.707\le|H(e^{jw})|\le1$ for $|w|\le0.2\pi$ and $|H(e^{jw})|\le0.1$ for
-$0.5\pi\le|w|\le\pi$.
+Design the \mk{Chebysev} filter using bilinear transformation to meet the following
+specification. $0.707\le|H(e^{jw})|\le1$; for $|w|\le0.2\pi$. $|H(e^{jw})|\le0.1$; for
+$0.5\pi\le|w|\le\pi$
 \end{asked}
 
 \lead{Step 1 to 3: spec, pre-warp, ripple factor}
@@ -702,17 +816,20 @@ $0.5\pi\le|w|\le\pi$.
 \creamq{The other three Chebyshev papers}{}
 \par\smallskip
 {\footnotesize
-\begin{tabular}{@{}L{1.6cm}L{3.5cm}L{1.4cm}L{0.6cm}L{3.2cm}L{3.4cm}@{}}
+\begin{tabular}{@{}L{1.5cm}L{5.6cm}L{1.2cm}L{0.5cm}L{2.9cm}L{3.2cm}@{}}
 \toprule
-\hrow \thead{Paper} & \thead{Spec} & \thead{$\varepsilon$} & \thead{$N$}
+\hrow \thead{Paper} & \thead{Question as printed} & \thead{$\varepsilon$} & \thead{$N$}
 & \thead{Poles} & \thead{$H(z)$} \\
-\texttt{74 Ma} & $0.2\pi$, 1 dB; $-15$ dB at $0.3\pi$; $T{=}1$
+\texttt{74 Ma} & Design a low pass digital filter by bilinear transformation method to
+  an approximate Chebyshev filter for passband edge $0.2\pi$ with 1 dB ripple and
+  $-15$ dB at $0.3\pi$, with $T=1$.
   & $0.50885$ & 4 & $-0.0907\pm j0.6390$ \newline $-0.2189\pm j0.2647$
   & $K=0.0018356$, \newline numerator $K(1+z^{-1})^4$, \newline denominator
     $1-3.054340z^{-1}$ \newline $+3.828999z^{-2}$ \newline $-2.292452z^{-3}$ \newline
     $+0.550745z^{-4}$ \\
-\texttt{70 Ma} & $0.25\pi$, $0.55\pi$; $\alpha_{\max}{=}1.01$,
-  $\alpha_{\min}{=}13.55$; $f_s{=}0.5$ Hz
+\hrow \texttt{70 Ma} & Design a low pass digital filter by bilinear transformation to an
+  approximate Chebyshev filter with $\omega_p=0.25\pi$, $\omega_s=0.55\pi$,
+  $\alpha_{\max}=1.01$ dB, $\alpha_{\min}=13.55$ dB and $f_s=0.5$ Hz.
   & $0.51169$ & 2 & $-0.45286\pm j0.74042$
   & $K=0.102154$, \newline numerator $K(1+z^{-1})^2$, \newline denominator
     $1-0.989132z^{-1}$ \newline $+0.448133z^{-2}$ \\
@@ -731,10 +848,10 @@ $0.5\pi\le|w|\le\pi$.
 
 \creamq{75 Bh}{\m{10}} {\color{sub}\footnotesize \mk{an analog design first}}
 \begin{asked}{2075 Bhadra \textperiodcentered{} [10]}
-Design an \emph{analog} filter using Chebyshev approximation with maximum passband
-attenuation 5 dB at 20 rad/sec and stopband attenuation 20 dB at 50 rad/sec; then,
-taking a sampling frequency of 0.5 Hz, convert the obtained analog filter to digital
-using the bilinear transformation method.
+Design an analog filter using Chebyshev approximation which has maximum passband
+attenuation of 5dB at frequency 20 rad/sec and stopband attenuation of 20dB at frequency
+50 rad/sec. Taking sampling frequency of 0.5 Hz convert the obtained analog filter to
+digital by using Bilinear transformation method.
 \end{asked}
 \begin{itemize}
   \item \mk{The edges are already analog}, in rad/s. \textbf{Do not pre-warp}: the
@@ -768,7 +885,7 @@ using the bilinear transformation method.
 
 \begin{asked}{2070 Chaitra \textperiodcentered{} [5]}
 A digital LPF with cut off frequency $w_c=0.2575\pi$ is given as
-$H(z)=\dfrac{0.1+0.4z^{-1}}{1-0.6z^{-1}+0.1z^{-2}}$. Design a digital high pass filter
+$H(Z)=\dfrac{0.1+0.4z^{-1}}{1-0.6z^{-1}+0.1z^{-2}}$ Design a digital high pass filter
 with $w'_c=0.3567\pi$.
 \end{asked}
 

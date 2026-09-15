@@ -1981,6 +1981,30 @@ def ch6():
         chk("c6 T=%g gives the same numerator" % T, got[5], base[5], 1e-9)
         chk("c6 T=%g gives the same denominator" % T, got[6], base[6], 1e-9)
 
+    # --- claims added 2026-09-15 with the papers' own wording.
+    # 73 Shr states its spec as bare magnitudes; 77 Ch and 76 Bh state the
+    # same filter in decibels. The chapter says 0.89125 is 1 dB and 0.17783
+    # is 15 dB, which is the whole reason they group.
+    chk("c6 73Shr 0.89125 is 1 dB", -20 * math.log10(0.89125), 1.0, 1e-4)
+    chk("c6 73Shr 0.17783 is 15 dB", -20 * math.log10(0.17783), 15.0, 2e-4)
+    # 68 Bh prints delta_p twice; read the second as delta_s. The chapter's
+    # alpha values are what those two ripples give.
+    chk("c6 68Bh delta_p 0.17 in dB", IR.alpha_from_ripple(0.17, "pass"),
+        1.6184, 1e-4)
+    chk("c6 68Bh delta_s 0.27 in dB", IR.alpha_from_ripple(0.27, "stop"),
+        11.3727, 1e-4)
+    # 75 Ash / 74 Bh and 74 Ch print the SAME specification and differ only
+    # in the method, which is why one is in section 1 and the other in 2.
+    n_bl = IR.butter_order(0.15 * PI, 0.6 * PI, 0.7, 14.0, 1.0, "bilinear")[1]
+    n_ii = IR.butter_order(0.15 * PI, 0.6 * PI, 0.7, 14.0, 1.0, "invariance")[1]
+    chk("c6 75Ash bilinear order", n_bl, 2)
+    chk("c6 74Ch same spec by impulse invariance", n_ii, 2)
+    chk("c6 the two methods are not the same map",
+        1 if IR.butter_order(0.15 * PI, 0.6 * PI, 0.7, 14.0, 1.0,
+                             "bilinear")[0]
+        != IR.butter_order(0.15 * PI, 0.6 * PI, 0.7, 14.0, 1.0,
+                           "invariance")[0] else 0, 1)
+
 
 def ch7():
     """Assert every spectrum, butterfly stage and convolution printed in
