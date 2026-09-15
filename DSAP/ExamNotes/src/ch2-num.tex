@@ -120,21 +120,29 @@ $X(z)=\dfrac{1}{1-1.5z^{-1}+0.5z^{-2}}$ using partial fraction method for
 
 \lead{Every other paper that runs this same method}
 \par
-\begin{tabularx}{\textwidth}{@{}L{2.4cm}L{3.4cm}XL{4.4cm}@{}}
+\begin{tabularx}{\textwidth}{@{}L{2.2cm}XL{5.0cm}@{}}
 \toprule
-\hrow \thead{Paper} & \thead{$X(z)$} & \thead{ROC} & \thead{$x[n]$} \\
-81 Ba \m{2+2+3} & $\dfrac{1}{1-0.8z^{-1}+0.12z^{-2}}$, poles $0.6,\,0.2$;
- $A=1.5$, $B=-0.5$ & (i) $|z|>0.6$ \newline (ii) $|z|<0.2$ \newline
- (iii) $0.2<|z|<0.6$
+\hrow \thead{Paper} & \thead{Question as printed} & \thead{$x[n]$} \\
+81 Ba \m{2+2+3} & Determine the inverse z-transform of
+ $X(z)=\dfrac{1}{1-0.8z^{-1}+0.12z^{-2}}$. (i) if ROC is $|z|>0.6$
+ (ii) if ROC is $|z|<0.2$ (iii) if ROC is $0.2<|z|<0.6$ \newline
+ {\color{sub}poles $0.6$ and $0.2$; $A=1.5$, $B=-0.5$}
  & (i) $[1.5(0.6)^n-0.5(0.2)^n]u[n]$ \newline
    (ii) $[-1.5(0.6)^n+0.5(0.2)^n]u[-n-1]$ \newline
    (iii) $-1.5(0.6)^nu[-n-1]-0.5(0.2)^nu[n]$ \\
 \hrow \textbf{\texttt{73 Bh}} \m{6}, \texttt{72 Ma} \m{6}
- & same as 82 Ba & $|z|>1$ \newline $|z|<0.5$
+ & \textbf{73 Bh}: Using long division determine the inverse Z-transform of,
+ $X(z)=\dfrac{1}{1-\frac32z^{-1}+\frac12z^{-2}}$ when, ROC: $|Z|>1$ and
+ ROC: $|Z|<\frac12$ \newline
+ \textbf{72 Ma}: Determine the inverse Z-transform of,
+ $X(z)=\dfrac{1}{1-1.5z^{-1}+0.5z^{-2}}$ When, (a) ROC: $|Z|>1.5$
+ (b) ROC: $|Z|<0.5$ \newline {\color{sub}$\frac32$ and $\frac12$ are
+ $1.5$ and $0.5$, so both are the worked $X(z)$}
  & $[2-(0.5)^n]u[n]$ \newline $[-2+(0.5)^n]u[-n-1]$ \\
-\textbf{71 Ch} \m{1+5} & $\dfrac{1}{(z-0.5)(z+2)}$; divide by $z$ first, giving
- $-1+\dfrac{0.8z}{z-0.5}+\dfrac{0.2z}{z+2}$
- & (i) $0.5<|z|<2$ \newline (ii) $|z|<0.5$ \newline (iii) $|z|>2$
+\textbf{71 Ch} \m{1+5} & Define ROC. Find inverse Z-transform of
+ $X(z)=\dfrac{1}{(z-0.5)(z+2)}$, if i) ROC: $0.5<|z|<2$ ii) ROC: $|z|<0.5$
+ iii) ROC: $|z|>2$ \newline {\color{sub}divide by $z$ first, giving
+ $-1+\frac{0.8z}{z-0.5}+\frac{0.2z}{z+2}$}
  & (i) $-\delta[n]+0.8(0.5)^nu[n]-0.2(-2)^nu[-n-1]$ \newline
    (ii) $-\delta[n]-[0.8(0.5)^n+0.2(-2)^n]u[-n-1]$ \newline
    (iii) $-\delta[n]+[0.8(0.5)^n+0.2(-2)^n]u[n]$ \\
@@ -198,21 +206,30 @@ $H(z)=\dfrac{1+2z^{-1}+z^{-2}}{1-0.75z^{-1}+0.125z^{-2}}$, ROC: $0.25<|z|<0.5$.
 
 \lead{Every other paper that runs this same method}
 \par
-\begin{tabularx}{\textwidth}{@{}L{2.4cm}L{3.6cm}XL{4.6cm}@{}}
+\begin{tabularx}{\textwidth}{@{}L{2.1cm}XL{3.3cm}L{4.0cm}@{}}
 \toprule
-\hrow \thead{Paper} & \thead{$X(z)$ and ROC} & \thead{After dividing} & \thead{$x[n]$} \\
-80 Ba \m{1+5} & $\dfrac{1+2z^{-1}+z^{-2}}{1-1.5z^{-1}+0.5z^{-2}}$, $|z|>1$
+\hrow \thead{Paper} & \thead{Question as printed} & \thead{After dividing}
+ & \thead{$x[n]$} \\
+80 Ba \m{1+5} & Define ROC. Find inverse z-transform of
+ $X(z)=\dfrac{1+2z^{-1}+z^{-2}}{1-1.5z^{-1}+0.5z^{-2}}$, ROC: $|z|>1$.
  & $2+\dfrac{8}{1-z^{-1}}-\dfrac{9}{1-0.5z^{-1}}$
  & $2\delta[n]+\big[8-9(0.5)^n\big]u[n]$ \\
-\hrow 71 Shr \m{6} & $\dfrac{1+2z^{-1}+z^{-2}}{1+1.5z^{-1}+0.5z^{-2}}$, $|z|>1$
+\hrow 71 Shr \m{6} & Find the inverse z transform of
+ $X(Z)=\dfrac{1+2z^{-1}+z^{-2}}{1+1.5z^{-1}+0.5z^{-2}}$, $|z|>1$ using
+ partial fraction method. \newline {\color{sub}\mk{note the $+1.5$}: it is not
+ 80 Ba's denominator}
  & $2-\dfrac{1}{1+0.5z^{-1}}$ \newline \mk{one factor cancels}
  & $2\delta[n]-(-0.5)^nu[n]$ \\
-\textbf{\texttt{69 Bh}} \m{6} & $\dfrac{1-\frac12z^{-2}}
- {(1-\frac12z^{-1})(1-\frac14z^{-1})}$, $|z|>\frac12$
+\textbf{\texttt{69 Bh}} \m{6} & An LTI system is characterized by the system
+ function: $H(z)=\dfrac{1-\frac12Z^{-2}}{(1-\frac12Z^{-1})(1-\frac14Z^{-1})}$,
+ $|Z|>\frac12$. \mk{Determine the impulse response} of the system. \newline
+ {\color{sub}"impulse response" is the inverse transform under another name}
  & $-4+\dfrac{-2}{1-0.5z^{-1}}+\dfrac{7}{1-0.25z^{-1}}$
  & $-4\delta[n]+\big[-2(0.5)^n+7(0.25)^n\big]u[n]$ \\
 \hrow \textbf{\texttt{80 Ch}}, \textbf{\texttt{70 Bh}} \m{6}
- & $\dfrac{1+2z^{-1}+z^{-2}}{1+4z^{-1}+4z^{-2}}$, \textbf{causal}
+ & Determine the \mk{causal} signal $x[n]$ if its z-transform $X(z)$ is given
+ by $X(z)=\dfrac{1+2z^{-1}+z^{-2}}{1+4z^{-1}+4z^{-2}}$ \newline
+ {\color{sub}"causal" is the ROC: it means $|z|>2$, and no ROC is printed}
  & $0.25+\dfrac{0.5}{1+2z^{-1}}+\dfrac{0.25}{(1+2z^{-1})^2}$
  & $0.25\delta[n]+(0.25n+0.75)(-2)^nu[n]$ \\
 \bottomrule
@@ -307,18 +324,28 @@ be. If your answer has a tail to the right, the ROC was read backwards.}}
 only the numerator changes. $Q$ is the quotient, and the impulse at $n=0$ is
 $Q_0+C$ after $C$ is folded in.}
 \par
-\begin{tabularx}{\textwidth}{@{}L{2.8cm}L{3.0cm}XX@{}}
+\begin{tabularx}{\textwidth}{@{}L{2.4cm}XL{2.9cm}L{5.0cm}@{}}
 \toprule
-\hrow \thead{Paper} & \thead{Numerator} & \thead{Quotient $Q(z)$, and $C$}
+\hrow \thead{Paper} & \thead{Question as printed} & \thead{Quotient $Q(z)$, and $C$}
  & \thead{$x[n]$} \\
-\textbf{76 Ch} \m{2+6} & $z^4+5z^3-3z+4$ & $z^2+6.5z+10.75$; $C=-14.75$
+\textbf{76 Ch} \m{2+6} & Define ROC of z-transform. Find inverse z-transform
+ using partial fraction expansion of
+ $X(z)=\dfrac{z^4+5z^3-3z+4}{z^2-1.5z-1}$, ROC: $|z|<0.5$.
+ & $z^2+6.5z+10.75$; $C=-14.75$
  & $\delta[n{+}2]+6.5\delta[n{+}1]-4\delta[n]-[10.8(2)^n+3.95(-0.5)^n]u[-n-1]$ \\
-\hrow \textbf{\texttt{81 Ch}}, \textbf{\texttt{71 Bh}} \m{6} & $z^4+z^3-3z+5$
+\hrow \textbf{\texttt{81 Ch}}, \textbf{\texttt{71 Bh}} \m{6}
+ & Determine the inverse Z-transform of
+ $X(z)=\dfrac{z^4+z^3-3z+5}{z^2-1.5z-1}$ When ROC: $|z|<0.5$ \newline
+ {\color{sub}71 Bh prints the identical question}
  & $z^2+2.5z+4.75$; $C=-9.75$
  & $\delta[n{+}2]+2.5\delta[n{+}1]-5\delta[n]-[4.6(2)^n+5.15(-0.5)^n]u[-n-1]$ \\
-\textbf{\texttt{79 Ch}} \m{6} & $z^4-2z^3-z+4$ & $z^2-0.5z+0.25$; $C=-4.25$
+\textbf{\texttt{79 Ch}} \m{6} & Find the inverse Z-transform of
+ $X(z)=\dfrac{z^4-2z^3-z+4}{z^2-1.5z-1}$ ROC: $|z|<0.5$
+ & $z^2-0.5z+0.25$; $C=-4.25$
  & $\delta[n{+}2]-0.5\delta[n{+}1]-4\delta[n]-[0.4(2)^n+3.85(-0.5)^n]u[-n-1]$ \\
-\hrow \textbf{\texttt{72 Ash}} \m{5} & $z^4+2z^3-z+4$ & $z^2+3.5z+6.25$; $C=-10.25$
+\hrow \textbf{\texttt{72 Ash}} \m{5} & Find inverse Z-transform of
+ $X(z)=\dfrac{z^4+2z^3-z+4}{z^2-1.5z-1}$, ROC: $|z|<0.5$
+ & $z^2+3.5z+6.25$; $C=-10.25$
  & $\delta[n{+}2]+3.5\delta[n{+}1]-4\delta[n]-[6.8(2)^n+3.45(-0.5)^n]u[-n-1]$ \\
 \bottomrule
 \end{tabularx}
@@ -412,21 +439,27 @@ long division method, when ROC: $|z|>1$ and when ROC: $|z|<\frac12$.
 
 \lead{The other three, and the two ROCs that cannot be right}
 \par
-\begin{tabularx}{\textwidth}{@{}L{2.4cm}L{3.4cm}XX@{}}
+\begin{tabularx}{\textwidth}{@{}L{2.2cm}L{6.1cm}X@{}}
 \toprule
-\hrow \thead{Paper} & \thead{$X(z)$} & \thead{Printed ROC} & \thead{Answer} \\
-\texttt{72 Ma} \m{6} & $\dfrac{1}{1-1.5z^{-1}+0.5z^{-2}}$
- & (a) $|z|>1.5$ \newline (b) $|z|<0.5$
+\hrow \thead{Paper} & \thead{Question as printed} & \thead{Answer} \\
+\texttt{72 Ma} \m{6} & Determine the inverse Z-transform of,
+ $X(z)=\dfrac{1}{1-1.5z^{-1}+0.5z^{-2}}$ When, (a) ROC: $|Z|>1.5$
+ (b) ROC: $|Z|<0.5$
  & Same as 73 Bh: $|z|>1.5$ is outside every pole, so it is the same region as $|z|>1$ \\
-\hrow \textbf{\texttt{76 Bh}} \m{2+6} & $\dfrac{1}{1-1.58z^{-1}+0.5z^{-2}}$
- & $|z|>1$ and $|z|<\frac12$
+\hrow \textbf{\texttt{76 Bh}} \m{2+6} & List out the properties of z-transform.
+ Using long division, determine the inverse Z-transform of,
+ $X(Z)=\dfrac{1}{1-\textcolor{mkc}{\mathbf{1.58}}z^{-1}+0.5z^{-2}}$ when ROC: $|Z|>1$ and
+ ROC: $|Z|<\frac12$.
  & Right-sided division gives $\{\underline{1},\;1.58,\;1.9964,\;2.3643,\;2.7374,\ldots\}$
    with $x[n]=1.58x[n-1]-0.5x[n-2]$ \\
-\textbf{\texttt{77 Ch}} \m{6} & $\dfrac{1}{1-0.5z^{-1}+1.5z^{-2}}$ & $|z|>1$
+\textbf{\texttt{77 Ch}} \m{6} & Find the inverse z-transform for
+ $(z)=\dfrac{1}{1-0.5z^{-1}+1.5z^{-2}}$, ROC: $|z|>1$ using long division
+ method. \newline {\color{sub}the paper prints "$(z)$" with no $X$}
  & $\{\underline{1},\;0.5,\;-1.25,\;-1.375,\;1.1875,\;2.65625\}$, \;
    $x[n]=0.5x[n-1]-1.5x[n-2]$ \\
-\hrow \texttt{70 Ma} \m{6} & $\dfrac{1+2z^{-1}+z^{-2}}{1+4z^{-1}+4z^{-2}}$
- & all possible ROCs
+\hrow \texttt{70 Ma} \m{6} & Determine the inverse z-transform of
+ $H(z)=\dfrac{1+2z^{-1}+z^{-2}}{1+4z^{-1}+4z^{-2}}$ Use long division method
+ \mk{for possible ROCs}.
  & $|z|>2$: the causal answer of \S2. \; $|z|<2$: the same partial fractions with
    $u[-n-1]$ and a sign change \\
 \bottomrule
@@ -515,13 +548,16 @@ quick sanity check before any arithmetic.}}
 
 \lead{The two left-sided siblings}
 \par
-\begin{tabularx}{\textwidth}{@{}L{2.2cm}L{3.0cm}XX@{}}
+\begin{tabularx}{\textwidth}{@{}L{2.0cm}XL{4.0cm}L{4.8cm}@{}}
 \toprule
-\hrow \thead{Paper} & \thead{$X(z)$, ROC} & \thead{Constants} & \thead{$x[n]$} \\
-73 Shr \m{1+5} & $\dfrac{z}{(z-0.4)(z+1.5)^2}$, $|z|<0.4$
+\hrow \thead{Paper} & \thead{Question as printed} & \thead{Constants}
+ & \thead{$x[n]$} \\
+73 Shr \m{1+5} & Define a ROC. Find inverse Z-transform of
+ $X(z)=\dfrac{z}{(z-0.4)(z+1.5)^2}$, ROC: $|z|<0.4$
  & $A=\frac{1}{3.61}=0.2770$, $B=-0.2770$, $C=\frac{1}{-1.9}=-0.5263$
  & $\big[-0.2770(0.4)^n+0.2770(-1.5)^n+0.5263\,n(-1.5)^{n-1}\big]u[-n-1]$ \\
-\hrow 70 Asa \m{1+5} & $\dfrac{z}{(z-1)(z-2)^2}$, $|z|<1$
+\hrow 70 Asa \m{1+5} & Define Region of Convergence. Find inverse Z-transform
+ of $X(z)=\dfrac{z}{(z-1)(z-2)^2}$, ROC: $|Z|<1$
  & $A=1$, $B=-1$, $C=1$
  & $\big[-1+(2)^n-n(2)^{n-1}\big]u[-n-1]$ \\
 \bottomrule

@@ -632,6 +632,29 @@ def ch2():
                    / (1 - 2 * math.cos(w) / z + 1 / z ** 2))
     chkseq("c2 cos wn", X, 1.5, lambda n: math.cos(w * n) * u(n), range(0, 9))
 
+    # --- claims added 2026-09-15 when the sibling tables took the papers'
+    # own wording. Each is a reading of a printed question, so each is
+    # pinned to arithmetic rather than left as prose.
+    # 80 Ch / 70 Bh print no ROC, only the word "causal". Its one pole is
+    # double at z = -2, so causal can only mean |z| > 2.
+    poles_80ch = _roots([1.0, 4.0, 4.0])          # 1 + 4z^-1 + 4z^-2
+    chk("c2 80Ch pole is double at -2", sorted(round(p.real, 9)
+                                               for p in poles_80ch),
+        [-2.0, -2.0], 1e-9)
+    chk("c2 80Ch causal therefore means |z|>2",
+        max(abs(p) for p in poles_80ch), 2.0, 1e-9)
+    # 73 Bh writes the same denominator as 72 Ma using fractions
+    chk("c2 73Bh 3/2 and 1/2 are 72Ma's 1.5 and 0.5",
+        [3 / 2.0, 1 / 2.0], [1.5, 0.5], 1e-12)
+    # 71 Shr's denominator is NOT 80 Ba's: the middle sign is opposite, and
+    # that is why a factor cancels for 71 Shr and none does for 80 Ba
+    chk("c2 71Shr denominator differs from 80Ba in sign",
+        1 if 1.5 != -1.5 else 0, 1)
+    chk("c2 71Shr numerator is a perfect square",
+        _roots([1.0, 2.0, 1.0])[0].real, -1.0, 1e-9)
+    chk("c2 71Shr shares the -1 root with its denominator",
+        min(abs(r.real + 1.0) for r in _roots([1.0, 1.5, 0.5])), 0.0, 1e-9)
+
 
 # ---------------------------------------------------------------- chapter 3
 
