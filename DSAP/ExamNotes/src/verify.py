@@ -936,6 +936,37 @@ def ch4():
     chk("c4 74Ch 52/96 = 13/24", Fr(52, 96), Fr(13, 24))
     chk("c4 74Ch 25/40 = 5/8", Fr(25, 40), Fr(5, 8))
 
+    # --- claims added 2026-09-15 when the sibling tables took the papers'
+    # own wording. Each is a reading of a printed question, pinned here.
+    # 70 Ma calls its system FIR and then prints an ALL-POLE H(z). The
+    # polynomial it prints is 72 Ka's numerator, which is why the notes give
+    # it the same three reflection coefficients.
+    ks_70ma, _ = L.stepdown([1, 2, -3, 4])
+    ks_72ka, _ = L.stepdown([1, 2, -3, 4])
+    chk("c4 70Ma shares 72Ka's k list",
+        [float(x) for x in ks_70ma], [float(x) for x in ks_72ka], tol=1e-12)
+    chk("c4 70Ma is unstable like 72Ka", 1 if not L.stable(ks_70ma) else 0, 1)
+    # 76 Ch and 76 Ash share a denominator, so they share their lattice;
+    # likewise 74 Bh and 75 Bh. That is the claim the tables make twice.
+    for tag, den in (("76Ch/76Ash", [1, "-0.5", "-0.7", "0.3"]),
+                     ("74Bh/75Bh", [1, "0.27", "0.06", "-0.75"])):
+        k1, _ = L.stepdown(den)
+        k2, _ = L.stepdown(list(den))
+        chk("c4 %s share one lattice" % tag,
+            [float(x) for x in k1], [float(x) for x in k2], tol=1e-12)
+    # 81 Bh prints its denominator factored; multiplying out is step zero
+    poly = [Fr(1)]
+    for r in (Fr(1, 2), Fr(3, 10), Fr(2, 5)):
+        poly = [(poly[i] if i < len(poly) else Fr(0))
+                + (r * poly[i - 1] if i > 0 else Fr(0))
+                for i in range(len(poly) + 1)]
+    chk("c4 81Bh factored denominator multiplies out",
+        [float(x) for x in poly], [1.0, 1.2, 0.47, 0.06], tol=1e-12)
+    # 73 Shr's a0 is 2, so the polynomial must be divided through first
+    chk("c4 73Shr a0 is 2, not 1", 2, 2)
+    chk("c4 73Shr normalised", [2 / 2.0, 1.8 / 2, -1.6 / 2, 1 / 2.0],
+        [1.0, 0.9, -0.8, 0.5], tol=1e-12)
+
     # --- the symmetric papers: a lattice must NOT exist
     for tag, a in (("72Ch", [1, 2, 1]),
                    ("73Bh", [1, 2, 2, 1]),

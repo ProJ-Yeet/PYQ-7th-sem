@@ -88,23 +88,34 @@ $y[n]-0.25y[n-2]=x[n]+0.4x[n-1]+0.5x[n-2]$.
 \lead{Every other paper in this group}
 \par\smallskip
 {\footnotesize
-\begin{tabular}{@{}L{2.2cm}L{6.2cm}L{3.3cm}L{3.5cm}@{}}
+\begin{tabular}{@{}L{1.9cm}L{8.1cm}L{3.0cm}L{3.2cm}@{}}
 \toprule
-\hrow \thead{Papers} & \thead{System} & \thead{Taps} & \thead{Watch for} \\
-79 Ba, \textbf{82 Bh} & $y[n]-0.75y[n{-}1]-0.25y[n{-}2]$ \newline $=x[n]+0.5x[n{-}1]$
+\hrow \thead{Papers} & \thead{Question as printed} & \thead{Taps} & \thead{Watch for} \\
+79 Ba \m{4}, \textbf{82 Bh} \m{2+2} & Obtain the direct form I and direct form II
+  realization of the following system: $y[n]-0.75y[n{-}1]-0.25y[n{-}2]=x[n]+0.5x[n{-}1]$
   & $b=\{1,0.5\}$ \newline $-a=\{0.75,0.25\}$ & both feedback taps positive \\
-\textbf{74 Ch} & $3y[n]+y[n{-}1]+2y[n{-}4]$ \newline $=2x[n]+x[n{-}3]$
+\hrow \textbf{74 Ch} \m{5} & Obtain the Direct Form I and Direct Form II realization of
+  the following system. $3y[n]+y[n{-}1]+2y[n{-}4]=2x[n]+x[n{-}3]$
   & $b=\{\tfrac23,0,0,\tfrac13\}$ \newline $-a=\{-\tfrac13,0,0,-\tfrac23\}$
   & \mk{divide by $a_0=3$ first}; 4 delays, most taps zero \\
-\textbf{72 Ch} & $y(n)=-0.1y(n{-}1)+0.2y(n{-}2)$ \newline $+3x(n)+3.6x(n{-}2)+0.6x(n{-}2)$
+\textbf{72 Ch} \m{5} & Determine the Direct Form I and Direct Form II realization of the
+  following system. $y(n)=-0.1y(n{-}1)+0.2y(n{-}2)+3x(n)+3.6x(n{-}2)+0.6x(n{-}2)$
   & $b=\{3,0,4.2\}$ \newline $-a=\{-0.1,0.2\}$
   & \mk{$x(n{-}2)$ is printed twice}; add them, $3.6+0.6=4.2$ \\
-72 Ka, \textbf{69 Ch} & $y(n)=-0.1y(n{-}1)+0.72y(n{-}2)$ \newline $+0.7x(n)-0.252x(n{-}2)$
-  & $b=\{0.7,0,-0.252\}$ \newline $-a=\{-0.1,0.72\}$ & Direct Form II only \\
-\textbf{70 Ch} & $y[n]-\tfrac34y[n{-}1]+\tfrac18y[n{-}2]$ \newline $-x[n]-2x[n{-}1]=0$
+\hrow 72 Ka \m{4}, \textbf{69 Ch} \m{4} & Determine the Direct Form II realization of the
+  following system $y(n)=-0.1y(n{-}1)+0.72y(n{-}2)+0.7x(n)-0.252x(n{-}2)$ \newline
+  {\color{sub}\mk{Direct Form II only}, so do not draw Form I}
+  & $b=\{0.7,0,-0.252\}$ \newline $-a=\{-0.1,0.72\}$ & one structure, not two \\
+\textbf{70 Ch} \m{4} & Determine the \mk{Cascade Form} realization of the following
+  system. $y[n]-\tfrac34y[n{-}1]+\tfrac18y[n{-}2]-x[n]-2x[n{-}1]=0$ \newline
+  {\color{sub}it asks for the \textbf{cascade} form, not a direct one; the taps below
+  are the first step and \S2 is the rest}
   & $b=\{1,2\}$ \newline $-a=\{\tfrac34,-\tfrac18\}$
   & move the $x$ terms across: they are \textbf{positive} on the right \\
-\textbf{68 Bh} & $H(z)$ given factored, 3 zeros over 4 poles
+\hrow \textbf{68 Bh} \m{9} & Realize the overall system function $H(z)$ (three zeros over
+  four poles, printed factored) in terms of direct form I and direct form II structures.
+  Draw the corresponding block diagrams. \newline {\color{sub}the factored $H(z)$ is in
+  the box below}
   & multiply out first & see the box below \\
 \bottomrule
 \end{tabular}}
@@ -129,9 +140,9 @@ multiplied out.}
 \textbf{67 Mng}, \textbf{\texttt{78 Ch}} \m{6}}}
 
 \begin{asked}{2081 Baishakh \textperiodcentered{} [5]}
-Realize the following system in cascade form of second-order sections (signal flow
-graph): $H(z)=\dfrac{10(1-0.25z^{-1})(1-0.667z^{-1})(1+2z^{-1})}
-{(1-0.75z^{-1})(1-0.125z^{-1})\{1-(0.5+j0.5)z^{-1}\}\{1-(0.5-j0.5)z^{-1}\}}$.
+Draw the cascaded form structure of
+\[ H(z)=\frac{10(1-0.25z^{-1})(1-0.667z^{-1})(1+2z^{-1})}
+             {(1-0.75z^{-1})(1-0.125z^{-1})\{1-(0.5+j0.5)z^{-1}\}\{1-(0.5-j0.5)z^{-1}\}} \]
 \end{asked}
 
 \lead{Step 1: pair the poles, then pair the zeros to match}
@@ -165,20 +176,37 @@ graph): $H(z)=\dfrac{10(1-0.25z^{-1})(1-0.667z^{-1})(1+2z^{-1})}
 form, which needs partial fractions instead of factors.}
 \par\smallskip
 {\footnotesize
-\begin{tabular}{@{}L{2.3cm}L{5.4cm}L{7.4cm}@{}}
+\begin{tabular}{@{}L{2.0cm}L{8.0cm}L{6.6cm}@{}}
 \toprule
-\hrow \thead{Papers} & \thead{Poles} & \thead{Sections} \\
-\texttt{74 Ma} & same as 81 Ba, gain $5$ & identical sections, gain $5$; \mk{parallel
-  form also asked}, so partial-fraction the expanded $H(z)$ \\
-80 Ba & $0.5e^{\pm j\pi/3}$, $-0.7e^{\pm j\pi/4}$
+\hrow \thead{Papers} & \thead{Question as printed} & \thead{Sections} \\
+\texttt{74 Ma} \m{7} & Draw cascaded and parallel form structure of
+  $H(z)=\dfrac{5(1-0.25z^{-1})(1-0.667z^{-1})(1+2z^{-1})}
+  {(1-0.75z^{-1})(1-0.125z^{-1})[1-(0.5+j0.5)z^{-1}][1-(0.5-j0.5)z^{-1}]}$
+  & same poles as 81 Ba, \mk{gain $5$ not $10$}; identical sections;
+  \mk{parallel form also asked}, so partial-fraction the expanded $H(z)$ \\
+\hrow 80 Ba \m{4} & Realize the given system in Cascade Form of 2nd order section flow
+  graph representation. $H(z)$ has zeros $0.4$, $-0.2$, $0.3e^{\pm j\pi/6}$ and poles
+  $0.5e^{\pm j\pi/3}$, $-0.7e^{\pm j\pi/4}$.
   & $1-0.5z^{-1}+0.25z^{-2}$ and $1+0.99z^{-1}+0.49z^{-2}$ \\
-\textbf{76 Ch} & $0.6e^{\pm jn\pi/3}$, $-0.5e^{\pm j2n\pi/7}$
+\textbf{76 Ch} \m{4} & Realize the given system in Cascade form of 2nd order section in
+  signal flow graph representation. Poles $0.6e^{\pm j\textcolor{mkc}{\mathbf{n}}\pi/3}$,
+  $-0.5e^{\pm j2\textcolor{mkc}{\mathbf{n}}\pi/7}$.
   & \mk{the paper prints a stray $n$} in every exponent; read it as $n=1$ \\
-\textbf{\texttt{77 Ch}} & $-0.2$, $0.25$, $-0.5\pm j0.15$
+\hrow \textbf{\texttt{77 Ch}} \m{7} & Draw cascaded structure of the system given by
+  $(z)=\dfrac{2(1-0.4z^{-1})(1-0.5z^{-1})}{(1+0.2z^{-1})(1-0.25z^{-1})
+  [1-(-0.5+j0.15)z^{-1}][1-(-0.5-j0.15)z^{-1}]}$ \newline
+  {\color{sub}prints "$(z)$" with no $H$, as it does in ch2}
   & real pair $1-0.05z^{-1}-0.05z^{-2}$, complex pair $1+z^{-1}+0.2725z^{-2}$ \\
-\textbf{69 Bh} & $0.5$, $0.3$, $0.7e^{\pm j\pi/4}$
+\textbf{69 Bh} \m{6} & Realize the system function
+  $H(z)=\dfrac{1}{(1-0.5z^{-1})(1-0.7e^{-j\pi/4}z^{-1})(1-0.7e^{j\pi/4}z^{-1})
+  (1-0.3z^{-1})}$ in terms of cascade of second order sections. Draw the block diagram
+  of the cascade realization.
   & $1-0.8z^{-1}+0.15z^{-2}$ and $1-0.99z^{-1}+0.49z^{-2}$; all-pole, numerator $1$ \\
-\textbf{67 Mng} & $\tfrac56$, $\tfrac16$, $\tfrac34e^{\pm j\pi/4}$
+\hrow \textbf{67 Mng} & Realize the system function
+  $H(z)=\dfrac{(1-\frac13z^{-1})(1-\frac14z^{-1})(1-\frac18z^{-1})}
+  {(1-\frac56z^{-1})(1-\frac16z^{-1})(1-\frac34e^{-j\pi/4}z^{-1})
+  (1-\frac34e^{\textcolor{mkc}{\mathbf{-}}j\pi/4}z^{-1})}$ in terms of cascade of second order sections.
+  \newline {\color{sub}\mk{the same exponent twice}; see the note below}
   & $1-z^{-1}+\tfrac5{36}z^{-2}$ and $1-1.0607z^{-1}+0.5625z^{-2}$ \\
 \bottomrule
 \end{tabular}}
@@ -243,20 +271,31 @@ see \S4.}
 \lead{The other FIR papers}
 \par\smallskip
 {\footnotesize
-\begin{tabular}{@{}L{2.6cm}L{5.4cm}L{5.3cm}L{1.9cm}@{}}
+\begin{tabular}{@{}L{2.0cm}L{8.2cm}L{4.4cm}L{1.6cm}@{}}
 \toprule
-\hrow \thead{Papers} & \thead{$H(z)$} & \thead{$k=\{k_1,k_2,k_3,\dots\}$}
+\hrow \thead{Papers} & \thead{Question as printed} & \thead{$k=\{k_1,k_2,k_3,\dots\}$}
 & \thead{Stable?} \\
-81 Ba, \textbf{78 Bh}, \textbf{74 Ch}
-  & $1+\tfrac{13}{24}z^{-1}+\tfrac58z^{-2}+\tfrac13z^{-3}$
+81 Ba \m{5}, \textbf{78 Bh} \m{3+7}, \textbf{74 Ch} \m{5}
+  & \textbf{81 Ba}: Draw the lattice structure for the given FIR filter and also check
+  whether the system is stable. $H(z)=1+\frac{13}{24}z^{-1}+\frac58z^{-2}+\frac13z^{-3}$
+  \newline \textbf{78 Bh}: the same $H(z)$, "Draw the Direct Form and Lattice Structure"
+  \newline \textbf{74 Ch}: \mk{the same filter with the fractions unreduced},
+  $1+\frac{52}{96}z^{-1}+\frac{25}{40}z^{-2}+\frac13z^{-3}$, and it calls it $A_3(z)$
   & $\{\tfrac14,\ \tfrac12,\ \tfrac13\}$ & \textbf{yes} \\
-73 Shr & $2+1.8z^{-1}-1.6z^{-2}+z^{-3}$ \newline (divide by 2 first)
+\hrow 73 Shr \m{3+7} & The system function of a filter is
+  $H(z)=2+1.8z^{-1}-1.6z^{-2}+z^{-3}$. Draw the Direct Form and Lattice Structure
+  implementation of the above filter. \newline {\color{sub}\mk{$a_0=2$}: divide through
+  first, or every $k$ comes out wrong}
   & $\{-2.6,\ -1.6667,\ 0.5\}$ & \textbf{no} \\
-\textbf{\texttt{76 Bh}} & $1+2z^{-1}+0.62z^{-2}+0.8z^{-3}$
+\textbf{\texttt{76 Bh}} \m{2+5} & Draw direct form and lattice structure for system
+  having system response $H(z)=1+2z^{-1}+0.62z^{-2}+0.8z^{-3}$
   & $\{-2.4258,\ -2.7222,\ 0.8\}$ & \textbf{no} \\
-72 Ka, \textbf{69 Ch} & $1+2z^{-1}-3z^{-2}+4z^{-3}$
+\hrow 72 Ka \m{6}, \textbf{69 Ch} \m{6} & Compute the lattice coefficients and draw the
+  lattice structure of following FIR system $H(z)=1+2z^{-1}-3z^{-2}+4z^{-3}$
   & $\{-0.5385,\ 0.7333,\ 4\}$ & \textbf{no} \\
-\textbf{70 Ch} & $1+3.1z^{-1}+5.5z^{-2}$ \newline $+\,4.2z^{-3}+2.3z^{-4}$
+\textbf{70 Ch} \m{6} & Compute the lattice coefficients and draw the lattice structure of
+  following FIR system $H(z)=1+3.1z^{-1}+5.5z^{-2}+4.2z^{-3}+2.3z^{-4}$ \newline
+  {\color{sub}the only fourth-order one, so \textbf{four} reflection coefficients}
   & $\{0.3381,\ 1.1664,\ 0.6830,\ 2.3\}$ & \textbf{no} \\
 \bottomrule
 \end{tabular}}
@@ -351,50 +390,105 @@ $H(z)=\dfrac{1}{1-0.2z^{-1}+0.4z^{-2}+0.6z^{-3}}$.
 
 \par\smallskip
 {\footnotesize
-\begin{tabular}{@{}L{2.6cm}L{4.6cm}L{4.2cm}L{3.6cm}@{}}
+\begin{tabular}{@{}L{1.9cm}L{8.6cm}L{3.6cm}L{3.1cm}@{}}
 \toprule
-\hrow \thead{Papers} & \thead{$H(z)$ denominator} & \thead{$k$} & \thead{$C$ (ladder)} \\
-\textbf{80 Bh} & $1-0.2z^{-1}+0.4z^{-2}+0.6z^{-3}$
+\hrow \thead{Papers} & \thead{Question as printed} & \thead{$k$} & \thead{$C$ (ladder)} \\
+\textbf{80 Bh} \m{10} & Draw the Lattice structure from the following system
+  function. $H(z)=\dfrac{1}{1-0.2z^{-1}+0.4z^{-2}+0.6z^{-3}}$
   & $\{-0.3793,\ 0.8125,\ 0.6\}$ & all-pole \\
-\textbf{\texttt{81 Ch}}, \textbf{\texttt{72 Ash}} & $1-0.525z^{-1}+0.6125z^{-2}+0.3z^{-3}$
+\hrow \textbf{\texttt{81 Ch}}, \textbf{\texttt{72 Ash}} \m{4+2+1} & Compute Lattice
+  coefficients and draw Lattice structure for given IIR system
+  $H(z)=\dfrac{1}{1-0.525z^{-1}+0.6125z^{-2}+0.3z^{-3}}$. Also check the stability of
+  given system. \newline {\color{sub}72 Ash prints it word for word}
   & $\{-0.4219,\ 0.8462,\ 0.3\}$ & all-pole, \textbf{stable} \\
-\textbf{\texttt{79 Ch}}, \textbf{\texttt{69 Bh}} & $1-0.9z^{-1}+0.64z^{-2}-0.576z^{-3}$
+\textbf{\texttt{79 Ch}} \m{4+2+1}, \textbf{\texttt{69 Bh}} \m{8} & Compute Lattice
+  coefficient and draw Lattice structure for given IIR system
+  $H(z)=\dfrac{1}{1-0.9z^{-1}+0.64z^{-2}-0.576z^{-3}}$. Also check the stability.
+  \newline {\color{sub}69 Bh prints the same filter as "For the given system, $H[z]=
+  \ldots$ Compute and draw the lattice structure"}
   & $\{-0.6728,\ 0.1820,\ -0.576\}$ & all-pole, \textbf{stable} \\
-\textbf{\texttt{71 Bh}} & $1-0.3z^{-1}+0.5z^{-2}+0.25z^{-3}$
+\hrow \textbf{\texttt{71 Bh}} \m{6+2} & Compute Lattice coefficients and draw lattice
+  structure for given IIR system $H(z)=\dfrac{1}{1-0.3z^{-1}+0.5z^{-2}+0.25z^{-3}}$.
   & $\{-0.2810,\ 0.6133,\ 0.25\}$ & all-pole \\
-\texttt{70 Ma} & $1+2z^{-1}-3z^{-2}+4z^{-3}$
+\texttt{70 Ma} \m{6} & Compute the lattice coefficients and draw the lattice structure of
+  following \mk{FIR} system $H(z)=\dfrac{1}{1+2z^{-1}-3z^{-2}+4z^{-3}}$. \newline
+  {\color{sub}\mk{it says FIR and prints an all-pole $H(z)$}, which is IIR. The
+  polynomial is 72 Ka's numerator, so the $k$'s are the same three numbers}
   & $\{-0.5385,\ 0.7333,\ 4\}$ & \mk{unstable}, same as 72 Ka \\
-\textbf{71 Ch} & $1-0.01z^{-1}-0.23z^{-2}+0.5z^{-3}$
+\hrow \textbf{71 Ch} \m{4+2+1} & Compute Lattice coefficients and draw lattice structure
+  for given IIR system $H(z)=\dfrac{1}{1-0.01z^{-1}-0.23z^{-2}+0.5z^{-3}}$. Also check
+  the stability of given system.
   & $\{0.2,\ -0.3,\ 0.5\}$ & all-pole, \textbf{stable} \\
-80 Ba, \textbf{82 Bh} & $1-0.3z^{-1}+0.25z^{-2}$, \newline $B=2-0.7z^{-1}+0.5z^{-2}$
+\bottomrule
+\end{tabular}}
+\par\smallskip
+{\footnotesize
+\begin{tabular}{@{}L{1.9cm}L{8.6cm}L{3.6cm}L{3.1cm}@{}}
+\toprule
+\hrow \thead{Papers} & \thead{Question as printed} & \thead{$k$} & \thead{$C$ (ladder)} \\
+80 Ba \m{6}, \textbf{82 Bh} \m{6} & Compute Lattice-ladder coefficients and
+  draw lattice structure for given system
+  $H(z)=\dfrac{2-0.7z^{-1}+0.5z^{-2}}{1-0.3z^{-1}+0.25z^{-2}}$.
   & $\{-0.24,\ 0.25\}$ & $\{1.743,\ -0.55,\ 0.5\}$ \\
-79 Ba & $1-0.3z^{-1}+0.5z^{-2}$, \newline $B=1-0.4z^{-1}+0.25z^{-2}$
+\hrow 79 Ba \m{6+1} & Compute Lattice-ladder coefficients and draw lattice structure for
+  given system $H(z)=\dfrac{1-0.4z^{-1}+0.25z^{-2}}{1-0.3z^{-1}+0.5z^{-2}}$. Also check
+  the stability of given system.
   & $\{-0.2,\ 0.5\}$ & $\{0.81,\ -0.325,\ 0.25\}$ \\
-\textbf{76 Ch} & $1-0.5z^{-1}-0.7z^{-2}+0.3z^{-3}$, \newline $B=0.5-2z^{-1}+3z^{-2}$
+\textbf{76 Ch} \m{6+4} & Compute Lattice and Ladder coefficients and Draw lattice-ladder
+  structure for given IIR system
+  $H(z)=\dfrac{0.5-2z^{-1}+3z^{-2}}{1-0.5z^{-1}-0.7z^{-2}+0.3z^{-3}}$.
   & $\{-0.8056,\ -0.6044,\ 0.3\}$ & $\{1.4722,\ -1.0440,\ 3\}$ \\
-76 Ash & \mk{same denominator}, \newline $B=0.7-1.5z^{-1}+0.5z^{-2}$
+\hrow 76 Ash \m{6+3} & Compute Lattice and Ladder coefficients and Draw lattice-ladder
+  structure for given IIR system
+  $H(z)=\dfrac{0.7-1.5z^{-1}+0.5z^{-2}}{1-0.5z^{-1}-0.7z^{-2}+0.3z^{-3}}$. \newline
+  {\color{sub}\mk{same denominator as 76 Ch}, so the same three $k$'s}
   & $\{-0.8056,\ -0.6044,\ 0.3\}$ & $\{-0.0778,\ -1.3407,\ 0.5\}$ \\
-\textbf{\texttt{74 Bh}} & $1+0.27z^{-1}+0.06z^{-2}-0.75z^{-3}$, \newline
-  $B=0.62+0.42z^{-1}-0.25z^{-2}$
+\textbf{\texttt{74 Bh}} \m{5+1} & Draw lattice-ladder structure for given IIR system
+  $H(z)=\dfrac{0.62+0.42z^{-1}-0.25z^{-2}}{1+0.27z^{-1}+0.06z^{-2}-0.75z^{-3}}$. Also
+  check the stability of given system.
   & $\{0.45,\ 0.6,\ -0.75\}$ & $\{0.5,\ 0.6,\ -0.25\}$ \\
-\textbf{\texttt{75 Bh}} & \mk{same denominator}, \newline $B=0.6-0.45z^{-1}-0.25z^{-2}$
+\hrow \textbf{\texttt{75 Bh}} \m{7+1} & Draw lattice-ladder structure for given IIR
+  system $H(z)=\dfrac{0.6-0.45z^{-1}-0.25z^{-2}}{1+0.27z^{-1}+0.06z^{-2}-0.75z^{-3}}$.
+  Also check the stability. \newline {\color{sub}\mk{same denominator as 74 Bh}}
   & $\{0.45,\ 0.6,\ -0.75\}$ & $\{0.8715,\ -0.27,\ -0.25\}$ \\
-\textbf{\texttt{77 Ch}} & $1+0.2z^{-1}+0.7z^{-2}-0.75z^{-3}$, \newline
-  $B=0.5-0.4z^{-1}-0.2z^{-2}$
+\textbf{\texttt{77 Ch}} \m{7+2} & Draw the lattice ladder structure for the IIR system
+  given by $H(z)=\dfrac{0.5-0.4z^{-1}-0.2z^{-2}}{1+0.2z^{-1}+0.7z^{-2}-0.75z^{-3}}$.
+  Also comment on the stability of given system.
   & $\{0.5631,\ \mathbf{1.9429},\ -0.75\}$ & \mk{unstable}, $|k_2|>1$ \\
-\texttt{73 Ma} & $1-0.45z^{-1}+0.3z^{-2}+0.5z^{-3}$, \newline $B=0.5+0.65z^{-1}+0.2z^{-2}$
+\bottomrule
+\end{tabular}}
+\par\smallskip
+{\footnotesize
+\begin{tabular}{@{}L{1.9cm}L{8.6cm}L{3.6cm}L{3.1cm}@{}}
+\toprule
+\hrow \thead{Papers} & \thead{Question as printed} & \thead{$k$} & \thead{$C$ (ladder)} \\
+\texttt{73 Ma} \m{6+1} & Draw lattice-ladder structure for given IIR system
+  $H(z)=\dfrac{0.5+0.65z^{-1}+0.2z^{-2}}{1-0.45z^{-1}+0.3z^{-2}+0.5z^{-3}}$. Also check
+  the stability of given system.
   & $\{-0.4706,\ 0.7,\ 0.5\}$ & $\{0.7412,\ 0.81,\ 0.2\}$ \\
-\textbf{\texttt{78 Ch}} & $1+0.2z^{-1}-0.15z^{-2}$, \newline $B=1-z^{-1}+0.5z^{-2}$
+\hrow \textbf{\texttt{78 Ch}} \m{6+2} & Synthesize the IIR filter with transfer function
+  $H(Z)=\dfrac{1-z^{-1}+0.5z^{-2}}{1+0.2z^{-1}-0.15z^{-2}}$ using a lattice-ladder
+  network. Also comment on the stability of the filter.
   & $\{0.2353,\ -0.15\}$ & $\{1.3338,\ -1.1,\ 0.5\}$ \\
-70 Asa & $1-0.3z^{-1}+0.4z^{-2}$, \newline $B=0.5+2z^{-1}+0.6z^{-2}$
+70 Asa \m{6} & Draw lattice structure for given \mk{pole-zero} system
+  $H(z)=\dfrac{0.5+2z^{-1}+0.6z^{-2}}{1-0.3z^{-1}+0.4z^{-2}}$ \newline
+  {\color{sub}"pole-zero" is the paper's way of saying the numerator is not $1$, so a
+  ladder is needed}
   & $\{-0.2143,\ 0.4\}$ & $\{0.7271,\ 2.18,\ 0.6\}$ \\
-\textbf{66 Ma} & $1+\tfrac15z^{-1}+\tfrac25z^{-2}+\tfrac35z^{-3}$, \newline
-  $B=\tfrac12+\tfrac13z^{-1}+\tfrac14z^{-2}+\tfrac15z^{-3}$
+\hrow \textbf{66 Ma} \m{6} & Find the lattice-ladder filter structure for the LTI system
+  with system function $H(z)=\dfrac{\frac12+\frac13z^{-1}+\frac14z^{-2}+\frac15z^{-3}}
+  {1+\frac15z^{-1}+\frac25z^{-2}+\frac35z^{-3}}$.
   & $\{-0.0435,\ 0.4375,\ 0.6\}$ & $\{0.2997,\ 0.2665,\ 0.21,\ 0.2\}$ \\
-82 Ba & $1-0.001z^{-1}+0.6546z^{-2}-0.0775z^{-3}$
+82 Ba \m{10} & A third order low pass filter has a system function
+  $H(z)=\dfrac{0.2759+0.5121z^{-1}+0.5121z^{-2}+0.2759z^{-3}}
+  {1-0.0010z^{-1}+0.6546z^{-2}-0.0775z^{-3}}$. Implement the filter using
+  lattice-ladder structure.
   & $\{0.0302,\ 0.6585,\ -0.0775\}$ & $\{-0.0493,\ 0.3059,\ 0.5124,\ 0.2759\}$ \\
-\textbf{81 Bh} & $(1+0.5z^{-1})(1+0.3z^{-1})(1+0.4z^{-1})$ \newline
-  $=1+1.2z^{-1}+0.47z^{-2}+0.06z^{-3}$ & \mk{multiply out first}
+\hrow \textbf{81 Bh} \m{6+4} & Compute the lattice and ladder coefficients and draw
+  lattice-ladder structure for the given IIR system
+  $H(z)=\dfrac{1+z^{-1}+z^{-2}}{(1+0.5z^{-1})(1+0.3z^{-1})(1+0.4z^{-1})}$ \newline
+  {\color{sub}the denominator is printed \textbf{factored}}
+  & \mk{multiply out first}: \newline $1+1.2z^{-1}+0.47z^{-2}+0.06z^{-3}$
   & $B=1+z^{-1}+z^{-2}$ \\
 \bottomrule
 \end{tabular}}
