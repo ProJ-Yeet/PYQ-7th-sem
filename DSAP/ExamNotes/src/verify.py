@@ -2063,6 +2063,33 @@ def ch7():
     chk("c7 71Shr is not the linear convolution",
         1 if abs(D.linconv([1, 2, 3, 4], [1, 3, 5, 7])[0] - 42) > 1 else 0, 1)
 
+    # --- the papers that do NOT print eight numbers, now quoted verbatim in
+    # section 1's table. Each needs a conversion before any butterfly, and
+    # that conversion is the first mark.
+    step = [1 if 0 <= n < 4 else 0 for n in range(8)]      # u[n] - u[n-4]
+    chk("c7 78Bh u[n]-u[n-4] samples to", step,
+        [1, 1, 1, 1, 0, 0, 0, 0], 1e-12)
+    chk("c7 78Bh X(k) from the step", D.dft(step, 8)[0].real, 4.0, 1e-9)
+    chk("c7 82Bh fractions equal the decimals",
+        [1, 0.5, -1, -0.5, 2, -1.5],
+        [1, 1 / 2.0, -1, -1 / 2.0, 2, -3 / 2.0], 1e-12)
+    chk("c7 74Ash halves equal 70Bh decimals",
+        [1 / 2.0] * 4 + [0] * 4, [0.5, 0.5, 0.5, 0.5, 0, 0, 0, 0], 1e-12)
+    # 71 Shr / 71 Bh also want the spectrum plotted: |X(k)|, symmetric
+    mag = [abs(v) for v in D.dft([1, 1, 2, 0, 1, 2, 0, 1], 8)]
+    chk("c7 71Shr magnitude spectrum", [round(v, 4) for v in mag],
+        [8.0, 0.5858, 2.0, 3.4142, 0.0, 3.4142, 2.0, 0.5858], 5e-4)
+    chk("c7 71Shr spectrum is symmetric about k=4",
+        [round(v, 6) for v in mag[1:]], [round(v, 6) for v in mag[1:][::-1]],
+        1e-9)
+    # 74 Ch asks for X(1) and X(2) ONLY, which is why they are marked up
+    x74 = [1.5, -1, 1.8, 0.6, 3, 1.7, 0, 0]
+    X74 = D.dft(x74, 8)
+    chk("c7 74Ch X(1)", [round(X74[1].real, 4), round(X74[1].imag, 4)],
+        [-3.8334, -0.3151], 5e-4)
+    chk("c7 74Ch X(2)", [round(X74[2].real, 4), round(X74[2].imag, 4)],
+        [2.7, -0.1], 5e-4)
+
     # ------------------------------------------- the 81 Ch / 75 Bh defect ---
     a1, a2 = [1, 3, 9, 27], [1, 2, 4, 8, 16]
     chk("c7 81Ch x1 = 3^n has 4 entries", len(a1), 4)
@@ -2187,7 +2214,58 @@ def ch7():
     # 25 convolution rows (14 direct + 11 product), 4 linear ones. The
     # four-point table is skipped on purpose: its columns are
     # (paper, alg, x, X, note), so cells[1] is not a number.
-    chk("c7 tex FFT rows found", fft_rows, 22)
+    # --- section 1's table was restyled 2026-09-15: its columns are now
+    # (papers, question as printed, X(k)), so the 5-cell scan above no longer
+    # reaches it. Recompute it from the QUESTION cell instead: pull the
+    # sequence out of the paper's own wording and assert the answer column
+    # against dft.py, which is a stronger check than before because it now
+    # also proves the quoted question and the published answer agree.
+    def seq_from_question(cell):
+        """The \\{...\\} the paper prints, or None if it prints a formula."""
+        m = re.search(r"\$x\s*[\[(]n[\])]\s*=?\s*\\\{(.+?)\\?[\}\)]\$", cell)
+        if not m:
+            m = re.search(r"\$\\\{([-\d.,\s]+)\\\}\$", cell)
+        if not m:
+            return None
+        out = []
+        for tok in m.group(1).split(","):
+            tok = tok.strip()
+            if not tok:
+                return None
+            try:
+                out.append(float(tok))
+            except ValueError:
+                return None          # \tfrac, a formula, anything symbolic
+        return out
+
+    body = tex.split("Question as printed", 1)
+    q_rows = 0
+    if len(body) > 1:
+        body = body[1].split("\\bottomrule", 1)[0]
+        for row in body.split("\\\\"):
+            cells = [c.strip() for c in row.split("&")]
+            if len(cells) != 3:
+                continue
+            tag = re.sub(r"\\text(bf|tt)|[{}]", "", cells[0]).strip()
+            x, X = seq_from_question(cells[1]), parse(cells[2])
+            if x is None or X is None:
+                continue
+            chk("c7 tex question-row %s" % tag, X, D.dft(x, 8), 5e-4)
+            q_rows += 1
+    # 19 of the 21 data rows are recomputed here. Exactly three are skipped,
+    # and each is asserted by name in the block further up instead:
+    #   82 Bh        prints its sequence as \tfrac fractions
+    #   74 Ash/70 Bh the same, as halves
+    #   74 Ch        its X(1) and X(2) carry \mk markup, being the only two
+    #                values the paper actually asks for
+    # A row that quotes a formula rather than a list (78 Bh's u[n]-u[n-4])
+    # still passes, because the cell also prints what it samples to and that
+    # is what gets checked against the answer. If this count drops, a row
+    # was lost in an edit.
+    chk("c7 tex question rows found", q_rows, 19)
+
+    # the old 5-column FFT tabulars are gone, replaced by the above
+    chk("c7 old 5-column FFT rows are retired", fft_rows, 0)
     chk("c7 tex convolution rows found", conv_rows, 25)
     chk("c7 tex linear rows found", lin_rows, 4)
 

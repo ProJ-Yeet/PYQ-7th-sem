@@ -160,48 +160,103 @@ after stage 3 & $6$ & $2$ & $-j2$ & $j2$ & $j2$ & $j2$ & $-j2$ & $-j2$ \\
         $\frac18(36+7\times4)=\frac{64}{8}=8$. \checkmark
 \end{itemize}
 
-\creamq{Every other FFT paper}{}
-{\color{sub}\footnotesize Same recipe, different sequences. \mk{DIT and DIF give the
-same $X(k)$}, so the algorithm column records only what the paper asked for. Sequences
-shorter than $N$ are zero padded, which is shown as printed.}
+\lead{Every other FFT paper, question as printed}
+{\color{sub}\footnotesize Same recipe, different sequences, so the answer column is the
+result rather than a repeat of the three stages. \mk{DIT and DIF give the same $X(k)$},
+and each paper's own wording says which it wants. Sequences shorter than $N$ are zero
+padded; \mk{the padding is never stated by the paper} and is the first mark.}
 \par\smallskip
 {\footnotesize
-\begin{tabular}{@{}L{1.7cm}L{0.4cm}L{0.7cm}L{3.9cm}L{7.4cm}@{}}
+\begin{tabular}{@{}L{1.45cm}L{8.1cm}L{7.5cm}@{}}
 \toprule
-\hrow \thead{Papers} & \thead{$N$} & \thead{Alg} & \thead{$x[n]$ as printed}
-& \thead{$X(k)$} \\
-80 Bh & 8 & DIF & \{$2$, $1$, $2$, $1$, $1$, $2$, $1$, $2$\} & \{$12$, $1{+}j0.4142$, $0$, $1{+}j2.414$, $0$, $1{-}j2.414$, $0$, $1{-}j0.4142$\} \\
-78 Bh & 8 & DIT & \{$1$, $1$, $1$, $1$, $0$, $0$, $0$, $0$\} & \{$4$, $1{-}j2.414$, $0$, $1{-}j0.4142$, $0$, $1{+}j0.4142$, $0$, $1{+}j2.414$\} \\
-81 Bh & 8 & DIT & \{$1$, $-2$, $-4$, $3$, $0$, $1$\} & \{$-1$, $-3.243{+}j4$, $5{+}j4$, $5.243{-}j4$, $-5$, $5.243{+}j4$, $5{-}j4$, $-3.243{-}j4$\} \\
-79 Ba & 8 & DIF & \{$1$, $2$, $4$, $3$, $5$, $-1$, $3$\} & \{$17$, $-4{-}j5.243$, $-1{+}j2$, $-4{-}j3.243$, $9$, $-4{+}j3.243$, $-1{-}j2$, $-4{+}j5.243$\} \\
-76 Ch & 8 & DIF & \{$1$, $2$, $3$, $3$, $5$, $0$, $4$, $6$\} & \{$24$, $-0.4645{+}j1.707$, $-1{+}j7$, $-7.536{-}j0.2929$, $2$, $-7.536{+}j0.2929$, $-1{-}j7$, $-0.4645{-}j1.707$\} \\
-76 Ash & 8 & DIF & \{$1$, $2$, $3$, $3$, $5$, $1$, $4$, $2$\} & \{$21$, $-4{-}j0.4142$, $-1{+}j2$, $-4{-}j2.414$, $5$, $-4{+}j2.414$, $-1{-}j2$, $-4{+}j0.4142$\} \\
-82 Bh & 8 & DIT & \{$1$, $0.5$, $-1$, $-0.5$, $2$, $-1.5$\} & \{$0.5$, $0.7678{-}j0.06066$, $4{+}j0.5$, $-2.768{-}j2.061$, $3.5$, $-2.768{+}j2.061$, $4{-}j0.5$, $0.7678{+}j0.06066$\} \\
-75 Ash & 8 & DIT & \{$1$, $2$, $3$, $4$, $5$, $6$, $7$, $8$\} & \{$36$, $-4{+}j9.657$, $-4{+}j4$, $-4{+}j1.657$, $-4$, $-4{-}j1.657$, $-4{-}j4$, $-4{-}j9.657$\} \\
-74 Ch & 8 & DIF & \{$1.5$, $-1$, $1.8$, $0.6$, $3$, $1.7$\} & \{$7.6$, $-3.833{-}j0.3151$, $2.7{-}j0.1$, $0.8335{+}j3.285$, $5$, $0.8335{-}j3.285$, $2.7{+}j0.1$, $-3.833{+}j0.3151$\} \\
+\hrow \thead{Papers} & \thead{Question as printed} & \thead{$X(k)$} \\
+80 Bh & Compute 8-point DIF-FFT of sequence $x(n)=\{2,1,2,1,1,2,1,2\}$. \m{8}
+  & \{$12$, $1{+}j0.4142$, $0$, $1{+}j2.414$, $0$, $1{-}j2.414$, $0$, $1{-}j0.4142$\} \\
+78 Bh & Find the 8 -- point DFT of \mk{$x[n]=u[n]-u[n-4]$} using FFT DIT algorithm.
+  \m{7} \newline {\color{sub}a formula, not a list: it samples to
+  $\{1,1,1,1,0,0,0,0\}$}
+  & \{$4$, $1{-}j2.414$, $0$, $1{-}j0.4142$, $0$, $1{+}j0.4142$, $0$, $1{+}j2.414$\} \\
+81 Bh & How does FFT reduce computational complexity compared to direct calculation of
+  DFT? Compute 8-point DFT of $x[n]=\{1,-2,-4,3,0,1\}$ using DIT-FFT algorithm. \m{2+7}
+  & \{$-1$, $-3.243{+}j4$, $5{+}j4$, $5.243{-}j4$, $-5$, $5.243{+}j4$, $5{-}j4$, $-3.243{-}j4$\} \\
+79 Ba & Why we need DFT? Find 8-point DFT of sequence $x[n]=\{1,2,4,3,5,-1,3\}$ using
+  Decimation in Frequency Fast Fourier Transform (DIFFFT) algorithm. \m{2+6}
+  & \{$17$, $-4{-}j5.243$, $-1{+}j2$, $-4{-}j3.243$, $9$, $-4{+}j3.243$, $-1{-}j2$, $-4{+}j5.243$\} \\
+76 Ch & Find 8-point DFT of sequence $x[n]=\{1,2,3,3,5,0,4,6\}$ using Decimation in
+  frequency Fast Fourier Transform (DIFFFT) algorithm. \m{7}
+  & \{$24$, $-0.4645{+}j1.707$, $-1{+}j7$, $-7.536{-}j0.2929$, $2$, $-7.536{+}j0.2929$, $-1{-}j7$, $-0.4645{-}j1.707$\} \\
+76 Ash & Why we need DFT? Find 8-point DFT of sequence $x[n]=\{1,2,3,3,5,1,4,2\}$ using
+  Decimation in frequency Fast Fourier Transform (DIFFFT) algorithm. \m{2+8}
+  & \{$21$, $-4{-}j0.4142$, $-1{+}j2$, $-4{-}j2.414$, $5$, $-4{+}j2.414$, $-1{-}j2$, $-4{+}j0.4142$\} \\
+82 Bh & Find 8-point DFT using DIF-FFT of the sequence
+  \mk{$x[n]=\{1,\tfrac12,-1,-\tfrac12,2,-\tfrac32\}$}. \m{8} \newline
+  {\color{sub}printed as fractions; same numbers as $\{1,0.5,-1,-0.5,2,-1.5\}$}
+  & \{$0.5$, $0.7678{-}j0.06066$, $4{+}j0.5$, $-2.768{-}j2.061$, $3.5$, $-2.768{+}j2.061$, $4{-}j0.5$, $0.7678{+}j0.06066$\} \\
+75 Ash & (its FFT marks are on the circular convolution in \S2; the sequence
+  $\{1,2,3,4,5,6,7,8\}$ below is the standard worked one)
+  & \{$36$, $-4{+}j9.657$, $-4{+}j4$, $-4{+}j1.657$, $-4$, $-4{-}j1.657$, $-4{-}j4$, $-4{-}j9.657$\} \\
+74 Ch & Why do we need DFT? Draw the butterfly structure to compute the DFT of the
+  following signal using Radix-2 DIFFFT algorithm, and \mk{compute $X(2)$ and $X(1)$
+  only} $x[n]=\{1.5,-1,1.8,0.6,3,1.7\}$ \m{3+7}
+  & \{$7.6$, \mk{$-3.833{-}j0.3151$}, \mk{$2.7{-}j0.1$}, $0.8335{+}j3.285$, $5$, $0.8335{-}j3.285$, $2.7{+}j0.1$, $-3.833{+}j0.3151$\} \\
+74 Ash, \texttt{70 Bh} & Compute the 8-point DFT of the sequence
+  $x[n]=\{\tfrac12,\tfrac12,\tfrac12,\tfrac12,0,0,0,0\}$ using DIF-FFT. \m{7} \newline
+  {\color{sub}70 Bh prints the same four values as $0.5$ and says "radix-2 DIF"} \m{8}
+  & \{$2$, $0.5{-}j1.207$, $0$, $0.5{-}j0.2071$, $0$, $0.5{+}j0.2071$, $0$, $0.5{+}j1.207$\} \\
+\texttt{81 Ch} & Why we need FFT? Compute the 8-point DFT of sequence
+  $x(n)=\{-0.5,-0.5,0.5,0.5,0,0,0,0)$ using Decimation in Frequency Fast Fourier
+  Transform (DIFFFT) algorithm. \m{2+6} \newline {\color{sub}the paper closes the brace
+  with a round bracket} & \{$0$, $-1.207{-}j0.5$, $-1{+}j1$, $0.2071{+}j0.5$, $0$, $0.2071{-}j0.5$, $-1{-}j1$, $-1.207{+}j0.5$\} \\
+73 Ch & Why we need FFT? Find 8-point DFT of sequence $x[n]=\{1,-1,3,2,1,1,3,-2\}$ using
+  Decimation in frequency Fast Fourier Transform (DIFFFT) algorithm. \m{2+6}
+  & \{$8$, $-4.243{-}j1.414$, $-4$, $4.243{-}j1.414$, $8$, $4.243{+}j1.414$, $-4$, $-4.243{+}j1.414$\} \\
+73 Shr & Why do we need DFT? Find 8-point DFT of sequence $x[n]=\{1,-1,2,2,1,1,2,2\}$
+  using Fast Fourier Transform algorithm. \m{2+6} \newline {\color{sub}\mk{names neither
+  DIT nor DIF}, so either is accepted; say which you used}
+  & \{$10$, $-1.414{+}j1.414$, $-2{+}j4$, $1.414{+}j1.414$, $2$, $1.414{-}j1.414$, $-2{-}j4$, $-1.414{-}j1.414$\} \\
+72 Ch & Find the FFT of the signal $x[n]\{1,1,2,4,3,1,2,1\}$ using DIT-FFT algorithm.
+  \m{8} & \{$15$, $-4.121{-}j2.121$, $j3$, $0.1213{-}j2.121$, $1$, $0.1213{+}j2.121$, $-j3$, $-4.121{+}j2.121$\} \\
+72 Ka & Find 8-point DFT of sequence $x[n]=\{1,1,0,1,0,1,2\}$ using Decimation in Time
+  Fast Fourier Transform (DITFFT) algorithm. \m{7}
+  & \{$6$, $0.2929{+}j1.293$, $-1{-}j1$, $1.707{-}j2.707$, $0$, $1.707{+}j2.707$, $-1{+}j1$, $0.2929{-}j1.293$\} \\
+71 Shr, \texttt{71 Bh} & Find DFT for $\{1,1,2,0,1,2,0,1\}$ using FFT DIT butterfly
+  algorithm and \mk{plot the spectrum}. \m{6+2} \newline {\color{sub}71 Bh prints
+  "using FFT" and the same sequence} \m{8}
+  & \{$8$, $-j0.5858$, $-j2$, $j3.414$, $0$, $-j3.414$, $j2$, $j0.5858$\} \\
+69 Ch & Why do we need FFT? Find 8-point DFT of sequence $x[n]=\{1,1,2,2,1,1,2,1\}$
+  using Decimation in frequency FFT (DIFFT) algorithm. \m{2+7}
+  & \{$11$, $-0.7071{-}j0.7071$, $-2{+}j1$, $0.7071{-}j0.7071$, $1$, $0.7071{+}j0.7071$, $-2{-}j1$, $-0.7071{+}j0.7071$\} \\
+\texttt{80 Ch}, \texttt{73 Bh} & Why we need a DFT? Find 8-point DFT of sequence
+  $x[n]=\{1,0,2,0,-1,1,1\}$ using Decimation in Time Fast Fourier Transform (DITFFT)
+  algorithm. \m{1+7}\m{1+6} & \{$4$, $1.293{-}j0.2929$, $-3{-}j1$, $2.707{+}j1.707$, $2$, $2.707{-}j1.707$, $-3{+}j1$, $1.293{+}j0.2929$\} \\
+\texttt{72 Ma} & Why we need FFT? Find 8-point DFT of sequence
+  $x[n]=\{1,0,0,0,-1,1,1)$ using Decimation in Frequency Fast Fourier Transform
+  (DIFFFT) algorithm. \m{1+6} & \{$2$, $1.293{+}j1.707$, $-1{-}j1$, $2.707{-}j0.2929$, $0$, $2.707{+}j0.2929$, $-1{+}j1$, $1.293{-}j1.707$\} \\
+\texttt{74 Bh} & Discuss the computational efficiency of FFT algorithm. Find DFT of a
+  sequence given a $x[n]=\{1,1,0,0,0\}$ using DIT FFT algorithm. \m{2+5}
+  & \{$2$, $1.707{-}j0.7071$, $1{-}j1$, $0.2929{-}j0.7071$, $0$, $0.2929{+}j0.7071$, $1{+}j1$, $1.707{+}j0.7071$\} \\
+\texttt{73 Ma} & Discuss the computional efficiency of FFT algorithm. Find DFT of a
+  sequence given as $x[n]=\{1,-1,2\}$ using DIT FFT algorithm. \m{2+5}
+  & \{$2$, $0.2929{-}j1.293$, $-1{+}j1$, $1.707{+}j2.707$, $4$, $1.707{-}j2.707$, $-1{-}j1$, $0.2929{+}j1.293$\} \\
+\texttt{74 Ma} & Find 8 point DFT of $\{1,1,0,-1,2\}$ using \mk{DFTFFT} algorithm. \m{7}
+  \newline {\color{sub}"DFTFFT" is a typo for DITFFT} & \{$3$, $0.4142$, $3{-}j2$, $-2.414$, $3$, $-2.414$, $3{+}j2$, $0.4142$\} \\
 \bottomrule
 \end{tabular}}
 \par\smallskip
-{\footnotesize
-\begin{tabular}{@{}L{1.7cm}L{0.4cm}L{0.7cm}L{3.9cm}L{7.4cm}@{}}
-\toprule
-\hrow \thead{Papers} & \thead{$N$} & \thead{Alg} & \thead{$x[n]$ as printed}
-& \thead{$X(k)$} \\
-74 Ash, \texttt{70 Bh} & 8 & DIF & \{$0.5$, $0.5$, $0.5$, $0.5$, $0$, $0$, $0$, $0$\} & \{$2$, $0.5{-}j1.207$, $0$, $0.5{-}j0.2071$, $0$, $0.5{+}j0.2071$, $0$, $0.5{+}j1.207$\} \\
-\texttt{81 Ch} & 8 & DIF & \{$-0.5$, $-0.5$, $0.5$, $0.5$, $0$, $0$, $0$, $0$\} & \{$0$, $-1.207{-}j0.5$, $-1{+}j1$, $0.2071{+}j0.5$, $0$, $0.2071{-}j0.5$, $-1{-}j1$, $-1.207{+}j0.5$\} \\
-73 Ch & 8 & DIF & \{$1$, $-1$, $3$, $2$, $1$, $1$, $3$, $-2$\} & \{$8$, $-4.243{-}j1.414$, $-4$, $4.243{-}j1.414$, $8$, $4.243{+}j1.414$, $-4$, $-4.243{+}j1.414$\} \\
-73 Shr & 8 & DIT & \{$1$, $-1$, $2$, $2$, $1$, $1$, $2$, $2$\} & \{$10$, $-1.414{+}j1.414$, $-2{+}j4$, $1.414{+}j1.414$, $2$, $1.414{-}j1.414$, $-2{-}j4$, $-1.414{-}j1.414$\} \\
-72 Ch & 8 & DIT & \{$1$, $1$, $2$, $4$, $3$, $1$, $2$, $1$\} & \{$15$, $-4.121{-}j2.121$, $j3$, $0.1213{-}j2.121$, $1$, $0.1213{+}j2.121$, $-j3$, $-4.121{+}j2.121$\} \\
-72 Ka & 8 & DIT & \{$1$, $1$, $0$, $1$, $0$, $1$, $2$\} & \{$6$, $0.2929{+}j1.293$, $-1{-}j1$, $1.707{-}j2.707$, $0$, $1.707{+}j2.707$, $-1{+}j1$, $0.2929{-}j1.293$\} \\
-71 Shr, \texttt{71 Bh} & 8 & DIT & \{$1$, $1$, $2$, $0$, $1$, $2$, $0$, $1$\} & \{$8$, $-j0.5858$, $-j2$, $j3.414$, $0$, $-j3.414$, $j2$, $j0.5858$\} \\
-69 Ch & 8 & DIF & \{$1$, $1$, $2$, $2$, $1$, $1$, $2$, $1$\} & \{$11$, $-0.7071{-}j0.7071$, $-2{+}j1$, $0.7071{-}j0.7071$, $1$, $0.7071{+}j0.7071$, $-2{-}j1$, $-0.7071{+}j0.7071$\} \\
-\texttt{80 Ch}, \texttt{73 Bh} & 8 & DIT & \{$1$, $0$, $2$, $0$, $-1$, $1$, $1$\} & \{$4$, $1.293{-}j0.2929$, $-3{-}j1$, $2.707{+}j1.707$, $2$, $2.707{-}j1.707$, $-3{+}j1$, $1.293{+}j0.2929$\} \\
-\texttt{72 Ma} & 8 & DIF & \{$1$, $0$, $0$, $0$, $-1$, $1$, $1$\} & \{$2$, $1.293{+}j1.707$, $-1{-}j1$, $2.707{-}j0.2929$, $0$, $2.707{+}j0.2929$, $-1{+}j1$, $1.293{-}j1.707$\} \\
-\texttt{74 Bh} & 8 & DIT & \{$1$, $1$, $0$, $0$, $0$\} & \{$2$, $1.707{-}j0.7071$, $1{-}j1$, $0.2929{-}j0.7071$, $0$, $0.2929{+}j0.7071$, $1{+}j1$, $1.707{+}j0.7071$\} \\
-\texttt{73 Ma} & 8 & DIT & \{$1$, $-1$, $2$\} & \{$2$, $0.2929{-}j1.293$, $-1{+}j1$, $1.707{+}j2.707$, $4$, $1.707{-}j2.707$, $-1{-}j1$, $0.2929{+}j1.293$\} \\
-\texttt{74 Ma} & 8 & DIT & \{$1$, $1$, $0$, $-1$, $2$\} & \{$3$, $0.4142$, $3{-}j2$, $-2.414$, $3$, $-2.414$, $3{+}j2$, $0.4142$\} \\
-\bottomrule
-\end{tabular}}
+\begin{itemize}
+  \item \mk{Five of these do not hand you a list of eight numbers.} 78 Bh prints a step
+        difference $u[n]-u[n-4]$; 82 Bh prints fractions; 74 Ash prints halves and 70 Bh
+        the same values as decimals. \textbf{Sample or convert first, then pad}, and
+        write the padded sequence down before touching a butterfly.
+  \item \mk{74 Ch wants only $X(1)$ and $X(2)$}, not all eight, and says so. The two
+        marked values are the answer; computing the other six is unpaid work. The
+        butterfly \emph{structure} still has to be drawn, which is where its 3 marks are.
+  \item \mk{71 Shr and 71 Bh also want the spectrum plotted.} Plot $|X(k)|$ against $k$:
+        here $\{8,\,0.5858,\,2,\,3.414,\,0,\,3.414,\,2,\,0.5858\}$, symmetric about
+        $k=4$, which is the conjugate-symmetry check drawn rather than written.
+  \item \mk{73 Shr names no algorithm at all}, only "Fast Fourier Transform". Either is
+        correct; name the one you used in the first line.
+\end{itemize}
 
 \T{1.1 \quad The four-point papers}
 {\color{sub}\footnotesize \tF{8} \yr{81 Ba \m{2+6}, 82 Ba \m{1+2+6}, \textbf{75 Ch}
