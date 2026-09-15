@@ -175,6 +175,10 @@ SYMBOLS = {
     "textendash": "&ndash;", "textemdash": "&mdash;", "dots": "&hellip;",
     "ldots": "&hellip;", "S": "&sect;", "textbackslash": BS,
     "hfill": " ", "enter": "<br>", "lb": "<br>&rarr; ",
+    # \newline is the in-table line break. \lb expands to \\, which inside a
+    # tabular ends the ROW instead, so every multi-line table cell in DSAP
+    # ch3, ch6 and ch7 uses \newline. 169 of them were being dropped.
+    "newline": "<br>",
     "rightarrow": " &rarr; ", "Rightarrow": " &rArr; ", "leftarrow": " &larr; ",
     "times": " &times; ", "cdot": " &middot; ", "approx": " &asymp; ",
     "le": " &le; ", "ge": " &ge; ", "ne": " &ne; ", "pm": " &plusmn; ",
