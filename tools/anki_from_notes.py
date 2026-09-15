@@ -150,7 +150,14 @@ def protect_math(s):
     s = re.sub(re.escape(BS + "begin{align") + r"\*?\}(.*?)" +
                re.escape(BS + "end{align") + r"\*?\}",
                aligned, s, flags=re.S)
-    s = re.sub(re.escape(BS + "[") + r"(.*?)" + re.escape(BS + "]"),
+    # The lookbehind is not decoration. \\[2pt] is a LINE BREAK carrying an
+    # extra-space option, and its second backslash plus the bracket look
+    # exactly like the \[ that opens display math. Without the guard the
+    # lazy scan runs to the next \] anywhere in the file and swallows
+    # everything between as one math island -- which is what put a page of
+    # raw TeX on the front of every chapter's opener card.
+    s = re.sub(r"(?<!" + re.escape(BS) + r")" + re.escape(BS + "[") +
+               r"(.*?)" + re.escape(BS + "]"),
                disp, s, flags=re.S)
     # $...$  (no $$ in these sources)
     s = re.sub(r"(?<!" + re.escape(BS) + r")\$(.+?)(?<!" + re.escape(BS) + r")\$",
@@ -241,6 +248,7 @@ class Conv(object):
     # -- entry point ------------------------------------------------------
     def html(self, tex):
         out = self.conv(tex)
+        out = re.sub(r"\x06", "<br>", out)  # row breaks outside any table
         out = re.sub(r"(\s*<br>\s*){3,}", "<br><br>", out)
         out = re.sub(r"\x03", "<br>", out)  # paragraph breaks left over
         for tag in ("ul", "ol", "table", "div", "hr", "p"):
@@ -277,7 +285,14 @@ class Conv(object):
                     i += 2
                     if sym == BS:
                         _, i = grab_opt(s, i)
-                        out.append("<br>")
+                        # \x06, not <br>. Inside a tabular \\ ends the ROW,
+                        # while \newline breaks a LINE within one cell, and
+                        # both used to arrive here as <br> -- so table() split
+                        # a row at every in-cell break and shunted the rest of
+                        # that row's cells left into a new one. Keeping them
+                        # distinct is the whole fix; html() turns any \x06
+                        # that never reached a table into a <br>.
+                        out.append("\x06")
                     elif sym in "%&_$#{}":
                         out.append(htmlmod.escape(sym))
                     elif sym in " ,;:":
@@ -482,8 +497,8 @@ class Conv(object):
         items = []
         for p in parts[1:]:
             p = p.strip()
-            p = re.sub(r"^(\x03|<br>)+", "", p)
-            p = re.sub(r"(\x03|<br>)+$", "", p)
+            p = re.sub(r"^(\x03|\x06|<br>)+", "", p)
+            p = re.sub(r"(\x03|\x06|<br>)+$", "", p)
             items.append(p)
         tag = "ul" if kind == "itemize" else "ol"
         inner = "".join("<li>%s</li>" % it for it in items if it)
@@ -492,7 +507,9 @@ class Conv(object):
     def table(self, body):
         conv = self.conv(body)
         rows = []
-        for raw in re.split(r"<br>", conv):
+        # rows break on \x06 (the tabular's own \\) ONLY. A <br> here came
+        # from \newline and belongs inside the cell it is sitting in.
+        for raw in re.split(r"\x06", conv):
             cells = raw.split("\x04")
             cells = [c.strip() for c in cells]
             if not any(c and c not in ("\x03",) for c in cells):
@@ -633,8 +650,13 @@ def parse_num(path, chno, chtitle, conv):
 
     first = segs[0].start() if segs else len(src)
     intro = src[:first]
-    intro = re.sub(re.escape(BS) + r"section\*?\{.*?\}\s*", "", intro,
-                   count=1, flags=re.S)
+    # Brace-match the \section*{...}; a lazy \{.*?\} stops at the first
+    # closing brace, which here is the one ending {\color{acc}, and leaves
+    # the whole title -- rule, tint macros and all -- on the opener card.
+    m = re.search(re.escape(BS) + r"section\*?\{", intro)
+    if m:
+        _, after = grab_group(intro, m.end() - 1)
+        intro = intro[:m.start()] + intro[after:].lstrip()
     intro = re.sub(re.escape(BS) + r"vspace\{[^}]*\}\{" + re.escape(BS) +
                    r"color\{acc\}" + re.escape(BS) + r"rule[^\n]*", "", intro)
     intro_html = conv.html(intro)
