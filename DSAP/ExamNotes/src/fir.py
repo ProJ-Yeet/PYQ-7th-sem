@@ -171,9 +171,20 @@ def db(x):
     return -20 * math.log10(x)
 
 
-def design(wp, ws, atten_db=None, dp=None, ds=None, kind="lp"):
-    """One window design. Returns a dict of everything a paper can ask for."""
+def design(wp, ws, atten_db=None, dp=None, ds=None, kind="lp", dw2=None):
+    """One window design. Returns a dict of everything a paper can ask for.
+
+    dw2 is the SECOND transition width of a band-pass spec. A band-pass
+    filter has two of them and one window has to satisfy both, so the
+    length is set by the NARROWER: a filter long enough for the wide
+    transition is too short for the narrow one. 78 Bh / 74 Ch was entered
+    here as a low pass carrying only its lower transition (0.1 pi), which
+    hid the upper one (0.05 pi) and published N = 47 where the rule gives
+    91. verify.py now asserts both the answer and the rule.
+    """
     dw = abs(ws - wp)
+    if dw2 is not None:
+        dw = min(dw, abs(dw2))
     wc = (wp + ws) / 2.0
     if atten_db is None:
         atten_db = db(ds)
@@ -279,7 +290,9 @@ KAISER = [
     ("80 Bh", 0.19 * PI, 0.21 * PI, 0.05, 0.01),
     ("80 Ba", 0.016 * PI, 0.08 * PI, 0.01, 0.01),
     ("79 Bh", 0.2 * PI, 0.4 * PI, 0.101, 0.01),
-    ("78 Bh, 74 Ch", 0.35 * PI, 0.25 * PI, 0.05, 0.01),
+    # band pass: transitions 0.25->0.35 pi and 0.6->0.65 pi. The second is
+    # the narrower and therefore the one that sets N.
+    ("78 Bh, 74 Ch", 0.25 * PI, 0.35 * PI, 0.05, 0.01, 0.05 * PI),
     ("75 Ash, 72 Ka", 0.19 * PI, 0.21 * PI, 0.01, 0.01),
     ("76 Ash", 0.16 * PI, 0.18 * PI, 0.01, 0.01),
     ("73 Ch", 0.09 * PI, 0.14 * PI, 0.02, 0.01),
@@ -323,8 +336,8 @@ def run_papers():
     print("=" * 86)
     print("KAISER DESIGNS")
     print("=" * 86)
-    for tag, wp, ws, dp, ds in KAISER:
-        d = design(wp, ws, dp=dp, ds=ds)
+    for tag, wp, ws, dp, ds, *rest in KAISER:
+        d = design(wp, ws, dp=dp, ds=ds, dw2=(rest[0] if rest else None))
         print("%-16s d = %-6.3f A = %5.2f dB  beta = %-7.4f M = %7.2f -> "
               "N = %-5d wc = %.3f pi"
               % (tag, d["delta"], d["kaiser_A"], d["beta"], d["kaiser_M"],

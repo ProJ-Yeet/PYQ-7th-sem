@@ -1115,6 +1115,38 @@ def ch5():
     chk("c5 70Asa N from 8pi/dw", int(math.ceil(8 * PI / (0.1 * PI))) + 1, 81)
     chk("c5 68Bh N from 12pi/dw", int(math.ceil(12 * PI / (0.1 * PI))) + 1, 121)
     chk("c5 69Bh Hann exact would be", FI.length_for("Hann", 0.05 * PI), 125)
+    # the "one line saying what the table would have given" that 1.5 prints
+    chk("c5 70Asa exact c=6.2 would be 63", FI.length_for("Hann", 0.1 * PI), 63)
+    chk("c5 68Bh exact c=11 would be 111", FI.length_for("Blackman", 0.1 * PI), 111)
+
+    # --- 79 Ba, the one fixed-window paper that lands on Hamming
+    chk("c5 79Ba needs Hamming not Hann", FI.pick_window(51), "Hamming")
+    N79, wc79 = 29, 0.325 * PI
+    hd79 = FI.hd_lowpass(N79, wc79)
+    w79 = FI.window("Hamming", N79)
+    h79 = [hd79[i] * w79[i] for i in range(N79)]
+    chk("c5 79Ba N", FI.length_for("Hamming", 0.25 * PI), 29)
+    chk("c5 79Ba alpha", (N79 - 1) // 2, 14)
+    chk("c5 79Ba centre tap", hd79[14], 0.325, tol=1e-12)
+    chk("c5 79Ba h[0..2]", h79[:3], [0.001797, 0.001456, -0.001029], tol=5e-6)
+    # Hamming does not vanish at the ends, which is the whole contrast with Hann
+    chk("c5 79Ba h[0] is NOT zero", 1 if abs(h79[0]) > 1e-6 else 0, 1)
+
+    # --- 82 Bh and 82 Ba: the unit conversions, which are the marks
+    chk("c5 82Bh Hz to rad/sample wp", 2 * PI * 2000 / 20000, 0.2 * PI, tol=1e-12)
+    chk("c5 82Bh Hz to rad/sample ws", 2 * PI * 5000 / 20000, 0.5 * PI, tol=1e-12)
+    chk("c5 82Bh window", FI.pick_window(42), "Hann")
+    chk("c5 82Bh N", FI.length_for("Hann", 0.3 * PI), 23)
+    chk("c5 82Ba rad/s to rad/sample wp", 30 * PI / 100, 0.3 * PI, tol=1e-12)
+    chk("c5 82Ba rad/s to rad/sample ws", 45 * PI / 100, 0.45 * PI, tol=1e-12)
+    chk("c5 82Ba needs Hamming", FI.pick_window(50), "Hamming")
+    chk("c5 82Ba N", FI.length_for("Hamming", 0.15 * PI), 45)
+
+    # --- 76 Ch / 81 Ch / 73 Ma: ripple to dB, and delta_s is the one to use
+    chk("c5 76Ch delta_p from 0.899", 1 - 0.899, 0.101, tol=1e-12)
+    chk("c5 76Ch A from delta_s", FI.db(0.01), 40.0, tol=1e-12)
+    chk("c5 76Ch delta_p would give only 19.9 dB", FI.db(0.101), 19.9136, tol=5e-4)
+    chk("c5 76Ch N", FI.length_for("Hann", 0.2 * PI), 33)
 
     # --- section 1 worked example, 79 Ch / 75 Bh, first three coefficients
     N, wc = 23, 0.39 * PI
@@ -1166,22 +1198,43 @@ def ch5():
         ("80Bh", 0.19, 0.21, 0.05, 0.01, 3.3953, 225),
         ("80Ba", 0.016, 0.08, 0.01, 0.01, 3.3953, 71),
         ("79Bh", 0.2, 0.4, 0.101, 0.01, 3.3953, 25),
-        ("78Bh/74Ch", 0.35, 0.25, 0.05, 0.01, 3.3953, 47),
+        # band pass, and its SECOND transition (0.6 -> 0.65 pi) is the
+        # narrow one. Entered below with dw2; see the 78Bh/74Ch block after
+        # this loop for the rule itself.
+        ("78Bh/74Ch", 0.25, 0.35, 0.05, 0.01, 3.3953, 91, 0.05),
         ("75Ash/72Ka", 0.19, 0.21, 0.01, 0.01, 3.3953, 225),
         ("76Ash", 0.16, 0.18, 0.01, 0.01, 3.3953, 225),
         ("73Ch", 0.09, 0.14, 0.02, 0.01, 3.3953, 91),
         ("78Ch", 0.19, 0.21, 0.02, 0.02, 2.6523, 183),
         ("66Ma", 0.25, 0.65, 0.035, 0.035, 1.9903, 9),
     ]
-    for tag, wp, ws, dp, ds, beta, N in KAI:
-        d = FI.design(wp * PI, ws * PI, dp=dp, ds=ds)
+    for tag, wp, ws, dp, ds, beta, N, *rest in KAI:
+        dw2 = rest[0] * PI if rest else None
+        d = FI.design(wp * PI, ws * PI, dp=dp, ds=ds, dw2=dw2)
         chk("c5 %s beta" % tag, d["beta"], beta, tol=5e-5)
         chk("c5 %s kaiser N" % tag, d["kaiser_N"], N)
         chk("c5 %s N odd" % tag, d["kaiser_N"] % 2, 1)
 
+    # ---- 78 Bh / 74 Ch, the band pass, and the rule that was missing.
+    # Its spec has THREE bands and therefore TWO transitions, 0.25->0.35 pi
+    # and 0.6->0.65 pi. One window serves both, so the NARROWER sets N.
+    # The chapter published N = 47 for years because the paper had been
+    # entered as a low pass carrying only the wide transition; these four
+    # checks make that unrepeatable.
+    bp = FI.design(0.25 * PI, 0.35 * PI, dp=0.05, ds=0.01, dw2=0.05 * PI)
+    chk("c5 78Bh two transitions, narrower wins", bp["dw"] / PI, 0.05, tol=1e-12)
+    chk("c5 78Bh N from the narrow transition", bp["kaiser_N"], 91)
+    wide = FI.design(0.25 * PI, 0.35 * PI, dp=0.05, ds=0.01)
+    chk("c5 78Bh wide transition alone would give 47", wide["kaiser_N"], 47)
+    chk("c5 78Bh narrow answer is not the wide one",
+        1 if bp["kaiser_N"] != wide["kaiser_N"] else 0, 1)
+    # band-pass ideal response: each edge in the middle of its own transition
+    chk("c5 78Bh band edges", [(0.25 + 0.35) / 2, (0.6 + 0.65) / 2],
+        [0.3, 0.625], tol=1e-12)
+
     # eight of the ten share one beta, which is the grouping the notes claim
     betas = [FI.design(wp * PI, ws * PI, dp=dp, ds=ds)["beta"]
-             for _, wp, ws, dp, ds, _, _ in KAI]
+             for _, wp, ws, dp, ds, _, _, *_r in KAI]
     chk("c5 eight Kaiser papers share beta",
         sum(1 for b in betas if abs(b - 3.3953) < 5e-5), 8)
 
@@ -1193,6 +1246,36 @@ def ch5():
     chk("c5 66Ma beta is one of its own table entries",
         FI.kaiser_beta(FI.db(0.035)), 1.9903, tol=5e-5)
     chk("c5 66Ma I0(beta) supplied", FI.i0(1.9903), 2.2642, tol=5e-5)
+    # 66 Ma worked end to end: the w[n], hd[n] and h[n] rows the chapter prints
+    b66 = FI.kaiser_beta(FI.db(0.035))
+    N66, wc66 = 9, 0.45 * PI
+    x66 = [b66 * math.sqrt(max(0.0, 1 - (2.0 * n / (N66 - 1) - 1) ** 2))
+           for n in range(N66)]
+    w66 = FI.kaiser_window(N66, b66)
+    hd66 = FI.hd_lowpass(N66, wc66)
+    h66 = [hd66[i] * w66[i] for i in range(N66)]
+    chk("c5 66Ma N", FI.design(0.25 * PI, 0.65 * PI, dp=0.035,
+                               ds=0.035)["kaiser_N"], 9)
+    chk("c5 66Ma x(n)", [round(v, 4) for v in x66],
+        [0.0, 1.3165, 1.7237, 1.9271, 1.9903, 1.9271, 1.7237, 1.3165, 0.0],
+        tol=5e-5)
+    chk("c5 66Ma w[n]", [round(v, 4) for v in w66],
+        [0.4417, 0.6548, 0.8359, 0.9573, 1.0, 0.9573, 0.8359, 0.6548, 0.4417],
+        tol=5e-5)
+    chk("c5 66Ma hd[n]", [round(v, 4) for v in hd66],
+        [-0.0468, -0.0945, 0.0492, 0.3144, 0.45, 0.3144, 0.0492, -0.0945,
+         -0.0468], tol=5e-5)
+    chk("c5 66Ma h[n]", [round(v, 4) for v in h66],
+        [-0.0207, -0.0619, 0.0411, 0.3010, 0.45, 0.3010, 0.0411, -0.0619,
+         -0.0207], tol=5e-5)
+    chk("c5 66Ma centre tap is wc/pi", h66[4], 0.45, tol=1e-12)
+    # the chapter claims only five of the paper's eight x entries are reached
+    supplied = [0, 1.3165, 1.7237, 1.8455, 1.9271, 1.93, 1.9903, 2]
+    used = {round(v, 4) for v in x66}
+    chk("c5 66Ma five of the eight table entries are used",
+        sum(1 for v in supplied if round(v, 4) in used), 5)
+    chk("c5 66Ma 1.8455, 1.93 and 2 are never reached",
+        sum(1 for v in (1.8455, 1.93, 2) if round(v, 4) in used), 0)
     # J_0 would be nothing like it
     chk("c5 J0 is not I0", 1.0 if abs(math.cos(2.0) - 2.2796) > 1.0 else 0.0, 1.0)
 
