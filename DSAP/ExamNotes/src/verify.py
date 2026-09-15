@@ -1809,8 +1809,308 @@ def ch6():
         chk("c6 T=%g gives the same denominator" % T, got[6], base[6], 1e-9)
 
 
+def ch7():
+    """Assert every spectrum, butterfly stage and convolution printed in
+    chapter 7. The big tables in ch7-num.tex were EMITTED by dft.py rather
+    than typed, so the job here is different from the other chapters: prove
+    the emitted values are right, and prove the .tex still matches them.
+    The second half is done by re-reading the .tex, which is the only place
+    in verify.py that does so and the only defence against an edit that
+    silently changes a digit."""
+    import cmath
+    import math
+    import os
+    import re
+    import dft as D
+    PI = math.pi
+
+    # ---------------------------------------------------------- primitives ---
+    chk("c7 W_4 table", [D.W(4, k) for k in range(4)], [1, -1j, -1, 1j], 1e-12)
+    chk("c7 W_8^1", D.W(8, 1), complex(1 / math.sqrt(2), -1 / math.sqrt(2)), 1e-12)
+    chk("c7 W_8^2", D.W(8, 2), -1j, 1e-12)
+    chk("c7 W_8^3", D.W(8, 3), complex(-1 / math.sqrt(2), -1 / math.sqrt(2)), 1e-12)
+    chk("c7 W_8^1 decimal", D.W(8, 1), complex(0.7071, -0.7071), 5e-5)
+    chk("c7 symmetry W^{k+N/2} = -W^k", D.W(8, 5), -D.W(8, 1), 1e-12)
+    chk("c7 periodicity W^{k+N} = W^k", D.W(8, 9), D.W(8, 1), 1e-12)
+    chk("c7 bitrev 4", D.bitrev(4), [0, 2, 1, 3])
+    chk("c7 bitrev 8", D.bitrev(8), [0, 4, 2, 6, 1, 5, 3, 7])
+    chk("c7 bitrev 16 head", D.bitrev(16)[:8], [0, 8, 4, 12, 2, 10, 6, 14])
+    chk("c7 bitrev is its own inverse",
+        [D.bitrev(8)[i] for i in D.bitrev(8)], list(range(8)))
+    chk("c7 3 = 011 reverses to 110 = 6", D.bitrev(8)[3], 6)
+    chk("c7 1 = 001 reverses to 100 = 4", D.bitrev(8)[1], 4)
+
+    # complexity, the figures the nine-paper bookwork question quotes
+    for N, direct, fft, up in [(8, 64, 12, 5.33), (32, 1024, 80, 12.8),
+                               (256, 65536, 1024, 64.0),
+                               (1024, 1048576, 5120, 204.8)]:
+        d, f, s = D.complexity(N)
+        chk("c7 N=%d direct" % N, d, direct)
+        chk("c7 N=%d fft" % N, f, fft)
+        chk("c7 N=%d speed-up" % N, s, up, 5e-3)
+
+    # ------------------------------------------- the worked example, 80 Ba ---
+    x = [1, 1, 0, 0, 1, 1, 2]
+    xp, nz = D.pad(x, 8)
+    chk("c7 80Ba pads one zero", nz, 1)
+    chk("c7 80Ba padded", xp, [1, 1, 0, 0, 1, 1, 2, 0], 1e-12)
+    st, order, X = D.dit_stages(x, 8)
+    chk("c7 80Ba DIT input order", order, [0, 4, 2, 6, 1, 5, 3, 7])
+    chk("c7 80Ba DIT input", [xp[i] for i in order],
+        [1, 1, 0, 2, 1, 1, 0, 0], 1e-12)
+    chk("c7 80Ba DIT stage 1", st[0], [2, 0, 2, -2, 2, 0, 0, 0], 1e-9)
+    chk("c7 80Ba DIT stage 2", st[1], [4, 2j, 0, -2j, 2, 0, 2, 0], 1e-9)
+    chk("c7 80Ba DIT stage 3", st[2],
+        [6, 2j, -2j, -2j, 2, 2j, 2j, -2j], 1e-9)
+    st2, order2, X2 = D.dif_stages(x, 8)
+    chk("c7 80Ba DIF stage 1", st2[0], [2, 2, 2, 0, 0, 0, 2j, 0], 1e-9)
+    chk("c7 80Ba DIF stage 2", st2[1], [4, 2, 0, -2j, 2j, 0, -2j, 0], 1e-9)
+    chk("c7 80Ba DIF stage 3", st2[2],
+        [6, 2, -2j, 2j, 2j, 2j, -2j, -2j], 1e-9)
+    chk("c7 80Ba DIF unscrambles to the same X", X2, X, 1e-9)
+    chk("c7 80Ba X(k)", X, [6, 2j, -2j, -2j, 2, 2j, 2j, -2j], 1e-9)
+    chk("c7 80Ba X(0) is the sum", X[0], sum(xp), 1e-9)
+    chk("c7 80Ba X(4) is the alternating sum", X[4],
+        sum((-1) ** n * xp[n] for n in range(8)), 1e-9)
+    chk("c7 80Ba conjugate symmetry", [X[8 - k] for k in range(1, 8)],
+        [X[k].conjugate() for k in range(1, 8)], 1e-9)
+    chk("c7 80Ba |X(k)|", [abs(v) for v in X], [6, 2, 2, 2, 2, 2, 2, 2], 1e-9)
+    e1, e2 = D.parseval(xp)
+    chk("c7 80Ba Parseval time side", e1, 8, 1e-9)
+    chk("c7 80Ba Parseval freq side", e2, 8, 1e-9)
+
+    # ---------------------------------------------------- 66 Ma, worked 4-pt ---
+    st, order, X = D.dit_stages([1, 3, 4, 5], 4)
+    chk("c7 66Ma DIT order", order, [0, 2, 1, 3])
+    chk("c7 66Ma DIT input", [[1, 3, 4, 5][i] for i in order],
+        [1, 4, 3, 5], 1e-12)
+    chk("c7 66Ma DIT stage 1", st[0], [5, -3, 8, -2], 1e-9)
+    chk("c7 66Ma DIT stage 2", st[1], [13, -3 + 2j, -3, -3 - 2j], 1e-9)
+    chk("c7 66Ma X(0)", X[0], 13, 1e-9)
+
+    # 75 Ch: X(5) of a 4-point DFT is X(1), which is the whole question
+    X = D.dft([1, -2, 3, 2], 4)
+    chk("c7 75Ch X(k)", X, [4, -2 + 4j, 4, -2 - 4j], 1e-9)
+    chk("c7 75Ch X(5) = X(1)", X[5 % 4], X[1], 1e-12)
+    chk("c7 75Ch X(3) = conj X(1)", X[3], X[1].conjugate(), 1e-9)
+    # 76 Bh: a constant sequence transforms to an impulse
+    chk("c7 76Bh constant -> impulse", D.dft([0.5] * 4, 4), [2, 0, 0, 0], 1e-9)
+    # 71 Ch / 70 Asa: an impulse transforms to a constant, so X(7) = 1
+    chk("c7 71Ch impulse -> flat", D.dft([1, 0, 0, 0, 0, 0, 0, 0], 8),
+        [1] * 8, 1e-9)
+
+    # the three formula-defined sequences, sampled the way the notes print them
+    chk("c7 78Ch samples", [0.5 * math.sin(n * PI / 6) for n in range(8)],
+        [0, 0.25, 0.433, 0.5, 0.433, 0.25, 0, -0.25], 5e-4)
+    chk("c7 77Ch samples", [math.sin(3 * PI * n / 8) for n in range(8)],
+        [0, 0.9239, 0.7071, -0.3827, -1, -0.3827, 0.7071, 0.9239], 5e-5)
+    chk("c7 77Ch spectrum is real",
+        max(abs(D.clean(v).imag) for v in
+            D.dft([math.sin(3 * PI * n / 8) for n in range(8)], 8)), 0.0, 1e-9)
+    chk("c7 75Bh samples", [0.2 * n for n in range(8)],
+        [0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4], 1e-12)
+    Xb = D.dft([0.2 * n for n in range(8)], 8)
+    chk("c7 75Bh X(4) is the alternating sum", Xb[4],
+        sum((-1) ** n * 0.2 * n for n in range(8)), 1e-9)
+    chk("c7 75Bh X(4)", Xb[4], -0.8, 1e-9)
+    chk("c7 75Bh X(7) = conj X(1)", Xb[7], Xb[1].conjugate(), 1e-9)
+    chk("c7 75Bh X(7)", Xb[7], complex(-0.8, -1.931), 5e-4)
+
+    # 72 Ash: the IDFT through a forward FFT
+    Xk = [6, -2 + 2j, -2, -2 - 2j]
+    chk("c7 72Ash conjugated input", [complex(v).conjugate() for v in Xk],
+        [6, -2 - 2j, -2, -2 + 2j], 1e-12)
+    fwd = D.dft([complex(v).conjugate() for v in Xk], 4)
+    chk("c7 72Ash forward DFT of the conjugate", fwd, [0, 4, 8, 12], 1e-9)
+    chk("c7 72Ash answer", D.ifft_via_fft(Xk), [0, 1, 2, 3], 1e-9)
+    chk("c7 72Ash answer is real",
+        max(abs(D.clean(v).imag) for v in D.ifft_via_fft(Xk)), 0.0, 1e-9)
+    chk("c7 72Ash sum matches X(0)", sum(D.clean(v).real
+                                         for v in D.ifft_via_fft(Xk)), 6, 1e-9)
+
+    # ------------------------------------------ the worked circular convolution ---
+    x1, x2 = [1, 2, 3, 1], [4, 3, 2, 2]
+    y = D.circconv(x1, x2, 4)
+    chk("c7 80Bh y", y, [17, 19, 22, 19], 1e-9)
+    chk("c7 80Bh circulant row 0", [x2[(0 - m) % 4] for m in range(4)],
+        [4, 2, 2, 3], 1e-12)
+    chk("c7 80Bh circulant row 1", [x2[(1 - m) % 4] for m in range(4)],
+        [3, 4, 2, 2], 1e-12)
+    chk("c7 80Bh circulant row 2", [x2[(2 - m) % 4] for m in range(4)],
+        [2, 3, 4, 2], 1e-12)
+    chk("c7 80Bh circulant row 3", [x2[(3 - m) % 4] for m in range(4)],
+        [2, 2, 3, 4], 1e-12)
+    chk("c7 80Bh X1(k)", D.dft(x1, 4), [7, -2 - 1j, 1, -2 + 1j], 1e-9)
+    chk("c7 80Bh X2(k)", D.dft(x2, 4), [11, 2 - 1j, 1, 2 + 1j], 1e-9)
+    chk("c7 80Bh product", [a * b for a, b in zip(D.dft(x1, 4), D.dft(x2, 4))],
+        [77, -5, 1, -5], 1e-9)
+    chk("c7 80Bh DFT route agrees", D.circconv_via_dft(x1, x2, 4), y, 1e-9)
+    chk("c7 80Bh sum check", sum(D.clean(v).real for v in y),
+        sum(x1) * sum(x2), 1e-9)
+
+    # 74 Ch: linear via circular, and the wrap that justifies zero padding
+    N, yl = D.linconv_via_circ([1, 1, 1, 1], [2, 3])
+    chk("c7 74Ch N = L+M-1", N, 5)
+    chk("c7 74Ch linear answer", yl, [2, 5, 5, 5, 3], 1e-9)
+    chk("c7 74Ch equals true linear convolution",
+        yl, D.linconv([1, 1, 1, 1], [2, 3]), 1e-9)
+    chk("c7 74Ch at N=4 it wraps", D.circconv([1, 1, 1, 1], [2, 3], 4),
+        [5, 5, 5, 5], 1e-9)
+    chk("c7 74Ch the wrap is 2+3 on y[0]",
+        D.clean(D.circconv([1, 1, 1, 1], [2, 3], 4)[0]).real,
+        D.clean(yl[0]).real + D.clean(yl[4]).real, 1e-9)
+    err, folded = D.wrap_error([1, 1, 1, 1], [2, 3], 4)
+    chk("c7 74Ch wrap is exactly the fold", err, 0.0, 1e-9)
+    chk("c7 74Ch sum check", sum(D.clean(v).real for v in yl), 4 * 5, 1e-9)
+    # 72 Ash's triangle
+    chk("c7 72Ash triangle", D.linconv_via_circ([1, 1, 1], [2, 2, 2])[1],
+        [2, 4, 6, 4, 2], 1e-9)
+    # 77 Ch's misprinted x[n]
+    chk("c7 77Ch reading", D.linconv_via_circ([1, 1, 1], [1, 0, -3])[1],
+        [1, 1, -2, -3, -3], 1e-9)
+
+    # constant-sequence convolutions, which the notes call out as free marks
+    chk("c7 75Ch flat x2 gives sum(x1) everywhere",
+        D.circconv([0, 0, 1, 1], [1, 1, 1, 1], 4), [2, 2, 2, 2], 1e-9)
+    chk("c7 71Ch flat gives 3 everywhere",
+        D.circconv([1, 2], [1, 1, 1, 1], 4), [3, 3, 3, 3], 1e-9)
+    # 71 Shr is the circular answer, NOT the linear one
+    chk("c7 71Shr circular", D.circconv_via_dft([1, 2, 3, 4], [1, 3, 5, 7], 4),
+        [42, 46, 42, 30], 1e-9)
+    chk("c7 71Shr is not the linear convolution",
+        1 if abs(D.linconv([1, 2, 3, 4], [1, 3, 5, 7])[0] - 42) > 1 else 0, 1)
+
+    # ------------------------------------------- the 81 Ch / 75 Bh defect ---
+    a1, a2 = [1, 3, 9, 27], [1, 2, 4, 8, 16]
+    chk("c7 81Ch x1 = 3^n has 4 entries", len(a1), 4)
+    chk("c7 81Ch x2 = 2^n has 5 entries", len(a2), 5)
+    chk("c7 81Ch x1 values", a1, [3 ** n for n in range(4)], 1e-12)
+    chk("c7 81Ch x2 values", a2, [2 ** n for n in range(5)], 1e-12)
+    try:
+        D.circconv_via_dft(a1, a2, 4)
+        chk("c7 81Ch 4-point must be rejected", 0, 1)
+    except ValueError:
+        chk("c7 81Ch 4-point must be rejected", 1, 1)
+    chk("c7 81Bh N=5 answer", D.circconv_via_dft(a1, a2, 5),
+        [229, 365, 451, 65, 130], 1e-8)
+    chk("c7 81Bh sum check",
+        sum(D.clean(v).real for v in D.circconv_via_dft(a1, a2, 5)),
+        sum(a1) * sum(a2), 1e-7)
+
+    # ------------------------------ every emitted table row, recomputed ---
+    for name, N, kind, x, note in D.FFT_PAPERS:
+        X = D.dft(x, N)
+        tag = "c7 table %s (%d-pt %s)" % (name, N, kind)
+        if N in (4, 8):
+            chk(tag + " DIT", D.dit_stages(x, N)[2], X, 1e-9)
+            chk(tag + " DIF", D.dif_stages(x, N)[2], X, 1e-9)
+        chk(tag + " X(0)", X[0], sum(D.pad(x, N)[0]), 1e-9)
+        if all(abs(complex(v).imag) < 1e-15 for v in x):
+            chk(tag + " conjugate symmetry",
+                [X[N - k] for k in range(1, N)],
+                [X[k].conjugate() for k in range(1, N)], 1e-9)
+    for name, x, h, N, note in D.CIRC_PAPERS:
+        y = D.circconv(x, h, N)
+        chk("c7 conv %s both routes" % name,
+            y, D.circconv_via_dft(x, h, N), 1e-8)
+        chk("c7 conv %s sum" % name, sum(D.clean(v).real for v in y),
+            sum(x) * sum(h), 1e-8)
+    for name, x1_, x2_, N in D.PRODUCT_PAPERS:
+        y = D.circconv_via_dft(x1_, x2_, N)
+        chk("c7 product %s is the circular convolution" % name,
+            y, D.circconv(x1_, x2_, N), 1e-8)
+        chk("c7 product %s sum" % name, sum(D.clean(v).real for v in y),
+            sum(x1_) * sum(x2_), 1e-7)
+    for name, x, h in D.LINEAR_PAPERS:
+        N, y = D.linconv_via_circ(x, h)
+        chk("c7 linear %s N" % name, N, len(x) + len(h) - 1)
+        chk("c7 linear %s equals linconv" % name, y, D.linconv(x, h), 1e-9)
+
+    # ---------------- and the .tex itself still carries those same numbers ---
+    # The tables were emitted, not typed, so the risk is not a typo at birth
+    # but a later edit. Re-read the file and check every sequence literal that
+    # follows a paper name against dft.py.
+    here = os.path.dirname(os.path.abspath(__file__))
+    path = os.path.join(here, "ch7-num.tex")
+    if not os.path.exists(path):
+        chk("c7 ch7-num.tex is readable", 0, 1)
+        return
+    tex = open(path, encoding="utf-8").read()
+
+    def parse(cell):
+        """\\{$a$, $b$\\} -> list of complex, or None if it is not one."""
+        cell = cell.strip()
+        if not (cell.startswith("\\{") and cell.endswith("\\}")):
+            return None
+        body = cell[2:-2]
+        out = []
+        for tok in body.split(","):
+            tok = tok.strip()
+            if not (tok.startswith("$") and tok.endswith("$")):
+                return None
+            t = tok[1:-1].replace("{+}", "+").replace("{-}", "-")
+            m = re.fullmatch(r"([+-]?[\d.]+)?([+-]?)j([\d.]+)", t)
+            if m:
+                re_ = float(m.group(1)) if m.group(1) else 0.0
+                sign = -1.0 if m.group(2) == "-" else 1.0
+                out.append(complex(re_, sign * float(m.group(3))))
+                continue
+            try:
+                out.append(complex(float(t), 0.0))
+            except ValueError:
+                return None
+        return out
+
+    # Recompute the ANSWER column of every table row from that row's own INPUT
+    # column. A row only passes if the printed data and the printed result
+    # still agree with dft.py, so editing either side alone fails here.
+    fft_rows = conv_rows = lin_rows = 0
+    for line in tex.splitlines():
+        line = line.rstrip()
+        if "&" not in line or not line.endswith("\\\\"):
+            continue
+        cells = [c.strip() for c in line[:-2].split("&")]
+        if len(cells) != 5:
+            continue
+        alg = cells[2].strip()
+        tag = cells[0].replace("\\textbf", "").replace("\\texttt", "")
+        tag = tag.replace("{", "").replace("}", "").strip()
+
+        if alg in ("DIT", "DIF") and cells[1].strip().isdigit():
+            N = int(cells[1])
+            x, X = parse(cells[3]), parse(cells[4])
+            if x is None or X is None:
+                continue
+            chk("c7 tex FFT %s (%d-pt %s)" % (tag, N, alg), X, D.dft(x, N), 5e-4)
+            fft_rows += 1
+        elif cells[1].strip().isdigit():
+            N = int(cells[1])
+            a, b, y = parse(cells[2]), parse(cells[3]), parse(cells[4])
+            if a is None or b is None or y is None:
+                continue
+            chk("c7 tex conv %s (N=%d)" % (tag, N), y, D.circconv(a, b, N), 5e-4)
+            conv_rows += 1
+        elif cells[3].strip().isdigit():
+            N = int(cells[3])
+            a, b, y = parse(cells[1]), parse(cells[2]), parse(cells[4])
+            if a is None or b is None or y is None:
+                continue
+            chk("c7 tex linear %s N" % tag, N, len(a) + len(b) - 1)
+            chk("c7 tex linear %s" % tag, y, D.linconv(a, b), 5e-4)
+            lin_rows += 1
+
+    # and the counts, so a table that silently vanishes is also caught.
+    # 22 FFT rows (the 8-point table, split in two tabulars for pagination),
+    # 25 convolution rows (14 direct + 11 product), 4 linear ones. The
+    # four-point table is skipped on purpose: its columns are
+    # (paper, alg, x, X, note), so cells[1] is not a number.
+    chk("c7 tex FFT rows found", fft_rows, 22)
+    chk("c7 tex convolution rows found", conv_rows, 25)
+    chk("c7 tex linear rows found", lin_rows, 4)
+
+
 CHAPTERS = {"ch1": ch1, "ch2": ch2, "ch3": ch3, "ch4": ch4,
-            "ch5": ch5, "ch6": ch6}
+            "ch5": ch5, "ch6": ch6, "ch7": ch7}
 
 
 def main():

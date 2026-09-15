@@ -1,0 +1,470 @@
+%=======================================================================
+%  CHAPTER 7 - NUMERICAL PROBLEMS AND SOLUTIONS
+%  Every spectrum, butterfly stage and convolution below is produced by
+%  dft.py, which checks DIT and DIF against the direct DFT on nine
+%  sequences before it prints, and is asserted again by verify.py ch7.
+%  The three big tables were EMITTED by dft.py rather than transcribed:
+%  34 spectra of 8 complex numbers each is past what a hand copy survives.
+%  Grouping follows the standing rule: one method, one full solution, then
+%  the sibling papers as a data-and-answer table, split out only where the
+%  calculation genuinely differs.
+%=======================================================================
+\section*{\color{acc}Ch 7 \textperiodcentered{} Discrete Fourier Transform and FFT\\[2pt]
+{\large\textcolor{sub}{Numerical Problems \& Solutions}}}
+\vspace{-4pt}{\color{acc}\rule{\textwidth}{1.1pt}}\vspace{4pt}
+
+{\color{sub}\footnotesize \mk{82 of the 99 questions are two calculations}: an $N$-point
+DFT by DIT or DIF (43 questions, 340 marks) and a circular convolution (39 questions,
+253 marks). The other 17 are bookwork, answered in the theory chapter. Every
+computational paper in the 45 is below.}
+
+\lead{The DIT recipe}
+\begin{enumerate}
+  \item \textbf{Pad} $x[n]$ with zeros up to $N$, a power of 2. Eleven papers print six
+        or seven values for an 8-point transform; \mk{that is the zero padding, not a
+        misprint}.
+  \item \textbf{Reorder the input} into bit-reversed order. For $N=8$ that is
+        $x[0],x[4],x[2],x[6],x[1],x[5],x[3],x[7]$.
+  \item \textbf{Stage 1}: $N/2$ butterflies on \emph{adjacent} pairs, twiddle $W_N^0=1$,
+        so it is pure add and subtract.
+  \item \textbf{Stage 2}: butterflies spanning 2, twiddles $W_N^0$ and $W_N^{2}$.
+  \item \textbf{Stage 3}: butterflies spanning 4, twiddles $W_N^0\dots W_N^{3}$.
+  \item \textbf{Read the output in natural order}: it is $X[0]$ to $X[N-1]$.
+\end{enumerate}
+
+\lead{The DIF recipe, which is the same thing backwards}
+\begin{enumerate}
+  \item Pad to $N$ as before, but \textbf{leave the input in natural order}.
+  \item \textbf{Stage 1}: butterflies spanning $N/2$, twiddle applied to the
+        \emph{difference}, twiddles $W_N^0\dots W_N^{3}$.
+  \item \textbf{Stage 2}: span $N/4$, twiddles $W_N^0$ and $W_N^{2}$.
+  \item \textbf{Stage 3}: span 1, twiddle $W_N^0$, pure add and subtract.
+  \item \mk{Unscramble the output}: what comes out in position $i$ is $X[\,$bitrev$(i)]$.
+\end{enumerate}
+
+\sbs{%
+\lead{The twiddle factors, which is all the arithmetic there is}
+\par\smallskip
+\begin{tabular}{@{}L{1.1cm}L{2.6cm}L{2.2cm}@{}}
+\toprule
+\hrow \thead{$W_8^k$} & \thead{Exact} & \thead{Decimal} \\
+$W_8^0$ & $1$ & $1$ \\
+$W_8^1$ & $\frac{1}{\sqrt2}(1-j)$ & $0.7071-j0.7071$ \\
+$W_8^2$ & $-j$ & $-j$ \\
+$W_8^3$ & $-\frac{1}{\sqrt2}(1+j)$ & $-0.7071-j0.7071$ \\
+\bottomrule
+\end{tabular}
+\par\smallskip
+{\color{sub}\footnotesize And $W_4^k$ is $1,-j,-1,+j$. Beyond $k=3$ use
+$W_8^{k+4}=-W_8^{k}$; \mk{there are only four numbers to know.}}}{%
+\lead{Checks that cost nothing}
+\begin{enumerate}
+  \item \mk{$X[0]=\sum x[n]$.} One addition, and it catches a wrong first stage.
+  \item \mk{$X[N-k]=X^*[k]$} for real $x[n]$. Compute $X[1]$ to $X[N/2]$ and
+        \textbf{mirror the rest}, which halves the work and is not a shortcut the
+        examiner can object to.
+  \item $X[N/2]=\sum(-1)^n x[n]$, the alternating sum.
+  \item Parseval: $\sum|x[n]|^2=\frac1N\sum|X[k]|^2$.
+  \item For a convolution, $\sum y[n]=(\sum x_1)(\sum x_2)$.
+\end{enumerate}}
+
+\hr
+
+\T{1 \quad The 8-point DFT by DIT and by DIF}
+{\color{sub}\footnotesize \tS{43} \yr{\textbf{80 Bh}, 81 Ba, 82 Ba, 80 Ba, \textbf{70 Ch},
+\textbf{78 Bh}, \textbf{79 Bh}, \textbf{81 Bh}, 79 Ba, \textbf{76 Ch}, 76 Ash,
+\textbf{82 Bh}, \textbf{75 Ch}, 75 Ash, \textbf{74 Ch}, 74 Ash, \textbf{\texttt{70 Bh}},
+\textbf{\texttt{81 Ch}}, \textbf{\texttt{76 Bh}}, \texttt{70 Ma}, \textbf{73 Ch},
+73 Shr, \textbf{72 Ch}, 72 Ka, \textbf{71 Ch}, 70 Asa, 71 Shr, \textbf{\texttt{71 Bh}},
+\textbf{69 Ch}, \textbf{\texttt{80 Ch}}, \textbf{\texttt{73 Bh}}, \texttt{72 Ma},
+\textbf{\texttt{78 Ch}}, \textbf{\texttt{77 Ch}}, \textbf{\texttt{75 Bh}},
+\textbf{\texttt{74 Bh}}, \texttt{73 Ma}, \texttt{74 Ma}, \textbf{66 Ma}, \textbf{68 Bh},
+\textbf{\texttt{69 Bh}}, \textbf{\texttt{72 Ash}}}
+\gap$\cdot$\gap \mk{340 marks, the largest single question in the subject}}
+
+\begin{asked}{2080 Baishakh \textperiodcentered{} 2070 Chaitra \textperiodcentered{} [2+6]}
+Find the 8-point DFT of the sequence $x[n]=\{1,1,0,0,1,1,2\}$ using the decimation in
+frequency FFT algorithm. 2080 Baishakh also asks for the same sequence by the
+decimation in time algorithm.
+\end{asked}
+
+{\color{sub}\footnotesize \mk{This is the one sequence a paper asks BOTH ways}, so it is
+worked both ways here. The answers are identical, which is the point.}
+
+\lead{Step 0: pad, and say so}
+\begin{itemize}
+  \item Seven values are printed for an 8-point transform, so
+        \mk{$x[7]=0$}: $x[n]=\{1,1,0,0,1,1,2,0\}$.
+  \item Check target: $X[0]=\sum x[n]=1+1+0+0+1+1+2+0=\mathbf{6}$.
+\end{itemize}
+
+\lead{Route A: decimation in time}
+\begin{itemize}
+  \item Bit-reversed input order $0,4,2,6,1,5,3,7$ gives
+        $\{x[0],x[4],x[2],x[6],x[1],x[5],x[3],x[7]\}=\{1,1,0,2,1,1,0,0\}$.
+\end{itemize}
+\par\smallskip
+{\footnotesize
+\begin{tabular}{@{}L{2.5cm}L{1.5cm}L{1.5cm}L{1.5cm}L{1.5cm}L{1.5cm}L{1.5cm}L{1.3cm}L{1.3cm}@{}}
+\toprule
+\hrow \thead{} & \thead{$0$} & \thead{$1$} & \thead{$2$} & \thead{$3$} & \thead{$4$}
+& \thead{$5$} & \thead{$6$} & \thead{$7$} \\
+input (bit-rev) & $1$ & $1$ & $0$ & $2$ & $1$ & $1$ & $0$ & $0$ \\
+after stage 1 & $2$ & $0$ & $2$ & $-2$ & $2$ & $0$ & $0$ & $0$ \\
+after stage 2 & $4$ & $j2$ & $0$ & $-j2$ & $2$ & $0$ & $2$ & $0$ \\
+\hrow after stage 3 & $6$ & $j2$ & $-j2$ & $-j2$ & $2$ & $j2$ & $j2$ & $-j2$ \\
+\bottomrule
+\end{tabular}}
+\begin{itemize}
+  \item \textbf{Stage 1} is pure add/subtract ($W^0=1$) on adjacent pairs:
+        $1\pm1=2,0$; $0\pm2=2,-2$; $1\pm1=2,0$; $0\pm0=0,0$.
+  \item \textbf{Stage 2} spans 2, with twiddles $W_8^0=1$ and $W_8^2=-j$.
+        The $-j$ acting on $-2$ is what produces the $\pm j2$.
+  \item \textbf{Stage 3} spans 4, twiddles $W_8^0,W_8^1,W_8^2,W_8^3$. The last row is
+        already $X[k]$ in \mk{natural order}.
+\end{itemize}
+
+\lead{Route B: decimation in frequency, same sequence}
+\par\smallskip
+{\footnotesize
+\begin{tabular}{@{}L{2.5cm}L{1.5cm}L{1.5cm}L{1.5cm}L{1.5cm}L{1.5cm}L{1.5cm}L{1.3cm}L{1.3cm}@{}}
+\toprule
+\hrow \thead{} & \thead{$0$} & \thead{$1$} & \thead{$2$} & \thead{$3$} & \thead{$4$}
+& \thead{$5$} & \thead{$6$} & \thead{$7$} \\
+input (natural) & $1$ & $1$ & $0$ & $0$ & $1$ & $1$ & $2$ & $0$ \\
+after stage 1 & $2$ & $2$ & $2$ & $0$ & $0$ & $0$ & $j2$ & $0$ \\
+after stage 2 & $4$ & $2$ & $0$ & $-j2$ & $j2$ & $0$ & $-j2$ & $0$ \\
+after stage 3 & $6$ & $2$ & $-j2$ & $j2$ & $j2$ & $j2$ & $-j2$ & $-j2$ \\
+\hrow unscrambled & $6$ & $j2$ & $-j2$ & $-j2$ & $2$ & $j2$ & $j2$ & $-j2$ \\
+\bottomrule
+\end{tabular}}
+\begin{itemize}
+  \item \textbf{Stage 1} pairs $x[n]$ with $x[n+4]$: sums $2,2,2,0$ on top; the
+        differences $0,0,-2,0$ are then multiplied by $W_8^0,W_8^1,W_8^2,W_8^3$, and
+        $(-2)(W_8^2)=(-2)(-j)=j2$ lands in position 6.
+  \item \mk{The last row is in bit-reversed order.} Position $i$ holds
+        $X[\text{bitrev}(i)]$, so reading positions $0,4,2,6,1,5,3,7$ gives the natural
+        order shown in the final row.
+  \item[] \[ \boxed{X(k)=\{6,\ j2,\ -j2,\ -j2,\ 2,\ j2,\ j2,\ -j2\}} \]
+\end{itemize}
+
+\lead{The checks, and a pleasant surprise}
+\begin{itemize}
+  \item $X[0]=6$. \checkmark\ $X[4]=\sum(-1)^nx[n]=1-1+0-0+1-1+2-0=2$. \checkmark
+  \item $X[7]=X^*[1]$: $-j2=(j2)^*$. \checkmark\ And $X[6]=X^*[2]$, $X[5]=X^*[3]$.
+        \checkmark
+  \item \mk{$|X(k)|=\{6,2,2,2,2,2,2,2\}$}: every non-zero frequency has the same
+        magnitude 2, and only the phase differs. Worth writing down, because it looks
+        like an error and is not.
+  \item Parseval: $\sum|x[n]|^2=1+1+0+0+1+1+4+0=8$, and
+        $\frac18(36+7\times4)=\frac{64}{8}=8$. \checkmark
+\end{itemize}
+
+\creamq{Every other FFT paper}{}
+{\color{sub}\footnotesize Same recipe, different sequences. \mk{DIT and DIF give the
+same $X(k)$}, so the algorithm column records only what the paper asked for. Sequences
+shorter than $N$ are zero padded, which is shown as printed.}
+\par\smallskip
+{\footnotesize
+\begin{tabular}{@{}L{1.7cm}L{0.4cm}L{0.7cm}L{3.9cm}L{7.4cm}@{}}
+\toprule
+\hrow \thead{Papers} & \thead{$N$} & \thead{Alg} & \thead{$x[n]$ as printed}
+& \thead{$X(k)$} \\
+80 Bh & 8 & DIF & \{$2$, $1$, $2$, $1$, $1$, $2$, $1$, $2$\} & \{$12$, $1{+}j0.4142$, $0$, $1{+}j2.414$, $0$, $1{-}j2.414$, $0$, $1{-}j0.4142$\} \\
+78 Bh & 8 & DIT & \{$1$, $1$, $1$, $1$, $0$, $0$, $0$, $0$\} & \{$4$, $1{-}j2.414$, $0$, $1{-}j0.4142$, $0$, $1{+}j0.4142$, $0$, $1{+}j2.414$\} \\
+81 Bh & 8 & DIT & \{$1$, $-2$, $-4$, $3$, $0$, $1$\} & \{$-1$, $-3.243{+}j4$, $5{+}j4$, $5.243{-}j4$, $-5$, $5.243{+}j4$, $5{-}j4$, $-3.243{-}j4$\} \\
+79 Ba & 8 & DIF & \{$1$, $2$, $4$, $3$, $5$, $-1$, $3$\} & \{$17$, $-4{-}j5.243$, $-1{+}j2$, $-4{-}j3.243$, $9$, $-4{+}j3.243$, $-1{-}j2$, $-4{+}j5.243$\} \\
+76 Ch & 8 & DIF & \{$1$, $2$, $3$, $3$, $5$, $0$, $4$, $6$\} & \{$24$, $-0.4645{+}j1.707$, $-1{+}j7$, $-7.536{-}j0.2929$, $2$, $-7.536{+}j0.2929$, $-1{-}j7$, $-0.4645{-}j1.707$\} \\
+76 Ash & 8 & DIF & \{$1$, $2$, $3$, $3$, $5$, $1$, $4$, $2$\} & \{$21$, $-4{-}j0.4142$, $-1{+}j2$, $-4{-}j2.414$, $5$, $-4{+}j2.414$, $-1{-}j2$, $-4{+}j0.4142$\} \\
+82 Bh & 8 & DIT & \{$1$, $0.5$, $-1$, $-0.5$, $2$, $-1.5$\} & \{$0.5$, $0.7678{-}j0.06066$, $4{+}j0.5$, $-2.768{-}j2.061$, $3.5$, $-2.768{+}j2.061$, $4{-}j0.5$, $0.7678{+}j0.06066$\} \\
+75 Ash & 8 & DIT & \{$1$, $2$, $3$, $4$, $5$, $6$, $7$, $8$\} & \{$36$, $-4{+}j9.657$, $-4{+}j4$, $-4{+}j1.657$, $-4$, $-4{-}j1.657$, $-4{-}j4$, $-4{-}j9.657$\} \\
+74 Ch & 8 & DIF & \{$1.5$, $-1$, $1.8$, $0.6$, $3$, $1.7$\} & \{$7.6$, $-3.833{-}j0.3151$, $2.7{-}j0.1$, $0.8335{+}j3.285$, $5$, $0.8335{-}j3.285$, $2.7{+}j0.1$, $-3.833{+}j0.3151$\} \\
+\bottomrule
+\end{tabular}}
+\par\smallskip
+{\footnotesize
+\begin{tabular}{@{}L{1.7cm}L{0.4cm}L{0.7cm}L{3.9cm}L{7.4cm}@{}}
+\toprule
+\hrow \thead{Papers} & \thead{$N$} & \thead{Alg} & \thead{$x[n]$ as printed}
+& \thead{$X(k)$} \\
+74 Ash, \texttt{70 Bh} & 8 & DIF & \{$0.5$, $0.5$, $0.5$, $0.5$, $0$, $0$, $0$, $0$\} & \{$2$, $0.5{-}j1.207$, $0$, $0.5{-}j0.2071$, $0$, $0.5{+}j0.2071$, $0$, $0.5{+}j1.207$\} \\
+\texttt{81 Ch} & 8 & DIF & \{$-0.5$, $-0.5$, $0.5$, $0.5$, $0$, $0$, $0$, $0$\} & \{$0$, $-1.207{-}j0.5$, $-1{+}j1$, $0.2071{+}j0.5$, $0$, $0.2071{-}j0.5$, $-1{-}j1$, $-1.207{+}j0.5$\} \\
+73 Ch & 8 & DIF & \{$1$, $-1$, $3$, $2$, $1$, $1$, $3$, $-2$\} & \{$8$, $-4.243{-}j1.414$, $-4$, $4.243{-}j1.414$, $8$, $4.243{+}j1.414$, $-4$, $-4.243{+}j1.414$\} \\
+73 Shr & 8 & DIT & \{$1$, $-1$, $2$, $2$, $1$, $1$, $2$, $2$\} & \{$10$, $-1.414{+}j1.414$, $-2{+}j4$, $1.414{+}j1.414$, $2$, $1.414{-}j1.414$, $-2{-}j4$, $-1.414{-}j1.414$\} \\
+72 Ch & 8 & DIT & \{$1$, $1$, $2$, $4$, $3$, $1$, $2$, $1$\} & \{$15$, $-4.121{-}j2.121$, $j3$, $0.1213{-}j2.121$, $1$, $0.1213{+}j2.121$, $-j3$, $-4.121{+}j2.121$\} \\
+72 Ka & 8 & DIT & \{$1$, $1$, $0$, $1$, $0$, $1$, $2$\} & \{$6$, $0.2929{+}j1.293$, $-1{-}j1$, $1.707{-}j2.707$, $0$, $1.707{+}j2.707$, $-1{+}j1$, $0.2929{-}j1.293$\} \\
+71 Shr, \texttt{71 Bh} & 8 & DIT & \{$1$, $1$, $2$, $0$, $1$, $2$, $0$, $1$\} & \{$8$, $-j0.5858$, $-j2$, $j3.414$, $0$, $-j3.414$, $j2$, $j0.5858$\} \\
+69 Ch & 8 & DIF & \{$1$, $1$, $2$, $2$, $1$, $1$, $2$, $1$\} & \{$11$, $-0.7071{-}j0.7071$, $-2{+}j1$, $0.7071{-}j0.7071$, $1$, $0.7071{+}j0.7071$, $-2{-}j1$, $-0.7071{+}j0.7071$\} \\
+\texttt{80 Ch}, \texttt{73 Bh} & 8 & DIT & \{$1$, $0$, $2$, $0$, $-1$, $1$, $1$\} & \{$4$, $1.293{-}j0.2929$, $-3{-}j1$, $2.707{+}j1.707$, $2$, $2.707{-}j1.707$, $-3{+}j1$, $1.293{+}j0.2929$\} \\
+\texttt{72 Ma} & 8 & DIF & \{$1$, $0$, $0$, $0$, $-1$, $1$, $1$\} & \{$2$, $1.293{+}j1.707$, $-1{-}j1$, $2.707{-}j0.2929$, $0$, $2.707{+}j0.2929$, $-1{+}j1$, $1.293{-}j1.707$\} \\
+\texttt{74 Bh} & 8 & DIT & \{$1$, $1$, $0$, $0$, $0$\} & \{$2$, $1.707{-}j0.7071$, $1{-}j1$, $0.2929{-}j0.7071$, $0$, $0.2929{+}j0.7071$, $1{+}j1$, $1.707{+}j0.7071$\} \\
+\texttt{73 Ma} & 8 & DIT & \{$1$, $-1$, $2$\} & \{$2$, $0.2929{-}j1.293$, $-1{+}j1$, $1.707{+}j2.707$, $4$, $1.707{-}j2.707$, $-1{-}j1$, $0.2929{+}j1.293$\} \\
+\texttt{74 Ma} & 8 & DIT & \{$1$, $1$, $0$, $-1$, $2$\} & \{$3$, $0.4142$, $3{-}j2$, $-2.414$, $3$, $-2.414$, $3{+}j2$, $0.4142$\} \\
+\bottomrule
+\end{tabular}}
+
+\T{1.1 \quad The four-point papers}
+{\color{sub}\footnotesize \tF{8} \yr{81 Ba \m{2+6}, 82 Ba \m{1+2+6}, \textbf{75 Ch}
+\m{2+8}, \textbf{\texttt{76 Bh}} \m{2+5}, \texttt{70 Ma} \m{7}, \textbf{66 Ma} \m{6},
+\textbf{68 Bh} \m{8}, \textbf{\texttt{69 Bh}} \m{5}} \gap$\cdot$\gap \mk{two stages, not
+three, and the twiddles are only $1$ and $-j$}}
+
+\par\smallskip
+{\footnotesize
+\begin{tabular}{@{}L{2.0cm}L{0.8cm}L{3.4cm}L{4.4cm}L{4.0cm}@{}}
+\toprule
+\hrow \thead{Paper} & \thead{Alg} & \thead{$x[n]$} & \thead{$X(k)$} & \thead{Note} \\
+81 Ba & DIT & \{$2$, $2$, $4$\} & \{$8$, $-2{-}j2$, $4$, $-2{+}j2$\} & padded to 4 \\
+82 Ba & DIF & \{$1$, $4$, $-1$\} & \{$4$, $2{-}j4$, $-4$, $2{+}j4$\} & padded to 4 \\
+\textbf{75 Ch} & DIT & \{$1$, $-2$, $3$, $2$\} & \{$4$, $-2{+}j4$, $4$, $-2{-}j4$\}
+  & asks $X(3)$ \emph{and} $X(5)$ \\
+\textbf{\texttt{76 Bh}} & DIT & \{$0.5$, $0.5$, $0.5$, $0.5$\} & \{$2$, $0$, $0$, $0$\}
+  & constant $\to$ impulse \\
+\texttt{70 Ma} & DIT & \{$2$, $0$, $1$, $2$\} & \{$5$, $1{+}j2$, $1$, $1{-}j2$\} & \\
+\textbf{66 Ma} & DIT & \{$1$, $3$, $4$, $5$\} & \{$13$, $-3{+}j2$, $-3$, $-3{-}j2$\}
+  & "show the computation" \\
+\textbf{68 Bh} & DIF & \{$1$, $-2$, $2$, $1$\} & \{$2$, $-1{+}j3$, $4$, $-1{-}j3$\} & \\
+\textbf{\texttt{69 Bh}} & DIT & \{$3.6$, $5.5$, $3.3$, $6.3$\}
+  & \{$18.7$, $0.3{+}j0.8$, $-4.9$, $0.3{-}j0.8$\} & \\
+\bottomrule
+\end{tabular}}
+
+\begin{itemize}
+  \item \textbf{66 Ma worked, since it says "show the computation".} Bit-reversed input
+        $\{x[0],x[2],x[1],x[3]\}=\{1,4,3,5\}$.
+        Stage 1: $1\pm4=5,-3$ and $3\pm5=8,-2$, giving $\{5,-3,8,-2\}$.
+        Stage 2 with $W_4^0=1$, $W_4^1=-j$: $5\pm8=13,-3$ and $-3\pm(-j)(-2)=-3\pm j2$,
+        giving $\{13,\ -3+j2,\ -3,\ -3-j2\}$. \checkmark\ $X[0]=1+3+4+5=13$.
+  \item \mk{75 Ch asks for $X(5)$ of a 4-point DFT.} The DFT is periodic in $k$ with
+        period $N$, so $X(5)=X(5-4)=X(1)=-2+j4$, and $X(3)=-2-j4=X^*(1)$.
+        \textbf{That periodicity is the whole question}; computing a 5th value would be
+        a mistake, not extra credit.
+  \item \mk{76 Bh's constant sequence transforms to an impulse}: a flat signal has
+        energy at DC and nowhere else. Free check on a DIT you can do in your head.
+\end{itemize}
+
+\T{1.2 \quad Papers whose sequence is a formula, an impulse, or missing}
+{\color{sub}\footnotesize \tF{6} \yr{\textbf{\texttt{78 Ch}} \m{7},
+\textbf{\texttt{77 Ch}} \m{8}, \textbf{\texttt{75 Bh}} \m{2+8}, \textbf{71 Ch},
+70 Asa \m{2+6}, \textbf{79 Bh} \m{2+6}}}
+
+\begin{itemize}
+  \item \textbf{Sample the formula first}, then run the ordinary recipe. All three are
+        8-point DIF.
+\end{itemize}
+\par\smallskip
+{\footnotesize
+\begin{tabular}{@{}L{1.7cm}L{2.5cm}L{4.4cm}L{6.4cm}@{}}
+\toprule
+\hrow \thead{Paper} & \thead{Formula} & \thead{$x[n]$, $n=0\dots7$} & \thead{$X(k)$} \\
+\texttt{78 Ch} & $0.5\sin(n\pi/6)$ & \{$0$, $0.25$, $0.433$, $0.5$, $0.433$, $0.25$, $0$, $-0.25$\}
+  & \{$1.616$, $-0.9633{-}j0.9633$, $-j0.25$, $0.09732{-}j0.09732$, $0.116$, $0.09732{+}j0.09732$, $j0.25$, $-0.9633{+}j0.9633$\} \\
+\texttt{77 Ch} & $\sin(3\pi n/8)$ & \{$0$, $0.9239$, $0.7071$, $-0.3827$, $-1$, $-0.3827$, $0.7071$, $0.9239$\}
+  & \{$1.497$, $2.848$, $-2.414$, $-0.8478$, $-0.6682$, $-0.8478$, $-2.414$, $2.848$\} \\
+\texttt{75 Bh} & $0.2n$ & \{$0$, $0.2$, $0.4$, $0.6$, $0.8$, $1$, $1.2$, $1.4$\}
+  & \{$5.6$, $-0.8{+}j1.931$, $-0.8{+}j0.8$, $-0.8{+}j0.3314$, $-0.8$, $-0.8{-}j0.3314$, $-0.8{-}j0.8$, $-0.8{-}j1.931$\} \\
+\bottomrule
+\end{tabular}}
+\begin{itemize}
+  \item \mk{77 Ch's spectrum is entirely real}, because its sampled sequence happens to
+        be symmetric about $n=4$. A real spectrum is a legitimate answer; do not hunt
+        for a missing $j$.
+  \item \textbf{75 Bh asks only for $X(4)$ and $X(7)$.} $X(4)=-0.8$ is the alternating
+        sum $0-0.2+0.4-0.6+0.8-1+1.2-1.4$; $X(7)=X^*(1)=-0.8-j1.931$. \mk{Two
+        butterflies, not twenty-four.}
+  \item \textbf{71 Ch and 70 Asa} give $x(n)=\{1,0,0,0,0,0,0,0\}$, a unit impulse, and
+        ask for $X(7)$. Every $X(k)=1$, so \mk{$X(7)=1$}. The flow graph is still worth
+        drawing, because that is where the marks are: the answer itself is one line.
+  \item \mk{79 Bh prints no sequence at all.} The paper says only "find the 8-point DFT
+        of the following sequence using radix-2 DIT-FFT", and nothing follows.
+        Verified on both available scans. \textbf{Answer the method}: draw the general
+        8-point DIT flow graph, state the bit-reversed input order and the three stages,
+        and say the numeric answer needs the data that is missing.
+\end{itemize}
+
+\T{1.3 \quad 72 Ash: the IDFT through a forward FFT}
+{\color{sub}\footnotesize \tP{1} \yr{\textbf{\texttt{72 Ash}} \m{2+6}}}
+
+\begin{asked}{2072 Ashwin \textperiodcentered{} [2+6]}
+Use the FFT algorithm to compute the IDFT of the sequence
+$X(k)=\{6,\ -2+2j,\ -2,\ -2-2j\}$.
+\end{asked}
+\begin{itemize}
+  \item Use $x[n]=\frac1N\big(\mathrm{DFT}\{X^*[k]\}\big)^*$ from \S7.3.
+  \item \textbf{Conjugate}: $X^*(k)=\{6,\ -2-2j,\ -2,\ -2+2j\}$.
+  \item \textbf{Forward 4-point DFT} of that, by DIT: bit-reversed input
+        $\{6,-2,-2-2j,-2+2j\}$; stage 1 gives $\{4,8,-4,-4j\}$; stage 2 with
+        $W_4^1=-j$ gives $\{0,\ 4,\ 8,\ 12\}$.
+  \item \textbf{Conjugate and divide by $N=4$}:
+  \item[] \[ \boxed{x[n]=\tfrac14\{0,4,8,12\}^{*}=\{0,\ 1,\ 2,\ 3\}} \]
+  \item Check forwards: $\sum x[n]=6=X(0)$. \checkmark\ And $x[n]$ came out real, as it
+        must, because $X(k)$ was conjugate symmetric ($X(3)=X^*(1)$).
+\end{itemize}
+
+\hr
+
+\T{2 \quad Circular convolution}
+{\color{sub}\footnotesize \tS{39} \yr{15 papers direct, 12 as
+$x_3=\mathrm{IDFT}(X_1X_2)$, 4 as a linear convolution}
+\gap$\cdot$\gap \mk{253 marks, and all 31 problems are one calculation}}
+
+\begin{asked}{2080 Bhadra \textperiodcentered{} 2080 Baishakh \textperiodcentered{} [6] [2+5]}
+Compute the circular convolution of $x_1=\{1,2,3,1\}$ and $x_2=\{4,3,2,2\}$.
+\end{asked}
+
+\lead{Route A: the matrix, which is what to do in the exam}
+\begin{itemize}
+  \item $N=4$. Build the circulant of $x_2$: row $n$, column $m$ holds
+        $x_2[((n-m))_4]$, so each row is the previous one shifted right by one.
+  \item[] \[ \begin{bmatrix}4&2&2&3\\3&4&2&2\\2&3&4&2\\2&2&3&4\end{bmatrix}
+             \begin{bmatrix}1\\2\\3\\1\end{bmatrix}
+             =\begin{bmatrix}4+4+6+3\\3+8+6+2\\2+6+12+2\\2+4+9+4\end{bmatrix}
+             =\begin{bmatrix}17\\19\\22\\19\end{bmatrix} \]
+  \item[] \[ \boxed{y[n]=\{17,\ 19,\ 22,\ 19\}} \]
+  \item \textbf{Check}: $\sum y=77$, and $(\sum x_1)(\sum x_2)=7\times11=77$. \checkmark
+        \mk{Two additions and a multiplication.}
+\end{itemize}
+
+\lead{Route B: through the DFT, if the paper insists}
+\begin{itemize}
+  \item $X_1(k)=\{7,\ -2-j1,\ 1,\ -2+j1\}$ and $X_2(k)=\{11,\ 2-j1,\ 1,\ 2+j1\}$.
+  \item Multiply term by term: $X_3(k)=\{77,\ -5,\ 1,\ -5\}$.
+  \item IDFT with $W_4^{-nk}$, i.e. $1,\,j,\,-1,\,-j$ as $nk$ runs $0,1,2,3$:
+  \item[] \[ y[0]=\tfrac14(77-5+1-5)=\tfrac{68}{4}=17 \]
+  \item[] \[ y[1]=\tfrac14\big(77+(-5)(j)+(1)(-1)+(-5)(-j)\big)=\tfrac{76}{4}=19 \]
+  \item[] \[ y[2]=\tfrac14\big(77+(-5)(-1)+(1)(1)+(-5)(-1)\big)=\tfrac{88}{4}=22 \]
+  \item[] \[ y[3]=\tfrac14\big(77+(-5)(-j)+(1)(-1)+(-5)(j)\big)=\tfrac{76}{4}=19 \]
+        The imaginary parts cancel in pairs at every $n$, as they must for a real
+        answer. Same $\{17,19,22,19\}$.
+  \item \mk{This route costs three transforms to reach a result the matrix gives in one
+        table.} Use it only when the question names the DFT.
+\end{itemize}
+
+\creamq{Every other direct circular convolution}{}
+\par\smallskip
+{\footnotesize
+\begin{tabular}{@{}L{3.3cm}L{0.5cm}L{3.3cm}L{3.5cm}L{3.6cm}@{}}
+\toprule
+\hrow \thead{Papers} & \thead{$N$} & \thead{$x_1$} & \thead{$x_2$} & \thead{$y[n]$} \\
+81 Ba & 4 & \{$1$, $2$, $4$, $5$\} & \{$2$, $1$, $6$, $8$\} & \{$47$, $67$, $56$, $34$\} \\
+\textbf{72 Ch}, \textbf{82 Bh} & 5 & \{$1$, $2$, $3$, $1$\} & \{$1$, $2$, $1$, $-1$, $1$\} & \{$1$, $6$, $9$, $8$, $4$\} \\
+79 Ba & 5 & \{$1$, $-1$, $-2$, $3$, $-1$\} & \{$1$, $2$, $3$\} & \{$8$, $-2$, $-1$, $-4$, $-1$\} \\
+82 Ba & 5 & \{$1$, $1$, $-1$, $-1$, $2$\} & \{$1$, $-1$, $-2$\} & \{$1$, $-4$, $-4$, $-2$, $5$\} \\
+\textbf{78 Bh}, \texttt{74 Ma} & 4 & \{$2$, $1$, $2$, $1$\} & \{$1$, $2$, $3$, $4$\} & \{$14$, $16$, $14$, $16$\} \\
+\textbf{\texttt{78 Ch}} & 4 & \{$2$, $1$, $2$, $1$\} & \{$1$, $-2$, $-1$, $3$\} & \{$1$, $2$, $1$, $2$\} \\
+75 Ash & 4 & \{$1$, $2$, $-1$, $1$\} & \{$1$, $3$, $5$, $7$\} & \{$13$, $3$, $17$, $15$\} \\
+\textbf{75 Ch} & 4 & \{$0$, $0$, $1$, $1$\} & \{$1$, $1$, $1$, $1$\} & \{$2$, $2$, $2$, $2$\} \\
+\textbf{\texttt{76 Bh}} & 4 & \{$1$, $0.5$, $1$, $0.5$\} & \{$0$, $1$, $2$, $3$\} & \{$4$, $5$, $4$, $5$\} \\
+\textbf{\texttt{71 Bh}} & 5 & \{$1$, $2$, $0$, $3$, $4$\} & \{$2$, $-1$, $2$, $-1$, $2$\} & \{$8$, $8$, $2$, $17$, $5$\} \\
+\textbf{67 Mng} & 4 & \{$1$, $2$, $1$\} & \{$1$, $2$, $0$, $1$\} & \{$3$, $5$, $5$, $3$\} \\
+\textbf{66 Ma} & 4 & \{$1$, $2$\} & \{$1$, $3$, $4$, $5$\} & \{$11$, $5$, $10$, $13$\} \\
+\textbf{69 Bh} & 4 & \{$1$, $0$, $1$\} & \{$1$, $0$, $2$, $1$\} & \{$3$, $1$, $3$, $1$\} \\
+\textbf{71 Ch}, 70 Asa, \textbf{\texttt{79 Ch}} & 4 & \{$1$, $2$\} & \{$1$, $1$, $1$, $1$\} & \{$3$, $3$, $3$, $3$\} \\
+\bottomrule
+\end{tabular}}
+\par\smallskip
+{\color{sub}\footnotesize \mk{75 Ch's answer is constant} because $x_2$ is constant:
+convolving anything with a flat sequence circularly gives $\sum x_1$ in every position.
+Same reason 71 Ch's answer is $\{3,3,3,3\}$ with $\sum x_1=3$. Both are free marks once
+you see it.}
+
+\T{2.1 \quad "Find $x_3[n]$ if $X_3(k)=X_1(k)X_2(k)$"}
+{\color{sub}\footnotesize \tS{12} \yr{\textbf{76 Ch}, \textbf{69 Ch}, \texttt{72 Ma},
+\textbf{79 Bh}, \textbf{81 Bh}, \textbf{\texttt{81 Ch}}, \textbf{\texttt{75 Bh}},
+\textbf{73 Ch}, 73 Shr, \textbf{\texttt{80 Ch}}, \textbf{\texttt{73 Bh}}, \texttt{73 Ma},
+\textbf{74 Ch}, 72 Ka, 71 Shr}
+\gap$\cdot$\gap \mk{this IS the circular convolution; take no transform at all}}
+
+{\color{sub}\footnotesize By the convolution property of \S7.2, multiplying the DFTs is
+circular convolution in time. Write \emph{"by the circular convolution property,
+$x_3[n]=x_1[n]\circledast x_2[n]$"}, then build the matrix. \mk{One line of theory
+replaces three DFTs and an IDFT.}}
+\par\smallskip
+{\footnotesize
+\begin{tabular}{@{}L{3.0cm}L{0.5cm}L{3.1cm}L{3.3cm}L{4.3cm}@{}}
+\toprule
+\hrow \thead{Papers} & \thead{$N$} & \thead{$x_1$} & \thead{$x_2$} & \thead{$x_3[n]$} \\
+\textbf{76 Ch}, \textbf{69 Ch} & 4 & \{$1$, $2$, $-2$\} & \{$1$, $2$, $3$, $-1$\} & \{$-7$, $6$, $5$, $1$\} \\
+\texttt{72 Ma} & 4 & \{$1$, $2$, $3$, $-1$\} & \{$2$, $1$, $-3$\} & \{$-8$, $8$, $5$, $-5$\} \\
+\textbf{79 Bh} & 4 & \{$1$, $0$, $0$, $1$\} & \{$2$, $0$, $2$\} & \{$2$, $2$, $2$, $2$\} \\
+72 Ka & 4 & \{$1$, $2$, $4$\} & \{$-1$, $2$, $3$, $1$\} & \{$13$, $4$, $3$, $15$\} \\
+71 Shr & 4 & \{$1$, $2$, $3$, $4$\} & \{$1$, $3$, $5$, $7$\} & \{$42$, $46$, $42$, $30$\} \\
+\textbf{81 Bh}, \textbf{\texttt{81 Ch}}, \textbf{\texttt{75 Bh}} & 5 & \{$1$, $3$, $9$, $27$\} & \{$1$, $2$, $4$, $8$, $16$\} & \{$229$, $365$, $451$, $65$, $130$\} \\
+\textbf{73 Ch} & 5 & \{$1$, $-2$, $5$, $1$, $2$\} & \{$1$, $2$, $-3$, $-2$\} & \{$-8$, $-8$, $-6$, $15$, $-7$\} \\
+73 Shr & 5 & \{$1$, $-2$, $2$, $1$, $4$\} & \{$2$, $1$, $-3$, $-1$\} & \{$1$, $-16$, $-5$, $9$, $5$\} \\
+\textbf{\texttt{80 Ch}}, \textbf{\texttt{73 Bh}} & 5 & \{$1$, $2$, $3$, $-1$, $5$\} & \{$2$, $1$, $-3$\} & \{$10$, $-10$, $5$, $-5$, $0$\} \\
+\texttt{73 Ma} & 5 & \{$3$, $2$, $1$, $-1$, $-2$\} & \{$1$, $2$, $3$\} & \{$-4$, $2$, $14$, $7$, $-1$\} \\
+\textbf{74 Ch} & 5 & \{$1$, $2$, $0$, $1$, $-2$\} & \{$1$, $0$, $1$, $1$, $2$\} & \{$6$, $1$, $1$, $0$, $2$\} \\
+\bottomrule
+\end{tabular}}
+
+\begin{itemize}
+  \item \mk{71 Shr is the same question in disguise again}: "input $x[n]$, impulse
+        response $h[n]$, find $y[n]$ if $G[k]=X[k]H[k]$". It is the 4-point circular
+        convolution, $\{42,46,42,30\}$, and \textbf{not} the linear one, because no
+        padding was asked for.
+  \item \mk{79 Bh's answer is constant} for the same reason as \S2: $x_1$ padded is
+        $\{1,0,0,1\}$ and $x_2$ is $\{2,0,2,0\}$; every output picks up
+        $\sum x_1\cdot$ the same pairing.
+\end{itemize}
+
+\creamq{The defect: 81 Ch asks for a 4-point DFT of a 5-point sequence}%
+{\m{1+6}\m{1+5}} {\color{sub}\footnotesize \mk{81 Ch, 75 Bh and 81 Bh set identical
+sequences and only one states a workable $N$}}
+\begin{itemize}
+  \item All three give $x_1[n]=(3)^n$ for $0\le n\le3$ (four values, $\{1,3,9,27\}$) and
+        $x_2[n]=(2)^n$ for $0\le n\le4$ (\mk{five values}, $\{1,2,4,8,16\}$).
+  \item \textbf{81 Bh} says "5-point DFT". Fine, and the answer is the table row above.
+  \item \textbf{81 Ch} says "\mk{4-point} DFT". A 4-point DFT of a five-entry sequence
+        \mk{does not exist}; there is nowhere for $x_2[4]=16$ to go. As printed the
+        question is unanswerable.
+  \item \textbf{75 Bh} states \mk{no $N$ at all}. With none given, $N$ must be at least
+        $\max(L,M)=5$, so it is 81 Bh's question.
+  \item \textbf{What to write}: take $N=5$, say in one line why (a 5-entry sequence
+        needs $N\ge5$; the paper's own "what is zero padding" part is the justification),
+        and give $x_3=\{229,\ 365,\ 451,\ 65,\ 130\}$. \mk{Naming the defect is worth
+        more than forcing an answer.}
+  \item Note for the PYQ document: its heading groups 75 Bh with 81 Ch under "4-pt".
+        That is an inference from 81 Ch's wording, and it is the wrong one.
+\end{itemize}
+
+\T{2.2 \quad Linear convolution through circular convolution}
+{\color{sub}\footnotesize \tF{4} \yr{\textbf{74 Ch} \m{1+5},
+\textbf{\texttt{74 Bh}} \m{2+6}, \textbf{\texttt{72 Ash}} \m{5},
+\textbf{\texttt{77 Ch}} \m{6+2}} \gap$\cdot$\gap \mk{the only difference is the choice
+of $N$}}
+
+\begin{asked}{2074 Chaitra \textperiodcentered{} [1+5]}
+What is zero padding? Find the linear convolution of $x=\{1,1,1,1\}$ and $h=\{2,3\}$
+using circular convolution.
+\end{asked}
+\begin{itemize}
+  \item $L=4$, $M=2$, so the linear result has $L+M-1=\mathbf{5}$ samples.
+        \mk{Zero pad both to length 5}: $x=\{1,1,1,1,0\}$, $h=\{2,3,0,0,0\}$.
+  \item The $5\times5$ circulant of $h$ against $x$ gives
+  \item[] \[ \boxed{y[n]=\{2,\ 5,\ 5,\ 5,\ 3\}} \]
+  \item Check: $\sum y=20=(\sum x)(\sum h)=4\times5$. \checkmark
+  \item \mk{Why the padding matters, in one demonstration.} Convolving the same two
+        sequences circularly at $N=4$ instead gives $\{5,5,5,5\}$. The 5th sample, $3$,
+        had nowhere to go, so it \textbf{wrapped onto $y[0]$}: $2+3=5$. That is the
+        time-domain aliasing the whole question is about, and it is the answer to the
+        "what is zero padding" part.
+\end{itemize}
+\par\smallskip
+{\footnotesize
+\begin{tabular}{@{}L{2.0cm}L{3.0cm}L{3.0cm}L{0.6cm}L{4.4cm}@{}}
+\toprule
+\hrow \thead{Paper} & \thead{$x$} & \thead{$h$} & \thead{$N$} & \thead{$y[n]$} \\
+\textbf{74 Ch} & \{$1$, $1$, $1$, $1$\} & \{$2$, $3$\} & 5 & \{$2$, $5$, $5$, $5$, $3$\} \\
+\textbf{\texttt{74 Bh}} & \{$-1$, $1$\} & \{$2$, $3$, $1$, $-2$\} & 5 & \{$-2$, $-1$, $2$, $3$, $-2$\} \\
+\textbf{\texttt{72 Ash}} & \{$1$, $1$, $1$\} & \{$2$, $2$, $2$\} & 5 & \{$2$, $4$, $6$, $4$, $2$\} \\
+\textbf{\texttt{77 Ch}} & \{$1$, $1$, $1$\} & \{$1$, $0$, $-3$\} & 5 & \{$1$, $1$, $-2$, $-3$, $-3$\} \\
+\bottomrule
+\end{tabular}}
+\begin{itemize}
+  \item \mk{77 Ch's $x[n]$ is misprinted} as "$u[n]-u[n]-[n-3]$". It means
+        $u[n]-u[n-3]=\{1,1,1\}$, and $h[n]=\delta[n]-3\delta[n-2]=\{1,0,-3\}$.
+  \item \mk{72 Ash's answer is a triangle}, $\{2,4,6,4,2\}$, because convolving a
+        rectangle with a rectangle always gives a trapezoid, and with two equal lengths
+        it degenerates to a triangle. A shape check worth two seconds.
+\end{itemize}
