@@ -1,14 +1,14 @@
 \documentclass[10pt]{article}
 \usepackage{hyperref}
 \usepackage{amsmath, amssymb, amsfonts}
-\usepackage[margin=1cm]{geometry}
+\usepackage[margin=0.8cm]{geometry}
 \usepackage{xcolor}
 \usepackage{graphicx}
 \usepackage{enumitem}
 \usepackage{multicol}
 \usepackage{titlesec}
 \parindent 0pt
-\setlength{\columnsep}{18pt}
+\setlength{\columnsep}{14pt}
 \setlist{noitemsep, topsep=1pt, leftmargin=1.4em}
 \titlespacing*{\section}{0pt}{4pt}{2pt}
 \titleformat{\section}{\normalfont\large\bfseries}{\thesection.}{0.5em}{}
@@ -37,105 +37,104 @@ Ch.\ 1--7 follow the CT704 syllabus; Ch.\ 8 is the \texttt{EX753}-only material 
 
 \section*{1. Discrete-Time Signals \& Systems}
 \begin{itemize}
-  \item Even/odd DT signals +Eg; even/odd part; plot $x[-2n+3]$ +Fig \hfill (2)(3)(2+3)(4+5)
-  \item Plot a composite sequence of $u[n],\delta[n],nu[n]$ \hfill (2)(3+2)
+  \item Even/odd DT signals +Eg; even/odd part; plot $x[-2n+3]$ +Fig \hfill (2)\allowbreak(3)\allowbreak(2+3)\allowbreak(4+5)
+  \item Plot a composite sequence of $u[n],\delta[n],nu[n]$ \hfill (2)\allowbreak(3+2)
   \item Unit step +Fig; relation to unit impulse \hfill (1+2)
-  \item Energy Vs power signal; check type; energy \& power of $u[n]$ \hfill (2+2)(2+3)(3+4)(5)
-  \item Periodicity + fundamental period \hfill (2+2)(3)(4)(5)
-  \item System properties: linear / time-invariant / causal / memoryless / BIBO stable \hfill (3)(4)(5)(2+2+2)(3+3)(10)
-  \item LTI system properties; recursive Vs non-recursive; moving-average recursive form \hfill (3+3)(5)(6)(8)
-  \item Fourier series coefficients; discrete Fourier series of an impulse train; FT multiplication property; Dirichlet conditions \hfill (3)(4)(6)(4+3)
-  \item Convolution summation --- derive, significance \hfill (3)(1+3)(2+4)
-  \item LTI convolution output (many $h,x$ pairs: finite sequences, $u[n]$ gates, $a^n u[n]$, complex exponential inputs, tabulated / stem-plot data) \hfill (4)(5)(6)(7)(8)(3+7)(2+2+6)
-  \item Spectrum of CT Vs sampled signal +Fig \hfill (6)(8)
-  \item Sampling theorem; Nyquist rate; aliasing; oversampling; anti-aliasing filter; sample-and-hold \hfill (2+5)(7)(1+3+3)
+  \item Energy Vs power signal; check type; energy \& power of $u[n]$ \hfill (2+2)\allowbreak(2+3)\allowbreak(3+4)\allowbreak(5)
+  \item Periodicity + fundamental period \hfill (2+2)\allowbreak(3)\allowbreak(4)\allowbreak(5)
+  \item System properties: linear / time-invariant / causal / memoryless / BIBO stable \hfill (3)\allowbreak(4)\allowbreak(5)\allowbreak(2+2+2)\allowbreak(3+3)\allowbreak(10)
+  \item LTI system properties; recursive Vs non-recursive; moving-average recursive form \hfill (3+3)\allowbreak(5)\allowbreak(6)\allowbreak(8)
+  \item Fourier series coefficients; discrete Fourier series of an impulse train; FT multiplication property; Dirichlet conditions \hfill (3)\allowbreak(4)\allowbreak(6)\allowbreak(4+3)
+  \item Convolution summation --- derive, significance \hfill (2)\allowbreak(3)\allowbreak(1+3)
+  \item LTI convolution output (many $h,x$ pairs: finite sequences, $u[n]$ gates, $a^n u[n]$, complex exponential inputs, tabulated / stem-plot data) \hfill (4)\allowbreak(5)\allowbreak(6)\allowbreak(7)\allowbreak(8)\allowbreak(1+4)\allowbreak(2+4)\allowbreak(3+2)\allowbreak(2+6)\allowbreak(4+6)\allowbreak(5+2)\allowbreak(3+7)\allowbreak(2+2+6)\allowbreak(2+3+5)
+  \item Spectrum of CT Vs sampled signal +Fig \hfill (6)\allowbreak(8)
+  \item Sampling theorem; Nyquist rate; aliasing; oversampling; anti-aliasing filter; sample-and-hold \hfill (7)\allowbreak(2+5)\allowbreak(1+3+3)\allowbreak(2+2+3)\allowbreak(2+1+1+2+2)
     \begin{itemize}
       \item $x_a(t)=3\cos100\pi t$ at $F_s=75$ Hz / 200 Hz / 5000 Hz
       \item multi-tone $x(t)$ sampled at 5000 / 6000 / 8000 / 10000 samples/s
     \end{itemize}
-  \item Spectral properties of time-domain sampling +Eg \hfill (4+2)
 \end{itemize}
 
 \section*{2. Z-Transform}
 \begin{itemize}
-  \item ROC definition + properties + locate ROC \hfill (1)(2+4)(3+6)(4+6)(5)
-  \item One-sided Z-transform (I); $Z\{na^n u[n]\}$; $Z\{\cos\omega n\}$ \hfill (5)(3+3)(3+8)
-  \item Properties: convolution (state + prove), time-shift, time-delay, scaling \hfill (2+4)(3+3)(3+6)
-  \item Inverse Z-transform by partial fraction (many $X(z)$, ROC given) \hfill (4)(5)(6)(1+5)(2+6)(2+2+3)
-  \item Inverse Z-transform by long division (both ROCs) \hfill (6)(2+6)
+  \item ROC definition + properties + locate ROC \hfill (5)\allowbreak(1+4)\allowbreak(2+4)\allowbreak(3+6)\allowbreak(3+8)\allowbreak(4+6)
+  \item One-sided Z-transform (I); $Z\{na^n u[n]\}$; $Z\{\cos\omega n\}$ \hfill (3+3)
+  \item Properties: convolution (state + prove), time-shift, time-delay, scaling; list the properties \hfill (2)\allowbreak(3+3)\allowbreak(1+3+3)
+  \item Inverse Z-transform by partial fraction (many $X(z)$, ROC given) \hfill (4)\allowbreak(5)\allowbreak(6)\allowbreak(1+5)\allowbreak(1+6)\allowbreak(2+6)\allowbreak(3+3)\allowbreak(3+6)\allowbreak(2+2+3)\allowbreak(1+3+5)
+  \item Inverse Z-transform by long division (both ROCs) \hfill (6)\allowbreak(2+6)
 \end{itemize}
 
 \section*{3. Analysis of LTI in Frequency Domain}
 \begin{itemize}
-  \item Pole-zero plot + magnitude / phase response from a difference equation (many 2nd- and 3rd-order eqns) \hfill (6)(7)(8)(2+4)(3+7)(2+2+6)
-  \item Same from given pole / zero locations ($0.45\pm j1.06$, $0.58\pm j2.06$, etc.) \hfill (8)(2+6)(2+8)(4+6)
-  \item Frequency response from LCCDE; output for a sinusoidal input \hfill (6)(7)(10)
-  \item FIR Vs IIR system \hfill (2)(4)
-  \item LCCDE + system function; difference equation need (I) \hfill (2)(3)
-  \item Zero-input / zero-state / total response, $H(z)$, poles \hfill (4)(10)
-  \item Stability \& causality via impulse response \& ROC +Eg \hfill (2)(3)(4)(4+3)
-  \item Linear-phase FIR condition; show $h=\{-1,0,1\}$ linear phase; derive freq.\ response for odd $M$ \hfill (6)(2+4)
+  \item Pole-zero plot + magnitude / phase response from a difference equation (many 2nd- and 3rd-order eqns) \hfill (6)\allowbreak(7)\allowbreak(8)\allowbreak(10)\allowbreak(2+4)\allowbreak(2+5)\allowbreak(2+7)\allowbreak(2+8)\allowbreak(3+7)\allowbreak(2+2+6)\allowbreak(2+6+2)\allowbreak(3+3+2+4)
+  \item Same from given pole / zero locations ($0.45\pm j1.06$, $0.58\pm j2.06$, etc.) \hfill (8)\allowbreak(2+6)\allowbreak(2+8)\allowbreak(4+6)
+  \item Frequency response from LCCDE; output for a sinusoidal input \hfill (6)\allowbreak(7)\allowbreak(10)
+  \item FIR Vs IIR system \hfill (2)\allowbreak(4)
+  \item LCCDE + system function; difference equation need (I) \hfill (2)\allowbreak(3)
+  \item Zero-input / zero-state / total response, $H(z)$, poles \hfill (4)\allowbreak(10)
+  \item Stability \& causality via impulse response \& ROC +Eg \hfill (2)\allowbreak(3)\allowbreak(4)\allowbreak(4+3)
+  \item Linear-phase FIR condition; show $h=\{-1,0,1\}$ linear phase; derive freq.\ response for odd $M$ \hfill (6)\allowbreak(2+4)
 \end{itemize}
 
 \section*{4. Discrete Filter Structures}
 \begin{itemize}
-  \item Direct Form I \& II (many systems) \hfill (4)(5)(9)(2+2)
-  \item Cascade form of 2nd-order sections; parallel form \hfill (4)(5)(6)(7)
-  \item Lattice / lattice-ladder, FIR \& IIR, + stability check \hfill (5)(6)(8)(9)(10)(6+1)(6+4)(7+2)
+  \item Direct Form I \& II (many systems) \hfill (4)\allowbreak(5)\allowbreak(9)\allowbreak(2+2)
+  \item Cascade form of 2nd-order sections; parallel form \hfill (4)\allowbreak(5)\allowbreak(6)\allowbreak(7)
+  \item Lattice / lattice-ladder, FIR \& IIR, + stability check \hfill (5)\allowbreak(6)\allowbreak(8)\allowbreak(9)\allowbreak(10)\allowbreak(2+5)\allowbreak(3+7)\allowbreak(5+1)\allowbreak(6+1)\allowbreak(6+2)\allowbreak(6+3)\allowbreak(6+4)\allowbreak(7+1)\allowbreak(7+2)\allowbreak(7+3)\allowbreak(4+2+1)
     \begin{itemize}
-      \item 3-stage lattice $K_1,K_2,K_3\to$ system function \& FIR coefficients \hfill (5)(6)(7)
+      \item 3-stage lattice $K_1,K_2,K_3\to$ system function \& FIR coefficients \hfill (5)\allowbreak(6)\allowbreak(7)
       \item all-pass filter via lattice \hfill (8)
     \end{itemize}
-  \item Limit cycle in recursive system +Eg; dead band; round-off effects \hfill (3)(4)(5)(1+3)(2+4)(3+4)
-  \item Quantization (I); rounding Vs truncation; sign-magnitude / 1's / 2's complement; truncation-error bounds \hfill (6)(3+4)(1+1+2+1)
+  \item Limit cycle in recursive system +Eg; dead band; round-off effects \hfill (3)\allowbreak(4)\allowbreak(5)\allowbreak(1+3)\allowbreak(2+4)\allowbreak(3+4)
+  \item Quantization (I); rounding Vs truncation; sign-magnitude / 1's / 2's complement; truncation-error bounds \hfill (6)\allowbreak(3+4)\allowbreak(1+1+2+1)
 \end{itemize}
 
 \section*{5. FIR Filter Design}
 \begin{itemize}
-  \item Window method + window characteristics; key points of windowing \hfill (4)(5)(4+4)(5+3)
-  \item Gibbs phenomenon --- how it arises with the rectangular window, how to minimize \hfill (3+3)(5)(6)(1+4)(2+5)
-  \item Symmetric FIR LPF, $H_d(\omega)=e^{-j\omega\tau}$, length 7, $\omega_c=1$ (Hanning / Blackman) \hfill (10)(2+7)(1+2+7)
-  \item FIR LPF via suitable window from $\omega_p,\omega_s,\alpha_s$ (first 3 / first 6 coefficients) \hfill (6)(8)(9)(5+3)(2+6)
-  \item Kaiser window design --- ripple, $\beta$, length $M{+}1$ (many spec sets) \hfill (8)(10)(2+8)(8+4)(9+3)(2+2+2)
-  \item Kaiser (+) over fixed windows; FIR Vs IIR choice \hfill (2)(3)(4)
-  \item Optimum filter / Remez exchange --- math expression, derivation, flowchart, (I) over windowing \hfill (4)(5)(6)(7)(9)(1+6)(3+10)
+  \item Window method + window characteristics; key points of windowing \hfill (4)\allowbreak(5)\allowbreak(4+4)\allowbreak(5+3)
+  \item Gibbs phenomenon --- how it arises with the rectangular window, how to minimize \hfill (3+3)\allowbreak(5)\allowbreak(6)\allowbreak(1+4)\allowbreak(2+5)
+  \item Symmetric FIR LPF, $H_d(\omega)=e^{-j\omega\tau}$, length 7, $\omega_c=1$ (Hanning / Blackman) \hfill (10)\allowbreak(2+7)\allowbreak(1+2+7)
+  \item FIR LPF via suitable window from $\omega_p,\omega_s,\alpha_s$ (first 3 / first 6 coefficients) \hfill (6)\allowbreak(8)\allowbreak(9)\allowbreak(2+6)\allowbreak(4+5)\allowbreak(5+3)
+  \item Kaiser window design --- ripple, $\beta$, length $M{+}1$ (many spec sets) \hfill (8)\allowbreak(10)\allowbreak(2+8)\allowbreak(6+8)\allowbreak(8+4)\allowbreak(9+3)\allowbreak(2+2+2)\allowbreak(2+4+4)
+  \item Kaiser (+) over fixed windows; FIR Vs IIR choice \hfill (3)\allowbreak(4)\allowbreak(2+2)
+  \item Optimum filter / Remez exchange --- math expression, derivation, flowchart, (I) over windowing \hfill (4)\allowbreak(5)\allowbreak(6)\allowbreak(7)\allowbreak(9)\allowbreak(1+5)\allowbreak(1+6)\allowbreak(2+5)\allowbreak(2+6)\allowbreak(5+4)\allowbreak(3+10)
   \item Linear phase FIR from kHz specs (2 kHz / 5 kHz / 42 dB / 20 kHz) \hfill (10)
 \end{itemize}
 
 \section*{6. IIR Filter Design}
 \begin{itemize}
-  \item Bilinear-transformation Butterworth LPF --- many spec sets, given as $|H|$ bounds, as dB deviations, or in Hz \hfill (9)(10)(11)(12)(15)(18)(11+4)
+  \item Bilinear-transformation Butterworth LPF --- many spec sets, given as $|H|$ bounds, as dB deviations, or in Hz \hfill (9)\allowbreak(10)\allowbreak(11)\allowbreak(12)\allowbreak(15)\allowbreak(18)\allowbreak(1+10)\allowbreak(2+10)\allowbreak(3+12)\allowbreak(11+3)\allowbreak(11+4)\allowbreak(12+3)
     \begin{itemize}
       \item most common: $W_p=0.25\pi$, $W_s=0.55\pi$, $\delta_p=0.11$, $\delta_s=0.21$, $f_s=0.5$ Hz, then LP$\to$HP at $W'_p=0.45\pi$
       \item find $N$, $\omega_c$, poles $s_k$, $H(s)$, $H(z)$ (part-wise version)
     \end{itemize}
-  \item Bilinear-transformation Chebyshev LPF; analog Chebyshev then convert \hfill (9)(10)(11)
-  \item Impulse-invariance Butterworth; pre-warping (I); limitations \hfill (12)(13)(15)(12+3)
-  \item Bilinear Vs impulse invariance (+); why transform a CT design \hfill (2+10)(3+6)(3+12)
-  \item Butterworth Vs Chebyshev approximation \hfill (1)
-  \item Spectral (digital-domain) transformation LP$\to$HP; features / parameters; (I) \hfill (2)(4)(5)
+  \item Bilinear-transformation Chebyshev LPF; analog Chebyshev then convert \hfill (9)\allowbreak(10)\allowbreak(11)
+  \item Impulse-invariance Butterworth; pre-warping (I); limitations \hfill (12)\allowbreak(13)\allowbreak(15)\allowbreak(12+3)
+  \item Bilinear Vs impulse invariance (+); why transform a CT design; Butterworth Vs Chebyshev approximation \hfill (3)\allowbreak(3+6)
+  \item Spectral (digital-domain) transformation LP$\to$HP; features / parameters; (I) \hfill (2)\allowbreak(4)\allowbreak(5)
 \end{itemize}
 
 \section*{7. Discrete Fourier Transform (DFT / FFT)}
 \begin{itemize}
-  \item DFT need (I); DFT Vs DTFT; complexity DFT Vs FFT; FFT (+) \hfill (1)(2)(4)(5)(2+5)(4+2)
-  \item Circular convolution property (state + prove); multiplication property; zero padding; Parseval \hfill (1)(2)(6)(2+2+4)
+  \item DFT need (I); DFT Vs DTFT; complexity DFT Vs FFT; FFT (+) \hfill (1)\allowbreak(2)\allowbreak(4)\allowbreak(5)\allowbreak(2+5)\allowbreak(4+2)
+  \item Circular convolution property (state + prove); multiplication property; zero padding; Parseval \hfill (1)\allowbreak(2)\allowbreak(6)\allowbreak(2+2+4)
   \item DFT duality $\to$ compute IDFT with the DFT formula \hfill (8)
-  \item FFT (DIT / DIF) $N$-point DFT + butterfly diagram + spectrum (many sequences; several papers print 7 entries for an 8-point DFT, and 82 Ba prints 3 for a 4-point one) \hfill (5)(6)(7)(8)(1+6)(2+6)(3+7)(2+8)(1+2+6)
+  \item FFT (DIT / DIF) $N$-point DFT + butterfly diagram + spectrum (many sequences; several papers print 7 entries for an 8-point DFT, and 82 Ba prints 3 for a 4-point one) \hfill (5)\allowbreak(6)\allowbreak(7)\allowbreak(8)\allowbreak(1+6)\allowbreak(1+7)\allowbreak(2+5)\allowbreak(2+6)\allowbreak(2+7)\allowbreak(2+8)\allowbreak(3+7)\allowbreak(6+2)\allowbreak(1+2+6)
   \item IDFT via FFT from a given $X(k)$ \hfill (2+6)
-  \item Circular convolution --- direct or via DFT (many pairs) \hfill (4)(5)(6)(7)(1+5)(2+5)(2+6)(3+7)
-  \item Linear convolution through circular convolution with zero padding \hfill (5)(1+5)(2+6)(6+2)
-  \item $x_3=\mathrm{IDFT}(X_1{\cdot}X_2)$, 4-pt \& 5-pt \hfill (5)(6)(7)(1+5)(2+4)(2+6)
+  \item Circular convolution --- direct or via DFT (many pairs) \hfill (4)\allowbreak(5)\allowbreak(6)\allowbreak(7)\allowbreak(1+5)\allowbreak(2+5)\allowbreak(2+6)\allowbreak(3+7)
+  \item Linear convolution through circular convolution with zero padding \hfill (5)\allowbreak(1+5)\allowbreak(2+6)\allowbreak(6+2)
+  \item $x_3=\mathrm{IDFT}(X_1{\cdot}X_2)$, 4-pt \& 5-pt \hfill (5)\allowbreak(6)\allowbreak(7)\allowbreak(1+5)\allowbreak(1+6)\allowbreak(1+7)\allowbreak(2+4)\allowbreak(2+6)
 \end{itemize}
 
 \section*{8. Extra: DSP Fundamentals \& Processors \textnormal{(\texttt{EX753} only, outside the CT704 syllabus)}}
 \begin{itemize}
-  \item Basic elements of DSP +Fig; A/D--D/A conversion (I) \hfill (3+4)(4+2)(7)
-  \item DSP (+) over analog; (-) of DSP; applications \hfill (2)(3)(6)
-  \item Quantization at 8 / 10 bits; discrete values + quantization error \hfill (2+5)(1+3+3)
-  \item Bit-serial arithmetic +Fig; distributed arithmetic \hfill (5)(6)(3+3)
+  \item Basic elements of DSP +Fig; A/D--D/A conversion (I) \hfill (3+4)\allowbreak(4+2)\allowbreak(7)
+  \item DSP (+) over analog; (-) of DSP; applications \hfill (2)\allowbreak(3)\allowbreak(6)\allowbreak(2+1)\allowbreak(3+4)
+  \item Spectral properties of time-domain sampling +Eg; (-) of DSP \hfill (4+2)
+  \item Quantization at 8 / 10 bits; discrete values + quantization error \hfill (2+5)\allowbreak(1+3+3)
+  \item Bit-serial arithmetic +Fig; distributed arithmetic; applications of DSP \hfill (5)\allowbreak(6)\allowbreak(3+3)\allowbreak(6+2)
   \item Pipelined implementation of DSP processors \hfill (6)
-  \item DSP processor chips --- where used, general Vs special purpose, features \hfill (6)(2+4)
+  \item DSP processor chips --- where used, general Vs special purpose, features \hfill (6)\allowbreak(2+4)
 \end{itemize}
 
 \end{multicols}

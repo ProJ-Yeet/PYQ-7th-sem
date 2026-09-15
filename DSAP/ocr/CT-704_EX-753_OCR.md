@@ -341,7 +341,16 @@ p8 and p10 are two scans of the same 2078 Bhadra paper.
 
 ## p8 / p10 — 2078 Bhadra, Regular, BE, BCT, IV/I, CT 704 [80 marks, 3 hrs]
 
-> p8 and p10 are two scans of the SAME paper (p9 is blank). Transcribed once.
+> p8 and p10 are two scans of the SAME paper. Transcribed once.
+>
+> **CORRECTION 2026-09-15: p9 is NOT blank.** It was recorded here as blank and
+> it is a complete 2079 Baishakh paper, 11 questions, the same paper filed
+> below as `old-p5`. Its text layer is empty (0 chars) but its ink coverage is
+> 0.59 %, and a truly blank sheet measures near zero. No content was lost,
+> because 2079 Baishakh was transcribed from the older scan and every one of
+> its questions is cited in the Detailed document; only the provenance note
+> was wrong. This is the THIRD time a page in this repo was called blank on
+> the strength of an empty text layer (see CLAUDE.md golden rules 2 and 6).
 
 1. Determine whether the signal x[n] = cos[πn/2] . cos[πn/4] is periodic
    or non periodic and if it is periodic, find its fundamental period. [4]
@@ -1099,13 +1108,22 @@ p8 and p10 are two scans of the same 2078 Bhadra paper.
 > NOTE: Q11's mark is not printed on the scan.
 
 =======================================================================
-# CT704 — papers present ONLY in the older scan
+# CT704 — papers first transcribed from the older scan
 `D:\College\PYQ\DSAP\CT-704_69-81.pdf`
 =======================================================================
 
+**CORRECTION 2026-09-15.** This banner used to read "papers present ONLY in
+the older scan", and said of the two below that "only these two are unique to
+it". That is wrong for **2079 Baishakh**: it is also page 9 of
+`New PYQ\DSAP.pdf`, which had been recorded as a blank page because its text
+layer is empty. Only **2073 Chaitra** is genuinely unique to the older scan.
+Both papers are transcribed below and both are fully cited in the Detailed
+document, so nothing was lost; the older scan does still have to stay on disk,
+for 2073 Chaitra.
+
 Every other paper in that 22-page file also appears in
-`New PYQ\DSAP.pdf` and is transcribed above. Only these two are unique
-to it. (Old-file page order, for reference: p1=80 Bh, p2=81 Ba,
+`New PYQ\DSAP.pdf` and is transcribed above. (Old-file page order, for
+reference: p1=80 Bh, p2=81 Ba,
 p3=80 Ba, p4=79 Bh, p5=79 Ba, p6 blank, p7=78 Bh, p8=76 Ch, p9=76 Ash,
 p10=75 Ch, p11=75 Ash, p12=74 Ch, p13=74 Ash, p14=73 Ch, p15=73 Shr,
 p16=72 Ch, p17=72 Ka, p18=71 Ch, p19=71 Shr, p20=70 Ch, p21=70 Ash,

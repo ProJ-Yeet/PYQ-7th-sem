@@ -44,7 +44,10 @@ SEC_D = re.compile(re.escape(B) + r"section\{([^}]*)\}")
 SEC_C = re.compile(re.escape(B) + r"section\*\{([^}]*)\}")
 # Detailed marks are bracketed, e.g. [4] [2+6] [2.5+2.5]; a line may carry
 # several, one per paper that asked it with a different split.
-MK_D = re.compile(r"\[([0-9][0-9.+ ]*)\]")
+# The negative lookbehind is load-bearing: without it an array index in a
+# question's data, "$h[0]=1,\ h[1]=0.75$", is read as a 0-mark and a 1-mark
+# question. That put four phantom values into DSAP's missing list.
+MK_D = re.compile(r"(?<![A-Za-z])\[([0-9][0-9.+ ]*(?:/[0-9][0-9.+ ]*)*)\]")
 # Concise marks are parenthesised and run together, e.g. (4)(2+6).
 MK_C = re.compile(r"\(([0-9][0-9.+]*)\)")
 
@@ -94,7 +97,13 @@ def reconcile(concise_path, detailed_path, label=None):
     bad = 0
     for i, (dn, db) in enumerate(ds):
         cn, cb = cs[i] if i < len(cs) else ("<NO CONCISE CHAPTER>", "")
-        dm = set(x.replace(" ", "") for x in MK_D.findall(db))
+        # One bracket may carry SEVERAL splits separated by slashes,
+        # e.g. [3+3/5/6/1+4/2+5] for one question asked five ways.
+        # DSAP is the only subject that uses that notation and it hid
+        # 17 distinct marks values from this check, which then read as
+        # spurious entries in the Concise. Split them out.
+        dm = set(part.replace(" ", "")
+                 for x in MK_D.findall(db) for part in x.split("/"))
         cm = set(MK_C.findall(cb))
         dm = set(x for x in dm if real_mark(x))
         cm = set(x for x in cm if real_mark(x))
