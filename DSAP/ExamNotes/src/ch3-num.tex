@@ -67,10 +67,16 @@ identical in both.}
 \texttt{70 Ma} \m{8}}}
 
 \begin{asked}{2080 Chaitra \textperiodcentered{} 2072 Ashwin \textperiodcentered{} [8/7]}
-Plot the pole-zero in the z-plane and draw the magnitude response (not to scale) of the
-system described by the difference equation
-$y[n]-0.4y[n-1]+0.25y[n-2]=x[n]+0.5x[n-1]$ (magnitude response only).
+\mk{Plot Magnitude Response} (not to the scale) of the system described by difference
+equation. $y[n]-0.4y[n-1]+0.25y[n-2]=x[n]+0.5x[n-1]$\
+\textit{Both papers print exactly this, and \textbf{neither asks for a pole-zero plot}.}
 \end{asked}
+
+{\color{sub}\footnotesize \mk{Five of the 24 ask for the magnitude response and
+nothing else}: \textbf{\texttt{80 Ch}}, \textbf{\texttt{72 Ash}}, 72 Ka,
+\textbf{70 Ch} and \textbf{\texttt{71 Bh}}. The pole-zero plot is worth 2 or 3 marks in
+the others and \mk{nothing in these}, so the plot still helps you draw the shape but does
+not earn on its own. Every other paper in this section asks for both.}
 
 \lead{Step 1: transform and divide}
 \begin{itemize}
@@ -146,58 +152,108 @@ to $+0.4$, that is from angle $180^{\circ}$ to angle $0^{\circ}$.}
 the $x$ coefficients, then the three anchor values.}
 \par\smallskip
 {\footnotesize
-\begin{tabular}{@{}L{2.45cm}L{4.45cm}L{2.55cm}L{2.35cm}L{1.5cm}L{1.85cm}@{}}
+\begin{tabular}{@{}L{2.0cm}L{5.6cm}L{2.4cm}L{2.3cm}L{1.35cm}L{1.75cm}@{}}
 \toprule
-\hrow \thead{Papers} & \thead{Difference equation} & \thead{Zeros} & \thead{Poles ($|p|$)}
-& \thead{$|H|$ at $0,\frac{\pi}{2},\pi$} & \thead{Character} \\
-\textbf{80 Bh} & $y(n)=x(n)+0.8x(n{-}1)$ \newline $+\,0.8x(n{-}2)+0.49y(n{-}2)$
+\hrow \thead{Papers} & \thead{Question as printed} & \thead{Zeros}
+& \thead{Poles ($|p|$)} & \thead{$|H|$ at $0,\frac{\pi}{2},\pi$} & \thead{Character} \\
+\textbf{80 Bh} \m{3+7} & Plot the pole-zero on the z-plane and draw
+  Magnitude response (not to the scale) of an LTI system described by the equation,
+  $y(n)=x(n)+0.8x(n{-}1)+0.8x(n{-}2)+0.49y(n{-}2)$.
   & $-0.4\pm j0.8$ \newline $(0.894)$ & $\pm0.7$ \newline $(0.7)$
   & $5.10$ \newline $0.55$ \newline $1.96$ & low-pass, dip at $116^{\circ}$ \\
-\textbf{79 Bh} & $y[n]-0.35y[n{-}1]+0.25y[n{-}2]$ \newline $=x[n]-0.75x[n{-}1]$
+\hrow \textbf{79 Bh} \m{3+7} & Plot the pole-zero in z-plane and draw the magnitude
+  response (not to the scale) of the equation of the system describe by difference
+  equation: $y[n]-0.35y[n{-}1]+0.25y[n{-}2]=x[n]-0.75x[n{-}1]$.
   & $0.75$, $0$ & $0.175\pm j0.468$ \newline $(0.5)$
   & $0.28$ \newline $1.51$ \newline $1.09$ & high-pass, peak $1.53$ at $83^{\circ}$ \\
-79 Ba & $y[n]-0.3y[n{-}1]+0.2y[n{-}2]$ \newline $=x[n]-0.5x[n{-}1]$
+79 Ba \m{3+7} & Plot the pole-zero in z-plane and draw magnitude response (not to the
+  scale) of the system described by difference equation
+  $y[n]-0.3y[n{-}1]+0.2y[n{-}2]=x[n]-0.5x[n{-}1]$
   & $0.5$, $0$ & $0.15\pm j0.421$ \newline $(0.447)$
   & $0.56$ \newline $1.31$ \newline $1.00$ & high-pass, peak $1.31$ at $85^{\circ}$ \\
-74 Ash & $y[n]-0.4y[n{-}1]+0.2y[n{-}2]=x[n]$ \newline $+0.5x[n{-}1]+0.6x[n{-}2]+0.8x[n{-}3]$
+\hrow 74 Ash \m{3+7} & Plot the pole-zero in z-plane and Draw Magnitude Response (not to
+  the scale) of the system described by difference equation
+  $y[n]-0.4y[n{-}1]+0.2y[n{-}2]=x[n]+0.5x[n{-}1]+0.6x[n{-}2]+0.8x[n{-}3]$ \newline
+  {\color{sub}\mk{third order in $x$}, so three zeros, not two}
   & $0.185\pm j0.942$ \newline $(0.96)$, $-0.869$ & $0.2\pm j0.4$ \newline $(0.447)$
   & $3.63$ \newline $0.56$ \newline $0.19$ & low-pass, dip at $79^{\circ}$ \\
-72 Ka & $y[n]-0.5y[n{-}1]+0.3y[n{-}2]$ \newline $=x[n]+0.7x[n{-}1]$
+\bottomrule
+\end{tabular}}
+\par\smallskip
+{\footnotesize
+\begin{tabular}{@{}L{2.0cm}L{5.6cm}L{2.4cm}L{2.3cm}L{1.35cm}L{1.75cm}@{}}
+\toprule
+\hrow \thead{Papers} & \thead{Question as printed} & \thead{Zeros} & \thead{Poles ($|p|$)} & \thead{$|H|$ at $0,\frac{\pi}{2},\pi$} & \thead{Character} \\
+72 Ka \m{6} & \mk{Plot Magnitude Response} (not to the scale) of the system described by
+  difference equation. $y[n]-0.5y[n{-}1]+0.3y[n{-}2]=x[n]+0.7x[n{-}1]$ \newline
+  {\color{sub}\mk{no pole-zero plot asked}: the response only}
   & $-0.7$, $0$ & $0.25\pm j0.487$ \newline $(0.548)$
   & $2.13$ \newline $1.42$ \newline $0.17$ & low-pass, peak $2.44$ at $50^{\circ}$ \\
-\textbf{72 Ch} & $y[n]-0.4y[n{-}1]+0.1y[n{-}2]$ \newline $=x[n]+0.6x[n{-}1]$
+\hrow \textbf{72 Ch} \m{2+4} & Plot the pole-zero in z-plane and Draw Magnitude Response
+  (not to the scale) of the system described by difference equation.
+  $y[n]-0.4y[n{-}1]+0.1y[n{-}2]=x[n]+0.6x[n{-}1]$
   & $-0.6$, $0$ & $0.2\pm j0.245$ \newline $(0.316)$
   & $2.29$ \newline $1.18$ \newline $0.27$ & low-pass \\
-\textbf{70 Ch} & $y[n]-0.3y[n{-}1]+0.225y[n{-}2]$ \newline $=x[n]+0.5x[n{-}1]$
+\textbf{70 Ch} \m{6} & \mk{Plot Magnitude Response} (not to the scale) of the system
+  described by difference equation.
+  $y[n]-0.3y[n{-}1]+0.225y[n{-}2]=x[n]+0.5x[n{-}1]$ \newline
+  {\color{sub}\mk{no pole-zero plot asked}; and note $+0.5$ where 71 Bh prints $-0.4$}
   & $-0.5$, $0$ & $0.15\pm j0.45$ \newline $(0.474)$
   & $1.62$ \newline $1.35$ \newline $0.33$ & low-pass, peak $1.80$ at $55^{\circ}$ \\
 \bottomrule
 \end{tabular}}
 \par\smallskip
 {\footnotesize
-\begin{tabular}{@{}L{2.45cm}L{4.45cm}L{2.55cm}L{2.35cm}L{1.5cm}L{1.85cm}@{}}
+\begin{tabular}{@{}L{2.0cm}L{5.6cm}L{2.4cm}L{2.3cm}L{1.35cm}L{1.75cm}@{}}
 \toprule
-\hrow \thead{Papers} & \thead{Difference equation} & \thead{Zeros} & \thead{Poles ($|p|$)}
-& \thead{$|H|$ at $0,\frac{\pi}{2},\pi$} & \thead{Character} \\
-\textbf{\texttt{71 Bh}} & $y[n]-0.3y[n{-}1]+0.225y[n{-}2]$ \newline $=x[n]-0.4x[n{-}1]$
+\hrow \thead{Papers} & \thead{Question as printed} & \thead{Zeros}
+& \thead{Poles ($|p|$)} & \thead{$|H|$ at $0,\frac{\pi}{2},\pi$} & \thead{Character} \\
+\textbf{\texttt{71 Bh}} \m{6} & \mk{Plot Magnitude Response} (not to the
+  scale) of the system described by difference equation.
+  $y[n]-0.3y[n{-}1]+0.225y[n{-}2]=x[n]-0.4x[n{-}1]$ \newline
+  {\color{sub}\mk{no pole-zero plot asked}}
   & $0.4$, $0$ & $0.15\pm j0.45$ \newline $(0.474)$
   & $0.65$ \newline $1.30$ \newline $0.92$ & high-pass, peak $1.32$ at $81^{\circ}$ \\
-\texttt{73 Ma} & $y[n]-0.3y[n{-}1]+0.2y[n{-}2]$ \newline $=x[n]+0.7x[n{-}1]$
+\hrow \texttt{73 Ma} \m{7} & Plot the pole-zero in z-plane and draw magnitude response
+  (not to the scale) of the system described by difference equation
+  $y[n]-0.3y[n{-}1]+0.2y[n{-}2]=x[n]+0.7x[n{-}1]$
   & $-0.7$, $0$ & $0.15\pm j0.421$ \newline $(0.447)$
   & $1.89$ \newline $1.43$ \newline $0.20$ & low-pass, peak $2.00$ at $48^{\circ}$ \\
-\textbf{69 Ch} & $y[n]-0.4y[n{-}1]+0.2y[n{-}2]=x[n]$ \newline $+0.1x[n{-}1]-0.06x[n{-}2]$
+\bottomrule
+\end{tabular}}
+\par\smallskip
+{\footnotesize
+\begin{tabular}{@{}L{2.0cm}L{5.6cm}L{2.4cm}L{2.3cm}L{1.35cm}L{1.75cm}@{}}
+\toprule
+\hrow \thead{Papers} & \thead{Question as printed} & \thead{Zeros} & \thead{Poles ($|p|$)} & \thead{$|H|$ at $0,\frac{\pi}{2},\pi$} & \thead{Character} \\
+\textbf{69 Ch} \m{2+2+6} & Why do we need Difference Equation? Draw Pole-zero in Z-Plane
+  and plot magnitude response (not to the scale) of the system described by difference
+  equation $y[n]-0.4y[n{-}1]+0.2y[n{-}2]=x[n]+0.1x[n{-}1]-0.06x[n{-}2]$
   & $-0.3$, $0.2$ & $0.2\pm j0.4$ \newline $(0.447)$
   & $1.30$ \newline $1.19$ \newline $0.53$ & low-pass, peak $1.51$ at $55^{\circ}$ \\
-\textbf{\texttt{76 Bh}} & $y[n]-0.6y[n{-}1]+0.35y[n{-}2]=x[n]$ \newline $-0.1x[n{-}1]-0.2x[n{-}2]$
+\hrow \textbf{\texttt{76 Bh}} \m{2+5} & Show the pole-zero in z-plane and plot magnitude
+  response (not to the scale) of the system described by difference equation.
+  $y[n]-0.6y[n{-}1]+0.35y[n{-}2]=x[n]-0.1x[n{-}1]-0.2x[n{-}2]$
   & $0.5$, $-0.4$ & $0.3\pm j0.510$ \newline $(0.592)$
   & $0.93$ \newline $1.36$ \newline $0.46$ & band-pass, peak $1.91$ at $61^{\circ}$ \\
-\textbf{75 Ch} & $y(n)-0.3y(n{-}1)=4x(n)$ \newline $+0.7x(n{-}1)+2x(n{-}2)$
+\textbf{75 Ch} \m{2+7} & Plot the pole-zero in z-plane and draw magnitude response (not
+  to scale) of the system described by \mk{differential} equation
+  $y(n)-0.3y(n{-}1)=2x(n{-}2)+0.7x(n{-}1)+4x(n)$ \newline
+  {\color{sub}"differential" for "difference", and \mk{the $x$ terms are printed
+  backwards}, $n{-}2$ first}
   & $-0.0875\pm j0.702$ \newline $(0.707)$ & $0.3$ \newline $(0.3)$
   & $9.57$ \newline $2.03$ \newline $4.08$ & low-pass, dip at $99^{\circ}$ \\
-\textbf{\texttt{69 Bh}} & $y[n]=x[n]+1.21x[n{-}2]$ \newline $-\,0.8y[n{-}1]$
+\hrow \textbf{\texttt{69 Bh}} \m{3+3+2+4} & Explain how the poles and zeros of $H(z)$
+  affect the stability and the gain response of a system. Given $H(z)$ for a system with
+  the difference equation $y[n]=x[n]+1.21x[n{-}2]-0.8y[n{-}1]$, plot its poles and zeros
+  on the Z-plane, \mk{determine whether it is causal and stable} and sketch its gain
+  response.
   & $\pm j1.1$ \newline $(1.1)$ & $-0.8$ \newline $(0.8)$
   & $1.23$ \newline $0.16$ \newline $11.05$ & high-pass, deep dip at $90^{\circ}$ \\
-70 Asa, \texttt{70 Ma} & $y(n)=x(n)+x(n{-}2)$ \newline (FIR, no feedback)
+70 Asa \m{2+6+2}, \texttt{70 Ma} \m{8} & Given $H(z)$ for a system with the following
+  difference equation: $y(n)=x(n)+x(n{-}2)$. Plot its poles and zeros in Z plane.
+  Determine its magnitude response. \mk{Also, determine whether system is causal and
+  stable.} \newline {\color{sub}FIR, no feedback}
   & $\pm j$ \newline \mk{on the circle} & none \newline (all-zero)
   & $2.00$ \newline $\mathbf{0}$ \newline $2.00$ & $|H|=2|\cos\omega|$, exact null \\
 \bottomrule
@@ -283,22 +339,42 @@ both ends} and odd in between.}
 \lead{The rest of the family}
 \par\smallskip
 {\footnotesize
-\begin{tabular}{@{}L{3.3cm}L{3.9cm}L{3.5cm}L{1.6cm}L{3.0cm}@{}}
+\begin{tabular}{@{}L{2.6cm}L{6.0cm}L{3.0cm}L{2.8cm}L{1.35cm}L{2.2cm}@{}}
 \toprule
-\hrow \thead{Papers} & \thead{Poles ($|p|$)} & \thead{Zeros ($|z|$)}
-& \thead{$|H|$ at $0,\frac{\pi}{2},\pi$} & \thead{Shape} \\
-82 Ba, 80 Ba, \textbf{82 Bh} & $0.45\pm j1.6$ \newline $(1.662)$
-  & $0.58\pm j2.06$ \newline $(2.140)$ & $1.54$ \newline $1.90$ \newline $1.45$
+\hrow \thead{Papers} & \thead{Question as printed} & \thead{Poles ($|p|$)}
+& \thead{Zeros ($|z|$)} & \thead{$|H|$ at $0,\frac{\pi}{2},\pi$} & \thead{Shape} \\
+82 Ba \m{3+7}, 80 Ba \m{4+6}, \textbf{82 Bh} \m{2+8} & Draw the poles and zeros in the
+  z-plane for the system with poles at $0.45\pm j1.6$ and zeros at $0.58\pm j2.06$. Also
+  plot the magnitude response (not in scale) of the system. \newline
+  {\color{sub}80 Ba prefixes "Differentiate between FIR system and IIR System"; 82 Ba
+  asks for the \mk{phase response as well}}
+  & $0.45\pm j1.6$ \newline $(1.662)$ & $0.58\pm j2.06$ \newline $(2.140)$
+  & $1.54$ \newline $1.90$ \newline $1.45$
   & shallow bump, peak $2.04$ at $74^{\circ}$ \\
-\textbf{76 Ch}, 75 Ash, \textbf{\texttt{81 Ch}}, \textbf{\texttt{73 Bh}}
+\hrow \textbf{76 Ch} \m{2+6}, 75 Ash \m{2+8}, \textbf{\texttt{81 Ch}} \m{8},
+  \textbf{\texttt{73 Bh}} & Draw the pole-zero in the z-plane for a system with poles at
+  $0.45\pm j1.06$ and zeroes at $0.58\pm j2.06$. Also plot the magnitude response (not
+  to the scale) of the system. \newline {\color{sub}\mk{$j1.06$, not $j1.6$}: one digit
+  pulls the poles in and the peak goes from $2$ to $11.5$. 75 Ash omits "not to scale"}
   & $0.45\pm j1.06$ \newline $(1.152)$ & $0.58\pm j2.06$ \newline $(2.140)$
   & $3.10$ \newline $3.93$ \newline $2.09$ & \mk{real peak} $11.50$ at $67^{\circ}$ \\
-\textbf{74 Ch} & $0.45-j0.77$ \newline $(0.892)$, $-2\pm j0.3$ \newline $(2.022)$
+\textbf{74 Ch} \m{2+8} & The poles of a system are located at: $0.45-0.77i$ and
+  $-2\pm0.3i$. Map the poles and zero in the z-plane and plot the magnitude response of
+  the system. \newline {\color{sub}\mk{a lone complex pole}, not a pair, and \mk{no zeros
+  are given at all}}
+  & $0.45-j0.77$ \newline $(0.892)$, $-2\pm j0.3$ \newline $(2.022)$
   & none & $0.20$ \newline $0.18$ \newline $0.63$ & rises towards $\omega=\pi$ \\
-\textbf{\texttt{75 Bh}}, \textbf{71 Ch} & $0.45\mp j0.77$ \newline $(0.892)$,
-  $-2\pm j0.3$ \newline $(2.022)$ & $1.2\pm j3$ \newline $(3.231)$
+\hrow \textbf{\texttt{75 Bh}}, \textbf{71 Ch} \m{2+8} & The poles of a system are located
+  at: $0.45+0.77i$ and $-2\pm0.3i$ and zeroes at: $1.2\pm3i$. Map the poles and zero in
+  the z-plane and plot the magnitude response of the system.
+  & $0.45\mp j0.77$ \newline $(0.892)$, $-2\pm j0.3$ \newline $(2.022)$
+  & $1.2\pm j3$ \newline $(3.231)$
   & $1.81$ \newline $1.76$ \newline $8.76$ & high-pass, peak $8.76$ at $\pi$ \\
-\textbf{73 Ch} & $0.45+j0.77$ \newline $(0.892)$, $2\pm j0.7$ \newline $(2.119)$
+\textbf{73 Ch} \m{2+8} & Define the difference equation with example. The Poles of a
+  system are located at:- $0.45+0.77i$ and $2\pm0.7i$ and zeros at: $1.2\pm0.43i$. Plot
+  the magnitude response of this system. \newline {\color{sub}\mk{$+2$, not $-2$}, which
+  is what moves its bump}
+  & $0.45+j0.77$ \newline $(0.892)$, $2\pm j0.7$ \newline $(2.119)$
   & $1.2\pm j0.43$ \newline $(1.275)$ & $0.27$ \newline $0.43$ \newline $0.37$
   & broad bump at $72^{\circ}$ \\
 \bottomrule

@@ -902,6 +902,42 @@ def ch3():
     chk("c3 70Asa antisymmetric", [h[0] + h[2], h[1]], [0, 0])
     chk("c3 70Asa grd", 1.0, (3 - 1) / 2.0)
 
+    # --- claims added 2026-09-15 with the papers' own wording. The chapter
+    # now states that FIVE of the 24 ask for the magnitude response alone,
+    # and names them; this pins the count so the sentence cannot drift.
+    import os as _os
+    _p = _os.path.join(_os.path.dirname(_os.path.abspath(__file__)),
+                       "ch3-num.tex")
+    _t = open(_p, encoding="utf-8").read()
+    chk("c3 the five magnitude-only papers are named",
+        sum(1 for tag in ("80 Ch", "72 Ash", "72 Ka", "70 Ch", "71 Bh")
+            if tag in _t), 5)
+    # three of the five are table rows; the other two (80 Ch, 72 Ash) are
+    # the worked example, whose sked block says so in its own line
+    chk("c3 'no pole-zero plot asked' marked on three table rows",
+        _t.count("no pole-zero plot asked"), 3)
+    chk("c3 the worked example says neither paper wants the plot",
+        1 if "neither asks for a pole-zero plot" in _t else 0, 1)
+    # 76 Ch's pole pair is j1.06, the 82 group's is j1.6, and that one digit
+    # is what separates a peak of 2 from a peak of 11.5
+    import cmath as _cm
+    def _peak(pr, pi_, zr, zi):
+        best = 0.0
+        for k in range(2001):
+            w = math.pi * k / 2000.0
+            z = _cm.exp(1j * w)
+            num = abs(z - complex(zr, zi)) * abs(z - complex(zr, -zi))
+            den = abs(z - complex(pr, pi_)) * abs(z - complex(pr, -pi_))
+            best = max(best, num / den)
+        return best
+    p16 = _peak(0.45, 1.06, 0.58, 2.06)
+    p160 = _peak(0.45, 1.6, 0.58, 2.06)
+    chk("c3 76Ch j1.06 peaks near 11.5", round(p16, 1), 11.5, tol=0.2)
+    chk("c3 82Bh j1.6 peaks near 2.0", round(p160, 1), 2.0, tol=0.2)
+    chk("c3 one digit is a 5x difference", 1 if p16 > 5 * p160 else 0, 1)
+    # 74 Ch really is given no zeros, unlike every sibling in its table
+    chk("c3 74Ch has no zeros", _t.count("& none & $0.20$"), 1)
+
 
 # ---------------------------------------------------------------- chapter 4
 
