@@ -48,8 +48,9 @@
   \item \mk{Everything else is the analog half}: which prototype (Butterworth or
         Chebyshev), what order, what cut-off. That part is identical for both maps.
   \item \mk{The sampling period cancels.} When the spec is given in rad/sample, pre-warp
-        by $\Omega=\frac{2}{T}\tan\frac{\omega}{2}$ and map back by $s=\frac{2}{T}\cdots$
-        and \textbf{every $2/T$ divides out}: $H(z)$ is the same for $T=1$, $T=2$ or
+        by $\Omega=\frac{2}{T}\tan\frac{\omega}{2}$ and map back by
+        $s=\frac{2}{T}\frac{1-z^{-1}}{1+z^{-1}}$, and
+        \textbf{every $2/T$ divides out}: $H(z)$ is the same for $T=1$, $T=2$ or
         $T=0.1$. Nine papers give a sampling frequency purely as a distraction.
         \mk{Set $T=1$ and write one line saying why} (\S6.5).
   \item The other 14 questions are bookwork: why transform at all, the two methods
@@ -147,11 +148,15 @@ Use when & flatness matters more than sharpness & a short filter matters more th
 \bottomrule
 \end{tabular}
 \par\smallskip
-{\color{sub}\footnotesize The standing example: $\Omega_p=1$, $\Omega_s=3.33$,
-$\alpha_p=0.3$ dB, $\alpha_s=22$ dB needs \textbf{$N=5$ Butterworth} but only
-\textbf{$N=3$ Chebyshev}. On the 45 papers' own recurring spec ($0.2\pi$, $0.3\pi$,
-1 dB, 15 dB) it is \mk{$N=6$ against $N=4$}. That single sentence answers "compare"
-better than a paragraph.}
+{\color{sub}\footnotesize The number to quote comes from the 45 papers' own recurring
+spec ($\omega_p=0.2\pi$, $\omega_s=0.3\pi$, 1 dB, 15 dB), asked by 73 Shr, 77 Ch and
+76 Bh: \mk{Butterworth needs $N=6$, Chebyshev only $N=4$}. That single sentence answers
+"compare" better than a paragraph. \added\ The local notes offer a second example,
+$\Omega_p=1$, $\Omega_s=3.33$, $\alpha_p=0.3$ dB, $\alpha_s=22$ dB, and print
+"$n=5$ for butterworth, $n=3$ for chebyshev". \textbf{The Butterworth figure is wrong}:
+the ratio is $157.489/0.071519=2202.05$, its log is $3.3429$, and
+$2\log(3.33)=1.0449$, so $N=3.1992$ and the answer is \mk{4, not 5}. The Chebyshev 3 is
+right. Use the paper-derived example above and this one only with the correction.}
 
 \Q{The design formulas, in the form every paper's specification uses}{\m{core}}
 {\color{sub}\footnotesize \mk{these four lines carry 36 questions}

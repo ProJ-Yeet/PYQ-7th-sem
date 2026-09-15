@@ -374,7 +374,7 @@ $=170$ Hz, stop band attenuation $=16$ dB. Assume sampling frequency of 256 Hz.
   \item $\Omega_p=0.64984$, $\Omega_s=1.01905$, $N=5.3044\Rightarrow\boxed{N=6}$,
         $\Omega_c=0.72729$.
   \item $H_a(s)$, three quadratics, each with constant term $\Omega_c^2=0.52895$:
-  \item[] \[ \frac{0.147944}
+  \item[] \[ \frac{0.147996}
              {(s^2+0.37647s+0.52895)(s^2+1.02854s+0.52895)(s^2+1.40502s+0.52895)} \]
   \item[] \[ H(z)=\frac{0.00057969\,(1+z^{-1})^6}
              {(1-1.31432z^{-1}+0.71490z^{-2})(1-1.05406z^{-1}+0.37532z^{-2})
@@ -382,7 +382,7 @@ $=170$ Hz, stop band attenuation $=16$ dB. Assume sampling frequency of 256 Hz.
   \item Check: $|H(e^{j0.2\pi})|=0.89125$ exactly, $|H(e^{j0.3\pi})|=0.13101\le0.17783$.
         \checkmark
   \item \mk{A textbook difference worth knowing.} Oppenheim places the 3 dB point so the
-        \emph{stopband} is met exactly, giving $\Omega_c=0.76627$ and a different
+        \emph{stopband} is met exactly, giving $\Omega_c=0.766229$ and a different
         (equally valid) $H(z)$. The local formula meets the \emph{passband} exactly, as
         above. \textbf{State which convention you used} and either is right.
   \item 76 Bh's extra mark is the Butterworth/Chebyshev comparison: on this very spec
@@ -753,7 +753,7 @@ using the bilinear transformation method.
         $s=\frac{2}{2}\frac{1-z^{-1}}{1+z^{-1}}=\frac{1-z^{-1}}{1+z^{-1}}$:
   \item[] \[ H(z)=\frac{0.539692\,(1+z^{-1})^2}{1+1.911510z^{-1}+0.927382z^{-2}} \]
   \item \mk{Both denominator coefficients are positive}, which in \S1 never happened.
-        The poles are at $-0.956\pm j0.110$, near $z=-1$: sampling a 20 rad/s filter at
+        The poles are at $-0.956\pm j0.118$, near $z=-1$: sampling a 20 rad/s filter at
         $0.5$ Hz is sampling far below Nyquist, and the filter that results is a
         high-frequency one. \textbf{Say that the sampling rate is inconsistent with the
         analog design} rather than presenting the answer as a good low-pass filter.
@@ -779,7 +779,7 @@ with $w'_c=0.3567\pi$.
   \item[] \[ \alpha=-\frac{\cos\frac{\omega_c+\omega'_c}{2}}
                           {\cos\frac{\omega_c-\omega'_c}{2}}
              =-\frac{\cos(0.3071\pi)}{\cos(0.0496\pi)}
-             =-\frac{0.56928}{0.98788}=\mathbf{-0.57658} \]
+             =-\frac{0.569595}{0.987880}=\mathbf{-0.57658} \]
   \item $|\alpha|<1$ \checkmark, so the map is stable.
   \item Substitute $z^{-1}\to-\dfrac{z^{-1}+\alpha}{1+\alpha z^{-1}}
         =-\dfrac{z^{-1}-0.57658}{1-0.57658z^{-1}}$, multiplying top and bottom by

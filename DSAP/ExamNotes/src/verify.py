@@ -17,16 +17,25 @@ FAIL = []
 OK = [0]
 
 
+def _near(a, b, tol):
+    """Compare two answers to within tol. Handles nested sequences, and
+    complex numbers, which chapter 6 needs for s-plane and z-plane poles:
+    abs() of a complex difference is the modulus, and for two reals that is
+    exactly the old float comparison, so nothing before ch6 changes."""
+    if isinstance(a, (list, tuple)) or isinstance(b, (list, tuple)):
+        if not (isinstance(a, (list, tuple)) and isinstance(b, (list, tuple))):
+            return False
+        return len(a) == len(b) and all(_near(x, y, tol) for x, y in zip(a, b))
+    return abs(complex(a) - complex(b)) <= tol
+
+
 def chk(tag, got, want, tol=1e-9):
     if got is None or want is None:
         same = got is want                 # "aperiodic" is a real answer, not a number
     elif isinstance(want, str) or isinstance(got, str):
         same = got == want                 # a window name is an answer too
-    elif isinstance(want, (list, tuple)) and isinstance(got, (list, tuple)):
-        same = len(got) == len(want) and all(
-            abs(float(a) - float(b)) <= tol for a, b in zip(got, want))
     else:
-        same = abs(float(got) - float(want)) <= tol
+        same = _near(got, want, tol)
     if same:
         OK[0] += 1
     else:
@@ -1202,8 +1211,606 @@ def ch5():
     chk("c5 Remez M=26 against Kaiser M=38", 38 - 26, 12)
 
 
+def ch6():
+    """Assert every order, cut-off, pole, H(s), H(z) and check printed in
+    chapter 6. The expected values below are transcribed from ch6.tex and
+    ch6-num.tex; the recomputation comes from iir.py, so a disagreement fails
+    whichever side is wrong. T is 1 for every bilinear design, because it
+    cancels, and the last block proves that it does."""
+    import cmath
+    import math
+    import iir as IR
+    PI = math.pi
+    cexp = cmath.exp
+
+    def bilin(wp, ws, ap, asb, T=1.0):
+        """(N_exact, N, Op, Os, Oc, b, a) for a bilinear Butterworth design."""
+        Nx, N, Op, Os = IR.butter_order(wp * PI, ws * PI, ap, asb, T)
+        Oc = IR.butter_wc(Op, ap, N)
+        num, den = IR.butter_Hs(Oc, N)
+        b, a = IR.bilinear(num, den, T)
+        return Nx, N, Op, Os, Oc, b, a
+
+    def iinv(wp, ws, ap, asb, T=1.0, scale_T=False):
+        Nx, N, Op, Os = IR.butter_order(wp * PI, ws * PI, ap, asb, T,
+                                        "invariance")
+        Oc = IR.butter_wc(Op, ap, N)
+        num, den = IR.butter_Hs(Oc, N)
+        b, a = IR.impulse_invariance(num, den, T, scale_T)
+        return Nx, N, Op, Os, Oc, b, a
+
+    # ---------------------------------------------------- spec conversions ---
+    # ch6.tex 6.2: "those four phrasings are the same spec four ways"
+    chk("c6 gain 0.89125 -> 1 dB", IR.alpha_from_gain(0.89125), 1.0, 1e-4)
+    chk("c6 gain 0.17783 -> 15 dB", IR.alpha_from_gain(0.17783), 15.0, 1e-3)
+    chk("c6 delta_p 0.11 -> 1.0122 dB",
+        IR.alpha_from_ripple(0.11, "pass"), 1.0122, 1e-4)
+    chk("c6 delta_s 0.21 -> 13.5556 dB",
+        IR.alpha_from_ripple(0.21, "stop"), 13.5556, 1e-4)
+    chk("c6 delta_p 0.17 -> 1.6184 dB",
+        IR.alpha_from_ripple(0.17, "pass"), 1.6184, 1e-4)
+    chk("c6 delta_s 0.27 -> 11.3727 dB",
+        IR.alpha_from_ripple(0.27, "stop"), 11.3727, 1e-4)
+    chk("c6 delta_s 0.22 -> 13.1515 dB",
+        IR.alpha_from_ripple(0.22, "stop"), 13.1515, 1e-4)
+    chk("c6 gain 0.9 -> 0.9151 dB", IR.alpha_from_gain(0.9), 0.9151, 1e-4)
+    chk("c6 gain 0.8 -> 1.9382 dB", IR.alpha_from_gain(0.8), 1.9382, 1e-4)
+    chk("c6 gain 0.6 -> 4.4370 dB", IR.alpha_from_gain(0.6), 4.4370, 1e-4)
+    chk("c6 gain 0.82 -> 1.7237 dB", IR.alpha_from_gain(0.82), 1.7237, 1e-4)
+    chk("c6 gain 0.2 -> 13.9794 dB", IR.alpha_from_gain(0.2), 13.9794, 1e-4)
+    chk("c6 gain 0.18 -> 14.8945 dB", IR.alpha_from_gain(0.18), 14.8945, 1e-4)
+    chk("c6 gain 0.1 -> 20 dB", IR.alpha_from_gain(0.1), 20.0, 1e-4)
+    chk("c6 gain 0.707 -> 3.0116 dB", IR.alpha_from_gain(0.707), 3.0116, 1e-4)
+    # section 1.1, the three specifications printed in hertz
+    chk("c6 76Ch 1.2 kHz at 8 kHz", IR.w_from_hz(1200, 8000) / PI, 0.3, 1e-12)
+    chk("c6 76Ch 2.5 kHz at 8 kHz", IR.w_from_hz(2500, 8000) / PI, 0.625, 1e-12)
+    chk("c6 82Bh 350 Hz at 5 kHz", IR.w_from_hz(350, 5000) / PI, 0.14, 1e-12)
+    chk("c6 82Bh 1000 Hz at 5 kHz", IR.w_from_hz(1000, 5000) / PI, 0.4, 1e-12)
+    chk("c6 78Bh 200 Hz at 5 kHz", IR.w_from_hz(200, 5000) / PI, 0.08, 1e-12)
+    chk("c6 78Bh 500 Hz at 5 kHz", IR.w_from_hz(500, 5000) / PI, 0.2, 1e-12)
+
+    # ------------------------------------- the worked example, 79 Bh family ---
+    ap = IR.alpha_from_ripple(0.11, "pass")
+    asb = IR.alpha_from_ripple(0.21, "stop")
+    Nx, N, Op, Os, Oc, b, a = bilin(0.25, 0.55, ap, asb)
+    chk("c6 79Bh 10^0.1ap-1", 10 ** (0.1 * ap) - 1, 0.262467, 1e-6)
+    chk("c6 79Bh 10^0.1as-1", 10 ** (0.1 * asb) - 1, 21.675737, 1e-5)
+    chk("c6 79Bh Omega_p", Op, 0.828427, 1e-6)
+    chk("c6 79Bh Omega_s", Os, 2.341699, 1e-6)
+    chk("c6 79Bh Os/Op", Os / Op, 2.82668, 1e-5)
+    chk("c6 79Bh N exact", Nx, 2.1239, 1e-4)
+    chk("c6 79Bh N", N, 3)
+    chk("c6 79Bh (0.262467)^(1/6)", 0.262467 ** (1 / 6.), 0.800164, 1e-6)
+    chk("c6 79Bh Omega_c", Oc, 1.035321, 1e-6)
+    chk("c6 79Bh Omega_c^2", Oc ** 2, 1.071891, 1e-6)
+    chk("c6 79Bh Omega_c^3", Oc ** 3, 1.109751, 1e-6)
+    poles = IR.butter_poles(Oc, 3)
+    chk("c6 79Bh pole 120deg", poles[0], complex(-0.517661, 0.896615), 1e-6)
+    chk("c6 79Bh pole 180deg", poles[1], complex(-1.035321, 0.0), 1e-6)
+    chk("c6 79Bh pole 240deg", poles[2], complex(-0.517661, -0.896615), 1e-6)
+    # the two substituted factors, printed in step 5
+    chk("c6 79Bh linear factor", [2 + Oc, Oc - 2], [3.035321, -0.964679], 1e-6)
+    chk("c6 79Bh quad factor",
+        [4 + 2 * Oc + Oc ** 2, -8 + 2 * Oc ** 2, 4 - 2 * Oc + Oc ** 2],
+        [7.142534, -5.856219, 3.001248], 1e-6)
+    prod = IR.pmul([complex(2 + Oc), complex(Oc - 2)],
+                   [complex(4 + 2 * Oc + Oc ** 2), complex(-8 + 2 * Oc ** 2),
+                    complex(4 - 2 * Oc + Oc ** 2)])
+    chk("c6 79Bh denominator product", IR.preal(prod),
+        [21.679886, -24.665755, 14.759120, -2.895239], 1e-5)
+    chk("c6 79Bh K", Oc ** 3 / prod[0].real, 0.051188, 1e-6)
+    chk("c6 79Bh H(z) numerator", b,
+        [0.051188, 0.153564, 0.153564, 0.051188], 1e-6)
+    chk("c6 79Bh H(z) denominator", a,
+        [1.0, -1.137725, 0.680775, -0.133545], 1e-6)
+    chk("c6 79Bh sum of a", sum(a), 0.409505, 1e-6)
+    chk("c6 79Bh sum of b", sum(b), 0.409504, 1e-6)
+    chk("c6 79Bh |H(0)|", abs(IR.freqz(b, a, 0.0)), 1.0, 1e-9)
+    chk("c6 79Bh |H(wp)|", abs(IR.freqz(b, a, 0.25 * PI)), 0.8900, 1e-4)
+    chk("c6 79Bh |H(ws)|", abs(IR.freqz(b, a, 0.55 * PI)), 0.0861, 1e-4)
+    # step 7, the low pass to high pass conversion
+    chk("c6 79Bh cos(0.35pi)", math.cos(0.35 * PI), 0.45399, 1e-5)
+    chk("c6 79Bh cos(0.10pi)", math.cos(0.10 * PI), 0.95106, 1e-5)
+    hb, ha, al = IR.hp_from_lp(b, a, 0.25 * PI, 0.45 * PI)
+    chk("c6 79Bh LP->HP alpha", al, -0.47735, 1e-5)
+    chk("c6 79Bh HP numerator", hb,
+        [0.276238, -0.828713, 0.828713, -0.276238], 1e-6)
+    chk("c6 79Bh HP denominator", ha,
+        [1.0, -0.683740, 0.457627, -0.068533], 1e-6)
+    chk("c6 79Bh HP kills DC", abs(IR.freqz(hb, ha, 0.0)), 0.0, 1e-9)
+    chk("c6 79Bh HP at new edge", abs(IR.freqz(hb, ha, 0.45 * PI)), 0.8900, 1e-4)
+
+    # ------------------------------------------ the three section-1 tables ---
+    # (papers, wp/pi, ws/pi, alpha_p, alpha_s, N, Omega_c, denominator tail)
+    # alpha is the EXACT value wherever the paper states a gain or a ripple;
+    # the table prints it rounded, and those rounded figures are asserted in
+    # the spec-conversion block above. Designing from the rounded dB instead
+    # moves the fifth decimal of every coefficient.
+    G, R = IR.alpha_from_gain, IR.alpha_from_ripple
+    TAB = [
+        ("80Bh/81Bh", 0.5, 0.75, G(0.9), G(0.2), 3, 2.54674,
+         [0.439377, 0.384500, 0.041621]),
+        ("81Ba", 0.35, 0.70, G(0.6), G(0.1), 2, 1.06140,
+         [-0.706985, 0.261356]),
+        ("75Ch/70Ch/82Ba", 0.2, 0.6, G(0.8), G(0.2), 2, 0.75037,
+         [-1.028191, 0.365076]),
+        ("78Ch", 0.22, 0.58, G(0.82), G(0.18), 2, 0.86185,
+         [-0.907246, 0.321026]),
+        ("80Ba", 0.26, 0.58, 0.99, 14.99, 3, 1.08611,
+         [-1.063382, 0.636275, -0.121138]),
+        ("79Ba", 0.24, 0.57, 0.98, 14.95, 3, 0.99560,
+         [-1.197105, 0.718611, -0.144059]),
+        ("79Ch/72Ash", 0.24, 0.57, 1.0, 14.9, 3, 0.99186,
+         [-1.202755, 0.722318, -0.145088]),
+        ("73Bh", 0.25, 0.59, 0.99, 14.85, 3, 1.03961,
+         [-1.131372, 0.676848, -0.132453]),
+        ("71Bh", 0.25, 0.55, 1.0, 15.0, 3, 1.03767,
+         [-1.134251, 0.678624, -0.132947]),
+        ("72Ka", 0.25, 0.45, 1.0, 15.0, 4, 0.98086,
+         [-1.647588, 1.356278, -0.525238, 0.083384]),
+        ("71Shr", 0.2, 0.4, 1.0, 15.0, 3, 0.81397,
+         [-1.482585, 0.929644, -0.203325]),
+        ("73Ma", 0.2, 0.5, 0.98, 20.0, 3, 0.81704,
+         [-1.477568, 0.925510, -0.202144]),
+        ("76Ash", 0.22, 0.54, R(0.11, "pass"), R(0.22, "stop"), 2, 1.00598,
+         [-0.760561, 0.275748]),
+        ("74Ash", 0.27, 0.58, R(0.11, "pass"), R(0.21, "stop"), 3, 1.12856,
+         [-1.002598, 0.602240, -0.111573]),
+        ("68Bh", 0.25, 0.45, R(0.17, "pass"), R(0.27, "stop"), 3, 0.94579,
+         [-1.273110, 0.770048, -0.158361]),
+        ("75Ash/74Bh", 0.15, 0.6, 0.7, 14.0, 2, 0.74249,
+         [-1.036997, 0.368530]),
+    ]
+    for tag, wp, ws, ap_, as_, N_, Oc_, den in TAB:
+        Nx, N, Op, Os, Oc, b, a = bilin(wp, ws, ap_, as_)
+        chk("c6 %s N" % tag, N, N_)
+        chk("c6 %s Omega_c" % tag, Oc, Oc_, 5e-5)
+        chk("c6 %s denominator" % tag, a[1:], den, 5e-6)
+        # the caption claims the numerator is K times the binomials
+        binom = [1.0]
+        for _ in range(N):
+            binom = [x + y for x, y in zip(binom + [0.0], [0.0] + binom)]
+        chk("c6 %s numerator is K*binomials" % tag, b,
+            [b[0] * c for c in binom], 1e-12)
+        chk("c6 %s K = sum(a)/2^N" % tag, b[0], sum(a) / 2.0 ** N, 1e-12)
+        chk("c6 %s |H(0)| = 1" % tag, abs(IR.freqz(b, a, 0.0)), 1.0, 1e-9)
+        chk("c6 %s passband met exactly" % tag,
+            abs(IR.freqz(b, a, wp * PI)), 10 ** (-ap_ / 20.0), 1e-6)
+        chk("c6 %s stopband cleared" % tag,
+            1 if abs(IR.freqz(b, a, ws * PI)) <= 10 ** (-as_ / 20.0) + 1e-9
+            else 0, 1)
+
+    # ------------------------------------------------- 1.1, specs in hertz ---
+    Nx, N, Op, Os, Oc, b, a = bilin(0.3, 0.625, 1.0, 40.0)
+    chk("c6 76Ch Omega_p", Op, 1.01905, 1e-5)
+    chk("c6 76Ch Omega_s", Os, 2.99321, 1e-5)
+    chk("c6 76Ch N exact", Nx, 4.9010, 1e-4)
+    chk("c6 76Ch N", N, 5)
+    chk("c6 76Ch Omega_c", Oc, 1.16648, 1e-5)
+    chk("c6 76Ch Omega_c^2", Oc ** 2, 1.360683, 1e-6)
+    secs = sorted(tuple(round(v, 5) for v in s[:2])
+                  for s in IR.sections(IR.butter_poles(Oc, N)))
+    chk("c6 76Ch real pole section", list(secs[0]), [1.16648, 1.0], 1e-5)
+    chk("c6 76Ch quad section 1", list(secs[1]), [1.36068, 0.72093], 1e-5)
+    chk("c6 76Ch quad section 2", list(secs[2]), [1.36068, 1.88741], 1e-5)
+    chk("c6 76Ch K", b[0], 0.010975, 1e-6)
+    zs = sorted(tuple(round(v, 5) for v in s[1:]) for s in IR.zsections(a))
+    chk("c6 76Ch z-cascade 1", list(zs[0]), [-0.77598, 0.57608], 5e-5)
+    chk("c6 76Ch z-cascade 2", list(zs[1]), [-0.57782, 0.17359], 5e-5)
+    chk("c6 76Ch z-cascade 3", list(zs[2]), [-0.26323], 5e-5)
+    chk("c6 76Ch cascade multiplies back",
+        IR.check_cascade(a, IR.zsections(a)), a, 1e-9)
+    chk("c6 76Ch |H(wp)|", abs(IR.freqz(b, a, 0.3 * PI)), 0.89125, 1e-5)
+    chk("c6 76Ch |H(ws)|", abs(IR.freqz(b, a, 0.625 * PI)), 0.00899, 1e-5)
+
+    Nx, N, Op, Os, Oc, b, a = bilin(0.14, 0.4, 3.0, 10.0)
+    chk("c6 82Bh Omega_p", Op, 0.44705, 1e-5)
+    chk("c6 82Bh Omega_s", Os, 1.45309, 1e-5)
+    chk("c6 82Bh N exact", Nx, 0.9340, 1e-4)
+    chk("c6 82Bh N", N, 1)
+    chk("c6 82Bh Omega_c", Oc, 0.44812, 1e-5)
+    chk("c6 82Bh H(z)", [b[0], a[1]], [0.183045, -0.633910], 1e-6)
+    chk("c6 82Bh |H(wp)|", abs(IR.freqz(b, a, 0.14 * PI)), 0.70795, 1e-5)
+    chk("c6 82Bh 3 dB point", 10 ** (-3 / 20.), 0.70795, 1e-5)
+
+    # 70 Bh: the stopband edge is above Nyquist, so the design is impossible
+    wp70, ws70 = IR.w_from_hz(120, 256), IR.w_from_hz(170, 256)
+    chk("c6 70Bh wp/pi", wp70 / PI, 0.9375, 1e-9)
+    chk("c6 70Bh ws/pi", ws70 / PI, 1.3281, 1e-4)
+    chk("c6 70Bh ws exceeds pi", 1 if ws70 > PI else 0, 1)
+    chk("c6 70Bh tan(ws/2) is negative", 1 if math.tan(ws70 / 2) < 0 else 0, 1)
+    try:
+        IR.butter_order(wp70, ws70, 1.0, 16.0, 1 / 256.)
+        chk("c6 70Bh must be rejected", 0, 1)
+    except ValueError:
+        chk("c6 70Bh must be rejected", 1, 1)
+    chk("c6 70Bh aliases to 86 Hz", 256 - 170, 86)
+    chk("c6 70Bh alias sits below the passband edge", 1 if 86 < 120 else 0, 1)
+    Nx, N, Op, Os = IR.butter_order(2 * PI * 120, 2 * PI * 170, 1.0, 16.0,
+                                    1.0, "bilinear", warp=False)
+    chk("c6 70Bh analog Omega_p", Op, 753.98, 1e-2)
+    chk("c6 70Bh analog Omega_s", Os, 1068.14, 1e-2)
+    chk("c6 70Bh analog N exact", Nx, 7.19, 5e-3)
+    chk("c6 70Bh analog N", N, 8)
+    chk("c6 70Bh analog Omega_c", IR.butter_wc(Op, 1.0, N), 820.42, 1e-2)
+
+    # ----------------------------------------- 1.2, the textbook filter x3 ---
+    Nx, N, Op, Os, Oc, b, a = bilin(0.2, 0.3, 1.0, 15.0)
+    chk("c6 73Shr Omega_p", Op, 0.64984, 1e-5)
+    chk("c6 73Shr Omega_s", Os, 1.01905, 1e-5)
+    chk("c6 73Shr N exact", Nx, 5.3044, 1e-4)
+    chk("c6 73Shr N", N, 6)
+    chk("c6 73Shr Omega_c", Oc, 0.72729, 1e-5)
+    chk("c6 73Shr Omega_c^2", Oc ** 2, 0.528952, 1e-6)
+    chk("c6 73Shr H(s) gain", Oc ** 6, 0.147996, 1e-6)
+    secs = sorted(tuple(round(v, 5) for v in s[:2])
+                  for s in IR.sections(IR.butter_poles(Oc, N)))
+    chk("c6 73Shr section 1", list(secs[0]), [0.52895, 0.37647], 1e-5)
+    chk("c6 73Shr section 2", list(secs[1]), [0.52895, 1.02854], 1e-5)
+    chk("c6 73Shr section 3", list(secs[2]), [0.52895, 1.40502], 1e-5)
+    chk("c6 73Shr K", b[0], 0.00057969, 1e-8)
+    zs = sorted(tuple(round(v, 5) for v in s[1:]) for s in IR.zsections(a))
+    chk("c6 73Shr z-cascade 1", list(zs[0]), [-1.31432, 0.71490], 5e-5)
+    chk("c6 73Shr z-cascade 2", list(zs[1]), [-1.05406, 0.37532], 5e-5)
+    chk("c6 73Shr z-cascade 3", list(zs[2]), [-0.94592, 0.23422], 5e-5)
+    chk("c6 73Shr |H(wp)|", abs(IR.freqz(b, a, 0.2 * PI)), 0.89125, 1e-5)
+    chk("c6 73Shr |H(ws)|", abs(IR.freqz(b, a, 0.3 * PI)), 0.13101, 1e-5)
+    # the textbook's other convention, quoted in the notes as an alternative
+    chk("c6 73Shr stopband-exact Omega_c",
+        IR.butter_wc(Op, 1.0, 6, Os, 15.0, edge="stop"), 0.766229, 1e-6)
+    # and the Chebyshev order on the same spec, which is 76 Bh's comparison
+    chk("c6 73Shr Chebyshev needs only N=4",
+        IR.cheb_order(0.2 * PI, 0.3 * PI, 1.0, 15.0)[1], 4)
+
+    # --------------------------------- 1.3, where the arithmetic collapses ---
+    # 73 Ch: 0.707 is 1/sqrt2, so the passband edge IS the 3 dB point
+    chk("c6 73Ch Omega_p is exactly 2", 2 * math.tan(PI / 4), 2.0, 1e-12)
+    chk("c6 73Ch Omega_s", 2 * math.tan(3 * PI / 8), 4.82843, 1e-5)
+    Nx, N, Op, Os, Oc, b, a = bilin(0.5, 0.75, IR.alpha_from_gain(0.707),
+                                    IR.alpha_from_gain(0.2))
+    chk("c6 73Ch N exact", Nx, 1.8026, 1e-4)
+    chk("c6 73Ch N", N, 2)
+    # the exact answer printed in the notes, from Omega_c = 2 exactly
+    Kx = 1.0 / (2 + math.sqrt(2))
+    a2x = (2 - math.sqrt(2)) / (2 + math.sqrt(2))
+    chk("c6 73Ch exact K", Kx, 0.292893, 1e-6)
+    chk("c6 73Ch exact z^-2 coefficient", a2x, 0.171573, 1e-6)
+    numx, denx = IR.butter_Hs(2.0, 2)
+    bx, ax = IR.bilinear(numx, denx, 1.0)
+    chk("c6 73Ch exact numerator", bx, [Kx, 2 * Kx, Kx], 1e-9)
+    chk("c6 73Ch exact z^-1 term vanishes", ax[1], 0.0, 1e-12)
+    chk("c6 73Ch exact denominator", ax, [1.0, 0.0, a2x], 1e-9)
+    # taking 0.707 literally leaves a residue, which is rounding not a term
+    chk("c6 73Ch literal 0.707 Omega_c", Oc, 1.99970, 1e-5)
+    chk("c6 73Ch literal residue", a[1], -0.000177, 1e-6)
+    chk("c6 73Ch residue is negligible", 1 if abs(a[1]) < 1e-3 else 0, 1)
+
+    # 66 Ma, the largest filter in the chapter
+    Nx, N, Op, Os, Oc, b, a = bilin(0.3, 0.4, 1.0122, 13.5556)
+    chk("c6 66Ma Omega_p", Op, 1.01905, 1e-5)
+    chk("c6 66Ma Omega_s", Os, 1.45309, 1e-5)
+    chk("c6 66Ma N exact", Nx, 6.2199, 1e-4)
+    chk("c6 66Ma N", N, 7)
+    chk("c6 66Ma Omega_c", Oc, 1.12122, 1e-5)
+    chk("c6 66Ma Omega_c^2", Oc ** 2, 1.257133, 1e-6)
+    chk("c6 66Ma 2N poles of |H|^2", 2 * N, 14)
+    chk("c6 66Ma pole spacing pi/7 in degrees", 180.0 / 7, 25.71, 5e-3)
+    secs = sorted(round(s[1], 5) for s in IR.sections(IR.butter_poles(Oc, N))
+                  if len(s) == 3)
+    chk("c6 66Ma quad b coefficients", secs, [0.49899, 1.39814, 2.02037], 1e-5)
+    chk("c6 66Ma K", b[0], 0.0015237, 1e-7)
+    zs = sorted(tuple(round(v, 5) for v in s[1:]) for s in IR.zsections(a))
+    chk("c6 66Ma z-cascade 1", list(zs[0]), [-0.87700, 0.68091], 5e-5)
+    chk("c6 66Ma z-cascade 2", list(zs[1]), [-0.68117, 0.30557], 5e-5)
+    chk("c6 66Ma z-cascade 3", list(zs[2]), [-0.59000, 0.13083], 5e-5)
+    chk("c6 66Ma z-cascade real", list(zs[3]), [-0.28155], 5e-5)
+    chk("c6 66Ma |H(wp)|", abs(IR.freqz(b, a, 0.3 * PI)), 0.8900, 1e-4)
+    chk("c6 66Ma |H(ws)|", abs(IR.freqz(b, a, 0.4 * PI)), 0.16074, 1e-5)
+
+    # ----------------------------------------------- 2, impulse invariance ---
+    # the comparison pair: identical specification, the two methods
+    NxB, NB, OpB, OsB, OcB, bB, aB = bilin(0.15, 0.6, 0.7, 14.0)
+    NxI, NI, OpI, OsI, OcI, bI, aI = iinv(0.15, 0.6, 0.7, 14.0)
+    chk("c6 pair 10^0.07-1", 10 ** 0.07 - 1, 0.174898, 1e-6)
+    chk("c6 pair 10^1.4-1", 10 ** 1.4 - 1, 24.118864, 1e-6)
+    chk("c6 pair bilinear Omega_p", OpB, 0.480158, 1e-6)
+    chk("c6 pair bilinear Omega_s", OsB, 2.752764, 1e-6)
+    chk("c6 pair bilinear ratio", OsB / OpB, 5.733043, 1e-6)
+    chk("c6 pair bilinear N exact", NxB, 1.4106, 1e-4)
+    chk("c6 pair bilinear Omega_c", OcB, 0.742485, 1e-6)
+    chk("c6 pair invariance Omega_p", OpI, 0.471239, 1e-6)
+    chk("c6 pair invariance Omega_s", OsI, 1.884956, 1e-6)
+    chk("c6 pair invariance ratio", OsI / OpI, 4.0, 1e-9)
+    chk("c6 pair invariance N exact", NxI, 1.7769, 1e-4)
+    chk("c6 pair invariance Omega_c", OcI, 0.728694, 1e-6)
+    chk("c6 pair both N=2", [NB, NI], [2, 2])
+    chk("c6 pair bilinear poles", IR.butter_poles(OcB, 2)[0],
+        complex(-0.52502, 0.52502), 1e-5)
+    chk("c6 pair invariance poles", IR.butter_poles(OcI, 2)[0],
+        complex(-0.51526, 0.51526), 1e-5)
+    chk("c6 pair bilinear H(s) gain", OcB ** 2, 0.551284, 1e-6)
+    chk("c6 pair invariance H(s) gain", OcI ** 2, 0.530995, 1e-6)
+    chk("c6 pair bilinear H(z)", [bB[0]] + aB[1:],
+        [0.082883, -1.036997, 0.368530], 1e-6)
+    chk("c6 pair invariance H(z)", bI + aI[1:],
+        [0.0, 0.303336, -1.039570, 0.356818], 1e-6)
+    numI, denI = IR.butter_Hs(OcI, 2)
+    pI, AI = IR.residues(numI, denI)
+    chk("c6 pair residues are pure imaginary",
+        sorted(abs(x.real) for x in AI), [0.0, 0.0], 1e-9)
+    chk("c6 pair residue magnitude", abs(AI[0]), 0.51526, 1e-5)
+    zp = sorted((round(abs(cexp(p).real), 5), round(abs(cexp(p).imag), 5))
+                for p in pI)[0]
+    chk("c6 pair z poles", list(zp), [0.51979, 0.29435], 1e-5)
+    # the three rows that are the whole comparison
+    need_p, need_s = 10 ** (-0.7 / 20.), 10 ** (-14 / 20.)
+    chk("c6 pair spec at wp", need_p, 0.922571, 1e-6)
+    chk("c6 pair spec at ws", need_s, 0.199526, 1e-6)
+    chk("c6 pair bilinear |H(wp)|", abs(IR.freqz(bB, aB, 0.15 * PI)),
+        0.922571, 1e-6)
+    chk("c6 pair bilinear |H(ws)|", abs(IR.freqz(bB, aB, 0.6 * PI)),
+        0.072559, 1e-6)
+    chk("c6 pair bilinear |H(0)|", abs(IR.freqz(bB, aB, 0.0)), 1.0, 1e-9)
+    chk("c6 pair invariance |H(wp)|", abs(IR.freqz(bI, aI, 0.15 * PI)),
+        0.898611, 1e-6)
+    chk("c6 pair invariance |H(ws)|", abs(IR.freqz(bI, aI, 0.6 * PI)),
+        0.191753, 1e-6)
+    chk("c6 pair invariance |H(0)|", abs(IR.freqz(bI, aI, 0.0)), 0.956147, 1e-6)
+    # the claims the notes make about those numbers
+    chk("c6 pair invariance MISSES the passband",
+        1 if abs(IR.freqz(bI, aI, 0.15 * PI)) < need_p else 0, 1)
+    chk("c6 pair invariance scrapes the stopband",
+        1 if need_s * 0.9 < abs(IR.freqz(bI, aI, 0.6 * PI)) <= need_s else 0, 1)
+    chk("c6 pair bilinear clears the stopband by about 3x",
+        1 if abs(IR.freqz(bB, aB, 0.6 * PI)) * 2.5 < need_s else 0, 1)
+    chk("c6 pair invariance b0 is zero", bI[0], 0.0, 1e-12)
+
+    # 81 Ch / 80 Ch / 69 Bh
+    Nx, N, Op, Os, Oc, b, a = iinv(0.25, 0.55, 0.5, 15.0)
+    chk("c6 81Ch Omega_p", Op, 0.78540, 1e-5)
+    chk("c6 81Ch Omega_s", Os, 1.72788, 1e-5)
+    chk("c6 81Ch N exact", Nx, 3.5039, 1e-4)
+    chk("c6 81Ch N", N, 4)
+    chk("c6 81Ch Omega_c", Oc, 1.02161, 1e-5)
+    chk("c6 81Ch Omega_c^2", Oc ** 2, 1.04369, 1e-5)
+    secs = sorted(round(s[1], 5) for s in IR.sections(IR.butter_poles(Oc, N)))
+    chk("c6 81Ch section b coefficients", secs, [0.78191, 1.88770], 1e-5)
+    chk("c6 81Ch numerator", b, [0.0, 0.088750, 0.174840, 0.023521], 1e-6)
+    chk("c6 81Ch denominator", a,
+        [1.0, -1.513201, 1.180022, -0.449386, 0.069280], 1e-6)
+    chk("c6 81Ch |H(wp)|", abs(IR.freqz(b, a, 0.25 * PI)), 0.94338, 1e-5)
+    chk("c6 81Ch spec at wp", 10 ** (-0.5 / 20.), 0.94406, 1e-5)
+    chk("c6 81Ch misses the passband",
+        1 if abs(IR.freqz(b, a, 0.25 * PI)) < 10 ** (-0.5 / 20.) else 0, 1)
+    chk("c6 81Ch |H(ws)|", abs(IR.freqz(b, a, 0.55 * PI)), 0.11982, 1e-5)
+    chk("c6 81Ch |H(0)| is ABOVE 1", abs(IR.freqz(b, a, 0.0)), 1.00139, 1e-5)
+
+    # 70 Asa
+    Nx, N, Op, Os, Oc, b, a = iinv(0.2, 0.35, 0.5, 15.0)
+    chk("c6 70Asa Omega_p", Op, 0.62832, 1e-5)
+    chk("c6 70Asa Omega_s", Os, 1.09956, 1e-5)
+    chk("c6 70Asa N exact", Nx, 4.9367, 1e-4)
+    chk("c6 70Asa N", N, 5)
+    chk("c6 70Asa Omega_c", Oc, 0.77542, 1e-5)
+    secs = sorted(round(s[1], 5) for s in IR.sections(IR.butter_poles(Oc, N))
+                  if len(s) == 3)
+    chk("c6 70Asa quad b coefficients", secs, [0.47924, 1.25466], 1e-5)
+    chk("c6 70Asa Omega_c^2", Oc ** 2, 0.60128, 1e-5)
+    chk("c6 70Asa numerator", b,
+        [0.0, 0.0069166, 0.044472, 0.027021, 0.0015381], 1e-6)
+    chk("c6 70Asa denominator", a,
+        [1.0, -2.584442, 2.999693, -1.857044, 0.603063, -0.081324], 1e-6)
+    chk("c6 70Asa |H(wp)|", abs(IR.freqz(b, a, 0.2 * PI)), 0.94403, 1e-5)
+    chk("c6 70Asa |H(ws)|", abs(IR.freqz(b, a, 0.35 * PI)), 0.17189, 1e-5)
+    chk("c6 70Asa |H(0)|", abs(IR.freqz(b, a, 0.0)), 1.00002, 1e-5)
+
+    # 78 Bh / 72 Ch: the one paper where T != 1, so the convention bites
+    T = 1 / 5000.
+    Nx, N, Op, Os, Oc, b, a = iinv(0.08, 0.2, 5.0, 12.0, T)
+    _, _, _, _, _, bT, aT = iinv(0.08, 0.2, 5.0, 12.0, T, scale_T=True)
+    chk("c6 78Bh Omega_p is 2pi*200", Op, 2 * PI * 200, 1e-6)
+    chk("c6 78Bh Omega_p", Op, 1256.64, 1e-2)
+    chk("c6 78Bh Omega_s", Os, 3141.59, 1e-2)
+    chk("c6 78Bh 10^0.5-1", 10 ** 0.5 - 1, 2.1623, 1e-4)
+    chk("c6 78Bh 10^1.2-1", 10 ** 1.2 - 1, 14.849, 1e-3)
+    chk("c6 78Bh ratio", (10 ** 1.2 - 1) / (10 ** 0.5 - 1), 6.8672, 1e-4)
+    chk("c6 78Bh N exact", Nx, 1.0514, 1e-4)
+    chk("c6 78Bh N", N, 2)
+    chk("c6 78Bh Omega_c", Oc, 1036.29, 1e-2)
+    chk("c6 78Bh poles", IR.butter_poles(Oc, 2)[0],
+        complex(-732.769, 732.769), 1e-3)
+    pk, Ak = IR.residues(*IR.butter_Hs(Oc, 2))
+    chk("c6 78Bh residue magnitude", abs(Ak[0]), 732.769, 1e-3)
+    chk("c6 78Bh z pole", cexp(pk[0] * T), complex(0.854421, -0.126123), 1e-6)
+    chk("c6 78Bh Proakis numerator", b[1], 184.838, 1e-3)
+    chk("c6 78Bh Oppenheim numerator", bT[1], 0.0369676, 1e-7)
+    chk("c6 78Bh scaling is exactly T", bT[1] / b[1], T, 1e-12)
+    chk("c6 78Bh denominator", a, [1.0, -1.708842, 0.745942], 1e-6)
+    chk("c6 78Bh Proakis DC gain is about 1/T",
+        abs(IR.freqz(b, a, 0.0)), 4982.1, 1e-1)
+    chk("c6 78Bh scaled |H(wp)|", abs(IR.freqz(bT, aT, 0.08 * PI)), 0.5633, 1e-4)
+    chk("c6 78Bh spec at wp", 10 ** (-5 / 20.), 0.5623, 1e-4)
+    chk("c6 78Bh passband met by a hair",
+        1 if abs(IR.freqz(bT, aT, 0.08 * PI)) >= 10 ** (-5 / 20.) else 0, 1)
+    chk("c6 78Bh scaled |H(ws)|", abs(IR.freqz(bT, aT, 0.2 * PI)), 0.1114, 1e-4)
+    chk("c6 78Bh spec at ws", 10 ** (-12 / 20.), 0.2512, 1e-4)
+
+    # 67 Mng: H(s) is given, and it is a Butterworth N=3 with Omega_c = 1.3
+    ps = [complex(-1.3, 0.0), 1.3 * cexp(complex(0, 2 * PI / 3)),
+          1.3 * cexp(complex(0, -2 * PI / 3))]
+    chk("c6 67Mng pole 1.3e^{j2pi/3}", ps[1], complex(-0.65, 1.12583), 1e-5)
+    chk("c6 67Mng is Butterworth N=3 Omega_c=1.3",
+        sorted((round(p.real, 5), round(p.imag, 5))
+               for p in IR.butter_poles(1.3, 3)),
+        sorted((round(p.real, 5), round(p.imag, 5)) for p in ps), 1e-5)
+    den = IR.preal(IR.from_roots(ps))
+    chk("c6 67Mng H(s) denominator", den, [2.197, 3.38, 2.6, 1.0], 1e-6)
+    chk("c6 67Mng 1.3^3", 1.3 ** 3, 2.197, 1e-9)
+    pk, Ak = IR.residues([1.0], den)
+    Ad = dict((round(p.real, 5), A) for p, A in zip(pk, Ak))
+    chk("c6 67Mng real residue", Ad[-1.3].real, 0.591716, 1e-6)
+    chk("c6 67Mng complex residue", abs(Ad[-0.65]),
+        abs(complex(-0.295858, 0.170814)), 1e-6)
+    chk("c6 67Mng residues sum to zero", abs(sum(Ak)), 0.0, 1e-9)
+    chk("c6 67Mng e^{-1.3}", math.exp(-1.3), 0.272532, 1e-6)
+    b, a = IR.impulse_invariance([1.0], den, 1.0)
+    chk("c6 67Mng numerator", b, [0.0, 0.189281, 0.081154], 1e-6)
+    chk("c6 67Mng denominator", a, [1.0, -0.721935, 0.395008, -0.074274], 1e-6)
+    # the parallel sections the block diagram is drawn from
+    zq = cexp(complex(-0.65, 1.12583))
+    chk("c6 67Mng quad section coefficients",
+        [-(zq + zq.conjugate()).real, (zq * zq.conjugate()).real],
+        [-0.449403, 0.272532], 1e-5)
+
+    # ------------------------------------------------------- 3, Chebyshev ---
+    ap72 = IR.alpha_from_gain(0.707)
+    Nx, N, Op, Os = IR.cheb_order(0.2 * PI, 0.5 * PI, ap72, 20.0)
+    eps = IR.cheb_eps(ap72)
+    alpha, a_, b_ = IR.cheb_ab(eps, N)
+    chk("c6 72Ma Omega_p", Op, 0.64984, 1e-5)
+    chk("c6 72Ma Omega_s is exactly 2", Os, 2.0, 1e-12)
+    chk("c6 72Ma epsilon", eps, 1.00030, 1e-5)
+    chk("c6 72Ma N exact", Nx, 1.6694, 1e-4)
+    chk("c6 72Ma N", N, 2)
+    g = math.sqrt((10 ** 2 - 1) / (10 ** (0.1 * ap72) - 1))
+    chk("c6 72Ma cosh argument", g, 9.94687, 1e-5)
+    chk("c6 72Ma Os/Op", Os / Op, 3.07769, 1e-5)
+    chk("c6 72Ma ln form of cosh-1(g)", g + math.sqrt(g * g - 1), 19.8433, 1e-3)
+    chk("c6 72Ma cosh-1(g)", math.acosh(g), 2.98787, 1e-5)
+    r = Os / Op
+    chk("c6 72Ma ln form of cosh-1(r)", r + math.sqrt(r * r - 1), 5.9884, 1e-3)
+    chk("c6 72Ma cosh-1(r)", math.acosh(r), 1.78982, 1e-5)
+    chk("c6 72Ma alpha", alpha, 2.41370, 1e-5)
+    chk("c6 72Ma a", a_, 0.45497, 1e-5)
+    chk("c6 72Ma b", b_, 1.09864, 1e-5)
+    chk("c6 72Ma a*Omega_c", a_ * Op, 0.29566, 1e-5)
+    chk("c6 72Ma b*Omega_c", b_ * Op, 0.71394, 1e-5)
+    chk("c6 72Ma ellipse is taller than wide", 1 if b_ > 1 > a_ else 0, 1)
+    cps = IR.cheb_poles(Op, eps, N)
+    chk("c6 72Ma poles", cps[0], complex(-0.20906, 0.50483), 1e-5)
+    cn, cd = IR.cheb_Hs(Op, eps, N)
+    chk("c6 72Ma H(s) denominator", cd, [0.298560, 0.418125, 1.0], 1e-6)
+    chk("c6 72Ma |s_k|^2", abs(cps[0]) ** 2, 0.298560, 1e-6)
+    chk("c6 72Ma sqrt(1+eps^2)", math.sqrt(1 + eps ** 2), 1.41443, 1e-5)
+    chk("c6 72Ma K", cn[0], 0.211082, 1e-6)
+    chk("c6 72Ma K is |s|^2 over sqrt(1+eps^2)",
+        cn[0], abs(cps[0]) ** 2 / math.sqrt(1 + eps ** 2), 1e-12)
+    bz, az = IR.bilinear(cn, cd, 1.0)
+    chk("c6 72Ma H(z)", [bz[0]] + az[1:], [0.041108, -1.441705, 0.674282], 1e-6)
+    chk("c6 72Ma |H(wp)|", abs(IR.freqz(bz, az, 0.2 * PI)), 0.70700, 1e-5)
+    chk("c6 72Ma |H(ws)|", abs(IR.freqz(bz, az, 0.5 * PI)), 0.05563, 1e-5)
+    chk("c6 72Ma |H(0)| is NOT 1", abs(IR.freqz(bz, az, 0.0)), 0.70700, 1e-5)
+    chk("c6 72Ma even-order DC dip is 1/sqrt(1+eps^2)",
+        abs(IR.freqz(bz, az, 0.0)), 1 / math.sqrt(1 + eps ** 2), 1e-5)
+    chk("c6 72Ma Butterworth would need N=3",
+        IR.butter_order(0.2 * PI, 0.5 * PI, ap72, 20.0)[1], 3)
+
+    # 74 Ma and 70 Ma
+    Nx, N, Op, Os = IR.cheb_order(0.2 * PI, 0.3 * PI, 1.0, 15.0)
+    eps = IR.cheb_eps(1.0)
+    chk("c6 74Ma epsilon", eps, 0.50885, 1e-5)
+    chk("c6 74Ma N exact", Nx, 3.0141, 1e-4)
+    chk("c6 74Ma N", N, 4)
+    cps = sorted((round(p.real, 5), round(abs(p.imag), 5))
+                 for p in IR.cheb_poles(Op, eps, N))
+    chk("c6 74Ma pole pair 1", list(cps[0]), [-0.21891, 0.26470], 1e-5)
+    chk("c6 74Ma pole pair 2", list(cps[2]), [-0.09068, 0.63904], 1e-5)
+    cn, cd = IR.cheb_Hs(Op, eps, N)
+    bz, az = IR.bilinear(cn, cd, 1.0)
+    chk("c6 74Ma K", bz[0], 0.0018356, 1e-7)
+    chk("c6 74Ma denominator", az[1:],
+        [-3.054340, 3.828999, -2.292452, 0.550745], 1e-6)
+    chk("c6 74Ma even order DC dip", abs(IR.freqz(bz, az, 0.0)),
+        1 / math.sqrt(1 + eps ** 2), 1e-6)
+    chk("c6 74Ma beats Butterworth's N=6",
+        [N, IR.butter_order(0.2 * PI, 0.3 * PI, 1.0, 15.0)[1]], [4, 6])
+
+    Nx, N, Op, Os = IR.cheb_order(0.25 * PI, 0.55 * PI, 1.01, 13.55)
+    eps = IR.cheb_eps(1.01)
+    chk("c6 70Ma epsilon", eps, 0.51169, 1e-5)
+    chk("c6 70Ma N", N, 2)
+    chk("c6 70Ma poles", IR.cheb_poles(Op, eps, N)[0],
+        complex(-0.45286, 0.74042), 1e-5)
+    cn, cd = IR.cheb_Hs(Op, eps, N)
+    bz, az = IR.bilinear(cn, cd, 1.0)
+    chk("c6 70Ma K", bz[0], 0.102154, 1e-6)
+    chk("c6 70Ma denominator", az[1:], [-0.989132, 0.448133], 1e-6)
+    # 70 Ma's alpha_max / alpha_min is the delta_p=0.11, delta_s=0.21 spec again
+    chk("c6 70Ma is the same spec in a third notation",
+        [round(IR.alpha_from_ripple(0.11, "pass"), 2),
+         round(IR.alpha_from_ripple(0.21, "stop"), 2)], [1.01, 13.56], 1e-9)
+
+    # 75 Bh: an analog design, so NO pre-warp, and T does not cancel
+    eps = IR.cheb_eps(5.0)
+    g = math.sqrt((10 ** 2.0 - 1) / (10 ** 0.5 - 1))
+    Nx = math.acosh(g) / math.acosh(50.0 / 20.0)
+    N = int(math.ceil(Nx - 1e-12))
+    alpha, a_, b_ = IR.cheb_ab(eps, N)
+    chk("c6 75Bh epsilon", eps, 1.47047, 1e-5)
+    chk("c6 75Bh g", g, 6.76647, 1e-5)
+    chk("c6 75Bh N exact", Nx, 1.6592, 1e-4)
+    chk("c6 75Bh N", N, 2)
+    chk("c6 75Bh alpha", alpha, 1.88938, 1e-5)
+    chk("c6 75Bh a", a_, 0.32352, 1e-5)
+    chk("c6 75Bh b", b_, 1.05103, 1e-5)
+    chk("c6 75Bh semi-axes", [a_ * 20, b_ * 20], [6.47037, 21.02060], 1e-4)
+    cps = IR.cheb_poles(20.0, eps, N)
+    chk("c6 75Bh poles", cps[0], complex(-4.57524, 14.86381), 1e-5)
+    cn, cd = IR.cheb_Hs(20.0, eps, N)
+    chk("c6 75Bh H(s)", [cn[0]] + cd[:2], [136.011, 241.866, 9.15049], 1e-3)
+    bz, az = IR.bilinear(cn, cd, 2.0)
+    chk("c6 75Bh H(z)", [bz[0]] + az[1:], [0.539692, 1.911510, 0.927382], 1e-6)
+    chk("c6 75Bh both denominator coefficients are POSITIVE",
+        1 if az[1] > 0 and az[2] > 0 else 0, 1)
+    chk("c6 75Bh poles sit near z = -1",
+        list(sorted((round(r.real, 3), round(abs(r.imag), 3))
+                    for r in IR.zroots(az))[0]), [-0.956, 0.118], 2e-3)
+
+    # ---------------------------------------- 4, spectral transformation ---
+    blp, alp = [0.1, 0.4], [1.0, -0.6, 0.1]
+    chk("c6 70Ch source is 3 dB at its stated cut-off",
+        abs(IR.freqz(blp, alp, 0.2575 * PI)), 0.70789, 1e-5)
+    chk("c6 70Ch cos((wc+wc')/2)", math.cos(0.3071 * PI), 0.569595, 1e-6)
+    chk("c6 70Ch cos((wc-wc')/2)", math.cos(0.0496 * PI), 0.98788, 1e-5)
+    hb, ha, al = IR.hp_from_lp(blp, alp, 0.2575 * PI, 0.3567 * PI)
+    chk("c6 70Ch alpha", al, -0.57658, 1e-5)
+    chk("c6 70Ch |alpha| < 1", 1 if abs(al) < 1 else 0, 1)
+    chk("c6 70Ch HP numerator", hb, [0.48106, -0.94325, 0.38393], 1e-5)
+    chk("c6 70Ch HP denominator", ha, [1.0, -0.68240, 0.12585], 1e-5)
+    chk("c6 70Ch gain is preserved at the new edge",
+        abs(IR.freqz(hb, ha, 0.3567 * PI)), 0.70789, 1e-5)
+    chk("c6 70Ch matches the source's own edge gain",
+        abs(IR.freqz(hb, ha, 0.3567 * PI)),
+        abs(IR.freqz(blp, alp, 0.2575 * PI)), 1e-9)
+    chk("c6 LP->HP alpha, Oppenheim 7.6",
+        IR.lp_to_hp(0.2 * PI, 0.6 * PI), -0.38197, 1e-5)
+    chk("c6 LP->LP alpha is zero when nothing moves",
+        IR.lp_to_lp(0.3 * PI, 0.3 * PI), 0.0, 1e-12)
+
+    # ----------------------------------------- claims made in ch6.tex 6.2 ---
+    # "the standing example": Omega_p=1, Omega_s=3.33, 0.3 dB, 22 dB
+    # The local source prints "for butterworth filter n = 5", which is wrong:
+    # the ratio is 2202.05, its log is 3.3429, and 2 log(3.33) is 1.0449, so
+    # N = 3.1992 and the answer is 4. Its Chebyshev n = 3 is right. The notes
+    # print the corrected figure and say the source disagrees.
+    chk("c6 standing example ratio",
+        (10 ** 2.2 - 1) / (10 ** 0.03 - 1), 2202.05, 5e-2)
+    chk("c6 standing example Butterworth N exact",
+        IR.butter_order(1.0, 3.33, 0.3, 22.0, 1.0, "invariance")[0], 3.1992, 1e-4)
+    chk("c6 standing example Butterworth N=4",
+        IR.butter_order(1.0, 3.33, 0.3, 22.0, 1.0, "invariance")[1], 4)
+    chk("c6 standing example Chebyshev N=3",
+        IR.cheb_order(1.0, 3.33, 0.3, 22.0, 1.0, "invariance")[1], 3)
+    # T really does cancel, which is the claim the whole chapter leans on
+    base = bilin(0.25, 0.55, 1.0122, 13.5556, 1.0)
+    for T in (2.0, 0.1, 0.0001):
+        got = bilin(0.25, 0.55, 1.0122, 13.5556, T)
+        chk("c6 T=%g gives the same numerator" % T, got[5], base[5], 1e-9)
+        chk("c6 T=%g gives the same denominator" % T, got[6], base[6], 1e-9)
+
+
 CHAPTERS = {"ch1": ch1, "ch2": ch2, "ch3": ch3, "ch4": ch4,
-            "ch5": ch5}
+            "ch5": ch5, "ch6": ch6}
 
 
 def main():
