@@ -332,7 +332,10 @@ class Conv(object):
     def text(self, t):
         t = htmlmod.escape(t)
         t = t.replace("---", "&mdash;").replace("--", "&ndash;")
-        t = t.replace("``", "&ldquo;").replace("''", "&rdquo;")
+        # htmlmod.escape has already turned each ' into &#x27;, so a literal
+        # '' never survives to be matched here -- match what escape produced.
+        # Backticks are not escaped, which is why the opening pair works.
+        t = t.replace("``", "&ldquo;").replace("&#x27;&#x27;", "&rdquo;")
         return t
 
     # -- command dispatch -------------------------------------------------
