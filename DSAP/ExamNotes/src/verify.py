@@ -423,6 +423,26 @@ def ch1():
         1 / (1 - a * a), 1e-12)
     # x[n]=4 constant: P=16
     chk("c1 P of const 4", 16.0, 16.0)
+    import math
+    # a complex exponential: |x[n]|=1 at every n, so P = A^2 with no factor
+    # of 2 -- 74 Ash, 79 Ba, 82 Bh. Averaged over 2N+1 samples, exactly as the
+    # document's limit is written.
+    for tag, w0, ph in [("74 Ash", math.pi / 3, math.pi / 4),
+                        ("79 Ba/82 Bh", math.pi / 2, 4 * math.pi / 7)]:
+        N = 20000
+        P = sum(abs(complex(math.cos(w0 * n + ph), math.sin(w0 * n + ph))) ** 2
+                for n in range(-N, N + 1)) / (2 * N + 1)
+        chk("c1 P of e^j(w0 n + phi) " + tag, P, 1.0, 1e-9)
+    # the contrast the document draws: a real cosine of the same amplitude
+    # averages to 1/2, not 1
+    N = 20000
+    Pc = sum(math.cos(math.pi / 3 * n + math.pi / 4) ** 2
+             for n in range(-N, N + 1)) / (2 * N + 1)
+    chk("c1 P of cos(w0 n + phi)", Pc, 0.5, 1e-4)
+    # and the phase offset changes neither
+    Pc0 = sum(math.cos(math.pi / 3 * n) ** 2
+              for n in range(-N, N + 1)) / (2 * N + 1)
+    chk("c1 P of cos is phase independent", Pc0, Pc, 1e-4)
 
     # ---- 6. periodicity --------------------------------------------
     import math

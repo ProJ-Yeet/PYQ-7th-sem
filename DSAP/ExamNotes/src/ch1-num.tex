@@ -875,6 +875,38 @@ period.
         \textbf{energy} signal.
 \end{itemize}}
 
+\lead{74 Ash, 79 Ba and \textbf{82 Bh} \m{2+2}: a complex exponential, where
+$P=A^2$ and \mk{not} $A^2/2$}
+
+\sbs{%
+\lead{Where the factor of 2 goes}
+\begin{itemize}
+  \item 74 Ash prints $x[n]=e^{j(\pi n/3+\pi/4)}$; 79 Ba and \textbf{82 Bh} print
+        $x[n]=e^{j(\pi n/2+4\pi/7)}$. Same working, different $\omega_0$.
+  \item $|e^{j\theta}|=1$ for \emph{every} real $\theta$, so $|x[n]|^2=1$ at every single
+        $n$. \mk{There is nothing to average}, which is the whole difference from a
+        cosine.
+  \item[] \[ E=\sum_{n=-\infty}^{\infty}1=\boxed{\;\infty\;} \]
+  \item[] \[ P=\lim_{N\to\infty}\frac{1}{2N+1}\sum_{n=-N}^{N}1
+             =\lim_{N\to\infty}\frac{2N+1}{2N+1}=\boxed{\;1\;} \]
+  \item $E=\infty$ with $P$ finite and non-zero, so it is a \textbf{power signal}.
+        \mk{Every sample counts here}, unlike $u[n]$, where only $N+1$ of the $2N+1$ are
+        non-zero and the limit lands on $\tfrac12$.
+\end{itemize}}{%
+\lead{The three power formulas, side by side}
+\begin{itemize}
+  \item $A\cos(\omega_0n+\phi)$: \; $P=\dfrac{A^2}{2}$, because
+        $\overline{\cos^2}=\tfrac12$ over a period.
+  \item $Ae^{j(\omega_0n+\phi)}$: \; $P=A^2$, because the magnitude never moves.
+  \item Two sinusoids at \emph{different} frequencies: the powers \textbf{add}, which is
+        the 79 Bh signal worked above.
+  \item \mk{The constant phase is a decoy.} $\pi/4$ and $4\pi/7$ shift the signal, and
+        neither $E$, $P$ nor the period depends on a shift: do not expand the exponential
+        to get rid of it.
+  \item The second half of each of these papers is \S6: $\omega_0=\pi/3$ gives $N=6$,
+        $\omega_0=\pi/2$ gives $N=4$.
+\end{itemize}}
+
 \lead{Every other paper that runs this same method}
 \par
 {\color{sub}\footnotesize \mk{The instruction varies and the marks follow it.}
