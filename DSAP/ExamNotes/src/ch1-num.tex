@@ -31,12 +31,22 @@ answer: \mk{same process, different numbers, so only the numbers change}.}
 \hr
 
 \T{1 \quad Convolution of two finite sequences}
-{\color{sub}\footnotesize \tS{16} \yr{\textbf{70 Ch} \m{6}, 73 Shr \m{6},
+{\color{sub}\footnotesize \tF{6} \yr{\textbf{70 Ch} \m{6}, 73 Shr \m{6},
 \textbf{\texttt{70 Bh}} \m{2+4}, 70 Asa \m{2+4}, \textbf{\texttt{74 Bh}} \m{6},
-\texttt{74 Ma} \m{5}, \textbf{71 Ch} \m{6}, \textbf{79 Bh} \m{5}, \textbf{81 Bh} \m{5},
-79 Ba \m{5}, 74 Ash \m{3+2}, \textbf{82 Bh} \m{5}, 72 Ka \m{5}, 75 Ash \m{5},
-\textbf{\texttt{79 Ch}} \m{4+6}, \textbf{\texttt{75 Bh}} \m{4+6}}
-\gap$\cdot$\gap \mk{one method, sixteen papers}}
+\texttt{74 Ma} \m{5}}
+\gap$\cdot$\gap \mk{both sequences printed as plain sample lists}}
+
+{\color{sub}\footnotesize \mk{Which convolution section am I in?} Decide from how the paper
+\emph{writes} the two sequences, not from what it asks --- the instruction is the same
+sentence every year.
+\textbf{Both as sample lists} $\rightarrow$ \S1, straight to the product table.
+\textbf{Either one as a sum of $\delta$'s} $\rightarrow$ \S1b: scale, shift, add, no table.
+\textbf{$h$ as a windowed exponential} $a^n\{u[n{+}A]-u[n{-}B]\}$ $\rightarrow$ \S1c: write
+the window out as samples first, then \S1.
+\textbf{Both of those at once} $\rightarrow$ \S1d.
+\textbf{Only the non-zero samples listed by index}, or drawn as stems $\rightarrow$ \S4.
+A sequence that runs forever --- $u[n]$ or $a^nu[n]$ with no closing window --- is none of
+these: that is \S2, and the answer there is a formula, not a list.}
 
 \begin{asked}{2070 Chaitra \textperiodcentered{} Q2 \textperiodcentered{} [6]}
 Find output, $y(n)$ when: $h(n)=\{5,4,3,2\}$ and $x(n)=\{1,0,3,2\}$
@@ -88,8 +98,9 @@ $\sum x=6$, $\sum h=14$, $6\times14=84$ and
 $5+4+18+24+17+12+4=84$ \checkmark}
 
 \lead{Every other paper that runs this same method}
-{\color{sub}\footnotesize A window such as $(1/2)^n\{u[n+2]-u[n-2]\}$ is written out as its
-samples first: that is the only extra step, and the underlined sample is $n=0$.}
+{\color{sub}\footnotesize Five papers, and nothing changes but the digits: both sequences
+are already sample lists starting at $n=0$, so the product table is written down
+immediately.}
 \par
 \begin{tabularx}{\textwidth}{@{}L{2.0cm}XL{4.4cm}@{}}
 \toprule
@@ -109,46 +120,310 @@ samples first: that is the only extra step, and the underlined sample is $n=0$.}
  $x(n)=\{1,2,1,2\}$. & $\{\underline{2},6,5,5,5,-1,2\}$ \\
 \texttt{74 Ma} \m{5} & Find the response of an \mk{FIR system} with input
  $x[n]=\{0,2,4,6\}$ and impulse response $h[n]=\{5,3,4,2,0\}$. \newline
- {\color{sub}$h$ and $x$ are named the other way round from every sibling}
+ {\color{sub}$h$ and $x$ are named the other way round from every sibling, and both
+ carry a \mk{zero at an end}: keep it, it is a real tap and it is why $y$ has 8 samples}
  & $\{\underline{0},10,26,50,38,32,12,0\}$ \\
-\hrow \textbf{71 Ch} \m{6} & A discrete time LTI system has impulse response
- $h(n)=\{1,3,2,-1,1\}$ \mk{for $-1\le n\le3$}. Determine the system output $y(n)$ if the
- input $x(n)$ is given by $x(n)=2\delta(n)-\delta(n-1)$.
- & $\{2,\underline{5},1,-4,3,-1\}$, from $n=-1$ \\
-\textbf{79 Bh}, \textbf{81 Bh} \m{5} & Find the output of LTI system having input signal
- $x[n]=\delta[n]+2\delta[n{-}1]-\delta[n{-}3]$ and $h[n]=2\delta[n{+}1]+2\delta[n{-}1]$.
- \newline {\color{sub}81 Bh prints the same pair, leading with $h$}
- & $\{2,\underline{4},2,2,0,-2\}$, from $n=-1$ \\
-\hrow 79 Ba \m{5} & Find the output of LTI system having impulse response
- $h[n]=(\frac12)^n\{u[n{+}2]-u[n{-}2]\}$ to the input $x[n]=\{2,1,0,-1,4\}$.
- & $\{8,8,\underline{4},-2,14.5,7,3.5,2\}$, from $n=-2$ \\
-74 Ash \m{3+2} & Find the output of LTI system having impulse response
- $h[n]=(\frac12)^n\{u[n{+}2]-u[n{-}2]\}$ and input signal $x[n]=\{2,1,0.5,-1\}$.
- \mk{Also check the answer.} \newline {\color{sub}same $h$ as 79 Ba, different $x$}
- & $\{8,8,\underline{6},-1,-1,-0.75,-0.5\}$, from $n=-2$ \\
-\hrow \textbf{82 Bh} \m{5} & Find the output of an LTI system whose impulse response is
- given by $0.5^n\{u[n]-u[n{-}3]\}$ and input is given by $\{2,1,0.5,-1\}$.
- & $\{\underline{2},2,1.5,-0.5,-0.375,-0.25\}$ \\
-72 Ka \m{5} & Find the output of LTI system having impulse response
- $h[n]=(\frac13)^n\{u[n{+}1]-u[n{-}2]\}$ and input signal $x[n]=\{2,1,0.5,3\}$.
- & $\{6,\underline{5},\frac{19}{6},\frac{59}{6},\frac{19}{6},1\}$, from $n=-1$ \\
-\hrow 75 Ash \m{5} & Find the output of LTI system having impulse response
- $h[n]=2^n\{u[n]-u[n{-}3]\}$ and input signal
- $x[n]=\delta[n]+\delta[n{-}1]+\delta[n{-}2]$. & $\{\underline{1},3,7,6,4\}$ \\
-\textbf{\texttt{79 Ch}}, \textbf{\texttt{75 Bh}} \m{4+6} & Define the recursive and
- non-recursive systems with examples. Find the output of LTI system having impulse
- response $h[n]=2^n\{u[n]-u[n{-}3]\}$ and input signal
- $x[n]=\delta[n]+\delta[n{-}1]-\delta[n{-}3]$. \newline {\color{sub}79 Ch prints
- \mk{"$2n$"} for $2^n$}
- & $\{\underline{1},3,6,3,-2,-4\}$ \\
 \bottomrule
 \end{tabularx}
 
 \par\vspace{2pt}
-{\color{sub}\footnotesize \mk{The two traps in this table.} (1) A $\delta[n+1]$ or a
-$u[n+2]$ puts samples at \emph{negative} $n$, so the answer starts left of the origin: mark
-$n=0$ or lose the marks. (2) $u[n+2]-u[n-2]$ has \textbf{4} taps ($n=-2,-1,0,1$), not 5:
-the upper limit $u[n-B]$ is exclusive.}
+{\color{sub}\footnotesize \mk{Convolution commutes}, so it never matters which sequence goes
+across the top. Put the \emph{shorter} one down the side: fewer rows, fewer anti-diagonals to
+read.}
+
+\hr
+
+\T{1b \quad One or both sequences written as impulses}
+{\color{sub}\footnotesize \tP{3} \yr{\textbf{79 Bh} \m{5}, \textbf{81 Bh} \m{5},
+\textbf{71 Ch} \m{6}}
+\gap$\cdot$\gap \mk{no product table at all}: scale, shift, add}
+
+\begin{asked}{2079 Bhadra \textperiodcentered{} Q2 \textperiodcentered{} [5]}
+Find the output of LTI system having input signal $x[n]=\delta[n]+2\delta[n-1]-\delta[n-3]$
+and $h[n]=2\delta[n+1]+2\delta[n-1]$.
+\end{asked}
+{\color{sub}\footnotesize \textbf{81 Bh} \m{5} sets the identical pair, leading with $h$:
+``Find the output of an LTI System with impulse response $h[n]=2\delta[n+1]+2\delta[n-1]$
+when an input of $x[n]=\delta[n]+2\delta[n-1]-\delta[n-3]$ is applied to it.''}
+
+\lead{Method \mk{(one rule replaces the whole table)}}
+\begin{enumerate}
+  \item \textbf{Shifts add}:
+        \[ \delta[n-a]*\delta[n-b]=\delta[n-a-b] \]
+        This is the sifting property, and it is the only identity the section needs.
+  \item Convolution is linear, so multiply the two sums out term by term: a coefficient
+        $A$ at shift $a$ against a coefficient $B$ at shift $b$ contributes $AB$ at index
+        $a+b$. Two impulses times three impulses is \textbf{six} contributions.
+  \item Collect the contributions that land on the same index.
+  \item \textbf{Fill every index in between with a zero}, including the ones nothing
+        landed on.
+  \item \mk{Check}: $\sum y=(\sum x)(\sum h)$, exactly as in \S1.
+\end{enumerate}
+
+\lead{Step 1: every pair of impulses}
+\par
+\begin{tabularx}{\textwidth}{@{}L{3.0cm}L{3.0cm}L{3.0cm}X@{}}
+\toprule
+\hrow \thead{from $x$} & \thead{from $h$} & \thead{lands at $a+b$} & \thead{contributes} \\
+$1$ at $a=0$  & $2$ at $b=-1$ & $0+(-1)=-1$ & $1\times2=2$ \\
+$1$ at $a=0$  & $2$ at $b=+1$ & $0+1=1$     & $1\times2=2$ \\
+$2$ at $a=1$  & $2$ at $b=-1$ & $1-1=0$     & $2\times2=4$ \\
+$2$ at $a=1$  & $2$ at $b=+1$ & $1+1=2$     & $2\times2=4$ \\
+$-1$ at $a=3$ & $2$ at $b=-1$ & $3-1=2$     & $-1\times2=-2$ \\
+$-1$ at $a=3$ & $2$ at $b=+1$ & $3+1=4$     & $-1\times2=-2$ \\
+\bottomrule
+\end{tabularx}
+
+\lead{Step 2: collect by index}
+\par
+\begin{tabularx}{\textwidth}{@{}L{1.6cm}XL{2.2cm}@{}}
+\toprule
+\hrow \thead{$n$} & \thead{terms landing there} & \thead{$y[n]$} \\
+$-1$ & $2$ & \textbf{2} \\
+$0$ & $4$ & \textbf{4} \\
+$1$ & $2$ & \textbf{2} \\
+$2$ & $4-2$ & \textbf{2} \\
+$3$ & \mk{nothing} & \textbf{0} \\
+$4$ & $-2$ & \textbf{$-2$} \\
+\bottomrule
+\end{tabularx}
+
+\lead{Final answer}
+\[ \boxed{\;y[n]=\{2,\,\underline{4},\,2,\,2,\,0,\,-2\}\;}\qquad n=-1\ldots4 \]
+{\color{sub}\footnotesize Check: $\sum x=1+2-1=2$, $\sum h=2+2=4$, $2\times4=8$; and
+$2+4+2+2+0-2=8$ \checkmark \; \mk{The $n=3$ zero is not optional}: drop it and every sample
+after it moves one place left, which loses the question.}
+
+\lead{The same answer in one line, if you see it}
+\[ y[n]=2x[n+1]+2x[n-1] \]
+{\color{sub}\footnotesize $h$ is two impulses, so the output is two scaled copies of $x$, one
+advanced by 1 and one delayed by 1, added. Written out: $2x[n+1]$ puts $\{2,4,0,-2\}$ at
+$n=-1\ldots2$, $2x[n-1]$ puts $\{2,4,0,-2\}$ at $n=1\ldots4$, and the overlap at $n=1,2$ adds.
+\mk{Same six numbers, no table} --- this is the 30-second route once the shift rule is
+automatic.}
+
+\lead{\textbf{71 Ch} \m{6}: impulses on one side, a negative start on the other}
+
+\begin{asked}{2071 Chaitra \textperiodcentered{} Q2 \textperiodcentered{} [6]}
+A discrete time LTI system has impulse response $h(n)=\{1,3,2,-1,1\}$ for $-1\le n\le3$.
+Determine the system output $y(n)$ if the input $x(n)$ is given by
+$x(n)=2\delta(n)-\delta(n-1)$.
+\end{asked}
+
+\sbs{%
+\lead{Why this one is not \S1}
+\begin{itemize}
+  \item Only $h$ is a sample list, and it is the list that carries the \mk{marked start},
+        $h[-1]=1$. $x$ is two impulses.
+  \item So do not convert $x$ into a list and tabulate. Read $x$ as an \textbf{instruction
+        on $h$}: one copy of $h$ scaled by 2, minus one copy delayed by 1.
+  \item[] \[ y[n]=2h[n]-h[n-1] \]
+  \item Shape first: start $=-1+0=-1$, length $=5+2-1=6$, so $n=-1\ldots4$.
+  \item \mk{The delay row is where the marks go}. $h[n-1]$ is the $h$ row written one column
+        to the \emph{right}, so its first entry sits at $n=0$, not $n=-1$.
+\end{itemize}}{%
+\lead{The whole calculation}
+\par
+\begin{tabular}{@{}L{1.9cm}L{0.8cm}L{0.8cm}L{0.8cm}L{0.8cm}L{0.8cm}L{0.8cm}@{}}
+\toprule
+\hrow \thead{$n$} & $-1$ & $0$ & $1$ & $2$ & $3$ & $4$ \\
+$h[n]$        & 1 & 3 & 2 & $-1$ & 1 & 0 \\
+$2h[n]$       & 2 & 6 & 4 & $-2$ & 2 & 0 \\
+$h[n-1]$      & 0 & 1 & 3 & 2 & $-1$ & 1 \\
+\hrow $y[n]$  & \textbf{2} & \textbf{5} & \textbf{1} & \textbf{$-4$} & \textbf{3}
+ & \textbf{$-1$} \\
+\bottomrule
+\end{tabular}
+\par\vspace{2pt}
+\[ \boxed{\;y[n]=\{2,\,\underline{5},\,1,\,-4,\,3,\,-1\}\;}\quad n=-1\ldots4 \]
+{\color{sub}\footnotesize Check: $\sum h=6$, $\sum x=2-1=1$, product $6$; and
+$2+5+1-4+3-1=6$ \checkmark \newline
+\mk{The trap}: $h$ starting at $-1$ is printed as a range, ``for $-1\le n\le3$'', not as an
+underline. Miss that line and the whole answer is shifted one place and every sample is
+wrong.}}
+
+\hr
+
+\T{1c \quad Impulse response given as a windowed exponential}
+{\color{sub}\footnotesize \tF{4} \yr{79 Ba \m{5}, 74 Ash \m{3+2}, \textbf{82 Bh} \m{5},
+72 Ka \m{5}}
+\gap$\cdot$\gap \mk{one extra step before \S1}: write the window out as samples}
+
+\begin{asked}{2079 Baishakh \textperiodcentered{} Q2 \textperiodcentered{} [5]}
+Find the output of LTI system having impulse response
+$h[n]=(1/2)^n\{u[n+2]-u[n-2]\}$ to the input $x[n]=\{2,1,0,-1,4\}$.
+\end{asked}
+
+\lead{Method \mk{(used for every problem in this section)}}
+\begin{enumerate}
+  \item \textbf{Turn the window into a tap count, before touching the exponential.}
+        $u[n+A]-u[n-B]$ is 1 for $-A\le n\le B-1$: the lower limit is
+        \emph{inclusive}, the upper limit is \mk{exclusive}.
+        Here $u[n+2]-u[n-2]$ gives $-2\le n\le1$, which is \textbf{4} taps, not 5.
+  \item \textbf{Evaluate $a^n$ at each of those $n$, negative $n$ included.}
+        A negative index makes the sample \emph{larger}: $(1/2)^{-2}=4$.
+        \[ h[n]=\{\,4,\;2,\;\underline{1},\;0.5\,\}\qquad n=-2\ldots1 \]
+  \item From here it is \S1 exactly: product table, anti-diagonals, sum check.
+  \item \textbf{Predict the shape with the real start index}: start $=n_x+n_h=0+(-2)=-2$,
+        length $=5+4-1=8$, so $y[n]$ runs $n=-2$ to $5$.
+\end{enumerate}
+
+\lead{Step 1: product table \mk{($h$ is now an ordinary sample list)}}
+\par
+\begin{tabularx}{\textwidth}{@{}L{2.4cm}XXXXX@{}}
+\toprule
+\hrow & \thead{$x[0]=2$} & \thead{$x[1]=1$} & \thead{$x[2]=0$} & \thead{$x[3]=-1$}
+      & \thead{$x[4]=4$} \\
+$h[-2]=4$   & 8 & 4 & 0 & $-4$ & 16 \\
+$h[-1]=2$   & 4 & 2 & 0 & $-2$ & 8 \\
+$h[0]=1$    & 2 & 1 & 0 & $-1$ & 4 \\
+$h[1]=0.5$  & 1 & 0.5 & 0 & $-0.5$ & 2 \\
+\bottomrule
+\end{tabularx}
+
+\lead{Step 2: anti-diagonals, starting the count at $n=-2$}
+\par
+\begin{tabularx}{\textwidth}{@{}L{1.4cm}XL{2.2cm}@{}}
+\toprule
+\hrow \thead{$n$} & \thead{terms} & \thead{$y[n]$} \\
+$-2$ & $8$ & \textbf{8} \\
+$-1$ & $4+4$ & \textbf{8} \\
+$0$ & $0+2+2$ & \textbf{4} \\
+$1$ & $-4+0+1+1$ & \textbf{$-2$} \\
+$2$ & $16-2+0+0.5$ & \textbf{14.5} \\
+$3$ & $8-1+0$ & \textbf{7} \\
+$4$ & $4-0.5$ & \textbf{3.5} \\
+$5$ & $2$ & \textbf{2} \\
+\bottomrule
+\end{tabularx}
+
+\lead{Final answer}
+\[ \boxed{\;y[n]=\{8,\,8,\,\underline{4},\,-2,\,14.5,\,7,\,3.5,\,2\}\;}\qquad n=-2\ldots5 \]
+{\color{sub}\footnotesize Check: $\sum x=6$, $\sum h=4+2+1+0.5=7.5$, $6\times7.5=45$; and
+$8+8+4-2+14.5+7+3.5+2=45$ \checkmark}
+
+\lead{Every other paper that runs this same method}
+{\color{sub}\footnotesize Read each row as: window $\rightarrow$ tap range $\rightarrow$
+samples $\rightarrow$ \S1 table. Only the base $a$, the window edges and the input move.}
+\par
+\begin{tabularx}{\textwidth}{@{}L{2.0cm}XL{4.6cm}@{}}
+\toprule
+\hrow \thead{Paper} & \thead{Question as printed, and the window written out}
+ & \thead{$y[n]$} \\
+74 Ash \m{3+2} & Find the output of LTI system having impulse response
+ $h[n]=(\frac12)^n\{u[n{+}2]-u[n{-}2]\}$ and input signal $x[n]=\{2,1,0.5,-1\}$.
+ \mk{Also check the answer.} \newline
+ {\color{sub}same $h$ as 79 Ba: $\{4,2,\underline{1},0.5\}$, $n=-2\ldots1$; only $x$ changed}
+ & $\{8,8,\underline{6},-1,-1,-0.75,-0.5\}$, from $n=-2$ \newline
+ {\color{sub}the check: $\sum x=2.5$, $\sum h=7.5$, $2.5\times7.5=18.75=\sum y$ \checkmark}
+ \\
+\hrow \textbf{82 Bh} \m{5} & Find the output of an LTI system whose impulse response is
+ given by $0.5^n\{u[n]-u[n{-}3]\}$ and input is given by $\{2,1,0.5,-1\}$. \newline
+ {\color{sub}window $0\le n\le2$, so \mk{no negative taps at all}:
+ $h=\{\underline{1},0.5,0.25\}$ and $y$ starts at $n=0$}
+ & $\{\underline{2},2,1.5,-0.5,-0.375,-0.25\}$ \\
+72 Ka \m{5} & Find the output of LTI system having impulse response
+ $h[n]=(\frac13)^n\{u[n{+}1]-u[n{-}2]\}$ and input signal $x[n]=\{2,1,0.5,3\}$. \newline
+ {\color{sub}window $-1\le n\le1$, 3 taps: $h=\{3,\underline{1},\frac13\}$;
+ $(\frac13)^{-1}=3$}
+ & $\{6,\underline{5},\frac{19}{6},\frac{59}{6},\frac{19}{6},1\}$, from $n=-1$ \\
+\bottomrule
+\end{tabularx}
+
+\par\vspace{2pt}
+{\color{sub}\footnotesize \mk{The two ways this section is failed.} (1) Counting
+$u[n+2]-u[n-2]$ as 5 taps ($n=-2\ldots2$) instead of 4: the upper step is exclusive, so
+$n=2$ is already switched off. (2) Evaluating $(1/2)^{-2}$ as $1/4$ instead of $4$, which
+makes the answer decay the wrong way --- \mk{a window reaching left of the origin always
+starts with the largest sample} when $a<1$.}
+
+\hr
+
+\T{1d \quad Windowed exponential against an impulse comb}
+{\color{sub}\footnotesize \tP{3} \yr{\textbf{\texttt{79 Ch}} \m{4+6},
+\textbf{\texttt{75 Bh}} \m{4+6}, 75 Ash \m{5}}
+\gap$\cdot$\gap \S1c on one side, \S1b on the other, \mk{and the fast route uses both}}
+
+\begin{asked}{2079 Chaitra \textperiodcentered{} Q2 \textperiodcentered{} [4+6]}
+Define the recursive and non-recursive systems with examples. Find the output of LTI system
+having impulse response $h[n]=2^n\{u[n]-u[n-3]\}$ and input signal
+$x[n]=\delta[n]+\delta[n-1]-\delta[n-3]$.
+\end{asked}
+{\color{sub}\footnotesize \textbf{\texttt{75 Bh}} \m{4+6} prints the same question word for
+word. \texttt{79 Ch} prints \mk{``$2n$''} where it means $2^n$: the window makes it an
+exponential, and a linear $2n$ would make $h[0]=0$, which no answer key uses.}
+
+\lead{Method \mk{(both sides convert, then it is four lines)}}
+\begin{enumerate}
+  \item \textbf{Window $\rightarrow$ samples} (\S1c). $u[n]-u[n-3]$ is 1 for
+        $0\le n\le2$, so
+        \[ h[n]=\{\,\underline{1},\;2,\;4\,\}\qquad n=0,1,2 \]
+        \mk{Here $a=2>1$, so the taps grow} instead of decaying.
+  \item \textbf{Impulses $\rightarrow$ shifts} (\S1b). $x[n]=\delta[n]+\delta[n-1]-\delta[n-3]$
+        says: one copy of $h$, plus a copy delayed by 1, minus a copy delayed by 3.
+        \[ y[n]=h[n]+h[n-1]-h[n-3] \]
+  \item Lay the three shifted copies in a grid and add the columns. \textbf{No product
+        table is needed}, because every coefficient of $x$ is $\pm1$.
+  \item Shape: start $=0+0=0$, length $=3+4-1=6$, so $n=0\ldots5$. \mk{$x$ has length 4},
+        not 3 --- the missing $\delta[n-2]$ is a zero sample inside the sequence, and it
+        still counts towards the length.
+\end{enumerate}
+
+\lead{The calculation: three shifted copies of $h$, added down the columns}
+\par
+\begin{tabularx}{\textwidth}{@{}L{2.6cm}L{1.3cm}L{1.3cm}L{1.3cm}L{1.3cm}L{1.3cm}X@{}}
+\toprule
+\hrow \thead{$n$} & $0$ & $1$ & $2$ & $3$ & $4$ & $5$ \\
+$h[n]$          & 1 & 2 & 4 & 0 & 0 & 0 \\
+$h[n-1]$        & 0 & 1 & 2 & 4 & 0 & 0 \\
+$-h[n-3]$       & 0 & 0 & 0 & $-1$ & $-2$ & $-4$ \\
+\hrow $y[n]$ & \textbf{1} & \textbf{3} & \textbf{6} & \textbf{3} & \textbf{$-2$}
+ & \textbf{$-4$} \\
+\bottomrule
+\end{tabularx}
+
+\lead{Final answer}
+\[ \boxed{\;y[n]=\{\underline{1},\,3,\,6,\,3,\,-2,\,-4\}\;}\qquad n=0\ldots5 \]
+{\color{sub}\footnotesize Check: $\sum h=1+2+4=7$, $\sum x=1+1-1=1$, product $7$; and
+$1+3+6+3-2-4=7$ \checkmark \; \mk{Read the sign change}: the output is positive while the
+first two copies dominate and turns negative from $n=4$, where only the subtracted copy is
+left. A sign flip in the tail is the signature of a $-\delta$ in the input.}
+
+\lead{75 Ash \m{5}: the same grid with three plus signs}
+
+\begin{asked}{2075 Ashwin \textperiodcentered{} Q2 \textperiodcentered{} [5]}
+Find the output of LTI system having impulse response $h[n]=2^n\{u[n]-u[n-3]\}$ and input
+signal $x[n]=\delta[n]+\delta[n-1]+\delta[n-2]$.
+\end{asked}
+
+\sbs{%
+\lead{The grid}
+\par
+\begin{tabular}{@{}L{1.9cm}L{0.9cm}L{0.9cm}L{0.9cm}L{0.9cm}L{0.9cm}@{}}
+\toprule
+\hrow \thead{$n$} & $0$ & $1$ & $2$ & $3$ & $4$ \\
+$h[n]$       & 1 & 2 & 4 & 0 & 0 \\
+$h[n-1]$     & 0 & 1 & 2 & 4 & 0 \\
+$h[n-2]$     & 0 & 0 & 1 & 2 & 4 \\
+\hrow $y[n]$ & \textbf{1} & \textbf{3} & \textbf{7} & \textbf{6} & \textbf{4} \\
+\bottomrule
+\end{tabular}
+\par\vspace{2pt}
+\[ \boxed{\;y[n]=\{\underline{1},\,3,\,7,\,6,\,4\}\;}\quad n=0\ldots4 \]
+{\color{sub}\footnotesize Check: $\sum h=7$, $\sum x=3$, $7\times3=21$; and
+$1+3+7+6+4=21$ \checkmark}}{%
+\lead{Why the two answers differ in length}
+\begin{itemize}
+  \item 75 Ash: $x$ is $\{1,1,1\}$, length 3, so $y$ has $3+3-1=\mathbf{5}$ samples.
+  \item 79 Ch: $x$ is $\{1,1,0,-1\}$, length \textbf{4} --- the gap at $n=2$ is inside the
+        sequence --- so $y$ has $3+4-1=\mathbf{6}$.
+  \item \mk{Three impulses do not always mean length 3.} The length runs from the first
+        non-zero index to the last, and counts every index in between.
+  \item Both answers rise to a peak and then follow $h$'s own shape: the running sum of a
+        growing exponential is dominated by its newest term, which is why $y$ keeps
+        climbing while all three copies overlap.
+\end{itemize}}
+
 
 \hr
 
@@ -499,9 +774,49 @@ $0.5+0.375+1.25+1.5+1.0625+0.875+0.375+0.25=6.1875$ \checkmark
 \end{tabularx}
 
 \par\vspace{2pt}
-{\color{sub}\footnotesize \mk{75 Ch is the one people get wrong}: $x[n]=2^n$ for
-$-1\le n\le3$ starts at $n=-1$ with the value $0.5$, not at $n=0$ with the value 1. With
-$h$ starting at $-2$, the output starts at $-3$.}
+\lead{\textbf{75 Ch} \m{5+2}: the input is a \emph{formula} over a stated range}
+
+\begin{asked}{2075 Chaitra \textperiodcentered{} Q2 \textperiodcentered{} [5+2]}
+Find the output of LTI system having impulse response $h[n]$ with $h[-2]=3$, $h[0]=2$,
+$h[1]=1$ and input signal $x[n]=(2)^n$, for $-1\le n\le3$. Also check the answer.
+\end{asked}
+
+\sbs{%
+\lead{The extra step, and the trap inside it}
+\begin{itemize}
+  \item $h$ is listed by index, so fill the gap first: $h[-1]$ is unlisted, therefore zero.
+  \item[] \[ h[n]=\{\,3,\;0,\;\underline{2},\;1\,\}\qquad n=-2\ldots1 \]
+  \item $x$ is \mk{not a list at all}. It is $2^n$ \emph{evaluated} over the range the paper
+        states, so generate the samples before anything else.
+  \item[] \[ x[n]=\{\,0.5,\;\underline{1},\;2,\;4,\;8\,\}\qquad n=-1\ldots3 \]
+  \item \mk{Where the marks go}: reading $x$ as $\{1,2,4,8,16\}$ from $n=0$. The range
+        opens at $-1$, so the first sample is $2^{-1}=0.5$ and it sits \emph{left} of the
+        origin --- the same negative-exponent step as \S1c.
+  \item Shape: start $=n_x+n_h=-1+(-2)=-3$, length $=5+4-1=8$, so $n=-3\ldots4$.
+  \item From here it is \S1 unchanged: product table, anti-diagonals, sum check.
+\end{itemize}}{%
+\lead{Product table, then the check the question demands}
+\par
+\begin{tabular}{@{}L{1.55cm}L{1.05cm}L{0.95cm}L{0.95cm}L{0.95cm}L{0.95cm}@{}}
+\toprule
+\hrow & \thead{$0.5$} & \thead{$1$} & \thead{$2$} & \thead{$4$} & \thead{$8$} \\
+$h[-2]=3$ & 1.5 & 3 & 6 & 12 & 24 \\
+$h[-1]=0$ & 0 & 0 & 0 & 0 & 0 \\
+$h[0]=2$  & 1 & 2 & 4 & 8 & 16 \\
+$h[1]=1$  & 0.5 & 1 & 2 & 4 & 8 \\
+\bottomrule
+\end{tabular}
+\par\vspace{3pt}
+\[ \boxed{\;y[n]=\{1.5,\,3,\,7,\,\underline{14.5},\,29,\,10,\,20,\,8\}\;} \]
+\vspace{-4pt}
+\begin{itemize}
+  \item $n=-3\ldots4$, and the underline marks $n=0$.
+  \item \textbf{``Also check the answer''}, worth the 2 marks: $\sum x=15.5$,
+        $\sum h=6$, $15.5\times6=93$; and
+        $1.5+3+7+14.5+29+10+20+8=93$ \checkmark
+  \item \mk{The zero row is not decoration}. Leaving $h[-1]$ out drops $h$ to three taps,
+        shortens $y$ to seven samples and moves every one of them.
+\end{itemize}}
 
 \hr
 

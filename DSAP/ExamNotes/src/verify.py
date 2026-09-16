@@ -141,6 +141,82 @@ def ch1():
     chk("c1 conv 79 Ch", conv(([1, 1, 0, -1], 0), ([1, 2, 4], 0))[0],
         [1, 3, 6, 3, -2, -4])
 
+    # -- the window expansions the document prints as samples ---------
+    #    a^n over the taps u[n+A]-u[n-B] switches on, i.e. -A <= n <= B-1
+    def window(a, A, B):
+        return [F(a) ** n for n in range(-A, B)], -A
+    chk("c1 window 79 Ba/74 Ash (1/2)^n u[n+2]-u[n-2]",
+        [float(v) for v in window(F(1, 2), 2, 2)[0]], [4.0, 2.0, 1.0, 0.5])
+    chk("c1 window 79 Ba start", window(F(1, 2), 2, 2)[1], -2)
+    chk("c1 window 82 Bh 0.5^n u[n]-u[n-3]",
+        [float(v) for v in window(F(1, 2), 0, 3)[0]], [1.0, 0.5, 0.25])
+    chk("c1 window 72 Ka (1/3)^n u[n+1]-u[n-2]",
+        [float(v) for v in window(F(1, 3), 1, 2)[0]],
+        [3.0, 1.0, 0.3333333333], 1e-6)
+    chk("c1 window 75 Ash/79 Ch 2^n u[n]-u[n-3]",
+        [float(v) for v in window(F(2), 0, 3)[0]], [1.0, 2.0, 4.0])
+    # a four-tap window, not five: the upper step is exclusive
+    chk("c1 window 79 Ba tap count", len(window(F(1, 2), 2, 2)[0]), 4)
+
+    # -- the shift-and-add routes, asserted against the convolutions ---
+    def shifts(base, nb, terms):
+        """sum of coeff * base delayed by d, over (coeff, d) pairs."""
+        lo = nb + min(d for _, d in terms)
+        hi = nb + len(base) - 1 + max(d for _, d in terms)
+        out = [F(0)] * (hi - lo + 1)
+        for c, d in terms:
+            for i, v in enumerate(base):
+                out[nb + i + d - lo] += F(c) * F(v)
+        return out, lo
+    # 79 Bh: y[n] = 2x[n+1] + 2x[n-1]
+    y, n0 = shifts([1, 2, 0, -1], 0, [(2, -1), (2, 1)])
+    chk("c1 shift 79 Bh", [float(v) for v in y], [2.0, 4.0, 2.0, 2.0, 0.0, -2.0])
+    chk("c1 shift 79 Bh start", n0, -1)
+    # 71 Ch: y[n] = 2h[n] - h[n-1], h from n=-1
+    y, n0 = shifts([1, 3, 2, -1, 1], -1, [(2, 0), (-1, 1)])
+    chk("c1 shift 71 Ch", [float(v) for v in y], [2.0, 5.0, 1.0, -4.0, 3.0, -1.0])
+    chk("c1 shift 71 Ch start", n0, -1)
+    # 79 Ch / 75 Bh: y[n] = h[n] + h[n-1] - h[n-3]
+    y, n0 = shifts([1, 2, 4], 0, [(1, 0), (1, 1), (-1, 3)])
+    chk("c1 shift 79 Ch", [float(v) for v in y], [1.0, 3.0, 6.0, 3.0, -2.0, -4.0])
+    chk("c1 shift 79 Ch start", n0, 0)
+    # 75 Ash: y[n] = h[n] + h[n-1] + h[n-2]
+    y, n0 = shifts([1, 2, 4], 0, [(1, 0), (1, 1), (1, 2)])
+    chk("c1 shift 75 Ash", [float(v) for v in y], [1.0, 3.0, 7.0, 6.0, 4.0])
+    chk("c1 shift 75 Ash start", n0, 0)
+
+    # -- the sum check printed under every boxed answer ----------------
+    #    (paper, x, h, the product the document prints)
+    for tag, x, h, want in [
+            ("70 Ch", [1, 0, 3, 2], [5, 4, 3, 2], 84),
+            ("73 Shr", [1, 1, 1, 1], [1, 1, 1], 12),
+            ("70 Bh", [1, -2, 2, 3, 4], [1, 1, 1], 24),
+            ("70 Asa", [1, -2, -2, 3, 4], [1, 0, 1], 8),
+            ("74 Bh", [1, 2, 1, 2], [2, 2, -1, 1], 24),
+            ("74 Ma", [0, 2, 4, 6], [5, 3, 4, 2, 0], 168),
+            ("71 Ch", [2, -1], [1, 3, 2, -1, 1], 6),
+            ("79 Bh", [1, 2, 0, -1], [2, 0, 2], 8),
+            ("79 Ba", [2, 1, 0, -1, 4], [F(4), F(2), F(1), F(1, 2)], F(45)),
+            ("74 Ash", [F(2), F(1), F(1, 2), F(-1)],
+             [F(4), F(2), F(1), F(1, 2)], F(75, 4)),
+            ("82 Bh", [F(2), F(1), F(1, 2), F(-1)],
+             [F(1), F(1, 2), F(1, 4)], F(35, 8)),
+            ("72 Ka", [F(2), F(1), F(1, 2), F(3)],
+             [F(3), F(1), F(1, 3)], F(169, 6)),
+            ("75 Ash", [1, 1, 1], [1, 2, 4], 21),
+            ("79 Ch", [1, 1, 0, -1], [1, 2, 4], 7)]:
+        y = conv((x, 0), (h, 0))[0]
+        chk("c1 sumcheck " + tag + " = (sum x)(sum h)",
+            float(sum(F(v) for v in y)), float(want), 1e-9)
+        chk("c1 sumcheck " + tag + " printed",
+            float(sum(F(v) for v in x) * sum(F(v) for v in h)),
+            float(want), 1e-9)
+
+    # 79 Ch's x runs to n=3, so y has 6 samples while 75 Ash's has 5:
+    # the zero at n=2 is inside the sequence and counts towards the length
+    chk("c1 length 79 Ch", len(conv(([1, 1, 0, -1], 0), ([1, 2, 4], 0))[0]), 6)
+    chk("c1 length 75 Ash", len(conv(([1, 1, 1], 0), ([1, 2, 4], 0))[0]), 5)
+
     # ---- 2. one sequence infinite: closed forms --------------------
     # Check each published closed form against a brute-force truncated sum.
     def brute(xf, hf, n, lo=-200, hi=200):
@@ -317,6 +393,14 @@ def ch1():
     y, n0 = conv(x, h)
     chk("c1 75 Ch", y, [1.5, 3.0, 7.0, 14.5, 29.0, 10.0, 20.0, 8.0])
     chk("c1 75 Ch start", n0, -3)
+    # the samples the document generates from the formula, and the trap:
+    # the range opens at n=-1, so the first one is 2^-1, left of the origin
+    chk("c1 75 Ch x from 2^n", [2.0 ** n for n in range(-1, 4)],
+        [0.5, 1.0, 2.0, 4.0, 8.0])
+    # "also check the answer" -- the 2 marks the question names
+    chk("c1 75 Ch sumcheck", sum(y), 93.0, 1e-9)
+    chk("c1 75 Ch sumcheck printed", sum(x[0]) * sum(h[0]), 93.0, 1e-9)
+    chk("c1 75 Ch length", len(y), 8)
     # 72 Ch: h[-2]=1, h[0]=2, h[1]=3 ; x[0]=0.5, x[2]=2, x[3]=3
     h = ([1.0, 0.0, 2.0, 3.0], -2)
     x = ([0.5, 0.0, 2.0, 3.0], 0)
