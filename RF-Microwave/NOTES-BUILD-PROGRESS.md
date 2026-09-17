@@ -170,3 +170,23 @@ Third-party and gitignored — build input only, never publish.
   Next: Ch4 (Components and Devices, 317 marks, 52 questions, the biggest question
   count) — note Ch3 §3.6 already catalogues the tee / coupler / circulator
   S-matrices, so Ch4 should cover the physical construction and cross-reference.
+- **2026-09-17** — Ch4 started. **`src/wg.py` added** (runs in ~7 s): rectangular TE/TM
+  components checked symbolically against both curl equations and all four walls;
+  circular TE/TM checked numerically in cylindrical coordinates plus `E_phi(a)=0`;
+  mode-existence proofs enumerated; every waveguide numerical; rectangular cavity mode
+  order; two magic tees joined E-to-E (77 Ch) and H-to-H (78 Ch) by real port
+  connection; hybrid tee with matched terminations (82 Ba). **Mutation-tested**: a
+  flipped sign in any field component fails the curl check on its own.
+  Sources for Ch4: `Notes/RF Pulchowk/all/Chapter_4.pptx` (Gangaju, 99 slides, the
+  spine; slides exported to PNG with PowerPoint COM, waveguide equations are images),
+  `Chapter 4/Waveguide.pdf` (13 pp OneNote ink, the only circular-guide derivation),
+  `Chapter 4/Chapter_4_Part_B.pdf` (44 pp, clean text: microwave transistor, varactor,
+  Schottky, Gunn, IMPATT/TRAPATT/BARITT, MMIC).
+  Errors found in the sources:
+  - Deck slide 18, TE boundary condition (iv) prints `k_y = nπ/a`; it is `nπ/b`.
+  - Waveguide.pdf p11, TM circular: prints `E_phi = +jβn/(k_c²ρ)(A cos nφ − B sin nφ)J_n`.
+    The sign is **minus**; `wg.py` fails the curl equation with the plus sign.
+  - Deck slide 25 prints TE10 of WR430 as 1.372 GHz; exact with c = 3e8 is 1.373.
+  Paper defect: **81 Bh Q3a asks to show TE10 is dominant "when b > a"**. With b > a the
+  dominant mode is TE01 (cut-off c/2b < c/2a). TE10 is dominant when a > b. Answer the
+  intended physics and say so.
