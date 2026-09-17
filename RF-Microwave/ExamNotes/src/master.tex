@@ -1,0 +1,113 @@
+%=======================================================================
+%  RF and Microwave Engineering — Complete Exam Notes (combined master)
+%  All eight chapters in syllabus order, then Last-Minute Revision and the
+%  abbreviation chart. The five solved-problem companions are collected in
+%  master-num.tex, exactly as AI, Wireless and Data Mining do.
+%=======================================================================
+\documentclass[10pt]{article}
+\input{preamble}
+\usepackage{bookmark}
+
+\begin{document}
+
+% ------------------------------------------------ title page
+\thispagestyle{empty}
+\vspace*{2.0cm}
+\begin{center}
+  {\Huge\bfseries\color{acc} RF and Microwave Engineering}\\[6pt]
+  {\LARGE\bfseries Complete Exam Notes}\\[14pt]
+  {\large\color{sub} EX 716 (BEI, IV/I) \quad$\cdot$\quad EX 752 (BEX, IV/II)}\\[3pt]
+  {\color{sub} Institute of Engineering, Tribhuvan University}\\[20pt]
+  \begin{minipage}{0.78\textwidth}
+    \color{sub}\small
+    Built from the syllabus, the Pulchowk lecture decks, three textbooks and \textbf{all 24
+    past papers (2069--2082 BS)} across both course codes. Every topic carries a frequency
+    tier counted from those papers, and \code{src/check.py} checks each tier chip against
+    its own year list \emph{and} against the sorted PYQ document, so no chapter can cite a
+    paper that asks it nothing.\\[8pt]
+    Solved problems live in the companion volume, \textbf{RF and Microwave Engineering:
+    Complete Numerical Problems and Solutions}: \textbf{56 problems} over five chapters,
+    each opening with the question exactly as its paper prints it. \textbf{Chapters 1, 5 and
+    8 set no numerical} in 24 papers, and each says so in its own PYQ-mapping section.\\[8pt]
+    \textbf{Short on time?} Go straight to \textbf{\S9, Last-Minute Revision}.
+  \end{minipage}
+\end{center}
+
+\vfill
+\begin{center}
+\begin{tabularx}{0.92\textwidth}{@{}L{1.0cm}XL{1.2cm}L{1.5cm}L{1.4cm}L{1.7cm}@{}}
+\toprule
+\hrow \thead{Ch} & \thead{Topic} & \thead{Hours} & \thead{Papers} & \thead{Marks} &
+  \thead{Problems} \\
+1 & Introduction & 3 & 19/24 & 184 & --- \\
+2 & RF and M/W Transmission Lines & 6 & \textbf{24/24} & 297 & \textbf{24} \\
+3 & RF and M/W Network Theory and Analysis & 4 & 18/24 & 193 & 12 \\
+4 & RF/Microwave Components and Devices & 8 & \textbf{24/24} & 317 & 8 \\
+5 & Microwave Generators & 5 & 23/24 & 166 & --- \\
+6 & RF Design Practices & 10 & \textbf{24/24} & \textbf{426} & 10 \\
+7 & Microwave Antennas and Propagation & 3 & 23/24 & 162 & 2 \\
+8 & RF/Microwave Measurements & 6 & 22/24 & 181 & --- \\
+\midrule
+& \textbf{Total} & \textbf{45} & & \textbf{1926} & \textbf{56 problems} \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\par\penalty0\vspace{10pt}
+\begin{center}
+\begin{minipage}{0.86\textwidth}\small\color{sub}
+\mk{Read the marks column, not the hours column.} Chapter 6 is \textbf{22.4\,\% of every
+mark ever set} against a 22\,\% hour share, so it is the one chapter that is exactly as big
+as it looks, and it is the biggest. Chapter 1 is \textbf{3 syllabus hours} and
+\textbf{9.7\,\%} of the marks, 1.5 times its hour share, because ``compare microwave with
+conventional circuits'' alone is asked in \textbf{18 of the 24 papers}. Chapter 4 is the
+opposite: 8 hours for 16.7\,\%, close to fair. Nothing here is safe to skip, because the
+least-asked chapter, Chapter 3, still appears in \textbf{18 of 24 papers}.\\[6pt]
+The marks column sums to 1926 against a theoretical $24\times80 = 1920$, because a two-part
+question whose halves belong to different chapters, such as 82 Bh's $[4+8]$ on hazards
+\emph{and} on a BTS survey instrument, is counted into both. The percentage each chapter
+prints for itself was computed on an archive total of 1902, taken before the Chapter-7
+recount, so every one of them runs a shade high. Treat these as shares, not as an audit.
+\end{minipage}
+\end{center}
+\vspace{1.2cm}
+
+% ------------------------------------------------ contents
+\cleardoublepage
+\pagestyle{fancy}
+{\Large\bfseries\color{acc} Contents}
+\vspace{-6pt}{\color{acc}\rule{\textwidth}{1.1pt}}\vspace{4pt}
+\begingroup
+\renewcommand{\contentsname}{}
+\setcounter{tocdepth}{1}
+\vspace{-24pt}
+\tableofcontents
+\endgroup
+
+% ------------------------------------------------ chapters
+\cleardoublepage
+\input{ch1}
+\cleardoublepage
+\input{ch2}
+\cleardoublepage
+\input{ch3}
+\cleardoublepage
+\input{ch4}
+\cleardoublepage
+\input{ch5}
+\cleardoublepage
+\input{ch6}
+\cleardoublepage
+\input{ch7}
+\cleardoublepage
+\input{ch8}
+
+% ------------------------------------------------ revision + abbreviations
+\input{revision}
+
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{section}{Abbreviations}
+\input{abbrev}
+
+\end{document}

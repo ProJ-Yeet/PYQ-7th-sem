@@ -27,7 +27,7 @@ Audit pagination with `PYTHONIOENCODING=utf-8 python audit.py`
 | 6 | RF Design Practices | ✅ 11 pp | ✅ 7 pp, 10 problems | heaviest; `amp.py`, `filt.py` |
 | 7 | Antennas and Propagation | ✅ 11 pp | ✅ 5 pp, 2 problems | radiation hazards; `ant.py` |
 | 8 | RF/Microwave Measurements | ✅ 14 pp | — none (stated in §8.11) | power measurement is 80 % of it; `meas.py` |
-| — | Combined masters | ⬜ | ⬜ | `master`, `master-num` |
+| — | Combined masters | ✅ 96 pp | ✅ 77 pp | + `revision.tex`, §9 Last-Minute Revision |
 
 ## Weight of each chapter (measured from the Detailed PYQ, 24 papers)
 
@@ -279,3 +279,29 @@ Third-party and gitignored — build input only, never publish.
   the ordinary first-page pattern every chapter has. check.py clean, tagcensus 0 mismatches,
   audit.py 0 stranded, no bold lead line left at a page foot.
   Next: the combined masters (`master`, `master-num`).
+- **2026-09-18** — **The two combined masters shipped, and the subject is complete.**
+  `master.tex` is 96 pp: all eight chapters in syllabus order, then `revision.tex` as
+  **§9 Last-Minute Revision**, then the abbreviation chart. `master-num.tex` is 77 pp: the
+  five numerical companions (ch2, ch3, ch4, ch6, ch7), **56 problems**. Chapters 1, 5 and 8
+  set no numerical in 24 papers and each says so in its own PYQ-mapping section.
+  `revision.tex` follows the AI and Wireless shape: R.1 Must Know (the 22 TOP-tier topics,
+  extracted from the chapters' own `\tS` chips rather than retyped), R.2 Must Memorize per
+  chapter, R.3 Must Practice (the 56 problems ranked by how many papers set them, with the
+  failure mode of each family), R.4 the fifteen most repeated PYQs, R.5 a one-day checklist.
+  Two defects fixed while building it:
+  - **ch8 carried two `\tS{6}` chips.** The legend in `abbrev.tex` says TOP is 7 or more
+    papers and HOT is 3 to 6, and `\tS{6}` was the only violation anywhere in the subject.
+    Both are now `\tF{6}`. `check.py` compares a chip's number to its own year list but not
+    to the tier thresholds, so this class of defect is invisible to it: worth a census
+    (`Counter` over every `\t[SFP]{n}`) before shipping a chapter.
+  - `ch2-num.tex`'s `\section` title used an em dash while the other four companions use a
+    colon, which showed up side by side in the new master-num contents page. Changed to a
+    colon. **The wider em-dash sweep of ch1, ch2 and ch2-num is still pending the user's
+    call**; this was one title in a table of contents, not that sweep.
+  Marks bookkeeping, stated openly on the master's title page rather than papered over: the
+  per-chapter marks column sums to **1926** against a theoretical 24 x 80 = 1920, because a
+  two-part question straddling two chapters (82 Bh's [4+8], hazards and a BTS instrument) is
+  counted into both; and the percentage each chapter prints for itself was computed on an
+  archive total of 1902 that predates the Ch7 recount, so each runs a shade high.
+  All ten exit tests pass (rf, verify, sparam, wg, tubes, amp, filt, ant, meas, tagcensus),
+  check.py is clean on all eight chapters, audit.py reports 0 stranded headings.

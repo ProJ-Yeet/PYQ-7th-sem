@@ -1,0 +1,121 @@
+%=======================================================================
+%  RF and Microwave Engineering — Complete Numerical Problems and Solutions
+%  The five solved-problem companions (ch 2, 3, 4, 6, 7) in syllabus order,
+%  then the abbreviation chart. Companion volume to master.tex; the
+%  per-chapter standalones stay exactly as they are.
+%
+%  Each companion heads itself with a NUMBERED \section, so the section
+%  counter is set before every \input to keep the numbers matching the
+%  chapter numbers -- the same thing each -num-standalone.tex does.
+%=======================================================================
+\documentclass[10pt]{article}
+\input{preamble}
+\usepackage{bookmark}
+
+\begin{document}
+
+% ------------------------------------------------ title page
+\thispagestyle{empty}
+\vspace*{2.0cm}
+\begin{center}
+  {\Huge\bfseries\color{acc} RF and Microwave Engineering}\\[6pt]
+  {\LARGE\bfseries Complete Numerical Problems and Solutions}\\[14pt]
+  {\large\color{sub} EX 716 (BEI, IV/I) \quad$\cdot$\quad EX 752 (BEX, IV/II)}\\[3pt]
+  {\color{sub} Institute of Engineering, Tribhuvan University}\\[20pt]
+  \begin{minipage}{0.78\textwidth}
+    \color{sub}\small
+    All \textbf{56 solved problems} from the five problem chapters, in one volume. Every
+    problem is a real question drawn from \textbf{all 24 past papers (2069--2082 BS)} and
+    opens with the \textbf{question exactly as the paper prints it}, the paper's own
+    spelling and slips included, so it can be attempted from this PDF alone.\\[8pt]
+    The Chapter 2 problems are worked as \textbf{Smith chart constructions}, step by step:
+    which circle to draw, which arc to follow, what to read off the rim, because that is
+    what the examiner marks. The numbers beside each step are computed exactly from the
+    line equations, so they are what a perfectly drawn chart would give; a hand-drawn
+    reading will differ in the second decimal and that is fine.\\[8pt]
+    \textbf{Chapters 1, 5 and 8 set no numerical} in 24 papers, so they do not appear here.
+    Theory lives in the companion volume, \textbf{RF and Microwave Engineering: Complete
+    Exam Notes}.
+  \end{minipage}
+\end{center}
+
+\vspace{10pt}
+\begin{center}
+\begin{tabularx}{0.94\textwidth}{@{}L{0.9cm}L{6.1cm}L{1.6cm}X@{}}
+\toprule
+\hrow \thead{Ch} & \thead{Topic} & \thead{Problems} & \thead{Biggest family} \\
+2 & RF and M/W Transmission Lines & \textbf{24} &
+  Double-stub tuning, \textbf{17/24 papers} \\
+3 & RF and M/W Network Theory and Analysis & 12 &
+  Identify the device from its S-matrix: every one is a \textbf{magic tee} \\
+4 & RF/Microwave Components and Devices & 8 &
+  Rectangular-guide parameter sets, \textbf{14/24 papers} \\
+6 & RF Design Practices & 10 &
+  Transistor stability and maximum gain, \textbf{22/24 papers} \\
+7 & Microwave Antennas and Propagation & 2 &
+  Radiation zones, with the $D > \lambda$ validity check \\
+\midrule
+& \textbf{Total} & \textbf{56} & \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\par\penalty0\vspace{12pt}
+\begin{center}
+\begin{minipage}{0.88\textwidth}\small\color{sub}
+\mk{Every answer in this volume is machine checked.} \code{src/rf.py} solves the
+transmission line and both stub tuners exactly, with no chart read and no formula quoted
+from memory. \code{src/verify.py} then walks each \textbf{published} design forward through
+the line equations and asserts $y_{in} = 1 + j0$, re-deriving every susceptance from the
+\textbf{published stub length}, so a wrong length cannot hide behind a right $b$.
+\code{src/sparam.py} re-derives each device matrix from its stated properties rather than
+quoting it, brute-forces the three-port impossibility theorem, and reduces an $n$-port by
+terminating ports. \code{src/wg.py} tests every printed waveguide field component against
+both curl equations and the walls, and is mutation tested. \code{src/amp.py} and
+\code{src/filt.py} reproduce the deck's worked amplifier and filter examples and sample the
+stability circles. \code{src/ant.py} asserts every radiation-zone number, including the
+cases where the standard formulas are \textbf{not valid}. \code{src/smith.py} draws each
+chart as a \textbf{construction} and asserts its own geometry before rendering.
+\end{minipage}
+\end{center}
+
+% ------------------------------------------------ contents
+\cleardoublepage
+\pagestyle{fancy}
+{\Large\bfseries\color{acc} Contents}
+\vspace{-6pt}{\color{acc}\rule{\textwidth}{1.1pt}}\vspace{4pt}
+\begingroup
+\renewcommand{\contentsname}{}
+\setcounter{tocdepth}{1}
+\vspace{-24pt}
+\tableofcontents
+\endgroup
+
+% ------------------------------------------------ chapters
+\cleardoublepage
+\setcounter{section}{1}
+\input{ch2-num}
+
+\cleardoublepage
+\setcounter{section}{2}
+\input{ch3-num}
+
+\cleardoublepage
+\setcounter{section}{3}
+\input{ch4-num}
+
+\cleardoublepage
+\setcounter{section}{5}
+\input{ch6-num}
+
+\cleardoublepage
+\setcounter{section}{6}
+\input{ch7-num}
+
+% ------------------------------------------------ abbreviations
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{section}{Abbreviations}
+\input{abbrev}
+
+\end{document}
