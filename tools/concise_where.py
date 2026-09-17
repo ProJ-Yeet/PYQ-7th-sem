@@ -47,6 +47,12 @@ def chapters(text, star):
     return out
 
 
+def _trim(line):
+    """One source line, stripped of its list markup and squeezed to one line."""
+    body = re.sub(re.escape(B) + r"(item|lb)\b", "", line.strip()).strip()
+    return re.sub(r"\s+", " ", body)[:150]
+
+
 def detail_marks(blk):
     """marks value -> list of trimmed source lines carrying it."""
     out = {}
@@ -54,11 +60,6 @@ def detail_marks(blk):
         for m in MARKS.finditer(line):
             for v in m.group(1).replace(" ", "").split("/"):
                 out.setdefault(v, []).append(_trim(line))
-            continue
-            body = line.strip()
-            body = re.sub(re.escape(B) + r"(item|lb)\b", "", body).strip()
-            body = re.sub(r"\s+", " ", body)
-            out.setdefault(v, []).append(body[:150])
     return out
 
 

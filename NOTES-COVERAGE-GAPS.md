@@ -29,10 +29,29 @@ Everything below under sections A and B has been written, built and verified.
   printed as 0.971 and is 0.695.
 - `verify.py` now runs **242 checks, 0 failures** (was 189).
 
-**Still open (updated 2026-09-09):** AI chapters 6 and 7 have since been written
-(`66b37be`, `b5967f6`, `e19d32f`), so **this checklist is now due against them** — the three
-passes below have never been run over ch6, ch7 or the two combined masters. AI layout is
-0 stranded but 75 short pages, up from 19 when only ch1–5 existed. Wireless needs nothing.
+**AI CLOSED 2026-09-17.** The checklist has now been run over ch6, ch7 and both combined
+masters, and AI is clean. Four passes, not three — the per-chapter and per-(paper, marks)
+reconciliations below were added because the citation-density ratio alone cannot see a
+single dropped question inside an otherwise well-cited paper.
+
+- **Pass 2, citation density.** All 41 papers cited, lowest ratio 1.70 (2069 Poush). The
+  three papers flagged as thin in section D — 2071 Magh, 2069 Poush, 2074 Magh — were thin
+  only because ch6 and ch7 did not exist yet. They now sit at 2.70, 1.70 and 2.10.
+- **Per-chapter.** Every paper the Detailed document files under chapter N is cited by
+  `ch<N>.tex` or `ch<N>-num.tex`. **0 gaps in all seven chapters.**
+- **Per-(paper, marks).** 23 pairs the Detailed has and the notes' `\yr` bands do not.
+  All 23 triaged by hand to false positives of the matcher: those papers are cited in a
+  plain `{\color{sub}\footnotesize ...}` footnote rather than in a `\yr{}`+`\m{}` band, so
+  the marks value cannot be paired mechanically. Ch2's nine are the whole multi-answer
+  crypt-arithmetic table in `ch2-num.tex`; Ch3's seven are theory asks answered in
+  `ch3.tex` (§3.1 evaluation criteria, §3.5 hill climbing, blind-search comparison).
+- **Pass 3, theory riders on numericals.** Nothing unanswered. The rider that looked most
+  exposed, 2075 Bhadra's *"What do you understand by swarm intelligence?"* [2], is
+  researched and written in `ch6.tex` §6.9 with a note that no lecture deck in the subject
+  contains the word. Boltzmann, Sugeno, ANN non-linearity, "differs from classical binary
+  logic" and the perceptron/NLP definitional riders all land in their chapters too.
+
+AI layout is 0 stranded, 75 short pages. Wireless needs nothing.
 
 ## Method (reproducible)
 
@@ -51,6 +70,21 @@ Three independent passes, scripts in the session scratchpad:
 Wireless and AI chapters have **no PYQ-mapping index**, so pass 1 does not apply to them;
 passes 2 and 3 do.
 
+Two more reconciliations were added 2026-09-17, because a density ratio above 1.0 proves
+only that a paper was read, not that each of its questions was answered:
+
+4. **Per-chapter.** Split the Detailed document at `\section`, collect the year tags in
+   each chapter, and check that `ch<N>.tex` or `ch<N>-num.tex` cites every one of them. A
+   (chapter, paper) pair the Detailed has and the notes do not is a question the notes may
+   never answer. Key on (course code, year, month) wherever a subject has more than two
+   course codes — for AI, plain = CT653, `\texttt` = CT710, `\textit` = CT78506.
+5. **Per-(paper, marks).** The same, one level finer: pair each year tag with the marks
+   value next to it, using `ch_tally.py`'s windowing rule (at every marks bracket, read the
+   year codes up to the next bracket) on the Detailed side, and the `\m{}` inside each
+   `\yr{}` band on the notes side. **Expect false positives and triage them by hand** — a
+   paper cited in a plain footnote rather than a `\yr{}`+`\m{}` band cannot be paired
+   mechanically, and on AI every one of the 23 hits was of that kind.
+
 ---
 
 ## Headline
@@ -58,7 +92,7 @@ passes 2 and 3 do.
 | Subject | Papers in archive | Papers cited in notes | Verdict |
 |---|---|---|---|
 | Wireless | 22 | 22 (min ratio 0.94) | clean |
-| AI | 41 | all, ch 1–5 scope | clean for written chapters |
+| AI | 41 | 41 (min ratio 1.70) | clean, all 7 chapters |
 | **Data Mining** | **23** | **17** | **six papers never audited in** |
 
 The reported miss is real, and it is not isolated. Data Mining is the weak set for two
@@ -177,7 +211,14 @@ in the archive are handled:
 Theory riders on numericals are either answered in the chapter or carry a cross-reference
 ("The first two parts are theory, answered in chapter §7.1 and §7.6").
 
-## D. AI — clean for the chapters that exist
+## D. AI — clean (all seven chapters, re-audited 2026-09-17)
+
+> The section below was written 2026-09-08, when only chapters 1–5 existed. Its verdict
+> still holds and now covers ch6 and ch7 as well; see the **AI CLOSED** block at the top
+> for the four passes and their numbers. The instruction that used to close this section,
+> *"Re-audit AI chapters 6 and 7 against this same checklist once they are written"*, is
+> discharged.
+
 
 Chapters 1–5 of 7 are written; Ch 6 (Machine Learning) and Ch 7 (NLP / expert systems) are
 not. Every low-density paper is explained by those two unwritten chapters, not by an
@@ -192,7 +233,7 @@ close cousins of the Data Mining miss:
 - 2072 Ashwin "Why is it good news that the disease is rare?" — answered under its own
   heading, ending "A 99 % test is not a 99 % answer".
 
-**Re-audit AI chapters 6 and 7 against this same checklist once they are written.**
+**Re-audited 2026-09-17; see the AI CLOSED block at the top. Nothing outstanding.**
 
 ---
 
