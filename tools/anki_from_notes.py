@@ -159,10 +159,60 @@ def protect_math(s):
     s = re.sub(r"(?<!" + re.escape(BS) + r")" + re.escape(BS + "[") +
                r"(.*?)" + re.escape(BS + "]"),
                disp, s, flags=re.S)
-    # $...$  (no $$ in these sources)
+    # $$...$$ BEFORE $...$, and the order is not a style choice.
+    #
+    # The old TeX way of writing display math is deprecated and rare -- one
+    # instance in this whole repo, AI ch5-num.tex's "Cat eats fish" FOPL -- but
+    # the $...$ pass below CANNOT survive it. Given $$X$$ the lazy scan opens on
+    # the first $, takes "$X" as the body, and closes on the THIRD $. It
+    # consumes $$X$ and leaves a single orphan $ behind, which then pairs with
+    # the next dollar anywhere in the file and swallows every band between as
+    # one math island. In ch5-num.tex that ate four \T bands, so NUMSEG_RE saw
+    # 7 segments instead of 11, the last one ran to EOF with an \end{itemize}
+    # stranded inside a removed \begin{asked} block, and the whole subject
+    # crashed with "unclosed environment itemize". The file had an EVEN number
+    # of unescaped $ throughout, so a parity check does not catch this.
+    s = re.sub(r"(?<!" + re.escape(BS) + r")\$\$(.+?)(?<!" + re.escape(BS) +
+               r")\$\$",
+               lambda m: _stash(BS + "[" + m.group(1) + BS + "]"), s, flags=re.S)
+    # $...$
     s = re.sub(r"(?<!" + re.escape(BS) + r")\$(.+?)(?<!" + re.escape(BS) + r")\$",
                lambda m: _stash(BS + "(" + m.group(1) + BS + ")"), s, flags=re.S)
     return s
+
+
+# A mis-paired $ swallows PROSE, and prose carries structure that no formula
+# ever does. Length alone is the wrong test: DSAP prints a legitimate 192-char
+# transfer function, while one of the ch5-num runaways was only 303. So look
+# for document structure inside the island instead.
+#
+# \begin{...} on its own is NOT such a marker -- \begin{bmatrix} belongs in
+# inline math and Wireless has nine of them -- so only prose environments
+# count, named explicitly.
+PROSE_ENVS = ("itemize", "enumerate", "asked", "tabularx", "tabular",
+              "center", "align", "figure", "minipage")
+RUNAWAY_MARKERS = ((BS + "item ", BS + "item[", BS + "section",
+                    BS + "T{", BS + "lead{", BS + "creamq{", BS + "figT",
+                    BS + "hr", "\n\n") +
+                   tuple(BS + "begin{" + e for e in PROSE_ENVS))
+
+
+def runaway_math():
+    """[(chars, why, opening text)] for every inline island holding prose.
+
+    Reported rather than raised: the tool should still produce a deck, but a
+    hit here means a $ is mis-paired somewhere and whole bands may have been
+    swallowed. That is what hid the AI deck for as long as it did.
+    """
+    out = []
+    for tex in MATH:
+        if not tex.startswith(BS + "("):
+            continue
+        hit = [m for m in RUNAWAY_MARKERS if m in tex]
+        if hit:
+            why = ", ".join(repr(h) for h in hit[:3])
+            out.append((len(tex), why, re.sub(r"\s+", " ", tex[2:72])))
+    return sorted(out, reverse=True)
 
 
 def restore_math(s):
@@ -407,6 +457,15 @@ class Conv(object):
         if name == "colorbox":
             (_, t), i = grab_args(s, i, 2)
             return self.conv(t), i, None
+        if name == "parbox":
+            # \parbox[pos]{width}{text}. The width is a TeX dimen expression,
+            # here always \dimexpr\linewidth-2\fboxsep, and it MUST be consumed
+            # as an argument: an unhandled macro returns "" without eating its
+            # braces, so the width group was being converted as body text and
+            # every boxed Answer came out reading "-2Answer.".
+            _, i = grab_opt(s, i)
+            (_, t), i = grab_args(s, i, 2)
+            return self.conv(t), i, None
         if name == "multicolumn":
             (_, _, t), i = grab_args(s, i, 3)
             return self.conv(t), i, None
@@ -545,8 +604,39 @@ class Conv(object):
 MONTHS = "Ba|Jth|Asa|Shr|Bh|Ash|Ka|Mng|Po|Ma|Ch"
 YEAR_RE = re.compile(r"\b(\d{2})\s+(%s)\b" % MONTHS)
 HEAD_RE = re.compile(r"(?m)^[ \t]*" + re.escape(BS) + r"(T|Q|creamq|qq)\{")
-NUMSEG_RE = re.compile(r"(?m)^[ \t]*" + re.escape(BS) +
-                       r"(T)\{|^[ \t]*" + re.escape(BS) + r"(lead)\{\d+\.\d+")
+NUMSEG_RE = re.compile(r"(?m)^[ \t]*" + re.escape(BS) + r"(T)\{"
+                       r"|^[ \t]*" + re.escape(BS) + r"(lead)\{\d+\.\d+"
+                       r"|^[ \t]*" + re.escape(BS) + r"(qq|creamq)\{")
+
+
+def problem_segments(segs, src):
+    r"""Drop the \creamq matches that are commentary rather than a problem.
+
+    The same macro means two different things across this repo, so segmenting
+    on it blindly is wrong for half the subjects:
+
+      * AI and Data Mining write \creamq as the PROBLEM STATEMENT, always
+        followed by the paper's own \begin{asked} block. 79 of AI's 80 and 74
+        of Data Mining's 74 are that shape. Without splitting here a whole
+        band lands on one card -- AI ch4's "ten one-off premise sets" came out
+        as a single 14,295-character card holding ten complete resolution
+        proofs, against a median of 2,403.
+      * DSAP writes it as a caveat sidebar INSIDE a worked problem -- "70 Asa
+        and 70 Ma also ask whether the system is causal and stable" -- and a
+        split there would tear the note off the problem it annotates. 26 of
+        DSAP's 31 are that shape.
+
+    Owning an \begin{asked} before the next boundary is what tells them apart.
+    A dropped match is not lost: its text merges into the segment above it,
+    which is where it was already being rendered.
+    """
+    out = []
+    for k, seg in enumerate(segs):
+        stop = segs[k + 1].start() if k + 1 < len(segs) else len(src)
+        if seg.group(3) and BS + "begin{asked}" not in src[seg.start():stop]:
+            continue
+        out.append(seg)
+    return out
 
 
 def meta_split(body):
@@ -648,7 +738,7 @@ def parse_theory(path, chno, chtitle, conv):
 def parse_num(path, chno, chtitle, conv):
     src = strip_comments(open(path, encoding="utf-8").read())
     src = protect_math(src)
-    segs = list(NUMSEG_RE.finditer(src))
+    segs = problem_segments(list(NUMSEG_RE.finditer(src)), src)
     cards = []
 
     first = segs[0].start() if segs else len(src)
@@ -680,6 +770,17 @@ def parse_num(path, chno, chtitle, conv):
         start = src.index("{", seg.start())
         arg, after = grab_group(src, start)
         title = re.sub("<[^>]+>", "", conv.html(arg)).strip()
+        marks_tex = ""
+        if seg.group(3):
+            # \creamq{question}{marks}: the SECOND group has to be eaten here,
+            # or it stays at the head of the body, meta_split no longer sees
+            # the {\color{sub}...} tag line it needs, and the card loses its
+            # tier chip and its year list to the answer text.
+            j = after
+            while j < len(src) and src[j] in " \t\n":
+                j += 1
+            if j < len(src) and src[j] == "{":
+                marks_tex, after = grab_group(src, j)
         body = src[after:stop]
         meta, body = meta_split(body)
         if seg.group(1) == "T":
@@ -722,7 +823,7 @@ def parse_num(path, chno, chtitle, conv):
         cards.append(Card(
             kind="numerical", chno=chno, chtitle=chtitle, band=band,
             question=heading,
-            marks="",
+            marks=conv.html(marks_tex),
             meta=conv.html(allmeta),
             statement=front_extra,
             answer=answer,
@@ -976,6 +1077,13 @@ def main():
     if unknown:
         log.append("UNHANDLED MACROS: " + ", ".join(
             "%s(%d)" % (k, v) for k, v in unknown.most_common()))
+    runaway = runaway_math()
+    if runaway:
+        log.append("RUNAWAY MATH: %d inline island(s) contain document "
+                   "structure -- a $ is mis-paired (see protect_math)"
+                   % len(runaway))
+        for n, why, head in runaway[:5]:
+            log.append("    %5d chars, holds %s: %s..." % (n, why, head))
 
     outdir = os.path.join(args.root, args.subject, "Anki")
     mediadir = os.path.join(outdir, "_media")
