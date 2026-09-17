@@ -24,7 +24,7 @@ Audit pagination with `PYTHONIOENCODING=utf-8 python audit.py`
 | 3 | Network Theory and Analysis | ✅ 13 pp | ✅ 18 pp, 12 problems | the magic-tee chapter |
 | 4 | Components and Devices | ✅ 16 pp | ✅ 8 pp, 8 problems | the waveguide chapter; `wg.py` |
 | 5 | Microwave Generators | ✅ 10 pp | — none (stated in §5.10) | tubes; `tubes.py` |
-| 6 | RF Design Practices | ⬜ | ⬜ | **heaviest chapter, 22.4 % of marks** |
+| 6 | RF Design Practices | ✅ 11 pp | ✅ 7 pp, 10 problems | heaviest; `amp.py`, `filt.py` |
 | 7 | Antennas and Propagation | ⬜ | — | |
 | 8 | RF/Microwave Measurements | ⬜ | — | |
 | — | Combined masters | ⬜ | ⬜ | `master`, `master-num` |
@@ -209,3 +209,20 @@ Third-party and gitignored — build input only, never publish.
   BWO slides describe klystron cavities. LNA (73 Bh) has no source note: written
   [verified/added].
   Next: Ch6 (RF Design Practices, 46 questions, 426 marks, heaviest; has a numerical companion).
+- **2026-09-17** — **Ch6 shipped**: theory 11 pp (6.1-6.7) + companion 7 pp (10 problems:
+  all 13 amplifier S-parameter sets in 22 papers, and the 82 Bh fifth-order ladder).
+  `src/amp.py`: Delta, K, mu, stability circles (sampled: |Gamma_in| = 1 on them),
+  simultaneous conjugate match (checked = MAG, Gamma_S = Gamma_in*), unilateral gain,
+  M bounds, gain circles, stub+line matching networks walked forward; reproduces the deck's
+  800 MHz and 8 GHz examples. `src/filt.py`: Butterworth/Chebyshev g-values (= Pozar
+  tables), order selection, scaling + LP->HP/BP transforms checked at -3 dB by ABCD,
+  stepped-impedance table (= deck example 8.6), and to-scale microstrip layout drawings
+  (pi, double-pi, double-pad T, shunt-arm stubs, HPF gaps + shorted stubs, gap-coupled BPF).
+  Only three sets are not unconditionally stable: 0.894/-60.6 (72 Ash, 70 Ma, 80 Ba, 79 Bh),
+  76 Bh, 73 Ma; bilateral max gain does not exist there (MSG quoted).
+  PYQ documents fixed first (commit 4ec0754): 71 Ma set/marks, 70 Ma and 80 Ba asks,
+  75 Bh Smith-chart stability and 72 Ma mixer note were missing.
+  Deck errors: slide 51 |Delta| 0.168 / K 3.53 (exact 0.173 / 3.445); slide 52 M = 0.04
+  (exact 0.034); slide 66 Gunn R_L = 60 ohm breaks its own |R_out| >= 1.2 R_L rule;
+  example 8.6 N = 6 where N = 5 already meets 20 dB. Mixer has no deck source: added.
+  Next: Ch7 (Antennas and Propagation) and Ch8 (Measurements), then the masters.

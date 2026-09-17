@@ -1,0 +1,34 @@
+\section{RF Design Practices: Numerical Problems}
+{\color{sub}\footnotesize 10 solved problems covering \mk{every amplifier S-parameter set in 22 papers}
+and the 82 Bh filter \gap$\cdot$\gap 13 transistor sets, 1 filter design}
+
+\vspace{3pt}\noindent
+\colorbox{gdL}{\makebox[\dimexpr\textwidth-2\fboxsep][l]{%
+  \textcolor{gd}{\bfseries\footnotesize READ THIS FIRST}}}
+\par\nobreak\vspace{3pt}
+
+Every amplifier question in the archive is one procedure run on four numbers. The papers attach
+the formula sheet (\,$\Delta$, $K$, $\mu$, $B_1$, $C_1$, $\Gamma_S$, $\Gamma_L$, $C_S$, $R_S$,
+$C_L$, $R_L$, $G_{T,max}$\,), so the marks are in doing the steps in order and getting the
+complex arithmetic right.
+\begin{itemize}
+  \item \textbf{The procedure, always in this order}, always tabulated:
+    (1) magnitudes and products, (2) $\Delta$, (3) $K$ and $\mu$, verdict,
+    (4) if stable, $B_1$, $C_1$, $B_2$, $C_2$, $\Gamma_S$, $\Gamma_L$, $G_{T,max}$,
+    (5) unilateral $G_S$, $G_0$, $G_L$, $G_{TU,max}$, (6) figure of merit $M$ and the error
+    bound, (7) compare. Problem 1 shows every line.
+  \item \textbf{If $K < 1$ stop and say so.} The simultaneous conjugate match does not exist
+    (the square root goes imaginary or $|\Gamma| > 1$). Draw stability circles instead and
+    give the unilateral gain with its design points checked to be stable (Problems 3 to 5).
+  \item \textbf{Work in polar form for products, rectangular for sums.} Most slips are a
+    sum done in polar form. Keep four significant figures until the end.
+  \item \textbf{``Compare'' means a sentence}: which is larger, by how many dB, and whether
+    $M$ says the unilateral figure can be trusted.
+  \item Every number below is from \code{src/amp.py}, which cross-checks $G_{T,max}$
+    against $|S_{21}/S_{12}|(K - \sqrt{K^2-1})$, confirms $\Gamma_S = \Gamma_{in}^*$ and
+    $\Gamma_L = \Gamma_{out}^*$, and walks each matching network forward.
+\end{itemize}
+
+\penalty0\vspace{2pt}
+
+\input{ch6-num-body}
