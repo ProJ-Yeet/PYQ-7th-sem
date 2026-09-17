@@ -1,0 +1,586 @@
+\section{Microwave Antennas and Propagation}
+{\color{sub}\footnotesize 3 hrs \gap$\cdot$\gap asked in \mk{23 of 24 papers}
+\gap$\cdot$\gap 3 syllabus sub-topics \gap$\cdot$\gap \mk{162 marks, 8.4\% of 24 papers}
+$\rightarrow$ almost every mark is on sub-topic (c), radiation hazards; antenna types and
+propagation have never been examined.}
+
+\vspace{3pt}\noindent
+\colorbox{gdL}{\makebox[\dimexpr\textwidth-2\fboxsep][l]{%
+  \textcolor{gd}{\bfseries\footnotesize READ THIS FIRST}}}
+\par\nobreak\vspace{3pt}
+
+Chapter 7 is the \mk{one guaranteed question} of the paper: only 72 Ash skips it in 24 sets.
+It comes as a 4 to 10 mark theory answer, usually two parts glued together.
+\begin{enumerate}[label=\arabic*., leftmargin=1.4em, itemsep=1pt]
+  \item \textbf{Radiation fields / zones} (11 papers) $\rightarrow$ $\S$7.1. Three zones, two
+    boundary formulas, one figure. The BTS and microwave-oven versions put numbers in them:
+    worked in the \textbf{numerical companion}.
+  \item \textbf{How microwaves are hazardous; HERP, HERO, HERF} (17 papers) $\rightarrow$
+    $\S$7.2. Always the same chain: non-ionizing $\rightarrow$ dielectric heating
+    $\rightarrow$ no internal heat sensors $\rightarrow$ poorly cooled organs.
+  \item \textbf{SAR} (3 papers, one of them for 10 marks) $\rightarrow$ $\S$7.3.
+  \item \textbf{Safety standards} (4 papers) and \textbf{safety practices} (7 papers)
+    $\rightarrow$ $\S$7.4 and $\S$7.5. Name the body, the frequency range and one number each.
+\end{enumerate}
+Two things worth knowing before the paper starts:
+\begin{itemize}
+  \item Nearly every question is ``part A + part B'' from the list above. Answer each part
+    under its own heading and draw the zone figure whenever ``fields'' appears.
+  \item \textbf{Every limit is built on one number}: a whole-body SAR of \mk{4 W/kg} warms
+    the body by about 1$^\circ$C. Divide by 10 for workers (0.4 W/kg), by 50 for the public
+    (0.08 W/kg). Quote this and the standards section writes itself.
+\end{itemize}
+
+\hr
+
+%=======================================================================
+\T{7.1 Microwave Radiation Fields (Radiation Zones)}
+
+\Q{Name and explain the microwave radiation fields: reactive, radiating near and far field}{\m{5}\m{4}\m{3}\m{8}\m{5+5}}
+{\color{sub}\footnotesize \tS{11} \yr{\textbf{69 Bh}, 71 Ma, 72 Ma, 74 Ma, \textbf{76 Bh}, \textbf{77 Ch}, \textbf{79 Ch}, \texttt{80 Ba}, \texttt{81 Ba}, \textbf{\texttt{81 Bh}}, \texttt{82 Ba}} \gap$\cdot$\gap oven (74 Ma, 77 Ch) and BTS (81 Ba, 81 Bh, 82 Ba) versions}
+
+\sbsr{0.50}{%
+\begin{itemize}
+  \item \textbf{Radiation} = energy carried away by EM waves. Round any antenna (or leaking
+    oven, or waveguide opening) the field is split into \textbf{three zones} by distance $R$,
+    antenna largest dimension $D$ and wavelength $\lambda$.
+  \item \textbf{Near field} = the first two zones. \textbf{Far field} = the third.
+\end{itemize}
+\vspace{2pt}
+\begin{tabularx}{\linewidth}{@{}L{2.0cm}X@{}}
+\toprule
+\hrow \thead{Zone} & \thead{Boundary} \\
+\midrule
+Reactive near field & $R < 0.62\sqrt{D^3/\lambda}$ \\
+Radiating near field (Fresnel) & $0.62\sqrt{D^3/\lambda} < R < 2D^2/\lambda$ \\
+Far field (Fraunhofer) & $R > 2D^2/\lambda$ \\
+\bottomrule
+\end{tabularx}}{%
+\figT{c7_zones.png}
+{\color{sub}\scriptsize Reactive and radiating near field, then far field. Karkee, Ch-7 PDF
+p5 (white on black in the source, inverted for print).}}
+
+\par\penalty0\Needspace{14\baselineskip}
+\lead{What each zone is like (the ``differentiate'' answer, 79 Ch, 72 Ma)}
+\begin{tabularx}{\linewidth}{@{}L{2.4cm}XXX@{}}
+\toprule
+\hrow & \thead{Reactive near field} & \thead{Radiating near field} & \thead{Far field} \\
+\midrule
+Energy & \textbf{stored}, sloshes back and forth to the antenna each cycle & radiated, but beam still forming & radiated, travelling away \\
+$E$ and $H$ & $90^\circ$ out of phase, not in fixed ratio & in phase, ratio settling & in phase, $E \perp H \perp$ direction \\
+$E/H$ & not 377 $\Omega$; measure $E$ and $H$ separately & approaching 377 $\Omega$ & $= 377\,\Omega$, so $S = E^2/377$ \\
+Fall with $R$ & fast ($1/R^2$ to $1/R^3$) & irregular, local peaks & $S \propto 1/R^2$ \\
+Pattern & not defined & changes with distance & fixed shape \\
+Hazard & \textbf{highest}: body close enough couples to stored energy & high: full beam power in a column about $D$ wide & lowest, and predictable from $S = P_tG/4\pi R^2$ \\
+\bottomrule
+\end{tabularx}
+
+\par\penalty0\Needspace{10\baselineskip}
+\begin{itemize}
+  \item \textbf{Hazardous vs safe} (deck): reactive and radiating near field are treated as
+    \textbf{hazardous}, the far field as the \textbf{safe} side, where exposure falls as
+    $1/R^2$ and can be checked against a limit ($\S$7.4).
+  \item \textbf{Validity} \added{}: the two formulas assume an antenna \textbf{larger than a
+    wavelength}. For a small antenna ($D < \lambda$, e.g. a quarter-wave whip) they give a
+    ``far field'' that starts inside the reactive region. Use instead: reactive field out to
+    $\lambda/2\pi$, far field beyond about $2\lambda$. The 82 Ba quarter-wave question and the
+    deck's 150 MHz example fall here (\code{ant.py}).
+\end{itemize}
+
+\par\penalty0\Needspace{12\baselineskip}
+\creamq{Radiation zones of a microwave oven; radiation fields round a GSM BTS}{\m{3}\m{4}\m{4}\m{4}}
+{\color{sub}\footnotesize \yr{74 Ma, \textbf{77 Ch} (oven); \texttt{81 Ba}, \textbf{\texttt{81 Bh}}, \texttt{82 Ba} (BTS)} \gap$\cdot$\gap full working in the numerical companion}
+\sbs{%
+\lead{Microwave oven, $f = 2.45$ GHz, $D = 0.5$ m}
+\begin{itemize}
+  \item $\lambda = 0.1224$ m, $D > \lambda$ so the formulas hold.
+  \item Reactive: $R < 0.63$ m. Fresnel: $0.63$ to $4.08$ m. Far field: $R > 4.08$ m.
+  \item \textbf{In practice} the cavity is a closed metal box (Faraday cage) and the door mesh
+    holes are far smaller than $\lambda = 12$ cm, so almost nothing leaks. Leakage limit (US
+    FDA): \mk{1 mW/cm$^2$ at 5 cm} when sold, 5 mW/cm$^2$ over its life. \added{}
+  \item Zones matter only for leakage at a damaged door seal or hinge: stay out of the
+    reactive zone (arm's length) while it runs.
+\end{itemize}}{%
+\lead{GSM / LTE base station (BTS)}
+\begin{itemize}
+  \item Panel antenna on a mast, main beam tilted a few degrees down, hitting the ground
+    tens to hundreds of metres away (figure).
+  \item \textbf{Reactive and Fresnel zones}: within a few metres \textbf{in front of} the
+    panel, reached only by riggers on the tower or a rooftop $\rightarrow$
+    \textbf{occupational} exclusion zone.
+  \item \textbf{Far field}: everywhere the public is. Power density there is far below the
+    limit (81 Bh: zones $0.65$ m and $4.33$ m).
+  \item \textbf{Radiation parameters} (81 Ba): frequency, transmit power, antenna gain,
+    EIRP, beam tilt and beamwidth, polarization, power density (W/m$^2$), field strength
+    (V/m), SAR.
+\end{itemize}
+\figT{c7_tower.png}
+{\color{sub}\scriptsize Main beam of a mast-mounted antenna. KEC Ch-7 deck, slide 32.}}
+
+\penalty0\vspace{2pt}
+
+%=======================================================================
+\T{7.2 How Microwave Radiation Is Hazardous: HERP, HERO, HERF}
+
+\Q{How are microwaves hazardous to humans (living body)? Microwave radiation hazards (short note)}{\m{3}\m{4}\m{5}\m{6}\m{8}}
+{\color{sub}\footnotesize \tS{17} \yr{\textbf{69 Bh}, \textbf{70 Bh}, 70 Ma, \textbf{71 Bh}, 72 Ma, 73 Ma, \textbf{73 Bh}, 74 Ma, \textbf{74 Bh}, \textbf{75 Bh}, \textbf{77 Ch}, \textbf{78 Ch}, \textbf{\texttt{79 Bh}}, \textbf{\texttt{80 Bh}}, \textbf{\texttt{81 Bh}}, \texttt{82 Ba}, \textbf{\texttt{82 Bh}}} \gap$\cdot$\gap \mk{the most repeated ask of the chapter}}
+
+\sbsr{0.60}{%
+\lead{1. Microwaves are non-ionizing}
+\begin{itemize}
+  \item Photon energy $E = hf$: at 2.45 GHz only $1.0\times10^{-5}$ eV.
+  \item Ionizing a molecule needs about 10 eV $\rightarrow$ a microwave photon is a
+    \textbf{million times} too weak. It cannot break bonds or DNA directly (unlike
+    X-rays, gamma rays).
+  \item So the established hazard is \textbf{heat}, not ionization.
+\end{itemize}
+\lead{2. Thermal effect: dielectric heating}
+\begin{itemize}
+  \item The field \textbf{rotates polar water molecules} and drives \textbf{ionic currents}
+    in tissue $\rightarrow$ friction and $I^2R$ loss $\rightarrow$ heat.
+  \item Absorbed power per kg $= \sigma E^2/\rho$ = \textbf{SAR} ($\S$7.3).
+  \item Microwaves heat \textbf{inside out}. Sunlight heats \textbf{outside in}, where skin
+    sensors warn and sweat cools (figure).
+\end{itemize}}{%
+\figT{c7_heating.png}
+{\color{sub}\scriptsize Sun heating (outside in, felt) vs microwave heating (inside out,
+trapped). Gangaju, Ch-7 deck, slide 4.}
+\vspace{3pt}
+
+\figT{c7_spectrum.png}
+{\color{sub}\scriptsize Microwaves sit far below visible light and the ionizing bands. KEC
+Ch-7 deck, slide 5.}}
+
+\par\penalty0\Needspace{14\baselineskip}
+\lead{3. Why the heating is dangerous}
+\begin{itemize}
+  \item \textbf{No internal heat sensation}: the body senses heat only in the skin, so deep
+    tissue can be damaged \textbf{before the person notices}.
+  \item \textbf{Poorly cooled organs} (little blood flow to carry heat away):
+  \begin{itemize}
+    \item \textbf{Eye lens} $\rightarrow$ cataract.
+    \item \textbf{Testes} $\rightarrow$ temporary sterility.
+    \item Stomach, intestines, bladder, gall bladder $\rightarrow$ thermal damage at high power.
+  \end{itemize}
+  \item \textbf{Body resonance}: absorption peaks when body size is comparable to $\lambda$
+    (whole adult body about 70 to 100 MHz). The deck adds: significant absorption even when
+    body size is $\lambda/10$. That is why every limit chart dips lowest at 30 to 300 MHz
+    ($\S$7.4).
+  \item \textbf{Penetration falls with frequency}: deep at UHF (several cm), about 1 to 2 cm
+    at 2.45 GHz, only the skin above about 10 GHz $\rightarrow$ lower microwave bands heat
+    deep tissue unfelt, higher bands burn the surface. \added{}
+  \item Long low-frequency magnetic exposure can also induce damaging currents (deck).
+\end{itemize}
+
+\par\penalty0\Needspace{12\baselineskip}
+\lead{4. Other effects}
+\begin{itemize}
+  \item \textbf{RF burns and shocks}: touching a metal object (fence, mast, vehicle) in a
+    strong field drives \textbf{contact current} through the hand.
+  \item \textbf{Implants}: pacemakers and other active implants can malfunction; metal
+    implants concentrate the field and heat.
+  \item \textbf{Microwave hearing}: pulsed radar is heard as clicks (thermoelastic
+    expansion in the head).
+  \item \textbf{Behavioural complaints} reported by RF workers: headache, irritability,
+    fatigue, sleeplessness (deck). Not reproduced in blind studies.
+  \item \textbf{Cancer}: IARC (WHO) 2011 classes RF fields \textbf{Group 2B, ``possibly
+    carcinogenic''}, meaning limited evidence. \mk{Correction}: one student deck calls
+    microwaves ``known'' to cause cancer and another slide calls non-thermal effects
+    ``several times more harmful'' than thermal; neither is established. \added{}
+\end{itemize}
+
+\par\penalty0\Needspace{12\baselineskip}
+\creamq{Link to the zones (69 Bh, 72 Ma, 81 Bh): ``how is non-radiating radiation hazardous?''}{\m{4}\m{5}\m{8}}
+\begin{itemize}
+  \item The \textbf{reactive near field} does not radiate, but its stored $E$ and $H$ fields
+    are strongest there. A body inside it \textbf{loads} the antenna and \textbf{draws energy
+    out} of the stored field $\rightarrow$ absorbed as heat, although nothing is ``radiated''.
+  \item Radiating near field: full beam power confined to a column about the antenna's size
+    $\rightarrow$ highest power density a person in front of the antenna meets.
+  \item Far field: $S = P_tG/4\pi R^2$ falls with distance $\rightarrow$ distance is the
+    simplest protection ($\S$7.5).
+\end{itemize}
+
+\par\penalty0\Needspace{14\baselineskip}
+\creamq{Types of electromagnetic radiation hazard (RADHAZ); HERP short note}{\m{4}}
+{\color{sub}\footnotesize \yr{74 Ma (types), \textbf{\texttt{80 Bh}} (HERP)}}
+\par\noindent
+\begin{minipage}[t]{0.31\textwidth}\vspace{0pt}\raggedright
+\lead{HERP: to personnel}
+\begin{itemize}
+  \item Harmful \textbf{biological} effects in humans.
+  \item Cause: thermal effect of absorbed energy (points 2 and 3 above).
+  \item Eg: eye lens exposed $\rightarrow$ too little blood flow to cool it $\rightarrow$
+    cataract.
+  \item Controlled by exposure limits (SAR, power density).
+  \item \textcolor{sub}{\small ``Hazards of Electromagnetic Radiation to Personnel''.}
+\end{itemize}\end{minipage}\hfill
+\begin{minipage}[t]{0.33\textwidth}\vspace{0pt}\raggedright
+\lead{HERO: to ordnance}
+\begin{itemize}
+  \item RF induces current in the leads of \textbf{electro-explosive devices} (EEDs: detonators,
+    squibs, airbag igniters, missile motors) $\rightarrow$ \textbf{premature firing}.
+  \item Ordnance is \textbf{more sensitive} than people: no blood flow to shed heat.
+  \item But easier to protect: metal enclosures reflect the field.
+  \item A chain explosion is possible $\rightarrow$ HERO limits are \textbf{lower} than
+    personnel limits.
+\end{itemize}\end{minipage}\hfill
+\begin{minipage}[t]{0.33\textwidth}\vspace{0pt}\raggedright
+\lead{HERF: to fuel}
+\begin{itemize}
+  \item RF-induced \textbf{arcs} ignite \textbf{fuel vapour} during refuelling near radar or
+    radio transmitters.
+  \item Ignition likely for arcs above about \textbf{50 VA}.
+  \item Rules (deck):
+  \begin{itemize}
+    \item no transmitting from a vehicle or aircraft being fuelled, or the one beside it
+    \item no connecting or breaking cables or ground wires while fuelling
+    \item radar lighting the area at 5 W/cm$^2$ peak: shut off
+    \item antennas of 250 W or less at least 50 ft from fuelling (500 W at sea)
+  \end{itemize}
+\end{itemize}\end{minipage}\par
+
+\penalty0\vspace{2pt}
+
+%=======================================================================
+\T{7.3 Specific Absorption Rate (SAR)}
+
+\Q{Define SAR. Discuss microwave radiation hazards based on SAR exposures; what is non-ionizing SAR}{\m{4}\m{6}\m{10}}
+{\color{sub}\footnotesize \tF{3} \yr{\textbf{74 Bh}, \textbf{80 Ch}, \texttt{81 Ba}} \gap$\cdot$\gap 80 Ch sets the whole 10 marks on it}
+
+\lead{Definition}
+\begin{itemize}
+  \item \textbf{SAR} = rate at which RF energy is \textbf{absorbed per unit mass} of body
+    tissue, in \textbf{W/kg}.
+    \[ \boxed{\mathrm{SAR} = \frac{d}{dt}\left(\frac{dW}{dm}\right) = \frac{\sigma E^2}{\rho} = c\,\frac{dT}{dt}} \]
+  \item $\sigma$ = tissue conductivity (S/m), $E$ = \textbf{rms field inside the tissue}
+    (V/m), $\rho$ = mass density (\textbf{kg/m$^3$}), $c$ = specific heat (J/kg K),
+    $dT/dt$ = initial temperature rise rate.
+\end{itemize}
+
+\sbsr{0.52}{%
+\begin{itemize}
+  \item \mk{Correction}: the deck prints the density unit as kg/m$^2$; a mass density is
+    kg/m$^3$, which is what makes $\sigma E^2/\rho$ come out in W/kg. \added{}
+  \item \textbf{Non-ionizing SAR} (81 Ba): SAR measures \textbf{heating} from non-ionizing
+    RF. It is the dose quantity for RF the way absorbed dose (Gy) is for ionizing radiation.
+\end{itemize}}{%
+\lead{Averaging and measurement}
+\begin{itemize}
+  \item \textbf{Whole-body SAR}: total absorbed power / body mass.
+  \item \textbf{Localized (peak spatial) SAR}: averaged over any \textbf{1 g} (FCC) or
+    \textbf{10 g} (ICNIRP, IEEE 2019) cube of tissue: the phone-against-head case.
+  \item Averaged over time (6 min in ICNIRP 1998).
+  \item \textbf{Measured} with a phantom head or body filled with tissue-simulating liquid: a
+    robot moves an $E$-field probe through it (SAR $= \sigma E^2/\rho$), or a temperature probe
+    logs $dT/dt$ (SAR $= c\,dT/dt$).
+  \item Eg (\code{ant.py}): muscle at 900 MHz, $\sigma \approx 0.94$ S/m,
+    $\rho \approx 1040$ kg/m$^3$; $E = 10$ V/m inside gives $0.09$ W/kg.
+\end{itemize}}
+
+\par\penalty0\Needspace{16\baselineskip}
+\lead{Hazards based on SAR exposure (the 10-mark body)}
+\begin{tabularx}{\linewidth}{@{}L{3.3cm}X@{}}
+\toprule
+\hrow \thead{Whole-body SAR} & \thead{Effect and what the standards do with it} \\
+\midrule
+below 0.08 W/kg & \textbf{public limit}. No established health effect. \\
+0.4 W/kg & \textbf{occupational limit} for trained workers. \\
+about 1 to 4 W/kg & body temperature rises up to about $1^\circ$C, thermoregulation (blood flow, sweat) copes in healthy adults. \\
+\textbf{4 W/kg} & \textbf{threshold}: about $1^\circ$C core rise, animals show disrupted behaviour. With no heat loss, 4 W/kg warms tissue 1$^\circ$C in about 15 min ($c \approx 3500$ J/kg K). \\
+well above 4 W/kg & heat stress, heat stroke; local hot spots burn tissue, cataract in poorly cooled lens. \\
+\bottomrule
+\end{tabularx}
+\par\penalty0\Needspace{8\baselineskip}
+\begin{itemize}
+  \item \textbf{Safety factors}: threshold $4 \xrightarrow{\div 10} 0.4$ (occupational)
+    $\xrightarrow{\div 5} 0.08$ W/kg (public). The student deck's ``one-tenth of the observed
+    threshold SAR (0.4 W/kg)'' means the \textbf{limit} is 0.4; the threshold is 4. \added{}
+  \item \textbf{Localized SAR limits}: public 2 W/kg over 10 g head and trunk (ICNIRP, IEEE
+    2019), \textbf{1.6 W/kg over 1 g} (FCC, US and India phones); workers 10 W/kg.
+  \item \textbf{Mobile phones}: SAR is declared by the maker (typically 0.2 to 1.6 W/kg).
+    Using a hands-free kit or speaker cuts it sharply because the head leaves the reactive
+    near field of the handset antenna.
+\end{itemize}
+
+\penalty0\vspace{2pt}
+
+%=======================================================================
+\T{7.4 International EMR Safety Standards}
+
+\Q{International standards and recommended practices (SARPs) for RF/microwave exposure; IEEE safety standard}{\m{2}\m{3}\m{3+3}\m{5+5}}
+{\color{sub}\footnotesize \tF{4} \yr{70 Ma, \textbf{76 Bh}, \texttt{80 Ba}, \texttt{82 Ba}} \gap$\cdot$\gap practices half in $\S$7.5}
+
+\begin{itemize}
+  \item \textbf{Basis of all of them}: adverse effects scale with absorbed power $\rightarrow$
+    \textbf{basic restriction} in SAR (W/kg), and because SAR cannot be measured in a person,
+    a \textbf{reference level} (MPE) in measurable power density (mW/cm$^2$, W/m$^2$) or
+    field strength (V/m, A/m).
+  \item \textbf{Two tiers}: \textbf{occupational / controlled} (trained workers who know they
+    are exposed) and \textbf{general public / uncontrolled} (everyone else, 24 hours a day,
+    including children, the ill and the elderly) $\rightarrow$ public limit 5 times lower.
+  \item $1 \text{ mW/cm}^2 = 10 \text{ W/m}^2$.
+\end{itemize}
+
+\par\penalty0\Needspace{20\baselineskip}
+\begin{tabularx}{\linewidth}{@{}L{2.9cm}L{2.2cm}X@{}}
+\toprule
+\hrow \thead{Body and standard} & \thead{Range} & \thead{Key numbers} \\
+\midrule
+\textbf{IEEE / ANSI C95.1} (US; 1982, 2005, 2019) & 3 kHz to 300 GHz (0 Hz to 300 GHz in 2019) & 1982 single tier: 1 mW/cm$^2$ at 30 to 300 MHz, $f/300$ to 1.5 GHz, 5 mW/cm$^2$ above. 2005/2019: two tiers, whole body 0.08 / 0.4 W/kg, local 2 / 10 W/kg over 10 g (2019). \\
+\textbf{FCC} (US, OET Bulletin 65) & 300 kHz to 100 GHz & public 0.2 mW/cm$^2$ at 30 to 300 MHz, $f/1500$ to 1.5 GHz, 1.0 mW/cm$^2$ above; occupational 5 times higher. Phone SAR 1.6 W/kg over 1 g. Averaging 6 min (workers), 30 min (public). \\
+\textbf{ICNIRP} (international, recognized by WHO; 1998, revised 2020) & 100 kHz to 300 GHz & public $f/200$ W/m$^2$ at 400 to 2000 MHz (4.5 at 900, 9 at 1800), 10 W/m$^2$ above 2 GHz; workers 5 times. SAR 0.08 / 0.4 W/kg whole body, 2 / 10 W/kg local. Adopted by most countries. \\
+\textbf{IRPA / INIRC} (1988) & & ICNIRP's predecessor: first international occupational and public limits. \\
+\textbf{OSHA} (US workplaces) & 10 MHz to 100 GHz & 10 mW/cm$^2$ averaged over 6 min (older guide). \\
+\textbf{ITU-T K.52, K.70} & telecom sites & how to check a BTS site against ICNIRP limits, and how to mitigate (compliance distance, exclusion zones). \\
+\textbf{WHO EMF Project, IARC} & & reviews health evidence; IARC Group 2B (2011). \\
+\bottomrule
+\end{tabularx}
+
+\par\penalty0\Needspace{16\baselineskip}
+\sbs{%
+\figT{c7_fcc.png}
+{\color{sub}\scriptsize \textbf{FCC MPE} (power density, mW/cm$^2$, vs MHz): solid occupational,
+dashed public. Karkee PDF p18.}}{%
+\figT{c7_ansi.png}
+{\color{sub}\scriptsize \textbf{ANSI C95.1-1982} Radiation Protection Guide. Karkee PDF p19.}}
+
+\par\penalty0\Needspace{8\baselineskip}
+\begin{itemize}
+  \item \textbf{Read the charts}: both dip at \textbf{30 to 300 MHz}, the body-resonance band
+    ($\S$7.2), and rise again above 300 MHz as absorption becomes shallower.
+  \item \mk{Correction}: the deck's ``IRPA permissible exposure level'' table (PDF p17: 200
+    $\mu$T, 5 kV/m, 20 mV/m in the head) is ICNIRP's \textbf{50 Hz power-line} limit, not a
+    microwave one. It is left out here. \added{}
+  \item \textbf{SARPs} (80 Ba) = \textbf{Standards And Recommended Practices}: answer with the
+    ICNIRP / IEEE limits above as the standards and $\S$7.5 as the practices.
+\end{itemize}
+
+\penalty0\vspace{2pt}
+
+%=======================================================================
+\T{7.5 RF/Microwave Safety Practices}
+
+\Q{RF/MW radiation hazards and safety practices; list and describe five major RF safety practices}{\m{3}\m{5}\m{6}\m{5+5}}
+{\color{sub}\footnotesize \tS{7} \yr{\textbf{70 Bh}, \textbf{71 Bh}, \textbf{73 Bh}, \textbf{74 Bh}, \textbf{76 Bh}, \textbf{79 Ch}, \textbf{\texttt{79 Bh}}} \gap$\cdot$\gap short-note form mostly; hazard half is $\S$7.2}
+
+\sbsr{0.68}{%
+\lead{Five major practices (79 Ch)}
+\begin{enumerate}[label=\arabic*., leftmargin=1.4em, itemsep=1pt]
+  \item \textbf{Time, distance, shielding}:
+  \begin{itemize}
+    \item cut exposure time
+    \item keep out of the main beam and out of the near field (power density $\propto 1/R^2$)
+    \item metal panels or mesh, RF absorbers, Faraday enclosures
+  \end{itemize}
+  \item \textbf{Engineering controls}:
+  \begin{itemize}
+    \item safety \textbf{interlocks} that cut RF when a door or panel opens
+    \item RF gaskets, choke joints, oven door mesh
+    \item test into a \textbf{dummy load}, never an open waveguide
+    \item grounding straps not bent at sharp angles (they radiate)
+  \end{itemize}
+  \item \textbf{Administrative controls}:
+  \begin{itemize}
+    \item RF survey of the site, marked \textbf{exclusion zones}, warning signs (figure)
+    \item \textbf{lockout / tagout} before work on a tower or transmitter
+    \item never look into a live waveguide, horn or dish
+    \item training and exposure records
+  \end{itemize}
+  \item \textbf{Personal protective equipment}: RF protective suit (stainless steel woven into
+    fire-retardant fibre) for high-field areas; personal RF monitor that alarms.
+  \item \textbf{Regular inspection}:
+  \begin{itemize}
+    \item \textbf{visual}: housekeeping, interlocks present, high-voltage grounding rods,
+      condition of cables and coax, RF shielding intact
+    \item \textbf{operational}: RF level survey in occupied spaces, interlock tests, lockout
+      used properly
+  \end{itemize}
+\end{enumerate}}{%
+\figT{c7_warning.png}
+{\color{sub}\scriptsize RF warning sign at an exclusion-zone boundary. KEC Ch-7 deck, slide 24.}
+\vspace{4pt}
+
+\lead{More practices (deck)}
+\begin{itemize}
+  \item Operate stray-RF sources (induction and dielectric heaters) \textbf{remotely}.
+  \item Keep workers below the recommended limits ($\S$7.4).
+  \item \textbf{HERO}: keep EEDs away from transmitters.
+  \item \textbf{HERF}: no RF devices in flammable atmospheres; fuelling rules of $\S$7.2.
+  \item RF-sensitive equipment and people with \textbf{implants} away from sources.
+  \item Switch equipment off when not in use.
+  \item \textbf{Public}: antennas high and beams tilted clear of rooftops; hands-free phones;
+    awareness and school teaching.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+%=======================================================================
+\T{7.6 Microwave Antennas}
+
+\Q{Microwave antenna types}{\pill{gdL}{gd}{syllabus, no PYQ yet}}
+{\color{sub}\footnotesize syllabus 7(a) \gap$\cdot$\gap the deck leaves it as an assignment and refers to Pozar}
+
+\begin{itemize}
+  \item Conventional wire antennas work at microwaves too, but the short wavelength allows
+    \textbf{aperture antennas} a few $\lambda$ across $\rightarrow$ high gain, narrow beams in a
+    small size.
+  \item \textbf{Parameters}: gain $G$ and directivity, beamwidth, efficiency, polarization,
+    input impedance / VSWR, bandwidth. Aperture gain
+    $G = 4\pi A_e/\lambda^2$ with $A_e = \eta\,\pi D^2/4$.
+\end{itemize}
+
+\par\penalty0\Needspace{16\baselineskip}
+\sbsr{0.72}{%
+\begin{tabularx}{\linewidth}{@{}L{1.9cm}XL{2.3cm}@{}}
+\toprule
+\hrow \thead{Type} & \thead{How it works} & \thead{Typical use} \\
+\midrule
+\textbf{Horn} & flared end of a waveguide; flare matches guide to free space. E-plane, H-plane, pyramidal, conical. 10 to 25 dBi & dish feed, gain standard in measurements \\
+\textbf{Parabolic reflector} & feed (horn) at focus; reflector turns spherical wave into plane wave. $G = \eta(\pi D/\lambda)^2$, HPBW $\approx 70\lambda/D$ degrees. Front-fed or Cassegrain & satellite earth stations, radar, point-to-point links \\
+\textbf{Lens} & dielectric (slows wave) or metal-plate (speeds it) lens collimates like an optical lens & mm-wave radar, automotive \\
+\textbf{Slot} & slot cut in a waveguide wall or ground plane; complement of a dipole (Babinet); flush & aircraft, slotted-guide arrays \\
+\textbf{Microstrip patch} & metal patch about $\lambda_g/2$ long over a ground plane on a substrate; low profile, narrow band (1 to 5\%), low power; arrays & phones, GPS, WLAN, 5G arrays \\
+\textbf{Helical} & wire helix; axial mode when circumference $\approx \lambda$ $\rightarrow$ circular polarization & satellite, space telemetry \\
+\bottomrule
+\end{tabularx}
+{\color{sub}\footnotesize Eg (\code{ant.py}): 1.2 m dish at 12 GHz, $\eta = 0.55$: $G = 41.0$ dBi, HPBW $= 1.46^\circ$.}}{%
+\figT{c7_horn.png}
+{\color{sub}\scriptsize Pyramidal horn.}
+\vspace{2pt}
+
+\figT{c7_dish.png}
+{\color{sub}\scriptsize Parabolic reflector.}
+\vspace{2pt}
+
+\figT{c7_patch.png}
+{\color{sub}\scriptsize 16-element patch array. All three: 2078 student presentation.}}
+
+\par\penalty0\Needspace{6\baselineskip}
+\begin{itemize}
+  \item \mk{Corrections to the student deck} \added{}: a microstrip antenna is a
+    \textbf{microwave} antenna (at 100 MHz a half-wave patch would be over a metre long), not
+    one ``used at low frequency''; and its ``MIMO'' slide shows a Yagi array. MIMO is a way of
+    using several antennas (spatial multiplexing, diversity), not an antenna type.
+\end{itemize}
+
+\par\penalty0\Needspace{16\baselineskip}
+\creamq{Choose a proper microwave measurement tool to test an antenna as a DUT; explain its working principle}{\m{8}}
+{\color{sub}\footnotesize \tP{1} \yr{\textbf{74 Bh}} \gap$\cdot$\gap instrument principles in Ch 8}
+\sbs{%
+\lead{Tool 1: vector network analyzer (VNA), port 1 to the antenna}
+\begin{itemize}
+  \item Measures $S_{11}$ vs frequency $\rightarrow$ return loss, VSWR
+    $= (1 + |S_{11}|)/(1 - |S_{11}|)$, input impedance on a Smith chart, and the
+    \textbf{bandwidth} where VSWR $< 2$.
+  \item Working: internal source sweeps; directional couplers split incident and reflected
+    waves; receivers compare amplitude and phase; calibration (short, open, load) removes
+    cable and coupler errors. Detail in Ch 8.
+\end{itemize}}{%
+\lead{Tool 2: anechoic chamber (pattern and gain)}
+\begin{itemize}
+  \item Walls lined with RF absorber cones (no reflections). Known source horn at one end,
+    antenna under test on a rotating \textbf{positioner} at the other.
+  \item Separation $R > 2D^2/\lambda$ so the test is in the \textbf{far field} ($\S$7.1).
+  \item Rotate and record received power (VNA $S_{21}$ or spectrum analyzer) $\rightarrow$
+    \textbf{radiation pattern}, beamwidth, side lobes.
+  \item \textbf{Gain}: compare with a standard gain horn, or three-antenna method with Friis.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+%=======================================================================
+\T{7.7 Propagation Characteristics of Microwaves}
+
+\Q{Propagation characteristics: line of sight, atmosphere, ground and plasma effects}{\pill{gdL}{gd}{syllabus, no PYQ yet}}
+{\color{sub}\footnotesize syllabus 7(b) \gap$\cdot$\gap deck refers to Pozar; numbers from \code{ant.py}}
+
+\sbs{%
+\lead{Line-of-sight (space wave)}
+\begin{itemize}
+  \item Ground wave dies within a short range and the ionosphere does not reflect microwaves
+    (they pass through) $\rightarrow$ terrestrial links are \textbf{LOS}, satellites use the
+    fact that they pass.
+  \item \textbf{Radio horizon} with $k = 4/3$ earth (refraction bends the ray down):
+    $d \approx 4.12\sqrt{h}$ km, $h$ in m. Two masts: $d = 4.12(\sqrt{h_1} + \sqrt{h_2})$;
+    30 m and 50 m give 51.7 km.
+  \item \textbf{Fresnel clearance}: keep $60\%$ of the first Fresnel zone
+    $r_1 = \sqrt{\lambda d_1 d_2/(d_1 + d_2)}$ clear of obstacles; 50 km hop at 6 GHz needs
+    $r_1 = 25$ m at mid-path.
+  \item \textbf{Free-space path loss}:
+    $L = 32.44 + 20\log d_{km} + 20\log f_{MHz}$ dB; Friis
+    $P_r = P_tG_tG_r(\lambda/4\pi d)^2$.
+\end{itemize}}{%
+\lead{Atmosphere, ground and plasma effects}
+\begin{itemize}
+  \item \textbf{Gas absorption}: water vapour peak at 22 GHz, \textbf{oxygen at 60 GHz}; little
+    below 10 GHz. The 60 GHz peak suits short private links and satellite crosslinks.
+  \item \textbf{Rain and fog}: drops comparable to $\lambda$ scatter and absorb $\rightarrow$
+    rain fade, serious above about 10 GHz (Ku, Ka bands).
+  \item \textbf{Refraction}: ducting and super-refraction extend or bend paths
+    $\rightarrow$ fading and interference.
+  \item \textbf{Ground effect}: reflection off ground or water adds a second ray
+    $\rightarrow$ \textbf{multipath fading}; earth bulge blocks long hops.
+  \item \textbf{Plasma effect}: ionosphere rotates polarization (Faraday rotation) and causes
+    scintillation at low GHz; the plasma sheath round a re-entering spacecraft blocks
+    signals (blackout).
+  \item \textbf{Diffraction} round obstacles is weak at short $\lambda$ $\rightarrow$
+    shadowing behind buildings and hills.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+%=======================================================================
+\T{7.8 PYQ Mapping}
+
+\lead{Theory questions, covered in this document}
+\begin{itemize}
+  \item \textbf{Microwave radiation fields; differentiate reactive, near and far field}
+    $\rightarrow$ $\S$7.1. \yr{\textbf{69 Bh} \m{8}, 71 Ma \m{5}, 72 Ma \m{5},
+    \textbf{76 Bh} \m{5}, \textbf{79 Ch} \m{5}}
+  \item \textbf{Radiation zones of a microwave oven} $\rightarrow$ $\S$7.1 + companion
+    Problem 1. \yr{74 Ma \m{4}, \textbf{77 Ch} \m{3}}
+  \item \textbf{BTS fields: classify, radiation parameters; 900 vs 1800 MHz; hazardous and
+    safe zone at 2600 MHz} $\rightarrow$ $\S$7.1 + companion Problems 1 and 2.
+    \yr{\texttt{81 Ba} \m{4}, \textbf{\texttt{81 Bh}} \m{4}, \texttt{82 Ba} \m{4}}
+  \item \textbf{RF radiation fields to public exposure} $\rightarrow$ $\S$7.1 and $\S$7.4.
+    \yr{\texttt{80 Ba} \m{3}}
+  \item \textbf{How microwaves are hazardous; microwave radiation hazards (short note)}
+    $\rightarrow$ $\S$7.2. \yr{\textbf{69 Bh} \m{8}, 70 Ma \m{5}, 72 Ma \m{5}, 73 Ma \m{5},
+    \textbf{75 Bh} \m{5}, \textbf{77 Ch} \m{3}, \textbf{78 Ch} \m{5}, \textbf{\texttt{81 Bh}} \m{4},
+    \texttt{82 Ba} \m{2}, \textbf{\texttt{82 Bh}} \m{4}}
+  \item \textbf{Hazards + safety practices (short note)} $\rightarrow$ $\S$7.2 and $\S$7.5.
+    \yr{\textbf{70 Bh} \m{5}, \textbf{71 Bh} \m{5}, \textbf{73 Bh} \m{6}, \textbf{74 Bh} \m{6},
+    \textbf{\texttt{79 Bh}} \m{3+3}}
+  \item \textbf{Types of EM radiation hazard; HERP} $\rightarrow$ $\S$7.2.
+    \yr{74 Ma \m{4}, \textbf{\texttt{80 Bh}} \m{4}}
+  \item \textbf{SAR: define, effect as hazard, non-ionizing SAR} $\rightarrow$ $\S$7.3.
+    \yr{\textbf{74 Bh} \m{6}, \textbf{80 Ch} \m{10}, \texttt{81 Ba} \m{4}}
+  \item \textbf{International standards, SARPs, IEEE standard} $\rightarrow$ $\S$7.4.
+    \yr{70 Ma, \textbf{76 Bh} \m{5}, \texttt{80 Ba} \m{3}, \texttt{82 Ba} \m{2}}
+  \item \textbf{Five major RF safety practices} $\rightarrow$ $\S$7.5. \yr{\textbf{79 Ch} \m{5},
+    \textbf{76 Bh}}
+  \item \textbf{Antenna as DUT: measurement tool and principle} $\rightarrow$ $\S$7.6.
+    \yr{\textbf{74 Bh} \m{8}}
+\end{itemize}
+
+\lead{Numerical content}
+\begin{itemize}
+  \item \textbf{Radiation-zone boundaries} (BTS at 2600 MHz, BTS at 900 / 1800 MHz with
+    quarter-wave antennas, microwave oven) $\rightarrow$ numerical companion, 2 problems. Every
+    number is asserted in \code{src/ant.py}.
+\end{itemize}
+
+\lead{Corrections, and fixes made to the PYQ documents while building this chapter}
+\begin{itemize}
+  \item Karkee PDF p6: SAR mass density is kg/m$^3$, not kg/m$^2$.
+  \item Karkee PDF p17: the ``IRPA'' table is a 50 Hz power-line limit.
+  \item Deck example (150 MHz, $D = 0.5$ m): $D < \lambda$, so its zone boundaries are not
+    valid; small-antenna rule applies.
+  \item Student decks: cancer ``known'' (IARC says possibly, 2B); non-thermal effects ``several
+    times more harmful'' (not established); ``threshold SAR 0.4'' (0.4 is the limit, 4 the
+    threshold); microstrip ``used at low frequency''; Yagi pictured as ``MIMO''.
+  \item Sorted PYQ documents: the hazard short notes were tagged 71 Ma and 72 Ash, which ask
+    none. They are 70 Bh, 71 Bh and 73 Ma (73 Ma was missing). 70 Ma's note is [5], not [8].
+    Bold tags for 69 Bh, 71 Bh and 73 Bh made consistent (Regular papers).
+\end{itemize}

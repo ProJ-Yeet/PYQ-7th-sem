@@ -1,0 +1,27 @@
+\section{Microwave Antennas and Propagation: Numerical Problems}
+{\color{sub}\footnotesize 2 solved problems covering \mk{every radiation-zone calculation in 24 papers}
+\gap$\cdot$\gap 81 Bh, 82 Ba, and the microwave-oven zones of 74 Ma and 77 Ch}
+
+\vspace{3pt}\noindent
+\colorbox{gdL}{\makebox[\dimexpr\textwidth-2\fboxsep][l]{%
+  \textcolor{gd}{\bfseries\footnotesize READ THIS FIRST}}}
+\par\nobreak\vspace{3pt}
+
+Chapter 7 has one calculation: where the three radiation zones of an antenna begin and end. It
+is always a 3 or 4 mark part of a longer theory question.
+\begin{itemize}
+  \item \textbf{The procedure}: (1) $\lambda = c/f$, (2) check $D > \lambda$, (3)
+    $R_1 = 0.62\sqrt{D^3/\lambda}$, (4) $R_2 = 2D^2/\lambda$, (5) state the three zones and
+    which are hazardous. Problem 1 shows every line.
+  \item \textbf{Do step 2.} When the antenna is smaller than a wavelength (82 Ba's
+    quarter-wave antennas) the formulas put the ``far field'' inside the reactive field. Give
+    the formula result, then the small-antenna boundaries $\lambda/2\pi$ and $2\lambda$
+    (Problem 2).
+  \item \textbf{Units}: keep $\lambda$ and $D$ in metres; the answers come out in metres.
+  \item Every number below is asserted in \code{src/ant.py}, which also cross-checks the
+    81 Bh zone answer against an ICNIRP compliance distance.
+\end{itemize}
+
+\penalty0\vspace{2pt}
+
+\input{ch7-num-body}

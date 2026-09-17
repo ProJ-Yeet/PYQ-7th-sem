@@ -51,11 +51,12 @@ def archive_papers():
         name, body = parts[i], parts[i + 1]
         papers = set()
         for line in body.splitlines():
-            if B + "item" in line or B + "lb" in line:
-                m = re.search(r"\(([^()]*(?:\([^()]*\)[^()]*)*)\)\s*$", line)
-                if m:
-                    for y in YR.finditer(m.group(1)):
-                        papers.add(y.group(1) + " " + y.group(2))
+            if (B + "item" in line or B + "lb" in line) and B + "hfill" in line:
+                # every "[marks] (years)" group after \hfill, not only the last:
+                # "[8] (69 Bh) [5] (70 Bh, 73 Ma)" names three papers
+                tail = line.split(B + "hfill", 1)[1]
+                for y in YR.finditer(tail):
+                    papers.add(y.group(1) + " " + y.group(2))
         out[name] = papers
     return out
 

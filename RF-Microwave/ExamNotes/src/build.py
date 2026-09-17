@@ -30,6 +30,7 @@ TARGETS = {
     "ch6":        ("ch6-standalone", "Ch6 - RF Design Practices.pdf"),
     "ch6-num":    ("ch6-num-standalone", "Ch6 - RF Design Practices - Numerical Problems & Solutions.pdf"),
     "ch7":        ("ch7-standalone", "Ch7 - Microwave Antennas and Propagation.pdf"),
+    "ch7-num":    ("ch7-num-standalone", "Ch7 - Microwave Antennas and Propagation - Numerical Problems & Solutions.pdf"),
     "ch8":        ("ch8-standalone", "Ch8 - RF Microwave Measurements.pdf"),
 }
 

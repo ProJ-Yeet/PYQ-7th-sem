@@ -25,7 +25,7 @@ Audit pagination with `PYTHONIOENCODING=utf-8 python audit.py`
 | 4 | Components and Devices | ✅ 16 pp | ✅ 8 pp, 8 problems | the waveguide chapter; `wg.py` |
 | 5 | Microwave Generators | ✅ 10 pp | — none (stated in §5.10) | tubes; `tubes.py` |
 | 6 | RF Design Practices | ✅ 11 pp | ✅ 7 pp, 10 problems | heaviest; `amp.py`, `filt.py` |
-| 7 | Antennas and Propagation | ⬜ | — | |
+| 7 | Antennas and Propagation | ✅ 11 pp | ✅ 5 pp, 2 problems | radiation hazards; `ant.py` |
 | 8 | RF/Microwave Measurements | ⬜ | — | |
 | — | Combined masters | ⬜ | ⬜ | `master`, `master-num` |
 
@@ -39,7 +39,7 @@ Audit pagination with `PYTHONIOENCODING=utf-8 python audit.py`
 | 4 | 52 | 317 | 13.2 | 16.7 % |
 | 5 | 22 | 166 | 6.9 | 8.7 % |
 | 6 | 46 | 426 | 17.8 | 22.4 % |
-| 7 | 20 | 138 | 5.8 | 7.3 % |
+| 7 | 20 | 138 → **162** | 6.8 | 8.4 % of 1920 (recounted 2026-09-17 after the PYQ fixes) |
 | 8 | 25 | 181 | 7.5 | 9.5 % |
 
 Total 1902 marks against a theoretical 24 × 80 = 1920, i.e. the PYQ archive
@@ -84,6 +84,15 @@ session scratchpad, keyed on `\section` blocks of the Detailed `.tex`.
 The double-stub susceptance is `B = (1 ± √(g(1+t²) − g²t²)) / t` with
 `t = tan βd` — note the leading **1**, not `g`. Forbidden region is
 `g > 1/sin²(βd)`.
+
+- **`src/ant.py`** — Chapter-7 exit test. Radiation-zone boundaries for every PYQ antenna
+  and both deck examples, **with a validity check** (`D > λ`; small antennas use `λ/2π` and
+  `2λ`), FCC OET-65 and ICNIRP-1998 limits as functions of f, compliance distance, SAR,
+  photon energy, FSPL, radio horizon, Fresnel radius, dish gain. Two of my own hand-estimates
+  (Fresnel radius, dish gain) were wrong and its asserts caught both.
+- **`src/check.py` parser fix (2026-09-17)**: it read only the *last* `(years)` group on a
+  Detailed line, so `[8] (69 Bh) [5] (70 Bh, 73 Ma)` hid 69 Bh. It now reads every group
+  after `\hfill`. All seven chapters still clean.
 
 ## Source material
 
@@ -226,3 +235,19 @@ Third-party and gitignored — build input only, never publish.
   (exact 0.034); slide 66 Gunn R_L = 60 ohm breaks its own |R_out| >= 1.2 R_L rule;
   example 8.6 N = 6 where N = 5 already meets 20 dB. Mixer has no deck source: added.
   Next: Ch7 (Antennas and Propagation) and Ch8 (Measurements), then the masters.
+- **2026-09-17** — **Ch7 shipped**: theory 11 pp (7.1-7.8) + companion 5 pp (2 problems).
+  23 of 24 papers ask it (only 72 Ash does not); nearly all marks are radiation hazards,
+  zones, SAR, standards and practices; antenna types and propagation are unexamined and
+  written as syllabus-only bands. `src/ant.py`, `src/figs_ch7.py` (10 figures; the PDF's zone
+  diagram is inverted from white-on-black).
+  PYQ documents fixed first (commits 118e902, 2137554): the hazard short notes were tagged
+  71 Ma and 72 Ash, which ask none; they are 70 Bh, 71 Bh and 73 Ma (73 Ma missing); 70 Ma's
+  note is [5] (printed [2+8] is a 2x5 misprint, 80-mark total confirms). Bolding made
+  consistent: 73 Bh plain in 4 places, `\bo{70 Bh, 70 Ma}` bolded a Back paper, 69 Bh and 71 Bh
+  plain despite "Regular / Back" headers. **Ch1-Ch6 ExamNotes still tag 69 Bh / 71 Bh plain.**
+  Source errors: SAR density printed kg/m² (kg/m³); PDF p17 "IRPA" table is the 50 Hz
+  power-line limit; deck's 150 MHz zone example has D < λ so its boundaries are invalid (same
+  trap as 82 Ba's quarter-wave antennas); student decks: cancer "known" (IARC 2B), non-thermal
+  "several times more harmful", "threshold SAR 0.4" (limit 0.4, threshold 4), microstrip "used
+  at low frequency", Yagi pictured as MIMO. Girish Kumar "minutes per day" slides left out.
+  Next: Ch8 (Measurements), then the masters.
