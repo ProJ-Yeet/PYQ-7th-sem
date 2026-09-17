@@ -33,7 +33,7 @@ Keys: (I)=Importance/Need \quad (+)=Advantage \quad (-)=Disadvantage \quad +Fig=
 
 \section*{1. Introduction}
 \begin{itemize}
-  \item Microwave frequency bands (IEEE) + applications; comm protocols of three / five systems \hfill (4)(2+4)(3+3)(2+6)(4+6)(5+5)
+  \item Microwave frequency bands (IEEE) + applications; comm protocols of two / three / five systems \hfill (4)(2+4)(3+3)(2+6)(4+6)(5+5)(3+3+4)
   \item Conventional Vs RF/microwave circuits; lumped Vs distributed; passive components at low Vs microwave bands \hfill (4+2)(3+3)(8)(10)
   \item (+)(-) of microwaves Vs acoustic / seismic / conventional / lower-freq \hfill (5)(6)(2+4)(4+4)
   \item Why S-parameter based analysis is a must in microwave network analysis \hfill (5+3)
@@ -49,7 +49,7 @@ Keys: (I)=Importance/Need \quad (+)=Advantage \quad (-)=Disadvantage \quad +Fig=
     \begin{itemize}
       \item $Z_L{=}300{+}j300$, $80{+}j180$@3GHz, $190{+}j110$@10GHz, $110{+}j110$/100$\Omega$
       \item $60{-}j80$/50$\Omega$, $109{+}j120$/75$\Omega$ coax, $\Gamma{=}0.64\angle58^\circ$/100$\Omega$, $\Gamma{=}0.45\angle60^\circ$@10GHz, $\Gamma{=}0.33\angle66^\circ$/75$\Omega$ patch
-      \item admittance $0.00813{+}j0.0065\,\mho$/50$\Omega$; short-ckt $75{+}j75$, $0.4{+}j0.85$
+      \item admittance $0.00813{+}j0.0065\,\mho$/50$\Omega$; short-ckt $75{+}j75$, $0.4{+}j0.85$ \hfill (3+15)(10+2)
       \item (+) of double over single stub; matching techniques + S-matrix of perfect match \hfill (2+8)(4+6)
     \end{itemize}
 \end{itemize}
@@ -57,7 +57,7 @@ Keys: (I)=Importance/Need \quad (+)=Advantage \quad (-)=Disadvantage \quad +Fig=
 \section*{3. RF \& M/W Network Theory}
 \begin{itemize}
   \item S-parameters (I); Vs h-parameters; return \& insertion loss \hfill (4)(4+4)(2)(5+5)
-  \item S-parameters --- two-port (derive); three-port network + characteristic parameters +Eg \hfill (2+6)(4+5)(4+4)(2+6)
+  \item S-parameters --- two-port (derive); three-port network + characteristic parameters +Eg \hfill (2+6)(4+5)(4+4)(4+6)(5+2)
   \item S-matrix analysis: reciprocal / lossless / return loss / reflected power; S-matrix of an Amplitude Modulator \hfill (3+1+1+1+2)(3+7)
   \item Passive device from S-matrix (4-port); power splitter; E/H-Tee \& Duplexer S-matrices \hfill (5)(6)(8)(10)
   \item Two radar transmitters needing double power; ASR duplexer at half input power \hfill (6)(8)(10)
@@ -69,7 +69,7 @@ Keys: (I)=Importance/Need \quad (+)=Advantage \quad (-)=Disadvantage \quad +Fig=
   \item Waveguide --- rect TE/TM field equations; modes + parameters \hfill (7+3)(8+2)(8)(10)
     \begin{itemize}
       \item $\text{TE}_{10}$ Vs $\text{TE}_{20}$ cutoff; prove $\text{TM}_{01}/\text{TM}_{10}$ absent; lowest TM cutoff is $\text{TM}_{11}$; $\text{TE}_{10}$ dominant when $b{>}a$ \hfill (2)(3)
-      \item dominant Vs degenerate modes; $a{=}3b$ dominant mode; rect WG (assumed dims): cutoff, $v_p$, $\lambda_g$, $Z_0$ \hfill (2+2)(6)
+      \item dominant Vs degenerate modes; dominant modes (rect \& circular) + 2.254\,cm WG at 6\,GHz?; $a{=}3b$ dominant mode; rect WG (assumed dims): cutoff, $v_p$, $\lambda_g$, $Z_0$ \hfill (2+2)(1+1+2)(6)
       \item circular waveguide TE/TM field; air-filled rect (cutoff/velocities/$Z_0$) +directional coupler \hfill (10)(7)(6+4)
     \end{itemize}
   \item Tee junctions --- Magic Tee (S-params, +derive); E-plane Vs H-plane; hybrid tee (terminated E/H/co-planar arms) \hfill (3+3)(4)(5)(8)(4+4+2)
@@ -83,7 +83,7 @@ Keys: (I)=Importance/Need \quad (+)=Advantage \quad (-)=Disadvantage \quad +Fig=
 \section*{5. Microwave Generators}
 \begin{itemize}
   \item Transit-time effect + two-cavity klystron; bunching (density modulation); bunching + field effect \hfill (2+8)(2)(2+6)(2+2+4)
-  \item Klystron oscillator/amplifier (multi-cavity); cross-field effect; velocity modulation + reflex klystron +Fig \hfill (2+7)(2+8)(5)(10)
+  \item Klystron oscillator/amplifier (multi-cavity); cross-field effect; velocity modulation + reflex klystron +Fig \hfill (2+7)(2+8)(4)(5)(10)
   \item Magnetron construction/operation; cross-field ($45^\circ/60^\circ/90^\circ$ phase) as power amp; circular beam-type cross-field amplifier \hfill (2+8)(10)(6+2)(8)(3+7)(7)
   \item TWT construction \& operation; conventional-tube limits at microwave; BWO; LNA \hfill (2+6)(2+8)(5)
 \end{itemize}
@@ -91,8 +91,8 @@ Keys: (I)=Importance/Need \quad (+)=Advantage \quad (-)=Disadvantage \quad +Fig=
 \section*{6. RF Design Practices}
 \begin{itemize}
   \item Filter --- insertion loss method; Butterworth/Chebyshev prototype \hfill (5)(8)(4)(10)
-  \item LPF/HPF/BPF via microstrip ($\pi$-section, T-type, series-arm, shunt-arm, double-section, triple-pad) +prototyping \hfill (3+5)(6+4)(10)(7+3)(2+8)(8+2)(5+3)
-  \item Amplifier --- stability + max gain (bilateral \& unilateral), +Smith, +flowchart \hfill (5+5)(10)(12)(18)(7+8)(8+4)
+  \item LPF/HPF/BPF via microstrip ($\pi$-section, T-type, series-arm, shunt-arm, double-section, triple-pad) +prototyping \hfill (3+5)(6+4)(10)(7+3)(2+8)(8+2)(5+3)(6+2)(3+8+3)
+  \item Amplifier --- stability + max gain (bilateral \& unilateral), +Smith, +flowchart \hfill (5+5)(10)(12)(18)(7+8)(8+4)(4+4+4+4)(6+3+3)
     \begin{itemize}
       \item S-params: $0.894\angle{-60.6}$; $0.55\angle150$; $0.656\angle146.7$; $0.72\angle{-116}$ (GaAs); $0.64\angle{-169}$; $0.55\angle{-160}$ (MESFET); $0.45\angle163$ (GaAs FET); $0.45\angle{-160}$; $0.78\angle{-113}$; $0.38\angle{-158}$ ($Z_s{=}25$, $Z_L{=}40$); $0.6\angle{-140}$; $0.55\angle{-150}$
       \item flowchart (GaAsFET) + $\Gamma_{in}/\Gamma_{out}$ trace; amplifier Vs oscillator (stability factor) \hfill (4)(5+5)(3+8)
@@ -111,7 +111,7 @@ Keys: (I)=Importance/Need \quad (+)=Advantage \quad (-)=Disadvantage \quad +Fig=
 \section*{8. RF/Microwave Measurements}
 \begin{itemize}
   \item Power measurement --- VSWR meter + low power / bolometry; VSWR $>$ 10; measuring 7.5 mW; ASR power tool \hfill (2+8)(4+6)(2+6)(10)(8)
-  \item Calorimeter --- static / dry / circulating Vs flow; calorimeter wattmeter; static + dynamic circulating \hfill (5)(2+8)(6+2)(10)(6+3)
+  \item Calorimeter --- static / dry / circulating Vs flow; calorimeter wattmeter; static + dynamic circulating \hfill (5)(6)(7)(2+8)(6+2)(10)(6+3)
   \item Bolometer bridge (single-bridge limits, double-channel); bolometry principle; network analyzer (VNA); two-port model \hfill (8)(4)(10)(5)
   \item Microwave Vs low-frequency measurements; spectrum analyzer; device to map BTS radiation zones \hfill (3)(4)(5)(8)
 \end{itemize}
