@@ -23,7 +23,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 PYQ = os.path.normpath(os.path.join(HERE, "..", "..", "RF-Microwave_Sorted_PYQ_Detailed_69-82.tex"))
 FILES = ["ch1.tex", "ch2.tex", "ch2-num-body.tex", "ch3.tex", "ch3-num-body.tex",
          "ch4.tex", "ch4-num-body.tex", "ch5.tex", "ch6.tex", "ch6-num-body.tex",
-         "ch7.tex", "ch7-num-body.tex"]
+         "ch7.tex", "ch7-num-body.tex", "ch8.tex"]
 YR = re.compile(r"(?<!\d)(\d{2}) (Ba|Bh|Ash|Ma|Ch)\b")
 
 

@@ -26,7 +26,7 @@ Audit pagination with `PYTHONIOENCODING=utf-8 python audit.py`
 | 5 | Microwave Generators | ✅ 10 pp | — none (stated in §5.10) | tubes; `tubes.py` |
 | 6 | RF Design Practices | ✅ 11 pp | ✅ 7 pp, 10 problems | heaviest; `amp.py`, `filt.py` |
 | 7 | Antennas and Propagation | ✅ 11 pp | ✅ 5 pp, 2 problems | radiation hazards; `ant.py` |
-| 8 | RF/Microwave Measurements | ⬜ | — | |
+| 8 | RF/Microwave Measurements | ✅ 14 pp | — none (stated in §8.11) | power measurement is 80 % of it; `meas.py` |
 | — | Combined masters | ⬜ | ⬜ | `master`, `master-num` |
 
 ## Weight of each chapter (measured from the Detailed PYQ, 24 papers)
@@ -251,3 +251,31 @@ Third-party and gitignored — build input only, never publish.
   "several times more harmful", "threshold SAR 0.4" (limit 0.4, threshold 4), microstrip "used
   at low frequency", Yagi pictured as MIMO. Girish Kumar "minutes per day" slides left out.
   Next: Ch8 (Measurements), then the masters.
+- **2026-09-18** — **Ch8 shipped**: theory 14 pp (8.1-8.11), no numerical PYQ in 24 papers.
+  22 of 24 papers ask it (69 Bh and 74 Bh do not; 74 Bh's "antenna as DUT" is filed in Ch7),
+  and 149 of its 181 marks are power measurement, so the chapter is built round one decision
+  table: low `<` 10 mW, medium 10 mW to 10 W, high `>` 10 W.
+  `src/meas.py` is the exit test: the two calorimeter laws re-derived from calories and
+  joules (and shown to be the same law with `m/t = v d`), the bolometer bridge as dc
+  substitution with the ambient-drift term the second bridge cancels, the double-minimum
+  VSWR formula derived from a **simulated standing wave** and its short form's error
+  measured (0.12 % at S = 25, 19 % at S = 2), slotted-line impedance inverted back to the
+  load it came from by two independent routes, the minimum-shift sign rule, guide wavelength
+  to frequency, spectrum-analyzer image response, Y-factor noise figure and the BTS zone
+  numbers. Two of my own expected constants were wrong and its asserts caught both.
+  `src/figs_ch8.py` extracts 19 figures from `all/Chapter_8.pptx`.
+  **The pptx is a superset of its own PDF export**: deck slides 23-30 (impedance measurement,
+  reflectometer, low and high VSWR) are missing from the 28-page PDF entirely, and the
+  double-minimum construction, which is all of 79 Bh's 6 marks, exists **only** in the pptx.
+  Slide 30 "Measurement of frequency" is an empty slide; §8.7 is written from Das ch.13.
+  Source errors: **Das Fig. 13.21's worked chart example does not follow from its own data**
+  (S = 2, dmin = 0.2 lambda_g prints Z0(1.0 + j0.7); its own equations give Z0(1.55 - j0.69),
+  and the printed point needs dmin = 0.348 lambda_g); Das §13.8 writes insertion loss as
+  10 log(P0/Pi), negative for a lossy network; deck slide 19 titles the circulating
+  calorimeter "Circular Calorimeter".
+  Pagination: the first build was 17 pp with 8 half-empty pages, all of them a `\T` band
+  plus a tall unbreakable `\sbsr`. Splitting the five tallest blocks (443 pt and 431 pt were
+  the worst against a 718 pt textheight) took it to **14 pp with one short page**, which is
+  the ordinary first-page pattern every chapter has. check.py clean, tagcensus 0 mismatches,
+  audit.py 0 stranded, no bold lead line left at a page foot.
+  Next: the combined masters (`master`, `master-num`).

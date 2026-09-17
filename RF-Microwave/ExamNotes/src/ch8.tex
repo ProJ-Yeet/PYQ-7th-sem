@@ -1,0 +1,870 @@
+\section{RF/Microwave Measurements}
+{\color{sub}\footnotesize 6 hrs \gap$\cdot$\gap asked in \mk{22 of 24 papers}
+\gap$\cdot$\gap 9 syllabus sub-topics \gap$\cdot$\gap \mk{181 marks, 9.5\% of the archive}
+$\rightarrow$ 149 of those 181 marks are \textbf{power measurement}, and the tool is picked
+by one number: how many milliwatts.}
+
+\vspace{3pt}\noindent
+\colorbox{gdL}{\makebox[\dimexpr\textwidth-2\fboxsep][l]{%
+  \textcolor{gd}{\bfseries\footnotesize READ THIS FIRST}}}
+\par\nobreak\vspace{3pt}
+
+Chapter 8 is descriptive and it repeats harder than any other chapter: five short-note
+titles (bolometry, double-channel bolometer, circulating calorimetry, spectrum analyzer,
+VNA) and three long-answer shapes cover everything asked in 24 papers.
+\begin{enumerate}[label=\arabic*., leftmargin=1.4em, itemsep=1pt]
+  \item \textbf{``Choose a proper power measuring tool and explain its working principle''}
+    (72 Ma 7.5 mW, 74 Ma airport radar, 73 Bh, 82 Bh BTS) $\rightarrow$ one table,
+    $\S$8.2. Say which band the number falls in, name the sensor, then give that sensor's
+    working principle from $\S$8.3 or $\S$8.5. \mk{The table is the mark.}
+  \item \textbf{Calorimetry} (9 papers) $\rightarrow$ $\S$8.5. Static vs circulating, one
+    formula each, and they are the same formula with $m/t$ replaced by $v\,d$.
+  \item \textbf{Bolometer bridge} (9 papers) $\rightarrow$ $\S$8.3. Barretter vs thermistor,
+    single bridge, its two faults, double bridge that cures them.
+\end{enumerate}
+Three things worth knowing before the paper starts:
+\begin{itemize}
+  \item \textbf{Every microwave power meter is a substitution instrument.} It never measures
+    RF. It measures how much \textbf{dc or low-frequency} power had to be taken away to keep
+    a bridge balanced, or how much a \textbf{temperature} rose. Open any power answer with
+    that sentence.
+  \item \textbf{The three bands are the whole decision}: low $<$ 10 mW, medium 10 mW to
+    10 W, high $>$ 10 W. A radar is quoted in \textbf{peak} power, so convert with the duty
+    cycle before choosing ($\S$8.2).
+  \item Measurement questions are worded as ``describe how X and Y are measured''. X and Y
+    are almost always \textbf{VSWR meter} and \textbf{some power sensor}, which is two
+    separate answers glued together (72 Ash, 70 Bh).
+\end{itemize}
+
+\hr
+
+%=======================================================================
+\T{8.1 Microwave Measurements Vs Low-Frequency Measurements}
+
+\Q{How are microwave measurements different from low-frequency measurements? List the major RF/MW measurement parameters}{\m{2}\m{3}\m{3}}
+{\color{sub}\footnotesize \tF{4} \yr{\textbf{71 Bh}, \textbf{73 Bh}, \textbf{\texttt{79 Bh}}, \textbf{\texttt{81 Bh}}} \gap$\cdot$\gap always the opener to a longer measurement question}
+
+\sbsr{0.52}{%
+\lead{Why voltage and current stop being useful}
+\begin{itemize}
+  \item At low frequency the circuit is \textbf{lumped}: $V$ and $I$ are the same everywhere
+    in a wire, so measure them and compute $Z$, power factor and phase angle.
+  \item At microwaves the line is \textbf{distributed}: $V$ and $I$ are functions of
+    \textbf{distance} along the line, so a ``the voltage'' does not exist. In a waveguide
+    there is no unique voltage at all.
+  \item \textbf{Power is the invariant}: on a lossless line the transmitted power is the same
+    at every plane. So measure \textbf{power}, and get everything else from ratios of powers
+    and from the standing-wave pattern.
+  \item Probes and leads are a \textbf{significant fraction of a wavelength}, so any contact
+    instrument loads and detunes what it measures. Measurement is made by
+    \textbf{directional coupling} and by \textbf{sampling} the field, not by touching nodes.
+  \item Circuit behaviour is described by \textbf{S-parameters}, which are themselves
+    defined from travelling waves rather than terminal $V$ and $I$ ($\S$3.1).
+  \item \textbf{Cost dodge used in every teaching laboratory}: rather than process microwave
+    signals directly, the source is \textbf{1 kHz square-wave modulated}, the microwave
+    signal is detected by a square-law crystal, and all the amplitude information is then
+    read with an ordinary 1 kHz low-frequency amplifier, the \textbf{VSWR meter}.
+\end{itemize}}{%
+\lead{The measurables and their tools \mk{(81 Bh asks exactly this list)}}
+\begin{tabularx}{\linewidth}{@{}L{2.35cm}X@{}}
+\toprule
+\hrow \thead{Measurable} & \thead{Instrument} \\
+\midrule
+Power (low) & bolometer (thermistor / barretter) bridge, Schottky diode sensor, thermocouple sensor \\
+Power (medium, high) & calorimeter (static, circulating), calorimetric wattmeter, thermistor behind a calibrated attenuator or directional coupler \\
+VSWR, $|\Gamma|$ & slotted line + VSWR meter, reflectometer \\
+Impedance, unknown load & slotted line (minima-shift method), VNA, magic tee \\
+Frequency & cavity (absorption) wavemeter, frequency counter, slotted line via $\lambda_g$ \\
+Spectrum, harmonics & spectrum analyzer \\
+S-parameters, insertion and return loss & network analyzer (VNA) \\
+Attenuation, insertion loss & two directional couplers + VSWR meter \\
+Noise figure & noise-source + Y-factor measurement ($\S$8.9) \\
+Field strength, radiation zones & EMF survey meter with isotropic probe ($\S$8.10) \\
+\bottomrule
+\end{tabularx}}
+
+\penalty0\vspace{2pt}
+
+%=======================================================================
+\T{8.2 Microwave Power: Bands, Average Vs Peak, Choosing the Sensor}
+
+\Q{Choose a proper power measurement tool for the stated source and explain its working principle}{\m{8}\m{10}}
+{\color{sub}\footnotesize \tF{4} \yr{\textbf{72 Ash}, 72 Ma, \textbf{73 Bh}, 74 Ma} \gap$\cdot$\gap 72 Ma 7.5 mW, 74 Ma airport surveillance radar, 73 Bh ``low microwave power''}
+
+\begin{itemize}
+  \item \textbf{Power} = energy dissipated or stored per unit time. At microwaves it is the
+    \textbf{average} power that a sensor responds to:
+    \[ P_{av} = \frac{1}{T}\int_0^T v(t)\,i(t)\,dt, \qquad
+       P_{av} = P_{peak}\times \text{duty cycle}, \quad
+       \text{duty} = \tau f_r = \tau/T \]
+  \item Unit: \mk{$P(\mathrm{dBm}) = 10\log_{10}[P(\mathrm{mW})/1\,\mathrm{mW}]$}, so
+    0 dBm = 1 mW, 30 dBm = 1 W, $-30$ dBm = 1 $\mu$W.
+\end{itemize}
+
+\par\penalty0\Needspace{13\baselineskip}
+\lead{The decision table: this is the answer to every ``choose a tool'' question}
+\begin{tabularx}{\linewidth}{@{}L{2.1cm}L{2.5cm}XL{2.9cm}@{}}
+\toprule
+\hrow \thead{Band} & \thead{Range} & \thead{Sensor, and why} & \thead{Section} \\
+\midrule
+\textbf{Low} & $<$ 10 mW & \textbf{resistance changes with power}: thermistor or barretter bolometer bridge (floor about $-20$ dBm), Schottky diode detector (down to $-70$ dBm = 100 pW), thermocouple sensor & $\S$8.3, $\S$8.4 \\
+\textbf{Medium} & 10 mW to 10 W & thermistor bolometer behind a \textbf{calibrated attenuator or 20 dB directional coupler}; static or circulating calorimeter & $\S$8.3, $\S$8.5 \\
+\textbf{High} & $>$ 10 W & \textbf{temperature changes with power}: calorimeter (static for moderate, circulating / flow for kW), calorimetric wattmeter & $\S$8.5 \\
+\bottomrule
+\end{tabularx}
+
+\par\penalty0\Needspace{9\baselineskip}
+\lead{Measurement procedure, common to every power meter (the ``zeroing'' marks)}
+\begin{enumerate}[label=\arabic*., leftmargin=1.4em, itemsep=1pt]
+  \item Attach a \textbf{calibrated sensor} to the line port where the unknown power appears;
+    connect it to the power meter.
+  \item \textbf{Turn the RF off and zero the meter} (``zero setting''): this removes sensor
+    self-heating and ambient drift from the reading.
+  \item Turn the RF on. The sensor reacts, the meter reads, and the reading is by
+    \textbf{substitution}: the dc or low-frequency power displaced, or the temperature rise.
+  \item Correct for the coupler or attenuator in front of the sensor, and for the
+    \textbf{calibration factor} (mismatch plus sensor efficiency).
+\end{enumerate}
+
+\par\penalty0\Needspace{10\baselineskip}
+\lead{The three PYQ cases worked \mk{(numbers checked in \code{meas.py})}}
+\begin{itemize}
+  \item \textbf{72 Ma, ``about 7.5 mW''} \m{10}: 7.5 mW $=$ 8.75 dBm, below 10 mW, so
+    \textbf{low power}. Answer: \textbf{thermistor bolometer bridge}, sensitivity floor
+    about $-20$ dBm $=$ 0.01 mW, so 7.5 mW sits comfortably inside its range. Then give the
+    bridge working principle ($\S$8.3). A Schottky diode sensor is the alternative.
+  \item \textbf{74 Ma, airport surveillance radar} \m{8}: a radar is quoted in \textbf{peak}
+    power and is pulsed. Take a representative set, 1 MW peak, $\tau = 1\ \mu$s,
+    PRF 1 kHz: duty $= 10^{-3}$, so $P_{av} = 1$ kW, which is \textbf{high power}. Answer:
+    a \textbf{circulating (flow) calorimeter} on a dummy load, or a thermistor behind a
+    high-directivity coupler plus a calibrated attenuator; report
+    $P_{peak} = P_{av}/\text{duty}$. Never put a bolometer directly in the line: it would
+    burn out.
+  \item \textbf{73 Bh, ``low microwave power measurement device''} \m{8}: name the parameters
+    first ($\S$8.1), then the \textbf{bolometer bridge} in full.
+\end{itemize}
+
+\penalty0\vspace{2pt}
+
+%=======================================================================
+\T{8.3 Bolometer Bridge Method}
+
+\Q{Explain the working principle of bolometry used in microwave measurements}{\m{5}\m{6}\m{8}\m{10}}
+{\color{sub}\footnotesize \tS{6} \yr{\textbf{70 Bh}, \textbf{72 Ash}, 72 Ma, \textbf{73 Bh}, \textbf{79 Ch}, \textbf{80 Ch}} \gap$\cdot$\gap 79 Ch for 10 marks, 80 Ch as a 5 mark short note}
+
+\begin{itemize}
+  \item A \textbf{bolometer} is a power sensor whose \textbf{resistance changes with
+    temperature} as it absorbs microwave power. RF energy is turned to heat inside the
+    element, the element warms, its resistance moves, and that resistance change is read.
+  \item Bolometer impedances are \mk{100 to 200 $\Omega$}. The \textbf{mount} provides a good
+    impedance match, low loss, thermal and mechanical isolation and shielding against
+    leakage.
+\end{itemize}
+
+\par\penalty0\Needspace{12\baselineskip}
+\sbsr{0.60}{%
+\begin{itemize}
+  \item \textbf{Two types}:
+  \begin{itemize}
+    \item \textbf{Barretter}: a short thin metal wire (platinum or tungsten, like a fuse),
+      \textbf{positive} temperature coefficient. More delicate, so used only for very low
+      power, a few mW at most.
+    \item \textbf{Thermistor}: a semiconductor bead, \textbf{negative} temperature
+      coefficient. Small, rugged, easily mounted in a waveguide or coaxial mount; the usual
+      choice. Sensitivity floor about $-20$ dBm.
+  \end{itemize}
+\end{itemize}}{%
+\figT{c8_barretter.png}
+{\color{sub}\scriptsize Resistance vs temperature: thermistor falls (negative coefficient),
+barretter rises (positive). Karkee, Ch-8 deck slide 8.}}
+
+\par\penalty0\Needspace{11\baselineskip}
+\sbsr{0.60}{%
+\begin{itemize}
+  \item \textbf{Principle}: the element sits in one arm of a \textbf{Wheatstone bridge}.
+    With no RF, $R_5$ is adjusted to balance the bridge. Incident microwave power heats the
+    element, its resistance changes, the bridge unbalances, and the galvanometer or voltmeter
+    current is \textbf{calibrated directly in power}.
+  \item \textbf{Substitution}: because the element responds only to total heating, the RF
+    power is exactly the \textbf{dc power that has to be withdrawn} to restore balance. This
+    is what makes it an absolute measurement rather than a comparison.
+\end{itemize}}{%
+\figT{c8_bridge.png}
+{\color{sub}\scriptsize Bolometer mount in one arm of a Wheatstone bridge; the galvanometer
+current measures the incident power. Deck slide 9.}}
+
+\par\penalty0\Needspace{16\baselineskip}
+\creamq{Single bridge, its two faults, and the double-channel (double bridge) cure}{\m{2}\m{4}\m{8}}
+{\color{sub}\footnotesize \tF{3} \yr{\texttt{80 Ba}, \textbf{\texttt{80 Bh}}, \texttt{81 Ba}} \gap$\cdot$\gap 80 Ba asks only the \textbf{limitations} \m{2}; 81 Ba is a 4 mark short note}
+
+\sbsr{0.50}{%
+\lead{Single bridge}
+\begin{itemize}
+  \item Balanced under \textbf{zero incident power} by adjusting $R_5$; the bolometer arm is
+    $R_4$.
+  \item Microwave power into $R_4$ changes its resistance, unbalances the bridge, and the
+    non-zero output is read on a voltmeter calibrated in power.
+  \item With dc bias voltage $E_1$ at balance and $E_2$ after RF is applied, the change
+    $(E_1 - E_2)$ is directly proportional to the microwave power.
+  \item \mk{Two faults} (this is the whole of 80 Ba's 2 marks):
+  \begin{enumerate}[label=\arabic*., leftmargin=1.4em]
+    \item A \textbf{mismatch} at the microwave input reflects power, so the element absorbs
+      less than is incident: the reading is wrong and there is no way to tell.
+    \item The thermistor is \textbf{sensitive to ambient temperature}: room drift is read as
+      RF power. A false reading with no warning.
+  \end{enumerate}
+\end{itemize}}{%
+\figT{c8_singlebridge.png}
+{\color{sub}\scriptsize Self-balancing single bolometer bridge. Deck slide 10.}}
+
+\par\penalty0\Needspace{18\baselineskip}
+\sbsr{0.52}{%
+\lead{Double-channel bolometer bridge}
+\begin{itemize}
+  \item \textbf{Two identical bridges}. The \textbf{upper} one carries the RF sensing
+    thermistor and measures the power. The \textbf{lower} one carries a matched thermistor
+    with \textbf{no RF}, exposed to the same ambient, and compensates temperature drift by
+    forcing $V_1 = V_2$.
+  \item The extra heating caused by mismatch is taken out automatically by \textbf{negative
+    dc feedback}: the self-balancing loop lowers the dc power in the sensing thermistor until
+    balance is restored, that is until the \textbf{net resistance change is zero}.
+  \item \textbf{Zero setting}: with no input, adjust $E_1 = E_2 = E_0$. Without RF the dc
+    voltage across the sensor at balance is $E_1/2$; with RF it is $E_2/2$.
+  \item Average input power is the dc power the RF displaced:
+    \[ P_{av} = \frac{E_1^2}{4R} - \frac{E_2^2}{4R}
+              = \frac{(E_1-E_2)(E_1+E_2)}{4R} \]
+  \item If ambient drift moves both rails by $\Delta E$,
+    \[ P_{av} + \Delta P = \frac{(E_1-E_2)(E_1-E_2+2\Delta E)}{4R} \]
+    and since $E_1 + E_2 \gg \Delta E$ in practice, $\Delta P \approx 0$: the meter reads the
+    line above. \textbf{That inequality is why the second bridge works.}
+\end{itemize}}{%
+\figT{c8_doublebridge.png}
+{\color{sub}\scriptsize Double-channel bolometer bridge: upper bridge measures, lower bridge
+compensates ambient temperature. Deck slide 12.}}
+
+\par\penalty0\Needspace{8\baselineskip}
+\begin{itemize}
+  \item \textbf{Worked, to fix the formula} (\code{meas.py}): $R = 200\ \Omega$,
+    $E_1 = 6$ V, $E_2 = 4$ V. Sensor dc power falls from 45 mW to 20 mW, so
+    $P_{av} = (36-16)/800 = $ \mk{25 mW}. A $+50$ mV ambient drift on both rails would move a
+    \textbf{single} bridge to 25.25 mW, an error of 1\%, which the second bridge removes.
+\end{itemize}
+
+\penalty0\vspace{2pt}
+
+%=======================================================================
+\T{8.4 Schottky Diode Detector and Thermocouple Sensor}
+
+\Q{Other low-power sensors: the square-law diode detector and the thermocouple}{\pill{gdL}{gd}{syllabus 8.4}}
+{\color{sub}\footnotesize no question names them, but both are legitimate answers to ``a low power measurement device'' (73 Bh, 72 Ash, 72 Ma)}
+
+\sbsr{0.60}{%
+\lead{Schottky barrier diode detector}
+\begin{itemize}
+  \item A zero-biased \textbf{metal-semiconductor (point contact) diode} used as a
+    \textbf{square-law detector}: output is proportional to the \textbf{square} of the input
+    voltage, therefore to input \textbf{power}.
+  \item RF input is applied to $R_1$ and passes through $R_2$; the diode rectifies, and the
+    resulting low-frequency or dc current is read.
+  \item Sensitivity down to \mk{$-70$ dBm (100 pW)}, up to about 18 GHz. It is the fastest
+    and most sensitive of the low-power sensors.
+  \item The circuit is arranged so the input match does not depend on the diode resistance,
+    which is a strong function of temperature.
+  \item \textbf{Caution}: it is square-law only over a limited range. Above roughly $-20$ dBm
+    it enters a transition region and eventually becomes \textbf{linear}, which is exactly
+    why the VSWR meter misreads a high SWR ($\S$8.6).
+\end{itemize}}{%
+\figT{c8_schottky.png}
+{\color{sub}\scriptsize Schottky barrier diode detector. Deck slide 6.}}
+
+\par\penalty0\Needspace{11\baselineskip}
+\sbsr{0.60}{%
+\lead{Thermocouple sensor}
+\begin{itemize}
+  \item A \textbf{thermocouple} is a junction of two dissimilar metals or semiconductors
+    (here n-type Si). A thin film of \textbf{tantalum-nitride} resistive load is deposited on
+    a Si substrate and forms one electrode.
+  \item Microwaves are absorbed in the resistive load, heat one end of the junction more than
+    the other, and the junction generates an \textbf{emf proportional to incident power}.
+  \item $C_2$ is the RF bypass capacitor, $C_1$ the input coupling capacitor (dc block). Emfs
+    of the parallel thermocouples add across $C_2$; the output leads are at RF ground, so the
+    dc voltmeter reads pure dc.
+  \item For a square-wave modulated signal the peak power follows from the average:
+    $P_{peak} = P_{av}\,T/\tau$, $T$ the period and $\tau$ the pulse width.
+    \mk{Same relation as the radar case in $\S$8.2.}
+  \item Wider dynamic range and better match stability than a bolometer, and no dc bias, but
+    no substitution: it must be calibrated.
+\end{itemize}}{%
+\figT{c8_thermocouple.png}
+{\color{sub}\scriptsize Thermocouple power sensor. Deck slide 14.}}
+
+\penalty0\vspace{2pt}
+
+%=======================================================================
+\T{8.5 Calorimetric Methods}
+
+\Q{What is calorimetry in microwave? Explain how microwave power is measured with a static calorimeter}{\m{2}\m{5}\m{6}\m{7}\m{10}}
+{\color{sub}\footnotesize \tS{6} \yr{70 Ma, 71 Ma, \textbf{71 Bh}, \textbf{76 Bh}, \textbf{77 Ch}, \textbf{\texttt{81 Bh}}} \gap$\cdot$\gap 76 Bh says ``static and dry'', which is the same instrument: a dry dielectric load, no flowing water}
+
+\lead{Calorimetry: the 2 mark definition}
+\begin{itemize}
+  \item \textbf{Calorimetry} measures microwave power by \textbf{converting it entirely into
+    heat}, absorbing that heat in a known medium, and measuring the medium's
+    \textbf{temperature rise}. It is the standard method for \textbf{medium and high power},
+    and it is an \textbf{absolute} measurement: nothing is compared against a reference
+    source, only against the specific heat of a fluid.
+  \item \textbf{Two heating arrangements} (both used with either calorimeter below):
+  \begin{itemize}
+    \item \textbf{Direct heating}: the rate of heat production is found from the temperature
+      rise of the \textbf{dissipating medium itself}.
+    \item \textbf{Indirect heating}: heat is \textbf{transferred to another medium} before
+      it is measured.
+  \end{itemize}
+\end{itemize}
+
+\par\penalty0\Needspace{13\baselineskip}
+\sbsr{0.60}{%
+\lead{Static (dry) calorimeter}
+\begin{itemize}
+  \item A \textbf{50 $\Omega$ coaxial line terminated in a lossy dielectric load} with a high
+    hysteresis loss, thermally isolated from its surroundings. No fluid circulates, hence
+    ``\textbf{dry}''.
+  \item The load dissipates all the microwave power; a thermometer or thermocouple reads the
+    rise $T$ of the thermometric medium over a time $t$:
+    \[ \boxed{P = \frac{4.187\, m\, C_p\, T}{t}\ \ \mathrm{watts}} \]
+    $m$ mass in grams, $C_p$ specific heat in cal/g, $T$ rise in $^\circ$C, $t$ in seconds,
+    and \mk{4.187 is joules per calorie}.
+  \item \textbf{Where the formula comes from}: $m C_p T$ is the heat in \textbf{calories},
+    dividing by $t$ makes it calories per second, and 4.187 converts to watts. Quote this and
+    the formula cannot be mis-remembered.
+  \item \textbf{Worked} (\code{meas.py}): 100 g of water raised 5$^\circ$C in 60 s is
+    $4.187\times100\times1\times5/60 = $ \mk{34.89 W}.
+  \item \textbf{Limits}: slow (thermal inertia), and the load must stay isolated, so it suits
+    steady medium power rather than a kilowatt transmitter.
+\end{itemize}}{%
+\figT{c8_static.png}
+{\color{sub}\scriptsize Static calorimeter: RF into an isolated calorimetric body, compared
+against low-frequency power. Deck slide 18.}}
+
+\par\penalty0\Needspace{14\baselineskip}
+\creamq{Circulating (flow) calorimeter; circulating Vs flow calorimetry}{\m{4}\m{5}\m{8}}
+{\color{sub}\footnotesize \tF{4} \yr{70 Ma, \textbf{75 Bh}, \textbf{\texttt{81 Bh}}, \texttt{82 Ba}} \gap$\cdot$\gap 82 Ba is a 4 mark short note; 81 Bh pairs it with the measurables list of $\S$8.1}
+
+\sbsr{0.58}{%
+\begin{itemize}
+  \item The calorimeter fluid (usually \textbf{water}) is \textbf{pumped continuously}
+    through a water load in the waveguide. Microwave power heats it in transit, so the
+    \textbf{outlet} temperature $T_2$ exceeds the \textbf{inlet} $T_1$:
+    \[ \boxed{P = 4.187\, v\, d\, C_p\,(T_2 - T_1)\ \ \mathrm{watts}} \]
+    $v$ flow rate in cc/s, $d$ specific gravity in g/cc, $C_p$ specific heat in cal/g.
+  \item \textbf{Same law as the static one}: $v\,d$ is grams per second, which is the static
+    formula's $m/t$. Confirmed in \code{meas.py}.
+  \item \textbf{Worked}: 10 cc/s of water with a 2$^\circ$C rise is \mk{83.7 W}. To take
+    1 kW with a 10$^\circ$C rise needs \mk{23.9 cc/s}.
+  \item \textbf{Instrumentation}: pump, flow meter, glass tube through the guide, inlet and
+    outlet thermocouples, heat exchanger to return the water cool.
+\end{itemize}}{%
+\figT{c8_circulating.png}
+{\color{sub}\scriptsize Circulating (flow) calorimeter: water load, pump, flow meter, inlet
+and outlet thermometers. Deck slide 19.}}
+
+\par\penalty0\Needspace{11\baselineskip}
+\lead{Static Vs circulating (the ``differentiate'' answer)}
+\begin{tabularx}{\linewidth}{@{}L{2.4cm}XX@{}}
+\toprule
+\hrow & \thead{Static (dry)} & \thead{Circulating (flow)} \\
+\midrule
+Load & fixed dry dielectric, thermally isolated & water pumped through continuously \\
+Reading & temperature rise per unit \textbf{time} & \textbf{steady} inlet to outlet difference \\
+Formula & $4.187\,mC_pT/t$ & $4.187\,vdC_p(T_2{-}T_1)$ \\
+Power handled & medium; the load stores heat and saturates & \textbf{high}, kW upward: the flow carries heat away \\
+Speed & slow, must wait for a measurable rise & continuous once flow is steady \\
+Errors & heat leakage, isolation, thermal inertia & flow-rate stability, thermometer placement, thermal inertia \\
+\bottomrule
+\end{tabularx}
+\begin{itemize}
+  \item \textbf{On the wording ``circulating Vs flow''} (70 Ma) \added{}: the sources use the
+    two words for the \textbf{same} instrument. Answer the question that is meant, which is
+    \textbf{static vs circulating}, and say so in one line: if a distinction is forced,
+    \textbf{circulating} returns the same fluid round a closed loop through a heat exchanger,
+    while a plain \textbf{flow} calorimeter passes fluid once and discards it.
+\end{itemize}
+
+\par\penalty0\Needspace{16\baselineskip}
+\creamq{Power measurement using a calorimeter wattmeter}{\m{6}}
+{\color{sub}\footnotesize \tP{1} \yr{\texttt{80 Ba}} \gap$\cdot$\gap paired with the single-bridge limitations of $\S$8.3}
+
+\sbsr{0.56}{%
+\begin{itemize}
+  \item A calorimeter run as a \textbf{self-balancing comparison bridge}, so the answer comes
+    out as a meter reading instead of a temperature calculation.
+  \item The unknown RF power is checked against a \textbf{1200 cps (Hz) comparison power} in
+    a bridge circuit. Two \textbf{temperature-sensitive resistors} serve as gauges.
+  \item \textbf{Operation}:
+  \begin{enumerate}[label=\arabic*., leftmargin=1.4em]
+    \item The unknown RF heats an \textbf{input load resistor}.
+    \item That resistor and one gauge sit in close thermal contact, so the gauge warms and
+      \textbf{unbalances the bridge}.
+    \item The unbalance signal is \textbf{amplified} and applied to the \textbf{comparison
+      load resistor}, which is next to the second gauge, and \textbf{rebalances} the bridge.
+    \item The meter reads the \textbf{power supplied to the comparison load}, which at
+      balance equals the unknown RF power.
+  \end{enumerate}
+  \item Both loads and gauges are \textbf{immersed in an oil stream} for efficient, equal
+    heat transfer.
+  \item \textbf{Why it is better than a bare calorimeter}: it is a null method, so gauge
+    calibration and ambient drift cancel, and it reads continuously.
+\end{itemize}}{%
+\figT{c8_wattmeter.png}
+{\color{sub}\scriptsize Calorimetric wattmeter: input load and comparison load, two
+temperature gauges, 1200 cps comparison power, oil stream. Deck slide 20.}}
+
+\penalty0\vspace{2pt}
+
+%=======================================================================
+\T{8.6 VSWR Measurement: Slotted Line and VSWR Meter}
+
+\Q{Describe how standing waves and microwave power are measured with a VSWR meter}{\m{2}\m{4}}
+{\color{sub}\footnotesize \tF{3} \yr{\textbf{70 Bh}, \textbf{72 Ash}, \textbf{\texttt{79 Bh}}} \gap$\cdot$\gap always part A, with a power sensor as part B: 72 Ash ``low power measurement'' \m{8}, 70 Bh ``bolometry'' \m{6}}
+
+\sbsr{0.58}{%
+\lead{Slotted line carriage: where the standing wave is seen}
+\begin{itemize}
+  \item A \textbf{coaxial E-field probe} penetrates a rectangular waveguide (or coaxial line)
+    through a \textbf{longitudinal slot} cut in the centre of the broad wall, over 2 to 3
+    wavelengths.
+  \item The slot lies where the \textbf{wall current has no transverse component}, so cutting
+    it does not disturb the field. Both ends are \textbf{tapered} to zero width to reduce
+    discontinuity, and the probe is thin and shallow for the same reason.
+\end{itemize}}{%
+\figT{c8_slotted.png}
+{\color{sub}\scriptsize Slotted-line carriage: longitudinal slot on the broad wall, probe,
+crystal detector, vernier scale. Deck slide 22.}}
+
+\par\penalty0\Needspace{10\baselineskip}
+\sbsr{0.58}{%
+\begin{itemize}
+  \item The carriage moves the probe along the slot at constant depth, so coupling is uniform,
+    and a \textbf{vernier scale} reads its position. It carries a tunable stub and a crystal
+    detector, whose 1 kHz output goes to the VSWR meter.
+  \item \textbf{It measures}: standing-wave pattern and \textbf{VSWR}, \textbf{wavelength}
+    ($\lambda_g = 2\times$ distance between successive minima), and by the minima-shift
+    method \textbf{impedance, reflection coefficient and return loss} ($\S$8.7).
+\end{itemize}}{%
+\figT{c8_vswrsetup.png}
+{\color{sub}\scriptsize The pattern the probe traces: maxima and minima $\lambda_g/2$ apart,
+each minimum $\lambda_g/4$ from its neighbouring maximum. Deck slide 27.}}
+
+\par\penalty0\Needspace{12\baselineskip}
+\sbsr{0.54}{%
+\lead{VSWR meter}
+\begin{itemize}
+  \item A \textbf{high-gain, high-$Q$, low-noise voltage amplifier} tuned to a \textbf{fixed
+    1 kHz}, the frequency at which the microwave source is square-wave modulated. Overall
+    gain about 125 dB, switchable in 10 dB steps.
+  \item Input is the \textbf{detected} output of the crystal detector; output goes to a
+    \textbf{square-law calibrated} voltmeter, which therefore reads $V_{max}/V_{min}$
+    directly once it has been set to 1.0 at a maximum.
+  \item \textbf{Procedure} (low VSWR):
+  \begin{enumerate}[label=\arabic*., leftmargin=1.4em]
+    \item Set the attenuator to about 10 dB, tune the probe stub for maximum reading.
+    \item Slide the carriage to a \textbf{maximum} and adjust the \textbf{gain} until the
+      meter reads \textbf{1.0} (0 dB).
+    \item Move to the adjacent \textbf{minimum}. The meter now reads \mk{$S$ directly}.
+  \end{enumerate}
+  \item \textbf{Three scales}: SWR NORMAL top (1 to 4), SWR NORMAL bottom (3.2 to 10),
+    EXPANDED (1 to 1.3) for a nearly matched load, plus a dB scale. For $S$ between 10 and
+    40 increase sensitivity by 20 dB, read on the 1 to 4 scale and \textbf{multiply by 10}.
+\end{itemize}}{%
+\figT{c8_vswrmeter.png}
+{\color{sub}\scriptsize 1 kHz modulation, mixer, amplifier, detector: the meter reads
+$V_{max}/V_{min}$. Deck slide 31.}
+\vspace{2pt}
+\figT{c8_lowvswr.png}
+{\color{sub}\scriptsize Low-VSWR bench: source, attenuator, slotted line, crystal detector,
+power meter. Deck slide 28.}}
+
+\par\penalty0\Needspace{18\baselineskip}
+\creamq{How is the VSWR of a microwave transmitter measured when VSWR $>$ 10?}{\m{6}}
+{\color{sub}\footnotesize \tP{1} \yr{\textbf{\texttt{79 Bh}}} \gap$\cdot$\gap \mk{the double-minimum method}: the one question in the chapter with a derivation in it}
+
+\sbsr{0.56}{%
+\begin{itemize}
+  \item \textbf{Why the direct reading fails.} With $S > 10$ the gap between $V_{max}$ and
+    $V_{min}$ is large. To read $V_{max}$ the detector is driven out of its
+    \textbf{square-law} region (diode current past about 20 mA, response turning linear),
+    while at $V_{min}$ it is in the noise. A meter calibrated on $I = kV^2$ is then simply
+    wrong, and the error grows with $S$.
+  \item \textbf{The cure}: never look at the maximum. Take \textbf{two readings either side
+    of a single minimum}, where the level is low and the detector is safely square-law. This
+    is the \textbf{double-minimum method}.
+  \item \textbf{Procedure}:
+  \begin{enumerate}[label=\arabic*., leftmargin=1.4em]
+    \item Terminate the line with the load and find a \textbf{voltage minimum} on the slotted
+      line; note its position and meter reading.
+    \item Move the probe either side until the detected \textbf{power is twice the minimum}
+      (voltage $\sqrt2\,V_{min}$). Record the two positions $d_1$ and $d_2$;
+      $\Delta x = d_2 - d_1$.
+    \item Short the line and measure $\lambda_g$ as \textbf{twice} the distance between two
+      successive minima.
+    \item Compute $S$.
+  \end{enumerate}
+\end{itemize}}{%
+\figT{c8_highvswr.png}
+{\color{sub}\scriptsize The two ``twice minimum power'' points either side of a minimum,
+$\Delta x = d_2 - d_1$. Deck slide 29.}}
+
+\begin{itemize}
+  \item \textbf{The formula, and where it comes from.} Near a minimum the detected quantity
+    is $|V|^2 = V_{min}^2 + (V_{max}^2 - V_{min}^2)\sin^2\beta\delta$ with $\delta$ measured
+    from the minimum. Setting $|V|^2 = 2V_{min}^2$ gives $(S^2-1)\sin^2\beta\delta = 1$, so
+    with $\Delta x = 2\delta$ and $\beta = 2\pi/\lambda_g$:
+    \[ \boxed{S = \sqrt{1 + \frac{1}{\sin^2(\pi\Delta x/\lambda_g)}}}
+       \qquad\longrightarrow\qquad S \approx \frac{\lambda_g}{\pi\,\Delta x}
+       \ \ \text{for large } S \]
+  \item \textbf{Both forms verified} in \code{meas.py} against a simulated standing wave: at
+    $S = 25$ the exact form returns 25.00 and the short form 24.97 (0.12\% error); at
+    $S = 60$, 0.04\%. \mk{The short form is only for large $S$}: at $S = 2$ it returns 1.63,
+    19\% out, which is precisely why the direct method is used there instead.
+  \item \textbf{Threshold}: the deck sets the changeover at $S > 10$ (which is the wording of
+    79 Bh), Das at $S > 20$. Say ``above about 10, where the detector leaves its square-law
+    region'' and the distinction never matters.
+\end{itemize}
+
+\penalty0\vspace{2pt}
+
+%=======================================================================
+\T{8.7 Impedance, Reflection Coefficient and Frequency}
+
+\Q{Measurement of an unknown load, of reflection coefficient, and of frequency}{\pill{gdL}{gd}{syllabus 8.5--8.8}}
+{\color{sub}\footnotesize no direct PYQ, but it is four of the nine syllabus sub-topics, and it is the reasoning behind 74 Bh's ``antenna as DUT'' \m{8} in $\S$7.8}
+
+\sbsr{0.53}{%
+\lead{Unknown impedance from the slotted line (minima-shift method)}
+\begin{itemize}
+  \item Impedance is complex, so \textbf{two} numbers are needed: the slotted line supplies
+    \textbf{$S$} (giving $|\Gamma|$) and \textbf{$d_{min}$} (giving the phase).
+  \item \textbf{Set-up 1}: load connected, measure $S$ and the position of the first minimum.
+    \textbf{Set-up 2}: replace the load with a \textbf{short}, which puts a minimum at the
+    load plane, and measure the \textbf{shift}.
+  \item Shift \textbf{towards the generator} means the load is \textbf{capacitive}; shift
+    \textbf{towards the load} means \textbf{inductive}.
+  \item The relations:
+    \[ \rho = \frac{S-1}{S+1},\quad \phi_L = 2\beta d_{min} - \pi,\quad
+       \beta = \frac{2\pi}{\lambda_g},\quad Z_L = Z_0\frac{1+\Gamma}{1-\Gamma} \]
+    with $\lambda_g = 2\times$(distance between successive minima), $\Gamma=\rho e^{j\phi_L}$.
+  \item Equivalent closed form, useful when no chart is at hand, $t = \tan\beta d_{min}$:
+    \[ Z_L = Z_0\,\frac{1 - jSt}{S - jt} \]
+  \item \textbf{Both routes checked} in \code{meas.py}: a simulated pattern from
+    $Z_L = 60 - j80$ on a 50 $\Omega$ line is inverted back to $60 - j80$ by each.
+  \item On the Smith chart: draw the $S$ circle, start at the short-circuit point and move
+    \textbf{towards the load} by $d_{min}/\lambda_g$; the intersection is $z_L$.
+\end{itemize}}{%
+\figT{c8_impedance.png}
+{\color{sub}\scriptsize The two set-ups: unknown load, then shorted termination. Deck
+slide 24.}
+\vspace{2pt}
+\figT{c8_reflectometer.png}
+{\color{sub}\scriptsize Reflectometer: two 20 dB directional couplers sample forward and
+reverse waves. Deck slide 26.}}
+
+\par\penalty0\Needspace{11\baselineskip}
+\sbsr{0.53}{%
+\lead{Reflectometer: $|\Gamma|$ without a slotted line}
+\begin{itemize}
+  \item \textbf{Two directional couplers} face opposite ways: the first samples the
+    \textbf{forward} wave at port 4, the second the \textbf{reverse} wave at port 3.
+  \item With coupling $C \ll 1$ the ratio of the two detected outputs is the reflection
+    coefficient itself:
+    \[ \left|\frac{b_3}{b_4}\right| = \sqrt{1-C^2}\,|\Gamma_L| \approx |\Gamma_L| \]
+  \item Calibrate by shorting port 2 ($|\Gamma| = 1$) and setting the meter to unity, then
+    connect the load. Everything else follows:
+    \[ \mathrm{VSWR} = \frac{1+|\Gamma_L|}{1-|\Gamma_L|}, \qquad
+       \mathrm{RL(dB)} = -20\log_{10}|\Gamma_L| \]
+  \item \textbf{Broadband and fast}, but accuracy is set by coupler \textbf{directivity}, so
+    it suits \textbf{low} VSWR; a high SWR still wants the slotted line.
+  \item Related loss family, all measured the same way:
+    \textbf{insertion loss} $=$ reflection loss $+$ attenuation loss, with reflection loss
+    $=-10\log(1-|\Gamma|^2) = -10\log[4S/(1+S)^2]$. \mk{Return loss compares $P_r$ with
+    $P_i$; insertion loss compares $P_0$ with $P_i$} ($\S$3.4).
+\end{itemize}}{%
+\lead{Frequency measurement}
+\begin{itemize}
+  \item \textbf{Cavity (absorption) wavemeter}: a cylindrical cavity with a \textbf{variable
+    short}, coupled to the guide through a hole in the narrow wall. Tuning the plunger
+    changes the resonant frequency; at resonance the cavity \textbf{absorbs}, and the power
+    meter downstream shows a \textbf{dip}. The plunger scale is calibrated in frequency.
+    \begin{itemize}
+      \item $TE_{011}$ has the highest $Q$ and no axial current, but it is a higher-order
+        mode, so practical wavemeters use the dominant \textbf{$TM_{010}$}, excited by
+        magnetic coupling. Polytron absorber behind the plunger stops oscillation above it.
+      \item Accuracy follows $Q$: \mk{1\% at $Q = 1000$, 0.005\% at $Q = 50\,000$}.
+    \end{itemize}
+  \item \textbf{Slotted line}: short the guide, measure $\lambda_g$ as twice the minima
+    spacing, then
+    \[ \frac{1}{\lambda^2} = \frac{1}{\lambda_g^2} + \frac{1}{\lambda_c^2},
+       \qquad f = \frac{c}{\lambda},\qquad \lambda_c = 2a\ (TE_{10}) \]
+    Worked (\code{meas.py}): WR-90 ($a = 2.286$ cm) with $\lambda_g = 4.00$ cm gives
+    \mk{9.96 GHz}.
+  \item \textbf{Frequency counter} with a \textbf{down-conversion} front end: the unknown is
+    mixed with a selected harmonic $nf_1$ of a known oscillator, and the counter reads
+    $f_x = $ counter $+ nf_1$. Direct and most accurate.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+%=======================================================================
+\T{8.8 Spectrum Analyzer}
+
+\Q{Spectrum analyzer (short note): working principle and block diagram}{\m{4}\m{5}}
+{\color{sub}\footnotesize \tP{2} \yr{\textbf{\texttt{80 Bh}}, \textbf{80 Ch}} \gap$\cdot$\gap short note both times, so a block diagram plus six lines is the full answer}
+
+\sbsr{0.56}{%
+\begin{itemize}
+  \item A \textbf{swept-tuned superheterodyne receiver} that plots \textbf{amplitude against
+    frequency}: frequency on the horizontal axis, amplitude on the vertical. It shows what an
+    oscilloscope cannot, namely the \textbf{signal spectrum}.
+  \item \textbf{Working}:
+  \begin{enumerate}[label=\arabic*., leftmargin=1.4em]
+    \item The input microwave signal is mixed with a \textbf{local oscillator swept
+      electronically} between two limits at a linear rate by a \textbf{sawtooth} sweep
+      voltage.
+    \item The difference product is amplified by a \textbf{narrow-bandwidth IF amplifier},
+      then detected and \textbf{video amplified}.
+    \item The same sawtooth drives the horizontal deflection, with \textbf{zero flyback
+      time}, so horizontal position tracks the LO frequency while the detected amplitude
+      gives vertical deflection.
+  \end{enumerate}
+\end{itemize}}{%
+\figT{c8_spectrum.png}
+{\color{sub}\scriptsize Block diagram: mixer, swept local oscillator, narrow-band IF
+amplifier, detector, video amplifier, display. Deck slide 33.}}
+
+\begin{itemize}
+  \item \textbf{Measures}: carrier power, harmonics, spurious products, sidebands, phase
+    noise, occupied bandwidth; on a modern analyzer, demodulated WLAN, GSM or LTE signals.
+  \item \textbf{Four design parameters}: sweep \textbf{rate}, sweep \textbf{range}, IF
+    \textbf{bandwidth}, IF \textbf{centre frequency}.
+  \item \textbf{Resolution is the IF bandwidth (RBW)}. Narrow RBW resolves closer tones but
+    needs a \textbf{slower sweep}, because the IF filter must have time to settle: sweep time
+    rises as $1/\mathrm{RBW}^2$. Keep the span as small as the measurement allows.
+  \item \textbf{Image response}: any signal $f_i = f_0 \pm f_{IF} = f_s \pm 2f_{IF}$ also
+    beats to the IF. Choose $f_{IF}$ \textbf{high} to push the image out of band. Worked:
+    $f_{IF} = 450$ kHz puts the image \mk{900 kHz} from the signal; $f_{IF} = 2$ MHz moves it
+    to \mk{4 MHz} away, easily filtered (\code{meas.py}).
+  \item \textbf{Types}: swept-tuned (superheterodyne), FFT, real-time, audio.
+\end{itemize}
+
+\penalty0\vspace{2pt}
+
+%=======================================================================
+\T{8.9 Network Analyzer, VNA and the Two-Port Model}
+
+\Q{Describe the working principle of a network analyzer; VNA (short note)}{\m{5}\m{8}}
+{\color{sub}\footnotesize \tF{3} \yr{\textbf{71 Bh}, 73 Ma, \textbf{78 Ch}} \gap$\cdot$\gap 78 Ch as a 5 mark short note on ``VNA type network analyzer''; 71 Bh asks the two-port model below}
+
+\sbsr{0.52}{%
+\lead{Why it exists, and how it works}
+\begin{itemize}
+  \item The slotted line measures amplitude and phase \textbf{one frequency at a time}, so
+    broadband testing with it is slow and expensive. A \textbf{network analyzer} measures
+    both \textbf{over a wide band} in a reasonable time.
+  \item \textbf{Principle: everything is measured against a reference.}
+  \begin{enumerate}[label=\arabic*., leftmargin=1.4em]
+    \item A \textbf{sweep oscillator} feeds a \textbf{power divider}, splitting the signal
+      into a \textbf{test} channel and a \textbf{reference} channel.
+    \item The test signal passes through the \textbf{DUT}; the reference passes through a
+      \textbf{phase-equalising length} of line.
+    \item Microwave frequencies cannot be processed directly, so a \textbf{harmonic frequency
+      converter} brings both to a fixed IF. A \textbf{phase-locked loop} makes the local
+      oscillator track the reference channel, which is what allows a \textbf{swept}
+      measurement.
+    \item Conversion is in two steps, RF to an MHz IF, then to a kHz IF, where the
+      \textbf{magnitude and phase comparators} compare test against reference.
+  \end{enumerate}
+  \item \textbf{Reflection and transmission} are separated by a test unit built from
+    \textbf{dual directional couplers}: $S_{11}$ and $S_{21}$ from one direction, then source
+    and load are interchanged for $S_{22}$ and $S_{12}$. Each $S_{ij}$ is a
+    \textbf{ratio of a coupler output to the reference}, with the phase as the difference
+    $\phi_j - \phi_i$.
+  \item \textbf{Two types}: \textbf{SNA} (scalar) measures amplitude only; \textbf{VNA}
+    (vector) measures \textbf{amplitude and phase}, so it can apply \textbf{vector error
+    correction} and is far more accurate.
+\end{itemize}}{%
+\figT{c8_vna.png}
+{\color{sub}\scriptsize VNA: DUT alters the reference in magnitude (resistive) and phase
+(reactive); two comparators output the magnitude and phase vectors. Deck slide 36.}
+\vspace{2pt}
+\begin{tabularx}{\linewidth}{@{}L{1.55cm}XX@{}}
+\toprule
+\hrow & \thead{Spectrum an.} & \thead{Network an.} \\
+\midrule
+Measures & unknown signals: power, harmonics, sidebands, phase noise & known stimulus: $\Gamma$, $S$-parameters, insertion and return loss \\
+Accuracy & lower & higher, vector error correction \\
+IF BW & wider & narrower \\
+Quantity & scalar only & amplitude \textbf{and} phase \\
+Sweep & frequency & frequency \textbf{and} power \\
+\bottomrule
+\end{tabularx}}
+
+\par\penalty0\Needspace{14\baselineskip}
+\creamq{Design a two-port network model and derive the required parameters}{\m{10}}
+{\color{sub}\footnotesize \tP{1} \yr{\textbf{71 Bh}} \gap$\cdot$\gap the only 10 mark question in $\S$8.9; it wants the \textbf{set} of two-port descriptions and why $S$ is the microwave one}
+
+\begin{itemize}
+  \item \textbf{The model}: a black box with two ports, port 1 $(V_1, I_1)$ and port 2
+    $(V_2, I_2)$, both currents taken as flowing \textbf{into} the box. Any two of the four
+    are independent, which is what gives the six standard parameter sets.
+\end{itemize}
+\begin{tabularx}{\linewidth}{@{}L{1.5cm}L{4.4cm}XL{3.2cm}@{}}
+\toprule
+\hrow \thead{Set} & \thead{Defining equations} & \thead{Element found by} & \thead{Needs} \\
+\midrule
+$Z$ (open-circuit) & $V_1 = Z_{11}I_1 + Z_{12}I_2$, $V_2 = Z_{21}I_1 + Z_{22}I_2$ & $Z_{11} = V_1/I_1|_{I_2=0}$ & \textbf{open} circuit at a port \\
+$Y$ (short-circuit) & $I_1 = Y_{11}V_1 + Y_{12}V_2$, $I_2 = Y_{21}V_1 + Y_{22}V_2$ & $Y_{11} = I_1/V_1|_{V_2=0}$ & \textbf{short} circuit at a port \\
+$h$ (hybrid) & $V_1 = h_{11}I_1 + h_{12}V_2$, $I_2 = h_{21}I_1 + h_{22}V_2$ & $h_{21} = I_2/I_1|_{V_2=0}$ & one short, one open \\
+$ABCD$ (chain) & $V_1 = AV_2 - BI_2$, $I_1 = CV_2 - DI_2$ & cascades by matrix product & short and open \\
+$S$ (scattering) & $b_1 = S_{11}a_1 + S_{12}a_2$, $b_2 = S_{21}a_1 + S_{22}a_2$ & $S_{11} = b_1/a_1|_{a_2=0}$ & \textbf{matched} $Z_0$ termination \\
+\bottomrule
+\end{tabularx}
+\begin{itemize}
+  \item \textbf{Why $S$ at microwaves} (the same argument as $\S$3.1, and the reason this
+    question sits in the measurements chapter): $Z$, $Y$, $h$ and $ABCD$ all need a
+    \textbf{short or open circuit} at a port. At microwaves a short is not a short (lead
+    inductance), an open radiates, and both are \textbf{frequency dependent} and may
+    destabilise an active device. A \textbf{matched load} is realisable at every frequency,
+    and $a$, $b$ are travelling-wave quantities that a directional coupler can sample: that
+    is exactly what the network analyzer above does, which is why $S$-parameters are the set
+    that can actually be \textbf{measured}.
+  \item \textbf{Reciprocity} $S_{12} = S_{21}$, \textbf{losslessness} $[S]^\dagger[S] = [I]$,
+    \textbf{matched} $S_{ii} = 0$; conversions to and from $Z$ exist,
+    $[S] = ([Z]-[I])([Z]+[I])^{-1}$ for $Z$ normalised to $Z_0$ ($\S$3.2).
+\end{itemize}
+
+\par\penalty0\Needspace{8\baselineskip}
+\lead{Noise figure measurement \pill{gdL}{gd}{syllabus 8.9, never asked}}
+\begin{itemize}
+  \item \textbf{Y-factor method}: drive the DUT with a calibrated \textbf{noise source} that
+    switches between hot and cold. $Y$ is the ratio of the two output powers, and with the
+    source's \textbf{excess noise ratio}:
+    \[ F = \frac{\mathrm{ENR}}{Y-1}, \qquad T_e = \frac{T_h - YT_c}{Y-1},
+       \qquad F = 1 + \frac{T_e}{T_0} \]
+  \item Worked (\code{meas.py}): ENR 15 dB with $Y = 10$ dB gives $F = 3.51$, i.e.
+    \mk{5.46 dB}, equivalently $T_e = 729$ K. The floor any such measurement sits on is
+    $kT_0 = -174$ dBm/Hz.
+\end{itemize}
+
+\penalty0\vspace{2pt}
+
+%=======================================================================
+\T{8.10 Surveying the Radiation Zones Round a BTS}
+
+\Q{Working principle of a microwave measuring device to map the radiation zones around a GSM BTS}{\m{8}}
+{\color{sub}\footnotesize \tP{1} \yr{\textbf{\texttt{82 Bh}}} \gap$\cdot$\gap paired with ``how microwaves are hazardous'' \m{4} from $\S$7.2; the zone formulas are $\S$7.1}
+
+\begin{itemize}
+  \item \textbf{The instrument}: a \textbf{broadband EMF survey meter} (field-strength
+    meter), which is a calibrated probe plus a display, usually backed by a
+    \textbf{spectrum analyzer} when the individual operators' carriers must be separated.
+  \item \textbf{Probe}: an \textbf{isotropic (three-axis) probe}, three mutually
+    perpendicular dipoles (E field) or loops (H field) whose outputs are squared and summed,
+    so the reading does not depend on how the probe is held. Diode or thermocouple detection,
+    high-resistance leads so the cable does not perturb the field.
+  \item \textbf{Why both E and H must be measured in the near field}: only in the far field
+    is $E/H = 377\ \Omega$ and $S = E^2/377$. Closer in, the ratio is not fixed, so the two
+    are measured \textbf{separately} and compared against separate limits ($\S$7.1).
+  \item \textbf{Working principle}: the probe dipoles develop a voltage proportional to the
+    field; a square-law diode detector gives a dc output proportional to \textbf{power
+    density}; high-resistance lines carry it to a meter calibrated in V/m, A/m or
+    W/m$^2$.
+  \item \textbf{Procedure}: zero the meter with the transmitter off, then walk a
+    \textbf{radial grid} out from the tower at a fixed height, log position with GPS, and
+    plot contours. Compare each contour with the ICNIRP or FCC limit for that frequency, and
+    mark the compliance boundary.
+  \item \textbf{Worked} (\code{meas.py}, same formulas as $\S$7.1): a 1.3 m panel at
+    1800 MHz has $\lambda = 16.7$ cm, so the reactive near field ends at
+    $0.62\sqrt{D^3/\lambda} = $ \mk{2.25 m} and the far field starts at
+    $2D^2/\lambda = $ \mk{20.3 m}. With 20 W into a 17 dBi sector, $S$ at 50 m is
+    0.032 W/m$^2$, against the ICNIRP public limit of $f/200 = $ 9 W/m$^2$: a margin of
+    \mk{about 280 times}.
+  \item \textbf{Related ask}: 74 Bh's ``antenna as a DUT, choose a measurement tool''
+    \m{8} wants a \textbf{VNA} instead ($\S$8.9): return loss and $S_{11}$ give the match and
+    bandwidth, and an anechoic range gives the pattern. It is filed in $\S$7.8.
+\end{itemize}
+
+\penalty0\vspace{2pt}
+
+%=======================================================================
+\T{8.11 PYQ Mapping}
+
+\lead{Theory questions, covered in this document}
+\begin{itemize}
+  \item \textbf{Microwave vs low-frequency measurements; major measurement parameters}
+    $\rightarrow$ $\S$8.1. \yr{\textbf{71 Bh} \m{3}, \textbf{\texttt{79 Bh}} \m{2},
+    \textbf{\texttt{81 Bh}} \m{3}}
+  \item \textbf{Choose a proper power measuring tool and explain it} $\rightarrow$ $\S$8.2.
+    \yr{72 Ma \m{10} (7.5 mW), 74 Ma \m{8} (airport radar), \textbf{73 Bh} \m{8} (low power)}
+  \item \textbf{Bolometry; low power measurement} $\rightarrow$ $\S$8.3.
+    \yr{\textbf{70 Bh} \m{6}, \textbf{72 Ash} \m{8}, \textbf{79 Ch} \m{10},
+    \textbf{80 Ch} \m{5}}
+  \item \textbf{Single-bridge bolometer limitations; double-channel bolometer bridge}
+    $\rightarrow$ $\S$8.3. \yr{\texttt{80 Ba} \m{2}, \textbf{\texttt{80 Bh}} \m{8},
+    \texttt{81 Ba} \m{4}}
+  \item \textbf{Calorimetry; static (dry) calorimeter} $\rightarrow$ $\S$8.5.
+    \yr{70 Ma \m{2}, 71 Ma \m{5}, \textbf{71 Bh} \m{7}, \textbf{76 Bh} \m{10},
+    \textbf{77 Ch} \m{6}, \textbf{\texttt{81 Bh}} \m{6}}
+  \item \textbf{Circulating (flow) calorimetry} $\rightarrow$ $\S$8.5.
+    \yr{70 Ma \m{8}, \textbf{75 Bh} \m{5}, \texttt{82 Ba} \m{4}}
+  \item \textbf{Calorimeter wattmeter} $\rightarrow$ $\S$8.5. \yr{\texttt{80 Ba} \m{6}}
+  \item \textbf{Standing waves and VSWR meter} $\rightarrow$ $\S$8.6.
+    \yr{\textbf{70 Bh} \m{4}, \textbf{72 Ash} \m{2}}
+  \item \textbf{VSWR of a transmitter with VSWR $>$ 10 (double-minimum method)}
+    $\rightarrow$ $\S$8.6. \yr{\textbf{\texttt{79 Bh}} \m{6}}
+  \item \textbf{Spectrum analyzer} $\rightarrow$ $\S$8.8.
+    \yr{\textbf{\texttt{80 Bh}} \m{4}, \textbf{80 Ch} \m{5}}
+  \item \textbf{Network analyzer; VNA} $\rightarrow$ $\S$8.9.
+    \yr{73 Ma \m{8}, \textbf{78 Ch} \m{5}}
+  \item \textbf{Two-port network model and its parameters} $\rightarrow$ $\S$8.9.
+    \yr{\textbf{71 Bh} \m{10}}
+  \item \textbf{Measuring device to map radiation zones round a GSM BTS} $\rightarrow$
+    $\S$8.10. \yr{\textbf{\texttt{82 Bh}} \m{8}}
+\end{itemize}
+
+\lead{Syllabus topics with no PYQ in 24 papers}
+\begin{itemize}
+  \item \textbf{Thermocouples} ($\S$8.4), \textbf{impedance measurement}, \textbf{measurement
+    of unknown loads}, \textbf{measurement of reflection coefficient} and \textbf{frequency
+    measurement} ($\S$8.7), and \textbf{noise} ($\S$8.9). All six are written up, briefly,
+    because the ``choose a tool'' questions can reach any of them.
+\end{itemize}
+
+\lead{Numerical content}
+\begin{itemize}
+  \item \textbf{This chapter has no numerical component}: no paper in 24 sets a measurement
+    calculation. The arithmetic above (duty cycle, the two calorimeter laws, the bridge
+    substitution, the double-minimum formula, $\lambda_g$ to frequency) exists to make the
+    descriptive answers specific, and every number is re-derived in \code{src/meas.py}.
+\end{itemize}
+
+\lead{Corrections and source defects found while building this chapter}
+\begin{itemize}
+  \item \textbf{Karkee's Chapter-8 PDF export is missing seven slides} that the pptx has:
+    impedance measurement, the reflectometer and the low and high VSWR methods (deck slides
+    23 to 30). The \textbf{double-minimum method}, which is the whole of 79 Bh's 6 marks,
+    appears \textbf{only} in the pptx. Figures are pulled from the pptx for this reason.
+  \item Deck slide 30, ``Measurement of frequency'', is an \textbf{empty slide}. $\S$8.7 is
+    written from Das ch.\,13 instead \added{}.
+  \item Das Fig.\,13.21's worked chart example (\,$S = 2$, $d_{min} = 0.2\lambda_g$\,) prints
+    $Z_L = Z_0(1.0 + j0.7)$. Its own equations 13.46 to 13.50 give
+    $Z_0(1.55 - j0.69)$, and the closed form $Z_0(1-jSt)/(S-jt)$ agrees with that. The
+    printed point does sit on the $S = 2$ circle, but at $70.7^\circ$, which needs
+    $d_{min} = 0.348\lambda_g$, not $0.200$. \mk{The answer does not follow from its own
+    data}; both routes are asserted in \code{meas.py}.
+  \item Das \S13.8 writes insertion loss as $10\log(P_0/P_i)$, which is negative for a lossy
+    network. Losses are quoted positive: $10\log(P_i/P_0)$. Same slip as the Chapter-3 deck's
+    ($\S$3.4).
+  \item Deck slide 19 titles the circulating calorimeter ``\textbf{Circular} Calorimeter'';
+    no such instrument. It is circulating, or flow.
+  \item The deck sets the high-VSWR threshold at $S > 10$, Das at $S > 20$. Both are quoted
+    in $\S$8.6 rather than one being picked.
+\end{itemize}
