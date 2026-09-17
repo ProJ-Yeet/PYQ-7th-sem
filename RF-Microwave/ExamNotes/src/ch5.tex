@@ -1,0 +1,575 @@
+\section{Microwave Generators}
+{\color{sub}\footnotesize 5 hrs \gap$\cdot$\gap asked in \mk{23 of 24 papers}
+\gap$\cdot$\gap 5 syllabus sub-topics \gap$\cdot$\gap \mk{166 marks, 8.7\% of the archive}
+$\rightarrow$ two tubes (klystron, magnetron) answer most of it; one idea (bunching) is the
+2-mark rider on almost every question.}
+
+\vspace{3pt}\noindent
+\colorbox{gdL}{\makebox[\dimexpr\textwidth-2\fboxsep][l]{%
+  \textcolor{gd}{\bfseries\footnotesize READ THIS FIRST}}}
+\par\nobreak\vspace{3pt}
+
+Chapter 5 is descriptive, with no numerical PYQ in 24 papers, and the questions come in a
+fixed shape: \mk{a 2-mark definition, then a 6 to 8 mark ``construction and working''}.
+\begin{enumerate}[label=\arabic*., leftmargin=1.4em, itemsep=1pt]
+  \item \textbf{The 2-mark riders} (bunching, density modulation, transit time, cross-field
+    effect, slow-wave structure) $\rightarrow$ each has a boxed two-line answer below.
+    Bunching alone is asked in 9 papers.
+  \item \textbf{Klystrons} (two-cavity, multicavity, reflex; 9 papers) $\rightarrow$
+    $\S$5.3 and $\S$5.4. One figure (the Applegate diagram) explains all three.
+  \item \textbf{Magnetron} (9 papers) $\rightarrow$ $\S$5.5. The ``45$^\circ$ / 60$^\circ$ /
+    90$^\circ$ phase shift between adjacent cavities'' versions are the same answer plus
+    one formula, $\phi = 2\pi n/N$.
+\end{enumerate}
+Two things worth knowing before the paper starts:
+\begin{itemize}
+  \item Every tube here does the same three things: \textbf{velocity-modulate} a beam,
+    let it \textbf{bunch}, and \textbf{decelerate the bunches} in a field that takes their
+    energy. Say this in the first line of any tube answer and the structure of the answer
+    follows.
+  \item Linear-beam (O-type) tubes: klystron, reflex klystron, TWT, BWO. Crossed-field
+    (M-type) tubes: magnetron, crossed-field amplifier. An examiner who writes ``field
+    effect'' or ``cross-field'' wants the M-type family.
+\end{itemize}
+
+\hr
+
+%=======================================================================
+\T{5.1 Conventional Tubes at Microwaves and the Transit-Time Effect}
+
+\Q{How is the output of conventional tubes reduced at microwaves? What is transit-time effect?}{\m{2}\m{2+6}\m{2+8}}
+{\color{sub}\footnotesize \tF{3} \yr{70 Ma, \textbf{77 Ch}, \textbf{\texttt{79 Bh}}} \gap$\cdot$\gap always the 2-mark opener to a tube question}
+
+\sbsr{0.62}{%
+\lead{Why triodes and pentodes fail above about 1 GHz}
+\begin{itemize}
+  \item \textbf{Inter-electrode capacitance} $C_{gp}, C_{gk}, C_{pk}$:
+  \begin{itemize}
+    \item Reactance $1/\omega C$ falls with frequency $\rightarrow$ shorts the input and
+      output $\rightarrow$ gain falls.
+    \item Cure (spread electrodes, smaller area) raises transit time: a
+      \textbf{compromise}.
+  \end{itemize}
+  \item \textbf{Lead inductance}: $\omega L$ grows $\rightarrow$ degenerative feedback;
+    cure: short leads (disk-seal tubes).
+  \item \textbf{Transit-time effect} (below).
+  \item \textbf{Cathode emission}: more current needs a bigger cathode, which adds
+    capacitance; filament voltage and temperature are limited.
+  \item \textbf{Power losses}: skin-effect resistance grows as $\sqrt{f}$; dielectric
+    loss in the glass envelope; radiation from leads.
+\end{itemize}}{%
+\figT{c5_interelectrode.png}
+{\color{sub}\scriptsize Inter-electrode capacitances of a triode. Karkee, Ch-5 deck, slide 4.}}
+
+\par\penalty0\Needspace{11\baselineskip}
+\creamq{Transit-time effect: the 2-mark answer}{\m{2}}
+\begin{itemize}
+  \item \textbf{Transit time} = time an electron takes from cathode to anode.
+    \textbf{Transit-time effect}: when this becomes a significant fraction of one RF cycle,
+    the grid voltage changes while the electron is in flight $\rightarrow$ plate current
+    lags the grid voltage $\rightarrow$ efficiency and gain collapse.
+  \item Numbers: $\tau = 1$ ns is $0.001$ cycle at 1 MHz but a \textbf{whole cycle} at
+    1 GHz. Above about $0.1$ cycle the loss is serious.
+  \item Estimate: 100 V gives $v = \sqrt{2eV/m} = 5.93\times10^6$ m/s; a 1 mm gap then takes
+    $3.4\times10^{-10}$ s, i.e. $0.34$ cycle at 1 GHz.
+  \item Cure in a conventional tube: closer electrodes and higher voltage (fights the
+    capacitance). \mk{Cure in a microwave tube: exploit it.} Klystrons, TWTs and magnetrons
+    turn transit time into velocity modulation and bunching.
+\end{itemize}
+
+\penalty0\vspace{2pt}
+
+%=======================================================================
+\T{5.2 Velocity Modulation, Density Modulation and Bunching}
+
+\Q{What is bunching effect (density modulation)? Explain velocity modulation and bunching}{\m{2}\m{5}\m{10}}
+{\color{sub}\footnotesize \tS{9} \yr{\textbf{70 Bh}, 71 Bh, \textbf{72 Ash}, 72 Ma, 73 Ma, \textbf{75 Bh}, \texttt{80 Ba}, \textbf{\texttt{80 Bh}}, \textbf{\texttt{81 Bh}}} \gap$\cdot$\gap \mk{the most repeated ask in the chapter}}
+
+\colorbox{rowL}{\parbox{\dimexpr\linewidth-2\fboxsep}{\small
+\textbf{2-mark answer.} \textbf{Velocity modulation}: an RF voltage across a gap speeds up
+electrons crossing in one half-cycle and slows those crossing in the other. \textbf{Bunching}
+(= \textbf{density modulation}): in the field-free drift space beyond, fast electrons catch
+up with slow ones sent earlier, so the uniform beam gathers into \textbf{bunches} once per RF
+cycle. The beam current is now modulated at the RF frequency and can drive a second cavity.}}
+
+\par\penalty0\Needspace{20\baselineskip}
+\sbsr{0.54}{%
+\lead{The equations (for the 5 and 10 mark versions)}
+\begin{itemize}
+  \item Beam accelerated by $V_0$: $v_0 = \sqrt{2eV_0/m} = 0.593\times10^{6}\sqrt{V_0}$ m/s.
+  \item Buncher gap voltage $V_1\sin\omega t$. Leaving at $t_1$:
+    \[ v(t_1) = v_0\left[1 + \frac{\beta_i V_1}{2V_0}\sin\omega t_1\right] \]
+    $\beta_i = \dfrac{\sin(\theta_g/2)}{\theta_g/2}$, the \textbf{beam coupling
+    coefficient}; $\theta_g = \omega d/v_0$ the gap transit angle.
+  \item Three reference electrons: \#2 crosses at zero voltage (unchanged), \#3 on the
+    rising half (accelerated), \#1 before it (decelerated). \#1 and \#3 converge on \#2.
+  \item Arrival at the catcher, drift length $L$: $t_2 = t_1 + L/v(t_1)$.
+  \item \textbf{Bunching parameter}
+    \[ X = \frac{\beta_i V_1}{2V_0}\,\theta_0, \qquad \theta_0 = \frac{\omega L}{v_0} \]
+  \item Catcher current:
+    $i_2 = I_0 + \sum_n 2I_0 J_n(nX)\cos n\omega(t_2 - \tau_0)$.
+  \item Fundamental $2I_0 J_1(X)$ peaks at \mk{$X = 1.841$}, where it is $1.164\,I_0$
+    $\rightarrow$ optimum drift length.
+\end{itemize}}{%
+\figT{c5_applegate.png}
+{\color{sub}\scriptsize \textbf{Applegate diagram}: each line is one electron's distance vs
+time; steep lines are fast. Lines converge (a bunch) around the electron that crossed at
+zero gap voltage. Karkee deck, PDF p22.}
+\vspace{2pt}
+\begin{itemize}
+  \item \textbf{Checked by simulation} in \code{tubes.py}: electrons launched with this
+    velocity law and drifted ballistically give a fundamental of exactly $2J_1(X)$.
+  \item Too short a drift ($X < 1.84$): weak bunches. Too long: electrons overtake and
+    the bunch spreads again (\textbf{debunching}).
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+%=======================================================================
+\T{5.3 Two-Cavity and Multicavity Klystrons}
+
+\Q{Describe the construction and operation of a two-cavity / multicavity klystron amplifier or oscillator}{\m{4}\m{5}\m{2+7}\m{2+8}}
+{\color{sub}\footnotesize \tS{7} \yr{69 Bh, 70 Ma, 71 Bh, \textbf{72 Ash}, \textbf{78 Ch}, \textbf{80 Ch}, \texttt{82 Ba}} \gap$\cdot$\gap 70 Ma two-cavity; the rest mostly multicavity}
+
+\sbsr{0.50}{%
+\lead{Construction (two-cavity amplifier)}
+\begin{itemize}
+  \item \textbf{Electron gun}: heated cathode, focusing electrode, anode at $+V_0$ forms a
+    narrow beam; an axial magnetic field keeps it focused.
+  \item \textbf{Buncher cavity} (input): re-entrant cavity with grids across the beam; RF
+    in via coaxial loop.
+  \item \textbf{Drift space}: field-free tube of length $L$.
+  \item \textbf{Catcher cavity} (output): identical cavity, RF out via loop.
+  \item \textbf{Collector}: absorbs the spent beam.
+  \item Cavities and collector at the same dc potential, so the beam drifts at constant
+    mean speed.
+\end{itemize}}{%
+\figT{c5_twocavity.png}
+{\color{sub}\scriptsize Two-cavity klystron. Karkee deck, slide 14.}}
+
+\lead{Operation}
+\begin{enumerate}[label=\arabic*., leftmargin=1.4em, itemsep=1pt]
+  \item Weak RF in the buncher sets up $V_1\sin\omega t$ across its gap.
+  \item \textbf{Velocity modulation}: electrons crossing are accelerated or decelerated
+    ($\S$5.2).
+  \item \textbf{Bunching} in the drift space: velocity modulation becomes density
+    modulation.
+  \item Bunches reach the catcher once per cycle and \textbf{induce} RF current in it. Its
+    field builds up to \textbf{oppose} the bunches: they are decelerated and give up
+    kinetic energy, while the thin stream between bunches is accelerated and takes back
+    only a little.
+  \item Net energy flows from beam to RF $\rightarrow$ amplified output. The beam leaves
+    slower and is collected.
+\end{enumerate}
+\begin{itemize}
+  \item \textbf{Correction to the source} (PDF p23): it says ``all the kinetic energy is
+    converted''. Only part is; the beam still reaches the collector with most of its speed.
+    Theoretical maximum efficiency is $\tfrac{1}{2}\times 1.164 = $ \mk{58\%} (at
+    $X = 1.841$, catcher voltage equal to $V_0$); practical about 40\%. \added{}
+  \item Gain of two cavities is low (about 10 dB) $\rightarrow$ multicavity.
+\end{itemize}
+
+\par\penalty0\Needspace{16\baselineskip}
+\sbsr{0.34}{%
+\figT{c5_threecavity.png}
+{\color{sub}\scriptsize Multicavity klystron. Karkee deck, slide 19.}}{%
+\lead{Multicavity klystron (amplifier)}
+\begin{itemize}
+  \item One or more \textbf{intermediate cavities} between buncher and catcher, not
+    externally driven.
+  \item Weak bunches from cavity 1 excite cavity 2 $\rightarrow$ its larger gap voltage
+    re-modulates the beam $\rightarrow$ tighter bunches $\rightarrow$ and so on.
+  \item Each stage adds gain: \textbf{30 to 70 dB} overall.
+  \item \textbf{Stagger tuning} the cavities slightly apart widens the bandwidth.
+  \item Higher efficiency and power: up to MW pulsed, kW CW.
+  \item Uses: UHF TV and troposcatter transmitters, satellite ground stations, radar
+    transmitters, linear accelerators.
+\end{itemize}
+\lead{Klystron oscillator}
+\begin{itemize}
+  \item Feed part of the catcher output \textbf{back} to the buncher with the right phase
+    (feedback loop, slide 18) $\rightarrow$ self-sustained oscillation. Multicavity
+    oscillator: the same loop around a multicavity tube (72 Ash).
+  \item Tuned by the cavities; for a single-cavity, voltage-tuned oscillator use the reflex
+    klystron ($\S$5.4).
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+%=======================================================================
+\T{5.4 Reflex Klystron}
+
+\Q{Explain velocity modulation and bunching in a reflex klystron with neat diagrams and equations}{\m{5}\m{10}}
+{\color{sub}\footnotesize \tP{2} \yr{72 Ma, \textbf{75 Bh}} \gap$\cdot$\gap 75 Bh prints ``multicavity reflex klystron''; a reflex klystron has one cavity}
+
+\sbsr{0.46}{%
+\figT{c5_reflex.png}
+{\color{sub}\scriptsize Karkee deck, PDF p29.}
+\vspace{2pt}
+
+\figT{c5_reflex_apple.png}
+{\color{sub}\scriptsize Electrons $e_e, e_r, e_l$ return together: the bunch arrives
+$n + \tfrac34$ cycles later. PDF p30.}}{%
+\lead{Construction}
+\begin{itemize}
+  \item Electron gun, \textbf{one} re-entrant anode cavity at $+V_0$, and a
+    \textbf{repeller} electrode at $-V_R$ beyond it.
+  \item Output via a coaxial loop from the same cavity.
+\end{itemize}
+\lead{Operation}
+\begin{enumerate}[label=\arabic*., leftmargin=1.4em, itemsep=1pt]
+  \item Noise starts a small RF voltage across the cavity gap.
+  \item Electrons crossing it are \textbf{velocity-modulated}.
+  \item In the retarding repeller field they stop and turn back. A \textbf{faster}
+    electron goes deeper and takes \textbf{longer}:
+    round trip $T' = \dfrac{2mLv}{e(V_R + V_0)}$.
+  \item So an early (fast) electron, the reference and a late (slow) one return
+    \textbf{together}: the bunch forms in the \textbf{repeller space}.
+  \item The bunch re-crosses the gap. If the gap field then opposes it, it gives energy
+    to the cavity and oscillation grows.
+\end{enumerate}
+\lead{Condition for oscillation}
+\begin{itemize}
+  \item The bunch forms round the electron that left at zero gap voltage (going
+    positive), and must return when the field most strongly retards it:
+    \[ \boxed{T' = \left(n + \tfrac{3}{4}\right)\text{ cycles}}, \quad n = 0, 1, 2 \]
+  \item Power returned to the gap $\propto -J_1(X)\sin\theta_0$: positive for
+    $\theta_0$ in the second half-cycle, largest at $\tfrac34$. \code{tubes.py} scans
+    $\theta_0$ with simulated electrons and finds the peak at $1.750$ cycles.
+\end{itemize}}
+
+\par\penalty0\Needspace{9\baselineskip}
+\begin{itemize}
+  \item \textbf{Electronic tuning}: changing $V_R$ changes $T'$ and pulls the frequency a
+    few percent; modes are the different $n$.
+  \item \textbf{Efficiency}: maximum $\dfrac{2X'J_1(X')}{2\pi n + 3\pi/2}$ with
+    $X' = 2.405$: 53\% for $n = 0$ (not practical), \mk{22.7\% for $n = 1$}. The deck's
+    22.78\% is this, with $X'$ rounded to 2.408. Practical 10 to 20\%.
+  \item \textbf{Performance}: 4 to 200 GHz, 1 mW to 2.5 W. \textbf{Uses}: local oscillator
+    in receivers, signal source for bench tests, portable links, pump for parametric
+    amplifiers.
+\end{itemize}
+
+\penalty0\vspace{2pt}
+
+%=======================================================================
+\T{5.5 Cavity Magnetron and the Cross-Field Effect}
+
+\Q{Describe the construction and working of a cavity magnetron; magnetron with 45 / 60 / 90 degree phase shift between adjacent cavities}{\m{5}\m{2+6}\m{8}\m{2+8}\m{10}}
+{\color{sub}\footnotesize \tS{9} \yr{\textbf{70 Bh}, 71 Ma, 72 Ma, 74 Ma, \textbf{77 Ch}, \textbf{79 Ch}, \texttt{80 Ba}, \texttt{81 Ba}, \textbf{\texttt{81 Bh}}} \gap$\cdot$\gap 81 Bh's ``high-power oscillator using bunching and field effects'' is this tube}
+
+\colorbox{rowL}{\parbox{\dimexpr\linewidth-2\fboxsep}{\small
+\textbf{2-mark answer: cross-field effect} (72 Ma, 78 Ch, 81 Bh). An electron in
+\textbf{perpendicular} dc electric and magnetic fields feels
+$\vec F = -e(\vec E + \vec v\times\vec B)$. It does not go straight to the anode: it
+follows a \textbf{cycloidal} path and drifts at $v = E/B$, perpendicular to both fields.
+Crossed-field (M-type) tubes use this drift to keep electrons in step with an RF wave for a
+long interaction.}}
+
+\par\penalty0\Needspace{16\baselineskip}
+\sbsr{0.50}{%
+\lead{Construction}
+\begin{itemize}
+  \item Thick cylindrical \textbf{cathode} on the axis (radius $a$).
+  \item Copper \textbf{anode block} (radius $b$) with $N$ (typically 8) \textbf{resonant
+    cavities} cut into it, opening onto the \textbf{interaction space}.
+  \item \textbf{Radial} dc field from anode voltage $V_0$; \textbf{axial} magnetic field
+    from a permanent magnet, so $E \perp B$.
+  \item Output: coupling loop in one cavity to a coaxial line or waveguide.
+  \item \textbf{Straps} join alternate anode segments to hold the tube in the $\pi$-mode.
+\end{itemize}}{%
+\figT{c5_mag_build.png}
+{\color{sub}\scriptsize Cavity magnetron cross-section and axial flux. PDF p55.}}
+
+\par\penalty0\Needspace{16\baselineskip}
+\sbsr{0.50}{%
+\lead{Electron paths and the Hull cut-off}
+\begin{itemize}
+  \item $B = 0$: straight radial path to the anode.
+  \item Small $B$: curved path, still reaches the anode.
+  \item $B = B_c$: path just \textbf{grazes} the anode (cut-off).
+  \item $B > B_c$: electron returns to the cathode without collecting.
+  \item \textbf{Hull cut-off field}:
+    \[ B_c = \frac{\sqrt{8mV_0/e}}{b\left(1 - a^2/b^2\right)} \]
+  \item Checked by integrating electron trajectories in \code{tubes.py}: for
+    $V_0 = 10$ kV, $a = 5$ mm, $b = 10$ mm the grazing field is $0.0899$ T, equal to the
+    formula. \added{}
+  \item The magnetron works just \textbf{above} $B_c$: without RF no electron reaches the
+    anode.
+\end{itemize}}{%
+\figT{c5_mag_cutoff.png}
+{\color{sub}\scriptsize (b) normal operation, (c) at cut-off. PDF p61.}
+\vspace{2pt}
+
+\figT{c5_mag_spokes.png}
+{\color{sub}\scriptsize $\pi$-mode spoke pattern. Deck slide 50.}}
+
+\par\penalty0\Needspace{14\baselineskip}
+\lead{Operation (oscillator)}
+\begin{enumerate}[label=\arabic*., leftmargin=1.4em, itemsep=1pt]
+  \item Noise excites the cavities; RF fringing fields appear at the vane tips, alternating
+    round the anode.
+  \item Electrons circling the cathode meet these fields. Those in a \textbf{retarding}
+    RF field slow down, feel less $v\times B$ force, and \textbf{drift outwards}, giving
+    energy to the RF on the way.
+  \item Those in an \textbf{accelerating} field curl back to the cathode (back-bombardment
+    heats it, often enough to switch the heater off).
+  \item The result is \textbf{phase focusing}: the electron cloud forms rotating
+    \textbf{spokes}, each sitting in a retarding field. This is the magnetron's
+    \textbf{bunching}.
+  \item On the next half-cycle the field pattern reverses and the spokes rotate one cavity
+    on, staying in step: sustained oscillation. Efficiency 40 to 70\%.
+\end{enumerate}
+
+\par\penalty0\Needspace{16\baselineskip}
+\creamq{The phase-shift versions: 45, 60, 90 degrees between adjacent cavities}{\m{6+2}\m{8}\m{3+7}}
+{\color{sub}\footnotesize \yr{74 Ma, \textbf{77 Ch}, \texttt{80 Ba} (45$^\circ$); \texttt{81 Ba} (60$^\circ$); 72 Ma (90$^\circ$)}}
+\sbs{%
+\begin{itemize}
+  \item Around a ring of $N$ cavities the total phase must be a whole number of turns:
+    \[ \phi = \frac{2\pi n}{N}, \quad n = 0, \pm1, \pm2 \text{ up to } \pm\frac{N}{2} \]
+  \item $n = N/2$: $\phi = 180^\circ$, the \textbf{$\pi$-mode}, normal operation.
+    $n = 0$: zero mode, no RF between anode and cathode, unused.
+  \item The RF pattern repeats every $360^\circ/\phi$ cavities, so there is \textbf{one
+    spoke} per that many cavities:
+  \begin{itemize}
+    \item $45^\circ$: 8 cavities per wavelength (in an 8-cavity tube $n = 1$, one spoke).
+    \item $60^\circ$: 6 cavities per wavelength ($N = 6$, $n = 1$).
+    \item $90^\circ$: 4 cavities per wavelength ($N = 8$ gives $n = 2$, two spokes).
+    \item $180^\circ$: 2 cavities, $N/2$ spokes.
+  \end{itemize}
+\end{itemize}}{%
+\begin{itemize}
+  \item \textbf{Synchronism}: the spokes rotate at the RF pattern's angular velocity
+    $\omega/n$; set $V_0$ and $B$ so the electron drift ($E/B$) matches it.
+  \item \textbf{As a power amplifier} (80 Ba, 72 Ma): break the ring, feed RF in at one
+    cavity and take it out several cavities later. The phase shift per cavity sets the
+    wave's speed along the anode, $v_p = \omega p/\phi$ ($p$ = cavity pitch), and the
+    beam drift is matched to it. That is the crossed-field amplifier of $\S$5.6.
+  \item Write the sketch with the cavities marked $+$ / $-$ according to $\phi$ and draw
+    the spokes in the retarding cavities; that sketch carries most of the marks.
+  \item \textbf{Uses}: radar transmitters, microwave ovens (2.45 GHz), industrial heating,
+    linear accelerators.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+%=======================================================================
+\T{5.6 Crossed-Field Amplifier}
+
+\Q{Explain the working principle of a circular-beam type microwave cavity-controlled crossed-field amplifier}{\m{3+7}\m{7}}
+{\color{sub}\footnotesize \tP{2} \yr{72 Ma, \textbf{\texttt{82 Bh}}} \gap$\cdot$\gap the magnetron turned into an amplifier}
+
+\sbsr{0.62}{%
+\begin{itemize}
+  \item A \textbf{crossed-field amplifier (CFA)}, also amplitron or platinotron: magnetron
+    geometry, $E \perp B$, but with an RF \textbf{input} and an RF \textbf{output}.
+  \item \textbf{Circular-beam (re-entrant beam)}: the electron stream circulates round the
+    cathode continuously, as in a magnetron.
+  \item \textbf{Cavity-controlled (non-re-entrant RF circuit)}: the anode cavities form a
+    slow-wave line from input to output; between output and input sits an \textbf{RF
+    absorber / insulator}, so the wave cannot circulate and the tube does not oscillate.
+  \item \textbf{Working}:
+  \begin{itemize}
+    \item The input wave travels along the anode at $v_p = \omega p/\phi$.
+    \item Electrons drift at $E/B$; matched to $v_p$ they \textbf{bunch into spokes} in
+      the retarding phase of the wave ($\S$5.5).
+    \item Spokes move with the wave and give up energy cavity by cavity $\rightarrow$ the
+      wave grows $\rightarrow$ amplified output.
+    \item Left-over electrons carry little RF past the absorber and re-enter the input
+      region.
+  \end{itemize}
+  \item \textbf{Performance}: high efficiency (up to about 70\%), broad band (about 10\%),
+    \textbf{low gain} (10 to 15 dB), high power.
+  \item \textbf{Use}: final power stage of radar transmitters, driven by a TWT.
+\end{itemize}}{%
+\figT{c5_cfa.png}
+{\color{sub}\scriptsize Circular CFA: input, output, absorber, spiralling electron flow.
+Student presentation 2078.}}
+
+\penalty0\vspace{2pt}
+
+%=======================================================================
+\T{5.7 Travelling Wave Tube}
+
+\Q{Describe the construction and operation of a travelling wave tube (TWT)}{\m{2+6}}
+{\color{sub}\footnotesize \tP{2} \yr{\textbf{\texttt{79 Bh}}, \textbf{\texttt{80 Bh}}}}
+
+\sbsr{0.52}{%
+\lead{Construction}
+\begin{itemize}
+  \item \textbf{Electron gun}: cathode, focusing plate, anode.
+  \item \textbf{Helix}: a wire coil round the beam, the \textbf{slow-wave structure}; RF
+    in at the gun end, out at the collector end.
+  \item \textbf{Attenuator} midway along the helix: absorbs reflected waves so the tube
+    cannot oscillate.
+  \item \textbf{Focusing magnets} (solenoid or periodic permanent magnets) along the tube.
+  \item \textbf{Collector}: collects the spent beam.
+  \item \textbf{No resonant cavities} $\rightarrow$ very wide bandwidth.
+\end{itemize}}{%
+\figT{c5_twt.png}
+{\color{sub}\scriptsize TWT construction. Student presentation 2078.}}
+
+\lead{Operation}
+\begin{enumerate}[label=\arabic*., leftmargin=1.4em, itemsep=1pt]
+  \item RF on the helix travels round the turns at about $c$, but \textbf{along the axis}
+    only at
+    $v_p \approx c\,\dfrac{\text{pitch}}{2\pi r}$ (a few percent of $c$).
+  \item The beam voltage is set so the electrons move slightly \textbf{faster} than $v_p$.
+  \item The axial RF field velocity-modulates the beam $\rightarrow$ bunches form, and
+    because beam and wave travel together the interaction lasts the \textbf{whole length}.
+  \item Being slightly faster, the bunches sit in the retarding field and give energy to
+    the wave, which grows exponentially $\rightarrow$ gain 30 to 60 dB.
+\end{enumerate}
+\begin{itemize}
+  \item \textbf{Correction to the source} (PDF p38): the beam does \textbf{not} move at the
+    velocity of light; the whole point of the helix is to slow the wave down to the beam.
+    Example (\code{tubes.py}): pitch 1 mm, radius 2 mm gives $v_p = 0.079c$, matched by a
+    beam of about 1.6 kV; a 1 kV beam moves at $0.063c$. \added{}
+  \item \textbf{Performance}: 0.5 to 95 GHz, octave bandwidth, 5 to 20\% efficiency,
+    mW to 10 MW pulsed. \textbf{Uses}: satellite transponders (long life), broadband
+    receivers, radar, troposcatter links, EW jammers.
+\end{itemize}
+\par\penalty0\Needspace{9\baselineskip}
+\begin{tabularx}{\linewidth}{@{}L{2.8cm}XX@{}}
+\toprule
+\hrow & \thead{Two-cavity klystron} & \thead{TWT} \\
+\midrule
+Interaction & at two gaps only & continuous, whole helix \\
+RF circuit & resonant cavities & non-resonant slow-wave helix \\
+Bandwidth & narrow (a few \%) & wide (an octave) \\
+Wave & standing wave in cavities & travelling wave \\
+Oscillation risk & needs feedback to oscillate & attenuator needed to prevent it \\
+\bottomrule
+\end{tabularx}
+
+\penalty0\vspace{2pt}
+
+%=======================================================================
+\T{5.8 Backward Wave Oscillator and Slow-Wave Structures}
+
+\Q{What is bunching effect? Explain the working principle of a BWO with neat diagrams}{\m{5}\m{2+8}}
+{\color{sub}\footnotesize \tF{3} \yr{71 Bh, 73 Ma, \textbf{74 Bh}} \gap$\cdot$\gap 71 Bh and 74 Bh as short notes}
+
+\sbsr{0.52}{%
+\begin{itemize}
+  \item \textbf{BWO} (carcinotron): a TWT-family tube used as an \textbf{oscillator},
+    microwave up to terahertz.
+  \item Electron gun, slow-wave structure (helix or folded line), collector, magnetic
+    focusing. \textbf{No RF input}.
+  \item The beam interacts with a \textbf{backward space harmonic}: its phase velocity is
+    along the beam (so they stay in step) but its \textbf{group velocity}, the direction
+    energy flows, is \textbf{towards the gun}.
+  \item Bunches give energy to this wave; the energy travels back to the gun end, where it
+    velocity-modulates newly arriving electrons: \textbf{built-in feedback} $\rightarrow$
+    self-sustained oscillation.
+  \item \textbf{Output is taken at the gun end}; the collector end is matched.
+  \item \textbf{Frequency is tuned electronically} by the beam voltage (it sets which
+    backward harmonic is in step): very wide tuning range.
+  \item M-type BWO: crossed fields with a negative \textbf{sole} electrode (lower figure).
+  \item Uses: swept signal generators, THz spectroscopy and imaging, jammers.
+  \item \textbf{Not} a klystron: some student notes describe buncher and catcher cavities
+    and a feedback conductor; a BWO has none.
+\end{itemize}}{%
+\figT{c5_bwo_helix.png}
+{\color{sub}\scriptsize O-type BWO: output near the gun. Deck slide 40.}
+\vspace{3pt}
+
+\figT{c5_bwo_mtype.png}
+{\color{sub}\scriptsize M-type BWO with sole. Student presentation 2078.}}
+
+\par\penalty0\Needspace{8\baselineskip}
+\creamq{What do you mean by a slow (backward) wave structure?}{\m{2}}
+{\color{sub}\footnotesize \yr{\textbf{73 Bh}}}
+\begin{itemize}
+  \item A \textbf{slow-wave structure} is a periodic RF circuit that makes the wave's
+    axial phase velocity much smaller than $c$, so an electron beam of practical voltage can
+    keep in step with it: helix, folded-back line, ring-bar, interdigital line, coupled
+    cavities.
+  \item It is \textbf{backward} when the space harmonic used has phase and group velocity
+    in \textbf{opposite} directions: energy flows against the beam, as the BWO needs.
+\end{itemize}
+
+\penalty0\vspace{2pt}
+
+%=======================================================================
+\T{5.9 Low-Noise Amplifier}
+
+\Q{Explain the construction and working principle of an LNA}{\m{2+6}}
+{\color{sub}\footnotesize \tP{1} \yr{\textbf{73 Bh}} \gap$\cdot$\gap \added{} no source note covers it; amplifier design in Ch 6}
+
+\begin{itemize}
+  \item \textbf{Purpose}: the first amplifier after the antenna. Its noise figure sets the
+    whole receiver's, by \textbf{Friis}:
+    \[ F = F_1 + \frac{F_2 - 1}{G_1} + \frac{F_3 - 1}{G_1G_2} \quad\text{(one more term per stage)} \]
+    e.g. a 1 dB, 20 dB-gain LNA before an 8 dB mixer gives 1.18 dB overall; the mixer
+    first would give 8.02 dB (\code{tubes.py}).
+  \item \textbf{Construction}:
+  \begin{itemize}
+    \item \textbf{Low-noise device}: GaAs FET / HEMT (historically a parametric amplifier,
+      maser or low-noise TWT).
+    \item \textbf{Input matching network}: presents the source reflection
+      $\Gamma_{opt}$ for \textbf{minimum noise figure}, not conjugate match.
+    \item \textbf{Output matching network}: conjugate match for gain.
+    \item \textbf{Bias network} with RF chokes and bypass capacitors; stabilising
+      resistors so $K > 1$.
+  \end{itemize}
+  \item \textbf{Working}: the signal is amplified with gain 10 to 20 dB while adding as
+    little noise as possible (NF 0.5 to 2 dB); trade-off between minimum NF and maximum
+    gain drawn as noise circles and gain circles on the Smith chart (Ch 6).
+\end{itemize}
+
+\penalty0\vspace{2pt}
+
+%=======================================================================
+\T{5.10 PYQ Mapping}
+
+\lead{Theory questions, covered in this document}
+\begin{itemize}
+  \item \textbf{Limitations of conventional tubes; transit-time effect} $\rightarrow$
+    $\S$5.1. \yr{70 Ma \m{2}, \textbf{77 Ch} \m{2}, \textbf{\texttt{79 Bh}} \m{2}}
+  \item \textbf{Bunching effect / density modulation} $\rightarrow$ $\S$5.2.
+    \mk{Most repeated ask of the chapter.} \yr{\textbf{70 Bh} \m{2}, 71 Bh \m{2},
+    \textbf{72 Ash} \m{2}, 73 Ma \m{2}, \texttt{80 Ba} \m{2}, \textbf{\texttt{80 Bh}} \m{2},
+    \textbf{\texttt{81 Bh}} \m{2}}
+  \item \textbf{Velocity modulation and bunching in a (multicavity) reflex klystron}
+    $\rightarrow$ $\S$5.2 and $\S$5.4. \yr{72 Ma \m{5}, \textbf{75 Bh} \m{10}}
+  \item \textbf{Two-cavity klystron amplifier} $\rightarrow$ $\S$5.3. \yr{69 Bh \m{5}, 70 Ma \m{8}}
+  \item \textbf{Multicavity klystron amplifier / oscillator; klystron oscillator}
+    $\rightarrow$ $\S$5.3. \yr{71 Bh \m{8}, \textbf{72 Ash} \m{7}, \textbf{78 Ch} \m{8},
+    \textbf{80 Ch} \m{5}, \texttt{82 Ba} \m{4}}
+  \item \textbf{Cross-field effect} $\rightarrow$ $\S$5.5. \yr{72 Ma \m{3}, \textbf{78 Ch} \m{2},
+    \textbf{\texttt{81 Bh}} \m{2}}
+  \item \textbf{Cavity magnetron; oscillator using bunching and field effects}
+    $\rightarrow$ $\S$5.5. \yr{\textbf{70 Bh} \m{8}, 71 Ma \m{10}, \textbf{79 Ch} \m{5},
+    \textbf{\texttt{81 Bh}} \m{4}}
+  \item \textbf{Magnetron with 45 / 60 / 90 degree phase shift} $\rightarrow$ $\S$5.5.
+    \yr{74 Ma \m{8}, \textbf{77 Ch} \m{6}, \texttt{80 Ba} \m{6}, \texttt{81 Ba} \m{8}, 72 Ma \m{7}}
+  \item \textbf{Circular-beam cavity-controlled crossed-field amplifier} $\rightarrow$
+    $\S$5.6. \yr{\textbf{\texttt{82 Bh}} \m{7}}
+  \item \textbf{TWT construction and operation} $\rightarrow$ $\S$5.7.
+    \yr{\textbf{\texttt{79 Bh}} \m{6}, \textbf{\texttt{80 Bh}} \m{6}}
+  \item \textbf{Backward wave oscillator} $\rightarrow$ $\S$5.8. \yr{71 Bh \m{5}, 73 Ma \m{8},
+    \textbf{74 Bh} \m{5}}
+  \item \textbf{Slow backward wave structure; LNA} $\rightarrow$ $\S$5.8 and $\S$5.9.
+    \yr{\textbf{73 Bh} \m{2+6}}
+\end{itemize}
+
+\lead{Numerical content}
+\begin{itemize}
+  \item \textbf{This chapter has no numerical component}: no paper in 24 sets a tube
+    calculation. The formulas above (bunching parameter, Hull cut-off, reflex transit
+    condition, helix velocity) are there to strengthen descriptive answers, and each is
+    checked in \code{src/tubes.py}.
+\end{itemize}
+
+\lead{Corrections, and fixes made to the PYQ documents while building this chapter}
+\begin{itemize}
+  \item Source PDF p23: a klystron catcher converts only part of the beam energy (58\%
+    theoretical maximum), not all of it.
+  \item Source PDF p38: a TWT beam moves far slower than light.
+  \item Deck slide 27: reflex efficiency 22.78\% is $X'$ rounded; exact 22.7\%.
+  \item Student BWO slides describe klystron cavities; ignored.
+  \item Sorted PYQ documents: 71 Bh's BWO short note was missing; 73 Ma is ``bunching +
+    BWO'' and 73 Bh ``slow backward wave structure + LNA''; 70 Ma asks no bunching question.
+\end{itemize}

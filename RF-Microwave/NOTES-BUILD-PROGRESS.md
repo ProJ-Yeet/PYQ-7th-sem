@@ -23,7 +23,7 @@ Audit pagination with `PYTHONIOENCODING=utf-8 python audit.py`
 | 2 | RF and M/W Transmission Lines | ✅ 12 pp | ✅ 42 pp, 24 problems | the Smith-chart chapter |
 | 3 | Network Theory and Analysis | ✅ 13 pp | ✅ 18 pp, 12 problems | the magic-tee chapter |
 | 4 | Components and Devices | ✅ 16 pp | ✅ 8 pp, 8 problems | the waveguide chapter; `wg.py` |
-| 5 | Microwave Generators | ⬜ | — | |
+| 5 | Microwave Generators | ✅ 10 pp | — none (stated in §5.10) | tubes; `tubes.py` |
 | 6 | RF Design Practices | ⬜ | ⬜ | **heaviest chapter, 22.4 % of marks** |
 | 7 | Antennas and Propagation | ⬜ | — | |
 | 8 | RF/Microwave Measurements | ⬜ | — | |
@@ -195,3 +195,17 @@ Third-party and gitignored — build input only, never publish.
   `figs_ch4.py` extracts the deck's original image blobs with python-pptx; a `MASKS`
   table whites out stray slide text left inside a crop box.
   Next: Ch5 (Microwave Generators, 22 questions, 166 marks), no numerical companion.
+- **2026-09-17** — **Ch5 shipped**: theory 10 pp (5.1-5.10), no numerical PYQ in 24 papers.
+  `src/tubes.py` checks the chapter's quantitative claims by simulating electrons:
+  ballistic bunching gives 2 J1(X) peaking at X = 1.841 (58 % efficiency); reflex return
+  power peaks at 1.750 cycles; trajectory bisection reproduces the Hull cut-off exactly;
+  helix slowing factor and synchronous beam voltage; Friis. `figs_ch5.py` extracts 15
+  figures (Karkee deck + PDF export, whose pages carry a full-page background image first,
+  so PDF figure indices are raw image indices; plus two 2078 student decks).
+  Found and fixed in the PYQ documents first (commit a007df2): 71 Bh BWO short note
+  missing; 73 Ma / 73 Bh riders swapped; 70 Ma wrongly under bunching.
+  Source errors: PDF p23 "all kinetic energy converted"; PDF p38 TWT beam "at the velocity
+  of light"; reflex 22.78 % is X' rounded (exact first zero of J0 gives 22.7 %); student
+  BWO slides describe klystron cavities. LNA (73 Bh) has no source note: written
+  [verified/added].
+  Next: Ch6 (RF Design Practices, 46 questions, 426 marks, heaviest; has a numerical companion).
