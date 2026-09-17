@@ -50,8 +50,22 @@ def chk(label, got, want, tol=None, rel=2e-3):
 # =====================================================================
 #  crypt-arithmetic
 # =====================================================================
+_CRYPT_CACHE = {}
+
+
 def crypt_solve(addends, total):
-    """Every solution, not the first. Distinct digits, no leading zero."""
+    """Every solution, not the first. Distinct digits, no leading zero.
+
+    Memoized: the structural checks below re-examine the same solution sets the
+    published-answer checks already built, and each solve is a 10Pn sweep.
+    """
+    key = (tuple(addends), total)
+    if key not in _CRYPT_CACHE:
+        _CRYPT_CACHE[key] = _crypt_solve(addends, total)
+    return _CRYPT_CACHE[key]
+
+
+def _crypt_solve(addends, total):
     words = list(addends) + [total]
     letters = sorted(set("".join(words)))
     assert len(letters) <= 10, "%s: more than 10 distinct letters" % total
@@ -187,6 +201,77 @@ def ch2():
           dict(S=9, W=4, I=0, M=5, E=3, A=2, R=1, L=7, X=6), 16)
     crypt("LOVE+LOVE=HATE", ["LOVE", "LOVE"], "HATE",
           dict(L=3, O=5, V=6, E=0, H=7, A=1, T=2), 42)
+
+    # --- the deduction chains of 2.N.2b ------------------------------
+    # Each chain publishes facts it claims hold for EVERY solution, not just
+    # for the assignment printed under it. A chain that only fits its own
+    # answer is not a derivation, so every such claim is swept here.
+    def carry_out(addends, m, col):
+        """carry out of column `col`, counted 1 = units, as the notes count."""
+        c = 0
+        for k in range(col):
+            c = (c + sum(m[w[-1 - k]] for w in addends if k < len(w))) // 10
+        return c
+
+    def sweep(label, addends, total, claim):
+        sols = crypt_solve(addends, total)
+        bad = sum(1 for s in sols
+                  if not claim(s, lambda i: carry_out(addends, s, i)))
+        chk(label, bad, 0)
+
+    sweep("2.N.2b ONE+ONE+TWO=FOUR: F = 1 in all 107",
+          ["ONE", "ONE", "TWO"], "FOUR", lambda s, c: s["F"] == 1)
+    sweep("2.N.2b ONE+ONE+TWO=FOUR: O + T + c2 = 10 in all 107",
+          ["ONE", "ONE", "TWO"], "FOUR",
+          lambda s, c: s["O"] + s["T"] + c(2) == 10)
+
+    sweep("2.N.2b TWO+TWO=FOUR: F = 1 in all 7",
+          ["TWO", "TWO"], "FOUR", lambda s, c: s["F"] == 1)
+    sweep("2.N.2b TWO+TWO=FOUR: T >= 5 in all 7",
+          ["TWO", "TWO"], "FOUR", lambda s, c: s["T"] >= 5)
+    sweep("2.N.2b TWO+TWO=FOUR: R is even in all 7",
+          ["TWO", "TWO"], "FOUR", lambda s, c: s["R"] % 2 == 0)
+
+    sweep("2.N.2b RIGHT+RIGHT=WRONG: R <= 4 in all 11",
+          ["RIGHT", "RIGHT"], "WRONG", lambda s, c: s["R"] <= 4)
+    sweep("2.N.2b RIGHT+RIGHT=WRONG: G is even in all 11",
+          ["RIGHT", "RIGHT"], "WRONG", lambda s, c: s["G"] % 2 == 0)
+    sweep("2.N.2b RIGHT+RIGHT=WRONG: W = 2R + c4 in all 11",
+          ["RIGHT", "RIGHT"], "WRONG",
+          lambda s, c: s["W"] == 2 * s["R"] + c(4))
+
+    sweep("2.N.2b WRONG+WRONG=RIGHT: W <= 4 in all 21",
+          ["WRONG", "WRONG"], "RIGHT", lambda s, c: s["W"] <= 4)
+    sweep("2.N.2b WRONG+WRONG=RIGHT: T is even in all 21",
+          ["WRONG", "WRONG"], "RIGHT", lambda s, c: s["T"] % 2 == 0)
+    sweep("2.N.2b WRONG+WRONG=RIGHT: R = 2W + c4 in all 21",
+          ["WRONG", "WRONG"], "RIGHT",
+          lambda s, c: s["R"] == 2 * s["W"] + c(4))
+
+    sweep("2.N.2b SWIM+WEAR=RELAX: R = 1 in all 16",
+          ["SWIM", "WEAR"], "RELAX", lambda s, c: s["R"] == 1)
+    sweep("2.N.2b SWIM+WEAR=RELAX: I = 0 in all 16",
+          ["SWIM", "WEAR"], "RELAX", lambda s, c: s["I"] == 0)
+    sweep("2.N.2b SWIM+WEAR=RELAX: c1 = 0 in all 16",
+          ["SWIM", "WEAR"], "RELAX", lambda s, c: c(1) == 0)
+    sweep("2.N.2b SWIM+WEAR=RELAX: X = M + 1 in all 16",
+          ["SWIM", "WEAR"], "RELAX", lambda s, c: s["X"] == s["M"] + 1)
+    sweep("2.N.2b SWIM+WEAR=RELAX: S + W + c3 = 10 + E in all 16",
+          ["SWIM", "WEAR"], "RELAX",
+          lambda s, c: s["S"] + s["W"] + c(3) == 10 + s["E"])
+
+    # the chain already printed above 2.N.2b, swept the same way
+    sweep("2.N.2 LOVE+LOVE=HATE: E = 0 in all 42",
+          ["LOVE", "LOVE"], "HATE", lambda s, c: s["E"] == 0)
+    sweep("2.N.2 LOVE+LOVE=HATE: L <= 4 in all 42",
+          ["LOVE", "LOVE"], "HATE", lambda s, c: s["L"] <= 4)
+    sweep("2.N.2 LOVE+LOVE=HATE: T is even in all 42",
+          ["LOVE", "LOVE"], "HATE", lambda s, c: s["T"] % 2 == 0)
+
+    # the SWIM+WEAR=RELAX chain rules out I = 9 by a contradiction; prove that
+    # no solution has I = 9 rather than trusting the argument.
+    chk("2.N.2b SWIM+WEAR=RELAX: no solution has I = 9",
+        any(s["I"] == 9 for s in crypt_solve(["SWIM", "WEAR"], "RELAX")), False)
 
     # --- AB + CD = AAA, \bo{\textit{76 Bh}} --------------------------
     # The paper asks only "what could be the possible values of B".
@@ -1334,6 +1419,60 @@ def ch6():
     # the weighted-average shortcut over the consequent peaks
     chk("c6 C3 weighted average shortcut",
         (w2 * 50 + w3 * 100) / (w2 + w3), 80.0)
+
+    # C4 the DESIGN of that controller (6.N.13). Two claims are checkable: the
+    # crossover points the section places its terms on, and the assertion that
+    # the six-cell rule matrix collapses to the three rules 6.N.12 runs.
+    chk("c6 C4 Cold/Warm cross at 15", ramp_down(15, 10, 20), 0.5)
+    chk("c6 C4 Warm at the Cold crossover", tri(15, 10, 20, 30), 0.5)
+    chk("c6 C4 Warm/Hot cross at 25", tri(25, 10, 20, 30), 0.5)
+    chk("c6 C4 Hot at the Warm crossover", ramp_up(25, 20, 30), 0.5)
+    chk("c6 C4 Low/High cross at 45", ramp_down(45, 30, 60), 0.5)
+    chk("c6 C4 High at the Low crossover", ramp_up(45, 30, 60), 0.5)
+
+    def mu_in(t, h):
+        return (ramp_down(t, 10, 20), tri(t, 10, 20, 30), ramp_up(t, 20, 30),
+                ramp_down(h, 30, 60), ramp_up(h, 30, 60))
+
+    def compressed(t, h):
+        """the three rules 6.N.12 prints -> (slow, medium, fast) strengths"""
+        c, wm, ht, lo, hi = mu_in(t, h)
+        return min(c, lo), wm, max(ht, hi)
+
+    def matrix(t, h):
+        """all six cells of the 6.N.13 table, each fired at min of its inputs"""
+        c, wm, ht, lo, hi = mu_in(t, h)
+        slow = min(c, lo)                       # Cold & Low
+        medium = max(min(wm, lo), min(wm, hi))  # Warm & Low, Warm & High
+        fast = max(min(c, hi), min(wm, hi), min(ht, lo), min(ht, hi))
+        return slow, medium, fast
+
+    # the section's claim is that these two rule bases are NOT the same system
+    chk("c6 C4 matrix strengths at T=26,H=45",
+        [round(x, 2) for x in matrix(26, 45)], [0.0, 0.4, 0.5])
+    chk("c6 C4 OR-rule strengths at T=26,H=45",
+        [round(x, 2) for x in compressed(26, 45)], [0.0, 0.4, 0.6])
+    grid = [(t, h) for t in range(0, 41) for h in range(0, 101)]
+    differ = [p for p in grid
+              if max(abs(a - b) for a, b in zip(compressed(*p), matrix(*p))) > 1e-12]
+    chk("c6 C4 grid size", len(grid), 4141)
+    chk("c6 C4 inputs where the two rule bases disagree", len(differ), 1386)
+    worst = max(grid, key=lambda p: max(abs(a - b) for a, b
+                                        in zip(compressed(*p), matrix(*p))))
+    chk("c6 C4 worst disagreement at T=15,H=60", worst, (15, 60))
+    chk("c6 C4 OR rule fires Fast at 1.0 there", compressed(15, 60)[2], 1.0)
+    chk("c6 C4 matrix fires Fast at 0.5 there", matrix(15, 60)[2], 0.5)
+
+    # centroid of the 6-cell matrix, same sampling as C3, for the comparison table
+    agg_m = []
+    sl, md, fs = matrix(26, 45)
+    for s in range(0, 101, 10):
+        agg_m.append(max(min(sl, tri(s, -50, 0, 50)),
+                         min(md, tri(s, 0, 50, 100)),
+                         min(fs, tri(s, 50, 100, 150))))
+    chk("c6 C4 matrix centroid",
+        sum(s * m for s, m in zip(range(0, 101, 10), agg_m)) / sum(agg_m),
+        59.76, tol=5e-3)
 
 
 # =====================================================================

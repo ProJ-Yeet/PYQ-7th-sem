@@ -795,15 +795,26 @@ from 0 at 7.5 km/h to 1 at 12.5 km/h. Fuzzify the readings 10 km/h and 9 km/h.
 %=======================================================================
 \T{6.N.12 Problem 3.3 --- a complete Mamdani fuzzy inference}
 
-\creamq{Explain the Mamdani fuzzy inference method / the steps of a fuzzy inference system, with an example}{\m{2+5}\m{2+6}\m{3+7}\m{8}}
-{\color{sub}\footnotesize \tS{16} \yr{73 Ma \m{3+7}, \texttt{82 Ba} \m{2+6},
-\textbf{\texttt{80 Bh}} \m{8}, \textbf{\texttt{79 Bh}} \m{2+6}, 70 Ma \m{2+6},
-80 Ash \m{1+2+5}, 79 Ash \m{1+2+5}, \textbf{80 Ch} \m{2+5}, \textbf{69 Bh} \m{4},
-\texttt{81 Ba} \m{4}, 78 Po \m{4}, \textbf{77 Ch} \m{4}, 81 Ash \m{4},
-\texttt{80 Ba} \m{3}, 82 Ka \m{2}, \textbf{\texttt{82 Bh}} \m{2}}
+{\color{sub}\footnotesize \mk{Which fuzzy answer does this paper want?} Sixteen papers ask
+something about fuzzy logic and they do not want the same answer. Decide from
+\emph{what is asked for}, not from the word \emph{fuzzy}.
+\textbf{``explain fuzzy inference / the Mamdani method / the steps, with an example''},
+5 marks or more $\rightarrow$ \S6.N.12, the worked run below.
+\textbf{``the architecture''}, or \textbf{``the major steps for developing a system based
+on fuzzy logic''} $\rightarrow$ \S6.N.13: those ask you to \emph{build} the variables,
+membership functions and rule base that \S6.N.12 is handed for free.
+\textbf{A 4-mark short note, or a 2-mark ``what is fuzzy logic''} $\rightarrow$ neither of
+them. That is \textbf{Ch 6 \S6.7}, and running a defuzzification for it spends twenty
+minutes earning four marks.}
+
+\creamq{Explain fuzzy inference / the Mamdani method / the steps of a fuzzy inference system, with an example}{\m{1+2+5}\m{2+6}\m{3+7}\m{8}}
+{\color{sub}\footnotesize \tF{6} \yr{73 Ma \m{3+7}, \textbf{\texttt{80 Bh}} \m{8},
+\textbf{\texttt{79 Bh}} \m{2+6}, 70 Ma \m{2+6}, 80 Ash \m{1+2+5}, 79 Ash \m{1+2+5}}
 \gap$\cdot$\gap the papers never supply numbers, so \mk{you have to
 invent the example} $-$ this one is small enough to write out in full in about
-ten minutes}
+ten minutes \gap$\cdot$\gap \yr{73 Ma} is the only paper in the 41 that names
+\textbf{Mamdani}; the other five say only \emph{fuzzy inference} or \emph{the steps},
+and this one run answers all six}
 
 \begin{asked}{73 Ma \textperiodcentered{} Q7 \textperiodcentered{} \m{3+7}}
 What is Fuzzy Logic and why is it important? Explain the Mamdani Fuzzy Inference Method
@@ -909,6 +920,127 @@ fan at \textbf{about 62 \%}. Rules R2 and R3 fired at 0.4 and 0.6; R1 did not fi
         must lie \emph{inside} the output range (0--100 here), and it must sit between
         the peaks of the sets that fired (50 and 100). Both 61.8 and 80 pass; a number
         outside that band means an arithmetic slip.
+\end{itemize}}
+
+%=======================================================================
+\T{6.N.13 Problem 3.4 --- designing the fuzzy system that Problem 3.3 runs}
+
+\creamq{What are the major steps for developing a system based on fuzzy logic? Explain the architecture and working mechanism of a fuzzy inference system}{\m{2+5}\m{2+6}}
+{\color{sub}\footnotesize \tP{2} \yr{\textbf{80 Ch} \m{2+5}, \texttt{82 Ba} \m{2+6}}
+\gap$\cdot$\gap \mk{these two do not want a defuzzification}: \S6.N.12
+is handed its membership functions and its three rules, and these papers ask
+\emph{where those came from} \gap$\cdot$\gap the 2-mark opener,
+\emph{when do we use fuzzy logic}, is the list in \textbf{Ch 6 \S6.7}}
+
+\begin{asked}{\textbf{80 Ch} \textperiodcentered{} Q7 \textperiodcentered{} \m{2+5}}
+When shall we use Fuzzy Logic? Explain with an appropriate example. What are the major
+steps for developing a system based on Fuzzy logic?
+\end{asked}
+
+\begin{asked}{\texttt{82 Ba} \textperiodcentered{} Q7 \textperiodcentered{} \m{2+6}}
+When do we use fuzzy logic? Explain the architecture and working mechanism of a fuzzy
+inference system.
+\end{asked}
+
+\sbsr{0.47}{%
+\lead{The seven design steps, in the order you do them}
+\begin{enumerate}
+  \item \textbf{Confirm fuzzy logic fits.} Expert rules exist, no exact plant model does,
+        and the boundaries are linguistic. If a threshold already works, do not fuzzify it.
+  \item \textbf{Name the variables and their universes of discourse.} One per sensor and
+        one per actuator, each with the range it physically spans.
+  \item \textbf{Choose the linguistic terms} for each variable. Three to five per
+        variable; \mk{the rule count is the product}, so five terms on
+        three inputs is 125 rules and unmaintainable.
+  \item \textbf{Draw one membership function per term.} Triangles and trapezoids, and
+        \mk{they must overlap}: every point of the universe belongs to
+        at least one set, and neighbours cross at about 0.5.
+  \item \textbf{Build the rule base} as a matrix of every input-term combination against
+        the action to take. The domain expert fills the cells, not the engineer.
+  \item \textbf{Fix the operators}: AND $=$ min, OR $=$ max, implication $=$ min
+        (Mamdani), aggregation $=$ max, and pick the defuzzifier (centroid unless the
+        question says otherwise).
+  \item \textbf{Simulate, tune, iterate.} Run known cases, move the membership breakpoints
+        until the outputs match the expert's judgement, then deploy.
+\end{enumerate}
+{\color{sub}\footnotesize Steps 1--5 are design and happen once. Steps 4 and 6 are what the
+running system executes on every reading $-$ that is the \emph{working mechanism} half of
+\yr{\texttt{82 Ba}}, and its block diagram is the architecture figure in
+\textbf{\S6.7}.}}{%
+\lead{Worked \gap step 2--4 for the fan controller of \S6.N.12}
+\begin{tabularx}{\linewidth}{@{}L{1.5cm}L{2.1cm}X@{}}
+\hrow \thead{Variable} & \thead{Universe} & \thead{Terms, and where they cross} \\
+$T$ in & 0--40 $^\circ$C & Cold, Warm, Hot. Cold/Warm cross at \mk{15},
+  Warm/Hot at \mk{25}, both at $\mu = 0.5$ \\
+$H$ in & 0--100 \% & Low, High, crossing at \mk{45} \\
+$S$ out & 0--100 \% & Slow, Medium, Fast, peaking at 0, 50, 100 \\
+\end{tabularx}
+\begin{itemize}
+  \item \mk{This is why \S6.N.12 read $\mu_{Low} = \mu_{High} = 0.5$}:
+        its 45 \% is exactly the crossover you placed here. A reading that lands on a
+        crossover is the best sanity check a design gets.
+\end{itemize}
+\lead{Step 5 \gap The rule matrix, all six cells}
+\begin{tabularx}{\linewidth}{@{}L{1.4cm}XX@{}}
+\hrow \thead{} & \thead{$H$ Low} & \thead{$H$ High} \\
+$T$ Cold & Slow & Fast \\
+$T$ Warm & Medium & Medium \emph{and} Fast \\
+$T$ Hot & Fast & Fast \\
+\end{tabularx}
+\begin{itemize}
+  \item \mk{The Warm/High cell naming two actions is not a bug.} Both
+        fire, at their own strengths, and aggregation settles it. A crisp rule base would
+        have to pick one and would jerk at the boundary.
+\end{itemize}}
+
+\sbsr{0.47}{%
+\lead{\mk{The compression \S6.N.12 uses is not a relabelling}}
+\begin{itemize}
+  \item Whole rows and columns of that matrix agree, so it is tempting to write
+        \emph{Hot \textbf{OR} High $\rightarrow$ Fast} as one rule and be done. That is
+        what \S6.N.12's R3 does.
+  \item \textbf{It changes the numbers.} A matrix cell fires at
+        $\min(\mu_T, \mu_H)$, so a fully high humidity is dragged down by a
+        half-cold temperature. An OR rule takes $\max$, and lets either antecedent
+        carry the rule on its own.
+\end{itemize}
+\begin{tabularx}{\linewidth}{@{}L{3.5cm}XX@{}}
+\hrow \thead{At $T=26$, $H=45$} & \thead{3 OR rules} & \thead{6 cells} \\
+Slow & 0 & 0 \\
+Medium & 0.4 & 0.4 \\
+Fast & \mk{0.6} & \mk{0.5} \\
+\hrow \thead{centroid} & \mk{61.8 \%} & \mk{59.8 \%} \\
+\end{tabularx}}{%
+\begin{itemize}
+  \item Over the whole input grid the two rule bases give different firing strengths at
+        \textbf{1386 of the 4141} integer $(T, H)$ points, and they are furthest apart at
+        \mk{$T=15$, $H=60$}: the OR rule fires Fast at \textbf{1.0}
+        because the air is fully humid, the matrix at \textbf{0.5} because
+        $\min$ sees a temperature that is only half cold.
+  \item \mk{Which one to write}: either, but \textbf{say which}. The
+        marks are for naming the operators and using them consistently, not for the
+        crisp number $-$ no paper in the 41 supplies data, so no paper has a right
+        answer to compare against.
+  \item \textbf{Do not print the matrix and then solve with the OR rules without a word},
+        which is the one version that is simply inconsistent.
+\end{itemize}}
+
+\sbs{%
+\par\penalty0\vspace{2pt}
+\noindent\colorbox{gdL}{\parbox{\dimexpr\linewidth-2\fboxsep}{\textbf{Answer.} Seven
+steps: confirm the fit, name the variables and their ranges, choose linguistic terms,
+draw overlapping membership functions, fill the rule matrix, fix the operators and the
+defuzzifier, then simulate and tune. \textbf{Design ends where \S6.N.12 begins.}}}}{%
+\lead{\mk{What loses marks here}}
+\begin{itemize}
+  \item \textbf{Answering with a defuzzification.} Neither paper gives numbers, and
+        neither asks for a crisp output. Five or six marks are for the \emph{procedure}.
+  \item \textbf{Membership functions that do not overlap.} Then the system is a lookup
+        table with fuzzy notation, and it jerks at every boundary. Say the overlap is
+        deliberate.
+  \item \textbf{Forgetting the 2-mark opener.} Both papers open with \emph{when do we use
+        fuzzy logic}, and it is a separate list: vague boundaries, expert rules available,
+        no mathematical model, tolerance for imprecision. \textbf{\S6.7}.
 \end{itemize}}
 
 \hr

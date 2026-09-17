@@ -551,6 +551,223 @@ TWO $+$ TWO $=$ FOUR
         $3560 + 3560 = 7120$ \checkmark
 \end{itemize}}
 
+%=======================================================================
+\T{2.N.2b The deduction chain for each of the five remaining puzzles}
+
+{\color{sub}\footnotesize The table above is an index, not an answer. \mk{Nine
+papers set one of these puzzles for six or seven marks}, and the marks are in the
+\emph{chain}, not in the digits at the end of it $-$ a puzzle with 107 solutions cannot
+be marked on the digits. LOVE $+$ LOVE $=$ HATE is chained just above; the other five
+follow, each with its own paper, its own column equations and its own worked choice.
+\gap$\cdot$\gap \textbf{Column $k$ is counted from the units end}, and $c_k$ is the carry
+\emph{out} of column $k$. Every forced result below was confirmed against the full
+solution set by \code{verify.py}.}
+
+%-----------------------------------------------------------------------
+\creamq{ONE $+$ ONE $+$ TWO $=$ FOUR}{\m{7}\m{2+6}}
+{\color{sub}\footnotesize \tP{3} \yr{71 Ma \m{7}, \textbf{73 Bh} \m{7}, 80 Ash \m{2+6}}
+\gap$\cdot$\gap \mk{107 solutions}, the most of any puzzle in the 41 papers
+\gap$\cdot$\gap the only \emph{multi-answer} puzzle with three addends, so a carry here
+can be \textbf{2}, not just 0 or 1}
+
+\begin{asked}{\textbf{73 Bh} \textperiodcentered{} Q2 \textperiodcentered{} \m{7}}
+Solve the following puzzle by assigning numeral (0-9) in such a way that each letter is
+assigned unique digit which satisfy the following addition. ONE $+$ ONE $+$ TWO $=$ FOUR
+\end{asked}
+
+\sbsr{0.48}{%
+\lead{The chain}
+\begin{itemize}
+  \item The addends have three digits and FOUR has four, so \textbf{F is nothing but the
+        carry out of column 3}, and $F \geq 1$.
+  \item Column 3 is $2O + T + c_2 = 10F + O$, so
+  \[ \boxed{\;O + T + c_2 = 10F\;} \]
+  \item $O + T \leq 9 + 8 = 17$ and $c_2 \leq 2$, so the left side is at most 19.
+        \textbf{$F = 2$ is impossible}, giving $\mathbf{F = 1}$ and $O + T + c_2 = 10$.
+  \item Column 1: $2E + O = 10c_1 + R$. \quad Column 2: $2N + W + c_1 = 10c_2 + U$.
+  \item \mk{That is everything the constraints force.} Seven of the
+        eight letters are free; say so before you choose.
+\end{itemize}}{%
+\lead{A choice that satisfies all of it}
+\begin{itemize}
+  \item Take $E = 2$, $O = 6$. Column 1: $4 + 6 = 10$, so $\mathbf{R = 0}$, $c_1 = 1$.
+  \item $O + T + c_2 = 10$ with $O = 6$ leaves $T + c_2 = 4$. Take $c_2 = 1$,
+        $\mathbf{T = 3}$.
+  \item Column 2: $2N + W + 1 = 10c_2 + U$. Take $N = 4$, $W = 8$:
+        $8 + 8 + 1 = 17$, so $\mathbf{U = 7}$ and $c_2 = 1$ \checkmark\ as assumed.
+\end{itemize}
+\par\penalty0\vspace{2pt}
+\noindent\colorbox{gdL}{\parbox{\dimexpr\linewidth-2\fboxsep}{\textbf{Answer.}
+$O{=}6, N{=}4, E{=}2, T{=}3, W{=}8, F{=}1, U{=}7, R{=}0$, all distinct.
+\quad $642 + 642 + 386 = 1670$ \checkmark}}}
+
+%-----------------------------------------------------------------------
+\creamq{WRONG $+$ WRONG $=$ RIGHT}{\m{5+3}\m{2+6}}
+{\color{sub}\footnotesize \tP{2} \yr{\textbf{70 Bh} \m{5+3}, \textbf{77 Ch} \m{2+6}}
+\gap$\cdot$\gap 21 solutions, \mk{nothing at all is forced}
+\gap$\cdot$\gap \yr{69 Po} sets \emph{the same eight letters with the two words swapped};
+work them as two different puzzles, because they are}
+
+\begin{asked}{\textbf{70 Bh} \textperiodcentered{} Q2 \textperiodcentered{} \m{5+3}}
+Solve the following crypto-arithmetic problem, where different letters denote different
+integers and identical letters denote same integer. WRONG $+$ WRONG $=$ RIGHT. Explain
+the steps that you have followed.
+\end{asked}
+
+\sbsr{0.48}{%
+\lead{The chain}
+\begin{itemize}
+  \item \mk{Both sides have five digits}, so there is no sixth carry:
+        $2 \times \text{WRONG} < 100000$, hence $\text{WRONG} < 50000$ and
+        $\mathbf{W \leq 4}$. \textbf{This is the only bound the puzzle gives you}, and
+        writing it down is most of the method mark.
+  \item Column 5: $2W + c_4 = R$, so \mk{$R = 2W + c_4$} $-$ $R$ is
+        pinned the moment $W$ and that carry are chosen.
+  \item Column 1: $2G = 10c_1 + T$, so \mk{$T$ is even}.
+  \item Columns 2, 3, 4: $2N + c_1 = 10c_2 + H$, \; $2O + c_2 = 10c_3 + G$, \;
+        $2R + c_3 = 10c_4 + I$.
+  \item \textbf{No letter is forced to one digit.} State that, then choose.
+\end{itemize}}{%
+\lead{A choice that satisfies all of it}
+\begin{itemize}
+  \item Take $W = 3$ with $c_4 = 1$, so $\mathbf{R = 7}$.
+  \item Column 1: $G = 1$ gives $\mathbf{T = 2}$, $c_1 = 0$.
+  \item Column 2: $N = 8$ gives $16$, so $\mathbf{H = 6}$, $c_2 = 1$.
+  \item Column 3: $O = 0$ gives $0 + 1 = 1 = G$ \checkmark, $c_3 = 0$.
+  \item Column 4: $2(7) + 0 = 14$, so $\mathbf{I = 4}$ and
+        \mk{$c_4 = 1$, which is what column 5 assumed} $-$ that
+        closing check is the one step candidates skip.
+\end{itemize}
+\par\penalty0\vspace{2pt}
+\noindent\colorbox{gdL}{\parbox{\dimexpr\linewidth-2\fboxsep}{\textbf{Answer.}
+$W{=}3, R{=}7, O{=}0, N{=}8, G{=}1, I{=}4, H{=}6, T{=}2$.
+\quad $37081 + 37081 = 74162$ \checkmark}}}
+
+%-----------------------------------------------------------------------
+\creamq{SWIM $+$ WEAR $=$ RELAX}{\m{1+6}\m{3+6}}
+{\color{sub}\footnotesize \tP{2} \yr{\textbf{74 Bh} \m{1+6}, \textbf{81 Ch} \m{3+6}}
+\gap$\cdot$\gap 16 solutions, and \mk{the richest chain of the seven}:
+two letters fall out completely and a third is pinned to a fourth}
+
+\begin{asked}{\textbf{74 Bh} \textperiodcentered{} Q2 \textperiodcentered{} \m{1+6}}
+Define constraint satisfaction problem (CSP). Solve the following crypto-arithmetic
+problem, where different letters denote different integers and identical letters denote
+same integer. SWIM $+$ WEAR $=$ RELAX.
+\end{asked}
+
+\sbsr{0.52}{%
+\lead{The chain}
+\begin{itemize}
+  \item Two four-digit numbers give a five-digit answer, so the leading digit is only a
+        carry: $\mathbf{R = 1}$.
+  \item Column 2 is $I + A + c_1 = 10c_2 + A$, and the $A$ cancels:
+  \[ \boxed{\;I + c_1 = 10c_2\;} \]
+  \item \textbf{Both cases, and one of them dies.} If $c_2 = 1$ then $I + c_1 = 10$,
+        forcing $I = 9$, $c_1 = 1$. Column 1 is then $M + R = 10 + X$ with $R = 1$, so
+        $M = 9 + X$, which needs $X = 0$ and $M = 9$ $-$
+        \mk{but $I$ is already 9}. Contradiction.
+  \item So $c_2 = 0$ and $\mathbf{I = 0}$, $c_1 = 0$.
+  \item Column 1 with $c_1 = 0$: $M + 1 = X$, so \mk{$X = M + 1$}.
+        The two move together.
+  \item Column 3: $W + E + c_2 = 10c_3 + L$. \quad Column 4: $S + W + c_3 = 10 + E$.
+  \item $A$ meets no constraint but AllDiff $-$ worth saying out loud.
+\end{itemize}}{%
+\lead{A choice that satisfies all of it}
+\begin{itemize}
+  \item Take $W = 4$, $E = 3$ with $c_3 = 0$: column 4 gives
+        $S = 10 + 3 - 4 = \mathbf{9}$.
+  \item Column 3: $4 + 3 + 0 = 7$, so $\mathbf{L = 7}$ and $c_3 = 0$ \checkmark.
+  \item $A = 2$, free. $M = 5$, so $X = 6$ by $X = M + 1$.
+\end{itemize}
+\par\penalty0\vspace{2pt}
+\noindent\colorbox{gdL}{\parbox{\dimexpr\linewidth-2\fboxsep}{\textbf{Answer.}
+$S{=}9, W{=}4, I{=}0, M{=}5, E{=}3, A{=}2, R{=}1, L{=}7, X{=}6$.
+\quad $9405 + 4321 = 13726$ \checkmark}}
+\begin{itemize}
+  \item \mk{Nine letters, so all ten digits but one are used.} A
+        duplicate is easy to make here; check the list before you write the sum.
+\end{itemize}}
+
+%-----------------------------------------------------------------------
+\creamq{RIGHT $+$ RIGHT $=$ WRONG}{\m{7}}
+{\color{sub}\footnotesize \tP{1} \yr{69 Po \m{7}} \gap$\cdot$\gap 11 solutions, nothing
+forced \gap$\cdot$\gap \mk{the mirror image of WRONG $+$ WRONG $=$ RIGHT}
+above, and it does \emph{not} have the same answer $-$ the letters swap roles, so every
+column equation changes}
+
+\begin{asked}{69 Po \textperiodcentered{} Q2 \textperiodcentered{} \m{7}}
+Solve the following crypto-arithmetic problem, where different letters denote different
+integers and identical letters denote same integer. RIGHT $+$ RIGHT $=$ WRONG. Show all
+the step of solving through constrain satisfaction problem.
+\end{asked}
+
+\sbsr{0.48}{%
+\lead{The chain}
+\begin{itemize}
+  \item Five digits on both sides, so $2 \times \text{RIGHT} < 100000$ and
+        $\mathbf{R \leq 4}$.
+  \item Column 5: \mk{$W = 2R + c_4$}.
+  \item Column 1: $2T = 10c_1 + G$, so \mk{$G$ is even}.
+  \item Columns 2, 3, 4: $2H + c_1 = 10c_2 + N$, \; $2G + c_2 = 10c_3 + O$, \;
+        $2I + c_3 = 10c_4 + R$.
+  \item Nothing is forced to a single digit.
+\end{itemize}
+{\color{sub}\footnotesize Note how column 3 feeds on $G$, which column 1 already produced.
+Fixing $T$ early therefore settles two columns at once, and that is the cheapest place to
+start guessing.}}{%
+\lead{A choice that satisfies all of it}
+\begin{itemize}
+  \item Take $R = 4$ with $c_4 = 0$, so $\mathbf{W = 8}$.
+  \item Column 1: $T = 5$ gives $10$, so $\mathbf{G = 0}$, $c_1 = 1$.
+  \item Column 2: $H = 6$ gives $13$, so $\mathbf{N = 3}$, $c_2 = 1$.
+  \item Column 3: $0 + 1 = 1$, so $\mathbf{O = 1}$, $c_3 = 0$.
+  \item Column 4: $2I = 10c_4 + R = 4$, so $\mathbf{I = 2}$ and $c_4 = 0$ \checkmark\
+        as column 5 assumed.
+\end{itemize}
+\par\penalty0\vspace{2pt}
+\noindent\colorbox{gdL}{\parbox{\dimexpr\linewidth-2\fboxsep}{\textbf{Answer.}
+$R{=}4, I{=}2, G{=}0, H{=}6, T{=}5, W{=}8, O{=}1, N{=}3$.
+\quad $42065 + 42065 = 84130$ \checkmark}}}
+
+%-----------------------------------------------------------------------
+\creamq{TWO $+$ TWO $=$ FOUR}{\m{2+6}}
+{\color{sub}\footnotesize \tP{1} \yr{\textbf{78 Ch} \m{2+6}} \gap$\cdot$\gap
+\mk{only 7 solutions}, the tightest of the seven, so a marker here is
+more likely than elsewhere to have one in mind $-$ print the count anyway}
+
+\begin{asked}{\textbf{78 Ch} \textperiodcentered{} Q2 \textperiodcentered{} \m{2+6}}
+What is well defined problem? Solve the following crypto-arithmetic problem by defining
+it. TWO $+$ TWO $=$ FOUR
+\end{asked}
+
+\sbsr{0.48}{%
+\lead{The chain}
+\begin{itemize}
+  \item Two three-digit numbers reach at most $999 + 999 = 1998$, so the leading digit of
+        a four-digit FOUR is $\mathbf{F = 1}$.
+  \item Column 3: $2T + c_2 = 10F + O = 10 + O$. With $c_2 \leq 1$ this needs
+        $2T \geq 9$, so \mk{$T \geq 5$}.
+  \item Column 1: $2O = 10c_1 + R$, so \mk{$R$ is even}.
+  \item Column 2: $2W + c_1 = 10c_2 + U$.
+  \item $F$ is the only letter forced.
+\end{itemize}}{%
+\lead{A choice that satisfies all of it}
+\begin{itemize}
+  \item Take $T = 7$ with $c_2 = 0$: column 3 gives $14 = 10 + O$, so $\mathbf{O = 4}$.
+  \item Column 1: $2(4) = 8$, so $\mathbf{R = 8}$, $c_1 = 0$.
+  \item Column 2: $2W + 0 = 10(0) + U$, so $U = 2W$. Take $W = 3$, $\mathbf{U = 6}$,
+        and $c_2 = 0$ \checkmark\ as assumed.
+\end{itemize}
+\par\penalty0\vspace{2pt}
+\noindent\colorbox{gdL}{\parbox{\dimexpr\linewidth-2\fboxsep}{\textbf{Answer.}
+$T{=}7, W{=}3, O{=}4, F{=}1, U{=}6, R{=}8$.
+\quad $734 + 734 = 1468$ \checkmark}}
+\begin{itemize}
+  \item \mk{Six letters, so this one is quick} $-$ spend the time
+        saved on the 2-mark \emph{well-defined problem} half, which is \textbf{Ch 2
+        \S2.2} and is where the easy marks are.
+\end{itemize}}
+
 %-----------------------------------------------------------------------
 \creamq{AB $+$ CD $=$ AAA: what values can B take?}{\m{4}}
 {\color{sub}\footnotesize \yr{\textbf{\textit{76 Bh}} \m{4}} \gap$\cdot$\gap
