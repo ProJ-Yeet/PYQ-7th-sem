@@ -1,0 +1,398 @@
+%======================================================================
+\Q{Problem 1: Full parameter set of an air-filled rectangular guide}{\m{6}}
+{\color{sub}\footnotesize \yr{\texttt{80 Ba}} \gap$\cdot$\gap width 3 cm, 6 GHz, dominant mode}
+
+\begin{asked}{\texttt{80 Ba} \ [6+4]}
+For an air-filled rectangular waveguide with a width of 3 cm and a desired frequency of operation of 6 GHz (for dominant mode), determine cut-off frequency, cut-off wavelength, group velocity, phase velocity, propagation wavelength in the waveguide and the characteristic impedance. Explain the four basic parameters used to describe the performance of a directional coupler.
+\end{asked}
+\lead{Given}
+\begin{itemize}
+  \item Air filling: $v = c = 3\times10^8$ m/s, $\eta = \eta_0 = 120\pi\,\Omega$.
+  \item Width (broad wall) $a = 3$ cm $= 0.03$ m; $f = 6$ GHz.
+  \item Dominant mode of a rectangular guide: \textbf{TE$_{10}$} ($m = 1$, $n = 0$), so $b$
+    is not needed.
+\end{itemize}
+\lead{Step 1: cut-off frequency and wavelength of TE$_{10}$}
+\begin{itemize}
+  \item $f_c = \dfrac{c}{2}\sqrt{\left(\dfrac{1}{a}\right)^2 + 0} = \dfrac{c}{2a}
+    = \dfrac{3\times10^8}{2 \times 0.03} = \boxed{5\ \text{GHz}}$.
+  \item $\lambda_c = 2a = \boxed{6\ \text{cm}}$ \quad (check: $c/f_c = 3\times10^8/5\times10^9 = 0.06$ m).
+  \item $f = 6$ GHz $> f_c = 5$ GHz $\Rightarrow$ \mk{the guide propagates}, so the
+    remaining quantities exist.
+\end{itemize}
+\lead{Step 2: the factor, computed once}
+\begin{itemize}
+  \item $f_c/f = 5/6 = 0.83333$; \quad $(f_c/f)^2 = 0.69444$; \quad $1 - 0.69444 = 0.30556$.
+  \item $F = \sqrt{0.30556} = \boxed{0.55277}$ \quad (exactly $\sqrt{11}/6$).
+  \item Free-space wavelength $\lambda = c/f = 3\times10^8/6\times10^9 = 5$ cm.
+\end{itemize}
+\par\penalty0\Needspace{14\baselineskip}
+\lead{Step 3: every other quantity from $F$}
+\begin{tabularx}{\linewidth}{@{}L{2.9cm}L{2.7cm}L{4.3cm}X@{}}
+\toprule
+\hrow \thead{Quantity} & \thead{Formula} & \thead{Substitution} & \thead{Value} \\
+\midrule
+Group velocity & $v_g = cF$ & $3\times10^8 \times 0.55277$ & $\mathbf{1.658\times10^8}$ m/s \\
+Phase velocity & $v_p = c/F$ & $3\times10^8 / 0.55277$ & $\mathbf{5.427\times10^8}$ m/s \\
+Guide wavelength & $\lambda_g = \lambda/F$ & $5 / 0.55277$ & $\mathbf{9.045}$ cm \\
+Impedance (TE) & $Z_{TE} = \eta_0/F$ & $376.99 / 0.55277$ & $\mathbf{682.0\ \Omega}$ \\
+Phase constant & $\beta = 2\pi/\lambda_g$ & $2\pi / 0.090453$ & $69.46$ rad/m \\
+\bottomrule
+\end{tabularx}
+\vspace{2pt}
+\begin{itemize}
+  \item \textbf{Checks}: $v_p v_g = 5.427\times10^8 \times 1.658\times10^8 = 9.0\times10^{16} = c^2$
+    \checkmark; and $\dfrac{1}{\lambda^2} = \dfrac{1}{\lambda_g^2} + \dfrac{1}{\lambda_c^2}$:
+    $400 = 122.2 + 277.8$ m$^{-2}$ \checkmark.
+  \item ``Characteristic impedance'' of a TE guide is its wave impedance $Z_{TE}$; it is
+    above $\eta_0$, as it must be for TE.
+  \item \textbf{Rider (4 marks)}: coupling, directivity, isolation, insertion loss, with
+    $I = C + D$. See theory $\S$4.6.
+\end{itemize}
+
+\penalty0\vspace{2pt}
+
+%======================================================================
+\Q{Problem 2: Same parameters, with suitably assumed dimensions}{\m{6}}
+{\color{sub}\footnotesize \yr{\textbf{77 Ch}} \gap$\cdot$\gap the choice of dimensions is part of the marks}
+
+\begin{asked}{\textbf{77 Ch} \ [6]}
+For a rectangular waveguide, with suitably assumed breadth, width and frequency, (for dominant mode), determine cut-off frequency, phase velocity, propagation wavelength in the waveguide and the characteristic impedance.
+\end{asked}
+\lead{Step 0: choose the data, and justify it}
+\begin{itemize}
+  \item Take the standard X-band guide \textbf{WR-90}: $a = 2.286$ cm, $b = 1.016$ cm, air
+    filled, at $f = 10$ GHz.
+  \item Why it is a good choice: it runs in \textbf{single-mode} TE$_{10}$ at 10 GHz. The
+    next modes are cut off:
+  \begin{itemize}
+    \item TE$_{20}$: $f_c = c/a = 3\times10^8/0.02286 = 13.12$ GHz $> 10$ GHz.
+    \item TE$_{01}$: $f_c = c/2b = 3\times10^8/0.02032 = 14.76$ GHz $> 10$ GHz.
+  \end{itemize}
+  \item Any other data is acceptable if it is stated and above cut-off; the method does not
+    change.
+\end{itemize}
+\lead{Step 1: cut-off}
+\begin{itemize}
+  \item $f_c = \dfrac{c}{2a} = \dfrac{3\times10^8}{2\times0.02286} = \boxed{6.562\ \text{GHz}}$,
+    \quad $\lambda_c = 2a = 4.572$ cm. \quad $10 > 6.562$ \checkmark\ propagates.
+\end{itemize}
+\lead{Step 2: the factor}
+\begin{itemize}
+  \item $f_c/f = 0.65617$; \quad squared $0.43056$; \quad $1 - 0.43056 = 0.56944$;
+    \quad $F = \sqrt{0.56944} = \boxed{0.75461}$.
+  \item $\lambda = c/f = 3$ cm.
+\end{itemize}
+\par\penalty0\Needspace{11\baselineskip}
+\lead{Step 3: the asked quantities}
+\begin{tabularx}{\linewidth}{@{}L{2.9cm}L{2.7cm}L{4.3cm}X@{}}
+\toprule
+\hrow \thead{Quantity} & \thead{Formula} & \thead{Substitution} & \thead{Value} \\
+\midrule
+Phase velocity & $v_p = c/F$ & $3\times10^8 / 0.75461$ & $\mathbf{3.976\times10^8}$ m/s \\
+Guide wavelength & $\lambda_g = \lambda/F$ & $3 / 0.75461$ & $\mathbf{3.976}$ cm \\
+Impedance (TE) & $Z_{TE} = \eta_0/F$ & $376.99 / 0.75461$ & $\mathbf{499.6\ \Omega}$ \\
+Group velocity (extra) & $v_g = cF$ & $3\times10^8 \times 0.75461$ & $2.264\times10^8$ m/s \\
+\bottomrule
+\end{tabularx}
+\vspace{2pt}
+\begin{itemize}
+  \item Check: $1/\lambda^2 = 1111.1$ and $1/\lambda_g^2 + 1/\lambda_c^2 = 632.7 + 478.4 = 1111.1$
+    m$^{-2}$ \checkmark.
+\end{itemize}
+
+\penalty0\vspace{2pt}
+
+%======================================================================
+\Q{Problem 3: Does the guide pass the signal? Cut-off checks}{\m{3}\m{2}}
+{\color{sub}\footnotesize \yr{\textbf{70 Bh}, \textbf{\texttt{80 Bh}}} \gap$\cdot$\gap one method, two instances; 70 Bh worked in full}
+
+\begin{asked}{\textbf{70 Bh} \ [7+3]}
+Define expressions for various field components of a rectangular waveguide in TE mode. Show that a 1 GHz signal cannot propagate in TE$_{10}$ made in a rectangular waveguide with a wall separation of 5 cm.
+\end{asked}
+\begin{asked}{\textbf{\texttt{80 Bh}} \ [1+1+2]}
+What is dominant mode in a waveguide? What are the dominant modes for rectangular and circular waveguides? Does a rectangular waveguide of width 2.254 cm support the propagation of a signal having frequency 6 GHz?
+\end{asked}
+\lead{Method}
+\begin{enumerate}[label=\arabic*., leftmargin=1.4em, itemsep=0pt]
+  \item Name the mode (TE$_{10}$, the dominant one) and read the broad-wall width $a$.
+  \item $f_c = c/2a$.
+  \item Compare: $f > f_c$ propagates; $f < f_c$ is evanescent.
+  \item For ``show that'', add the attenuation: $\gamma = \alpha = \sqrt{k_c^2 - k^2}$ is real.
+\end{enumerate}
+\lead{70 Bh worked: $a = 5$ cm, $f = 1$ GHz}
+\begin{itemize}
+  \item $f_c = \dfrac{3\times10^8}{2\times0.05} = 3\times10^9$ Hz $= \boxed{3\ \text{GHz}}$.
+  \item $f = 1$ GHz $< f_c = 3$ GHz $\Rightarrow$ below cut-off.
+  \item Confirm with $\gamma$:
+  \begin{itemize}
+    \item $k_c = \pi/a = \pi/0.05 = 62.832$ rad/m, \quad $k_c^2 = 3947.8$.
+    \item $k = 2\pi f/c = 2\pi\times10^9/3\times10^8 = 20.944$ rad/m, \quad $k^2 = 438.6$.
+    \item $\gamma^2 = k_c^2 - k^2 = 3947.8 - 438.6 = 3509.2 > 0$ $\Rightarrow$ $\gamma$ is
+      \textbf{real}: $\gamma = \alpha = \sqrt{3509.2} = 59.24$ Np/m, $\beta = 0$.
+  \end{itemize}
+  \item The field decays as $e^{-59.24z}$: to $1/e$ in $1/59.24 = 1.69$ cm, i.e.
+    $20\log_{10}e \times 59.24 = 514.5$ dB/m. \mk{No wave travels: the 1 GHz signal cannot
+    propagate.}
+\end{itemize}
+\par\penalty0\Needspace{9\baselineskip}
+\lead{Both instances}
+\begin{tabularx}{\linewidth}{@{}L{1.6cm}L{2.6cm}L{3.1cm}L{2.4cm}X@{}}
+\toprule
+\hrow \thead{Paper} & \thead{Given} & \thead{$f_c = c/2a$} & \thead{Compare} & \thead{Answer} \\
+\midrule
+\textbf{70 Bh} & $a = 5$ cm, 1 GHz & $3.00$ GHz & $1 < 3$ & \mk{cannot propagate}; $\alpha = 59.2$ Np/m \\
+\textbf{\texttt{80 Bh}} & $a = 2.254$ cm, 6 GHz & $3\times10^8/0.04508 = 6.65$ GHz & $6 < 6.65$ & \mk{not supported} \\
+\bottomrule
+\end{tabularx}
+\vspace{2pt}
+\begin{itemize}
+  \item \textbf{80 Bh theory part}: dominant mode = lowest cut-off mode; rectangular
+    TE$_{10}$, circular TE$_{11}$ ($\S$4.2).
+  \item The handwritten local example (Waveguide.pdf p6) runs the same 2.254 cm guide at
+    1 GHz and reaches the same verdict with $f_c = 6.65$ GHz.
+\end{itemize}
+
+\penalty0\vspace{2pt}
+
+%======================================================================
+\Q{Problem 4: Ranking TM modes when $a = 3b$}{\m{2+2}}
+{\color{sub}\footnotesize \yr{72 Ma}}
+
+\begin{asked}{72 Ma \ [6+2+2]}
+Describe magic Tee based on S-parameters. Differentiate between dominant and degenerate modes. Consider a rectangular waveguide having dimension of a = 3b and find the dominant mode among TM$_{01}$, TM$_{10}$, TM$_{11}$, TM$_{21}$, TM$_{12}$, TM$_{02}$ and TM$_{20}$.
+\end{asked}
+\lead{Step 1: put the cut-off formula in terms of $a$ only}
+\begin{itemize}
+  \item $f_c = \dfrac{c}{2}\sqrt{\left(\dfrac{m}{a}\right)^2 + \left(\dfrac{n}{b}\right)^2}$,
+    and $b = a/3 \Rightarrow n/b = 3n/a$:
+    \[ f_c = \frac{c}{2a}\sqrt{m^2 + 9n^2} \]
+  \item So each mode is ranked by the number $\sqrt{m^2 + 9n^2}$ (in units of $c/2a$).
+\end{itemize}
+\par\penalty0\Needspace{14\baselineskip}
+\lead{Step 2: test every listed mode}
+\begin{tabularx}{\linewidth}{@{}L{1.5cm}L{1.3cm}L{3.3cm}L{2.2cm}X@{}}
+\toprule
+\hrow \thead{Mode} & \thead{$(m, n)$} & \thead{Exists? (TM needs $m, n \ge 1$)} & \thead{$\sqrt{m^2 + 9n^2}$} & \thead{Rank} \\
+\midrule
+TM$_{01}$ & $(0, 1)$ & no, $E_z \propto \sin 0 = 0$ & n/a & excluded \\
+TM$_{10}$ & $(1, 0)$ & no & n/a & excluded \\
+TM$_{11}$ & $(1, 1)$ & yes & $\sqrt{10} = 3.162$ & \mk{1, dominant} \\
+TM$_{21}$ & $(2, 1)$ & yes & $\sqrt{13} = 3.606$ & 2 \\
+TM$_{12}$ & $(1, 2)$ & yes & $\sqrt{37} = 6.083$ & 3 \\
+TM$_{02}$ & $(0, 2)$ & no & n/a & excluded \\
+TM$_{20}$ & $(2, 0)$ & no & n/a & excluded \\
+\bottomrule
+\end{tabularx}
+\vspace{2pt}
+\begin{itemize}
+  \item \textbf{Answer}: among the listed modes the dominant one is
+    $\boxed{\text{TM}_{11}}$, $f_c = 3.162\,c/2a$.
+  \item Worth one line: the guide's overall dominant mode is TE$_{10}$ at $1 \times c/2a$,
+    which the list does not include.
+  \item Riders: magic tee $\S$4.5; dominant vs degenerate $\S$4.2.
+\end{itemize}
+
+\penalty0\vspace{2pt}
+
+%======================================================================
+\Q{Problem 5: Dominant TE and TM modes of a circular guide, with numbers}{\m{2}}
+{\color{sub}\footnotesize \yr{\textbf{75 Bh}} \gap$\cdot$\gap plus the local worked example as practice}
+
+\begin{asked}{\textbf{75 Bh} \ [8+2]}
+Derive the expression for the field strength for TM waves for a air-filled circular waveguide. Check the dominant mode in TE and TM modes.
+\end{asked}
+\lead{Step 1: cut-off in terms of the roots}
+\begin{itemize}
+  \item TE$_{nm}$: $f_c = \dfrac{p'_{nm}\,c}{2\pi a}$; \quad TM$_{nm}$: $f_c = \dfrac{p_{nm}\,c}{2\pi a}$.
+  \item Same $a$ and $c$ for every mode, so \textbf{the smallest root is the dominant mode}.
+\end{itemize}
+\lead{Step 2: compare the smallest roots}
+\begin{tabularx}{\linewidth}{@{}L{1.2cm}L{5.4cm}L{1.6cm}X@{}}
+\toprule
+\hrow \thead{Family} & \thead{Smallest root} & \thead{Mode} & \thead{Verdict} \\
+\midrule
+TE & $p'_{11} = 1.841$ (first zero of $J_1'$) & TE$_{11}$ & \mk{dominant TE mode} \\
+TE & $p'_{01} = 3.832$ (first zero of $J_0'$) & TE$_{01}$ & higher \\
+TM & $p_{01} = 2.405$ (first zero of $J_0$) & TM$_{01}$ & \mk{dominant TM mode} \\
+TM & $p_{11} = 3.832$ (first zero of $J_1$) & TM$_{11}$ & higher \\
+\bottomrule
+\end{tabularx}
+\vspace{2pt}
+\begin{itemize}
+  \item $1.841 < 2.405$ $\Rightarrow$ \mk{TE$_{11}$ is the dominant mode of the guide},
+    TM$_{01}$ the dominant TM mode. The derivation part is theory $\S$4.3.
+\end{itemize}
+\par\penalty0\Needspace{10\baselineskip}
+\lead{Practice (Waveguide.pdf p13): air-filled, radius 2 cm}
+\begin{tabularx}{\linewidth}{@{}L{1.8cm}L{5.0cm}L{2.2cm}X@{}}
+\toprule
+\hrow \thead{Mode} & \thead{Substitution} & \thead{$f_c$} & \thead{$\lambda_c = 2\pi a/p$} \\
+\midrule
+TE$_{11}$ & $1.8412\times3\times10^8 / (2\pi\times0.02)$ & $\mathbf{4.40}$ GHz & $6.83$ cm \\
+TM$_{01}$ & $2.4048\times3\times10^8 / (2\pi\times0.02)$ & $\mathbf{5.74}$ GHz & $5.23$ cm \\
+\bottomrule
+\end{tabularx}
+\vspace{2pt}
+\begin{itemize}
+  \item Does 3 GHz propagate? $3 < 4.40$ GHz $\Rightarrow$ \textbf{no}, not even in the
+    dominant mode.
+\end{itemize}
+
+\penalty0\vspace{2pt}
+
+%======================================================================
+\Q{Problem 6: Two magic tees joined at their E-arms}{\m{10}}
+{\color{sub}\footnotesize \yr{\textbf{77 Ch}} \gap$\cdot$\gap derived by connecting two 4-port matrices; asserted in \code{wg.py}}
+
+\begin{asked}{\textbf{77 Ch} \ [10]}
+Explain the properties of two Magic Tees if one connects their E-arms and derive its S-matrix.
+\end{asked}
+\lead{Given: the two tees}
+\begin{itemize}
+  \item Each tee, ports (1, 2) collinear, 3 = E-arm, 4 = H-arm, $r = 1/\sqrt{2}$ ($\S$3.6):
+    $[S_T] = r\left[\begin{smallmatrix} 0&0&1&1\\ 0&0&-1&1\\ 1&-1&0&0\\ 1&1&0&0 \end{smallmatrix}\right]$.
+  \item Tee A ports $1, 2, 3, 4$; tee B ports $1', 2', 3', 4'$. The E-arms $3$ and $3'$ are
+    joined, so they disappear as external ports.
+  \item Joining means: the wave \textbf{leaving} arm 3 \textbf{enters} arm 3', and vice
+    versa: $a_{3'} = b_3$, $a_3 = b_{3'}$.
+  \item External ports left: $1, 2, 4$ (tee A) and $1', 2', 4'$ (tee B) $\Rightarrow$ a
+    \textbf{6-port}, $6\times6$ matrix.
+\end{itemize}
+\lead{Step 1: drive port 1 with a unit wave ($a_1 = 1$, all other inputs zero)}
+\begin{itemize}
+  \item Inside tee A: $b_3 = S_{31} = r$, \quad $b_4 = S_{41} = r$, \quad $b_2 = S_{21} = 0$.
+  \item $b_3 = r$ enters tee B's E-arm: $a_{3'} = r$.
+  \item Inside tee B: $b_{1'} = S_{13}\,a_{3'} = r\cdot r = \tfrac{1}{2}$, \quad
+    $b_{2'} = S_{23}\,a_{3'} = -r\cdot r = -\tfrac{1}{2}$, \quad
+    $b_{4'} = S_{43}\,a_{3'} = 0$.
+  \item Nothing reflects back into arm 3, because $S_{3'3'} = 0$ (matched E-arm).
+  \item Column for port 1: $(b_1, b_2, b_4, b_{1'}, b_{2'}, b_{4'}) = (0,\ 0,\ r,\ \tfrac12,\ -\tfrac12,\ 0)$.
+  \item Power check: $\tfrac12 + \tfrac14 + \tfrac14 = 1$ \checkmark.
+\end{itemize}
+\lead{Step 2: the other drives, same way}
+\begin{itemize}
+  \item Port 2: $b_3 = S_{32} = -r$, $b_4 = r$; tee B receives $-r$ $\Rightarrow$
+    $b_{1'} = -\tfrac12$, $b_{2'} = +\tfrac12$.
+  \item Port 4 (H-arm A): $b_1 = b_2 = r$, and $b_3 = S_{34} = 0$ $\Rightarrow$ \textbf{nothing
+    crosses} to tee B.
+  \item Ports $1', 2', 4'$: mirror images, by symmetry of the connection.
+\end{itemize}
+\par\penalty0\Needspace{16\baselineskip}
+\sbsr{0.50}{%
+\lead{Step 3: the 6-port S-matrix}
+\[ [S] = \begin{array}{c} \\ 1 \\ 2 \\ 4 \\ 1' \\ 2' \\ 4' \end{array}
+\!\!\begin{array}{c} \begin{array}{cccccc} 1 & 2 & 4 & 1' & 2' & 4' \end{array} \\
+\left[\begin{array}{cccccc}
+0 & 0 & r & \tfrac12 & -\tfrac12 & 0 \\
+0 & 0 & r & -\tfrac12 & \tfrac12 & 0 \\
+r & r & 0 & 0 & 0 & 0 \\
+\tfrac12 & -\tfrac12 & 0 & 0 & 0 & r \\
+-\tfrac12 & \tfrac12 & 0 & 0 & 0 & r \\
+0 & 0 & 0 & r & r & 0
+\end{array}\right] \end{array} \]
+{\color{sub}\footnotesize $r = 1/\sqrt{2}$. Identical to the \code{connect()} result in \code{wg.py}.}}{%
+\lead{Step 4: properties}
+\begin{itemize}
+  \item \textbf{Matched}: all six diagonal entries are 0.
+  \item \textbf{Reciprocal}: $[S] = [S]^T$.
+  \item \textbf{Lossless}: every column's powers sum to 1.
+  \item \textbf{Collinear isolation kept}: $S_{12} = S_{1'2'} = 0$.
+  \item \textbf{H-arms isolated} from each other and from the far tee: $S_{44'} = 0$.
+  \item \textbf{Difference channel crosses}: an antiphase pair at $(1, 2)$ appears entirely
+    at $(1', 2')$, again antiphase.
+  \item \textbf{Sum channel stays}: an in-phase pair at $(1, 2)$ leaves entirely by $4$.
+  \item Use: a sum/difference separator, e.g. two monopulse channels feeding a common
+    difference path.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+%======================================================================
+\Q{Problem 7: Hybrid tee with a terminated arm}{\m{4+4+2}}
+{\color{sub}\footnotesize \yr{\texttt{82 Ba}} \gap$\cdot$\gap 70 Ma's ``hybrid tee'' [8] is answered by $\S$4.5 plus this}
+
+\begin{asked}{\texttt{82 Ba} \ [4+4+2]}
+Using proper S-Matrices, mention the properties of a Hybrid-Tee in the situation of (a) terminated E-arm, (b) terminated H-arm and (c) terminated co-planner arms.
+\end{asked}
+\lead{Step 0: what ``terminated'' does to a matrix}
+\begin{itemize}
+  \item Terminated = a \textbf{matched load}, $\Gamma = 0$: whatever leaves that arm is
+    absorbed, nothing comes back, so $a_k = 0$.
+  \item Therefore row $k$ and column $k$ simply \textbf{drop out}; the rest of the matrix is
+    unchanged.
+  \item Start from the magic tee, ports 1, 2 collinear (the co-planar arms), 3 = E, 4 = H.
+  \item If the paper meant a \textbf{short}, $\Gamma = -1$, the answer is different; that
+    is the 82 Bh case, $\S$3.6.
+\end{itemize}
+\par\penalty0\Needspace{18\baselineskip}
+\begin{tabularx}{\linewidth}{@{}L{2.2cm}L{3.9cm}X@{}}
+\toprule
+\hrow \thead{Case} & \thead{Reduced S-matrix} & \thead{Properties} \\
+\midrule
+(a) E-arm terminated, ports $(1, 2, 4)$
+ & $\left[\begin{smallmatrix} 0&0&r\\ 0&0&r\\ r&r&0 \end{smallmatrix}\right]$
+ & Matched and reciprocal. From the H-arm: \textbf{equal, in-phase} halves at 1 and 2, no
+   loss. Ports 1 and 2 \textbf{isolated}. From port 1: only half reaches port 4, the other
+   half is absorbed in the E-arm load, so the 3-port is \textbf{not lossless}. An in-phase
+   power divider. \\[4pt]
+(b) H-arm terminated, ports $(1, 2, 3)$
+ & $\left[\begin{smallmatrix} 0&0&r\\ 0&0&-r\\ r&-r&0 \end{smallmatrix}\right]$
+ & Matched and reciprocal. From the E-arm: \textbf{equal, antiphase} halves at 1 and 2.
+   Ports 1 and 2 isolated. From port 1: half to port 3, half lost in the H-arm load.
+   An antiphase (180$^\circ$) power divider. \\[4pt]
+(c) Both co-planar arms terminated, ports $(3, 4)$
+ & $\left[\begin{smallmatrix} 0&0\\ 0&0 \end{smallmatrix}\right]$
+ & E and H arms both \textbf{matched} and \textbf{completely isolated}. Any power entering
+   either side arm splits into the two loads and nothing comes out anywhere: the tee acts as
+   a matched termination for both. \\
+\bottomrule
+\end{tabularx}
+\vspace{2pt}
+\begin{itemize}
+  \item Why (a) and (b) \textbf{must} be lossy: they are matched, reciprocal 3-ports, and
+    $\S$3.5 proves no such 3-port can be lossless. The load is where the missing half goes.
+  \item Column check, (a): column 1 $= 0 + 0 + \tfrac12 = \tfrac12$ (half absorbed);
+    column 4 $= \tfrac12 + \tfrac12 = 1$ (lossless from the H-arm).
+\end{itemize}
+
+\penalty0\vspace{2pt}
+
+%======================================================================
+\Q{Problem 8: Two magic tees connected in the H-plane}{\m{5}}
+{\color{sub}\footnotesize \yr{\textbf{78 Ch}} \gap$\cdot$\gap a short note; the Problem 6 method with the H-arms joined}
+
+\begin{asked}{\textbf{78 Ch} \ [5]}
+Write short notes on: Combitional effect of two magic fees connected in H-plane.
+\end{asked}
+{\color{sub}\footnotesize The paper's typos (``Combitional'', ``magic fees'') are reproduced as printed; read ``combinational effect of two magic tees''.}
+\lead{Step 1: join H-arm 4 to H-arm 4' ($a_{4'} = b_4$, $a_4 = b_{4'}$) and follow port 1}
+\begin{itemize}
+  \item Tee A: $b_3 = S_{31} = r$, $b_4 = S_{41} = r$.
+  \item $b_4 = r$ enters tee B's H-arm: $b_{1'} = S_{14}\,r = \tfrac12$,
+    $b_{2'} = S_{24}\,r = +\tfrac12$ (in phase), $b_{3'} = S_{34}\,r = 0$.
+  \item From port 2: $b_4 = S_{42} = +r$ as well, so tee B again gets $+\tfrac12, +\tfrac12$.
+\end{itemize}
+\par\penalty0\Needspace{14\baselineskip}
+\sbsr{0.50}{%
+\lead{Step 2: the 6-port S-matrix}
+\[ [S] = \begin{array}{c} \\ 1 \\ 2 \\ 3 \\ 1' \\ 2' \\ 3' \end{array}
+\!\!\begin{array}{c} \begin{array}{cccccc} 1 & 2 & 3 & 1' & 2' & 3' \end{array} \\
+\left[\begin{array}{cccccc}
+0 & 0 & r & \tfrac12 & \tfrac12 & 0 \\
+0 & 0 & -r & \tfrac12 & \tfrac12 & 0 \\
+r & -r & 0 & 0 & 0 & 0 \\
+\tfrac12 & \tfrac12 & 0 & 0 & 0 & r \\
+\tfrac12 & \tfrac12 & 0 & 0 & 0 & -r \\
+0 & 0 & 0 & r & -r & 0
+\end{array}\right] \end{array} \]}{%
+\lead{Short-note points}
+\begin{itemize}
+  \item Matched at all six ports, reciprocal, lossless.
+  \item The \textbf{sum} (in-phase) signal crosses between the tees through the joined
+    H-arms and re-appears \textbf{in phase} at $1', 2'$.
+  \item The \textbf{difference} signal stays in its own tee's E-arm.
+  \item Collinear ports of each tee stay isolated; the two E-arms are isolated.
+  \item The exact mirror of Problem 6: E-joining passes the difference, H-joining passes
+    the sum.
+\end{itemize}}

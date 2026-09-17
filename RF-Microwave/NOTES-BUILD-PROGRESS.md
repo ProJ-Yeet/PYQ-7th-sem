@@ -22,7 +22,7 @@ Audit pagination with `PYTHONIOENCODING=utf-8 python audit.py`
 | 1 | Introduction | ✅ 10 pp | — none (stated in §1.7) | audited and repaired 2026-09-10 |
 | 2 | RF and M/W Transmission Lines | ✅ 12 pp | ✅ 42 pp, 24 problems | the Smith-chart chapter |
 | 3 | Network Theory and Analysis | ✅ 13 pp | ✅ 18 pp, 12 problems | the magic-tee chapter |
-| 4 | Components and Devices | ⬜ | ⬜ | biggest question count (52) |
+| 4 | Components and Devices | ✅ 16 pp | ✅ 8 pp, 8 problems | the waveguide chapter; `wg.py` |
 | 5 | Microwave Generators | ⬜ | — | |
 | 6 | RF Design Practices | ⬜ | ⬜ | **heaviest chapter, 22.4 % of marks** |
 | 7 | Antennas and Propagation | ⬜ | — | |
@@ -190,3 +190,8 @@ Third-party and gitignored — build input only, never publish.
   Paper defect: **81 Bh Q3a asks to show TE10 is dominant "when b > a"**. With b > a the
   dominant mode is TE01 (cut-off c/2b < c/2a). TE10 is dominant when a > b. Answer the
   intended physics and say so.
+  **Ch4 shipped** 2026-09-17: theory 16 pp (4.1-4.11) + companion 8 pp (8 problems,
+  46 marks). check.py clean, audit.py 0 stranded, no overfull or too-tall boxes.
+  `figs_ch4.py` extracts the deck's original image blobs with python-pptx; a `MASKS`
+  table whites out stray slide text left inside a crop box.
+  Next: Ch5 (Microwave Generators, 22 questions, 166 marks), no numerical companion.

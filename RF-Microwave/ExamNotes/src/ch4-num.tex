@@ -1,0 +1,30 @@
+\section{RF/Microwave Components and Devices: Numerical Problems}
+{\color{sub}\footnotesize 8 solved PYQ problems \gap$\cdot$\gap
+\mk{46 marks} across 8 papers \gap$\cdot$\gap
+2 guide-parameter sets, 1 cut-off family, 2 mode rankings, 3 junction networks}
+
+\vspace{3pt}\noindent
+\colorbox{gdL}{\makebox[\dimexpr\textwidth-2\fboxsep][l]{%
+  \textcolor{gd}{\bfseries\footnotesize READ THIS FIRST}}}
+\par\nobreak\vspace{3pt}
+
+Chapter 4 numericals come in two kinds, and neither needs more than a calculator's square root.
+\begin{itemize}
+  \item \textbf{Waveguide arithmetic} (Problems 1 to 5). Everything hangs off one number,
+    the \textbf{factor} $F = \sqrt{1 - (f_c/f)^2}$. Compute it once, write it in a box, and
+    every other quantity is a multiplication or a division by it:
+    \[ \lambda_g = \frac{\lambda}{F}, \quad v_p = \frac{c}{F}, \quad v_g = cF, \quad
+       Z_{TE} = \frac{\eta_0}{F}, \quad Z_{TM} = \eta_0 F. \]
+    \mk{Always start by naming the dominant mode and checking $f > f_c$}; a guide below
+    cut-off has no $\lambda_g$ or $v_p$ to find.
+  \item \textbf{Junction networks} (Problems 6 to 8). Treat each tee as its $\S$3.6 matrix
+    and \textbf{follow one unit wave through}: out of one tee, into the next, out again.
+    A matched termination deletes a row and column; a connection hands a leaving wave to the
+    other tee as an arriving one. Column power sums are the self-check.
+  \item Constants used by the papers and here: $c = 3\times10^8$ m/s,
+    $\eta_0 = 120\pi = 376.99\,\Omega$. Every answer is asserted in \code{src/wg.py}.
+\end{itemize}
+
+\penalty0\vspace{2pt}
+
+\input{ch4-num-body}
