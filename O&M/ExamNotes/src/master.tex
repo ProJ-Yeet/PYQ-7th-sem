@@ -1,0 +1,98 @@
+%=======================================================================
+%  Organization and Management — Complete Exam Notes (combined master)
+%  All five chapters in syllabus order, then Last-Minute Revision and the
+%  abbreviation chart. O&M sets no numericals, so there is no companion
+%  volume of solved problems.
+%=======================================================================
+\documentclass[10pt]{article}
+\input{preamble}
+\usepackage{bookmark}
+
+\begin{document}
+
+% ------------------------------------------------ title page
+\thispagestyle{empty}
+\vspace*{2.0cm}
+\begin{center}
+  {\Huge\bfseries\color{acc} Organization and Management}\\[6pt]
+  {\LARGE\bfseries Complete Exam Notes}\\[14pt]
+  {\large\color{sub} ME 708 \quad$\cdot$\quad IV/I \quad$\cdot$\quad BEL, BEX, BCT, BEI}\\[3pt]
+  {\color{sub} Institute of Engineering, Tribhuvan University}\\[20pt]
+  \begin{minipage}{0.78\textwidth}
+    \color{sub}\small
+    Built from the syllabus, AJ Sir's lecture decks, Bikash Adhikari's notes, S.K.\ Joshi's
+    textbook and \textbf{all 29 past papers (2065--2082 BS)}. Every topic carries a frequency
+    tier counted from those papers, and \code{src/check.py} checks each tier chip against its
+    own year list \emph{and} against the sorted PYQ document, so no chapter can cite a paper
+    that asks it nothing, and no paper that asks a chapter goes uncited.\\[8pt]
+    \textbf{No paper in 29 sets a numerical.} What O\&M asks instead is lists, comparisons and
+    ``in your opinion'' questions; each chapter answers its opinion questions directly, and
+    $\S$6.3 collects them.\\[8pt]
+    \textbf{Short on time?} Go straight to \textbf{\S6, Last-Minute Revision}.
+  \end{minipage}
+\end{center}
+
+\vfill
+\begin{center}
+\begin{tabularx}{0.86\textwidth}{@{}L{0.8cm}XL{1.2cm}L{1.5cm}L{1.4cm}L{1.5cm}@{}}
+\toprule
+\hrow \thead{Ch} & \thead{Topic} & \thead{Hours} & \thead{Papers} & \thead{Marks} & \thead{Share} \\
+1 & Introduction & \textbf{20} & 28/29 & \textbf{932} & \textbf{39.6\%} \\
+2 & Personnel Management & 8 & 28/29 & 400 & 17.0\% \\
+3 & Motivation, Leadership and Entrepreneurship & 10 & \textbf{29/29} & 579 & 24.6\% \\
+4 & Case Studies & 2 & 14/29 & 92 & 3.9\% \\
+5 & Management Information System & 5 & 24/29 & 248 & 10.5\% \\
+\midrule
+& \textbf{Total} & \textbf{45} & & \textbf{2251} & \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\par\penalty0\vspace{10pt}
+\begin{center}
+\begin{minipage}{0.86\textwidth}\small\color{sub}
+\mk{Marks track hours closely here.} Chapter 1 is 44\,\% of the hours and 40\,\% of the marks;
+Chapter 3 is 22\,\% of the hours and 25\,\% of the marks, and it is the only chapter asked in
+every paper. Chapter 4 is small but has been a near-certain 4-mark short note since 2079.\\[6pt]
+Shares are of the 2351 archive marks, which include 100 marks of 2065--2068 short notes that
+the Detailed PYQ keeps in a separate ``Extra'' section and these notes fold into the chapters
+they belong to. The archive averages 52 recorded marks per 80-mark paper because short-note
+blocks and the old any-five-of-six papers are counted low: read these as shares, not as an
+audit.
+\end{minipage}
+\end{center}
+\vspace{1.2cm}
+
+% ------------------------------------------------ contents
+\cleardoublepage
+\pagestyle{fancy}
+{\Large\bfseries\color{acc} Contents}
+\vspace{-6pt}{\color{acc}\rule{\textwidth}{1.1pt}}\vspace{4pt}
+\begingroup
+\renewcommand{\contentsname}{}
+\setcounter{tocdepth}{1}
+\vspace{-24pt}
+\tableofcontents
+\endgroup
+
+% ------------------------------------------------ chapters
+\cleardoublepage
+\input{ch1}
+\cleardoublepage
+\input{ch2}
+\cleardoublepage
+\input{ch3}
+\cleardoublepage
+\input{ch4}
+\cleardoublepage
+\input{ch5}
+
+% ------------------------------------------------ revision + abbreviations
+\input{revision}
+
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{section}{Abbreviations}
+\input{abbrev}
+
+\end{document}

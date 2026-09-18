@@ -310,7 +310,7 @@ NOARG_DROP = {
     "tabcolsep", "fboxsep", "smallskip", "medskip", "bigskip", "strut",
 }
 
-TIER = {"tS": "TOP", "tF": "HOT", "tP": "PIN"}
+TIER = {"tS": "TOP", "tF": "HOT", "tP": "PIN", "tL": "LOW"}
 
 
 class Conv(object):
@@ -441,6 +441,8 @@ class Conv(object):
             (a,), i = grab_args(s, i, 1)
             return ('<span class="tier t%s">%s&nbsp;%s</span>' %
                     (TIER[name], TIER[name], self.conv(a)), i, None)
+        if name == "tN":
+            return '<span class="chip">syllabus, no PYQ yet</span>', i, None
         if name == "added":
             return '<span class="chip gd">verified/added</span>', i, None
         if name == "pill":
@@ -711,7 +713,7 @@ def marks_of(tex):
 
 
 def tier_of(tex):
-    m = re.search(re.escape(BS) + r"t([SFP])\{(\d+)\}", tex)
+    m = re.search(re.escape(BS) + r"t([SFPL])\{(\d+)\}", tex)
     if not m:
         return None, None
     return TIER["t" + m.group(1)], int(m.group(2))
@@ -974,7 +976,7 @@ code { font-family: ui-monospace, Consolas, monospace; font-size: .94em;
 .tier { display: inline-block; color: #fff; font-weight: 700; font-size: 11px;
         border-radius: 4px; padding: 1px 6px; margin-right: 4px; }
 .tTOP { background: #C2410C; } .tHOT { background: #2563A8; }
-.tPIN { background: #6D28D9; }
+.tPIN { background: #6D28D9; } .tLOW { background: #6B7785; }
 .chip { display: inline-block; border: 1px solid #6B7785; color: #6B7785;
         font-size: 11px; border-radius: 4px; padding: 0 5px; }
 .gd { border-color: #15803D; color: #15803D; }
