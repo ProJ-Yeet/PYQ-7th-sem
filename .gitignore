@@ -13,6 +13,8 @@ RF-Microwave/Notes/
 RF-Microwave/Books/
 DSAP/Notes/
 DSAP/Books/
+O&M/Notes/
+O&M/Books/
 BEI IV-I(1).pdf
 
 # Extracted full text of copyrighted textbooks and lecture slides.
@@ -23,6 +25,7 @@ Wireless/ocr/notes_text/
 Wireless/ocr/rappaport/
 AI/ocr/notes_text/
 DSAP/ocr/notes_text/
+O&M/ocr/notes_text/
 
 # Internal working notes, not for publication.
 handoff.txt
@@ -31,6 +34,7 @@ Data Mining/NOTES-BUILD-PROGRESS.md
 Wireless/NOTES-BUILD-PROGRESS.md
 AI/NOTES-BUILD-PROGRESS.md
 DSAP/NOTES-BUILD-PROGRESS.md
+O&M/NOTES-BUILD-PROGRESS.md
 New Text Document.txt
 
 # Vendored binaries — fetch the toolchain instead of committing it.

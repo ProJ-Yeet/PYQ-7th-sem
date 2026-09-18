@@ -1,0 +1,197 @@
+% =====================================================================
+%  Organization and Management — Exam Notes : shared preamble
+%  Adapted from RF-Microwave, Wireless & Data Mining ExamNotes.
+%  Style: bare-bones bullets, modern sans (Lato), marks as chips,
+%         figures copied from source PDFs/slides (never redrawn).
+% =====================================================================
+\usepackage[margin=1.45cm, top=1.35cm, bottom=1.35cm]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{colortbl}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage{needspace}
+\usepackage[T1]{fontenc}
+\usepackage[default]{lato}
+% beramono silently fails to load under tectonic (no mono font ends up
+% embedded and \texttt falls back to CM Roman). lmtt does load.
+\renewcommand{\ttdefault}{lmtt}
+\usepackage{microtype}
+
+\parindent 0pt
+\setlength{\parskip}{2pt}
+\linespread{1.05}
+% no orphans and no widows anywhere: a heading's year-tag line and the
+% opening lines of an answer must not be cut off from each other
+\clubpenalty=10000
+\widowpenalty=10000
+\displaywidowpenalty=10000
+\brokenpenalty=10000
+
+% ---------------------------------------------------------------- palette
+\definecolor{ink}{HTML}{16202A}   % body text
+\definecolor{sub}{HTML}{6B7785}   % muted meta text
+\definecolor{acc}{HTML}{2563A8}   % primary accent (section, headings)
+\definecolor{accL}{HTML}{D6E4F5}  % accent tint
+\definecolor{mkc}{HTML}{C2410C}   % marks / warnings
+\definecolor{mkL}{HTML}{FDEBD9}
+\definecolor{gd}{HTML}{15803D}    % verified/added
+\definecolor{gdL}{HTML}{DCFCE7}
+\definecolor{pin}{HTML}{6D28D9}   % pin tier
+\definecolor{ruleL}{HTML}{DEE3E8}
+\definecolor{rowL}{HTML}{F4F7FA}
+\color{ink}
+
+% tight lists: this is the whole look
+\setlist{topsep=1pt, itemsep=0.6pt, parsep=0pt, partopsep=0pt}
+\setlist[itemize,1]{leftmargin=1.15em, label=\textcolor{acc}{\textbf{\textendash}}}
+\setlist[itemize,2]{leftmargin=1.05em, label=\textcolor{sub}{\textendash}}
+\setlist[itemize,3]{leftmargin=1.05em, label=\textcolor{sub}{$\circ$}}
+\setlist[enumerate,1]{leftmargin=1.5em, label=\textcolor{acc}{\bfseries\arabic*.}}
+
+% ---------------------------------------------------------------- chips
+% rounded pill used for marks and tier badges
+\newcommand{\pill}[3]{%
+  \tikz[baseline=(p.base)]{\node[rounded corners=2.2pt, inner xsep=3.4pt,
+        inner ysep=1.5pt, fill=#1, text=#2, font=\bfseries\scriptsize] (p) {#3};}}
+\newcommand{\pillo}[2]{%
+  \tikz[baseline=(p.base)]{\node[rounded corners=2.2pt, inner xsep=3.2pt,
+        inner ysep=1.3pt, draw=#1, line width=0.4pt, text=#1,
+        font=\bfseries\scriptsize] (p) {#2};}}
+
+\newcommand{\m}[1]{\pill{mkL}{mkc}{#1}\hspace{0.5pt}}          % marks chip
+\newcommand{\tS}[1]{\pill{mkc}{white}{TOP\, #1/29}}            % 8+ papers (out of 29)
+\newcommand{\tF}[1]{\pill{acc}{white}{HOT\, #1/29}}            % 4-7 papers
+\newcommand{\tP}[1]{\pill{pin}{white}{PIN\, #1/29}}            % 1-3, >=6 marks
+\newcommand{\tL}[1]{\pill{ruleL}{sub}{LOW\, #1/29}}            % 1-3, under 6 marks
+\newcommand{\tN}{\pillo{sub}{syllabus, no PYQ yet}}            % never examined
+\newcommand{\added}{\pill{gdL}{gd}{verified/added}}
+\newcommand{\yr}[1]{\textcolor{sub}{\footnotesize #1}}
+\newcommand{\mk}[1]{\textcolor{mkc}{\bfseries#1}}
+\newcommand{\gap}{\hspace{0.55em}}
+% pass/fail marks for tables and inline checks: Lato has no glyph for the
+% Unicode check/cross characters (renders as a tofu box), so route through
+% \checkmark (amssymb, already has a Lato-independent math glyph) and this.
+% Both are control words, so TeX silently eats the space after them when
+% they're followed by more prose ("\checkmark all" -> "\checkmarkall") --
+% \xspace fixes that without adding a space before closing punctuation.
+\usepackage{xspace}
+\newcommand{\xmark}{\ensuremath{\times}\xspace}
+\let\origcheckmark\checkmark
+\renewcommand{\checkmark}{\origcheckmark\xspace}
+% inline code / file name with a soft tint
+\newcommand{\code}[1]{{\setlength{\fboxsep}{1.2pt}\colorbox{rowL}{\texttt{\small #1}}}}
+
+% ---------------------------------------------------------------- headings
+\titleformat{\section}
+  {\normalfont\LARGE\bfseries\color{acc}}{\thesection.}{0.35em}{}
+  [\vspace{-7pt}{\color{acc}\rule{\textwidth}{1.1pt}}]
+\titlespacing*{\section}{0pt}{6pt}{7pt}
+
+% ------------------------------------------------------- keeping a topic whole
+\newif\ifbandopen
+\newcommand{\bandon}{\global\let\ifbandopen\iftrue
+  \global\everypar{\bandoff\global\everypar{}}}
+\newcommand{\bandoff}{\global\let\ifbandopen\iffalse}
+\bandoff
+\newcommand{\holdspace}[1]{%
+  \ifbandopen \nobreak \bandoff \else \Needspace{#1\baselineskip}\fi}
+
+\makeatletter
+\newcommand{\qhold}{%
+  \nobreak
+  \global\interlinepenalty10000
+  \global\let\qhsavedpar\par
+  \gdef\par{\qhsavedpar\global\let\par\qhsavedpar
+            \global\interlinepenalty0 \nobreak}%
+  \qh@peek}
+\newcommand{\qh@peek}{%
+  \@ifnextchar\par{\qh@eatpar}{\@ifnextchar\bgroup{\leavevmode}{}}}
+\long\def\qh@eatpar#1{\qh@peek}
+\makeatother
+
+% Q = exam question heading. #1 text, #2 mark chips
+\newcommand{\Q}[2]{%
+  \par\vspace{7pt}\holdspace{9}%
+  \begingroup\interlinepenalty10000 \noindent
+  {\large\bfseries\color{ink}#1}\hspace{0.45em}#2\par\endgroup
+  \nobreak\vspace{1pt}%
+  \nobreak\noindent{\color{ruleL}\rule{\textwidth}{0.7pt}}\par
+  \nobreak\vspace{1.5pt}\qhold}
+
+% T = topic band (tinted full-width bar).
+\newcommand{\T}[1]{%
+  \par\vspace{7pt}\Needspace{12\baselineskip}\noindent
+  \colorbox{accL}{\makebox[\dimexpr\textwidth-2\fboxsep][l]{%
+    \textcolor{acc}{\bfseries #1}}}\par\nobreak\vspace{3pt}\bandon\qhold}
+
+% small question sub-heading inside PYQ lists
+\newcommand{\creamq}[2]{%
+  \par\vspace{4pt}\holdspace{6}%
+  \begingroup\interlinepenalty10000
+  {\bfseries\color{acc}#1}\hspace{0.4em}#2\par\endgroup
+  \nobreak\vspace{1pt}\qhold}
+\let\qq\creamq
+
+% ---------------------------------------------------------------- question box
+\newenvironment{asked}[2][QUESTION AS PRINTED]%
+  {\par\vspace{4pt}\Needspace{4\baselineskip}\noindent
+   \colorbox{rowL}{\makebox[\dimexpr\textwidth-2\fboxsep][l]{%
+     \textcolor{acc}{\bfseries\scriptsize #1}\hspace{0.7em}%
+     \textcolor{sub}{\footnotesize #2}}}\par\nobreak\vspace{2pt}%
+   \begin{list}{}{\leftmargin=9pt \rightmargin=0pt \topsep=0pt
+                  \partopsep=0pt \parsep=1.5pt \itemsep=0pt}\item[]\small}
+  {\end{list}\vspace{1pt}}
+
+% ---------------------------------------------------------------- abbreviations
+\newenvironment{abbrtable}
+  {\par\vspace{2pt}\begin{tabularx}{\textwidth}{@{}L{1.9cm}X@{}L{1.9cm}X@{}}}
+  {\end{tabularx}\par}
+\newcommand{\abbr}[1]{\textbf{#1}}
+
+% bold lead-in line
+\newcommand{\lead}[1]{\vspace{2.5pt}\par\textbf{#1}\par\vspace{0.5pt}}
+
+% ---------------------------------------------------------------- figures
+\newcommand{\figC}[2]{\begin{center}\includegraphics[width=#2]{figs/#1}\end{center}}
+\newcommand{\figT}[1]{\vspace{0pt}\includegraphics[width=\linewidth]{figs/#1}}
+
+% side-by-side columns
+\newlength{\sbsmax}\setlength{\sbsmax}{0.78\textheight}
+\newsavebox{\sbsbox}
+\newcommand{\sbsr}[3]{%
+  \par
+  \setbox\sbsbox=\hbox to\textwidth{%
+  \begin{minipage}[t]{#1\textwidth}\vspace{0pt}\raggedright #2\end{minipage}%
+  \hfill
+  \begin{minipage}[t]{\dimexpr 0.97\textwidth - #1\textwidth\relax}%
+    \vspace{0pt}\raggedright #3\end{minipage}}%
+  \typeout{@SBS \the\dimexpr\ht\sbsbox+\dp\sbsbox\relax\space of \the\textheight}%
+  \ifdim\dimexpr\ht\sbsbox+\dp\sbsbox\relax>\sbsmax
+    \typeout{@SBS-TOO-TALL \the\dimexpr\ht\sbsbox+\dp\sbsbox\relax}%
+  \fi
+  \noindent\usebox{\sbsbox}\par}
+\newcommand{\sbs}[2]{\sbsr{0.485}{#1}{#2}}
+
+% ---------------------------------------------------------------- tables
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\arrayrulecolor{ruleL}
+\newcommand{\thead}[1]{\textcolor{acc}{\bfseries#1}}
+\newcommand{\hr}{\vspace{3pt}{\color{ruleL}\rule{\textwidth}{0.7pt}}\vspace{2pt}\par}
+\newcommand{\hrow}{\rowcolor{rowL}}
+
+% ---------------------------------------------------------------- header
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\footnotesize\color{sub} Organization and Management \textperiodcentered{} ME 708}
+\fancyhead[R]{\footnotesize\color{sub}\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\fancyheadoffset{0pt}
