@@ -1,6 +1,6 @@
 # Digital Signal Analysis and Processing — Anki deck
 
-`DSAP_ExamNotes.apkg` — **112 cards**, built straight from the LaTeX sources of
+`DSAP_ExamNotes.apkg` — **135 cards**, built straight from the LaTeX sources of
 `DSAP/ExamNotes/`, so the deck says exactly what the notes say. Import it into
 Anki (File → Import, or double-click). Re-importing a newer build **updates** the
 existing cards instead of duplicating them, and your scheduling is kept.
@@ -13,7 +13,7 @@ marks chips; back is that question's answer, figures, tables and all.
 | Source in `ExamNotes/src` | Cards |
 |---|---|
 | `\Q{...}` and `\qq{...}` in `ch<N>.tex` | the exam question as the notes head it — 55 |
-| `\T{...}` / `\creamq{...}` in `ch<N>-num.tex` | one per numerical, fronted by the `asked` statement **verbatim as the paper prints it** — 43 |
+| `\T{...}` / `\creamq{...}` in `ch<N>-num.tex` | one per numerical, fronted by the `asked` statement **verbatim as the paper prints it** — 66 |
 | the material above the first topic band | one "how is this chapter examined" card per chapter — 14 |
 
 **Question → Answer only.** The note type has a single card template, so Anki
