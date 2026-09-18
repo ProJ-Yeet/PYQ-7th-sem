@@ -36,6 +36,32 @@ BS = chr(92)
 # ---------------------------------------------------------------- utilities
 
 
+def read_tex(path, depth=0):
+    r"""File contents with any \input{name} on a line of its own expanded.
+
+    RF-Microwave splits every numerical companion in two: ch<N>-num.tex holds
+    only the \section and the READ THIS FIRST band and ends with
+    \input{ch<N>-num-body}, which is where all the problems are. Reading the
+    wrapper alone found 2 numerical cards in a subject that has 56.
+    Recursion is bounded because a cycle would otherwise hang the build.
+    """
+    src = open(path, encoding="utf-8").read()
+    if depth >= 4:
+        return src
+    base = os.path.dirname(path)
+
+    def sub(m):
+        child = os.path.join(base, m.group(1) + ".tex")
+        if not os.path.exists(child):
+            child = os.path.join(base, m.group(1))
+        if not os.path.exists(child):
+            return m.group(0)
+        return read_tex(child, depth + 1)
+
+    return re.sub(r"(?m)^[ \t]*" + re.escape(BS) + r"input\{([^}]+)\}[ \t]*$",
+                  sub, src)
+
+
 def strip_comments(s):
     """Drop TeX comments. A % eats the rest of the line and the line break."""
     out = []
@@ -457,6 +483,18 @@ class Conv(object):
         if name == "colorbox":
             (_, t), i = grab_args(s, i, 2)
             return self.conv(t), i, None
+        if name == "makebox":
+            # \makebox[width][pos]{text}. Both options must be consumed, for
+            # the same reason \parbox's width must be: an unhandled macro
+            # returns "" WITHOUT eating its brackets, so the dimen expression
+            # is converted as body text and the card reads "-2[l]TEXT".
+            # RF-Microwave's "READ THIS FIRST" banner is
+            # \colorbox{gdL}{\makebox[\dimexpr\textwidth-2\fboxsep][l]{...}},
+            # which is what surfaced this.
+            _, i = grab_opt(s, i)
+            _, i = grab_opt(s, i)
+            (t,), i = grab_args(s, i, 1)
+            return self.conv(t), i, None
         if name == "parbox":
             # \parbox[pos]{width}{text}. The width is a TeX dimen expression,
             # here always \dimexpr\linewidth-2\fboxsep, and it MUST be consumed
@@ -606,7 +644,16 @@ YEAR_RE = re.compile(r"\b(\d{2})\s+(%s)\b" % MONTHS)
 HEAD_RE = re.compile(r"(?m)^[ \t]*" + re.escape(BS) + r"(T|Q|creamq|qq)\{")
 NUMSEG_RE = re.compile(r"(?m)^[ \t]*" + re.escape(BS) + r"(T)\{"
                        r"|^[ \t]*" + re.escape(BS) + r"(lead)\{\d+\.\d+"
-                       r"|^[ \t]*" + re.escape(BS) + r"(qq|creamq)\{")
+                       r"|^[ \t]*" + re.escape(BS) + r"(qq|creamq|Q(?=\{Problem\b))\{")
+# \Q rides in the third group deliberately: RF-Microwave heads every numerical
+# with \Q{Problem N: ...}{marks}, which is the same two-argument shape as
+# \creamq, and the code below eats that second argument by testing group(3).
+# Adding a fourth alternative instead would have renumbered that test.
+#
+# The lookahead is load-bearing. DSAP also writes \Q inside a -num body, but as
+# a per-paper sub-heading (\Q{70 Bh}{\m{9}}) inside one worked problem, and
+# segmenting on those splits its cards. Only a \Q whose title begins "Problem"
+# is a problem heading.
 
 
 def problem_segments(segs, src):
@@ -633,7 +680,13 @@ def problem_segments(segs, src):
     out = []
     for k, seg in enumerate(segs):
         stop = segs[k + 1].start() if k + 1 < len(segs) else len(src)
-        if seg.group(3) and BS + "begin{asked}" not in src[seg.start():stop]:
+        # The asked-ownership test settles what a \creamq MEANS, which differs
+        # by subject. It does not apply to \Q: in a -num file a \Q is always a
+        # problem heading, never a sidebar. RF-Microwave's ch6 Problem 9 is
+        # deck practice rather than a PYQ, so it carries no \begin{asked}, and
+        # testing it here silently folded it into Problem 8's card.
+        if (seg.group(3) and seg.group(3) != "Q"
+                and BS + "begin{asked}" not in src[seg.start():stop]):
             continue
         out.append(seg)
     return out
@@ -670,7 +723,7 @@ class Card(object):
 
 
 def parse_theory(path, chno, chtitle, conv):
-    src = strip_comments(open(path, encoding="utf-8").read())
+    src = strip_comments(read_tex(path))
     src = protect_math(src)
     heads = list(HEAD_RE.finditer(src))
     cards = []
@@ -736,7 +789,7 @@ def parse_theory(path, chno, chtitle, conv):
 
 
 def parse_num(path, chno, chtitle, conv):
-    src = strip_comments(open(path, encoding="utf-8").read())
+    src = strip_comments(read_tex(path))
     src = protect_math(src)
     segs = problem_segments(list(NUMSEG_RE.finditer(src)), src)
     cards = []
@@ -790,7 +843,16 @@ def parse_num(path, chno, chtitle, conv):
             bandtex = ""
             heading = title
         else:
-            heading = "%s &mdash; %s" % (band, title) if band else title
+            # A title that already names itself "Problem N" does not want the
+            # band bolted onto its front. AI and Data Mining put the problem
+            # number IN the band, so this never fires for them; RF-Microwave
+            # puts a method summary in the band and the problem in the \Q, and
+            # every card came out as "M. The Three Methods, in Brief - Problem
+            # 5 - Single-stub shunt tuner".
+            if band and re.match(r"Problem\b", title) and "Problem" not in band:
+                heading = title
+            else:
+                heading = "%s &mdash; %s" % (band, title) if band else title
             meta = meta or ""
         allmeta = (bandmeta + " " + meta) if seg.group(1) != "T" else meta
 
