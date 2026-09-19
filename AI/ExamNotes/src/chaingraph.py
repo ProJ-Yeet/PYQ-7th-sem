@@ -122,7 +122,7 @@ PLACES = [
 
 def strip_blocks(src):
     return re.sub(r"\n" + re.escape(MARK) + r"c4_chain.*?\n" + re.escape(MARK) + r"end\n",
-                  "\n", src, flags=re.S)
+                  "", src, flags=re.S)
 
 
 def main():

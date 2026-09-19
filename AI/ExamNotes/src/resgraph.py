@@ -44,7 +44,7 @@ DEF = re.compile(r"(?:" + re.escape(BS) + r"item\[(\w+)\.\]|" + re.escape(BS)
 def strip_blocks(src):
     """Remove every block this script inserted before."""
     return re.sub(r"\n" + re.escape(MARK) + r"c4_resg_\d+.*?\n"
-                  + re.escape(MARK) + r"end\n", "\n", src, flags=re.S)
+                  + re.escape(MARK) + r"end\n", "", src, flags=re.S)
 
 
 def group_end(src, i):

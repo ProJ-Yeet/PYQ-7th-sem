@@ -438,11 +438,6 @@ $alive$. One predicate fewer, one resolution step fewer.}
 \begin{center}\includegraphics[width=289.8pt]{figs/c4_resg_01.png}\end{center}
 % resgraph:end
 
-
-
-
-
-
 \penalty0\vspace{2pt}
 
 \creamq{The four renamings}{\m{8}\m{6+4}}
@@ -607,11 +602,6 @@ never used, but it is wrong and in another problem it would prove anything.}}{%
 \begin{center}\includegraphics[width=347.9pt]{figs/c4_resg_02.png}\end{center}
 % resgraph:end
 
-
-
-
-
-
 \penalty0\vspace{2pt}
 
 \creamq{The two renamings}{\m{8}}
@@ -746,11 +736,6 @@ $M_1$ and it splits into two ground facts.}}{%
 \penalty0\vspace{2pt}
 \begin{center}\includegraphics[width=360.9pt]{figs/c4_resg_03.png}\end{center}
 % resgraph:end
-
-
-
-
-
 
 \penalty0\vspace{2pt}
 
@@ -934,8 +919,6 @@ each premise into the fact it helped derive. That picture is the answer; see \S4
 \begin{center}\includegraphics[width=453.9pt]{figs/c4_chain_west_bwd.png}\end{center}
 % chaingraph:end
 
-
-
 %=======================================================================
 \T{P5. Resolution refutation \gap\textcolor{sub}{Family D: the light sleeper}}
 
@@ -1015,11 +998,6 @@ another implication, get one clause instead of three, and then cannot close the 
 \begin{center}\includegraphics[width=364.6pt]{figs/c4_resg_04.png}\end{center}
 % resgraph:end
 
-
-
-
-
-
 \penalty0\vspace{2pt}
 
 \begin{asked}{2076 Bhadra \textperiodcentered{} CT 78506 \textperiodcentered{} [7]}
@@ -1054,7 +1032,18 @@ pompeian. Find, did Marcus Caesor?
 \end{asked}
 
 \sbs{%
-\lead{FOPL and CNF}
+\lead{FOPL}
+\begin{itemize}
+  \item[1.] $\forall x\; Pompeian(x) \rightarrow Roman(x)$
+  \item[2.] $\forall x\; Roman(x) \rightarrow loyal(x, Caesar) \vee hate(x, Caesar)$
+  \item[3.] $\forall x\, \exists y\; loyal(x, y)$
+  \item[4.] $\forall x \forall y\; tryAssassinate(x,y) \wedge ruler(y) \rightarrow
+            \neg loyal(x,y)$
+  \item[5.] $tryAssassinate(Marcus, Caesar)$
+  \item[6.] $Pompeian(Marcus)$ \qquad \textbf{7.} $ruler(Caesar)$ \hfill \yr{assumed}
+  \item[] \textbf{Goal}: $hate(Marcus, Caesar)$
+\end{itemize}
+\lead{CNF}
 \begin{itemize}
   \item[1.] $\neg Pompeian(x) \vee Roman(x)$
   \item[2.] $\neg Roman(x) \vee loyal(x, Caesar) \vee hate(x, Caesar)$
@@ -1089,11 +1078,6 @@ a constant} $-$ each person is loyal to their own someone.}}{%
 \begin{center}\includegraphics[width=515.0pt]{figs/c4_resg_05.png}\end{center}
 % resgraph:end
 
-
-
-
-
-
 \penalty0\vspace{2pt}
 
 \creamq{2. Scrooge is not a child}{\m{8}\m{3+3}}
@@ -1110,6 +1094,19 @@ Refutation, derive the conclusion: Scrooge is not a child.
 \end{asked}
 
 \sbs{%
+\lead{FOPL}
+\begin{itemize}
+  \item[1.] $\forall x\; child(x) \rightarrow loves(x, Santa)$
+  \item[2.] $\forall x \forall y\; loves(x, Santa) \wedge reindeer(y) \rightarrow
+            loves(x, y)$
+  \item[3.] $reindeer(Rudolph)$ \qquad \textbf{4.} $redNose(Rudolph)$
+  \item[5.] $\forall x\; redNose(x) \rightarrow weird(x) \vee clown(x)$
+  \item[6.] $\forall x\; reindeer(x) \rightarrow \neg clown(x)$
+  \item[7.] $\forall x\; weird(x) \rightarrow \neg loves(Scrooge, x)$
+  \item[] \textbf{Goal}: $\neg child(Scrooge)$
+\end{itemize}
+{\color{sub}\footnotesize \emph{``No reindeer is a clown''} is
+$\neg\exists x\,(reindeer(x) \wedge clown(x))$; pushing the $\neg$ in gives line 6.}
 \lead{CNF}
 \begin{itemize}
   \item[1.] $\neg child(x) \vee loves(x, Santa)$
@@ -1146,11 +1143,6 @@ on this set.}}{%
 \begin{center}\includegraphics[width=376.0pt]{figs/c4_resg_06.png}\end{center}
 % resgraph:end
 
-
-
-
-
-
 \penalty0\vspace{2pt}
 
 \creamq{3. Did Curiosity kill the cat?}{\m{3+5}}
@@ -1170,6 +1162,18 @@ resolution refutation:
 \end{asked}
 
 \sbsr{0.50}{%
+\lead{FOPL \; \yr{(the 3 marks)}}
+\begin{itemize}
+  \item[A.] $\forall x\, \big[\forall y\; Animal(y) \rightarrow Loves(x,y)\big]
+            \rightarrow \exists z\; Loves(z,x)$
+  \item[B.] $\forall x\, \big[\exists y\; Animal(y) \wedge Kills(x,y)\big]
+            \rightarrow \forall z\; \neg Loves(z,x)$
+  \item[C.] $\forall x\; Animal(x) \rightarrow Loves(Jack, x)$
+  \item[D.] $Kills(Jack, Tuna) \vee Kills(Curiosity, Tuna)$
+  \item[E.] $Cat(Tuna)$ \qquad \textbf{F.} $\forall x\; Cat(x) \rightarrow Animal(x)$
+            \hfill \yr{assumed}
+  \item[] \textbf{Goal}: $Kills(Curiosity, Tuna)$
+\end{itemize}
 \lead{CNF \; \yr{(the cat is named Tuna; ``cats are animals'' is assumed)}}
 \begin{itemize}
   \item[A1.] $Animal(F(x)) \vee Loves(G(x), x)$
@@ -1208,11 +1212,6 @@ $x$''. \mk{Both must be functions of $x$.}}}{%
 \begin{center}\includegraphics[width=515.0pt]{figs/c4_resg_07.png}\end{center}
 % resgraph:end
 
-
-
-
-
-
 \penalty0\vspace{2pt}
 
 \creamq{4. Sneha is happy}{\m{2+6}}
@@ -1229,6 +1228,14 @@ the lottery. Using resolution refutation, prove that Sneha is happy.
 \end{asked}
 
 \sbs{%
+\lead{FOPL}
+\begin{itemize}
+  \item[1.] $\forall x\; pass(x) \wedge win(x) \rightarrow happy(x)$
+  \item[2.] $\forall x\; study(x) \vee lucky(x) \rightarrow pass(x)$
+  \item[3.] $\neg study(Sneha) \wedge lucky(Sneha)$
+  \item[4.] $\forall x\; lucky(x) \rightarrow win(x)$
+  \item[] \textbf{Goal}: $happy(Sneha)$
+\end{itemize}
 \lead{CNF}
 \begin{itemize}
   \item[1.] $\neg pass(x) \vee \neg win(x) \vee happy(x)$
@@ -1267,11 +1274,6 @@ nothing to split. One De Morgan apart, opposite answers.}}{%
 \begin{center}\includegraphics[width=294.0pt]{figs/c4_resg_08.png}\end{center}
 % resgraph:end
 
-
-
-
-
-
 \penalty0\vspace{2pt}
 
 \creamq{5. Steve likes BK301}{\m{7}}
@@ -1297,6 +1299,14 @@ course. Prove that Steve likes BK301 using Resolution Refutation.
         \[ \forall x\; easy(x) \rightarrow likes(Steve, x) \]
   \item \mk{Write that line, then prove it.} Stating the reading you
         adopted is a mark; silently reversing an implication is not.
+\end{itemize}
+\lead{FOPL}
+\begin{itemize}
+  \item[1.] $\forall x\; easy(x) \rightarrow likes(Steve, x)$ \hfill \yr{converse reading}
+  \item[2.] $\forall x\; science(x) \rightarrow \neg easy(x)$
+  \item[3.] $\forall x\; basketWeaving(x) \rightarrow easy(x)$
+  \item[4.] $basketWeaving(BK301)$
+  \item[] \textbf{Goal}: $likes(Steve, BK301)$
 \end{itemize}}{%
 \lead{CNF and proof}
 \begin{itemize}
@@ -1321,11 +1331,6 @@ course. Prove that Steve likes BK301 using Resolution Refutation.
 \begin{center}\includegraphics[width=270.0pt]{figs/c4_resg_09.png}\end{center}
 % resgraph:end
 
-
-
-
-
-
 \penalty0\vspace{2pt}
 
 \creamq{6. You will enjoy}{\m{8}}
@@ -1341,6 +1346,15 @@ resolution by refutation.
 \end{asked}
 
 \sbs{%
+\lead{Into logic \; \yr{(propositional: no objects, so no quantifiers)}}
+\begin{itemize}
+  \item[1.] $sunny \wedge warm \rightarrow enjoy$
+  \item[2.] $warm \wedge pleasant \rightarrow picking$
+  \item[3.] $raining \rightarrow \neg picking$
+  \item[4.] $raining \rightarrow wet$
+  \item[5.] $warm$ \qquad \textbf{6.} $raining$ \qquad \textbf{7.} $sunny$
+  \item[] \textbf{Goal}: $enjoy$
+\end{itemize}
 \lead{CNF}
 \begin{itemize}
   \item[1.] $\neg sunny \vee \neg warm \vee enjoy$
@@ -1374,11 +1388,6 @@ antecedent. No quantifiers means no unification: every resolution step here is o
 \begin{center}\includegraphics[width=224.1pt]{figs/c4_resg_10.png}\end{center}
 % resgraph:end
 
-
-
-
-
-
 \penalty0\vspace{2pt}
 
 \creamq{7. Ram is naughty}{\m{8}}
@@ -1391,6 +1400,13 @@ children of Hari. Hari is oversmart. Show that Ram is naughty using FOPL based r
 \end{asked}
 
 \sbs{%
+\lead{FOPL}
+\begin{itemize}
+  \item[1.] $\forall x\; oversmart(x) \rightarrow stupid(x)$
+  \item[2.] $\forall x \forall y\; child(x,y) \wedge oversmart(y) \rightarrow naughty(x)$
+  \item[3.] $child(Ram, Hari)$ \qquad \textbf{4.} $oversmart(Hari)$
+  \item[] \textbf{Goal}: $naughty(Ram)$
+\end{itemize}
 \lead{CNF}
 \begin{itemize}
   \item[1.] $\neg oversmart(x) \vee stupid(x)$
@@ -1420,11 +1436,6 @@ children of Hari. Hari is oversmart. Show that Ram is naughty using FOPL based r
 \begin{center}\includegraphics[width=344.2pt]{figs/c4_resg_11.png}\end{center}
 % resgraph:end
 
-
-
-
-
-
 \penalty0\vspace{2pt}
 
 \creamq{8. The book supports the cup}{\m{8}}
@@ -1439,6 +1450,13 @@ supports(book, cup) is true.
 \end{asked}
 
 \sbs{%
+\lead{FOPL}
+\begin{itemize}
+  \item[1.] $\forall x \forall y\; onTop(x,y) \rightarrow supports(y,x)$
+  \item[2.] $\forall x \forall y\; above(x,y) \wedge touching(x,y) \rightarrow onTop(x,y)$
+  \item[3.] $above(Cup, Book)$ \qquad \textbf{4.} $touching(Cup, Book)$
+  \item[] \textbf{Goal}: $supports(Book, Cup)$
+\end{itemize}
 \lead{CNF}
 \begin{itemize}
   \item[1.] $\neg onTop(x,y) \vee supports(y,x)$
@@ -1471,11 +1489,6 @@ supports(book, cup) is true.
 \begin{center}\includegraphics[width=391.7pt]{figs/c4_resg_12.png}\end{center}
 % resgraph:end
 
-
-
-
-
-
 \penalty0\vspace{2pt}
 
 \creamq{9. If John does not study, Mary does not love John}{\m{10}}
@@ -1491,6 +1504,15 @@ not study does not pass; v) anyone who does not play is not a football star. Pro
 \end{asked}
 
 \sbsr{0.48}{%
+\lead{FOPL}
+\begin{itemize}
+  \item[1.] $\forall x\; loves(Mary, x) \rightarrow star(x)$
+  \item[2.] $\forall x\; student(x) \wedge \neg pass(x) \rightarrow \neg play(x)$
+  \item[3.] $student(John)$
+  \item[4.] $\forall x\; student(x) \wedge \neg study(x) \rightarrow \neg pass(x)$
+  \item[5.] $\forall x\; \neg play(x) \rightarrow \neg star(x)$
+  \item[] \textbf{Goal}: $\neg study(John) \rightarrow \neg loves(Mary, John)$
+\end{itemize}
 \lead{CNF}
 \begin{itemize}
   \item[1.] $\neg loves(Mary,x) \vee star(x)$
@@ -1534,11 +1556,6 @@ this question is usually lost.}}{%
 \begin{center}\includegraphics[width=310.1pt]{figs/c4_resg_13.png}\end{center}
 % resgraph:end
 
-
-
-
-
-
 \penalty0\vspace{2pt}
 
 \creamq{10. Can anyone be found with an exciting life?}{\m{3+5}}
@@ -1554,6 +1571,15 @@ Can anyone be found with an exciting life?''
 \end{asked}
 
 \sbs{%
+\lead{FOPL \; \yr{(the 5 marks begin here)}}
+\begin{itemize}
+  \item[1.] $\forall x\; \neg poor(x) \wedge smart(x) \rightarrow happy(x)$
+  \item[2.] $\forall x\; read(x) \rightarrow \neg stupid(x)$
+  \item[3.] $read(John) \wedge wealthy(John)$, i.e.\ $read(John) \wedge \neg poor(John)$
+  \item[4.] $\forall x\; happy(x) \rightarrow exciting(x)$
+  \item[5.] $\forall x\; \neg stupid(x) \rightarrow smart(x)$ \hfill \yr{bridge, stated}
+  \item[] \textbf{Goal}: $\exists x\; exciting(x)$
+\end{itemize}
 \lead{CNF \; \yr{with \emph{wealthy} $= \neg poor$ and \emph{smart} $= \neg stupid$}}
 \begin{itemize}
   \item[1.] $poor(x) \vee \neg smart(x) \vee happy(x)$
@@ -1592,11 +1618,6 @@ before starting $-$ the examiner's own wording forces it.}}{%
 \penalty0\vspace{2pt}
 \begin{center}\includegraphics[width=257.7pt]{figs/c4_resg_14.png}\end{center}
 % resgraph:end
-
-
-
-
-
 
 %=======================================================================
 \T{P7. Bayes' theorem: the twelve numericals}
