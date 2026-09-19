@@ -694,6 +694,23 @@ def problem_segments(segs, src):
     return out
 
 
+def depth(s, a, b):
+    """Net brace depth of s[a:b], ignoring escaped braces."""
+    d = 0
+    i = a
+    while i < b:
+        c = s[i]
+        if c == BS:
+            i += 2
+            continue
+        if c == "{":
+            d += 1
+        elif c == "}":
+            d -= 1
+        i += 1
+    return d
+
+
 def meta_split(body):
     """Pull the '{\\color{sub}\\footnotesize ...}' tag line off the front."""
     m = re.match(r"\s*\{\s*" + re.escape(BS) + r"color\{sub\}", body)
@@ -742,20 +759,34 @@ def parse_theory(path, chno, chtitle, conv):
             marks="", meta="", answer=opener_html, years=[], tier=None,
             key="ch%d-opener" % chno))
 
+    def asked_alone(h):
+        """Does this heading's own tag line name the papers that ask it?"""
+        _, after = grab_args(src, h.end() - 1, 2)
+        return bool(years_of(meta_split(src[after:after + 4000])[0]))
+
     def block(idx):
         """(question, marks, meta, body) for the heading at heads[idx].
 
-        A \\Q owns everything up to the next \\Q or topic band, its \\qq
-        sub-questions included: the sub-questions are what a 6-mark answer to
-        the parent has to say, and they also stand as cards of their own. A
-        \\qq owns only up to the next heading of any kind.
+        A \\Q owns everything up to the next \\Q or topic band, and its
+        \\creamq sub-headings with it: "Okumura model" and "Hata model" ARE
+        the answer to "explain any two outdoor propagation models". A \\creamq
+        that carries its own paper list is different. It is a separate asked
+        question (AI ch4's knowledge-based agent, 82 Ba, under the 72 Ash KR
+        question) with a card of its own, so the \\Q stops there instead of
+        nesting it. Only a top-level one: a \\creamq inside a group, e.g. one
+        column of an \\sbs, is part of the layout around it, and cutting
+        there would split the group's braces. A \\creamq or \\qq owns only up
+        to the next heading of any kind.
         """
         h = heads[idx]
         start = h.end() - 1  # at the '{'
         stops = ("Q", "T") if h.group(1) == "Q" else ("Q", "T", "creamq", "qq")
         stop = len(src)
         for j in range(idx + 1, len(heads)):
-            if heads[j].group(1) in stops:
+            if heads[j].group(1) in stops or (
+                    h.group(1) == "Q" and heads[j].group(1) == "creamq"
+                    and asked_alone(heads[j])
+                    and depth(src, h.start(), heads[j].start()) == 0):
                 stop = heads[j].start()
                 break
         args, after = grab_args(src, start, 2)
