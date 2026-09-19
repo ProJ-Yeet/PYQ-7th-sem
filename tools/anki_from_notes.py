@@ -644,6 +644,7 @@ class Conv(object):
 MONTHS = "Ba|Jth|Asa|Shr|Bh|Ash|Ka|Mng|Po|Ma|Ch"
 YEAR_RE = re.compile(r"\b(\d{2})\s+(%s)\b" % MONTHS)
 HEAD_RE = re.compile(r"(?m)^[ \t]*" + re.escape(BS) + r"(T|Q|creamq|qq)\{")
+LEAD_RE = re.compile(re.escape(BS) + r"lead\{")
 NUMSEG_RE = re.compile(r"(?m)^[ \t]*" + re.escape(BS) + r"(T)\{"
                        r"|^[ \t]*" + re.escape(BS) + r"(lead)\{\d+\.\d+"
                        r"|^[ \t]*" + re.escape(BS) + r"(qq|creamq|Q(?=\{Problem\b))\{")
@@ -759,24 +760,83 @@ def parse_theory(path, chno, chtitle, conv):
             marks="", meta="", answer=opener_html, years=[], tier=None,
             key="ch%d-opener" % chno))
 
-    def asked_alone(h):
-        """Does this heading's own tag line name the papers that ask it?"""
+    def head_meta(h):
         _, after = grab_args(src, h.end() - 1, 2)
-        return bool(years_of(meta_split(src[after:after + 4000])[0]))
+        return meta_split(src[after:after + 4000])[0]
+
+    def asked_alone(h):
+        """Does this heading carry a tag line of its own?"""
+        return bool(head_meta(h))
+
+    # A \lead whose title cites a paper its parent heading does not is a
+    # separate asked question written as a sub-heading: AI ch4's
+    # "Skolemization (81 Ba, 69 Bh)" and "Horn clause (78 Ch, 70 Ma)" under
+    # "Why do we need FOPL?" (70 Ma, 75 Bh, 72 Ma). It gets a card of its own
+    # and is cut out of the parent's. A \lead citing only the parent's papers
+    # is part of the parent's answer ("Why it is a process theory (80 Bh)"
+    # under Vroom, which lists 80 Bh), and an enumerated one ("2. Diffraction"
+    # of the three propagation mechanisms) is too, whatever it cites.
+    lead_pos = [m.start() for m in LEAD_RE.finditer(src)]
+    head_pos = set(h.start() for h in heads)
+
+    def lead_end(i):
+        """End of a \\lead's section: its group closes, or the next \\lead
+        at the same depth, or the next heading."""
+        stops = set(lead_pos) | head_pos
+        d = 0
+        while i < len(src):
+            if i in head_pos or (d == 0 and i in stops):
+                return i
+            c = src[i]
+            if c == BS:
+                i += 2
+                continue
+            if c == "{":
+                d += 1
+            elif c == "}":
+                d -= 1
+                if d < 0:
+                    return i
+            i += 1
+        return i
+
+    leads = []   # (start, title end, section end, title tex)
+    for p in lead_pos:
+        arg, aend = grab_group(src, src.index("{", p))
+        ly = set(years_of(arg))
+        if not ly or re.match(r"\s*(\d+\.|\([a-z]\))\s", arg):
+            continue
+        prev = [h for h in heads if h.start() < p]
+        if not prev or prev[-1].group(1) not in ("Q", "creamq"):
+            continue
+        if ly <= set(years_of(head_meta(prev[-1]))):
+            continue
+        leads.append((p, aend, lead_end(aend), arg))
+
+    def text(a, b):
+        """src[a:b] with the separately-asked \\lead sections cut out."""
+        out = []
+        for p, _, e, _ in leads:
+            if a <= p < b:
+                out.append(src[a:p])
+                a = e
+        out.append(src[a:b])
+        return "".join(out)
 
     def block(idx):
         """(question, marks, meta, body) for the heading at heads[idx].
 
         A \\Q owns everything up to the next \\Q or topic band, and its
         \\creamq sub-headings with it: "Okumura model" and "Hata model" ARE
-        the answer to "explain any two outdoor propagation models". A \\creamq
-        that carries its own paper list is different. It is a separate asked
-        question (AI ch4's knowledge-based agent, 82 Ba, under the 72 Ash KR
-        question) with a card of its own, so the \\Q stops there instead of
-        nesting it. Only a top-level one: a \\creamq inside a group, e.g. one
-        column of an \\sbs, is part of the layout around it, and cutting
-        there would split the group's braces. A \\creamq or \\qq owns only up
-        to the next heading of any kind.
+        the answer to "explain any two outdoor propagation models", and carry
+        no tag line. A \\creamq with a tag line of its own is different. It
+        is a separate question (AI ch4's knowledge-based agent, 82 Ba, under
+        the 72 Ash KR question; unification under FOPL) with a card of its
+        own, so the \\Q stops there instead of nesting it. Only a top-level
+        one: a \\creamq inside a group, e.g. one column of an \\sbs, is part
+        of the layout around it, and cutting there would split the group's
+        braces. A \\creamq or \\qq owns only up to the next heading of any
+        kind.
         """
         h = heads[idx]
         start = h.end() - 1  # at the '{'
@@ -790,12 +850,31 @@ def parse_theory(path, chno, chtitle, conv):
                 stop = heads[j].start()
                 break
         args, after = grab_args(src, start, 2)
-        meta, body = meta_split(src[after:stop])
+        meta, body = meta_split(text(after, stop))
         body = re.sub(r"\s*" + re.escape(BS) + r"hr\s*$", "", body)
         return args[0], args[1], meta, body
 
     band = ""
-    for idx, h in enumerate(heads):
+    pending = list(leads)
+    for idx, h in enumerate(heads + [None]):
+        while pending and (h is None or pending[0][0] < h.start()):
+            p, aend, end, arg = pending.pop(0)
+            cut = re.search(re.escape(BS) + r"(yr|gap|m|mk)\{|\s\((?=[^)]*\d)",
+                            arg)
+            k = cut.start() if cut else len(arg)
+            title, note = arg[:k].strip(), arg[k:]
+            tier, tiern = tier_of(note)
+            cards.append(Card(
+                kind="theory", chno=chno, chtitle=chtitle, band=band,
+                question=conv.html(title),
+                marks=conv.html("".join(BS + "m{%s}" % x for x in marks_of(note))),
+                meta=conv.html(note),
+                answer=conv.html(src[aend:end]),
+                years=years_of(note),
+                tier=tier,
+                key="ch%d-l%d" % (chno, len(leads) - len(pending) - 1)))
+        if h is None:
+            break
         kind = h.group(1)
         if kind == "T":
             arg, _ = grab_group(src, h.end() - 1)
