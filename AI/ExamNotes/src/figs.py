@@ -140,6 +140,15 @@ add("c1_agent_learning.png", BJ1, 67)
 add("c1_agent_env.png", BJ1, 54, pick=0)
 add("c1_vacuum_world.png", BJ1, 55)
 ins("c1_agent_utility.png", 27, (0.06, 0.04, 0.97, 0.36))
+# The Turing test setting: evaluator on one side of a wall, a human and a
+# machine on the other, text only. 1.2 described all of that in words and the
+# arrangement IS the definition, so it was the obvious thing to draw. Five
+# decks have a version; SG Sir's is the one that labels the three parties
+# A / B / C, which is how the notes and the papers refer to them. PS Sir's
+# slide is clearer about the barrier but its raster overruns the slide edge,
+# so it prints "Intelligent machi".
+SG1 = os.path.join(SG, "AIChapter_1_2.pdf")
+add("c1_turing_test.png", SG1, 17)
 
 
 # ------------------------------------------------------------------ chapter 3
@@ -429,6 +438,10 @@ add("c7_som.png", BA7, 36, box=(0.422, 0.650, 0.917, 0.913))
 # memory and the consultation / development split that the better answers add.
 add("c7_es_block.png", BA7, 39, pick=1)
 add("c7_es_arch.png", BA7, 39, pick=0)
+# The four development stages as a flow. 7.7 is asked in 8 papers and its own
+# note says the question is "always paired with the block diagram", but the
+# section had no diagram of the STAGES -- only of the finished architecture.
+add("c7_es_development.png", BA7, 47)
 # Human expert against expert system, point by point, with which side wins
 # each one. 80 Ash asks for exactly this comparison, "with practical examples".
 add("c7_es_vs_human.png", BA7, 46)
