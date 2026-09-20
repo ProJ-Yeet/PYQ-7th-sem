@@ -85,7 +85,12 @@ ever set \gap$\cdot$\gap \mk{heavy solved-problem chapter}: see
 \begin{itemize}
   \item A \textbf{solution} is a sequence of actions from the initial state to a goal
         state. An \textbf{optimal solution} is one of lowest path cost.
-\end{itemize}}
+\end{itemize}
+\penalty0\vspace{1pt}
+\figC{c2_8puzzle.png}{2.2in}
+{\color{sub}\footnotesize Draw \mk{both boards}: the initial state and the
+goal test are two of the five terms and neither means anything without them. The shortest
+solution from this pair is 26 moves.}}
 
 \penalty0\vspace{2pt}
 
@@ -288,6 +293,25 @@ $[B,\ \text{dirty}]$ & Suck \\
         architectures modelling human reasoning such as ACT and SOAR.
 \end{itemize}}
 
+\penalty0\vspace{3pt}
+\sbsr{0.44}{%
+\lead{The architecture, which is what to draw}
+\figT{c2_prod_system.png}}{%
+\vspace{2pt}
+\begin{itemize}
+  \item \mk{The same four components under other names.} This drawing says
+        \textbf{Interpreter} for the control strategy and inference engine, \textbf{Short
+        Term Memory} for working memory, and folds the rule applier into the interpreter.
+        Either set of names is accepted; \textbf{use one set consistently} and say which.
+  \item Read the two arrows as the \textbf{recognise-act cycle}. The interpreter matches
+        the rule base against short term memory, resolves the conflict set down to one
+        rule, and fires it; firing rewrites short term memory, and the cycle repeats.
+  \item \textbf{Both arrows are double-headed}, which is the part worth noticing: the
+        rules read the state and the state is rewritten by the rules. Nothing else in the
+        system holds any information, so \mk{the whole state of the
+        computation is the contents of that one box}.
+\end{itemize}}
+
 \penalty0\vspace{2pt}
 
 \creamq{Problems solvable by production rules}{\m{6}}
@@ -379,6 +403,20 @@ puzzle}
   \item \textbf{Class scheduling}, \textbf{VLSI layout}, \textbf{Sudoku}.
 \end{itemize}}
 
+\penalty0\vspace{3pt}
+\needspace{9\baselineskip}
+\lead{Map colouring, and the same problem as a constraint graph}
+\figC{c2_csp_australia.png}{5.4in}
+{\color{sub}\footnotesize \textbf{(a)} the seven regions, \textbf{(b)} the CSP. Variables
+become \mk{nodes}, binary constraints become \mk{edges};
+here every edge means ``these two must differ''. The domain of each variable is
+\{red, green, blue\}. \gap$\cdot$\gap \textbf{Two things to read off (b) that (a) hides}:
+$SA$ touches five of the other six, so it is the variable to assign first and the one a
+most-constrained-variable heuristic picks; and $T$ has \mk{no edge at
+all}, so Tasmania is an independent sub-problem that can be coloured any
+colour whatever the rest does. \gap$\cdot$\gap That is the whole point of drawing the
+graph: the structure of the problem is visible in it and is invisible in the map.}
+
 \penalty0\vspace{2pt}
 
 \creamq{The crypt-arithmetic rules, and how to set the answer out}{\m{6}\m{7}\m{8}}
@@ -467,3 +505,15 @@ owes you the formulation; minimax and alpha-beta are Ch\,3, where they are asked
         no rule set alone can express. That is precisely why Ch\,3 needs a separate family
         of algorithms.
 \end{itemize}}
+
+\penalty0\vspace{3pt}
+\needspace{8\baselineskip}
+\lead{The formulation above, drawn}
+\figC{c2_game_tree.png}{4.6in}
+{\color{sub}\footnotesize MAX moves from the root, MIN
+replies, and the nine leaves carry the \textbf{utility}. The number written on each
+internal node is backed up from its children, and the arrow marks MAX's choice.
+\gap$\cdot$\gap \mk{The tree is the strategy}, which is the point of the
+whole section: MAX cannot commit to a sequence, only to an answer at every node MIN might
+send it to. \gap$\cdot$\gap Computing those backed-up numbers is minimax, and it is
+\S3.5, not here.}

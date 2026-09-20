@@ -181,6 +181,12 @@ add("c2_8puzzle.png", AIMA, 87, box=(0.340, 0.100, 0.760, 0.277))
 add("c2_csp_australia.png", AIMA, 167, box=(0.220, 0.123, 0.900, 0.353))
 # AIMA Fig 6.2: a two-ply game tree with the backed-up values, for 2.6.
 add("c2_game_tree.png", AIMA, 196, box=(0.180, 0.086, 0.700, 0.267))
+# The production-system architecture. 2.4 lists the four components and the
+# recognise-act cycle in bullets with nothing to look at. No deck in Notes\
+# draws it; the CSIT handout does, as a single pasted raster, so the default
+# largest-raster mode is exact. It names the parts Interpreter / Rule Base /
+# Short Term Memory, which the caption reconciles with the notes' names.
+add("c2_prod_system.png", CSIT, 21)
 
 # The five question figures the papers print. These were cropped out of the
 # scanned papers for the Sorted PYQ document and are reused here so each
