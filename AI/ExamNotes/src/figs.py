@@ -49,6 +49,17 @@ IOE = os.path.join(SRC, "Notes by ioe_notes")
 IIT = os.path.join(SRC, "Notes by IIT Kharagpur")
 MISC = os.path.join(SRC, "Misc")
 
+# Russell & Norvig, "Artificial Intelligence: A Modern Approach", 4e.
+# The textbook the syllabus is written from. Its figures are VECTOR, so a
+# clip renders at any dpi without the softness every deck crop has, and it
+# supplies the diagrams no deck in Notes\ draws at all: why a ridge defeats
+# hill climbing, the BFS and DFS frontier step by step, the 8-puzzle, the
+# constraint graph, and the general case for an alpha-beta cut.
+AIMA = os.path.normpath(os.path.join(
+    HERE, "..", "..", "Books",
+    "1 Russell S Norvig P (2020) Artificial intelligence"
+    " - A modern approach - Pearson.pdf"))
+
 # "Insights on Artificial Intelligence" -- Shrestha, Giri, Joshi, Dahal.
 # The student's chosen method authority for worked problems. Two-page spread.
 INS = os.path.join(SRC, "Insights ArtificialIntelligence.pdf")
@@ -140,6 +151,36 @@ BA3 = os.path.join(BA, "CH-03 AI.pdf")
 # a manual box inside the top-left quadrant.
 add("c3_hill_landscape.png", BA3, 10, box=(0.268, 0.329, 0.480, 0.459))
 add("c3_hill_contour.png", BA3, 10, box=(0.325, 0.148, 0.425, 0.245))
+
+# The landscape above labels the local maximum, the shoulder and the flat
+# local maximum, but it CANNOT show a ridge: a ridge only exists in two or
+# more dimensions, which is the whole reason single-step ascent fails on one.
+# AIMA Fig 4.4 draws it properly -- the grid of states superimposed on a
+# ridge running left to right, every single-step move going down. The notes
+# named all three problems in a table with no picture of the third.
+add("c3_ridge.png", AIMA, 132, box=(0.283, 0.095, 0.600, 0.337))
+# AIMA Fig 3.8 / 3.11: the frontier of BFS and of DFS on the SAME binary
+# tree, panel by panel. The comparison table in 3.2 asserts the orders; these
+# show them.
+add("c3_bfs_tree.png", AIMA, 95, box=(0.190, 0.784, 0.920, 0.877))
+add("c3_dfs_tree.png", AIMA, 98, box=(0.110, 0.090, 0.790, 0.538))
+# AIMA Fig 6.6: the general case for an alpha-beta cut. 3.5 states the cut
+# rule in words ("a player higher up already has a better alternative");
+# this is that sentence as a picture.
+add("c3_ab_general.png", AIMA, 201, box=(0.400, 0.123, 0.700, 0.323))
+
+
+# ------------------------------------------------------------------ chapter 2
+# Chapter 2 shipped with no figure at all. These three are the ones its
+# questions actually need a picture for.
+# AIMA Fig 3.3: the 8-puzzle start and goal state. 2.1/2.2 define a state
+# space and a well-defined problem entirely in words.
+add("c2_8puzzle.png", AIMA, 87, box=(0.340, 0.100, 0.760, 0.277))
+# AIMA Fig 5.1: the Australia map and the same problem as a constraint
+# graph. Map colouring is the CSP example every paper uses.
+add("c2_csp_australia.png", AIMA, 167, box=(0.220, 0.123, 0.900, 0.353))
+# AIMA Fig 6.2: a two-ply game tree with the backed-up values, for 2.6.
+add("c2_game_tree.png", AIMA, 196, box=(0.180, 0.086, 0.700, 0.267))
 
 # The five question figures the papers print. These were cropped out of the
 # scanned papers for the Sorted PYQ document and are reused here so each

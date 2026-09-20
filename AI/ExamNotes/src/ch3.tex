@@ -145,6 +145,19 @@ Good when & the goal is shallow, memory is plentiful & the tree is deep, memory 
         about 120. That is the whole argument in one number.
 \end{itemize}}
 
+\penalty0\vspace{3pt}
+\lead{The same tree, the same goal $M$, the two orders}
+\figT{c3_bfs_tree.png}
+{\color{sub}\footnotesize \textbf{BFS}: the frontier is a whole \emph{level}. Four steps,
+and it has not gone below depth 2. Every node of a level is in memory at once, which is
+the $O(b^d)$ space.}
+\vspace{3pt}
+\figC{c3_dfs_tree.png}{5.2in}
+{\color{sub}\footnotesize \textbf{DFS}, twelve steps, left to right then top to bottom.
+The frontier is a single \emph{path}, and the faded nodes have been dropped from memory
+already: that is the $O(bm)$ space. Note steps 7 and 10, where it \mk{backs
+up} after a dead end. It reaches $M$ at step 12, having never looked at $N$ or $O$.}
+
 \penalty0\vspace{2pt}
 
 \sbs{%
@@ -159,7 +172,7 @@ Good when & the goal is shallow, memory is plentiful & the tree is deep, memory 
         not optimal either.
   \item Choosing $\ell$ needs knowledge of the problem. \emph{Eg} for a route between 20
         cities, no path needs more than 19 steps, so $\ell = 19$.
-\end{itemize}
+\end{itemize}}{%
 \lead{Iterative deepening (IDS) \added}
 \begin{itemize}
   \item Run DLS with $\ell = 0, 1, 2, \dots$ until a goal is found.
@@ -354,6 +367,32 @@ state reaches the local maximum, not the global one.}}{%
         ``use random restarts'' for all three loses half the marks.
 \end{itemize}}
 
+\penalty0\vspace{3pt}
+\sbsr{0.42}{%
+\lead{\mk{Why a ridge is the hard one}}
+\figT{c3_ridge.png}}{%
+\vspace{2pt}
+\begin{itemize}
+  \item The dots are \textbf{states}; they sit on a ridge rising left to right. The dark
+        arrows are the moves available from each state.
+  \item \mk{Every one of those moves goes down.} The ascent runs
+        \emph{across} the ridge, not along it, so no single step improves anything and
+        hill climbing halts on a slope that is not a maximum at all.
+  \item That is exactly why the cure is \textbf{apply two or more rules at once}: one step
+        in any single direction cannot go up, but a combination can.
+  \item \textbf{A ridge needs two dimensions to exist}, which is why the
+        one-dimensional landscape on the previous page cannot show one. If a paper asks
+        for ``the problems of hill climbing with diagrams'', \mk{this is the
+        one people leave out}.
+\end{itemize}
+\vspace{1pt}
+\sbsr{0.42}{\figT{c3_hill_contour.png}}{%
+\vspace{1pt}
+{\color{sub}\footnotesize The same landscape as a \textbf{contour map}, which shows all
+three problems at once: the \textbf{plateau} is the wide gap between contours, with no
+gradient anywhere on it; the \textbf{ridge} is the narrow crest on the left; the
+\textbf{local maximum} is the small closed loop at the foot.}}}
+
 \penalty0\vspace{2pt}
 
 \creamq{Simulated annealing}{\m{4}\m{5}\m{6}}
@@ -473,6 +512,21 @@ the chapter}
   \item So it depends entirely on \textbf{move ordering}, which is why real game programs
         invest in ordering heuristics before they invest in searching deeper.
 \end{itemize}}
+
+\penalty0\vspace{3pt}
+\sbsr{0.34}{%
+\lead{Why a cut is safe}
+\figT{c3_ab_general.png}}{%
+\vspace{2pt}
+{\color{sub}\footnotesize The whole justification in one picture. Player is choosing at
+the top and can already reach $m$. Somewhere far below, $n$ is a node Player would have to
+pass through to get anywhere in that branch, and Opponent can hold Player to $m'$ there.
+\gap$\cdot$\gap \mk{If $m$ or $m'$ is better than $n$ for Player, then Player
+will never be allowed to reach $n$ in real play} $-$ so whatever value $n$
+turns out to have cannot change the root, and the whole subtree under it can be skipped
+unexamined. \gap$\cdot$\gap That is the sentence to write when a paper asks \emph{why}
+pruning does not change the answer: a pruned branch is one a rational player above it
+would never let the game enter.}}
 
 \penalty0\vspace{2pt}
 
