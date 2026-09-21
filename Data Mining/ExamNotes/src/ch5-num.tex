@@ -737,6 +737,12 @@ $\{p_2p_3p_4p_5p_6\}$  & \mk{0.22} \\
   \item Reading it: $\{p_3,p_6\}$ is the tightest pair; $p_1$ is the most isolated point, joining last.
   \item Cutting between 0.15 and 0.22 gives \textbf{2 clusters}: $\{p_1\}$ and $\{p_2,p_3,p_4,p_5,p_6\}$.
 \end{itemize}
+\par\penalty0\needspace{14\baselineskip}
+\lead{The dendrogram}
+\mbox{}\hfill\includegraphics[width=0.60\textwidth]{figs/c5n_dend_80bh.png}\hfill\mbox{}\par
+{\color{sub}\footnotesize Bars at the five merge heights, numbered in merge order (Steps 1 to 5
+above); merges 3 and 4 share the height 0.15, the tie. The dashed line is the 2-cluster cut.
+Drawn by \code{dendfig.py}, which replays the merges and checks them against this page.}
 
 \creamq{Problem 2.2}{\m{8}}
 \begin{asked}{2080 Baishakh \textperiodcentered{} Q7 \textperiodcentered{} [8]}
@@ -784,6 +790,10 @@ $p_6$ & 0.235 & 0.244 & \textbf{0.102} & 0.219 & 0.386 \\
 \end{tabularx}
 \lead{Final answer} Heights \mk{0.102, 0.143, 0.219, 0.342, 0.386}; cutting below 0.386 gives
 $\{p_1,p_2,p_5\}$ and $\{p_3,p_4,p_6\}$.
+\par\penalty0\needspace{14\baselineskip}
+\mbox{}\hfill\includegraphics[width=0.60\textwidth]{figs/c5n_dend_80ba.png}\hfill\mbox{}\par
+{\color{sub}\footnotesize The dendrogram the question asks for, merges numbered as in the
+Step 2 table; the cut below 0.386 leaves the two groups. From \code{dendfig.py}.}
 
 \creamq{Problem 2.3}{\m{4+4}}
 \begin{asked}{2076 Chaitra \textperiodcentered{} Q10 \textperiodcentered{} [4+4]}
@@ -850,6 +860,12 @@ while complete link produces two clean balanced groups. \\
 \textbf{Single link} chases the nearest neighbour, so it follows chains and elongated shapes.
 \textbf{Complete link} is held back by the worst pair, so it prefers compact globular clusters. \added
 \end{minipage}}\end{center}
+\par\penalty0\needspace{16\baselineskip}
+\lead{Both dendrograms, to one scale}
+\mbox{}\hfill\includegraphics[width=0.88\textwidth]{figs/c5n_dend_76ch.png}\hfill\mbox{}\par
+{\color{sub}\footnotesize (a) single link: everything joins below 0.3, the chaining in one look.
+(b) complete link: two compact groups that only meet at 0.93. Merges numbered as in the two
+tables. From \code{dendfig.py}.}
 
 \hr
 
@@ -934,8 +950,8 @@ data gives a different answer at MinPts 3 than at MinPts 2. \added}
 $A(1,1)$ & A, B (1.00), C (1.00) & 3 & \textbf{core} \\
 $B(1,2)$ & B, A (1.00), C (1.41) & 3 & \textbf{core} \\
 $C(2,1)$ & C, A (1.00), B (1.41) & 3 & \textbf{core} \\
-$D(8,8)$ & D, E (1.00) & 2 & border \\
-$E(8,9)$ & E, D (1.00) & 2 & border \\
+$D(8,8)$ & D, E (1.00) & 2 & not core \\
+$E(8,9)$ & E, D (1.00) & 2 & not core \\
 $F(25,25)$ & F only & 1 & \textbf{noise} \\
 \bottomrule
 \end{tabularx}
@@ -945,7 +961,7 @@ $F(25,25)$ & F only & 1 & \textbf{noise} \\
   \item A, B, C are all core and all within $\varepsilon$ of each other $\rightarrow$
         \textbf{Cluster 1 $=\{A,B,C\}$}.
   \item D and E have only 2 neighbours each, and \mk{neither is within $\varepsilon$ of any core point}
-        $\rightarrow$ they are \textbf{not border points after all, they are noise}.
+        $\rightarrow$ they are \textbf{not border points either, they are noise}.
   \item F is isolated $\rightarrow$ \textbf{noise}.
 \end{itemize}
 
