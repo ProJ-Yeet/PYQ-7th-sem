@@ -223,6 +223,18 @@ Why? Then specifically explain why rules with 99\,\% confidence may be interesti
   \item Struggles with long patterns and with low min\_sup.
 \end{itemize}}
 
+\penalty0\vspace{3pt}
+\sbsr{0.40}{%
+\includegraphics[width=\linewidth]{figs/c4_apriori_example.png}}{%
+\lead{The level-wise run, drawn}
+\begin{itemize}
+  \item H\&K's 9-transaction example, min count 2: $C_1 \rightarrow L_1$, join to $C_2$,
+    scan, $L_2$, join and \textbf{prune} to $C_3$, scan, $L_3$.
+  \item Only 2 candidates survive into $C_3$: every other 3-itemset has an infrequent
+    2-subset, so it is dropped \mk{without a scan}. That is the Apriori property at work.
+  \item This is the shape every numerical in the companion writes out. H\&K Fig 6.2.
+\end{itemize}}
+
 \hr
 
 \T{4.3 FP-Growth and the FP-Tree}
@@ -267,7 +279,11 @@ Why? Then specifically explain why rules with 99\,\% confidence may be interesti
         frequent \emph{within} it.
   \item \textbf{Recurse} on the conditional tree, concatenating $\alpha$ to each pattern found.
   \item If a conditional tree is a \textbf{single path}, just enumerate all subsets of that path.
-\end{enumerate}}
+\end{enumerate}
+\mbox{}\hfill\includegraphics[width=0.62\linewidth]{figs/c4_fptree_hk.png}\hfill\mbox{}\par
+{\color{sub}\scriptsize A finished FP-tree: \textbf{null} root, \texttt{item:count} nodes, and the
+header table (item, support) whose dashed \textbf{node-links} thread every occurrence of an item.
+Step 2 walks those links. H\&K Fig 6.7.}}
 
 \penalty0\vspace{3pt}
 \lead{Apriori vs FP-Growth \mk{(asked as a direct comparison 4 times)}}
@@ -371,6 +387,14 @@ Speed & Slower & Roughly an order faster \\
         never occur).
   \item \mk{Hard because} support is anti-monotone, so ``infrequent'' cannot be pruned the same way.
 \end{itemize}}
+
+\penalty0\vspace{3pt}
+\sbsr{0.46}{%
+\includegraphics[width=\linewidth]{figs/c4_subgraph_types.png}}{%
+\lead{Subgraph terms, drawn}
+{\color{sub}\footnotesize (a) a labelled graph; (b) a \textbf{subgraph}: some of its vertices
+and edges; (c) an \textbf{induced} subgraph: some vertices and \emph{every} edge between them.
+Candidate generation grows these one vertex or one edge at a time. Mishra's Ch 4 notes, p9.}}
 
 \hr
 
