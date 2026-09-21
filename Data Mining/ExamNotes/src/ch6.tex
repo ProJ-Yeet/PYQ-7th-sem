@@ -80,7 +80,9 @@ $\rightarrow$ Ch 6 companion.}
     \item Generalises \textbf{local outliers}; a global outlier is the special case where the
           context is empty.
   \end{itemize}
-\end{itemize}}{%
+\end{itemize}
+\mbox{}\hfill\includegraphics[width=0.34\linewidth]{figs/c6_collective.png}\hfill\mbox{}\par
+{\color{sub}\scriptsize \textbf{Collective}: the black group, not any one point. H\&K Fig 12.2.}}{%
 \begin{itemize}
   \item \textbf{Collective outlier}
   \begin{itemize}
@@ -231,7 +233,13 @@ Depends on the clustering; costly; outliers can distort the clusters themselves.
   \item $+$ Unsupervised; reuses clustering you may already have.
   \item $-$ Effectiveness depends entirely on the clustering; outliers can themselves
         distort the clusters.
-\end{itemize}}{%
+\end{itemize}
+\lead{Global vs local, drawn (point 3 above)}
+\mbox{}\hfill\includegraphics[width=0.56\linewidth]{figs/c6_global_local.png}\hfill\mbox{}\par
+{\color{sub}\scriptsize $o_3$, $o_4$ are far from everything: \textbf{global} outliers, found by
+DB$(r,\pi)$. $o_1$, $o_2$ sit only as far from dense $C_1$ as ordinary points in sparse $C_2$
+are from each other, so one $r$ cannot catch them: \textbf{local} outliers, found by LOF.
+H\&K Fig 12.8.}}{%
 \creamq{Statistical approaches}{}
 \begin{itemize}
   \item Assume a model, flag low-probability objects.

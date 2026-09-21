@@ -35,7 +35,11 @@
   \item Only a \textbf{tiny fraction} is relevant to any one user.
   \item Broad topics return hundreds of thousands of documents $\rightarrow$
         \mk{search returns too much, and misses too much}.
-\end{itemize}}{%
+\end{itemize}
+\lead{The taxonomy, drawn}
+\figT{c7_web_taxonomy.png}
+{\color{sub}\scriptsize The three branches and their sub-branches, exactly the list on the right.
+Draw this tree first, then explain each box. Mishra's Ch 6 \& 7 notes, p6.}}{%
 \lead{The taxonomy \mk{(3 branches --- this IS the answer)}}
 \begin{enumerate}
   \item \textbf{Web Content Mining}: mine the \emph{content} of pages (text, images, video).
@@ -162,7 +166,10 @@
   \item \textbf{Seasonal (S)}: regular, calendar-fixed variation. Eg umbrella sales in monsoon.
   \item \textbf{Irregular / random (I)}: residual noise left after the other three.
   \item Models: multiplicative $Y = T \times C \times S \times I$, or additive $Y = T+C+S+I$.
-\end{itemize}}{%
+\end{itemize}
+\mbox{}\hfill\includegraphics[width=0.62\linewidth]{figs/c7_timeseries.png}\hfill\mbox{}\par
+{\color{sub}\scriptsize A stock price series (solid) and its 10-day moving average (dashed):
+smoothing strips the irregular part and leaves the \textbf{trend}. H\&K Fig 13.2.}}{%
 \lead{Tasks}
 \begin{itemize}
   \item \textbf{Trend analysis} $+$ \textbf{forecasting} (moving average, exponential smoothing, ARIMA).
