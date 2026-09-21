@@ -72,7 +72,11 @@ Classes & Fixed, known & Number often unknown \\
         least \textbf{one point} in its cluster than to any point outside. Handles chains and
         irregular shapes; \mk{breaks down when noise bridges 2 clusters}.
         $\rightarrow$ single-link hierarchical, or DBSCAN.
-\end{itemize}}{%
+\end{itemize}
+\lead{Prototype-based, found by K-means iterating (\S5.2)}
+\figT{c5_kmeans_iter.png}
+{\color{sub}\scriptsize (a) initial clustering around the seeds; (b) centroids recomputed and
+points reassigned; (c) final, once the assignment stops changing. H\&K Fig 10.3.}}{%
 \begin{itemize}
   \item \textbf{Density-based}: a cluster is a \textbf{dense region} separated by low-density
         regions. Handles arbitrary shapes and noise. $\rightarrow$ DBSCAN.
@@ -200,7 +204,10 @@ $\rightarrow$ companion.}
     \item Repeat until every point is alone (or a stopping rule fires).
   \end{enumerate}
   \item \mk{Divisive is more expensive} ($2^{n-1}-1$ ways to split), so agglomerative dominates.
-\end{itemize}}{%
+\end{itemize}
+\figT{c5_agglo_divisive.png}
+{\color{sub}\scriptsize AGNES merges $a..e$ upward in steps 0 to 4; DIANA splits them downward
+in the reverse order. H\&K Fig 10.6.}}{%
 \lead{Linkage: how to measure cluster-to-cluster distance \mk{(this is the whole exam question)}}
 \begin{itemize}
   \item \textbf{Single link (MIN)}: distance $=$ \textbf{closest} pair between the 2 clusters.
@@ -221,7 +228,10 @@ $\rightarrow$ companion.}
   \item $+$ No $K$ needed; the dendrogram is highly interpretable; any $K$ obtainable afterwards.
   \item $-$ \mk{$O(n^2)$ space and $O(n^3)$ time} $\rightarrow$ does not scale.
   \item $-$ \mk{Merges are irreversible} --- a bad merge can never be undone (greedy).
-\end{itemize}}
+\end{itemize}
+\mbox{}\hfill\includegraphics[width=0.72\linewidth]{figs/c5_dendrogram_hk.png}\hfill\mbox{}\par
+{\color{sub}\scriptsize The same merges as a dendrogram, level $l=0$ (all apart) to $l=4$ (one
+cluster); cut at any level for that many clusters. H\&K Fig 10.7.}}
 
 \hr
 
@@ -253,7 +263,11 @@ $\rightarrow$ companion.}
   \item \textbf{Density-connected}: $p$ and $q$ are density-connected if some object $o$ exists from
         which \textbf{both} are density-reachable. \mk{This one IS symmetric.}
   \item \textbf{A cluster} $=$ a maximal set of density-connected points.
-\end{itemize}}{%
+\end{itemize}
+\figT{c5_dbscan_reach.png}
+{\color{sub}\scriptsize Circles are $\varepsilon$-neighbourhoods, MinPts $=3$. Left: $m, p$ are core,
+$q$ is density-reachable from $p$ through $m$, but not the reverse ($q$ is a border point).
+Right: $r$ and $s$ are density-connected through $o$. H\&K Fig 10.14.}}{%
 \lead{Algorithm}
 \begin{enumerate}
   \item Label every point as core, border or noise by counting its $\varepsilon$-neighbours.
