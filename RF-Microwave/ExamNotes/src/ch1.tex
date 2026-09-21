@@ -32,6 +32,10 @@ The examiner repeatedly asks three core questions:
   \item \textbf{Millimeter waves (mmWave)}: $30\text{ GHz}$ to $300\text{ GHz}$ ($\lambda = 10\text{ mm}$ to $1\text{ mm}$).
   \item \textbf{Sub-millimeter / Terahertz}: $300\text{ GHz}$ to $3\text{ THz}$ ($\lambda < 1\text{ mm}$).
 \end{itemize}
+\figT{c1_em_spectrum.png}
+{\color{sub}\scriptsize Wavelength in metres: microwaves span $1$ m to $1$ mm, between VHF/FM and
+far infrared. Pozar Fig 1.1, bar only: its band list uses older letter-band edges, so quote the
+IEEE table below.}
 \lead{IEEE Radar / Microwave Band Designations}
 \begin{tabularx}{\linewidth}{@{}L{1.6cm}L{2.0cm}X@{}}
 \toprule
@@ -100,7 +104,7 @@ The examiner repeatedly asks three core questions:
 \penalty0\vspace{2pt}
 
 %=======================================================================
-\T{1.2 Behaviour of Circuits: Conventional vs RF/Microwave Bands}
+\T{1.2Behaviour of Circuits: Conventional vs RF/Microwave Bands}
 
 \Q{Compare the behavior of microwave circuits against conventional low frequency circuits. Differentiate lumped vs distributed analysis}{\m{4}\m{5}\m{6}\m{8}\m{10}}
 {\color{sub}\footnotesize \tS{18} \yr{\textbf{70 Bh}, 70 Ma, 71 Ma, \textbf{72 Ash}, 72 Ma, 73 Ma, \textbf{75 Bh}, \textbf{76 Bh}, \textbf{77 Ch}, \textbf{78 Ch}, \texttt{80 Ba}, \textbf{\texttt{80 Bh}}, \textbf{80 Ch}, \textbf{\texttt{81 Bh}}, \texttt{81 Ba}, \textbf{\texttt{82 Bh}}, \texttt{82 Ba}, \textbf{69 Bh}} \gap$\cdot$\gap top repeated topic}
@@ -384,6 +388,9 @@ The examiner repeatedly asks three core questions:
 
 \sbs{%
 \lead{Microstrip Line}
+\figT{c1_microstrip.png}
+{\color{sub}\scriptsize (a) geometry, (b) field lines: part in the substrate, part in air, hence
+quasi-TEM. Pozar Fig 3.25.}
 \begin{itemize}
   \item \textbf{Geometry}:
   \begin{itemize}
@@ -397,11 +404,11 @@ The examiner repeatedly asks three core questions:
     \item Characterized by effective dielectric constant $\epsilon_{\text{eff}}$:
       \[ 1 < \epsilon_{\text{eff}} < \epsilon_r, \quad v_p = \frac{c}{\sqrt{\epsilon_{\text{eff}}}} \]
   \end{itemize}
-  \item \textbf{Dispersion}: Moderate dispersion at higher frequencies as fields pull into substrate.
-  \item \textbf{Fabrication}: Very easy; standard photolithography; surface accessible for discrete component mounting (SMD, diodes, FETs).
-  \item \textbf{Radiation}: Unshielded; radiates at bends and discontinuities.
 \end{itemize}}{%
 \lead{Strip-line}
+\figT{c1_stripline.png}
+{\color{sub}\scriptsize (a) geometry, (b) field lines: all inside one dielectric between two
+ground planes, hence pure TEM. Pozar Fig 3.22.}
 \begin{itemize}
   \item \textbf{Geometry}:
   \begin{itemize}
@@ -413,6 +420,15 @@ The examiner repeatedly asks three core questions:
     \item Phase velocity is frequency-independent:
       \[ v_p = \frac{c}{\sqrt{\epsilon_r}} \]
   \end{itemize}
+\end{itemize}}
+
+\sbs{%
+\begin{itemize}
+  \item \textbf{Dispersion}: Moderate dispersion at higher frequencies as fields pull into substrate.
+  \item \textbf{Fabrication}: Very easy; standard photolithography; surface accessible for discrete component mounting (SMD, diodes, FETs).
+  \item \textbf{Radiation}: Unshielded; radiates at bends and discontinuities.
+\end{itemize}}{%
+\begin{itemize}
   \item \textbf{Dispersion}: Non-dispersive; wide broadband operation.
   \item \textbf{Shielding}: Completely enclosed between two ground planes $\rightarrow$ \textbf{zero radiation loss}, no crosstalk with adjacent circuits.
   \item \textbf{Fabrication}: Difficult; multi-layer sandwich lamination; impossible to mount surface components after manufacturing.
