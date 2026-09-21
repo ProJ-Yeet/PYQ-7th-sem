@@ -67,6 +67,16 @@
   \item Close w/ the 2--3 metrics used to judge one.
 \end{enumerate}}
 
+\penalty0\vspace{3pt}
+\needspace{12\baselineskip}
+\lead{The 2-step block diagram, drawn}
+\noindent\includegraphics[width=0.49\textwidth]{figs/c3_class_learn.png}\hfill
+\includegraphics[width=0.49\textwidth]{figs/c3_class_use.png}\par
+{\color{sub}\footnotesize \textbf{(a) Learning}: labelled training data $\rightarrow$
+classification algorithm $\rightarrow$ model (here as IF-THEN rules). \textbf{(b) Classification}:
+the rules are checked on a separate test set, then applied to a new tuple (John Henry
+$\rightarrow$ risky). H\&K Fig 8.1.}
+
 \hr
 
 \T{3.2 Decision Tree Classifier}
@@ -270,7 +280,10 @@ Let $D_t$ $=$ training records reaching node $t$, $y=\{y_1\dots y_c\}$ the class
   \item Mutually exclusive $+$ exhaustive by construction.
   \item Rules can then be \textbf{pruned} individually, which may break exclusivity
         $\rightarrow$ then class-based ordering is applied.
-\end{itemize}}{%
+\end{itemize}
+\mbox{}\hfill\includegraphics[width=0.80\linewidth]{figs/c3_rules_vs_tree.png}\hfill\mbox{}\par
+{\color{sub}\scriptsize One model three ways: (a) IF-THEN rules, (b) the decision tree they come
+from, one rule per root-to-leaf path, (c) a neural network. H\&K Fig 1.9.}}{%
 \lead{Sequential covering (direct rule induction) \yr{70 Ch asks CN2} \added}
 \begin{itemize}
   \item Learns rules \textbf{directly from the data}, one class at a time.
@@ -368,7 +381,10 @@ hard to see as a whole. \\
   \item $k$ too small $\rightarrow$ sensitive to \textbf{noise}, overfits.
   \item $k$ too large $\rightarrow$ neighbourhood includes other classes, underfits.
   \item Pick by cross-validation; rule of thumb $k \approx \sqrt{n}$.
-\end{itemize}}
+\end{itemize}
+\figT{c3_knn_k.png}
+{\color{sub}\scriptsize The query $\times$ with its (a) 1, (b) 2, (c) 3 nearest neighbours: the
+vote, and so the class, can change with $k$. Mishra's Ch 3 notes, p13.}}
 
 \penalty0\vspace{3pt}
 \sbs{%
