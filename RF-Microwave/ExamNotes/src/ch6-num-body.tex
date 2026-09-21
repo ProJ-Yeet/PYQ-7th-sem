@@ -185,6 +185,13 @@ Input ($\Gamma_S$) & $C_S = 1.132\angle68.5^\circ$, $R_S = 0.199$ & $0.933 < 1$:
     stable: the device is \mk{conditionally stable}. Pick $\Gamma_S$, $\Gamma_L$ outside the
     circles (deck figure, $\S$6.4).
 \end{itemize}
+\par\penalty0\Needspace{15\baselineskip}\vspace{2pt}
+\noindent\mbox{}\hfill\includegraphics[width=0.40\textwidth]{figs/c6n_p3_source.png}\hfill
+\includegraphics[width=0.40\textwidth]{figs/c6n_p3_load.png}\hfill\mbox{}\par
+{\color{sub}\footnotesize The two circles drawn from the table: each cuts the chart, so a
+sliver of the chart (hatched) is unstable; the unilateral design points $S_{11}^*$, $S_{22}^*$
+used in Step 5 sit on the stable side. Generated from the S-parameters by
+\code{ampfig.py}, which stops if these centres and radii differ from the table.}
 \lead{Step 5: unilateral maximum gain, and whether its design points are safe}
 \begin{itemize}
   \item $G_{TU,max} = \dfrac{1}{1 - 0.7992}\times9.747\times\dfrac{1}{1 - 0.6100}
@@ -231,6 +238,18 @@ Check the stability and find the maximum gain a transistor amplifier having S$_{
     which lowers $|S_{21}|$ slightly and raises $K$ above 1; a gain of around 20 dB is then
     realistic. State the modification you assume and recompute $K$.
 \end{itemize}
+\par\penalty0\Needspace{15\baselineskip}\vspace{2pt}
+\sbsr{0.42}{%
+\includegraphics[width=\linewidth]{figs/c6n_p4_circles.png}}{%
+\vspace{6pt}
+\begin{itemize}
+  \item Both stability circles drawn on one chart, since each only \textbf{clips the rim}:
+    the input circle near $166^\circ$, the output circle (radius $33.6$, so nearly a straight
+    line) near $63^\circ$.
+  \item Everything inside $|\Gamma| \approx 0.96$ is stable: this is why ``potentially
+    unstable'' here is narrow, and why $S_{11}^*$ and $S_{22}^*$ are safe.
+  \item From \code{ampfig.py}, checked against the centres and radii above.
+\end{itemize}}
 
 \penalty0\vspace{2pt}
 
@@ -304,6 +323,13 @@ A GaAs power FET has the S-parameters at 5 GHz with 50-ohm line measured as S$_{
     line $\rightarrow$ stub $\rightarrow$ load, as in the deck's final diagram ($\S$6.4).
   \item \code{amp.py} walks both networks forward and recovers $\Gamma_S$, $\Gamma_L$ exactly.
 \end{itemize}
+\par\penalty0\Needspace{15\baselineskip}\vspace{2pt}
+\noindent\mbox{}\hfill\includegraphics[width=0.40\textwidth]{figs/c6n_p6_input.png}\hfill
+\includegraphics[width=0.40\textwidth]{figs/c6n_p6_output.png}\hfill\mbox{}\par
+{\color{sub}\footnotesize Steps 5 and 6 on the chart. From the $50\,\Omega$ centre the open stub
+moves the point along the admittance $g = 1$ circle (green) onto the $|\Gamma_S|$ or $|\Gamma_L|$
+circle (dotted); the line then rotates it clockwise to the required $\Gamma$. Drawn by
+\code{ampfig.py} from the same numbers, which it checks against the boxed lengths.}
 \lead{69 Bh [18], the same design for the 4 GHz GaAs FET}
 \begin{itemize}
   \item $K = 1.195$: $\Gamma_S = 0.872\angle123.4^\circ$, $\Gamma_L = 0.876\angle61.0^\circ$,
@@ -338,6 +364,17 @@ Output, $C_L$, $R_L$ & $1.10 - 1.10 = 0$ to $2.20$ & \textbf{on} the circle & cu
     oscillation. Choose $\Gamma_L$ well on the stable side, away from the direction of $C_L$
     ($80^\circ$). \added{}
 \end{itemize}
+\par\penalty0\Needspace{15\baselineskip}\vspace{2pt}
+\sbsr{0.42}{%
+\includegraphics[width=\linewidth]{figs/c6n_p7_circles.png}}{%
+\vspace{6pt}
+\begin{itemize}
+  \item The sketch the question wants: the unit chart and the two given circles, each
+    \textbf{cutting} it. Hatch the unstable side and say which side that is.
+  \item The output circle passes through the centre: that is the $50\,\Omega$ load sitting on
+    the stability boundary.
+  \item Drawn by \code{ampfig.py} from the printed $C$ and $R$.
+\end{itemize}}
 \lead{73 Bh, 74 Bh, 75 Bh: synthesis from a sketched chart (assume your own numbers)}
 \begin{enumerate}[label=\arabic*., leftmargin=1.4em, itemsep=1pt]
   \item Read each circle's centre $C$ (distance and angle from the chart centre) and radius $R$.
