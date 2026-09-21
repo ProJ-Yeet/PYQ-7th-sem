@@ -126,7 +126,12 @@ Two more traps worth knowing before the paper starts:
 \textbf{Broadband}   & No, termination drifts & Yes \\
 \textbf{Cascading}   & Awkward & Via T-matrix \\
 \bottomrule
-\end{tabularx}}
+\end{tabularx}
+\vspace{3pt}
+\mbox{}\hfill\includegraphics[width=0.46\linewidth]{figs/c3_nport.png}\hfill\mbox{}\par
+{\color{sub}\scriptsize An $N$-port as S-parameters see it: at each reference plane $t_n$ an
+\mk{incident} $V_n^+$ and a \mk{reflected} $V_n^-$, not one total $V$ and $I$.
+Pozar Fig 4.5.}}
 
 \penalty0\vspace{2pt}
 
@@ -410,7 +415,11 @@ lab. Source: RF Pulchowk Ch3 deck.}
       two output arms are in phase or in antiphase.
     \item \textbf{Insertion loss} and \textbf{bandwidth} over which all of the above hold.
   \end{itemize}
-\end{itemize}}{%
+\end{itemize}
+\lead{The non-reciprocal escape, drawn}
+\figT{c3_circulators.png}
+{\color{sub}\scriptsize (a) clockwise, (b) counterclockwise circulator with its $[S]$: zero
+diagonal (matched), one unit entry per column (lossless), and $[S] \neq [S]^T$. Pozar Fig 7.2.}}{%
 \lead{The three escapes, and the device each one gives}
 \begin{tabularx}{\linewidth}{@{}L{2.35cm}L{2.5cm}X@{}}
 \toprule
@@ -673,6 +682,18 @@ $4\times4$, zero diagonal, $j$ on the coupled arm, one zero per row & Directiona
     and neither reciprocal ($\S$3.4, Problem 2).
 \end{itemize}}
 
+\penalty0\vspace{3pt}
+\sbsr{0.56}{%
+\lead{Why the signs fall where they do}
+\includegraphics[width=0.49\linewidth]{figs/c3_magictee_a.png}\hfill
+\includegraphics[width=0.49\linewidth]{figs/c3_magictee_b.png}}{%
+\vspace{2pt}
+{\color{sub}\scriptsize $E$ in the collinear arms (2), (3) of a magic tee.
+(a) fed from the H-arm (Pozar's port 1, the sum port): the arms are driven \mk{in phase}, the
+matching-sign column. (b) fed from the E-arm (4): \mk{antiphase}, the sign-flipped
+column. Pozar numbers the arms differently from the papers, so label by E and H, not by number.
+Pozar Fig 7.50.}}
+
 \penalty0\vspace{2pt}
 
 %=======================================================================
@@ -735,6 +756,21 @@ $4\times4$, zero diagonal, $j$ on the coupled arm, one zero per row & Directiona
   \item Multiply out, and read the answer off $|b|^2$.
   \item Close with the isolation and matching argument: that is the ``sufficient
     explanation'' the marks are for.
+\end{itemize}}
+
+\penalty0\vspace{3pt}
+\sbsr{0.36}{%
+\lead{The schematic to draw beside the tee}
+\figT{c3_hybrid180.png}}{%
+\vspace{2pt}
+\begin{itemize}
+  \item A magic tee is a $180^\circ$ hybrid: \mk{sum} port $\Sigma$ (the H-arm) and
+    \mk{difference} port $\Delta$ (the E-arm), with outputs (2) and (3).
+  \item \textbf{Combining}: equal in-phase inputs at (2), (3) add at
+    $\Sigma$ and cancel at $\Delta$, so the dummy load on $\Delta$ sees nothing.
+  \item \textbf{Splitting}: drive $\Sigma$ and (2), (3) each get half,
+    in phase; $\Delta$ stays isolated.
+  \item Pozar Fig 7.41.
 \end{itemize}}
 
 \penalty0\vspace{2pt}
