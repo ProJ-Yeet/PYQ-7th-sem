@@ -292,7 +292,12 @@ Using $min$ makes every $v'\ge 0$, which defeats the whole point of a zero-mean 
   \item \textbf{W/o replacement}: item removed once picked.
   \item \textbf{W/ replacement}: not removed, same item can repeat.
   \item \textbf{Stratified}: split into partitions, sample each. Best for skewed data.
-\end{itemize}}
+\end{itemize}
+\lead{The four forms at a glance}
+\mbox{}\hfill\includegraphics[width=0.78\linewidth]{figs/c2_preproc_forms.png}\hfill\mbox{}\par
+{\color{sub}\scriptsize Cleaning, integration, reduction (attributes A1..A126 to A1..A115,
+tuples T1..T2000 to fewer), transformation ($-2, 32, 100 \rightarrow -0.02, 0.32, 1.00$).
+The one-figure answer to ``forms of preprocessing''. H\&K Fig 3.1.}}
 
 \penalty0\vspace{3pt}
 \sbs{%
@@ -693,7 +698,10 @@ $freq_{median}$ $=$ its own frequency, $width$ $=$ its width.\\[2pt]
         linear interpolation between the two neighbouring values.
   \item Both are marked correct. \mk{The outlier verdict comes out the same either way}
         $\rightarrow$ see Ch 2 Numerical, M7.
-\end{itemize}}{%
+\end{itemize}
+\mbox{}\hfill\includegraphics[width=0.68\linewidth]{figs/c2_boxplot_hk.png}\hfill\mbox{}\par
+{\color{sub}\scriptsize Four boxplots side by side: box $Q_1$ to $Q_3$, median line, whiskers,
+and Branch 1's two outliers plotted as lone points above its whisker. H\&K Fig 2.3.}}{%
 \lead{Five-number summary and boxplot}
 \begin{itemize}
   \item \textbf{Five-number summary}, in this order:
