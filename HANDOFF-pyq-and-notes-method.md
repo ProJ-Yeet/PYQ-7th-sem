@@ -580,6 +580,29 @@ exactly. If a crop comes out black, this is why — the figure is not lost.
 Also: **decks mix page sizes**, so a box fraction tuned on one file will be wrong on another from
 the same course. Always read the crop back before shipping it.
 
+### 17a. Figure coverage: every figure-less topic, every graph-shaped numerical
+
+Standing rule since 2026-09-20 (AI), applied to O&M, RF and Data Mining on 2026-09-21:
+
+1. **Census first.** Split each `ch*.tex` on line-start `\T{` and list the bands with no
+   `\figT` / `\figC` / `\includegraphics` / tikzpicture. Every band whose answer is visual
+   (architecture, block diagram, flow, cross-section, curve, anything asked "with a neat
+   diagram") gets a sourced crop. Leave a band bare only when the figure would be a redraw of a
+   list, or no local source draws it, and say which in the commit.
+2. **Vector textbooks are the best source.** `figs_books.py` (RF, DM) finds the box from the text
+   layer alone: caption below, last full-width prose block or numbered equation above, running
+   head skipped, union of drawings between. Stacked (a)/(b) panels can be split and set side
+   by side to halve the height.
+3. **Numericals that ask for a graph get a generated one** (dendrogram, decision tree, FP-tree
+   evolution, stability circles, Smith-chart matching, zone strips, boxplot). The script recomputes
+   from the problem data and **asserts every drawn value is printed in the .tex** before drawing:
+   `ampfig.py`, `zonefig.py` (RF), `dendfig.py`, `dtfig.py`, `fpfig.py`, `boxfig.py` (DM),
+   `searchfig.py`, `semnet.py`, `resgraph.py` (AI).
+4. **A figure inside an `\sbs` column makes the unbreakable pair taller and it jumps a page.**
+   Log each column's height first (a temporary `\renewcommand{\sbsr}` that `\typeout`s both
+   minipage heights), put figures only where a column has slack, else make a small pair of their
+   own. Compare `audit.py` short pages against a HEAD build of the same chapters before committing.
+
 ## 18. The three-script harness
 
 Every subject's `src/` carries these. They are the reason the output is trustworthy.
