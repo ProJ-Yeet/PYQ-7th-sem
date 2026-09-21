@@ -543,6 +543,7 @@ Feedback & avoided, or negative & positive, loop gain $A\beta \ge 1$ \\
 \Q{Mixer theory / microwave mixer}{\m{5}}
 {\color{sub}\footnotesize \tP{2} \yr{\textbf{70 Bh}, 72 Ma} \gap$\cdot$\gap \added{} the deck has no mixer slides; written from Pozar Ch 13}
 
+\sbsr{0.56}{%
 \begin{itemize}
   \item \textbf{Mixer}: a \textbf{nonlinear} three-port (diode or FET) that multiplies an
     RF signal $f_{RF}$ with a local oscillator $f_{LO}$ to translate it in frequency.
@@ -568,7 +569,16 @@ Feedback & avoided, or negative & positive, loop gain $A\beta \ge 1$ \\
       harmonics and both RF and LO at the IF port.
     \item \textbf{FET mixers}: conversion \textbf{gain} instead of loss.
   \end{itemize}
-\end{itemize}
+\end{itemize}}{%
+\figT{c6_mixer_conv.png}
+{\color{sub}\scriptsize (a) up-conversion, (b) down-conversion, each with its output
+spectrum: both $f_{LO} \pm f_{IF}$ (or $f_{RF} \pm f_{LO}$) appear and a filter keeps one.
+Pozar Fig 13.24.}
+\vspace{3pt}
+\figT{c6_mixer_diode.png}
+{\color{sub}\scriptsize (a) single-ended diode mixer: RF and LO combined in a diplexing coupler,
+DC-biased diode, low-pass filter to the IF port; (b) its ideal equivalent, $v_{RF} + v_{LO}$
+across the diode. Pozar Fig 13.25.}}
 
 \penalty0\vspace{2pt}
 
