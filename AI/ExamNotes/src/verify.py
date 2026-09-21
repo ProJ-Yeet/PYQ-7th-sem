@@ -1255,6 +1255,10 @@ def ch6():
     _, gs = gains(sunny, "Play")
     chk("c6 A1 Sunny -> Windy", max(gs, key=lambda a: gs[a][1]), "Windy")
     chk("c6 A1 Sunny Windy gain", gs["Windy"][1], 0.9710, tol=5e-4)
+    chk("c6 A1 Rainy Temp gain", gr["Temp"][1], 0.5710, tol=5e-4)
+    chk("c6 A1 Rainy Windy gain", gr["Windy"][1], 0.0200, tol=5e-4)
+    chk("c6 A1 Sunny Temp gain", gs["Temp"][1], 0.0200, tol=5e-4)
+    chk("c6 A1 Sunny Humidity gain", gs["Humidity"][1], 0.0200, tol=5e-4)
 
     # A2 the play-cricket table (79 Jth). Same shape, DIFFERENT answer.
     base, g = gains(CRICKET, "Play")
@@ -1272,6 +1276,8 @@ def ch6():
     _, gw = gains(wtrue, "Play")
     chk("c6 A2 True -> Outlook", max(gw, key=lambda a: gw[a][1]), "Outlook")
     chk("c6 A2 True Outlook gain", gw["Outlook"][1], 0.8631, tol=5e-4)
+    chk("c6 A2 True Temp gain", gw["Temp"][1], 0.1138, tol=5e-4)
+    chk("c6 A2 True Humidity gain", gw["Humidity"][1], 0.0060, tol=5e-4)
     # every Outlook branch under Windy=True is pure, so the tree is two deep
     for v, n in (("Rainy", 3), ("Sunny", 2), ("Overcast", 2)):
         chk("c6 A2 True/%s pure" % v, gw["Outlook"][2][v], (n, 0.0))
@@ -1287,6 +1293,19 @@ def ch6():
     # the other three tie exactly, which is why the answer has to say so
     chk("c6 A3 the other three tie",
         len({round(g[a][1], 9) for a in ("NotHeavy", "Smelly", "Spotted")}), 1)
+    # second level: Smelly splits both halves perfectly, and flips meaning
+    s0 = [r for r in MUSH if r["Smooth"] == "0"]
+    _, g0 = gains([{k: v for k, v in r.items() if k != "Smooth"} for r in s0], "Edible")
+    chk("c6 A3 Smooth=0 -> Smelly", max(g0, key=lambda a: g0[a][1]), "Smelly")
+    chk("c6 A3 Smooth=0 Smelly gain", g0["Smelly"][1], 1.0, tol=5e-4)
+    chk("c6 A3 Smooth=0 NotHeavy gain", g0["NotHeavy"][1], 0.3113, tol=5e-4)
+    chk("c6 A3 Smooth=0 Spotted gain", g0["Spotted"][1], 0.0, tol=5e-4)
+    s1 = [r for r in MUSH if r["Smooth"] == "1"]
+    _, g1 = gains([{k: v for k, v in r.items() if k != "Smooth"} for r in s1], "Edible")
+    chk("c6 A3 Smooth=1 -> Smelly", max(g1, key=lambda a: g1[a][1]), "Smelly")
+    chk("c6 A3 Smooth=1 Smelly gain", g1["Smelly"][1], 0.8113, tol=5e-4)
+    chk("c6 A3 Smooth=1 NotHeavy gain", g1["NotHeavy"][1], 0.3113, tol=5e-4)
+    chk("c6 A3 Smooth=1 Spotted gain", g1["Spotted"][1], 0.1226, tol=5e-4)
 
     # A4 the profit table (Insights 6.4), the worked method
     base, g = gains(PROFIT, "Profit")

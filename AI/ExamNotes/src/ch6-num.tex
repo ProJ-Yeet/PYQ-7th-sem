@@ -130,41 +130,70 @@ Temperature & 0.0292 \\
 \end{tabularx}
 \par\penalty0\vspace{3pt}
 \noindent\colorbox{gdL}{\parbox{\dimexpr\linewidth-2\fboxsep}{\textbf{Answer.} The root
-attribute is \textbf{Outlook}, with the highest information gain, \textbf{0.2467}.}}
+attribute is \textbf{Outlook}, with the highest information gain, \textbf{0.2467}.}}}{%
+\lead{Why Outlook wins}
 \begin{itemize}
-  \item \textbf{Why, in words}: Outlook is the only attribute with a
-        \mk{pure branch} $-$ all four \emph{Overcast} days are Yes $-$
-        so it removes more uncertainty than any other. Temperature removes almost none:
-        its three branches are as mixed as the parent.
-\end{itemize}}{%
-\lead{Step 5 \gap Finish the tree \gap{\color{sub}\footnotesize(not asked, but it is two more lines and it proves the root was right)}}
-\begin{itemize}
-  \item \textbf{Overcast branch} $-$ 4 rows, all Yes. \mk{Leaf: Yes.}
-  \item \textbf{Rainy branch} $-$ 5 rows, 2 Yes 3 No, $H=0.9710$.
-  \begin{itemize}
-    \item Humidity: High $\rightarrow$ 0 Yes, 3 No ($H=0$); Normal $\rightarrow$ 2 Yes,
-          0 No ($H=0$). Residual 0, \mk{Gain $=0.9710$}.
-    \item Windy gives 0.0200, Temperature 0.5710. So \textbf{Humidity} splits it
-          perfectly: High $\rightarrow$ No, Normal $\rightarrow$ Yes.
-  \end{itemize}
-  \item \textbf{Sunny branch} $-$ 5 rows, 3 Yes 2 No, $H=0.9710$.
-  \begin{itemize}
-    \item Windy: False $\rightarrow$ 3 Yes, 0 No; True $\rightarrow$ 0 Yes, 2 No.
-          Residual 0, \mk{Gain $=0.9710$}. So \textbf{Windy}:
-          False $\rightarrow$ Yes, True $\rightarrow$ No.
-  \end{itemize}
-  \item \textbf{The tree}, three levels and five leaves:
-  \begin{itemize}
-    \item \code{Outlook = Overcast -> Yes}
-    \item \code{Outlook = Rainy, Humidity = High -> No}
-    \item \code{Outlook = Rainy, Humidity = Normal -> Yes}
-    \item \code{Outlook = Sunny, Windy = False -> Yes}
-    \item \code{Outlook = Sunny, Windy = True -> No}
-  \end{itemize}
-  \item Temperature never appears. \mk{ID3 has decided it is
-        irrelevant}, which is the feature-selection side of the algorithm.
+  \item Outlook is the only attribute with a \mk{pure branch} $-$ all four
+        \emph{Overcast} days are Yes $-$ so it removes more uncertainty than any other.
+  \item Temperature removes almost none: its three branches are as mixed as the parent.
+  \item \textbf{Overcast} (rows 3, 7, 12, 13) is all Yes, so it becomes a
+        \mk{leaf} at once. \textbf{Rainy} (2:3) and \textbf{Sunny} (3:2) both still
+        have $H=0.9710$, so each needs its own split: Step 5.
 \end{itemize}}
 
+\lead{Step 5 \gap Recurse: Steps 1 to 4 again, inside each impure branch \gap{\color{sub}\footnotesize(not asked, but it proves the root was right)}}
+{\color{sub}\footnotesize Rows numbered 1 to 14 top to bottom. Each branch uses only
+\emph{its own} five rows and only the three attributes Outlook has not used. Both
+branches start from $H=0.9710$, so the residual is the whole story.}
+\sbs{%
+\textbf{Outlook $=$ Rainy} {\color{sub}\footnotesize rows 1, 2, 8, 9, 11 \gap 2 Yes, 3 No}
+\par\vspace{2pt}
+\begin{tabularx}{\linewidth}{@{}l@{\hspace{5pt}}lcccX@{}}
+\hrow \thead{Attribute} & \thead{Value (rows)} & \thead{$P$} & \thead{$N$} &
+  \thead{$H$} & \thead{Gain} \\
+\textbf{Humidity} & High (1,2,8) & 0 & 3 & \mk{0} & \\
+                  & Normal (9,11) & 2 & 0 & \mk{0} & \mk{0.9710} \\
+\hrow Temperature & Hot (1,2)  & 0 & 2 & 0 & \\
+                  & Mild (8,11) & 1 & 1 & 1.0000 & \\
+                  & Cool (9)   & 1 & 0 & 0 & 0.5710 \\
+\hrow Windy & False (1,8,9) & 1 & 2 & 0.9183 & \\
+            & True (2,11)   & 1 & 1 & 1.0000 & 0.0200 \\
+\end{tabularx}
+\par\vspace{2pt}
+{\footnotesize Humidity: residual $0$, gain $=0.9710-0=0.9710$. Temperature: residual
+$\frac{2}{5}(1)=0.4000$, gain $0.5710$. Windy: residual
+$\frac{3}{5}(0.9183)+\frac{2}{5}(1)=0.9510$, gain $0.0200$. \mk{Split on Humidity.}}}{%
+\textbf{Outlook $=$ Sunny} {\color{sub}\footnotesize rows 4, 5, 6, 10, 14 \gap 3 Yes, 2 No}
+\par\vspace{2pt}
+\begin{tabularx}{\linewidth}{@{}l@{\hspace{5pt}}lcccX@{}}
+\hrow \thead{Attribute} & \thead{Value (rows)} & \thead{$P$} & \thead{$N$} &
+  \thead{$H$} & \thead{Gain} \\
+\textbf{Windy} & False (4,5,10) & 3 & 0 & \mk{0} & \\
+               & True (6,14)    & 0 & 2 & \mk{0} & \mk{0.9710} \\
+\hrow Temperature & Mild (4,10,14) & 2 & 1 & 0.9183 & \\
+                  & Cool (5,6)     & 1 & 1 & 1.0000 & 0.0200 \\
+\hrow Humidity & High (4,14)    & 1 & 1 & 1.0000 & \\
+               & Normal (5,6,10) & 2 & 1 & 0.9183 & 0.0200 \\
+\end{tabularx}
+\par\vspace{2pt}
+{\footnotesize Windy: residual $0$, gain $0.9710$. Temperature and Humidity each leave
+one 1:1 pair and one 2:1 triple: residual $\frac{2}{5}(1)+\frac{3}{5}(0.9183)=0.9510$,
+gain $0.0200$. \mk{Split on Windy.}}}
+
+\par\vspace{2pt}
+\noindent\textbf{The tree}, three levels and five leaves, one rule per leaf:
+\code{Outlook = Overcast -> Yes}; \code{Outlook = Rainy, Humidity = High -> No};
+\code{Outlook = Rainy, Humidity = Normal -> Yes}; \code{Outlook = Sunny, Windy = False -> Yes};
+\code{Outlook = Sunny, Windy = True -> No}. Temperature never appears:
+\mk{ID3 has decided it is irrelevant}, which is the feature-selection side of the algorithm.
+% ch6fig:slot c6_tree_golf
+% ch6fig:c6_tree_golf (generated by ch6fig.py; do not edit)
+\penalty0\vspace{3pt}
+\Needspace{235pt}
+\lead{The finished tree: play golf (rows numbered 1 to 14 top to bottom)}
+\begin{center}\includegraphics[width=513.2pt]{figs/c6_tree_golf.png}\end{center}
+\par\Needspace{16\baselineskip}
+% ch6fig:end
 %=======================================================================
 \T{6.N.3 Problem 1.2 --- the ``play cricket'' table, whose answer is different}
 
@@ -238,26 +267,45 @@ attribute is \textbf{Windy}, gain \textbf{0.5087} $-$ more than twice Outlook's 
 \end{itemize}}{%
 \lead{Finishing the tree \gap{\color{sub}\footnotesize(it is only two levels deep)}}
 \begin{itemize}
-  \item \textbf{Windy $=$ False} $-$ 7 rows, all Yes. \mk{Leaf: Yes.}
-  \item \textbf{Windy $=$ True} $-$ 7 rows, 2 Yes 5 No, $H=0.8631$. Split on Outlook:
-  \begin{itemize}
-    \item Rainy $\rightarrow$ 3 rows, all No ($H=0$).
-    \item Sunny $\rightarrow$ 2 rows, all No ($H=0$).
-    \item Overcast $\rightarrow$ 2 rows, all Yes ($H=0$).
-    \item Residual $0$, so \mk{Gain $=0.8631$}: a perfect split.
-  \end{itemize}
+  \item \textbf{Windy $=$ False} $-$ rows 1, 3, 4, 5, 9, 10, 13, all Yes. \mk{Leaf: Yes.}
+  \item \textbf{Windy $=$ True} $-$ rows 2, 6, 7, 8, 11, 12, 14: 2 Yes 5 No, $H=0.8631$.
+        Steps 1 to 4 again on those seven rows, with the three attributes left:
+\end{itemize}
+\begin{tabularx}{\linewidth}{@{}l@{\hspace{5pt}}lcccX@{}}
+\hrow \thead{Attribute} & \thead{Value (rows)} & \thead{$P$} & \thead{$N$} &
+  \thead{$H$} & \thead{Gain} \\
+\textbf{Outlook} & Rainy (2,8,11)  & 0 & 3 & \mk{0} & \\
+                 & Sunny (6,14)    & 0 & 2 & \mk{0} & \\
+                 & Overcast (7,12) & 2 & 0 & \mk{0} & \mk{0.8631} \\
+\hrow Temperature & Hot (2)            & 0 & 1 & 0 & \\
+                  & Cool (6,7)         & 1 & 1 & 1.0000 & \\
+                  & Mild (8,11,12,14)  & 1 & 3 & 0.8113 & 0.1138 \\
+\hrow Humidity & High (2,8,12,14) & 1 & 3 & 0.8113 & \\
+               & Normal (6,7,11)  & 1 & 2 & 0.9183 & 0.0060 \\
+\end{tabularx}
+\par\vspace{2pt}
+{\footnotesize Outlook: every branch pure, residual $0$, gain $=0.8631$. Temperature:
+residual $\frac{2}{7}(1)+\frac{4}{7}(0.8113)=0.7493$, gain $0.1138$. Humidity: residual
+$\frac{4}{7}(0.8113)+\frac{3}{7}(0.9183)=0.8571$, gain $0.0060$. \mk{Split on Outlook.}}}
+
+\par\vspace{2pt}
+\begin{itemize}
   \item \textbf{The tree}, four leaves and only two tests:
-  \begin{itemize}
-    \item \code{Windy = False -> Yes}
-    \item \code{Windy = True, Outlook = Overcast -> Yes}
-    \item \code{Windy = True, Outlook = Rainy -> No}
-    \item \code{Windy = True, Outlook = Sunny -> No}
-  \end{itemize}
+        \code{Windy = False -> Yes}; \code{Windy = True, Outlook = Rainy -> No};
+        \code{Windy = True, Outlook = Sunny -> No};
+        \code{Windy = True, Outlook = Overcast -> Yes}.
   \item Neither Temperature nor Humidity is ever tested. The cricket tree is
         \mk{smaller than the golf tree} $-$ two tests against three $-$
         which is what a higher root gain buys you.
-\end{itemize}}
-
+\end{itemize}
+% ch6fig:slot c6_tree_cricket
+% ch6fig:c6_tree_cricket (generated by ch6fig.py; do not edit)
+\penalty0\vspace{3pt}
+\Needspace{235pt}
+\lead{The finished tree: play cricket, two tests instead of three}
+\begin{center}\includegraphics[width=412.0pt]{figs/c6_tree_cricket.png}\end{center}
+\par\Needspace{16\baselineskip}
+% ch6fig:end
 %=======================================================================
 \T{6.N.4 Problem 1.3 --- the mushroom island}
 
@@ -340,25 +388,75 @@ attribute.}}
 \end{itemize}}{%
 \lead{Two things worth adding for the last marks}
 \begin{itemize}
-  \item \mk{No attribute here is much use.} The best gain is 0.0488
+  \item \mk{No attribute here is much use at the root.} The best gain is 0.0488
         against a starting entropy of 0.9544, so the root removes only about
-        \textbf{5\,\%} of the uncertainty. With eight examples and four binary
-        attributes the data simply does not determine a good tree $-$ and on this
-        question that is worth saying, because the story is about eating something
-        poisonous.
-  \item \mk{Classifying U, V and W}, which the story implies even though
-        the question stops at the root:
-  \begin{itemize}
-    \item \code{U: Smooth = 1} $\rightarrow$ the 3:1 inedible branch $\rightarrow$
-          predict \textbf{not edible}.
-    \item \code{V: Smooth = 1} $\rightarrow$ predict \textbf{not edible}.
-    \item \code{W: Smooth = 0} $\rightarrow$ the 2:2 branch, \mk{a tie}
-          $-$ the tree cannot decide, and a majority-class leaf would be a coin toss.
-  \end{itemize}
-  \item So the honest answer ends: \textbf{do not eat W}. A model this uncertain should
-        abstain, not guess.
+        \textbf{5\,\%} of the uncertainty.
+  \item \mk{But the second level is perfect.} Under either value of Smooth,
+        \textbf{Smelly} separates the mushrooms completely (tables below). The tree
+        is therefore only two tests deep, and it classifies U, V and W: the story
+        implies that even though the question stops at the root.
+  \item Beware the root-only shortcut: reading U and V off the 3:1 Smooth branch
+        says \emph{not edible}, and the full tree says the opposite.
 \end{itemize}}
 
+\lead{Finishing the tree \gap{\color{sub}\footnotesize(not asked; it is how U, V and W get classified)}}
+{\color{sub}\footnotesize Each branch uses only its own four mushrooms and only the three
+attributes Smooth has not used.}
+\sbs{%
+\textbf{Smooth $=$ 0} {\color{sub}\footnotesize A, B, E, H \gap 2 edible, 2 not, $H=1$}
+\par\vspace{2pt}
+\begin{tabularx}{\linewidth}{@{}l@{\hspace{5pt}}lcccX@{}}
+\hrow \thead{Attribute} & \thead{Value (rows)} & \thead{$P$} & \thead{$N$} &
+  \thead{$H$} & \thead{Gain} \\
+\textbf{Smelly} & 0 (A,B) & 2 & 0 & \mk{0} & \\
+                & 1 (E,H) & 0 & 2 & \mk{0} & \mk{1.0000} \\
+\hrow NotHeavy & 1 (A,B,E) & 2 & 1 & 0.9183 & \\
+               & 0 (H)     & 0 & 1 & 0 & 0.3113 \\
+\hrow Spotted & 1 (B,E) & 1 & 1 & 1.0000 & \\
+              & 0 (A,H) & 1 & 1 & 1.0000 & 0 \\
+\end{tabularx}
+\par\vspace{2pt}
+{\footnotesize NotHeavy: residual $\frac{3}{4}(0.9183)=0.6887$, gain $0.3113$. Spotted
+leaves both halves 1:1, gain 0. \mk{Split on Smelly.}}}{%
+\textbf{Smooth $=$ 1} {\color{sub}\footnotesize C, D, F, G \gap 1 edible, 3 not, $H=0.8113$}
+\par\vspace{2pt}
+\begin{tabularx}{\linewidth}{@{}l@{\hspace{5pt}}lcccX@{}}
+\hrow \thead{Attribute} & \thead{Value (rows)} & \thead{$P$} & \thead{$N$} &
+  \thead{$H$} & \thead{Gain} \\
+\textbf{Smelly} & 1 (C)     & 1 & 0 & \mk{0} & \\
+                & 0 (D,F,G) & 0 & 3 & \mk{0} & \mk{0.8113} \\
+\hrow NotHeavy & 0 (C,D) & 1 & 1 & 1.0000 & \\
+               & 1 (F,G) & 0 & 2 & 0 & 0.3113 \\
+\hrow Spotted & 0 (C,D,G) & 1 & 2 & 0.9183 & \\
+              & 1 (F)     & 0 & 1 & 0 & 0.1226 \\
+\end{tabularx}
+\par\vspace{2pt}
+{\footnotesize NotHeavy: residual $\frac{2}{4}(1)=0.5000$, gain $0.3113$. Spotted: residual
+$\frac{3}{4}(0.9183)=0.6887$, gain $0.1226$. \mk{Split on Smelly.}}}
+
+\par\vspace{2pt}
+\noindent\textbf{The tree}: \code{Smooth = 0, Smelly = 0 -> Edible};
+\code{Smooth = 0, Smelly = 1 -> Poisonous}; \code{Smooth = 1, Smelly = 1 -> Edible};
+\code{Smooth = 1, Smelly = 0 -> Poisonous}. Smelly flips meaning between the two
+branches, which is why it looked useless on its own at the root.
+\begin{itemize}
+  \item \code{U: Smooth = 1, Smelly = 1} $\rightarrow$ predict \textbf{Edible}.
+  \item \code{V: Smooth = 1, Smelly = 1} $\rightarrow$ predict \textbf{Edible}.
+  \item \code{W: Smooth = 0, Smelly = 1} $\rightarrow$ predict \textbf{Poisonous}.
+  \item \mk{The honest caveat}: the leaf U and V land in holds a single training
+        mushroom, C. Eight examples cannot make that leaf trustworthy, so the
+        answer should say the tree predicts \emph{edible} on the evidence of one
+        mushroom $-$ and on an island where the cost of a wrong guess is death,
+        that is a reason to abstain.
+\end{itemize}
+% ch6fig:slot c6_tree_mush
+% ch6fig:c6_tree_mush (generated by ch6fig.py; do not edit)
+\penalty0\vspace{3pt}
+\Needspace{249pt}
+\lead{The finished tree: the mushroom island, with U, V and W dropped through it}
+\begin{center}\includegraphics[width=412.0pt]{figs/c6_tree_mush.png}\end{center}
+\par\Needspace{16\baselineskip}
+% ch6fig:end
 %=======================================================================
 \T{6.N.5 Problem 1.4 --- the profit table (extra practice, not a PYQ)}
 
@@ -413,7 +511,7 @@ Type & Software & 3 & 3 & 6 & 1.0000 & 0.6000 \\
 \textbf{Competition} & Yes & 0 & 2 & 0 & \\
                      & No  & 2 & 0 & 0 & \mk{1.0000} \\
 Type & Software & 1 & 1 & 1 & \\
-     & Hardware & 1 & 1 & 1 & 0 \\
+     & Hardware & 1 & 1 & 1 & 0.0000 \\
 \end{tabularx}
 \par\penalty0\vspace{2pt}
 \noindent\colorbox{gdL}{\parbox{\dimexpr\linewidth-2\fboxsep}{\textbf{Answer.}
@@ -426,6 +524,14 @@ Type & Software & 1 & 1 & 1 & \\
         are all pure has residual 0 and therefore gain $=H(S)$, the maximum possible.
         Whenever you see one, stop comparing and take it.
 \end{itemize}}
+% ch6fig:slot c6_tree_profit
+% ch6fig:c6_tree_profit (generated by ch6fig.py; do not edit)
+\penalty0\vspace{3pt}
+\Needspace{235pt}
+\lead{The finished tree: profit (rows numbered 1 to 10 top to bottom)}
+\begin{center}\includegraphics[width=412.0pt]{figs/c6_tree_profit.png}\end{center}
+\par\Needspace{16\baselineskip}
+% ch6fig:end
 
 \hr
 
