@@ -201,23 +201,10 @@ $\tfrac{2}{5}(0)+\tfrac{3}{5}(0.918)=0.551$ & 0.171 \\
 
 \sbsr{0.5}{%
 \lead{Final tree}
-\begin{itemize}
-  \item \textbf{Travel cost?}
-  \begin{itemize}
-    \item \emph{Expensive} $\rightarrow$ \textbf{Car}
-    \item \emph{Standard} $\rightarrow$ \textbf{Train}
-    \item \emph{Cheap} $\rightarrow$ \textbf{Gender?}
-    \begin{itemize}
-      \item male $\rightarrow$ \textbf{Bus}
-      \item female $\rightarrow$ \textbf{Car ownership?}
-      \begin{itemize}
-        \item 0 $\rightarrow$ \textbf{Bus}
-        \item 1 $\rightarrow$ \textbf{Train}
-      \end{itemize}
-    \end{itemize}
-  \end{itemize}
-  \item 5 leaves, depth 3, classifies all 10 training tuples correctly.
-\end{itemize}}{%
+\includegraphics[width=\linewidth]{figs/c3n_dt_78bh.png}
+{\color{sub}\footnotesize 5 leaves, depth 3, classifies all 10 training tuples correctly.
+Drawn by \code{dtfig.py}, which reruns ID3 on the table and checks the gains and the tree
+against this page.}}{%
 \lead{Prediction for $<$Female, 2, standard, high$>$}
 \begin{itemize}
   \item Read the root first: Travel cost $=$ \textbf{standard}.
@@ -319,26 +306,20 @@ Debt       & $0.541$ & 0.109 \\
         $Info_A = 0$ and the branch is finished in one step.
 \end{itemize}}
 
-\sbsr{0.52}{%
+\par\penalty0\needspace{14\baselineskip}
 \lead{Final tree}
+\mbox{}\hfill\includegraphics[width=0.90\textwidth]{figs/c3n_dt_82bh.png}\hfill\mbox{}\par
+{\color{sub}\footnotesize Drawn by \code{dtfig.py}, which reruns ID3 on the table and checks the
+gains and the tree against this page.}
+
+\sbsr{0.52}{%
+\lead{Reading the tree}
 \begin{itemize}
-  \item \textbf{Income?}
-  \begin{itemize}
-    \item \emph{\$0--15K} $\rightarrow$ \textbf{high risk}
-    \item \emph{\$15--35K} $\rightarrow$ \textbf{Credit history?}
-    \begin{itemize}
-      \item bad $\rightarrow$ \textbf{high}
-      \item good $\rightarrow$ \textbf{moderate}
-      \item unknown $\rightarrow$ \textbf{Debt?} \; high $\rightarrow$ \textbf{high},
-            low $\rightarrow$ \textbf{moderate}
-    \end{itemize}
-    \item \emph{over \$35K} $\rightarrow$ \textbf{Credit history?}
-    \begin{itemize}
-      \item unknown $\rightarrow$ \textbf{low} \quad good $\rightarrow$ \textbf{low}
-      \item bad $\rightarrow$ \textbf{moderate}
-    \end{itemize}
-  \end{itemize}
   \item 8 leaves; classifies all 14 tuples correctly.
+  \item \textbf{Income} alone decides the \$0--15K band (all high risk).
+  \item \textbf{Credit history} is tested twice, once under each other income band: an
+    attribute used on one path can be reused on another.
+  \item Only the \$15--35K, unknown-history tuples need a third test, \textbf{Debt}.
 \end{itemize}}{%
 \lead{The 3-mark part: evaluating the model}
 \begin{itemize}
@@ -696,6 +677,12 @@ Negative & 98  & 720 \\
 \vspace{2pt}
 {\color{sub}``Positve'' is the paper's own spelling.}
 \end{asked}
+\lead{The [2] block diagram}
+\noindent\includegraphics[width=0.49\textwidth]{figs/c3_class_learn.png}\hfill
+\includegraphics[width=0.49\textwidth]{figs/c3_class_use.png}\par
+{\color{sub}\footnotesize (a) learning: training data $\rightarrow$ algorithm $\rightarrow$ model;
+(b) classification: model checked on test data, then applied to new data. The precision--recall
+part is Ch 3 theory, \S3.7. H\&K Fig 8.1.}
 \lead{Step 1: read the four cells} \mk{rows are Actual here}, so
 $TP=142$, $FN=40$, $FP=98$, $TN=720$ $\rightarrow$ $P=182$, $N=818$, total $=1000$.
 \par
