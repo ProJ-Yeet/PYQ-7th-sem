@@ -89,7 +89,12 @@ Numerical Problems \& Solutions}, where all 24 PYQ constructions are solved step
 \textbf{Termination} & Matching not needed. & Must terminate in $Z_0$ or match with a tuner. \\
 \textbf{Joints} & Any solder joint. & Precision connectors (SMA, N, APC-7); a bad joint is a reflector. \\
 \bottomrule
-\end{tabularx}}
+\end{tabularx}
+\lead{The planar family, in cross-section}
+\figT{c2_planar_lines.png}
+{\color{sub}\scriptsize (a) stripline, (b) microstrip, (c) slot line, (d) coplanar strips,
+with $E$ (solid) and $H$ (dashed). Only (a) has one homogeneous dielectric round the conductor,
+so only (a) is pure TEM. Das \& Das Fig 3.27.}}
 
 \penalty0\vspace{2pt}
 
@@ -105,6 +110,9 @@ compared there and are not repeated.}
 
 \sbs{%
 \lead{Distributed model and the telegrapher's equations}
+\mbox{}\hfill\includegraphics[width=0.62\linewidth]{figs/c2_lumped_model.png}\hfill\mbox{}\par
+{\color{sub}\scriptsize (a) $v$, $i$ on a length $\Delta z$; (b) its equivalent cell. Draw (b)
+before writing KVL and KCL. Pozar Fig 2.1.}
 \begin{itemize}
   \item A length $\Delta z$ of line is modelled by series $R'\Delta z$, $L'\Delta z$ and
     shunt $G'\Delta z$, $C'\Delta z$, all \textbf{per unit length}.
@@ -315,7 +323,11 @@ on a plain chart --- a $\lambda/4$ turn away.}}
   \item A resistive pad would ``match'' but dissipate the very power being matched.
   \item So matching uses only \textbf{reactive} elements: line lengths, stubs, lumped
     $L$ and $C$.
-\end{itemize}}{%
+\end{itemize}
+\figT{c2_lossless_match.png}
+{\color{sub}\scriptsize The general problem: a lossless network between line $Z_0$ and load
+$Z_L$, chosen so the line sees $Z_0$. Every technique in the table is one way to build the box.
+Pozar Fig 5.1.}}{%
 \lead{Comparison of techniques}
 \begin{tabularx}{\linewidth}{@{}L{2.05cm}X X@{}}
 \toprule
@@ -410,6 +422,22 @@ $\ell_{short} = \ell_{open} \pm \lambda/4$.}
     grid against the $r=1$ circle.
 \end{itemize}}
 
+\penalty0\vspace{3pt}
+\sbsr{0.56}{%
+\lead{The circuit, which is what to draw}
+\includegraphics[width=0.49\linewidth]{figs/c2_single_stub_a.png}\hfill
+\includegraphics[width=0.49\linewidth]{figs/c2_single_stub_b.png}}{%
+\vspace{2pt}
+\begin{itemize}
+  \item \textbf{(a) Shunt stub}: at distance $d$ from the load the line admittance is
+    $Y = 1/Z = Y_0 + jB$; the stub of length $\ell$, open or shorted, adds $-jB$.
+  \item \textbf{(b) Series stub}: same two unknowns $d$ and $\ell$, but the stub is in series,
+    so work in impedance: $Z = Z_0 + jX$ at $d$, stub supplies $-jX$.
+  \item Mark $d$ from the \textbf{load} and $\ell$ from the stub's \textbf{open or shorted
+    end} on the sketch: those are the two answers the question asks for.
+  \item Pozar Fig 5.4.
+\end{itemize}}
+
 \penalty0\vspace{2pt}
 
 %=======================================================================
@@ -484,6 +512,23 @@ $\ell_{short} = \ell_{open} \pm \lambda/4$.}
 {\footnotesize\color{sub}\textbf{Trap.} Stub spacings near $\lambda/2$ make the two stubs
 nearly coincident and the tuner hopelessly narrowband, so practical spacings stay between
 $\lambda/8$ and $3\lambda/8$.}}
+
+\penalty0\vspace{3pt}
+\sbsr{0.38}{%
+\lead{The circuit, which is what to draw}
+\figT{c2_double_stub.png}}{%
+\vspace{2pt}
+\begin{itemize}
+  \item \textbf{(a)} load an arbitrary distance from the first stub: stub 1 ($jB_1$, length
+    $\ell_1$) nearer the load, stub 2 ($jB_2$, $\ell_2$) a fixed $d$ further toward the
+    generator.
+  \item \textbf{(b)} the same tuner with that offset line absorbed into the load, now called
+    $Y_L'$. This is step 2 of the procedure: rotate $y_L$ by $d_1$ first, then design as if
+    stub 1 sat at the load.
+  \item Only $\ell_1$ and $\ell_2$ are adjusted; $d$ is fixed at manufacture, which is the
+    whole advantage over one stub.
+  \item Pozar Fig 5.7.
+\end{itemize}}
 
 \penalty0\vspace{2pt}
 
