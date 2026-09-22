@@ -783,7 +783,7 @@ def main():
             print("ok  %s" % n)
         return
     K.render([("pre", K.preamble(T))] + figs, TEX, PREFIX, CAPTION,
-             scale={"c3s_tree_11": 1.4, "c3s_tree_12": 1.3, "c3s_tree_13": 1.4})
+             scale={"c3s_index": 0.78, "c3s_tree_11": 1.4, "c3s_tree_12": 1.3, "c3s_tree_13": 1.4})
 
 
 if __name__ == "__main__":

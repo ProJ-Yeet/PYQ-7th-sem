@@ -37,7 +37,7 @@ MAXPT = 515.0
 BASE_COLOURS = r"""
 \definecolor{ink}{HTML}{16202A}\definecolor{sub}{HTML}{6B7785}
 \definecolor{acc}{HTML}{2563A8}\definecolor{accL}{HTML}{D6E4F5}
-\definecolor{mkc}{HTML}{C2410C}\definecolor{mkL}{HTML}{FDEBD9}
+\definecolor{mkc}{HTML}{C2410C}\definecolor{mkL}{HTML}{FDEBD9}\colorlet{mkcL}{mkL}
 \definecolor{gd}{HTML}{15803D}\definecolor{gdL}{HTML}{DCFCE7}
 \definecolor{pin}{HTML}{6D28D9}\definecolor{pinL}{HTML}{EDE9FE}
 \definecolor{ruleL}{HTML}{DEE3E8}\definecolor{rowL}{HTML}{F4F7FA}
@@ -106,6 +106,8 @@ class Techs(object):
                                                             self.label[k])
 
     def index(self, fullwidth_cm=16.6):
+        if len(self.order) > 20:
+            return self.index2(fullwidth_cm)
         rows = []
         for k in self.order:
             where = []
@@ -127,6 +129,30 @@ class Techs(object):
                 r"\textbf{Move} & \textbf{What it says} & \textbf{Where it is used"
                 r" (problem, step; {\color{mkc}orange} = the key step)} \\ \hline"
                 % (w2, w3) + "\n" + "\n".join(rows) + r"\end{tabular}\end{panelbox}")
+
+
+    def where(self, k):
+        seen = {}
+        for fig, step, key in self.used[k]:
+            seen.setdefault(fig, []).append((r"\textbf{\color{mkc}%d}" % step) if key else str(step))
+        return "; ".join("%s %s" % (f, ",".join(s)) for f, s in seen.items()) or "--"
+
+    def index2(self, fullwidth_cm):
+        """Two side-by-side tables: a long index would otherwise fill a page."""
+        half = (fullwidth_cm - 0.6) / 2
+        colw = half - 2.55
+        body = []
+        for k in self.order:
+            body.append(r"\tikz[baseline=(c.base)]\node[chip, fill=%s, anchor=base] (c) {%s};"
+                        r" & %s\newline{\color{sub}\scriptsize %s} \\"
+                        % (self.col[k], self.label[k], self.what[k], self.where(k)))
+        n = (len(body) + 1) // 2
+        head = (r"\begin{tabular}[t]{@{}l>{\raggedright\arraybackslash}p{%.2fcm}@{}}"
+                r"\textbf{Move} & \textbf{What it says} {\color{sub}\scriptsize(where: problem, step;"
+                r" {\color{mkc}orange} = key step)} \\ \hline" % colw)
+        tabs = [head + "\n" + "\n".join(part) + r"\end{tabular}" for part in (body[:n], body[n:])]
+        return (r"\begin{panelbox}\scriptsize\renewcommand{\arraystretch}{1.2}"
+                + tabs[0] + r"\hspace{0.6cm}" + tabs[1] + r"\end{panelbox}")
 
 
 def preamble(techs):
