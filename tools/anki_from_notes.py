@@ -280,6 +280,7 @@ WRAP1 = {
     "code": ("<code>", "</code>"), "yr": ('<span class="yr">', "</span>"),
     "mbox": ("", ""), "text": ("", ""), "textsf": ("", ""),
     "normalfont": ("", ""), "phantomsection": ("", ""),
+    "fbox": ('<div class="fbox">', "</div>"),
 }
 
 # commands whose arguments are dropped whole
@@ -288,6 +289,7 @@ DROP_ARGS = {
     "Needspace": 1, "setcounter": 2, "rule": 2, "label": 1, "index": 1,
     "addcontentsline": 3, "typeout": 1, "phantom": 1, "input": 1,
     "renewcommand": 2, "newcommand": 2, "hphantom": 1, "raisebox": 1,
+    "addlinespace": 0,
 }
 
 # declarations that colour or size the rest of their group
@@ -635,6 +637,11 @@ class Conv(object):
         return "".join(out)
 
     def figure(self, fname):
+        # \figT{confusion_matrix}: Data Mining leaves the extension off and
+        # lets \includegraphics find the .png. A name that is really a .jpg
+        # still shows up as MISSING FIGURE rather than silently vanishing.
+        if not os.path.splitext(fname)[1]:
+            fname += ".png"
         self.media.add(fname)
         return '<div class="fig"><img src="%s%s"></div>' % (self.figprefix, fname)
 
@@ -643,7 +650,11 @@ class Conv(object):
 
 MONTHS = "Ba|Jth|Asa|Shr|Bh|Ash|Ka|Mng|Po|Ma|Ch"
 YEAR_RE = re.compile(r"\b(\d{2})\s+(%s)\b" % MONTHS)
-HEAD_RE = re.compile(r"(?m)^[ \t]*" + re.escape(BS) + r"(T|Q|creamq|qq)\{")
+# A heading also opens an \sbs column: "\sbs{%" + newline + "\creamq{...}"
+# reaches this regex as "\sbs{\creamq{" once strip_comments has eaten the
+# "%" and its newline (Data Mining ch2's "Nominal attributes").
+HEAD_RE = re.compile(r"(?m)(?:^[ \t]*|(?<=" + re.escape(BS) + r"sbs\{)|(?<=\}\{))"
+                     + re.escape(BS) + r"(T|Q|creamq|qq)\{")
 LEAD_RE = re.compile(re.escape(BS) + r"lead\{")
 NUMSEG_RE = re.compile(r"(?m)^[ \t]*" + re.escape(BS) + r"(T)\{"
                        r"|^[ \t]*" + re.escape(BS) + r"(lead)\{\d+\.\d+"
@@ -850,6 +861,29 @@ def parse_theory(path, chno, chtitle, conv):
                 stop = heads[j].start()
                 break
         args, after = grab_args(src, start, 2)
+        # A heading inside a group (one column of an \sbs) also ends where
+        # that group closes: Data Mining's "Ordinal attributes" sits at the
+        # foot of the left column and the next \creamq heads the right one,
+        # so running on to it swallowed the "}{" between them. The mirror
+        # case: a top-level heading whose next heading opens the next \sbs
+        # stops before that \sbs, not inside its open group.
+        opened, k = [], after
+        while k < stop:
+            c = src[k]
+            if c == BS:
+                k += 2
+                continue
+            if c == "{":
+                opened.append(k)
+            elif c == "}":
+                if not opened:
+                    stop = k
+                    break
+                opened.pop()
+            k += 1
+        if opened:
+            m = re.search(r"(\\[a-zA-Z]+\*?(\{[^{}]*\})*\s*)$", src[after:opened[0]])
+            stop = opened[0] - (len(m.group(1)) if m else 0)
         meta, body = meta_split(text(after, stop))
         body = re.sub(r"\s*" + re.escape(BS) + r"hr\s*$", "", body)
         return args[0], args[1], meta, body
@@ -1065,6 +1099,7 @@ def remap_media(cards, paths, prefix):
 # ---------------------------------------------------------------- deck
 
 CSS = """
+.fbox { border: 1px solid #9AA5B1; border-radius: 4px; padding: 4px 8px; margin: 4px 0; }
 .card { font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
         font-size: 16px; text-align: left; color: #16202A; background: #fff;
         line-height: 1.45; }
