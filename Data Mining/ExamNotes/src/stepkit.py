@@ -159,7 +159,7 @@ def preamble(techs):
     return (r"\documentclass[border=4pt, multi=panelbox]{standalone}" "\n"
             r"\usepackage[T1]{fontenc}\usepackage[default]{lato}" "\n"
             r"\usepackage{amsmath, amssymb, xcolor, tikz, array}" "\n"
-            r"\usetikzlibrary{arrows.meta, positioning, calc}" "\n"
+            r"\usetikzlibrary{arrows.meta, positioning, calc, shapes.misc}" "\n"
             + BASE_COLOURS + techs.colours() + "\n"
             + r"\newenvironment{panelbox}{}{}"
             + r"\newcommand{\mk}[1]{\textcolor{mkc}{\bfseries #1}}" "\n"
