@@ -603,6 +603,37 @@ Standing rule since 2026-09-20 (AI), applied to O&M, RF and Data Mining on 2026-
    minipage heights), put figures only where a column has slack, else make a small pair of their
    own. Compare `audit.py` short pages against a HEAD build of the same chapters before committing.
 
+### 17b. Step figures: the solution drawn, one panel per step
+
+Standing rule since 2026-09-21 (AI ch2-num, ch6-num), applied to all six Data Mining
+numerical companions on 2026-09-22. **Every numerical ends with its solution drawn**, not only
+the ones whose answer is a graph (17a.3).
+
+1. **One panel per step of the worked solution**, in the order the notes argue it. A panel shows
+   the state *after* its step: the tree so far, the matrix after the merge, the centroids after the
+   move, the cells the metric reads.
+2. **A coloured TECHNIQUE chip on every panel** names the move it makes (prune, join, read the axes,
+   Laplace, share prefix, smallest entry, move to mean...). The chips are the point: a dozen moves
+   solve every problem in the archive, and naming them is what turns a worked answer into a method.
+3. **The decisive panel is framed KEY STEP**, and a **generated index** at the top of the chapter
+   lists every move, what it says, and where it is used (problem and step; the key step in orange).
+4. **The exit test is replay.** The script recomputes the whole solution from the problem data and
+   asserts every value it draws is printed in that problem's text. Never read a number out of the
+   notes and draw it back: that proves nothing. This is what caught DM ch2's `0.6300`
+   (10/15.8745 = 0.6299), ch3's 1.446 entropy typo and ch4's doubled brand dimension.
+5. **Match the notes' own arithmetic, not exact arithmetic.** H&K truncates 0.2467 to 0.246, and
+   PageRank tables carry each row rounded to 4 places (in float that lands at 0.44834999... and
+   rounds the wrong way, so compute those in `Decimal`). Accept a printed value within a small
+   tolerance and *display the printed one*, so page and figure never disagree.
+
+`<Subject>/ExamNotes/src/stepkit.py` is the shared machinery: the panel/chip/KEY STEP drawing, the
+technique index (two columns past 20 moves), `need()` for the replay assertions, and `render()`,
+which compiles every figure in one tectonic run, writes the PNGs and inserts each block at a
+`% ch<N>fig:slot <name>` line in the `.tex` (re-running replaces the block, never stacks a second).
+Per-chapter scripts are `ch<N>fig.py`. Figures are PNGs so `anki_from_notes.py` carries them onto
+the cards — **inline `tikzpicture` is dropped by the converter**, so a drawing that matters must be
+generated, not written inline (DM ch4 lost five FP-tree and subgraph drawings to this for months).
+
 ## 18. The three-script harness
 
 Every subject's `src/` carries these. They are the reason the output is trustworthy.
