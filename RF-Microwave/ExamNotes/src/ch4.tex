@@ -1,9 +1,9 @@
 \section{RF/Microwave Components and Devices}
 {\color{sub}\footnotesize 8 hrs \gap$\cdot$\gap asked in \mk{all 24 papers}
-\gap$\cdot$\gap 11 syllabus sub-topics \gap$\cdot$\gap \mk{317 marks, 16.7\% of the archive,
-52 questions}
+\gap$\cdot$\gap 11 syllabus sub-topics \gap$\cdot$\gap \mk{386 marks, 20.3\% of the archive,
+61 questions}
 $\rightarrow$ one derivation (the waveguide) worth up to 10 marks, one device (the magic tee)
-asked 9 times, and a ring of 4 to 6 mark short notes.}
+asked 9 times by name and 8 more in disguise, and a ring of 4 to 6 mark short notes.}
 
 \vspace{3pt}\noindent
 \colorbox{gdL}{\makebox[\dimexpr\textwidth-2\fboxsep][l]{%
@@ -19,9 +19,11 @@ Chapter 4 has the biggest question count in the paper, but three scripts answer 
   \item \textbf{Mode questions} (9 papers, 1 to 5 marks each): dominant, degenerate, ``prove
     TM$_{01}$ cannot exist'', ``show TM$_{11}$ is the lowest TM mode'' $\rightarrow$ $\S$4.2.
     Every one is \mk{the cut-off formula plus one sentence}.
-  \item \textbf{Magic tee} (9 papers) $\rightarrow$ $\S$4.5 for construction and the
-    derivation, $\S$3.6 for the matrix. The combinations (two tees joined, arms terminated)
-    are worked in the numerical companion.
+  \item \textbf{Magic tee} (9 papers) $\rightarrow$ $\S$4.5, construction, derivation and
+    matrix. The same matrix answers \textbf{identify the device from its S-matrix}
+    (4 papers, $\S$4.6) and the \textbf{radar power problems} (4 papers, $\S$4.7):
+    \mk{one matrix, three families}. The combinations (two tees joined, arms terminated
+    or shorted) are worked in the numerical companion.
 \end{enumerate}
 Two more things worth knowing before the paper starts:
 \begin{itemize}
@@ -341,7 +343,7 @@ H_\phi &= -\frac{j}{k_c^2}\left(\omega\epsilon\frac{\partial E_z}{\partial\rho} 
 \sbsr{0.40}{%
 \figT{c4_circ_cavity.png}
 {\color{sub}\scriptsize Cylindrical co-ordinates. The figure is a circular cavity (a guide
-closed at both ends, $\S$4.8); the guide itself is the same cylinder, open along $z$.
+closed at both ends, $\S$4.10); the guide itself is the same cylinder, open along $z$.
 Source: Gangaju, slide 93.}}{%
 \lead{Step 2 and 3: separate the Helmholtz equation}
 \begin{itemize}
@@ -466,7 +468,7 @@ Gangaju, slides 3 and 6.}}
 \begin{itemize}
   \item \textbf{Slot / aperture}: a hole in the wall where the field is strong; gives
     \textbf{loose} coupling, used between a guide and a cavity or a second guide
-    (directional coupler, $\S$4.6).
+    (directional coupler, $\S$4.8).
   \item Choice depends on: voltage breakdown near an antinode, ease of adjustment,
     constancy of coupling under mechanical change, not disturbing an electron beam, matching.
 \end{itemize}
@@ -477,7 +479,7 @@ Gangaju, slides 3 and 6.}}
 \T{4.5 Waveguide Tee Junctions and the Magic Tee}
 
 \Q{Explain the magic tee with a neat diagram and derive its S-matrix; E-plane vs H-plane tee}{\m{3+3}\m{4}\m{5}\m{6}\m{8}}
-{\color{sub}\footnotesize \tS{9} \yr{71 Ma, \textbf{71 Bh}, \textbf{72 Ash}, 72 Ma, \textbf{79 Ch}, \textbf{\texttt{79 Bh}}, \textbf{80 Ch}, \textbf{\texttt{80 Bh}}, \textbf{\texttt{82 Bh}}} \gap$\cdot$\gap the matrices are catalogued in $\S$3.6; this band adds construction, derivation and use}
+{\color{sub}\footnotesize \tS{9} \yr{71 Ma, \textbf{71 Bh}, \textbf{72 Ash}, 72 Ma, \textbf{79 Ch}, \textbf{\texttt{79 Bh}}, \textbf{80 Ch}, \textbf{\texttt{80 Bh}}, \textbf{\texttt{82 Bh}}} \gap$\cdot$\gap construction, derivation and use; identification is $\S$4.6, the radar problems $\S$4.7}
 
 \sbsr{0.42}{%
 \figT{c3_magictee.png}
@@ -535,8 +537,8 @@ Gangaju, slides 3 and 6.}}
 \end{itemize}
 \lead{Applications}
 \begin{itemize}
-  \item Power combiner, e.g. two radar transmitters into one antenna ($\S$3.8).
-  \item Duplexer: transmitter and receiver on the isolated E and H arms ($\S$3.6).
+  \item Power combiner, e.g. two radar transmitters into one antenna ($\S$4.7).
+  \item Duplexer: transmitter and receiver on the isolated E and H arms (below).
   \item Balanced mixer: signal on one side arm, local oscillator on the other.
   \item Impedance bridge / measurement: unknown and standard on 1 and 2, null detector on 3.
   \item Monopulse radar comparator: sum and difference channels.
@@ -551,7 +553,7 @@ Side-arm input & antiphase at 1, 2 & in phase at 1, 2 \\
 Relation & $S_{13} = -S_{23}$ & $S_{13} = S_{23}$ \\
 Equivalent & series junction & shunt junction \\
 In-phase at 1, 2 & cancel in side arm & add in side arm \\
-Matrix & $\S$3.6, $-1/\sqrt{2}$ in row 3 & $\S$3.6, $-1/2$ at $S_{12}$ \\
+Matrix & $-1/\sqrt{2}$ in row 3 (below) & $-1/2$ at $S_{12}$ (below) \\
 \bottomrule
 \end{tabularx}
 \vspace{2pt}
@@ -573,8 +575,57 @@ Matrix & $\S$3.6, $-1/\sqrt{2}$ in row 3 & $\S$3.6, $-1/2$ at $S_{12}$ \\
 \end{itemize}}
 
 \par\penalty0\Needspace{12\baselineskip}
+\creamq{Prepare the S-matrices of a perfectly working E-plane Tee, H-plane Tee and a Duplexer, and explore their uses}{\m{4}\m{8}}
+{\color{sub}\footnotesize \tP{2} \yr{\textbf{\texttt{80 Bh}}, \texttt{81 Ba}} \gap$\cdot$\gap derived line by line in the companion, Problems 6 and 7}
+
+\sbs{%
+\lead{E-plane tee (series tee)}
+\figT{c3_etee.png}
+\begin{itemize}
+  \item Side arm in the plane of the \textbf{E} field, so it excites the collinear arms in
+    \textbf{antiphase}.
+    \[ [S] = \begin{bmatrix}
+       \tfrac{1}{2} & \tfrac{1}{2} & \tfrac{1}{\sqrt{2}} \\[2pt]
+       \tfrac{1}{2} & \tfrac{1}{2} & -\tfrac{1}{\sqrt{2}} \\[2pt]
+       \tfrac{1}{\sqrt{2}} & -\tfrac{1}{\sqrt{2}} & 0 \end{bmatrix} \]
+  \item \textbf{Fingerprint}: the $-1/\sqrt{2}$ in the third row / column.
+  \item \textbf{Use}: power splitting with a phase reversal; the difference arm of a magic
+    tee.
+  \item \mk{Ports 1 and 2 are not matched} ($S_{11}=S_{22}=1/2$), which is the 3-port
+    theorem of $\S$3.5 showing up in the answer.
+\end{itemize}}{%
+\lead{H-plane tee (shunt tee)}
+\figT{c3_htee.png}
+\begin{itemize}
+  \item Side arm in the plane of the \textbf{H} field, so the collinear arms come out
+    \textbf{in phase}.
+    \[ [S] = \begin{bmatrix}
+       \tfrac{1}{2} & -\tfrac{1}{2} & \tfrac{1}{\sqrt{2}} \\[2pt]
+       -\tfrac{1}{2} & \tfrac{1}{2} & \tfrac{1}{\sqrt{2}} \\[2pt]
+       \tfrac{1}{\sqrt{2}} & \tfrac{1}{\sqrt{2}} & 0 \end{bmatrix} \]
+  \item \textbf{Fingerprint}: the minus sign has moved to $S_{12}$; the side-arm column is
+    all positive.
+  \item \textbf{Use}: in-phase power divider or combiner; the sum arm of a magic tee.
+  \item \textbf{E-tee vs H-tee in one line}: same geometry, same magnitudes, opposite
+    phase relation. The E-tee subtracts, the H-tee adds.
+\end{itemize}}
+
+\par\penalty0\Needspace{8\baselineskip}
+\lead{Duplexer}
+\begin{itemize}
+  \item \textbf{Circulator duplexer} (the usual answer): port 1 transmitter, port 2
+    antenna, port 3 receiver. Ideally lossless, so \textbf{all} the transmitter power
+    reaches the antenna and \textbf{all} the echo reaches the receiver, with the
+    transmitter isolated from the receiver.
+  \item \textbf{Magic-tee duplexer}: transmitter on the H-arm, antenna and a matched
+    dummy load on the collinear arms, receiver on the E-arm. Splits the transmitter power
+    in \textbf{half} and keeps transmitter and receiver isolated. This is the version
+    \textbf{76 Bh} asks for ($\S$4.7).
+\end{itemize}
+
+\par\penalty0\Needspace{12\baselineskip}
 \creamq{Tee combinations: arms terminated, two tees joined, a 3-port coupler}{\m{4}\m{4+4+2}\m{5}\m{8}\m{10}}
-{\color{sub}\footnotesize \tF{5} \yr{70 Ma, \textbf{75 Bh}, \textbf{77 Ch}, \textbf{78 Ch}, \texttt{82 Ba}} \gap$\cdot$\gap each solved by connecting or terminating ports in \code{wg.py}; full working in the companion, Problems 6 to 8}
+{\color{sub}\footnotesize \tF{5} \yr{70 Ma, \textbf{75 Bh}, \textbf{77 Ch}, \textbf{78 Ch}, \texttt{82 Ba}} \gap$\cdot$\gap each solved by connecting or terminating ports in \code{wg.py}; full working in the companion, Problems 9 to 11}
 \begin{itemize}
   \item \textbf{Hybrid tee with a terminated arm} (\texttt{82 Ba}, 70 Ma): a matched load
     simply deletes that row and column.
@@ -585,7 +636,7 @@ Matrix & $\S$3.6, $-1/\sqrt{2}$ in row 3 & $\S$3.6, $-1/2$ at $S_{12}$ \\
     \item H-arm terminated $\Rightarrow$ the same but \textbf{antiphase} from the E-arm.
     \item Both collinear arms terminated $\Rightarrow$ $[S] = [0]$: E and H arms matched and
       completely isolated.
-    \item For \textbf{shorted} arms (82 Bh) see $\S$3.6: $[S] = -[I]$.
+    \item For \textbf{shorted} arms (82 Bh) see the band below: $[S] = -[I]$.
   \end{itemize}
   \item \textbf{Two magic tees joined E-arm to E-arm} (77 Ch): a matched, lossless,
     reciprocal 6-port. The \textbf{difference} signal of one tee crosses to the other and
@@ -597,10 +648,205 @@ Matrix & $\S$3.6, $-1/\sqrt{2}$ in row 3 & $\S$3.6, $-1/2$ at $S_{12}$ \\
     its coupled share in the internal load.
 \end{itemize}
 
+\par\penalty0\Needspace{10\baselineskip}
+\creamq{\added{} Magic tee with both E- and H-arms short-circuited}{\m{4}}
+{\color{sub}\footnotesize \tP{1} \yr{\textbf{\texttt{82 Bh}}} \gap$\cdot$\gap not in any source note, derived here and checked in \code{sparam.py}; companion Problem 12}
+
+\sbs{%
+\begin{itemize}
+  \item Shorts at the junction reference plane give $a_3 = -b_3$ and $a_4 = -b_4$.
+  \item Substituting into the magic-tee equations collapses the 4-port to the two-port
+    seen from ports 1 and 2:
+    \[ [S]_{\text{shorted}} = \begin{bmatrix} -1 & 0 \\ 0 & -1 \end{bmatrix} \]
+\end{itemize}}{%
+\begin{itemize}
+  \item \textbf{Behaviour}: each collinear arm reflects \textbf{all} of its incident power
+    with a $180^\circ$ phase reversal, and the two arms stay \textbf{completely isolated}
+    from each other.
+  \item The E-arm and H-arm reflections add in the driven arm and cancel in the other one,
+    which is why $S_{21}$ stays zero.
+  \item Still lossless (each column sums to 1), still reciprocal. The tee has become a
+    \textbf{pair of independent short circuits}, useful as a reflective phase shifter or a
+    reference short.
+\end{itemize}}
+
 \penalty0\vspace{2pt}
 
 %=======================================================================
-\T{4.6 Directional Couplers}
+\T{4.6 Identifying a Device from its S-Matrix}
+
+\Q{Identify and explain, with a neat diagram, the passive microwave device described by the given S-matrix}{\m{5}\m{6}\m{8}\m{10}}
+{\color{sub}\footnotesize \tF{4} \yr{\textbf{74 Bh}, \textbf{75 Bh}, \textbf{78 Ch}, \textbf{\texttt{81 Bh}}} \gap$\cdot$\gap \mk{in all four papers the printed matrix is a magic tee}}
+
+\lead{The six-step method}
+\begin{enumerate}[label=\arabic*., leftmargin=1.4em]
+  \item \textbf{Count the ports}: the order of the matrix is the port count. $4\times4$
+    narrows it to coupler, magic tee or hybrid ring immediately.
+  \item \textbf{Read the diagonal}: zeros mark the matched ports. An all-zero diagonal on
+    a 4-port means matched everywhere.
+  \item \textbf{Test the transpose}: symmetric means passive and isotropic; asymmetric
+    means ferrite or active.
+  \item \textbf{Test the columns}: sums of 1 and orthogonal pairs mean lossless. A
+    shortfall is dissipation.
+  \item \textbf{Map the zeros}: an off-diagonal zero is an \textbf{isolated pair}. Which
+    pairs are decoupled is the strongest single clue.
+  \item \textbf{Read the signs and the $j$'s}: a sign flip down a column means an
+    \textbf{antiphase (difference, E) arm}; matching signs mean an \textbf{in-phase (sum,
+    H) arm}; a factor $j$ means a \textbf{quadrature} coupled arm.
+\end{enumerate}
+
+\sbs{%
+\lead{Answer skeleton}
+\begin{itemize}
+  \item Name the device in the first line. Do not narrate the tests first.
+  \item Draw it: the 3D waveguide sketch with all arms labelled, plus the schematic.
+  \item Justify with the four tests, one line each.
+  \item Close with two uses and one limitation (the tee needs matching irises at the
+    collinear arms to reach the ideal matrix in practice).
+\end{itemize}}{%
+\lead{Fingerprint table}
+\begin{tabularx}{\linewidth}{@{}L{3.05cm}X@{}}
+\toprule
+\hrow \thead{Pattern} & \thead{Device} \\
+\midrule
+$2\times2$, $S_{11}=S_{22}=0$, $S_{12}=S_{21}=1$ & Matched lossless line or ideal matched network \\
+$2\times2$, $S_{12}=0$, $S_{21}=1$ & Isolator \\
+$2\times2$, $|S_{21}|>1$, $|S_{12}|$ tiny & Amplifier (active, not reciprocal) \\
+$3\times3$, cyclic ones, not symmetric & Circulator \\
+$3\times3$ with a $\pm1/\sqrt{2}$ column & E-plane tee ($-$) or H-plane tee ($+$) \\
+$4\times4$, zero diagonal, two zero $2\times2$ blocks, one column sign-flipped & \mk{Magic tee} \\
+$4\times4$, zero diagonal, $j$ on the coupled arm, one zero per row & Directional coupler \\
+\bottomrule
+\end{tabularx}}
+
+
+
+\sbs{%
+\lead{The three matrices the four papers print}
+\begin{itemize}
+  \item \textbf{78 Ch} \m{10}, printed without its normalising factor:
+    \[ [S] = \begin{bmatrix} 0&0&1&1 \\ 0&0&-1&1 \\ 1&-1&0&0 \\ 1&1&0&0 \end{bmatrix} \]
+    Zero diagonal, symmetric, the $(1,2)$ and $(3,4)$ blocks zero, column 3 sign-flipped:
+    \textbf{magic tee}. It is unitary only after dividing by $\sqrt{2}$, and saying so
+    earns the ``judge the condition'' mark.
+  \item \textbf{\texttt{81 Bh}} \m{5} and \textbf{74 Bh} \m{8}, printed symbolically:
+    \[ [S] = \begin{bmatrix}
+       S_{11}&S_{12}&S_{13}&S_{14} \\ S_{12}&S_{22}&S_{13}&-S_{14} \\
+       S_{13}&S_{13}&0&0 \\ S_{14}&-S_{14}&0&0 \end{bmatrix} \]
+    Column 3 in phase (H-arm), column 4 antiphase (E-arm), $S_{33}=S_{44}=0$:
+    the \textbf{magic tee before the unitary property is applied}. Finish the job and
+    $S_{11}=S_{22}=S_{12}=0$, $S_{13}=S_{14}=1/\sqrt{2}$.
+\end{itemize}}{%
+\begin{itemize}
+  \item \textbf{75 Bh} \m{6}, the same device with the collinear isolation already
+    written in:
+    \[ [S] = \begin{bmatrix}
+       S_{11}&0&S_{13}&S_{14} \\ 0&S_{22}&-S_{13}&S_{14} \\
+       S_{13}&-S_{13}&0&0 \\ S_{14}&S_{14}&0&0 \end{bmatrix} \]
+    Here column 3 is the antiphase E-arm and column 4 the in-phase H-arm, the mirror of
+    the previous labelling. \mk{Read the signs, not the port numbers.}
+  \item Not to be confused with \textbf{\texttt{82 Bh}} \m{4}, which prints two
+    \emph{amplifier} sets: steps 3 and 4 answer it ($S_{12} \neq S_{21}$, $|S_{21}| > 1$),
+    and it is a Chapter 3 question, $\S$3.4 and Ch3 companion Problem 2.
+\end{itemize}}
+
+\penalty0\vspace{3pt}
+\sbsr{0.56}{%
+\lead{Why the signs fall where they do}
+\includegraphics[width=0.49\linewidth]{figs/c3_magictee_a.png}\hfill
+\includegraphics[width=0.49\linewidth]{figs/c3_magictee_b.png}}{%
+\vspace{2pt}
+{\color{sub}\scriptsize $E$ in the collinear arms (2), (3) of a magic tee.
+(a) fed from the H-arm (Pozar's port 1, the sum port): the arms are driven \mk{in phase}, the
+matching-sign column. (b) fed from the E-arm (4): \mk{antiphase}, the sign-flipped
+column. Pozar numbers the arms differently from the papers, so label by E and H, not by number.
+Pozar Fig 7.50.}}
+
+\penalty0\vspace{2pt}
+
+%=======================================================================
+\T{4.7 Power Splitting and Combining: the Radar Questions}
+
+\Q{Two identical radar transmitters must deliver twice the power to one antenna; and an ASR needs half the transmitter power at the antenna through a duplexer. Solve both with an S-matrix}{\m{6}\m{8}\m{10}}
+{\color{sub}\footnotesize \tF{4} \yr{73 Ma, \textbf{73 Bh}, 74 Ma, \textbf{76 Bh}} \gap$\cdot$\gap \mk{one device, two directions: the magic tee combines and splits}}
+
+\sbs{%
+\lead{Combining: two transmitters into one antenna}
+\begin{itemize}
+  \item \textbf{Device}: magic tee (or a $3$ dB hybrid coupler).
+  \item \textbf{Connection}: the two transmitters drive the collinear arms 1 and 2
+    \textbf{in phase and at equal amplitude}; the antenna hangs on the H-arm (port 4);
+    the E-arm (port 3) carries a \textbf{matched dummy load}.
+  \item \textbf{Mathematics}, with $a_1 = a_2 = a$ and $a_3 = a_4 = 0$:
+    \[ b_4 = \tfrac{1}{\sqrt{2}}(a_1 + a_2) = \sqrt{2}\,a
+       \;\Rightarrow\; |b_4|^2 = 2|a|^2 \]
+    \[ b_3 = \tfrac{1}{\sqrt{2}}(a_1 - a_2) = 0 \]
+  \item \textbf{Result}: the antenna receives $2P$, twice what either transmitter can
+    deliver, and the dummy load receives nothing.
+  \item \textbf{Why the tee and not a plain T-junction}: $S_{12} = 0$, so the two
+    transmitters are \textbf{isolated} and cannot pull or damage each other; and all four
+    ports stay matched, so neither transmitter sees a VSWR.
+  \item \textbf{Practical riders} worth a mark each:
+  \begin{itemize}
+    \item Phase must be equalised, so the two feed lines are cut to the same electrical
+      length.
+    \item Amplitude imbalance $\Delta$ shows up as $|b_3|^2 \neq 0$: the dummy load
+      absorbs exactly the mismatch, which is what protects the transmitters.
+    \item The dummy load must be rated for the full unbalanced power.
+  \end{itemize}
+\end{itemize}}{%
+\lead{Splitting: half the transmitter power to the antenna}
+\begin{itemize}
+  \item \textbf{Device}: the same magic tee, used as a duplexer, driven from the H-arm.
+  \item \textbf{Connection}: transmitter on port 4 (H-arm), antenna on port 1, matched
+    load on port 2, receiver on port 3 (E-arm).
+  \item \textbf{Mathematics}, with $a_4 = a$ and all other inputs zero:
+    \[ b_1 = \tfrac{1}{\sqrt{2}}a, \quad b_2 = \tfrac{1}{\sqrt{2}}a
+       \;\Rightarrow\; |b_1|^2 = |b_2|^2 = \tfrac{1}{2}|a|^2 \]
+    \[ b_3 = 0 \]
+  \item \textbf{Result}: the antenna gets exactly $P/2$, as \textbf{76 Bh} requires, and
+    the receiver on the E-arm gets \textbf{none} of the transmitter power, which is the
+    whole point of a duplexer.
+  \item \textbf{On receive}, the echo arrives at port 1 alone and divides between the
+    E-arm and the H-arm, so half of it reaches the receiver. The $3$ dB penalty in each
+    direction is the price of the magic-tee duplexer, and naming it shows you understand
+    the device rather than reciting it.
+  \item \textbf{Better answer for a real ASR}: a \textbf{ferrite circulator} duplexer
+    routes the full power $1 \rightarrow 2$ and the full echo $2 \rightarrow 3$ with no
+    $3$ dB loss. Quote it as the improvement whenever the question does not force the
+    half-power split.
+\end{itemize}
+\lead{Answer skeleton for both}
+\begin{itemize}
+  \item Name the device, draw it with every arm labelled and every termination named.
+  \item Write $[S]$ for the magic tee.
+  \item Write the drive vector $[a]$ the connection creates.
+  \item Multiply out, and read the answer off $|b|^2$.
+  \item Close with the isolation and matching argument: that is the ``sufficient
+    explanation'' the marks are for.
+\end{itemize}}
+
+\penalty0\vspace{3pt}
+\sbsr{0.36}{%
+\lead{The schematic to draw beside the tee}
+\figT{c3_hybrid180.png}}{%
+\vspace{2pt}
+\begin{itemize}
+  \item A magic tee is a $180^\circ$ hybrid: \mk{sum} port $\Sigma$ (the H-arm) and
+    \mk{difference} port $\Delta$ (the E-arm), with outputs (2) and (3).
+  \item \textbf{Combining}: equal in-phase inputs at (2), (3) add at
+    $\Sigma$ and cancel at $\Delta$, so the dummy load on $\Delta$ sees nothing.
+  \item \textbf{Splitting}: drive $\Sigma$ and (2), (3) each get half,
+    in phase; $\Delta$ stays isolated.
+  \item Pozar Fig 7.41.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+\penalty0\vspace{2pt}
+
+%=======================================================================
+\T{4.8 Directional Couplers}
 
 \Q{Explain directional couplers and the four parameters used to describe their performance}{\m{4}\m{5}\m{6}}
 {\color{sub}\footnotesize \tF{3} \yr{\textbf{73 Bh}, \textbf{79 Ch}, \texttt{80 Ba}}}
@@ -661,7 +907,7 @@ Insertion loss & $10\log\dfrac{P_1}{P_2}$ dB & loss on the main line \\
 \penalty0\vspace{2pt}
 
 %=======================================================================
-\T{4.7 Ferrite Devices: Circulators, Isolators, Phase Shifters}
+\T{4.9 Ferrite Devices: Circulators, Isolators, Phase Shifters}
 
 \Q{Explain the microwave circulator}{\m{5}}
 {\color{sub}\footnotesize \tF{3} \yr{\textbf{70 Bh}, \textbf{72 Ash}, 73 Ma} \gap$\cdot$\gap asked word for word each time}
@@ -695,7 +941,7 @@ Insertion loss & $10\log\dfrac{P_1}{P_2}$ dB & loss on the main line \\
 Gangaju slide 62.}
 \lead{Applications}
 \begin{itemize}
-  \item \textbf{Duplexer}: transmitter port 1, antenna 2, receiver 3 ($\S$3.6).
+  \item \textbf{Duplexer}: transmitter port 1, antenna 2, receiver 3 ($\S$4.5).
   \item Reflection amplifiers (tunnel diode, parametric): separate input from output.
   \item An \textbf{isolator}, by loading one port.
 \end{itemize}
@@ -731,7 +977,7 @@ Gangaju slide 62.}
 \penalty0\vspace{2pt}
 
 %=======================================================================
-\T{4.8 Cavity Resonators}
+\T{4.10 Cavity Resonators}
 
 \Q{Explain microwave cavity resonators}{\m{4}\m{6}}
 {\color{sub}\footnotesize \tP{2} \yr{74 Ma, \textbf{74 Bh}}}
@@ -794,7 +1040,7 @@ Gangaju slide 62.}
 \penalty0\vspace{2pt}
 
 %=======================================================================
-\T{4.9 Solid-State and Quantum Devices: Gunn Diode, MASER, Microwave Transistors}
+\T{4.11 Solid-State and Quantum Devices: Gunn Diode, MASER, Microwave Transistors}
 
 \Q{Gunn diode}{\m{4}}
 {\color{sub}\footnotesize \tP{1} \yr{\textbf{\texttt{79 Bh}}} \gap$\cdot$\gap short note}
@@ -891,7 +1137,7 @@ Gangaju slide 62.}
 \penalty0\vspace{2pt}
 
 %=======================================================================
-\T{4.10 Attenuators, Terminations, Windows, Microstrip}
+\T{4.12 Attenuators, Terminations, Windows, Microstrip}
 
 \Q{Microstrips}{\m{5}}
 {\color{sub}\footnotesize \tP{1} \yr{\textbf{69 Bh}} \gap$\cdot$\gap geometry and microstrip vs strip-line are in $\S$1.6; stub realisation in $\S$2.9}
@@ -943,7 +1189,7 @@ Gangaju slide 62.}
 \penalty0\vspace{2pt}
 
 %=======================================================================
-\T{4.11 PYQ Mapping}
+\T{4.13 PYQ Mapping}
 
 \lead{Theory questions, covered in this document}
 \begin{itemize}
@@ -967,25 +1213,34 @@ Gangaju slide 62.}
     \texttt{82 Ba} \m{7}}
   \item \textbf{Probe vs loop coupling} $\rightarrow$ $\S$4.4. \yr{\textbf{69 Bh} \m{5}}
   \item \textbf{Magic tee: principle, S-parameters, derivation} $\rightarrow$ $\S$4.5 and
-    $\S$3.6. \yr{71 Ma \m{5}, \textbf{71 Bh} \m{5}, \textbf{72 Ash} \m{3+3}, 72 Ma \m{6},
+    companion Problem 8. \yr{71 Ma \m{5}, \textbf{71 Bh} \m{5}, \textbf{72 Ash} \m{3+3}, 72 Ma \m{6},
     \textbf{79 Ch} \m{5}, \textbf{\texttt{79 Bh}} \m{4}, \textbf{80 Ch} \m{5},
     \textbf{\texttt{80 Bh}} \m{4}}
-  \item \textbf{Magic tee with both arms shorted} $\rightarrow$ $\S$3.6.
-    \yr{\textbf{\texttt{82 Bh}} \m{4}}
+  \item \textbf{Magic tee with both arms shorted} $\rightarrow$ $\S$4.5 and companion
+    Problem 12. \added{} \yr{\textbf{\texttt{82 Bh}} \m{4}}
+  \item \textbf{S-matrices of E-plane tee, H-plane tee and a duplexer, and their uses}
+    $\rightarrow$ $\S$4.5 and companion Problems 6 and 7. \yr{\texttt{81 Ba} \m{8}}
   \item \textbf{E-plane vs H-plane tee} $\rightarrow$ $\S$4.5. \yr{\textbf{69 Bh} \m{5}, \texttt{80 Ba} \m{4}}
   \item \textbf{Hybrid tee; terminated E, H, co-planar arms} $\rightarrow$ $\S$4.5 and
-    companion Problem 7. \yr{70 Ma \m{8}, \texttt{82 Ba} \m{4+4+2}}
+    companion Problem 11. \yr{70 Ma \m{8}, \texttt{82 Ba} \m{4+4+2}}
   \item \textbf{Two magic tees joined at E-arms / in H-plane} $\rightarrow$ $\S$4.5 and
-    companion Problems 6 and 8. \yr{\textbf{77 Ch} \m{10}, \textbf{78 Ch} \m{5}}
+    companion Problems 9 and 10. \yr{\textbf{77 Ch} \m{10}, \textbf{78 Ch} \m{5}}
+  \item \textbf{Identify the passive device from a printed S-matrix} $\rightarrow$
+    $\S$4.6 and companion Problems 13 to 15, all three printed matrices worked.
+    \yr{\textbf{74 Bh} \m{8}, \textbf{75 Bh} \m{6}, \textbf{78 Ch} \m{10},
+    \textbf{\texttt{81 Bh}} \m{5}}
+  \item \textbf{Radar power combining and duplexer power splitting} $\rightarrow$ $\S$4.7
+    and companion Problems 16 and 17.
+    \yr{73 Ma \m{8}, \textbf{73 Bh} \m{8}, 74 Ma \m{6}, \textbf{76 Bh} \m{10}}
   \item \textbf{3-port directional coupler, S-parameter analysis} $\rightarrow$ $\S$4.5,
     $\S$3.5. \yr{\textbf{75 Bh} \m{4}}
-  \item \textbf{Directional couplers; four performance parameters} $\rightarrow$ $\S$4.6.
+  \item \textbf{Directional couplers; four performance parameters} $\rightarrow$ $\S$4.8.
     \yr{\textbf{73 Bh} \m{6}, \textbf{79 Ch} \m{5}, \texttt{80 Ba} \m{4}}
-  \item \textbf{Circulators} $\rightarrow$ $\S$4.7. \yr{\textbf{70 Bh} \m{5}, \textbf{72 Ash} \m{5}, 73 Ma \m{5}}
-  \item \textbf{Cavity resonators} $\rightarrow$ $\S$4.8. \yr{74 Ma \m{4}, \textbf{74 Bh} \m{6}}
-  \item \textbf{Gunn diode} $\rightarrow$ $\S$4.9. \yr{\textbf{\texttt{79 Bh}} \m{4}}
-  \item \textbf{MASER} $\rightarrow$ $\S$4.9. \yr{\texttt{80 Ba} \m{4}}
-  \item \textbf{Microstrips} $\rightarrow$ $\S$4.10 and $\S$1.6. \yr{\textbf{69 Bh} \m{5}}
+  \item \textbf{Circulators} $\rightarrow$ $\S$4.9. \yr{\textbf{70 Bh} \m{5}, \textbf{72 Ash} \m{5}, 73 Ma \m{5}}
+  \item \textbf{Cavity resonators} $\rightarrow$ $\S$4.10. \yr{74 Ma \m{4}, \textbf{74 Bh} \m{6}}
+  \item \textbf{Gunn diode} $\rightarrow$ $\S$4.11. \yr{\textbf{\texttt{79 Bh}} \m{4}}
+  \item \textbf{MASER} $\rightarrow$ $\S$4.11. \yr{\texttt{80 Ba} \m{4}}
+  \item \textbf{Microstrips} $\rightarrow$ $\S$4.12 and $\S$1.6. \yr{\textbf{69 Bh} \m{5}}
 \end{itemize}
 
 \lead{Numerical content}
@@ -993,14 +1248,15 @@ Gangaju slide 62.}
   \item \textbf{This chapter has a numerical companion}, \textit{Ch4 - RF Microwave Components
     and Devices - Numerical Problems and Solutions}: rectangular-guide parameters
     (\texttt{80 Ba}, 77 Ch), cut-off checks (70 Bh, \texttt{80 Bh}), mode ranking (72 Ma),
-    circular-guide cut-offs (75 Bh), and the junction problems (77 Ch, 78 Ch,
-    \texttt{82 Ba}).
+    circular-guide cut-offs (75 Bh), the E-plane, H-plane and magic-tee derivations,
+    the junction problems (77 Ch, 78 Ch, \texttt{82 Ba}, \texttt{82 Bh}), the three
+    device identifications and the two radar power problems.
 \end{itemize}
 
 \lead{Syllabus topics never asked in 24 papers}
 \begin{itemize}
   \item Termination, phase shifter, attenuators, microwave transistor. Each has a short
-    band above ($\S$4.7, $\S$4.9, $\S$4.10) sized for a 4-mark short note.
+    band above ($\S$4.9, $\S$4.11, $\S$4.12) sized for a 4-mark short note.
 \end{itemize}
 
 \lead{Errors in the sources, corrected here}

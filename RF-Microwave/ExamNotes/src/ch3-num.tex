@@ -1,7 +1,7 @@
 \section{RF and M/W Network Theory and Analysis: Numerical Problems}
-{\color{sub}\footnotesize 12 solved PYQ problems \gap$\cdot$\gap
-\mk{$\approx$100 marks} across 11 papers \gap$\cdot$\gap
-2 numeric matrices, 3 derivations, 3 identifications, 3 design problems, 1 modulator}
+{\color{sub}\footnotesize 3 solved PYQ problems \gap$\cdot$\gap
+\mk{19 marks} across 3 papers \gap$\cdot$\gap
+2 numeric matrices, 1 modulator}
 
 \vspace{3pt}\noindent
 \colorbox{gdL}{\makebox[\dimexpr\textwidth-2\fboxsep][l]{%
@@ -9,30 +9,27 @@
 \par\nobreak\vspace{3pt}
 
 Chapter 3 numericals are not arithmetic problems. Every one of them is the same
-four tests of $\S$3.3 applied to a matrix, or the same five-step derivation run backwards
-to build one. \mk{Nothing here needs a calculator beyond $\sqrt{2}$, a square and a
-$\log$.} Every number below was computed and asserted in \code{src/sparam.py}, which
-re-derives each device matrix from its stated properties rather than quoting it.
+four tests of $\S$3.3 applied to a matrix. \mk{Nothing here needs a calculator beyond a
+square and a $\log$.} Every number below was computed and asserted in \code{src/sparam.py}.
 
 \begin{itemize}
   \item \textbf{Always run the four tests in the same order}, and \textbf{always write them
     as a table}. Examiners give a mark per test; a paragraph hides them.
   \item \textbf{A matrix that is not unitary is not wrong}, it is lossy. Say so, and say
     how much: the shortfall in a column is the dissipated fraction.
-  \item \textbf{Watch the normalising factor.} Papers print magic-tee matrices without the
-    $1/\sqrt{2}$. Spotting that it is missing is worth a mark on its own.
-  \item \textbf{Sign, not port number, names the arm.} A column whose entries flip sign is
-    the E-arm (difference); a column whose entries match is the H-arm (sum). Papers swap
-    which port number carries which.
+  \item \textbf{The tee problems live in Chapter 4.} The E-plane, H-plane and magic-tee
+    derivations, the three device identifications and the two radar problems are filed
+    with the tee junctions, so they are the \textbf{Chapter 4 companion, Problems 6 to 17}.
+    They use the same four tests.
 \end{itemize}
 
 \hr
 
 %=======================================================================
-\T{M. The Four Methods, in Brief}
+\T{M. The Four Tests, and the Conversions}
 
 \sbs{%
-\lead{M1: the four tests (Problems 1, 6, 7, 8)}
+\lead{M1: the four tests (Problems 1 and 2; Ch4 companion Problems 13 to 15)}
 \begin{enumerate}[label=\arabic*., leftmargin=1.4em]
   \item \textbf{Diagonal}: which $S_{ii} = 0$? Those ports are matched.
   \item \textbf{Transpose}: is $S_{ij} = S_{ji}$ for every pair? Yes means reciprocal
@@ -52,39 +49,7 @@ Transpose & $S_{ij}$ vs $S_{ji}$ & reciprocal / not \\
 Column sums & $\sum_k|S_{ki}|^2$ & lossless, or lossy by the shortfall \\
 Column dots & $\sum_k S_{ki}S_{kj}^{*}$ & phases consistent / not \\
 \bottomrule
-\end{tabularx}
-\vspace{2pt}
-\lead{M2: build a device matrix from its physics (Problems 3, 4, 5)}
-\begin{enumerate}[label=\arabic*., leftmargin=1.4em]
-  \item Write the blank $n \times n$ matrix.
-  \item Impose the \textbf{phase facts}: which arms come out in phase
-    ($S_{2k} = +S_{1k}$) and which in antiphase ($S_{2k} = -S_{1k}$).
-  \item Impose the \textbf{matching facts}: $S_{kk} = 0$ for every port the question calls
-    ``perfectly matched to the junction''.
-  \item Impose \textbf{reciprocity}, $S_{ij} = S_{ji}$, and count what is left. Both a
-    plane tee and a magic tee leave exactly \textbf{4 unknowns}.
-  \item Apply the \textbf{unitary property} $[S][S]^{*} = [I]$ and read off the equations
-    row by row. Each row-column product gives one equation; solve.
-\end{enumerate}}{%
-\lead{M3: reduce an $n$-port by terminating ports (Problem 9)}
-\begin{enumerate}[label=\arabic*., leftmargin=1.4em]
-  \item A termination on port $k$ forces $a_k = \Gamma_k b_k$, with
-    $\Gamma = -1$ for a \textbf{short}, $+1$ for an \textbf{open}, $0$ for a
-    \textbf{matched load}, all measured at the junction reference plane.
-  \item Write out $b_i = \sum_j S_{ij}a_j$ for every port.
-  \item Substitute the constraint for each terminated port and eliminate its $a$ and $b$.
-  \item What is left is the smaller matrix seen from the remaining ports.
-\end{enumerate}
-\lead{M4: power bookkeeping (Problems 1, 10, 11)}
-\begin{enumerate}[label=\arabic*., leftmargin=1.4em]
-  \item Write the drive vector $[a]$ that the connection creates. One transmitter on
-    port 1 alone is $[a] = [a_1, 0, 0, 0]^T$; two equal in-phase transmitters on ports 1
-    and 2 is $[a] = [a, a, 0, 0]^T$.
-  \item Multiply: $[b] = [S][a]$.
-  \item Power leaving port $i$ is $|b_i|^2$, in the same units as $|a|^2$.
-  \item Check the books: $\sum_i |b_i|^2 \le \sum_j |a_j|^2$, with equality for a
-    lossless network.
-\end{enumerate}
+\end{tabularx}}{%
 \lead{The conversions used throughout}
 \begin{itemize}
   \item $RL = -20\log_{10}|S_{11}|$ dB, \quad $IL = -20\log_{10}|S_{21}|$ dB.
@@ -93,8 +58,14 @@ Column dots & $\sum_k S_{ki}S_{kj}^{*}$ & phases consistent / not \\
   \item $P_{\text{ref}} = |S_{11}|^2 P_{\text{inc}}$, \quad
     $P_{\text{trans}} = |S_{21}|^2 P_{\text{inc}}$.
   \item $P_{\text{diss}} = \left(1 - \sum_k |S_{k1}|^2\right) P_{\text{inc}}$.
-  \item $1/\sqrt{2} = 0.7071$, and $\left(1/\sqrt{2}\right)^2 = 0.5$: half the power.
-\end{itemize}}
+\end{itemize}
+\lead{Power bookkeeping (Problem 1)}
+\begin{enumerate}[label=\arabic*., leftmargin=1.4em]
+  \item Write the drive vector $[a]$; multiply, $[b] = [S][a]$.
+  \item Power leaving port $i$ is $|b_i|^2$, in the same units as $|a|^2$.
+  \item Check the books: $\sum_i |b_i|^2 \le \sum_j |a_j|^2$, with equality for a
+    lossless network.
+\end{enumerate}}
 
 \penalty0\vspace{2pt}
 

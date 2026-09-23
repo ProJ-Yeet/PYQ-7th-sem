@@ -1,8 +1,8 @@
 \section{RF and M/W Network Theory and Analysis}
-{\color{sub}\footnotesize 4 hrs \gap$\cdot$\gap asked in \mk{18 of 24 papers}
-\gap$\cdot$\gap 2 syllabus sub-topics \gap$\cdot$\gap \mk{193 marks, 10.1\% of the archive}
-$\rightarrow$ definitions, one derivation, four matrix properties and one device
-(the magic tee) that answers half the chapter.}
+{\color{sub}\footnotesize 4 hrs \gap$\cdot$\gap asked in \mk{14 of 24 papers}
+\gap$\cdot$\gap 2 syllabus sub-topics \gap$\cdot$\gap \mk{124 marks, 6.5\% of the archive}
+$\rightarrow$ definitions, one derivation, four matrix properties and the 3-port theorem.
+The magic-tee questions are filed under Chapter 4.}
 
 \vspace{3pt}\noindent
 \colorbox{gdL}{\makebox[\dimexpr\textwidth-2\fboxsep][l]{%
@@ -12,18 +12,19 @@ $\rightarrow$ definitions, one derivation, four matrix properties and one device
 Chapter 3 is the cheapest 8 to 10 marks in the paper, because the same three asks recur:
 \begin{enumerate}[label=\arabic*., leftmargin=1.4em, itemsep=1pt]
   \item \textbf{Why S-parameters, and how do they differ from h / Z / Y / ABCD?}
-    (13 papers) $\rightarrow$ one reason list plus one comparison table, $\S$3.1.
+    (12 papers) $\rightarrow$ one reason list plus one comparison table, $\S$3.1.
   \item \textbf{Derive the S-parameters of a two-port network} (7 papers)
     $\rightarrow$ the same six lines every time, $\S$3.2. Learn it as a script.
-  \item \textbf{Identify the passive device from this S-matrix} (5 papers)
-    $\rightarrow$ \mk{in every one of the five it is the magic tee}, in four different
-    disguises. Learn the fingerprint in $\S$3.7 and the matrix in $\S$3.6.
+  \item \textbf{State the properties of the S-matrix and test a printed one} (6 papers)
+    $\rightarrow$ \mk{four tests, always as a table}, $\S$3.3, applied to numbers in
+    $\S$3.4.
 \end{enumerate}
 Two more traps worth knowing before the paper starts:
 \begin{itemize}
-  \item The radar questions (``two transmitters, twice the power'', ``half the power to the
-    antenna via a duplexer'', 4 papers) are the \textbf{same magic tee} asked as a design
-    problem, $\S$3.8. Nothing new has to be learnt for them.
+  \item \textbf{Identify the passive device from its S-matrix}, the E/H-tee matrices and
+    the radar power problems are filed with the tee junctions in \textbf{Chapter 4},
+    $\S$4.5 to $\S$4.9. They are all the four tests of $\S$3.3 applied to a magic tee, so
+    learn $\S$3.3 here first.
   \item An examiner who writes ``3-port network'' almost always wants the
     \textbf{impossibility theorem} ($\S$3.5), not just a $3\times3$ matrix. Stating that a
     3-port cannot be lossless, reciprocal and matched at the same time, and then naming the
@@ -36,7 +37,7 @@ Two more traps worth knowing before the paper starts:
 \T{3.1 Why S-parameters: the Limits of Z, Y, h and ABCD}
 
 \Q{Why are S-parameters used in microwave network analysis? Compare S-parameters with h-parameters}{\m{2}\m{3}\m{4}\m{4+4}\m{5+5}}
-{\color{sub}\footnotesize \tS{13} \yr{\textbf{69 Bh}, \textbf{70 Bh}, 70 Ma, 73 Ma, \textbf{73 Bh}, 74 Ma, \textbf{75 Bh}, \textbf{78 Ch}, \textbf{\texttt{79 Bh}}, \texttt{80 Ba}, \textbf{\texttt{80 Bh}}, \textbf{80 Ch}, \textbf{\texttt{81 Bh}}} \gap$\cdot$\gap \mk{the single most repeated ask in the chapter}}
+{\color{sub}\footnotesize \tS{12} \yr{\textbf{69 Bh}, \textbf{70 Bh}, 70 Ma, 73 Ma, \textbf{73 Bh}, 74 Ma, \textbf{75 Bh}, \textbf{78 Ch}, \textbf{\texttt{79 Bh}}, \texttt{80 Ba}, \textbf{\texttt{80 Bh}}, \textbf{80 Ch}} \gap$\cdot$\gap \mk{the single most repeated ask in the chapter}}
 
 \sbs{%
 \lead{What the low-frequency parameter sets need}
@@ -237,7 +238,7 @@ S-parameter. Useful when the question asks for a ``flow diagram''.}}{%
 \T{3.3 Properties of the S-Matrix}
 
 \Q{State and justify the properties of the scattering matrix}{\m{4}\m{4+4}\m{5}\m{6}}
-{\color{sub}\footnotesize \tS{8} \yr{\textbf{73 Bh}, \textbf{74 Bh}, \textbf{75 Bh}, \textbf{78 Ch}, \textbf{\texttt{79 Bh}}, \textbf{\texttt{80 Bh}}, \textbf{\texttt{81 Bh}}, \textbf{\texttt{82 Bh}}} \gap$\cdot$\gap \mk{these four tests are also the tool that identifies a device from its matrix}}
+{\color{sub}\footnotesize \tF{6} \yr{\textbf{73 Bh}, \textbf{75 Bh}, \textbf{78 Ch}, \textbf{\texttt{79 Bh}}, \textbf{\texttt{80 Bh}}, \textbf{\texttt{82 Bh}}} \gap$\cdot$\gap \mk{these four tests are also the tool that identifies a device from its matrix, $\S$4.8}}
 
 \sbs{%
 \lead{P1. Zero diagonal $\Leftrightarrow$ matched port}
@@ -310,7 +311,7 @@ Column dots & $\sum_k S_{ki}S_{kj}^{*} = 0$? & Confirms lossless, ties the phase
 \end{tabularx}
 \vspace{2pt}
 {\footnotesize\color{sub} Run the four in this order on any matrix the examiner prints:
-they are enough to name the device ($\S$3.7) and to answer every ``judge the condition''
+they are enough to name the device ($\S$4.8) and to answer every ``judge the condition''
 rider.}}
 
 \penalty0\vspace{2pt}
@@ -437,7 +438,7 @@ diagonal (matched), one unit entry per column (lossless), and $[S] \neq [S]^T$. 
     Terminate port 3 in a matched load and it becomes an \textbf{isolator}.
   \item A \textbf{4-port} escapes the trap entirely: a directional coupler and a magic
     tee are matched, lossless \emph{and} reciprocal all at once, which is exactly why the
-    exam favourite is a 4-port ($\S$3.6).
+    exam favourite is a 4-port ($\S$4.5).
 \end{itemize}}
 
 \sbs{%
@@ -459,7 +460,7 @@ diagonal (matched), one unit entry per column (lossless), and $[S] \neq [S]^T$. 
   \item The two demands \textbf{contradict}, so no such network exists.
     \mk{Give up exactly one of the three properties.}
 \end{itemize}}{%
-\lead{E-plane tee: the worked 3-port ($\S$3.6 has the full matrix)}
+\lead{E-plane tee: the worked 3-port ($\S$4.5 has the full matrix)}
 \begin{itemize}
   \item Ports 1 and 2 collinear, port 3 the E-arm, assumed matched to the junction.
   \item Three physical facts start the derivation:
@@ -470,7 +471,7 @@ diagonal (matched), one unit entry per column (lossless), and $[S] \neq [S]^T$. 
     \item The junction is passive and isotropic: $S_{ij} = S_{ji}$.
   \end{itemize}
   \item Four unknowns are left, and the unitary property fixes all four
-    ($\S$3.6, and Problem 5 of the companion works every line).
+    ($\S$4.5, and Ch4 companion Problem 6 works every line).
   \item \mk{Ports 1 and 2 cannot be matched}, and indeed the answer gives
     $S_{11} = S_{22} = 1/2$, which is the theorem showing up in the arithmetic.
 \end{itemize}}
@@ -478,64 +479,12 @@ diagonal (matched), one unit entry per column (lossless), and $[S] \neq [S]^T$. 
 \penalty0\vspace{2pt}
 
 %=======================================================================
-\T{3.6 S-Matrix Catalogue of the Standard Devices}
+\T{3.6 S-Matrices of the Two-Port and Non-Reciprocal Devices}
 
-\Q{Prepare the S-matrices of a perfectly working E-plane Tee, H-plane Tee and a Duplexer, and explore their uses}{\m{4+4}\m{8}\m{3+7}}
-{\color{sub}\footnotesize \tF{4} \yr{\textbf{78 Ch}, \texttt{81 Ba}, \textbf{\texttt{80 Bh}}, \textbf{\texttt{82 Bh}}} \gap$\cdot$\gap memorise these five matrices and half the chapter is already answered}
-
-\sbs{%
-\lead{E-plane tee (series tee)}
-\figT{c3_etee.png}
-\begin{itemize}
-  \item Side arm in the plane of the \textbf{E} field, so it excites the collinear arms in
-    \textbf{antiphase}.
-    \[ [S] = \begin{bmatrix}
-       \tfrac{1}{2} & \tfrac{1}{2} & \tfrac{1}{\sqrt{2}} \\[2pt]
-       \tfrac{1}{2} & \tfrac{1}{2} & -\tfrac{1}{\sqrt{2}} \\[2pt]
-       \tfrac{1}{\sqrt{2}} & -\tfrac{1}{\sqrt{2}} & 0 \end{bmatrix} \]
-  \item \textbf{Fingerprint}: the $-1/\sqrt{2}$ in the third row / column.
-  \item \textbf{Use}: power splitting with a phase reversal; the difference arm of a magic
-    tee.
-  \item \mk{Ports 1 and 2 are not matched} ($S_{11}=S_{22}=1/2$), which is the 3-port
-    theorem of $\S$3.5 showing up in the answer.
-\end{itemize}}{%
-\lead{H-plane tee (shunt tee)}
-\figT{c3_htee.png}
-\begin{itemize}
-  \item Side arm in the plane of the \textbf{H} field, so the collinear arms come out
-    \textbf{in phase}.
-    \[ [S] = \begin{bmatrix}
-       \tfrac{1}{2} & -\tfrac{1}{2} & \tfrac{1}{\sqrt{2}} \\[2pt]
-       -\tfrac{1}{2} & \tfrac{1}{2} & \tfrac{1}{\sqrt{2}} \\[2pt]
-       \tfrac{1}{\sqrt{2}} & \tfrac{1}{\sqrt{2}} & 0 \end{bmatrix} \]
-  \item \textbf{Fingerprint}: the minus sign has moved to $S_{12}$; the side-arm column is
-    all positive.
-  \item \textbf{Use}: in-phase power divider or combiner; the sum arm of a magic tee.
-  \item \textbf{E-tee vs H-tee in one line}: same geometry, same magnitudes, opposite
-    phase relation. The E-tee subtracts, the H-tee adds.
-\end{itemize}}
+\Q{Evaluate the S-matrix of an amplitude modulator; know the circulator, isolator, coupler and amplifier matrices}{\m{7}}
+{\color{sub}\footnotesize \tP{1} \yr{\textbf{78 Ch}} \gap$\cdot$\gap the tee and duplexer matrices are Chapter 4 material, $\S$4.5}
 
 \sbs{%
-\lead{Magic tee (hybrid tee): the exam favourite}
-\figT{c3_magictee.png}
-\begin{itemize}
-  \item Ports 1 and 2 collinear, port 3 the \textbf{E-arm} (difference), port 4 the
-    \textbf{H-arm} (sum). Four physical facts:
-  \begin{itemize}
-    \item E-arm drive gives antiphase outputs: $S_{23} = -S_{13}$.
-    \item H-arm drive gives in-phase outputs: $S_{24} = +S_{14}$.
-    \item E-arm and H-arm are decoupled: $S_{34} = S_{43} = 0$.
-    \item Ports 3 and 4 matched: $S_{33} = S_{44} = 0$; and the collinear arms are
-      decoupled, $S_{12} = S_{21} = 0$.
-  \end{itemize}
-  \item The unitary property then forces $S_{11} = S_{22} = 0$ as well, so the tee ends up
-    matched at \textbf{all four} ports:
-    \[ [S] = \frac{1}{\sqrt{2}}\begin{bmatrix}
-       0 & 0 & 1 & 1 \\ 0 & 0 & -1 & 1 \\
-       1 & -1 & 0 & 0 \\ 1 & 1 & 0 & 0 \end{bmatrix} \]
-  \item \textbf{Fingerprint}: an all-zero $2\times2$ block on each diagonal, one column
-    with a sign flip (E-arm), one without (H-arm).
-\end{itemize}}{%
 \lead{Circulator, isolator, gyrator}
 \begin{itemize}
   \item Circulator: $[S]$ as in $\S$3.5, matched and lossless but \textbf{not} symmetric.
@@ -554,19 +503,6 @@ diagonal (matched), one unit entry per column (lossless), and $[S] \neq [S]^T$. 
        j\beta & 0 & 0 & \alpha \\ 0 & j\beta & \alpha & 0 \end{bmatrix} \]
   \item A $3$ dB coupler has $\alpha = \beta = 1/\sqrt{2}$, and is then a magic tee in
     quadrature form.
-\end{itemize}}
-
-\sbs{%
-\lead{Duplexer}
-\begin{itemize}
-  \item \textbf{Circulator duplexer} (the usual answer): port 1 transmitter, port 2
-    antenna, port 3 receiver. Ideally lossless, so \textbf{all} the transmitter power
-    reaches the antenna and \textbf{all} the echo reaches the receiver, with the
-    transmitter isolated from the receiver.
-  \item \textbf{Magic-tee duplexer}: transmitter on the H-arm, antenna and a matched
-    dummy load on the collinear arms, receiver on the E-arm. Splits the transmitter power
-    in \textbf{half} and keeps transmitter and receiver isolated. This is the version
-    \textbf{76 Bh} asks for ($\S$3.8).
 \end{itemize}}{%
 \lead{Amplifier, attenuator, amplitude modulator}
 \begin{itemize}
@@ -579,216 +515,25 @@ diagonal (matched), one unit entry per column (lossless), and $[S] \neq [S]^T$. 
     whose transmission is \textbf{driven by the modulating signal},
     \[ [S] = \begin{bmatrix} 0 & \alpha(t) \\ \alpha(t) & 0 \end{bmatrix},
        \qquad \alpha(t) = \alpha_0\left(1 + m\cos\omega_m t\right) \]
-    Problem 6 of the companion derives it and evaluates the numbers.
-\end{itemize}}
-
-\penalty0\vspace{2pt}
-
-\creamq{\added{} Magic tee with both E- and H-arms short-circuited}{\m{4+4}}
-{\color{sub}\footnotesize \tP{1} \yr{\textbf{\texttt{82 Bh}}} \gap$\cdot$\gap not in any source note, derived here and checked in \code{sparam.py}}
-
-\sbs{%
-\begin{itemize}
-  \item Shorts at the junction reference plane give $a_3 = -b_3$ and $a_4 = -b_4$.
-  \item Substituting into the magic-tee equations collapses the 4-port to the two-port
-    seen from ports 1 and 2:
-    \[ [S]_{\text{shorted}} = \begin{bmatrix} -1 & 0 \\ 0 & -1 \end{bmatrix} \]
-\end{itemize}}{%
-\begin{itemize}
-  \item \textbf{Behaviour}: each collinear arm reflects \textbf{all} of its incident power
-    with a $180^\circ$ phase reversal, and the two arms stay \textbf{completely isolated}
-    from each other.
-  \item The E-arm and H-arm reflections add in the driven arm and cancel in the other one,
-    which is why $S_{21}$ stays zero.
-  \item Still lossless (each column sums to 1), still reciprocal. The tee has become a
-    \textbf{pair of independent short circuits}, useful as a reflective phase shifter or a
-    reference short.
+    Problem 3 of the companion derives it and evaluates the numbers.
 \end{itemize}}
 
 \penalty0\vspace{2pt}
 
 %=======================================================================
-\T{3.7 Identifying a Device from its S-Matrix}
-
-\Q{Identify and explain, with a neat diagram, the passive microwave device described by the given S-matrix}{\m{5}\m{6}\m{8}\m{10}}
-{\color{sub}\footnotesize \tF{5} \yr{\textbf{74 Bh}, \textbf{75 Bh}, \textbf{78 Ch}, \textbf{\texttt{81 Bh}}, \textbf{\texttt{82 Bh}}} \gap$\cdot$\gap \mk{in all five papers the printed matrix is a magic tee}}
-
-\sbs{%
-\lead{The six-step method}
-\begin{enumerate}[label=\arabic*., leftmargin=1.4em]
-  \item \textbf{Count the ports}: the order of the matrix is the port count. $4\times4$
-    narrows it to coupler, magic tee or hybrid ring immediately.
-  \item \textbf{Read the diagonal}: zeros mark the matched ports. An all-zero diagonal on
-    a 4-port means matched everywhere.
-  \item \textbf{Test the transpose}: symmetric means passive and isotropic; asymmetric
-    means ferrite or active.
-  \item \textbf{Test the columns}: sums of 1 and orthogonal pairs mean lossless. A
-    shortfall is dissipation.
-  \item \textbf{Map the zeros}: an off-diagonal zero is an \textbf{isolated pair}. Which
-    pairs are decoupled is the strongest single clue.
-  \item \textbf{Read the signs and the $j$'s}: a sign flip down a column means an
-    \textbf{antiphase (difference, E) arm}; matching signs mean an \textbf{in-phase (sum,
-    H) arm}; a factor $j$ means a \textbf{quadrature} coupled arm.
-\end{enumerate}
-\lead{Answer skeleton}
-\begin{itemize}
-  \item Name the device in the first line. Do not narrate the tests first.
-  \item Draw it: the 3D waveguide sketch with all arms labelled, plus the schematic.
-  \item Justify with the four tests, one line each.
-  \item Close with two uses and one limitation (the tee needs matching irises at the
-    collinear arms to reach the ideal matrix in practice).
-\end{itemize}}{%
-\lead{Fingerprint table}
-\begin{tabularx}{\linewidth}{@{}L{3.05cm}X@{}}
-\toprule
-\hrow \thead{Pattern} & \thead{Device} \\
-\midrule
-$2\times2$, $S_{11}=S_{22}=0$, $S_{12}=S_{21}=1$ & Matched lossless line or ideal matched network \\
-$2\times2$, $S_{12}=0$, $S_{21}=1$ & Isolator \\
-$2\times2$, $|S_{21}|>1$, $|S_{12}|$ tiny & Amplifier (active, not reciprocal) \\
-$3\times3$, cyclic ones, not symmetric & Circulator \\
-$3\times3$ with a $\pm1/\sqrt{2}$ column & E-plane tee ($-$) or H-plane tee ($+$) \\
-$4\times4$, zero diagonal, two zero $2\times2$ blocks, one column sign-flipped & \mk{Magic tee} \\
-$4\times4$, zero diagonal, $j$ on the coupled arm, one zero per row & Directional coupler \\
-\bottomrule
-\end{tabularx}}
-
-\sbs{%
-\lead{The four matrices the papers actually print}
-\begin{itemize}
-  \item \textbf{78 Ch} \m{10}, printed without its normalising factor:
-    \[ [S] = \begin{bmatrix} 0&0&1&1 \\ 0&0&-1&1 \\ 1&-1&0&0 \\ 1&1&0&0 \end{bmatrix} \]
-    Zero diagonal, symmetric, the $(1,2)$ and $(3,4)$ blocks zero, column 3 sign-flipped:
-    \textbf{magic tee}. It is unitary only after dividing by $\sqrt{2}$, and saying so
-    earns the ``judge the condition'' mark.
-  \item \textbf{\texttt{81 Bh}} \m{5} and \textbf{74 Bh} \m{8}, printed symbolically:
-    \[ [S] = \begin{bmatrix}
-       S_{11}&S_{12}&S_{13}&S_{14} \\ S_{12}&S_{22}&S_{13}&-S_{14} \\
-       S_{13}&S_{13}&0&0 \\ S_{14}&-S_{14}&0&0 \end{bmatrix} \]
-    Column 3 in phase (H-arm), column 4 antiphase (E-arm), $S_{33}=S_{44}=0$:
-    the \textbf{magic tee before the unitary property is applied}. Finish the job and
-    $S_{11}=S_{22}=S_{12}=0$, $S_{13}=S_{14}=1/\sqrt{2}$.
-\end{itemize}}{%
-\begin{itemize}
-  \item \textbf{75 Bh} \m{6}, the same device with the collinear isolation already
-    written in:
-    \[ [S] = \begin{bmatrix}
-       S_{11}&0&S_{13}&S_{14} \\ 0&S_{22}&-S_{13}&S_{14} \\
-       S_{13}&-S_{13}&0&0 \\ S_{14}&S_{14}&0&0 \end{bmatrix} \]
-    Here column 3 is the antiphase E-arm and column 4 the in-phase H-arm, the mirror of
-    the previous labelling. \mk{Read the signs, not the port numbers.}
-  \item \textbf{\texttt{82 Bh}} \m{4} prints two \emph{amplifier} sets instead, so steps
-    3 and 4 answer it: $S_{12} \neq S_{21}$ and $|S_{21}| > 1$ make both of them active
-    and neither reciprocal ($\S$3.4, Problem 2).
-\end{itemize}}
-
-\penalty0\vspace{3pt}
-\sbsr{0.56}{%
-\lead{Why the signs fall where they do}
-\includegraphics[width=0.49\linewidth]{figs/c3_magictee_a.png}\hfill
-\includegraphics[width=0.49\linewidth]{figs/c3_magictee_b.png}}{%
-\vspace{2pt}
-{\color{sub}\scriptsize $E$ in the collinear arms (2), (3) of a magic tee.
-(a) fed from the H-arm (Pozar's port 1, the sum port): the arms are driven \mk{in phase}, the
-matching-sign column. (b) fed from the E-arm (4): \mk{antiphase}, the sign-flipped
-column. Pozar numbers the arms differently from the papers, so label by E and H, not by number.
-Pozar Fig 7.50.}}
-
-\penalty0\vspace{2pt}
-
-%=======================================================================
-\T{3.8 Power Splitting and Combining: the Radar Questions}
-
-\Q{Two identical radar transmitters must deliver twice the power to one antenna; and an ASR needs half the transmitter power at the antenna through a duplexer. Solve both with an S-matrix}{\m{6}\m{8}\m{10}}
-{\color{sub}\footnotesize \tF{4} \yr{73 Ma, \textbf{73 Bh}, 74 Ma, \textbf{76 Bh}} \gap$\cdot$\gap \mk{one device, two directions: the magic tee combines and splits}}
-
-\sbs{%
-\lead{Combining: two transmitters into one antenna}
-\begin{itemize}
-  \item \textbf{Device}: magic tee (or a $3$ dB hybrid coupler).
-  \item \textbf{Connection}: the two transmitters drive the collinear arms 1 and 2
-    \textbf{in phase and at equal amplitude}; the antenna hangs on the H-arm (port 4);
-    the E-arm (port 3) carries a \textbf{matched dummy load}.
-  \item \textbf{Mathematics}, with $a_1 = a_2 = a$ and $a_3 = a_4 = 0$:
-    \[ b_4 = \tfrac{1}{\sqrt{2}}(a_1 + a_2) = \sqrt{2}\,a
-       \;\Rightarrow\; |b_4|^2 = 2|a|^2 \]
-    \[ b_3 = \tfrac{1}{\sqrt{2}}(a_1 - a_2) = 0 \]
-  \item \textbf{Result}: the antenna receives $2P$, twice what either transmitter can
-    deliver, and the dummy load receives nothing.
-  \item \textbf{Why the tee and not a plain T-junction}: $S_{12} = 0$, so the two
-    transmitters are \textbf{isolated} and cannot pull or damage each other; and all four
-    ports stay matched, so neither transmitter sees a VSWR.
-  \item \textbf{Practical riders} worth a mark each:
-  \begin{itemize}
-    \item Phase must be equalised, so the two feed lines are cut to the same electrical
-      length.
-    \item Amplitude imbalance $\Delta$ shows up as $|b_3|^2 \neq 0$: the dummy load
-      absorbs exactly the mismatch, which is what protects the transmitters.
-    \item The dummy load must be rated for the full unbalanced power.
-  \end{itemize}
-\end{itemize}}{%
-\lead{Splitting: half the transmitter power to the antenna}
-\begin{itemize}
-  \item \textbf{Device}: the same magic tee, used as a duplexer, driven from the H-arm.
-  \item \textbf{Connection}: transmitter on port 4 (H-arm), antenna on port 1, matched
-    load on port 2, receiver on port 3 (E-arm).
-  \item \textbf{Mathematics}, with $a_4 = a$ and all other inputs zero:
-    \[ b_1 = \tfrac{1}{\sqrt{2}}a, \quad b_2 = \tfrac{1}{\sqrt{2}}a
-       \;\Rightarrow\; |b_1|^2 = |b_2|^2 = \tfrac{1}{2}|a|^2 \]
-    \[ b_3 = 0 \]
-  \item \textbf{Result}: the antenna gets exactly $P/2$, as \textbf{76 Bh} requires, and
-    the receiver on the E-arm gets \textbf{none} of the transmitter power, which is the
-    whole point of a duplexer.
-  \item \textbf{On receive}, the echo arrives at port 1 alone and divides between the
-    E-arm and the H-arm, so half of it reaches the receiver. The $3$ dB penalty in each
-    direction is the price of the magic-tee duplexer, and naming it shows you understand
-    the device rather than reciting it.
-  \item \textbf{Better answer for a real ASR}: a \textbf{ferrite circulator} duplexer
-    routes the full power $1 \rightarrow 2$ and the full echo $2 \rightarrow 3$ with no
-    $3$ dB loss. Quote it as the improvement whenever the question does not force the
-    half-power split.
-\end{itemize}
-\lead{Answer skeleton for both}
-\begin{itemize}
-  \item Name the device, draw it with every arm labelled and every termination named.
-  \item Write $[S]$ for the magic tee.
-  \item Write the drive vector $[a]$ the connection creates.
-  \item Multiply out, and read the answer off $|b|^2$.
-  \item Close with the isolation and matching argument: that is the ``sufficient
-    explanation'' the marks are for.
-\end{itemize}}
-
-\penalty0\vspace{3pt}
-\sbsr{0.36}{%
-\lead{The schematic to draw beside the tee}
-\figT{c3_hybrid180.png}}{%
-\vspace{2pt}
-\begin{itemize}
-  \item A magic tee is a $180^\circ$ hybrid: \mk{sum} port $\Sigma$ (the H-arm) and
-    \mk{difference} port $\Delta$ (the E-arm), with outputs (2) and (3).
-  \item \textbf{Combining}: equal in-phase inputs at (2), (3) add at
-    $\Sigma$ and cancel at $\Delta$, so the dummy load on $\Delta$ sees nothing.
-  \item \textbf{Splitting}: drive $\Sigma$ and (2), (3) each get half,
-    in phase; $\Delta$ stays isolated.
-  \item Pozar Fig 7.41.
-\end{itemize}}
-
-\penalty0\vspace{2pt}
-
-%=======================================================================
-\T{3.9 PYQ Mapping}
+\T{3.7 PYQ Mapping}
 
 \lead{Theory questions, covered in this document}
 \begin{itemize}
   \item \textbf{Why S-parameters; importance in microwave network analysis; vs
     h-parameters} $\rightarrow$ $\S$3.1.
     \mk{The most repeated topic in the chapter, 13 papers.}
-    \yr{\textbf{69 Bh} \m{4}, \textbf{70 Bh} \m{4}, 70 Ma \m{4}, \textbf{80 Ch} \m{5},
-    \textbf{\texttt{81 Bh}} \m{3}}
+    \yr{\textbf{69 Bh} \m{4}, \textbf{70 Bh} \m{4}, 70 Ma \m{4}, \textbf{80 Ch} \m{5}}
+    \textbf{\texttt{81 Bh}} asks it too, \m{3}, as a rider the archive files under Chapter 1.
   \item \textbf{Derive S-parameters for a two-port network} $\rightarrow$ $\S$3.2.
     \yr{\textbf{69 Bh} \m{6}, \textbf{70 Bh} \m{4}, \texttt{80 Ba} \m{6}, \textbf{80 Ch} \m{5}}
   \item \textbf{Properties of the S-matrix} $\rightarrow$ $\S$3.3. The four tests are
-    also the identification tool of $\S$3.7. \yr{\textbf{\texttt{80 Bh}} \m{4}}
+    also the identification tool of $\S$4.8. \yr{\textbf{\texttt{80 Bh}} \m{4}}
   \item \textbf{Return loss and insertion loss} $\rightarrow$ $\S$3.4.
     \yr{\textbf{72 Ash} \m{2}, \textbf{\texttt{79 Bh}} \m{1}}
   \item \textbf{Three-port network: analysis, properties, characteristic parameters}
@@ -796,43 +541,39 @@ Pozar Fig 7.50.}}
     \yr{\textbf{72 Ash} \m{5}, 73 Ma \m{4}, \textbf{73 Bh} \m{4}, 74 Ma \m{6},
     \textbf{\texttt{82 Bh}} \m{4}}
   \item \textbf{Three-port parameters using an E-plane tee example} $\rightarrow$ $\S$3.5
-    for the parameters, $\S$3.6 for the matrix, companion Problem 5 for the derivation.
+    for the parameters, $\S$4.5 for the matrix, Ch4 companion Problem 6 for the derivation.
     \yr{\textbf{\texttt{80 Bh}} \m{4}}
-  \item \textbf{S-matrices of E-plane tee, H-plane tee and a duplexer, and their uses}
-    $\rightarrow$ $\S$3.6. \yr{\texttt{81 Ba} \m{8}}
-  \item \textbf{Magic tee with both E- and H-arms shorted} $\rightarrow$ $\S$3.6,
-    \added{} derived here because no source note carries it.
-    \yr{\textbf{\texttt{82 Bh}} \m{4}}
-  \item \textbf{Identify the passive device from a printed S-matrix} $\rightarrow$
-    $\S$3.7, with all four printed matrices worked.
-    \yr{\textbf{74 Bh} \m{8}, \textbf{75 Bh} \m{6}, \textbf{78 Ch} \m{10},
-    \textbf{\texttt{81 Bh}} \m{5}}
-  \item \textbf{Radar power combining and duplexer power splitting} $\rightarrow$ $\S$3.8.
-    \yr{73 Ma \m{8}, \textbf{73 Bh} \m{8}, 74 Ma \m{6}, \textbf{76 Bh} \m{10}}
+  \item \textbf{Compare two printed S-parameter sets} $\rightarrow$ $\S$3.4 and companion
+    Problem 2. \yr{\textbf{\texttt{82 Bh}} \m{4}}
   \item \textbf{Evaluate the S-matrix of an amplitude modulator} $\rightarrow$ $\S$3.6 and
-    companion Problem 6. \added{} \yr{\textbf{78 Ch} \m{7}}
+    companion Problem 3. \added{} \yr{\textbf{78 Ch} \m{7}}
+  \item \textbf{Not here}: the E-plane, H-plane and duplexer matrices, the shorted magic
+    tee, identify the device from its S-matrix, and the radar power problems. The archive
+    files them with the tee junctions (syllabus 4.4), so they are \textbf{Chapter 4},
+    $\S$4.5 to $\S$4.9.
 \end{itemize}
 
 \lead{Numerical content}
 \begin{itemize}
   \item \textbf{This chapter has a numerical companion}, \textit{Ch3 - RF and MW Network
-    Theory and Analysis - Numerical Problems and Solutions}. It carries every S-parameter
-    calculation the archive asks for: the \textbf{\texttt{79 Bh}} reciprocal / lossless /
-    return-loss / reflected-power question, the \textbf{\texttt{82 Bh}} comparison of two
-    amplifier sets, the four device-identification matrices, the E-plane, H-plane and
-    magic-tee derivations, and the two radar power problems.
+    Theory and Analysis - Numerical Problems and Solutions}: the \textbf{\texttt{79 Bh}}
+    reciprocal / lossless / return-loss / reflected-power question, the
+    \textbf{\texttt{82 Bh}} comparison of two amplifier sets, and the \textbf{78 Ch}
+    amplitude modulator. The tee derivations, the device identifications and the radar
+    problems are in the Chapter 4 companion, Problems 6 to 17.
   \item \textbf{Not in this chapter}: amplifier stability ($K$, $\Delta$, $\mu$) and the
     unilateral / bilateral maximum gain calculations. Those ride on S-parameters but the
     archive files them under \textbf{RF Design Practices}, so they belong to Chapter 6.
     $\S$3.4 gives only the reading of the numbers that \textbf{\texttt{82 Bh}} asks for.
 \end{itemize}
 
+\par\penalty0\Needspace{7\baselineskip}
 \lead{Syllabus coverage check}
 \begin{itemize}
   \item \textit{Scattering matrix and its properties} $\rightarrow$ $\S$3.3, $\S$3.5,
     $\S$3.6 \checkmark
   \item \textit{S-parameter derivation and analysis} $\rightarrow$ $\S$3.1, $\S$3.2,
-    $\S$3.4, $\S$3.7, $\S$3.8 \checkmark
+    $\S$3.4 \checkmark
 \end{itemize}
 
 \lead{Cross-references, so nothing is said twice}
@@ -842,8 +583,9 @@ Pozar Fig 7.50.}}
   \item \textbf{Chapter 2} $\S$2.8 carries the two-line S-matrix rider tacked onto ten
     stub-tuning questions ($[\Gamma_L]$ before matching, $\left[\begin{smallmatrix}0&1\\1&0\end{smallmatrix}\right]$
     after). The theory behind it is $\S$3.2 and $\S$3.3.
-  \item \textbf{Chapter 4} covers the physical construction of the tees, couplers,
-    circulators and waveguide junctions whose matrices are catalogued in $\S$3.6.
+  \item \textbf{Chapter 4} carries the tees: construction and matrices $\S$4.5,
+    identifying a device from its matrix $\S$4.8, the radar power problems $\S$4.9. The
+    circulator, isolator and coupler matrices stay here in $\S$3.6.
 \end{itemize}
 
 \penalty0\vspace{2pt}

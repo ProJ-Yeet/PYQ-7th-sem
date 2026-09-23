@@ -1,7 +1,7 @@
 \section{RF/Microwave Components and Devices: Numerical Problems}
-{\color{sub}\footnotesize 8 solved PYQ problems \gap$\cdot$\gap
-\mk{46 marks} across 8 papers \gap$\cdot$\gap
-2 guide-parameter sets, 1 cut-off family, 2 mode rankings, 3 junction networks}
+{\color{sub}\footnotesize 17 solved PYQ problems \gap$\cdot$\gap
+\mk{$\approx$127 marks} across 17 papers \gap$\cdot$\gap
+5 waveguide sets, 3 tee derivations, 4 junction networks, 3 identifications, 2 radar designs}
 
 \vspace{3pt}\noindent
 \colorbox{gdL}{\makebox[\dimexpr\textwidth-2\fboxsep][l]{%
@@ -17,13 +17,57 @@ Chapter 4 numericals come in two kinds, and neither needs more than a calculator
        Z_{TE} = \frac{\eta_0}{F}, \quad Z_{TM} = \eta_0 F. \]
     \mk{Always start by naming the dominant mode and checking $f > f_c$}; a guide below
     cut-off has no $\lambda_g$ or $v_p$ to find.
-  \item \textbf{Junction networks} (Problems 6 to 8). Treat each tee as its $\S$3.6 matrix
-    and \textbf{follow one unit wave through}: out of one tee, into the next, out again.
-    A matched termination deletes a row and column; a connection hands a leaving wave to the
-    other tee as an arriving one. Column power sums are the self-check.
+  \item \textbf{Tee matrices} (Problems 6 to 17). Build each tee's matrix from its physics
+    (M2 below), then \textbf{follow one unit wave through}: out of one tee, into the next,
+    out again. A matched termination deletes a row and column; a short reflects with
+    $\Gamma = -1$; a connection hands a leaving wave to the other tee as an arriving one.
+    Column power sums are the self-check, and the four tests are Ch3 companion M1.
+  \item \textbf{Watch the normalising factor.} Papers print magic-tee matrices without the
+    $1/\sqrt{2}$. Spotting that it is missing is worth a mark on its own.
+  \item \textbf{Sign, not port number, names the arm.} A column whose entries flip sign is
+    the E-arm (difference); a column whose entries match is the H-arm (sum). Papers swap
+    which port number carries which.
   \item Constants used by the papers and here: $c = 3\times10^8$ m/s,
-    $\eta_0 = 120\pi = 376.99\,\Omega$. Every answer is asserted in \code{src/wg.py}.
+    $\eta_0 = 120\pi = 376.99\,\Omega$. The guide answers are asserted in \code{src/wg.py},
+    the tee matrices in \code{src/sparam.py}.
 \end{itemize}
+
+\hr
+
+%=======================================================================
+\T{M. Three Matrix Methods for the Tee Problems}
+
+\sbs{%
+\lead{M2: build a device matrix from its physics (Problems 6, 7, 8)}
+\begin{enumerate}[label=\arabic*., leftmargin=1.4em]
+  \item Write the blank $n \times n$ matrix.
+  \item Impose the \textbf{phase facts}: which arms come out in phase
+    ($S_{2k} = +S_{1k}$) and which in antiphase ($S_{2k} = -S_{1k}$).
+  \item Impose the \textbf{matching facts}: $S_{kk} = 0$ for every port the question calls
+    ``perfectly matched to the junction''.
+  \item Impose \textbf{reciprocity}, $S_{ij} = S_{ji}$, and count what is left. Both a
+    plane tee and a magic tee leave exactly \textbf{4 unknowns}.
+  \item Apply the \textbf{unitary property} $[S][S]^{*} = [I]$ and read off the equations
+    row by row. Each row-column product gives one equation; solve.
+\end{enumerate}}{%
+\lead{M3: reduce an $n$-port by terminating ports (Problems 11, 12)}
+\begin{enumerate}[label=\arabic*., leftmargin=1.4em]
+  \item A termination on port $k$ forces $a_k = \Gamma_k b_k$, with
+    $\Gamma = -1$ for a \textbf{short}, $+1$ for an \textbf{open}, $0$ for a
+    \textbf{matched load}, all measured at the junction reference plane.
+  \item Write out $b_i = \sum_j S_{ij}a_j$ for every port.
+  \item Substitute the constraint for each terminated port and eliminate its $a$ and $b$.
+  \item What is left is the smaller matrix seen from the remaining ports.
+\end{enumerate}
+\lead{M4: power bookkeeping (Problems 16, 17)}
+\begin{enumerate}[label=\arabic*., leftmargin=1.4em]
+  \item Write the drive vector $[a]$ that the connection creates. Two equal in-phase
+    transmitters on ports 1 and 2 is $[a] = [a, a, 0, 0]^T$.
+  \item Multiply: $[b] = [S][a]$.
+  \item Power leaving port $i$ is $|b_i|^2$, in the same units as $|a|^2$.
+  \item Check the books: $\sum_i |b_i|^2 \le \sum_j |a_j|^2$, with equality for a
+    lossless network. $\left(1/\sqrt{2}\right)^2 = 0.5$: half the power.
+\end{enumerate}}
 
 \penalty0\vspace{2pt}
 

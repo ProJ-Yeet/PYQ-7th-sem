@@ -17,7 +17,7 @@ back into a chapter.}
 \T{R.1 Must Know \mk{(every TOP-tier topic: these carry the paper)}}
 
 {\color{sub}\footnotesize A topic is TOP tier when \textbf{7 or more} of the 24 papers ask it.
-There are 22 of them and every chapter has at least one, except Chapter 8, whose marks are
+There are 21 of them and every chapter has at least one, except Chapter 8, whose marks are
 spread thin over many small instruments instead.}
 
 \vspace{2pt}
@@ -31,7 +31,7 @@ spread thin over many small instruments instead.}
 2 & \textbf{Double-stub matching, all steps} & \textbf{17/24} & Chart construction with the spacing circle; two lengths and the forbidden region \\
 4 & \textbf{Rectangular waveguide TE and TM field equations} & 14/24 & Six steps, then the characteristic-equation table \\
 6 & \textbf{Microstrip implementation of the filter} & 13/24 & High-$Z$ line $=$ series $L$, low-$Z$ line $=$ shunt $C$; draw the named section \\
-3 & \textbf{Why S-parameters, and S Vs h-parameters} & 13/24 & A matched load exists at every frequency; a short and an open do not \\
+3 & \textbf{Why S-parameters, and S Vs h-parameters} & 12/24 & A matched load exists at every frequency; a short and an open do not \\
 7 & \textbf{Radiation fields (zones) of an antenna} & 11/24 & $0.62\sqrt{D^3/\lambda}$ and $2D^2/\lambda$, and the $D>\lambda$ validity check \\
 1 & \textbf{Real-world microwave systems and protocols} & 11/24 & Three or five systems with band, modulation, data rate and standard \\
 6 & Amplifier design flowchart; stability analysis & 10/24 & Boxes joined by arrows: $\Delta$, $K$, circles, $\Gamma_S$, $\Gamma_L$, networks \\
@@ -41,7 +41,6 @@ spread thin over many small instruments instead.}
 5 & \textbf{Bunching, velocity and density modulation} & 9/24 & Two lines for 2 marks; $X=1.841$ and $2I_0J_1(X)$ for 10 \\
 4 & \textbf{Magic tee and its S-matrix} & 9/24 & Sign pattern down a column, never the port number \\
 4 & Dominant and degenerate modes; which cannot exist & 9/24 & $f_c$ ranking; TM$_{m0}$ and TM$_{0n}$ do not exist \\
-3 & Properties of the S-matrix & 8/24 & Matched, reciprocal, unitary, reference-plane phase \\
 7 & Safety practices and standards & 7/24 & Name the body, the range and one number each \\
 5 & Two-cavity and multicavity klystron & 7/24 & Velocity modulate, drift, bunch, decelerate at the catcher \\
 3 & Derive S-parameters for a two-port & 7/24 & Five steps ending at $S_{11}=(Z-Z_0)/(Z+Z_0)$ \\
@@ -51,7 +50,7 @@ spread thin over many small instruments instead.}
 
 \vspace{2pt}
 {\footnotesize\color{sub} \mk{Two of these rows are one question.} ``Why S-parameters''
-is tagged into Chapter 1 by ten papers and into Chapter 3 by thirteen, because the papers
+is tagged into Chapter 1 by ten papers and into Chapter 3 by twelve, because the papers
 ask it as an opener to both a behaviour question and a network question. Learn it once.}
 
 \par\penalty0\vspace{4pt}
@@ -176,11 +175,12 @@ ask it as an opener to both a behaviour question and a network question. Learn i
 2 & \textbf{Double-stub shunt tuner} & \textbf{17/24} & 8 to 24 & The admittance chart's terminations are mirrored; a wrong end costs $\lambda/4$ \\
 6 & Filter design and microstrip layout & 13/24 & 10 & Choosing $N$ by habit rather than from the attenuation curve \\
 4 & \textbf{Rectangular guide parameter sets} & 14/24 & 1 to 3 & Using $\lambda$ where $\lambda_g$ belongs; forgetting the cut-off check \\
-3 & Magic tee and radar power splits & 9/24 & 3 to 5, 9 to 11 & Reading the port number instead of the sign pattern \\
-4 & Two magic tees joined; terminated arms & 5/24 & 6 to 8 & Not re-deriving after termination; use \code{sparam.terminate()} \\
+4 & Magic tee and radar power splits & 9/24 & 6 to 8, 12, 16, 17 & Reading the port number instead of the sign pattern \\
+4 & Two magic tees joined; terminated arms & 5/24 & 9 to 11 & Not re-deriving after termination; use \code{sparam.terminate()} \\
 2 & Single-stub shunt tuner & 6/24 & 2 to 7 & Two valid answers exist; give both $d$ and $\ell$ pairs \\
 6 & Amplifier matching networks and gain & 10/24 & 5 to 8 & Conjugate match at one port only; check $\Gamma_S = \Gamma_{in}^*$ \\
-3 & Identify the device from its S-matrix & 5/24 & 1, 6 to 8, 12 & Every one of them is a magic tee except the modulator \\
+4 & Identify the device from its S-matrix & 4/24 & 13 to 15 & Every one of them is a magic tee, printed without its $1/\sqrt{2}$ or with the arms swapped \\
+3 & Test a printed S-matrix; amplitude modulator & 3/24 & 1 to 3 & $RL$ uses $20\log$, because $S_{11}$ is an amplitude ratio \\
 7 & Radiation zones with numbers & 5/24 & 1, 2 & $D<\lambda$ makes the two formulas invalid; give the small-antenna boundaries \\
 4 & Circular guide modes with numbers & 3/24 & 4, 5 & Bessel roots: $p'_{11}=1.841$ for TE, $p_{01}=2.405$ for TM \\
 6 & Negative-resistance oscillator & 2/24 & 9 & $|R_{out}| \ge 1.2R_L$ is a rule, not a suggestion \\
@@ -217,22 +217,22 @@ electrons, \code{ant.py} and \code{meas.py} assert every number in Chapters 7 an
   \item \textbf{Derive the field equations and characteristic parameters of a rectangular
     waveguide in TE (or TM) mode.} \yr{14 papers} $\rightarrow$ $\S$4.1.
   \item \textbf{Why are S-parameters used in microwave network analysis? Compare with
-    h-parameters.} \yr{13 papers in Ch 3, 10 in Ch 1} $\rightarrow$ $\S$3.1, $\S$1.3.
+    h-parameters.} \yr{12 papers in Ch 3, 10 in Ch 1} $\rightarrow$ $\S$3.1, $\S$1.3.
   \item \textbf{Classify the microwave radiation fields around an antenna, oven or BTS.}
     \yr{11 papers} $\rightarrow$ $\S$7.1 and its two problems.
   \item \textbf{Give detailed protocols and specifications of three (or five) microwave
     communication systems.} \yr{11 papers} $\rightarrow$ $\S$1.5.
   \item \textbf{Draw a neat diagram of a magic tee and derive its S-matrix.}
-    \yr{9 papers} $\rightarrow$ $\S$4.5, $\S$3.6.
+    \yr{9 papers} $\rightarrow$ $\S$4.5.
   \item \textbf{What is bunching effect? Explain velocity modulation.} \yr{9 papers}
     $\rightarrow$ $\S$5.2. Usually the 2-mark rider on a tube question.
   \item \textbf{Sketch a cross-sectional magnetron with $45^\circ$ (or $60^\circ$,
     $90^\circ$) phase shift between adjacent cavities and explain its working.}
     \yr{9 papers} $\rightarrow$ $\S$5.5.
-  \item \textbf{State and justify the properties of the scattering matrix; analyse a
-    three-port network.} \yr{8 papers} $\rightarrow$ $\S$3.3, $\S$3.5.
   \item \textbf{Describe the construction and operation of a multicavity klystron.}
     \yr{7 papers} $\rightarrow$ $\S$5.3.
+  \item \textbf{State and justify the properties of the scattering matrix; analyse a
+    three-port network.} \yr{6 papers} $\rightarrow$ $\S$3.3, $\S$3.5.
   \item \textbf{Describe how standing waves and microwave power are measured (VSWR meter
     plus bolometry or calorimetry).} \yr{the pairing itself in 72 Ash, 70 Bh and 79 Bh; some
     Chapter 8 question in 22 of 24 papers} $\rightarrow$ $\S$8.3, $\S$8.5, $\S$8.6.
@@ -257,7 +257,8 @@ electrons, \code{ant.py} and \code{meas.py} assert every number in Chapters 7 an
 \lead{Afternoon: the reliable marks (about 3 hrs)}
 \begin{itemize}
   \item \textbf{Chapter 4}: write the six derivation steps and the characteristic-equation
-    table. Then the magic tee matrix, and one two-tee junction.
+    table. Then the magic tee matrix, identify it from a printed matrix by its signs, and
+    one two-tee junction.
   \item \textbf{Chapter 7}: the zone figure, the hazard chain, HERP / HERO / HERF, SAR and
     the three limits. This is a guaranteed question and it is fast.
   \item \textbf{Chapter 3}: the four tests, the 3-port impossibility theorem, and the

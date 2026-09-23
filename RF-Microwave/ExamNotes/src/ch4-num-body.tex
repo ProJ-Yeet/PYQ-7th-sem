@@ -47,7 +47,7 @@ Phase constant & $\beta = 2\pi/\lambda_g$ & $2\pi / 0.090453$ & $69.46$ rad/m \\
   \item ``Characteristic impedance'' of a TE guide is its wave impedance $Z_{TE}$; it is
     above $\eta_0$, as it must be for TE.
   \item \textbf{Rider (4 marks)}: coupling, directivity, isolation, insertion loss, with
-    $I = C + D$. See theory $\S$4.6.
+    $I = C + D$. See theory $\S$4.8.
 \end{itemize}
 
 \penalty0\vspace{2pt}
@@ -242,7 +242,290 @@ TM$_{01}$ & $2.4048\times3\times10^8 / (2\pi\times0.02)$ & $\mathbf{5.74}$ GHz &
 \penalty0\vspace{2pt}
 
 %======================================================================
-\Q{Problem 6: Two magic tees joined at their E-arms}{\m{10}}
+\Q{Problem 6: Derive the S-matrix of an E-plane Tee}{\m{4}\m{8}}
+{\color{sub}\footnotesize \yr{\textbf{\texttt{80 Bh}}, \texttt{81 Ba}} \gap$\cdot$\gap the model 3-port derivation; learn this and Problems 7 and 8 are the same script}
+
+\begin{asked}{\textbf{\texttt{80 Bh}} \ [4+4]}
+Briefly explain the need of S-parameters and their properties in microwave analysis. Explain three-port network parameters using an example of an E-plane Tee.
+\end{asked}
+\lead{Given}
+\begin{itemize}
+  \item An E-plane (series) tee: ports 1 and 2 are the \textbf{collinear arms}, port 3 is
+    the \textbf{E-arm} side arm, assumed \textbf{perfectly matched to the junction}.
+  \item The junction is a passive, lossless, isotropic waveguide structure.
+\end{itemize}
+\figC{c3_etee.png}{0.80\textwidth}
+{\footnotesize\color{sub} E-plane tee: 3D view and schematic, ports labelled as used below.
+Source: RF Pulchowk, S-parameter derivation sheets.}
+\lead{Step 1: write the blank matrix}
+\begin{itemize}
+  \item A 3-port has $3^2 = 9$ coefficients:
+    \[ [S] = \begin{bmatrix} S_{11} & S_{12} & S_{13} \\
+                             S_{21} & S_{22} & S_{23} \\
+                             S_{31} & S_{32} & S_{33} \end{bmatrix} \tag{i} \]
+\end{itemize}
+\lead{Step 2: impose the three physical facts}
+\begin{tabularx}{\linewidth}{@{}L{4.1cm}L{2.6cm}X@{}}
+\toprule
+\hrow \thead{Physical fact} & \thead{Equation} & \thead{Why} \\
+\midrule
+An input at the E-arm leaves ports 1 and 2 \textbf{$180^\circ$ out of phase}
+  & $S_{23} = -S_{13}$ \hfill (ii) & The E-field of the side arm drives the two collinear arms in opposition \\
+Port 3 is perfectly matched to the junction
+  & $S_{33} = 0$ \hfill (iii) & Nothing incident on the E-arm is reflected \\
+The junction is passive and isotropic
+  & $S_{ij} = S_{ji}$ \hfill (iv) & Reciprocity: $S_{12}=S_{21}$, $S_{23}=S_{32}$, $S_{31}=S_{13}$ \\
+\bottomrule
+\end{tabularx}
+\vspace{2pt}
+\begin{itemize}
+  \item Substituting (ii), (iii) and (iv) into (i):
+    \[ [S] = \begin{bmatrix} S_{11} & S_{12} & S_{13} \\
+                             S_{12} & S_{22} & -S_{13} \\
+                             S_{13} & -S_{13} & 0 \end{bmatrix} \tag{v} \]
+  \item \mk{Four unknowns remain}: $S_{11}$, $S_{12}$, $S_{22}$, $S_{13}$. Four equations
+    are needed, and the unitary property supplies them.
+\end{itemize}
+\lead{Step 3: apply the unitary (lossless) property}
+\begin{itemize}
+  \item A lossless network satisfies $[S][S]^{*T} = [I]$, and since (v) is symmetric this
+    is simply $[S][S]^{*} = [I]$:
+    \[ \begin{bmatrix} S_{11} & S_{12} & S_{13} \\ S_{12} & S_{22} & -S_{13} \\
+       S_{13} & -S_{13} & 0 \end{bmatrix}
+       \begin{bmatrix} S_{11}^{*} & S_{12}^{*} & S_{13}^{*} \\
+       S_{12}^{*} & S_{22}^{*} & -S_{13}^{*} \\
+       S_{13}^{*} & -S_{13}^{*} & 0 \end{bmatrix}
+       = \begin{bmatrix} 1&0&0 \\ 0&1&0 \\ 0&0&1 \end{bmatrix} \]
+\end{itemize}
+\lead{Step 4: read off one equation per row-column product}
+\begin{tabularx}{\linewidth}{@{}L{1.6cm}L{5.6cm}X@{}}
+\toprule
+\hrow \thead{Product} & \thead{Equation} & \thead{What it gives} \\
+\midrule
+$R_3 \cdot C_3$ & $|S_{13}|^2 + |S_{13}|^2 = 1 \Rightarrow 2|S_{13}|^2 = 1$
+  & $S_{13} = \dfrac{1}{\sqrt{2}}$ \hfill (vi) \\
+$R_3 \cdot C_1$ & $S_{13}S_{11}^{*} - S_{13}S_{12}^{*} + 0 = 0
+  \Rightarrow S_{11}^{*} = S_{12}^{*}$ & $S_{11} = S_{12}$ \hfill (vii) \\
+$R_1 \cdot C_1$ & $|S_{11}|^2 + |S_{12}|^2 + |S_{13}|^2 = 1$, and with (vi) and (vii)
+  $2|S_{11}|^2 = 1 - \tfrac{1}{2}$ & $|S_{11}|^2 = \tfrac{1}{4}$, so
+  $S_{11} = S_{12} = \tfrac{1}{2}$ \\
+$R_2 \cdot C_2$ & $|S_{12}|^2 + |S_{22}|^2 + |S_{13}|^2 = 1$, i.e.
+  $\tfrac{1}{4} + |S_{22}|^2 + \tfrac{1}{2} = 1$ & $|S_{22}|^2 = \tfrac{1}{4}$, so
+  $S_{22} = \tfrac{1}{2}$ \\
+\bottomrule
+\end{tabularx}
+\lead{Answer}
+\begin{itemize}
+  \item Substituting all four values back into (v):
+    \[ \boxed{\;[S]_{\text{E-tee}} = \begin{bmatrix}
+       \tfrac{1}{2} & \tfrac{1}{2} & \tfrac{1}{\sqrt{2}} \\[3pt]
+       \tfrac{1}{2} & \tfrac{1}{2} & -\tfrac{1}{\sqrt{2}} \\[3pt]
+       \tfrac{1}{\sqrt{2}} & -\tfrac{1}{\sqrt{2}} & 0 \end{bmatrix}\;} \]
+\end{itemize}
+\lead{Reading the answer back (this is the ``explain'' half of the marks)}
+\begin{itemize}
+  \item \textbf{Power split}: $|S_{13}|^2 = |S_{23}|^2 = \tfrac{1}{2}$, so an input at the
+    E-arm divides \textbf{equally} between the collinear arms.
+  \item \textbf{Phase}: $S_{23} = -S_{13}$, so those two outputs are \textbf{antiphase};
+    this is what makes the E-tee a \textbf{difference} junction.
+  \item \textbf{Matching}: $S_{33} = 0$ but $S_{11} = S_{22} = \tfrac{1}{2}$, so the
+    collinear arms are \mk{not matched}: a quarter of the power incident on port 1 comes
+    straight back. That is the 3-port theorem of $\S$3.5 appearing as arithmetic.
+  \item \textbf{Isolation}: $S_{12} = \tfrac{1}{2} \neq 0$, so the collinear arms are
+    \textbf{not isolated} from each other either. Adding the H-arm to fix both defects is
+    exactly what turns a tee into a magic tee (Problem 8).
+  \item \textbf{Check}: every column sums to
+    $\tfrac{1}{4}+\tfrac{1}{4}+\tfrac{1}{2} = 1$ \checkmark lossless.
+\end{itemize}
+
+\penalty0\vspace{2pt}
+
+%======================================================================
+\Q{Problem 7: Derive the S-matrix of an H-plane Tee}{\m{8}}
+{\color{sub}\footnotesize \yr{\texttt{81 Ba}} \gap$\cdot$\gap the same script as Problem 6 with one sign changed}
+
+\begin{asked}{\texttt{81 Ba} \ [8]}
+Prepare S-matrices of a perfectly working E-plane Tee, H-plane Tee and a Duplexer, and explore their uses.
+\end{asked}
+\lead{Given}
+\begin{itemize}
+  \item An H-plane (shunt) tee: ports 1 and 2 collinear, port 3 the \textbf{H-arm} side
+    arm, perfectly matched to the junction.
+\end{itemize}
+\figC{c3_htee.png}{0.62\textwidth}
+{\footnotesize\color{sub} H-plane tee: the side arm lies in the plane of the magnetic
+field. Source: RF Pulchowk, S-parameter derivation sheets.}
+\lead{Step 1: the one fact that differs from Problem 6}
+\begin{itemize}
+  \item In an H-plane tee an input at the side arm reaches the two collinear arms
+    \textbf{in phase}:
+    \[ S_{13} = S_{23} \tag{ii$'$} \]
+  \item Everything else is unchanged: $S_{33} = 0$ (iii) and $S_{ij} = S_{ji}$ (iv).
+  \item So the working matrix is
+    \[ [S] = \begin{bmatrix} S_{11} & S_{12} & S_{13} \\
+                             S_{12} & S_{22} & S_{13} \\
+                             S_{13} & S_{13} & 0 \end{bmatrix} \tag{v$'$} \]
+    with the same four unknowns.
+\end{itemize}
+\lead{Step 2: unitary property, row by row}
+\begin{tabularx}{\linewidth}{@{}L{1.6cm}L{5.6cm}X@{}}
+\toprule
+\hrow \thead{Product} & \thead{Equation} & \thead{What it gives} \\
+\midrule
+$R_3 \cdot C_3$ & $|S_{13}|^2 + |S_{13}|^2 = 1$
+  & $S_{13} = \dfrac{1}{\sqrt{2}}$ \\
+$R_3 \cdot C_1$ & $S_{13}S_{11}^{*} + S_{13}S_{12}^{*} = 0
+  \Rightarrow S_{11}^{*} = -S_{12}^{*}$ & $S_{11} = -S_{12}$ \\
+$R_1 \cdot C_1$ & $|S_{11}|^2 + |S_{12}|^2 + \tfrac{1}{2} = 1
+  \Rightarrow 2|S_{11}|^2 = \tfrac{1}{2}$ & $S_{11} = \tfrac{1}{2}$, so
+  $S_{12} = -\tfrac{1}{2}$ \\
+$R_2 \cdot C_2$ & $\tfrac{1}{4} + |S_{22}|^2 + \tfrac{1}{2} = 1$
+  & $S_{22} = \tfrac{1}{2}$ \\
+\bottomrule
+\end{tabularx}
+\vspace{2pt}
+\begin{itemize}
+  \item \mk{The sign moved.} In the E-tee the minus sign sat in the side-arm column; here
+    it sits in $S_{12}$ instead. That single difference is the whole distinction between
+    the two tees.
+\end{itemize}
+\lead{Answer, and the duplexer the same question asks for}
+\begin{itemize}
+  \item \textbf{H-plane tee}:
+    \[ \boxed{\;[S]_{\text{H-tee}} = \begin{bmatrix}
+       \tfrac{1}{2} & -\tfrac{1}{2} & \tfrac{1}{\sqrt{2}} \\[3pt]
+       -\tfrac{1}{2} & \tfrac{1}{2} & \tfrac{1}{\sqrt{2}} \\[3pt]
+       \tfrac{1}{\sqrt{2}} & \tfrac{1}{\sqrt{2}} & 0 \end{bmatrix}\;} \]
+  \item \textbf{Duplexer}, taken as an ideal 3-port ferrite circulator with port 1 the
+    transmitter, port 2 the antenna and port 3 the receiver:
+    \[ \boxed{\;[S]_{\text{duplexer}} = \begin{bmatrix}
+       0 & 0 & 1 \\ 1 & 0 & 0 \\ 0 & 1 & 0 \end{bmatrix}\;} \]
+    Matched at every port ($S_{ii}=0$), lossless (every column sums to 1) and
+    \mk{deliberately non-reciprocal} ($S_{21}=1$ but $S_{12}=0$), which is the only way a
+    3-port can be both matched and lossless ($\S$3.5).
+\end{itemize}
+\lead{Uses, which the question asks for explicitly}
+\begin{tabularx}{\linewidth}{@{}L{2.4cm}L{3.5cm}X@{}}
+\toprule
+\hrow \thead{Device} & \thead{Behaviour} & \thead{Uses} \\
+\midrule
+\textbf{E-plane tee} & Equal split, outputs in antiphase; difference junction
+  & Balanced mixers, phase comparators, the difference arm of a magic tee, feeding
+    balanced antennas \\
+\textbf{H-plane tee} & Equal split, outputs in phase; sum junction
+  & In-phase power dividers and combiners, feeding two antennas from one source, the
+    sum arm of a magic tee \\
+\textbf{Duplexer} & One antenna shared by transmitter and receiver, with the receiver
+  isolated from the transmitter & Radar, and any single-antenna transceiver; protects the
+  sensitive receiver front end from the transmit pulse \\
+\bottomrule
+\end{tabularx}
+
+\penalty0\vspace{2pt}
+
+%======================================================================
+\Q{Problem 8: Derive the S-matrix of a Magic Tee}{\m{3+3}\m{8}\m{10}}
+{\color{sub}\footnotesize \yr{\textbf{72 Ash}, \textbf{74 Bh}, \textbf{75 Bh}, \textbf{78 Ch}, \textbf{\texttt{81 Bh}}} \gap$\cdot$\gap \mk{the single highest-value derivation in the chapter}}
+
+\begin{asked}{The device behind five identification questions}
+Describe the operational principles of a magic tee based on its S-parameters, and derive its scattering matrix.
+\end{asked}
+\lead{Given}
+\begin{itemize}
+  \item A hybrid (magic) tee: ports 1 and 2 are the \textbf{collinear arms}, port 3 is the
+    \textbf{E-arm} and port 4 is the \textbf{H-arm}. Both side arms are perfectly matched
+    to the junction.
+\end{itemize}
+\figC{c3_magictee.png}{0.88\textwidth}
+{\footnotesize\color{sub} Magic tee: an E-plane tee and an H-plane tee sharing the same
+junction. Source: RF Pulchowk, S-parameter derivation sheets.}
+\lead{Step 1: write the blank $4\times4$}
+\[ [S] = \begin{bmatrix}
+   S_{11}&S_{12}&S_{13}&S_{14} \\ S_{21}&S_{22}&S_{23}&S_{24} \\
+   S_{31}&S_{32}&S_{33}&S_{34} \\ S_{41}&S_{42}&S_{43}&S_{44} \end{bmatrix} \tag{i} \]
+\lead{Step 2: impose the five physical facts}
+\begin{tabularx}{\linewidth}{@{}L{4.5cm}L{3.0cm}X@{}}
+\toprule
+\hrow \thead{Physical fact} & \thead{Equation} & \thead{Why} \\
+\midrule
+It contains an E-plane tee, so an input at the E-arm (port 3) leaves ports 1 and 2
+  \textbf{antiphase} & $S_{23} = -S_{13}$ \hfill (ii) & Same argument as Problem 6 \\
+It contains an H-plane tee, so an input at the H-arm (port 4) leaves ports 1 and 2
+  \textbf{in phase} & $S_{24} = +S_{14}$ \hfill (iii) & Same argument as Problem 7 \\
+An input at the E-arm produces no output at the H-arm, and the reverse
+  & $S_{34} = S_{43} = 0$ \hfill (iv) & The two side arms are geometrically orthogonal; the
+    E-arm excites an antisymmetric field, the H-arm a symmetric one \\
+Both side arms are perfectly matched to the junction & $S_{33} = S_{44} = 0$ \hfill (v)
+  & Stated in the question \\
+No output at port 2 for an input at port 1, and the reverse & $S_{12} = S_{21} = 0$
+  \hfill (vi) & The collinear arms are decoupled, which is the ``magic'' \\
+\bottomrule
+\end{tabularx}
+\vspace{2pt}
+\begin{itemize}
+  \item With reciprocity $S_{ij} = S_{ji}$ (vii), equations (ii) to (vii) reduce (i) to
+    \[ [S] = \begin{bmatrix}
+       S_{11} & 0 & S_{13} & S_{14} \\
+       0 & S_{22} & -S_{13} & S_{14} \\
+       S_{13} & -S_{13} & 0 & 0 \\
+       S_{14} & S_{14} & 0 & 0 \end{bmatrix} \tag{viii} \]
+  \item \mk{Four unknowns}: $S_{11}$, $S_{22}$, $S_{13}$, $S_{14}$.
+\end{itemize}
+\par\penalty0\Needspace{12\baselineskip}
+\lead{Step 3: unitary property, row by row}
+\begin{tabularx}{\linewidth}{@{}L{1.6cm}L{5.9cm}X@{}}
+\toprule
+\hrow \thead{Product} & \thead{Equation} & \thead{What it gives} \\
+\midrule
+$R_3 \cdot C_3$ & $|S_{13}|^2 + |{-}S_{13}|^2 + 0 + 0 = 1$, i.e. $2|S_{13}|^2 = 1$
+  & $S_{13} = \dfrac{1}{\sqrt{2}}$ \\
+$R_4 \cdot C_4$ & $|S_{14}|^2 + |S_{14}|^2 + 0 + 0 = 1$, i.e. $2|S_{14}|^2 = 1$
+  & $S_{14} = \dfrac{1}{\sqrt{2}}$ \\
+$R_1 \cdot C_1$ & $|S_{11}|^2 + 0 + |S_{13}|^2 + |S_{14}|^2 = 1$, i.e.
+  $|S_{11}|^2 + \tfrac{1}{2} + \tfrac{1}{2} = 1$ & $|S_{11}|^2 = 0$, so
+  $\mathbf{S_{11} = 0}$ \\
+$R_2 \cdot C_2$ & $0 + |S_{22}|^2 + |S_{13}|^2 + |S_{14}|^2 = 1$ & $\mathbf{S_{22} = 0}$ \\
+\bottomrule
+\end{tabularx}
+\vspace{2pt}
+\begin{itemize}
+  \item \mk{This is the striking result}: matching the two side arms and decoupling the
+    collinear pair \textbf{forces} the collinear arms to be matched as well. Nothing was
+    assumed about $S_{11}$ or $S_{22}$; the unitary condition produced them.
+\end{itemize}
+\lead{Answer}
+\[ \boxed{\;[S]_{\text{magic tee}} = \frac{1}{\sqrt{2}}\begin{bmatrix}
+   0 & 0 & 1 & 1 \\ 0 & 0 & -1 & 1 \\ 1 & -1 & 0 & 0 \\ 1 & 1 & 0 & 0
+   \end{bmatrix}\;} \]
+\lead{Operational principles, read straight off the matrix}
+\begin{tabularx}{\linewidth}{@{}L{3.0cm}L{3.8cm}X@{}}
+\toprule
+\hrow \thead{Drive} & \thead{Outputs} & \thead{Consequence} \\
+\midrule
+\textbf{E-arm} (port 3) & $b_1 = \tfrac{1}{\sqrt{2}}a_3$, $b_2 = -\tfrac{1}{\sqrt{2}}a_3$,
+  $b_4 = 0$ & Equal split, antiphase, nothing into the H-arm \\
+\textbf{H-arm} (port 4) & $b_1 = b_2 = \tfrac{1}{\sqrt{2}}a_4$, $b_3 = 0$
+  & Equal split, in phase, nothing into the E-arm \\
+\textbf{Port 1} & $b_3 = \tfrac{1}{\sqrt{2}}a_1$, $b_4 = \tfrac{1}{\sqrt{2}}a_1$,
+  $b_2 = 0$ & Splits into both side arms, \textbf{nothing reaches port 2} \\
+\textbf{Ports 1 and 2 together} & $b_4 \propto (a_1+a_2)$, $b_3 \propto (a_1-a_2)$
+  & \mk{H-arm is the sum arm, E-arm the difference arm} \\
+\bottomrule
+\end{tabularx}
+\vspace{2pt}
+\begin{itemize}
+  \item \textbf{Why ``magic''}: all four ports are matched \emph{and} two pairs
+    ($1$--$2$ and $3$--$4$) are completely isolated, which a 3-port can never achieve.
+  \item \textbf{Uses}: power combining and splitting ($\S$4.7), balanced mixers,
+    duplexers, impedance bridges, monopulse radar comparators.
+  \item \textbf{In practice} the ideal matrix needs matching posts or irises at the
+    junction; without them $S_{11}$ and $S_{22}$ are not zero.
+\end{itemize}
+
+\penalty0\vspace{2pt}
+
+%======================================================================
+\Q{Problem 9: Two magic tees joined at their E-arms}{\m{10}}
 {\color{sub}\footnotesize \yr{\textbf{77 Ch}} \gap$\cdot$\gap derived by connecting two 4-port matrices; asserted in \code{wg.py}}
 
 \begin{asked}{\textbf{77 Ch} \ [10]}
@@ -250,7 +533,7 @@ Explain the properties of two Magic Tees if one connects their E-arms and derive
 \end{asked}
 \lead{Given: the two tees}
 \begin{itemize}
-  \item Each tee, ports (1, 2) collinear, 3 = E-arm, 4 = H-arm, $r = 1/\sqrt{2}$ ($\S$3.6):
+  \item Each tee, ports (1, 2) collinear, 3 = E-arm, 4 = H-arm, $r = 1/\sqrt{2}$ ($\S$4.5):
     $[S_T] = r\left[\begin{smallmatrix} 0&0&1&1\\ 0&0&-1&1\\ 1&-1&0&0\\ 1&1&0&0 \end{smallmatrix}\right]$.
   \item Tee A ports $1, 2, 3, 4$; tee B ports $1', 2', 3', 4'$. The E-arms $3$ and $3'$ are
     joined, so they disappear as external ports.
@@ -309,12 +592,54 @@ r & r & 0 & 0 & 0 & 0 \\
 \penalty0\vspace{2pt}
 
 %======================================================================
-\Q{Problem 7: Hybrid tee with a terminated arm}{\m{4+4+2}}
+\Q{Problem 10: Two magic tees connected in the H-plane}{\m{5}}
+{\color{sub}\footnotesize \yr{\textbf{78 Ch}} \gap$\cdot$\gap a short note; the Problem 9 method with the H-arms joined}
+
+\begin{asked}{\textbf{78 Ch} \ [5]}
+Write short notes on: Combitional effect of two magic fees connected in H-plane.
+\end{asked}
+{\color{sub}\footnotesize The paper's typos (``Combitional'', ``magic fees'') are reproduced as printed; read ``combinational effect of two magic tees''.}
+\lead{Step 1: join H-arm 4 to H-arm 4' ($a_{4'} = b_4$, $a_4 = b_{4'}$) and follow port 1}
+\begin{itemize}
+  \item Tee A: $b_3 = S_{31} = r$, $b_4 = S_{41} = r$.
+  \item $b_4 = r$ enters tee B's H-arm: $b_{1'} = S_{14}\,r = \tfrac12$,
+    $b_{2'} = S_{24}\,r = +\tfrac12$ (in phase), $b_{3'} = S_{34}\,r = 0$.
+  \item From port 2: $b_4 = S_{42} = +r$ as well, so tee B again gets $+\tfrac12, +\tfrac12$.
+\end{itemize}
+\par\penalty0\Needspace{14\baselineskip}
+\sbsr{0.50}{%
+\lead{Step 2: the 6-port S-matrix}
+\[ [S] = \begin{array}{c} \\ 1 \\ 2 \\ 3 \\ 1' \\ 2' \\ 3' \end{array}
+\!\!\begin{array}{c} \begin{array}{cccccc} 1 & 2 & 3 & 1' & 2' & 3' \end{array} \\
+\left[\begin{array}{cccccc}
+0 & 0 & r & \tfrac12 & \tfrac12 & 0 \\
+0 & 0 & -r & \tfrac12 & \tfrac12 & 0 \\
+r & -r & 0 & 0 & 0 & 0 \\
+\tfrac12 & \tfrac12 & 0 & 0 & 0 & r \\
+\tfrac12 & \tfrac12 & 0 & 0 & 0 & -r \\
+0 & 0 & 0 & r & -r & 0
+\end{array}\right] \end{array} \]}{%
+\lead{Short-note points}
+\begin{itemize}
+  \item Matched at all six ports, reciprocal, lossless.
+  \item The \textbf{sum} (in-phase) signal crosses between the tees through the joined
+    H-arms and re-appears \textbf{in phase} at $1', 2'$.
+  \item The \textbf{difference} signal stays in its own tee's E-arm.
+  \item Collinear ports of each tee stay isolated; the two E-arms are isolated.
+  \item The exact mirror of Problem 9: E-joining passes the difference, H-joining passes
+    the sum.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+%======================================================================
+\Q{Problem 11: Hybrid tee with a terminated arm}{\m{4+4+2}}
 {\color{sub}\footnotesize \yr{\texttt{82 Ba}} \gap$\cdot$\gap 70 Ma's ``hybrid tee'' [8] is answered by $\S$4.5 plus this}
 
 \begin{asked}{\texttt{82 Ba} \ [4+4+2]}
 Using proper S-Matrices, mention the properties of a Hybrid-Tee in the situation of (a) terminated E-arm, (b) terminated H-arm and (c) terminated co-planner arms.
 \end{asked}
+\par\penalty0\Needspace{7\baselineskip}
 \lead{Step 0: what ``terminated'' does to a matrix}
 \begin{itemize}
   \item Terminated = a \textbf{matched load}, $\Gamma = 0$: whatever leaves that arm is
@@ -323,7 +648,7 @@ Using proper S-Matrices, mention the properties of a Hybrid-Tee in the situation
     unchanged.
   \item Start from the magic tee, ports 1, 2 collinear (the co-planar arms), 3 = E, 4 = H.
   \item If the paper meant a \textbf{short}, $\Gamma = -1$, the answer is different; that
-    is the 82 Bh case, $\S$3.6.
+    is the 82 Bh case, Problem 12.
 \end{itemize}
 \par\penalty0\Needspace{18\baselineskip}
 \begin{tabularx}{\linewidth}{@{}L{2.2cm}L{3.9cm}X@{}}
@@ -359,40 +684,457 @@ Using proper S-Matrices, mention the properties of a Hybrid-Tee in the situation
 \penalty0\vspace{2pt}
 
 %======================================================================
-\Q{Problem 8: Two magic tees connected in the H-plane}{\m{5}}
-{\color{sub}\footnotesize \yr{\textbf{78 Ch}} \gap$\cdot$\gap a short note; the Problem 6 method with the H-arms joined}
+\Q{Problem 12: Magic tee with both E- and H-arms short-circuited}{\m{4+4}}
+{\color{sub}\footnotesize \yr{\textbf{\texttt{82 Bh}}} \gap$\cdot$\gap \added{} no source note carries this; derived here and asserted in \code{sparam.py}}
 
-\begin{asked}{\textbf{78 Ch} \ [5]}
-Write short notes on: Combitional effect of two magic fees connected in H-plane.
+\begin{asked}{\textbf{\texttt{82 Bh}} \ [4+4]}
+Design a model of a three-port network and define its characteristic parameters. Prepare the S-matrix of a rectangular magic tee having both E- and H-arms shorted, and explain how it behaves.
 \end{asked}
-{\color{sub}\footnotesize The paper's typos (``Combitional'', ``magic fees'') are reproduced as printed; read ``combinational effect of two magic tees''.}
-\lead{Step 1: join H-arm 4 to H-arm 4' ($a_{4'} = b_4$, $a_4 = b_{4'}$) and follow port 1}
+\lead{Given}
 \begin{itemize}
-  \item Tee A: $b_3 = S_{31} = r$, $b_4 = S_{41} = r$.
-  \item $b_4 = r$ enters tee B's H-arm: $b_{1'} = S_{14}\,r = \tfrac12$,
-    $b_{2'} = S_{24}\,r = +\tfrac12$ (in phase), $b_{3'} = S_{34}\,r = 0$.
-  \item From port 2: $b_4 = S_{42} = +r$ as well, so tee B again gets $+\tfrac12, +\tfrac12$.
+  \item The ideal magic tee of Problem 8, with ports 3 (E-arm) and 4 (H-arm)
+    \textbf{short-circuited at the junction reference plane}.
+  \item A short reflects with $\Gamma = -1$, so $a_3 = -b_3$ and $a_4 = -b_4$.
+\end{itemize}
+\lead{Step 1: write out the four scattering equations}
+\begin{itemize}
+  \item From $[b] = [S][a]$ with the magic-tee matrix:
+    \[ b_1 = \tfrac{1}{\sqrt{2}}(a_3 + a_4), \qquad
+       b_2 = \tfrac{1}{\sqrt{2}}(-a_3 + a_4) \]
+    \[ b_3 = \tfrac{1}{\sqrt{2}}(a_1 - a_2), \qquad
+       b_4 = \tfrac{1}{\sqrt{2}}(a_1 + a_2) \]
+\end{itemize}
+\lead{Step 2: substitute the short-circuit conditions}
+\begin{itemize}
+  \item $a_3 = -b_3 = -\tfrac{1}{\sqrt{2}}(a_1 - a_2)$.
+  \item $a_4 = -b_4 = -\tfrac{1}{\sqrt{2}}(a_1 + a_2)$.
+\end{itemize}
+\lead{Step 3: eliminate and collect}
+\begin{itemize}
+  \item Into the expression for $b_1$:
+    \[ b_1 = \tfrac{1}{\sqrt{2}}\left[-\tfrac{1}{\sqrt{2}}(a_1-a_2)
+             - \tfrac{1}{\sqrt{2}}(a_1+a_2)\right]
+           = -\tfrac{1}{2}\left[(a_1-a_2) + (a_1+a_2)\right]
+           = -\tfrac{1}{2}(2a_1) = -a_1 \]
+  \item Into the expression for $b_2$:
+    \[ b_2 = \tfrac{1}{\sqrt{2}}\left[+\tfrac{1}{\sqrt{2}}(a_1-a_2)
+             - \tfrac{1}{\sqrt{2}}(a_1+a_2)\right]
+           = \tfrac{1}{2}\left[(a_1-a_2) - (a_1+a_2)\right]
+           = \tfrac{1}{2}(-2a_2) = -a_2 \]
+  \item The $a_2$ terms cancel in $b_1$ and the $a_1$ terms cancel in $b_2$: the two
+    reflections arriving from the shorted arms add in the driven arm and subtract in the
+    other one.
+\end{itemize}
+\lead{Answer}
+\begin{itemize}
+  \item Seen from the two collinear arms, the shorted magic tee is the two-port
+    \[ \boxed{\;[S]_{\text{shorted}} = \begin{bmatrix} -1 & 0 \\ 0 & -1 \end{bmatrix}\;} \]
+\end{itemize}
+\lead{How it behaves}
+\begin{itemize}
+  \item \textbf{Total reflection}: $|S_{11}| = |S_{22}| = 1$, so every watt fed into
+    port 1 comes back out of port 1. Return loss $= 0$ dB, VSWR $= \infty$.
+  \item \textbf{Phase reversal}: the $-1$ is a $180^\circ$ shift, exactly what an ideal
+    short does. The tee behaves as a \textbf{pair of independent short circuits}, one at
+    each collinear arm.
+  \item \textbf{Complete isolation survives}: $S_{12} = S_{21} = 0$, so the two arms still
+    cannot see each other even though both are totally reflecting.
+  \item \textbf{Still lossless}: each column sums to $|-1|^2 = 1$; nothing is dissipated,
+    everything is returned.
+  \item \textbf{Still reciprocal}: $[S] = [S]^{T}$.
+  \item \textbf{Use}: a reflective phase shifter or a calibration short. Moving the shorts
+    a distance $\ell$ out from the junction changes $\Gamma$ from $-1$ to
+    $-e^{-2j\beta\ell}$, and the same algebra then gives
+    $S_{11} = S_{22} = -e^{-2j\beta\ell}$ with $S_{12}$ still zero, so a tunable phase
+    with a constant unity magnitude.
+\end{itemize}
+
+\penalty0\vspace{2pt}
+
+%======================================================================
+\Q{Problem 13: Identify the device from a numeric 4-port matrix}{\m{10}}
+{\color{sub}\footnotesize \yr{\textbf{78 Ch}} \gap$\cdot$\gap the printed matrix is missing its normalising factor}
+
+\begin{asked}{\textbf{78 Ch} \ [10]}
+Identify and explain the properties of a microwave passive device having the following S-matrix, with necessary diagram.
+$[S] = \begin{bmatrix} 0&0&1&1 \\ 0&0&-1&1 \\ 1&-1&0&0 \\ 1&1&0&0 \end{bmatrix}$
+\end{asked}
+\lead{Given}
+\begin{itemize}
+  \item A $4\times4$ matrix, so the device has \textbf{four ports}.
+  \item \mk{The paper prints the first row as ``0 .0 1 1''}; the stray point is a scanner
+    artefact over a zero, and the matrix is the standard form.
+\end{itemize}
+\par\penalty0\Needspace{12\baselineskip}
+\lead{Step 1: run the four tests}
+\begin{tabularx}{\linewidth}{@{}L{2.15cm}L{5.3cm}L{2.2cm}X@{}}
+\toprule
+\hrow \thead{Test} & \thead{Computation} & \thead{Result} & \thead{Conclusion} \\
+\midrule
+\textbf{Diagonal} & $S_{11}=S_{22}=S_{33}=S_{44}=0$ & all zero
+  & \mk{Matched at every port} \\
+\textbf{Transpose} & $S_{13}=S_{31}=1$, $S_{23}=S_{32}=-1$, $S_{14}=S_{41}=1$,
+  $S_{24}=S_{42}=1$ & $[S]=[S]^{T}$ & \mk{Reciprocal}, so passive and non-ferrite \\
+\textbf{Column sums} & $|0|^2+|0|^2+|1|^2+|1|^2 = 2$ for every column
+  & $2 \neq 1$ & \mk{Not unitary as printed}: the $1/\sqrt{2}$ factor has been omitted \\
+\textbf{Column dots} & $C_1 \cdot C_2^{*} = (0)(0)+(0)(0)+(1)(-1)+(1)(1) = 0$;
+  $C_3 \cdot C_4^{*} = (1)(1)+(-1)(1)+0+0 = 0$ & all zero
+  & Phases are consistent; only the scale is wrong \\
+\bottomrule
+\end{tabularx}
+\vspace{2pt}
+\begin{itemize}
+  \item \textbf{Judging the condition}: divide the printed matrix by $\sqrt{2}$. Then
+    every column sums to $\tfrac{1}{2}+\tfrac{1}{2} = 1$ and the device is
+    \textbf{lossless}. \mk{Say this explicitly}: it is the ``judge the condition'' mark.
+\end{itemize}
+\lead{Step 2: map the zeros and read the signs}
+\begin{itemize}
+  \item \textbf{Zero blocks}: $S_{12} = S_{21} = 0$, so \textbf{ports 1 and 2 are
+    isolated}; $S_{34} = S_{43} = 0$, so \textbf{ports 3 and 4 are isolated}. Two
+    isolated pairs on a matched, lossless, reciprocal 4-port.
+  \item \textbf{Column 3} reads $(1, -1)$ down the collinear ports: the signs
+    \textbf{flip}, so port 3 is the \textbf{difference (E) arm}.
+  \item \textbf{Column 4} reads $(1, 1)$: the signs \textbf{match}, so port 4 is the
+    \textbf{sum (H) arm}.
+  \item \textbf{Equal magnitudes} everywhere off the zero blocks, so every split is
+    $50/50$.
+\end{itemize}
+\lead{Answer}
+\begin{itemize}
+  \item $\boxed{\text{The device is a magic tee (hybrid tee)}}$, with ports 1 and 2 the
+    collinear arms, port 3 the E-arm and port 4 the H-arm. Normalised:
+    \[ [S] = \frac{1}{\sqrt{2}}\begin{bmatrix}
+       0&0&1&1 \\ 0&0&-1&1 \\ 1&-1&0&0 \\ 1&1&0&0 \end{bmatrix} \]
+  \item Diagram: reproduce the 3D sketch of Problem 8 with all four arms labelled.
+\end{itemize}
+\lead{Properties, one line each}
+\begin{itemize}
+  \item \textbf{Matched} at all four ports, so no port reflects: $S_{ii}=0$, return loss
+    infinite in the ideal case.
+  \item \textbf{Reciprocal}, $[S]=[S]^{T}$: passive waveguide, no ferrite, no gain.
+  \item \textbf{Lossless} once normalised: all incident power is redistributed, none
+    dissipated.
+  \item \textbf{Two isolated pairs}: $1$--$2$ and $3$--$4$. Two sources on ports 1 and 2
+    cannot see each other, and the E-arm and H-arm are decoupled.
+  \item \textbf{Equal power division}, $|S_{13}|^2 = \tfrac{1}{2}$: every drive splits in
+    half, i.e. a $3$ dB hybrid.
+  \item \textbf{Phase}: E-arm drive gives antiphase outputs, H-arm drive gives in-phase
+    outputs.
+  \item \textbf{Uses}: power combiner and splitter, duplexer, balanced mixer, monopulse
+    comparator, impedance bridge.
+\end{itemize}
+
+\penalty0\vspace{2pt}
+
+%======================================================================
+\Q{Problem 14: Identify and complete a symbolic 4-port matrix}{\m{5}\m{8}}
+{\color{sub}\footnotesize \yr{\textbf{74 Bh}, \textbf{\texttt{81 Bh}}} \gap$\cdot$\gap the same device as Problem 13, printed before the unitary step}
+
+\begin{asked}{\textbf{\texttt{81 Bh}} \ [5] \quad and \quad \textbf{74 Bh} \ [8]}
+Identify and explain, along with a neat diagram, the properties of the passive microwave device described by the following S-matrix:
+$[S] = \begin{bmatrix} S_{11}&S_{12}&S_{13}&S_{14} \\ S_{12}&S_{22}&S_{13}&-S_{14} \\ S_{13}&S_{13}&0&0 \\ S_{14}&-S_{14}&0&0 \end{bmatrix}$
+\end{asked}
+\par\penalty0\Needspace{12\baselineskip}
+\lead{Step 1: read the structure before doing any algebra}
+\begin{tabularx}{\linewidth}{@{}L{3.4cm}L{3.4cm}X@{}}
+\toprule
+\hrow \thead{Feature} & \thead{Where} & \thead{What it means} \\
+\midrule
+$S_{33} = S_{44} = 0$ & bottom-right block
+  & Ports 3 and 4 are matched to the junction \\
+$S_{34} = S_{43} = 0$ & bottom-right block
+  & Ports 3 and 4 are isolated from each other \\
+Column 3 is $(S_{13}, S_{13})$ & signs \textbf{match}
+  & Port 3 drives the collinear arms \textbf{in phase}: the \textbf{H-arm} \\
+Column 4 is $(S_{14}, -S_{14})$ & signs \textbf{flip}
+  & Port 4 drives them \textbf{in antiphase}: the \textbf{E-arm} \\
+$[S] = [S]^{T}$ & everywhere & Reciprocal, hence passive and isotropic \\
+\bottomrule
+\end{tabularx}
+\vspace{2pt}
+\begin{itemize}
+  \item Four ports, two matched side arms, one sum arm and one difference arm:
+    \mk{this is a magic tee}. Note that the port labels are the reverse of Problem 13:
+    here \textbf{port 3 is the H-arm and port 4 the E-arm}. \mk{Read the signs, not the
+    numbers.}
+\end{itemize}
+\lead{Step 2: finish the job the printed matrix leaves undone}
+\begin{itemize}
+  \item The matrix still carries $S_{11}$, $S_{12}$, $S_{22}$, $S_{13}$, $S_{14}$ as
+    unknowns. Apply the unitary property exactly as in Problem 8:
+\end{itemize}
+\begin{tabularx}{\linewidth}{@{}L{1.6cm}L{5.9cm}X@{}}
+\toprule
+\hrow \thead{Product} & \thead{Equation} & \thead{Result} \\
+\midrule
+$R_3 \cdot C_3$ & $|S_{13}|^2 + |S_{13}|^2 = 1$ & $S_{13} = \dfrac{1}{\sqrt{2}}$ \\
+$R_4 \cdot C_4$ & $|S_{14}|^2 + |{-}S_{14}|^2 = 1$ & $S_{14} = \dfrac{1}{\sqrt{2}}$ \\
+$R_3 \cdot C_4$ & $S_{13}S_{14}^{*} - S_{13}S_{14}^{*} = 0$
+  & satisfied identically, no new information \\
+$R_1 \cdot C_2$ & $S_{11}S_{12}^{*} + S_{12}S_{22}^{*} + |S_{13}|^2 - |S_{14}|^2 = 0$,
+  and the last two cancel & $S_{11}S_{12}^{*} + S_{12}S_{22}^{*} = 0$ \\
+$R_1 \cdot C_1$ & $|S_{11}|^2 + |S_{12}|^2 + \tfrac{1}{2} + \tfrac{1}{2} = 1$
+  & $|S_{11}|^2 + |S_{12}|^2 = 0$, so $\mathbf{S_{11} = S_{12} = 0}$ \\
+$R_2 \cdot C_2$ & $|S_{12}|^2 + |S_{22}|^2 + \tfrac{1}{2} + \tfrac{1}{2} = 1$
+  & $\mathbf{S_{22} = 0}$ \\
+\bottomrule
+\end{tabularx}
+\par\penalty0\Needspace{7\baselineskip}
+\lead{Answer}
+\begin{itemize}
+  \item $\boxed{\text{Magic tee}}$, with the completed matrix
+    \[ [S] = \frac{1}{\sqrt{2}}\begin{bmatrix}
+       0&0&1&1 \\ 0&0&1&-1 \\ 1&1&0&0 \\ 1&-1&0&0 \end{bmatrix} \]
+    which is Problem 13's matrix with columns 3 and 4 interchanged, as the port labelling
+    demands.
+  \item \mk{The strongest single line in this answer}: nothing was assumed about
+    $S_{11}$, $S_{12}$ or $S_{22}$, yet all three came out zero. Matching the two side
+    arms of a 4-port \textbf{forces} the collinear arms to be matched and isolated. That
+    is precisely what a 3-port cannot do ($\S$3.5).
+  \item Properties and uses: as listed in Problem 13.
+\end{itemize}
+
+\penalty0\vspace{2pt}
+
+%======================================================================
+\Q{Problem 15: Judge the condition of a given S-matrix}{\m{6}}
+{\color{sub}\footnotesize \yr{\textbf{75 Bh}} \gap$\cdot$\gap the isolation is already printed in, so only the scale is left to judge}
+
+\begin{asked}{\textbf{75 Bh} \ [6]}
+Which passive microwave device is explained by this S-matrix? Judge the condition and explain its characteristics.
+$[S] = \begin{bmatrix} S_{11}&0&S_{13}&S_{14} \\ 0&S_{22}&-S_{13}&S_{14} \\ S_{13}&-S_{13}&0&0 \\ S_{14}&S_{14}&0&0 \end{bmatrix}$
+\end{asked}
+\lead{Step 1: identify}
+\begin{itemize}
+  \item Four ports; $S_{33} = S_{44} = 0$ and $S_{34} = S_{43} = 0$, so ports 3 and 4 are
+    matched and mutually isolated.
+  \item $S_{12} = S_{21} = 0$ is \textbf{already written in}, so ports 1 and 2 are
+    isolated too: the collinear pair.
+  \item Column 3 is $(S_{13}, -S_{13})$, signs flipping $\rightarrow$ \textbf{E-arm}.
+    Column 4 is $(S_{14}, S_{14})$, signs matching $\rightarrow$ \textbf{H-arm}.
+  \item $[S] = [S]^{T}$ $\rightarrow$ reciprocal, so passive.
+  \item $\boxed{\text{Magic tee}}$, with the port labelling of Problem 13.
 \end{itemize}
 \par\penalty0\Needspace{14\baselineskip}
-\sbsr{0.50}{%
-\lead{Step 2: the 6-port S-matrix}
-\[ [S] = \begin{array}{c} \\ 1 \\ 2 \\ 3 \\ 1' \\ 2' \\ 3' \end{array}
-\!\!\begin{array}{c} \begin{array}{cccccc} 1 & 2 & 3 & 1' & 2' & 3' \end{array} \\
-\left[\begin{array}{cccccc}
-0 & 0 & r & \tfrac12 & \tfrac12 & 0 \\
-0 & 0 & -r & \tfrac12 & \tfrac12 & 0 \\
-r & -r & 0 & 0 & 0 & 0 \\
-\tfrac12 & \tfrac12 & 0 & 0 & 0 & r \\
-\tfrac12 & \tfrac12 & 0 & 0 & 0 & -r \\
-0 & 0 & 0 & r & -r & 0
-\end{array}\right] \end{array} \]}{%
-\lead{Short-note points}
+\lead{Step 2: judge the condition (what the question actually rewards)}
+\begin{tabularx}{\linewidth}{@{}L{2.15cm}L{5.0cm}L{2.4cm}X@{}}
+\toprule
+\hrow \thead{Test} & \thead{Computation} & \thead{Result} & \thead{Conclusion} \\
+\midrule
+\textbf{Diagonal} & $S_{11}$, $S_{22}$ left as unknowns; $S_{33}=S_{44}=0$
+  & side arms matched & Collinear match not yet stated \\
+\textbf{Transpose} & every $S_{ij} = S_{ji}$ & symmetric & Reciprocal \\
+\textbf{Column 3 sum} & $|S_{13}|^2 + |{-}S_{13}|^2 = 1$
+  & $S_{13} = \tfrac{1}{\sqrt{2}}$ & Equal, antiphase split from the E-arm \\
+\textbf{Column 4 sum} & $|S_{14}|^2 + |S_{14}|^2 = 1$
+  & $S_{14} = \tfrac{1}{\sqrt{2}}$ & Equal, in-phase split from the H-arm \\
+\textbf{Column 1 sum} & $|S_{11}|^2 + 0 + \tfrac{1}{2} + \tfrac{1}{2} = 1$
+  & $S_{11} = 0$ & Port 1 is matched after all \\
+\textbf{Column 2 sum} & $0 + |S_{22}|^2 + \tfrac{1}{2} + \tfrac{1}{2} = 1$
+  & $S_{22} = 0$ & Port 2 likewise \\
+\bottomrule
+\end{tabularx}
+\vspace{2pt}
 \begin{itemize}
-  \item Matched at all six ports, reciprocal, lossless.
-  \item The \textbf{sum} (in-phase) signal crosses between the tees through the joined
-    H-arms and re-appears \textbf{in phase} at $1', 2'$.
-  \item The \textbf{difference} signal stays in its own tee's E-arm.
-  \item Collinear ports of each tee stay isolated; the two E-arms are isolated.
-  \item The exact mirror of Problem 6: E-joining passes the difference, H-joining passes
-    the sum.
-\end{itemize}}
+  \item \textbf{The condition}: the matrix describes a \textbf{lossless, reciprocal,
+    matched-at-all-four-ports} device, and this is \mk{consistent} only because it has
+    four ports. The same set of demands on a 3-port is impossible ($\S$3.5).
+  \item Completed:
+    \[ [S] = \frac{1}{\sqrt{2}}\begin{bmatrix}
+       0&0&1&1 \\ 0&0&-1&1 \\ 1&-1&0&0 \\ 1&1&0&0 \end{bmatrix} \]
+\end{itemize}
+\lead{Characteristics}
+\begin{itemize}
+  \item \textbf{$3$ dB equal division}: $|S_{13}|^2 = |S_{14}|^2 = \tfrac{1}{2}$, so every
+    input splits half and half.
+  \item \textbf{Double isolation}: $1$--$2$ and $3$--$4$. Two transmitters on the
+    collinear arms cannot load each other; the E-arm and H-arm cannot leak into each
+    other.
+  \item \textbf{Phase discrimination}: sum at the H-arm, difference at the E-arm, which
+    is what makes it usable as a comparator.
+  \item \textbf{Bidirectional}: being reciprocal, it combines as readily as it splits.
+  \item \textbf{Limitation}: the ideal matrix assumes matching irises at the junction and
+    holds over a limited bandwidth.
+\end{itemize}
+
+\penalty0\vspace{2pt}
+
+%======================================================================
+\Q{Problem 16: Two radar transmitters, twice the power into one antenna}{\m{6}\m{8}}
+{\color{sub}\footnotesize \yr{\textbf{73 Bh}, 74 Ma} \gap$\cdot$\gap a design question answered entirely by one matrix multiplication}
+
+\begin{asked}{\textbf{73 Bh} \ [8] \quad and \quad 74 Ma \ [6]}
+Suppose there are two identical radar transmitters and a few passive devices in equipment stock. A particular application requires twice more input power to an antenna than either transmitter can deliver. As an RF engineer, give your appropriate solution with necessary figures, mathematics and sufficient explanation.
+\end{asked}
+\lead{Given}
+\begin{itemize}
+  \item Two identical transmitters, each able to deliver $P$ watts.
+  \item One antenna, which must receive $2P$ watts.
+\end{itemize}
+\lead{Step 1: choose the device, and say why}
+\begin{itemize}
+  \item \textbf{Choice}: a \textbf{magic tee} used as a power \textbf{combiner}
+    (a $3$ dB hybrid coupler works identically).
+  \item \textbf{Why not a simple T-junction or Y-junction}:
+  \begin{itemize}
+    \item A plain junction gives $S_{12} \neq 0$, so each transmitter drives power into
+      the other one: mutual loading, pulling of the oscillators, and possible damage.
+    \item Its collinear ports are not matched ($S_{11} = S_{22} = \tfrac{1}{2}$ for a tee,
+      Problem 6), so both transmitters see a high VSWR.
+  \end{itemize}
+  \item The magic tee cures both: $S_{12} = 0$ (perfect isolation) and $S_{ii} = 0$
+    (matched at every port).
+\end{itemize}
+\par\penalty0\Needspace{10\baselineskip}
+\lead{Step 2: the connection}
+\begin{tabularx}{\linewidth}{@{}L{2.4cm}L{3.4cm}X@{}}
+\toprule
+\hrow \thead{Port} & \thead{Connected to} & \thead{Reason} \\
+\midrule
+1 (collinear) & Transmitter A & Isolated from port 2 \\
+2 (collinear) & Transmitter B & Isolated from port 1 \\
+3 (E-arm)     & Matched dummy load & Takes the \textbf{difference}, which is zero when the
+  drives are balanced \\
+4 (H-arm)     & Antenna & Takes the \textbf{sum} of the two drives \\
+\bottomrule
+\end{tabularx}
+\vspace{2pt}
+\begin{itemize}
+  \item The two feed lines must be cut to the \textbf{same electrical length}, so that the
+    transmitters arrive in phase.
+\end{itemize}
+\par\penalty0\Needspace{12\baselineskip}
+\lead{Step 3: the mathematics}
+\begin{itemize}
+  \item Both transmitters equal and in phase, nothing incident on the side arms:
+    \[ [a] = \begin{bmatrix} a & a & 0 & 0 \end{bmatrix}^{T},
+       \qquad |a|^2 = P \]
+  \item Multiply $[b] = [S][a]$ with the magic-tee matrix:
+    \[ b_3 = \tfrac{1}{\sqrt{2}}(a_1 - a_2) = \tfrac{1}{\sqrt{2}}(a - a) = 0 \]
+    \[ b_4 = \tfrac{1}{\sqrt{2}}(a_1 + a_2) = \tfrac{1}{\sqrt{2}}(2a) = \sqrt{2}\,a \]
+    \[ b_1 = \tfrac{1}{\sqrt{2}}(a_3 + a_4) = 0, \qquad
+       b_2 = \tfrac{1}{\sqrt{2}}(-a_3 + a_4) = 0 \]
+\end{itemize}
+\lead{Step 4: read the powers}
+\begin{tabularx}{\linewidth}{@{}L{2.4cm}L{3.6cm}L{2.0cm}X@{}}
+\toprule
+\hrow \thead{Port} & \thead{Wave} & \thead{Power} & \thead{Meaning} \\
+\midrule
+4, antenna & $b_4 = \sqrt{2}\,a$ & $|b_4|^2 = 2|a|^2 = 2P$
+  & \mk{The requirement, met exactly} \\
+3, dummy load & $b_3 = 0$ & $0$ & Nothing wasted when the drives are balanced \\
+1 and 2, transmitters & $b_1 = b_2 = 0$ & $0$ & No reflection back into either transmitter \\
+\midrule
+\textbf{Total out} & & $\mathbf{2P}$ & Equals the total in, as a lossless network requires \\
+\bottomrule
+\end{tabularx}
+\par\penalty0\Needspace{7\baselineskip}
+\lead{Answer}
+\begin{itemize}
+  \item $\boxed{\text{Feed the two transmitters into the collinear arms of a magic tee,
+    antenna on the H-arm, matched load on the E-arm}}$. The antenna then receives
+    $2P$ watts, twice what either transmitter alone can deliver.
+\end{itemize}
+\lead{Explanation, which carries the remaining marks}
+\begin{itemize}
+  \item \textbf{Why the sum appears at the H-arm}: an H-plane junction excites the two
+    collinear arms in phase, so by reciprocity two in-phase drives add there.
+  \item \textbf{Why the dummy load matters}: if the transmitters are unequal or out of
+    phase, $b_3 = \tfrac{1}{\sqrt{2}}(a_1 - a_2) \neq 0$ and the imbalance is
+    \textbf{absorbed} by the load instead of being reflected into the transmitters. The
+    load must be rated for the worst-case imbalance, i.e. the full power of one
+    transmitter.
+  \item \textbf{Phase error costs power}: with a phase error $\phi$ between the drives,
+    the antenna receives $2P\cos^2(\phi/2)$ and the load takes the rest. A $20^\circ$
+    error already loses $0.13$ dB.
+  \item \textbf{Alternatives}: a $3$ dB branch-line or rat-race hybrid does the same job in
+    microstrip; a Wilkinson combiner does it with an isolation resistor when the device
+    must be planar.
+\end{itemize}
+
+\penalty0\vspace{2pt}
+
+%======================================================================
+\Q{Problem 17: ASR duplexer delivering half the transmitter power}{\m{8}\m{10}}
+{\color{sub}\footnotesize \yr{73 Ma, \textbf{76 Bh}} \gap$\cdot$\gap the same magic tee, driven from the other end}
+
+\begin{asked}{\textbf{76 Bh} \ [10] \quad and \quad 73 Ma \ [8]}
+A radar installation engineer is given the responsibility of installing an Airport Surveillance Radar that requires half the input power to the antenna than the transmitter can deliver, using a duplexer. Prepare its S-matrix. \quad (73 Ma: choose a suitable passive microwave device to split power in half and explain its properties.)
+\end{asked}
+\lead{Given}
+\begin{itemize}
+  \item A transmitter delivering $P$ watts.
+  \item The antenna must receive $P/2$ watts, and the receiver must share the same antenna
+    while staying isolated from the transmitter.
+\end{itemize}
+\lead{Step 1: choose the device}
+\begin{itemize}
+  \item \textbf{Choice}: a \textbf{magic tee used as a duplexer}. It is the only passive
+    device that splits power exactly in half \emph{and} provides the transmitter-to-receiver
+    isolation a duplexer must have.
+  \item A resistive splitter would also halve the power but would burn the other half and
+    give no isolation.
+\end{itemize}
+\par\penalty0\Needspace{10\baselineskip}
+\lead{Step 2: the connection}
+\begin{tabularx}{\linewidth}{@{}L{2.4cm}L{3.4cm}X@{}}
+\toprule
+\hrow \thead{Port} & \thead{Connected to} & \thead{Reason} \\
+\midrule
+4 (H-arm)     & Transmitter & Drives both collinear arms equally and in phase \\
+1 (collinear) & Antenna & Receives half the transmitter power \\
+2 (collinear) & Matched dummy load & Absorbs the other half, and balances the bridge \\
+3 (E-arm)     & Receiver & Isolated from the H-arm, so the transmit pulse never reaches it \\
+\bottomrule
+\end{tabularx}
+\lead{Step 3: transmit path}
+\begin{itemize}
+  \item Drive vector $[a] = \begin{bmatrix} 0&0&0&a \end{bmatrix}^{T}$ with $|a|^2 = P$.
+  \item From $[b]=[S][a]$:
+    \[ b_1 = \tfrac{1}{\sqrt{2}}a_4 = \tfrac{1}{\sqrt{2}}a, \qquad
+       b_2 = \tfrac{1}{\sqrt{2}}a_4 = \tfrac{1}{\sqrt{2}}a, \qquad
+       b_3 = 0 \]
+  \item Powers:
+    \[ |b_1|^2 = \tfrac{1}{2}|a|^2 = \frac{P}{2}, \qquad
+       |b_2|^2 = \frac{P}{2}, \qquad |b_3|^2 = 0 \]
+  \item \mk{The antenna receives exactly $P/2$}, which is the requirement, and the
+    receiver on the E-arm receives \textbf{nothing} from the transmitter, which is the
+    point of a duplexer.
+\end{itemize}
+\lead{Step 4: receive path}
+\begin{itemize}
+  \item The echo arrives at port 1 alone: $[a] = \begin{bmatrix} a_1&0&0&0
+    \end{bmatrix}^{T}$ with $|a_1|^2 = P_{echo}$.
+  \item $b_3 = \tfrac{1}{\sqrt{2}}a_1$ and $b_4 = \tfrac{1}{\sqrt{2}}a_1$, so
+    \[ |b_3|^2 = \frac{P_{echo}}{2} \quad\text{to the receiver}, \qquad
+       |b_4|^2 = \frac{P_{echo}}{2} \quad\text{back into the transmitter} \]
+  \item \textbf{Nothing reaches port 2}, since $S_{21} = 0$.
+\end{itemize}
+\lead{Answer}
+\begin{itemize}
+  \item The duplexer is the magic tee, whose S-matrix is
+    \[ \boxed{\;[S] = \frac{1}{\sqrt{2}}\begin{bmatrix}
+       0 & 0 & 1 & 1 \\ 0 & 0 & -1 & 1 \\ 1 & -1 & 0 & 0 \\ 1 & 1 & 0 & 0
+       \end{bmatrix}\;} \]
+    with port 4 the transmitter, port 1 the antenna, port 2 the matched load and port 3
+    the receiver.
+\end{itemize}
+\lead{Properties and the honest limitation}
+\begin{itemize}
+  \item \textbf{Equal split}: $|S_{14}|^2 = |S_{24}|^2 = \tfrac{1}{2}$, a $3$ dB hybrid.
+  \item \textbf{Isolation}: transmitter (port 4) to receiver (port 3) is $S_{34} = 0$, so
+    the receiver front end is protected from the full transmit pulse.
+  \item \textbf{Matched at every port}, so neither the transmitter nor the antenna sees a
+    standing wave.
+  \item \mk{The $3$ dB penalty is real and should be stated}: half the transmit power goes
+    into the dummy load, and half the echo goes back to the transmitter. The magic-tee
+    duplexer therefore costs $3$ dB in each direction.
+  \item \textbf{Better in practice}: a \textbf{ferrite circulator} duplexer,
+    $[S] = \left[\begin{smallmatrix}0&0&1\\1&0&0\\0&1&0\end{smallmatrix}\right]$, routes
+    the \emph{whole} transmit power to the antenna and the \emph{whole} echo to the
+    receiver, with no $3$ dB loss. Quote it as the improvement whenever the question does
+    not explicitly demand the half-power split, as \textbf{76 Bh} does.
+\end{itemize}
+
+\penalty0\vspace{2pt}

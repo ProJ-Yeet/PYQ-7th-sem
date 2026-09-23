@@ -21,8 +21,8 @@ Audit pagination with `PYTHONIOENCODING=utf-8 python audit.py`
 |----|-------|--------|-----------|-------|
 | 1 | Introduction | ✅ 10 pp | — none (stated in §1.7) | audited and repaired 2026-09-10 |
 | 2 | RF and M/W Transmission Lines | ✅ 12 pp | ✅ 42 pp, 24 problems | the Smith-chart chapter |
-| 3 | Network Theory and Analysis | ✅ 13 pp | ✅ 18 pp, 12 problems | the magic-tee chapter |
-| 4 | Components and Devices | ✅ 16 pp | ✅ 8 pp, 8 problems | the waveguide chapter; `wg.py` |
+| 3 | Network Theory and Analysis | ✅ 10 pp | ✅ 6 pp, 3 problems | S-parameters; the tee material moved to Ch4 (PR #1) |
+| 4 | Components and Devices | ✅ 19 pp | ✅ 18 pp, 17 problems | waveguides + the magic-tee family; `wg.py`, `sparam.py` |
 | 5 | Microwave Generators | ✅ 10 pp | — none (stated in §5.10) | tubes; `tubes.py` |
 | 6 | RF Design Practices | ✅ 11 pp | ✅ 7 pp, 10 problems | heaviest; `amp.py`, `filt.py` |
 | 7 | Antennas and Propagation | ✅ 11 pp | ✅ 5 pp, 2 problems | radiation hazards; `ant.py` |
@@ -305,3 +305,24 @@ Third-party and gitignored — build input only, never publish.
   archive total of 1902 that predates the Ch7 recount, so each runs a shade high.
   All ten exit tests pass (rf, verify, sparam, wg, tubes, amp, filt, ant, meas, tagcensus),
   check.py is clean on all eight chapters, audit.py reports 0 stranded headings.
+
+- **2026-09-23: passive-device S-matrix questions moved Ch3 -> Ch4 (PR #1, Pankaj Arun).**
+  The Detailed PYQ's "Passive Microwave Devices: S-matrix Analysis" subsection (identify the
+  device, E/H-tee and duplexer matrices, the radar power problems) is syllabus 4.4 material
+  and now sits in Ch4 after Tee Junctions. One line of the PR was held back: **82 Bh
+  "differences of two S-matrix sets" prints two amplifier sets** and stays in Ch3. The PR's
+  `\enter` reflow of 79 Ch in Ch2 was rejoined onto one line, because every line-based tool
+  (`check.py`, the stats) misses a year tag on a continuation line.
+  ExamNotes followed: Ch3 keeps 3.1 to 3.5 plus a slim 3.6 (circulator, coupler, amplifier,
+  amplitude modulator), PYQ mapping is now 3.7. Ch4 gains the tee matrices, duplexer and
+  shorted magic tee in 4.5, new 4.6 Identify and 4.7 Radar; old 4.6 to 4.11 are now 4.8 to
+  4.13. Companions: ch3-num keeps Problems 1, 2 and the modulator (now 3); ch4-num gains old
+  ch3 Problems 3 to 11 as 6 to 8 and 12 to 17, with the old ch4 junctions renumbered 9 to 11.
+  Chapter stats on the 1902 basis: Ch3 124 marks, 6.5 %, 14 of 24 papers; Ch4 386 marks,
+  20.3 %, 61 questions. Consequences: the Ch3 §3.3 properties chip lost 74 Bh and 81 Bh
+  (TOP 8 -> HOT 6, so R.1 now lists 21 TOP topics), and the §3.1 chip lost 81 Bh, whose
+  "why S-parameters" rider the archive files under Ch1 (13 -> 12). Also fixed in passing:
+  ch3.tex pointed at "companion Problem 6" for the amplitude modulator, which was Problem 12.
+  check.py clean on ch3/ch4, tier census clean, sparam and wg self-tests pass, audit shows no
+  new short pages or stranded headings, concise_cov 0 discrepancies, year-code counts
+  identical to before the move.
