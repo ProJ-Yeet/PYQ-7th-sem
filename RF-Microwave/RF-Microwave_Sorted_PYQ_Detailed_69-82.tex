@@ -94,8 +94,9 @@
   \subsection{Types of Transmission Lines}
     \begin{enumerate}[topsep=0pt, noitemsep]
       \item Microwave transmission lines Vs conventional low-freq lines \hfill [4] (\bo{69 Bh})
+      \item Differentiate the behavior of a transmission line at conventional low frequency and microwave bands
+				\enter\hfill [10] (\bo{79 Ch})
       \item Microstrip Vs strip-lines \hfill [5] (71 Ma)
-      \item Differentiate the behavior of a transmission line at conventional low frequency and microwave bands \hfill [10] (\bo{79 Ch})
     \end{enumerate}
 
   \subsection{Smith Chart / Admittance (Immittance) Chart}
@@ -165,20 +166,6 @@
       \item Why are S-parameters used at high frequencies? For $[S]=\begin{bmatrix}0.4{+}j0.5 & j0.6\\ j0.6 & 0.4{-}j0.5\end{bmatrix}$: (a) reciprocal? (b) lossless? (c) return loss at input? (d) if input power is 5 W, reflected power? \hfill [3+1+1+1+2] (\bo{\texttt{79 Bh}})
     \end{enumerate}
 
-  \subsection{Passive Microwave Devices: S-matrix Analysis}
-    \begin{enumerate}[topsep=0pt, noitemsep]
-      \item Identify + explain passive device from S-matrix (4-port) \hfill [8] (\bo{74 Bh})
-      \item Passive device from given S-matrix: judge condition + characteristics \hfill [6] (\bo{75 Bh})
-      \item Choose device to split power in half + explain properties \hfill [8] (73 Ma)
-        \lb Two radar transmitters, double power to antenna: solution +Fig, math \hfill [8] (\bo{73 Bh})
-      \item Prepare S-Matrices of a perfectly working E-Plane Tee, H-Plane Tee and a Duplexer, and explore their uses \hfill [8] (\texttt{81 Ba})
-      \item Find the basic differences of the systems having the S-Matrix sets (a) $S_{11}{=}0.65\angle146^\circ$, $S_{12}{=}0.12\angle46^\circ$, $S_{21}{=}2.30\angle44^\circ$, $S_{22}{=}0.17\angle{-172^\circ}$ and (b) $S_{11}{=}0.30\angle{-134^\circ}$, $S_{12}{=}0.03\angle46^\circ$, $S_{21}{=}2.20\angle44^\circ$, $S_{22}{=}0.10\angle{-172^\circ}$ \hfill [4] (\bo{\texttt{82 Bh}})
-      \item Identify and explain, with a neat diagram, the passive device described by the 4-port S-Matrix $\begin{bmatrix}S_{11}&S_{12}&S_{13}&S_{14}\\ S_{12}&S_{22}&S_{13}&-S_{14}\\ S_{13}&S_{13}&0&0\\ S_{14}&-S_{14}&0&0\end{bmatrix}$ \hfill [5] (\bo{\texttt{81 Bh}})
-      \item Identify and explain the properties of the passive device with S-Matrix $\begin{bmatrix}0&0&1&1\\ 0&0&-1&1\\ 1&-1&0&0\\ 1&1&0&0\end{bmatrix}$ +Fig \hfill [10] (\bo{78 Ch})
-      \item Airport Surveillance Radar requiring half the input power to the antenna than the transmitter can deliver, using a duplexer; prepare its S-matrix \hfill [10] (\bo{76 Bh})
-      \item Two identical radar transmitters, twice the input power to an antenna; give the solution with explanation using S-matrix \hfill [6] (74 Ma)
-    \end{enumerate}
-
 \pagebreak
 %=======================================================================
 \section{RF/Microwave Components and Devices}
@@ -239,6 +226,20 @@
       \item Combitional effect of two magic fees connected in H-plane (short note) \hfill [5] (\bo{78 Ch})
       \item 3-port directional coupler (S-parameters analysis) \hfill [4] (\bo{75 Bh})
     \end{enumerate}
+
+	\subsection{Passive Microwave Devices: S-matrix Analysis}
+		\begin{enumerate}[topsep=0pt, noitemsep]
+			\item Identify + explain passive device from S-matrix (4-port) \hfill [8] (\bo{74 Bh})
+			\item Passive device from given S-matrix: judge condition + characteristics \hfill [6] (\bo{75 Bh})
+			\item Choose device to split power in half + explain properties \hfill [8] (73 Ma)
+				\lb Two radar transmitters, double power to antenna: solution +Fig, math \hfill [8] (\bo{73 Bh})
+			\item Prepare S-Matrices of a perfectly working E-Plane Tee, H-Plane Tee and a Duplexer, and explore their uses \hfill [8] (\texttt{81 Ba})
+			\item Find the basic differences of the systems having the S-Matrix sets (a) $S_{11}{=}0.65\angle146^\circ$, $S_{12}{=}0.12\angle46^\circ$, $S_{21}{=}2.30\angle44^\circ$, $S_{22}{=}0.17\angle{-172^\circ}$ and (b) $S_{11}{=}0.30\angle{-134^\circ}$, $S_{12}{=}0.03\angle46^\circ$, $S_{21}{=}2.20\angle44^\circ$, $S_{22}{=}0.10\angle{-172^\circ}$ \hfill [4] (\bo{\texttt{82 Bh}})
+			\item Identify and explain, with a neat diagram, the passive device described by the 4-port S-Matrix $\begin{bmatrix}S_{11}&S_{12}&S_{13}&S_{14}\\ S_{12}&S_{22}&S_{13}&-S_{14}\\ S_{13}&S_{13}&0&0\\ S_{14}&-S_{14}&0&0\end{bmatrix}$ \hfill [5] (\bo{\texttt{81 Bh}})
+			\item Identify and explain the properties of the passive device with S-Matrix $\begin{bmatrix}0&0&1&1\\ 0&0&-1&1\\ 1&-1&0&0\\ 1&1&0&0\end{bmatrix}$ +Fig \hfill [10] (\bo{78 Ch})
+			\item Airport Surveillance Radar requiring half the input power to the antenna than the transmitter can deliver, using a duplexer; prepare its S-matrix \hfill [10] (\bo{76 Bh})
+			\item Two identical radar transmitters, twice the input power to an antenna; give the solution with explanation using S-matrix \hfill [6] (74 Ma)
+		\end{enumerate}
 
   \subsection{Directional Couplers}
     \begin{enumerate}[topsep=0pt, noitemsep]
