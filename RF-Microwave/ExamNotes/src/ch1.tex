@@ -53,7 +53,9 @@ IEEE table below.}
 \textbf{W}    & $75\text{--}110\text{ GHz}$  & Automotive radar ($77\text{ GHz}$), imaging \\
 \textbf{mm}   & $110\text{--}300\text{ GHz}$ & Radio astronomy, security imaging \\
 \bottomrule
-\end{tabularx}}{%
+\end{tabularx}
+{\color{sub}\scriptsize \added{} Letter bands are not universal: the RSGB, old US Navy and
+ITU tables put different edges on the same letters. Name the standard, IEEE Std 521.}}{%
 \lead{Advantages of microwaves}
 \begin{itemize}
   \item \textbf{High bandwidth}:
@@ -350,6 +352,8 @@ IEEE table below.}
   \item \textbf{Industrial \& Domestic}: Microwave ovens ($2.45\text{ GHz}$), rubber vulcanization, food drying.
   \item \textbf{Medical}: Hyperthermia cancer treatment, microwave diathermy, tomography.
   \item \textbf{Scientific}: Radio astronomy, remote sensing, atmospheric sounding.
+  \item \added{} \textbf{Semiconductor processing}: microwave-generated plasma for reactive
+    ion etching and plasma-enhanced CVD (PECVD).
 \end{itemize}}{%
 \lead{Microwave system block diagram}
 \figT{c1_mw_system.png}
@@ -377,6 +381,18 @@ IEEE table below.}
 \textbf{Coverage / Range} & $1\text{--}35\text{ km}$ cell radius & $36000\text{ km}$ (GEO orbit) & $30\text{--}60\text{ km}$ per hop & $30\text{--}100\text{ m}$ indoor & $60\text{--}80\text{ NM}$ ($100\text{--}150\text{ km}$) \\
 \bottomrule
 \end{tabularx}
+
+\par\penalty0\Needspace{6\baselineskip}
+\lead{\added{} Two more, if the paper asks for more than five}
+\begin{itemize}
+  \item \textbf{WiMAX} (IEEE 802.16, wireless MAN): specified for 2 to 11 GHz, deployed at
+    2.3, 2.5, 3.5 and 5.8 GHz; OFDM / OFDMA, licensed links reaching tens of km.
+  \item \textbf{MBWA} (IEEE 802.20, mobile broadband wireless access): licensed bands below
+    3.5 GHz, built for vehicle-speed mobility and in-building penetration like a phone
+    network, at much higher spectral efficiency.
+  \item \textbf{GNSS} (GPS and others): navigation signals broadcast between about 1.2 and
+    1.6 GHz (L-band).
+\end{itemize}
 
 \penalty0\vspace{2pt}
 

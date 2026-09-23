@@ -583,6 +583,36 @@ $\lambda/8$ and $3\lambda/8$.}}
 reference planes --- is Chapter 3. This band covers only the rider attached to stub
 questions.}}
 
+\par\penalty0\Needspace{12\baselineskip}
+\sbs{%
+\lead{\added{} The 3-port and 4-port version in class notes}
+\begin{itemize}
+  \item Some class notes draw each stub as an extra port: single stub $\rightarrow$
+    $3\times3$, double stub $\rightarrow$ $4\times4$, then write ``after perfect matching''
+    as a matrix whose only non-zero entry is $S_{21}$ (or $-S_{21}$ for a
+    $180^\circ$ output), and ``power divided equally'' as $S_{11}/3$, $S_{21}/3$,
+    $S_{31}/3$ down one column.
+  \item \textbf{Do not copy those matrices.} Each fails a test of $\S$3.3:
+  \begin{itemize}
+    \item $S_{21} \neq 0$ with $S_{12} = 0$ is \textbf{not symmetric}, but line and stubs are
+      passive and isotropic, so the network must be reciprocal.
+    \item One column of $S_{k1}/3$ does not sum to $1$ in power, and the other columns are
+      zero, so the matrix is \textbf{not unitary} for a lossless tuner.
+  \end{itemize}
+\end{itemize}}{%
+\lead{\added{} What to write if the stub ports are wanted}
+\begin{itemize}
+  \item A stub's far end is a \textbf{short or open}, a fixed reactive termination with
+    $|\Gamma| = 1$. It is not an external port, so it is absorbed into the network and the
+    tuner seen from the line is the \textbf{two-port} above.
+  \item Sketch the stubs as ports only to label the junctions, then reduce: before matching
+    $[\,\Gamma_L\,]$, after matching
+    $\left[\begin{smallmatrix}0&e^{-j\theta}\\e^{-j\theta}&0\end{smallmatrix}\right]$.
+  \item Terminating the stub arm in $Z_0$ instead turns the tuner into a plain tee
+    junction, and by the 3-port theorem ($\S$3.5) a tee cannot be lossless, reciprocal
+    and matched at every port at once. That one line earns the extra marks.
+\end{itemize}}
+
 \penalty0\vspace{2pt}
 
 %=======================================================================

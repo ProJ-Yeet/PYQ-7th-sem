@@ -51,6 +51,12 @@ Two things worth knowing before the paper starts:
   \end{itemize}
   \item \textbf{Insertion loss method (ILM)}: network synthesis from a specified
     \textbf{power loss ratio} over all frequencies.
+  \item \added{} \textbf{Reflective} filter (L and C only): rejects the stopband by
+    reflecting it back to the source. \textbf{Absorptive} filter: lossy material
+    dissipates the stopband, so the source sees a match at every frequency.
+  \item \added{} \textbf{Specification}: passband and stopband edges, input and output
+    impedance, return loss $-20\log|\Gamma|$, insertion loss, and \textbf{group delay}
+    $\tau_d = -\,d\phi/d\omega$ (flat $\tau_d$ = no phase distortion).
 \end{itemize}}{%
 \lead{Power loss ratio}
 \[ P_{LR} = \frac{P_{\text{available}}}{P_{\text{load}}} = \frac{1}{1 - |\Gamma(\omega)|^2}
@@ -88,6 +94,9 @@ Gangaju Ch-6 deck, slide 11.}}{%
     \item Ripple of amplitude $1 + k^2$ in the passband.
     \item Also $20N$ dB/decade, but $\dfrac{2^{2N}}{4}$ times more attenuation than
       Butterworth well beyond cut-off.
+    \item \added{} $T_N(x) = \cos(N\cos^{-1}x)$ for $|x| \le 1$ (the ripple),
+      $\cosh(N\cosh^{-1}x)$ for $|x| > 1$; $T_1 = x$, $T_2 = 2x^2 - 1$,
+      $T_3 = 4x^3 - 3x$, $T_N = 2xT_{N-1} - T_{N-2}$.
   \end{itemize}
   \item \textbf{Linear phase}: $\phi = A\omega[1 + p(\omega/\omega_c)^{2N}]$, maximally
     flat group delay; poorer selectivity.

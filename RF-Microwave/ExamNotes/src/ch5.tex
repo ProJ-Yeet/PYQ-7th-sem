@@ -77,6 +77,19 @@ Two things worth knowing before the paper starts:
     turn transit time into velocity modulation and bunching.
 \end{itemize}
 
+\par\penalty0\Needspace{10\baselineskip}
+\lead{\added{} The four effects solid-state generators exploit}
+\begin{tabularx}{\linewidth}{@{}L{2.9cm}XL{2.6cm}@{}}
+\toprule
+\hrow \thead{Effect} & \thead{What happens} & \thead{Device} \\
+\midrule
+\textbf{Transit time} & Carrier drift across a region delays current behind voltage; a delay near half a cycle gives negative resistance & IMPATT, BARITT \\
+\textbf{Tunnelling} & Carriers pass \textbf{through} a thin potential barrier they could not climb classically; current falls as bias rises past the peak & Tunnel diode \\
+\textbf{Avalanche} & Strong field accelerates carriers until impact ionization knocks electrons out of covalent bonds, a chain reaction & IMPATT (with transit time) \\
+\textbf{Transferred electron} (Gunn) & Above a threshold field (about 3.2 kV/cm in GaAs) electrons move to a low-mobility upper valley: negative differential mobility, no p-n junction & Gunn diode, $\S$4.11 \\
+\bottomrule
+\end{tabularx}
+
 \penalty0\vspace{2pt}
 
 %=======================================================================
@@ -350,6 +363,14 @@ long interaction.}}
     the spokes in the retarding cavities; that sketch carries most of the marks.
   \item \textbf{Uses}: radar transmitters, microwave ovens (2.45 GHz), industrial heating,
     linear accelerators.
+  \item \added{} \textbf{Frequency pushing}: a change in anode voltage changes the
+    electron drift speed and so the oscillation frequency; cure, a regulated supply.
+  \item \added{} \textbf{Frequency pulling}: a change in load impedance (antenna VSWR)
+    reflects into the cavities and shifts the frequency; cure, an isolator or circulator
+    between tube and load.
+  \item \added{} \textbf{Pros}: high peak power (MW pulsed) from a small, efficient tube.
+    \textbf{Cons}: noisy, poor frequency stability and control, so it is an oscillator,
+    not a precision source.
 \end{itemize}}
 
 \penalty0\vspace{2pt}
