@@ -1003,12 +1003,27 @@ Pozar Fig 7.50.}}
   \item \textbf{Connection}: the two transmitters drive the collinear arms 1 and 2
     \textbf{in phase and at equal amplitude}; the antenna hangs on the H-arm (port 4);
     the E-arm (port 3) carries a \textbf{matched dummy load}.
-  \item \textbf{Mathematics}, with $a_1 = a_2 = a$ and $a_3 = a_4 = 0$:
-    \[ b_4 = \tfrac{1}{\sqrt{2}}(a_1 + a_2) = \sqrt{2}\,a
-       \;\Rightarrow\; |b_4|^2 = 2|a|^2 \]
-    \[ b_3 = \tfrac{1}{\sqrt{2}}(a_1 - a_2) = 0 \]
+  \item \textbf{S-matrix} of the magic tee ($\S$4.5; collinear 1, 2, E-arm 3, H-arm 4):
+    \[ [S] = \tfrac{1}{\sqrt{2}}\begin{bmatrix} 0&0&1&1 \\ 0&0&-1&1 \\ 1&-1&0&0 \\ 1&1&0&0
+       \end{bmatrix} \]
+  \item \textbf{Drive vector}: equal amplitude, in phase, so $a_1 = a_2 = a$ and
+    $a_3 = a_4 = 0$.
+  \item \textbf{Multiply out}, $[b] = [S][a]$:
+    \[ \begin{bmatrix} b_1\\ b_2\\ b_3\\ b_4 \end{bmatrix}
+       = \tfrac{1}{\sqrt{2}}\begin{bmatrix} 0&0&1&1 \\ 0&0&-1&1 \\ 1&-1&0&0 \\ 1&1&0&0
+         \end{bmatrix}\begin{bmatrix} a\\ a\\ 0\\ 0 \end{bmatrix}
+       = \begin{bmatrix} 0\\ 0\\ 0\\ \sqrt{2}\,a \end{bmatrix} \]
+\end{itemize}}{%
+\lead{Combining: reading the answer off $[b]$}
+\begin{itemize}
+  \item \textbf{Read each row}: $b_4 = \tfrac{1}{\sqrt{2}}(a_1 + a_2)$, the sum at the
+    H-arm; $b_3 = \tfrac{1}{\sqrt{2}}(a_1 - a_2) = 0$, the difference at the E-arm;
+    $b_1 = b_2 = 0$ because $S_{11} = S_{22} = S_{12} = 0$.
+  \item \textbf{Powers}, with $P = |a|^2$ per transmitter:
+    \[ |b_4|^2 = 2|a|^2 = 2P, \qquad |b_1|^2 = |b_2|^2 = |b_3|^2 = 0 \]
   \item \textbf{Result}: the antenna receives $2P$, twice what either transmitter can
-    deliver, and the dummy load receives nothing.
+    deliver; the dummy load receives nothing, and nothing reflects back into either
+    transmitter. Power in $2P$ = power out $2P$: lossless.
   \item \textbf{Why the tee and not a plain T-junction}: $S_{12} = 0$, so the two
     transmitters are \textbf{isolated} and cannot pull or damage each other; and all four
     ports stay matched, so neither transmitter sees a VSWR.
@@ -1020,23 +1035,38 @@ Pozar Fig 7.50.}}
       absorbs exactly the mismatch, which is what protects the transmitters.
     \item The dummy load must be rated for the full unbalanced power.
   \end{itemize}
-\end{itemize}}{%
+\end{itemize}}
+
+\penalty0\vspace{3pt}
+\sbs{%
 \lead{Splitting: half the transmitter power to the antenna}
 \begin{itemize}
   \item \textbf{Device}: the same magic tee, used as a duplexer, driven from the H-arm.
   \item \textbf{Connection}: transmitter on port 4 (H-arm), antenna on port 1, matched
     load on port 2, receiver on port 3 (E-arm).
-  \item \textbf{Mathematics}, with $a_4 = a$ and all other inputs zero:
-    \[ b_1 = \tfrac{1}{\sqrt{2}}a, \quad b_2 = \tfrac{1}{\sqrt{2}}a
-       \;\Rightarrow\; |b_1|^2 = |b_2|^2 = \tfrac{1}{2}|a|^2 \]
-    \[ b_3 = 0 \]
-  \item \textbf{Result}: the antenna gets exactly $P/2$, as \textbf{76 Bh} requires, and
-    the receiver on the E-arm gets \textbf{none} of the transmitter power, which is the
-    whole point of a duplexer.
-  \item \textbf{On receive}, the echo arrives at port 1 alone and divides between the
-    E-arm and the H-arm, so half of it reaches the receiver. The $3$ dB penalty in each
-    direction is the price of the magic-tee duplexer, and naming it shows you understand
-    the device rather than reciting it.
+  \item \textbf{S-matrix of the duplexer}, which is what \textbf{76 Bh} asks you to
+    prepare: the magic tee's, with rows and columns in the order
+    (1 Ant, 2 Load, 3 Rx, 4 Tx):
+    \[ [S] = \tfrac{1}{\sqrt{2}}\begin{bmatrix} 0&0&1&1 \\ 0&0&-1&1 \\ 1&-1&0&0 \\ 1&1&0&0
+       \end{bmatrix} \]
+  \item \textbf{Transmit}, $a_4 = a$ and all other inputs zero:
+    \[ \begin{bmatrix} b_1\\ b_2\\ b_3\\ b_4 \end{bmatrix}
+       = \tfrac{1}{\sqrt{2}}\begin{bmatrix} 0&0&1&1 \\ 0&0&-1&1 \\ 1&-1&0&0 \\ 1&1&0&0
+         \end{bmatrix}\begin{bmatrix} 0\\ 0\\ 0\\ a \end{bmatrix}
+       = \tfrac{1}{\sqrt{2}}\begin{bmatrix} a\\ a\\ 0\\ 0 \end{bmatrix} \]
+    \[ |b_1|^2 = |b_2|^2 = \tfrac{1}{2}|a|^2, \qquad |b_3|^2 = |b_4|^2 = 0 \]
+  \item \textbf{Result}: the antenna gets exactly $P/2$, as \textbf{76 Bh} requires, the
+    load takes the other $P/2$, and the receiver gets \textbf{none} of the transmitter
+    power ($S_{34} = 0$), which is the whole point of a duplexer.
+\end{itemize}}{%
+\lead{Splitting: the receive path}
+\begin{itemize}
+  \item \textbf{Receive}, echo $a_1 = e$ and all other inputs zero:
+    \[ [b] = \tfrac{1}{\sqrt{2}}\begin{bmatrix} 0\\ 0\\ e\\ e \end{bmatrix}
+       \;\Rightarrow\; |b_3|^2 = \tfrac{1}{2}|e|^2 \text{ to the receiver} \]
+    The other half goes back to the transmitter. The $3$ dB penalty in each direction is
+    the price of the magic-tee duplexer, and naming it shows you understand the device
+    rather than reciting it.
   \item \textbf{Better answer for a real ASR}: a \textbf{ferrite circulator} duplexer
     routes the full power $1 \rightarrow 2$ and the full echo $2 \rightarrow 3$ with no
     $3$ dB loss. Quote it as the improvement whenever the question does not force the
