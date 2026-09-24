@@ -13,8 +13,8 @@ asked 9 times by name and 8 more in disguise, and a ring of 4 to 6 mark short no
 Chapter 4 has the biggest question count in the paper, but three scripts answer most of it:
 \begin{enumerate}[label=\arabic*., leftmargin=1.4em, itemsep=1pt]
   \item \textbf{Field equations of a rectangular waveguide, TE or TM} (14 papers, up to
-    \mk{10 marks}) $\rightarrow$ $\S$4.1. \mk{One six-step script covers both modes}: only
-    the boundary condition in step 4 changes. Learn TM first; TE is the same page with
+    \mk{10 marks}) $\rightarrow$ $\S$4.1. \mk{One seven-step script covers both modes}: only
+    the boundary condition in Step 5 changes. Learn TM first; TE is the same page with
     $\sin$ and $\cos$ swapped.
   \item \textbf{Mode questions} (9 papers, 1 to 5 marks each): dominant, degenerate, ``prove
     TM$_{01}$ cannot exist'', ``show TM$_{11}$ is the lowest TM mode'' $\rightarrow$ $\S$4.2.
@@ -49,152 +49,210 @@ Two more things worth knowing before the paper starts:
   \item Hollow metal pipe, inner broad wall $a$ along $x$, narrow wall $b$ along $y$,
     propagation along $+z$, $a > b$.
   \item Lossless dielectric $(\mu, \epsilon)$ inside, perfectly conducting walls.
-  \item Every field component carries $e^{-\gamma z}$, $\gamma = \alpha + j\beta$.
-  \item Notation used throughout (Gangaju):
+  \item Symbols follow the \textbf{RF guide} (\emph{Fundamentals of Microwave Engineering},
+    $\S$4.1.1, eqs 4.1 to 4.37, Liao's scheme):
   \begin{itemize}
-    \item $k = \omega\sqrt{\mu\epsilon}$, the free-space wave number of the filling.
-    \item $h^2 = \gamma^2 + k^2 = k_x^2 + k_y^2$, the cut-off wave number squared
-      (Pozar writes $k_c^2$).
+    \item $\gamma$: intrinsic propagation constant of the dielectric; lossless
+      $\Rightarrow$ $\gamma = j\omega\sqrt{\mu\epsilon}$, $\gamma^2 = -\omega^2\mu\epsilon$.
+    \item $\gamma_g = \alpha_g + j\beta_g$: propagation constant \textbf{in the guide}.
+    \item $k_x, k_y$: separation constants; $k_c = \sqrt{k_x^2 + k_y^2}$, cut-off wave number.
+    \item $\psi$: stands for $H_z$ (TE) or $E_z$ (TM).
   \end{itemize}
-  \item \textbf{No TEM mode.} With $E_z = H_z = 0$ every transverse component below is
+  \item \textbf{No TEM mode.} With $E_z = H_z = 0$ every transverse component in Step 4 is
     zero. Physically, a closed $H$ loop in the cross-section needs an axial current, and a
     single hollow conductor has no centre conductor to carry it.
 \end{itemize}}{%
 \figT{c4_rect_geom.png}
 {\color{sub}\scriptsize Co-ordinates of the rectangular guide. Source: Gangaju, Ch-4 deck, slide 12.}}
 
-\lead{Step 1: transverse fields from the longitudinal ones (Maxwell's curl equations)}
+\lead{Step 1: wave equations (from Maxwell's equations)}
 \begin{itemize}
-  \item Write $\nabla\times E = -j\omega\mu H$ and $\nabla\times H = j\omega\epsilon E$ in
-    components with $\partial/\partial z \rightarrow -\gamma$, and solve the four transverse
-    equations for $E_x, E_y, H_x, H_y$:
+  \item Vector wave equations:
+    $\nabla^2 E = \gamma^2 E$, \quad $\nabla^2 H = \gamma^2 H$, \quad
+    $\gamma = \sqrt{j\omega\mu(\sigma + j\omega\epsilon)} = \alpha + j\beta$.
+  \item Each rectangular component $\psi$ obeys the scalar Helmholtz equation
+    $\nabla^2\psi = \gamma^2\psi$, i.e.
+    $\dfrac{\partial^2\psi}{\partial x^2} + \dfrac{\partial^2\psi}{\partial y^2}
+    + \dfrac{\partial^2\psi}{\partial z^2} = \gamma^2\psi$.
+\end{itemize}
+
+\lead{Step 2: separation of variables}
+\begin{itemize}
+  \item Put $\psi = X(x)\,Y(y)\,Z(z)$, substitute, divide by $XYZ$:
+    $\dfrac{1}{X}\dfrac{d^2X}{dx^2} + \dfrac{1}{Y}\dfrac{d^2Y}{dy^2}
+    + \dfrac{1}{Z}\dfrac{d^2Z}{dz^2} = \gamma^2$.
+  \item Each term is a function of one variable only $\Rightarrow$ each is a constant:
+  \begin{itemize}
+    \item $\dfrac{d^2X}{dx^2} = -k_x^2 X \Rightarrow X = A\sin k_x x + B\cos k_x x$.
+    \item $\dfrac{d^2Y}{dy^2} = -k_y^2 Y \Rightarrow Y = C\sin k_y y + D\cos k_y y$.
+    \item $\dfrac{d^2Z}{dz^2} = \gamma_g^2 Z \Rightarrow Z = e^{-\gamma_g z}$ (wave along $+z$ only).
+  \end{itemize}
+  \item Adding the constants back: $-k_x^2 - k_y^2 + \gamma_g^2 = \gamma^2$, so
+    $\boxed{\gamma_g^2 = \gamma^2 + k_x^2 + k_y^2 = \gamma^2 + k_c^2}$.
+  \item Lossless dielectric, $\gamma^2 = -\omega^2\mu\epsilon$:
+    $\boxed{\gamma_g = \pm\sqrt{k_c^2 - \omega^2\mu\epsilon}}$.
+\end{itemize}
+
+\par\penalty0\Needspace{12\baselineskip}
+\lead{Step 3: three cases for $\gamma_g$}
+\begin{itemize}
+  \item \textbf{Case I}, $\omega^2\mu\epsilon = k_c^2$: $\gamma_g = 0$, \textbf{cut-off}:
+    $f_c = \dfrac{1}{2\pi\sqrt{\mu\epsilon}}\sqrt{k_x^2 + k_y^2}$.
+  \item \textbf{Case II}, $\omega^2\mu\epsilon > k_c^2$:
+    $\gamma_g = \pm j\beta_g = \pm j\omega\sqrt{\mu\epsilon}\sqrt{1 - (f_c/f)^2}$, imaginary
+    $\rightarrow$ \textbf{propagates}; needs $f > f_c$.
+  \item \textbf{Case III}, $\omega^2\mu\epsilon < k_c^2$:
+    $\gamma_g = \pm\alpha_g = \pm\omega\sqrt{\mu\epsilon}\sqrt{(f_c/f)^2 - 1}$, real
+    $\rightarrow$ \textbf{attenuated} as $e^{-\alpha_g z}$, carries no power; $f < f_c$.
+    A waveguide is a \textbf{high-pass filter}.
+  \item Final solution (propagating wave):
+\end{itemize}
+\[ \psi = \left[A\sin k_x x + B\cos k_x x\right]\left[C\sin k_y y + D\cos k_y y\right]e^{-j\beta_g z} \]
+
+\par\penalty0\Needspace{14\baselineskip}
+\lead{Step 4: transverse components from $E_z$ and $H_z$ (expand the curl equations)}
+\begin{itemize}
+  \item Every component carries $e^{-j\beta_g z}$, so $\partial/\partial z \rightarrow -j\beta_g$.
+    Expand $\nabla\times E = -j\omega\mu H$ and $\nabla\times H = j\omega\epsilon E$ in
+    components and solve the four transverse equations:
 \end{itemize}
 \[
 \begin{aligned}
-E_x &= -\frac{\gamma}{h^2}\frac{\partial E_z}{\partial x} - \frac{j\omega\mu}{h^2}\frac{\partial H_z}{\partial y}, &
-E_y &= -\frac{\gamma}{h^2}\frac{\partial E_z}{\partial y} + \frac{j\omega\mu}{h^2}\frac{\partial H_z}{\partial x}, \\[3pt]
-H_x &= -\frac{\gamma}{h^2}\frac{\partial H_z}{\partial x} + \frac{j\omega\epsilon}{h^2}\frac{\partial E_z}{\partial y}, &
-H_y &= -\frac{\gamma}{h^2}\frac{\partial H_z}{\partial y} - \frac{j\omega\epsilon}{h^2}\frac{\partial E_z}{\partial x}.
+E_x &= -\frac{j\beta_g}{k_c^2}\frac{\partial E_z}{\partial x} - \frac{j\omega\mu}{k_c^2}\frac{\partial H_z}{\partial y}, &
+E_y &= -\frac{j\beta_g}{k_c^2}\frac{\partial E_z}{\partial y} + \frac{j\omega\mu}{k_c^2}\frac{\partial H_z}{\partial x}, \\[3pt]
+H_x &= -\frac{j\beta_g}{k_c^2}\frac{\partial H_z}{\partial x} + \frac{j\omega\epsilon}{k_c^2}\frac{\partial E_z}{\partial y}, &
+H_y &= -\frac{j\beta_g}{k_c^2}\frac{\partial H_z}{\partial y} - \frac{j\omega\epsilon}{k_c^2}\frac{\partial E_z}{\partial x}.
 \end{aligned}
 \]
 \begin{itemize}
-  \item \mk{This block is the whole trick}: find $E_z$ (TM) or $H_z$ (TE) and the other four
-    components follow by differentiation.
-\end{itemize}
-
-\lead{Step 2: the wave equation for the longitudinal component}
-\begin{itemize}
-  \item Helmholtz: $\nabla^2 E_z + k^2 E_z = 0$, i.e.
-    $\dfrac{\partial^2 E_z}{\partial x^2} + \dfrac{\partial^2 E_z}{\partial y^2}
-    + \dfrac{\partial^2 E_z}{\partial z^2} + \omega^2\mu\epsilon E_z = 0$.
-  \item The same equation holds for $H_z$.
-\end{itemize}
-
-\lead{Step 3: separation of variables}
-\begin{itemize}
-  \item Put $E_z = X(x)\,Y(y)\,Z(z)$ and divide by $XYZ$:
-    $\dfrac{X''}{X} + \dfrac{Y''}{Y} + \dfrac{Z''}{Z} = -k^2$.
-  \item Each ratio must be a constant:
-  \begin{itemize}
-    \item $X''/X = -k_x^2 \Rightarrow X = C_1\cos k_x x + C_2\sin k_x x$.
-    \item $Y''/Y = -k_y^2 \Rightarrow Y = C_3\cos k_y y + C_4\sin k_y y$.
-    \item $Z''/Z = \gamma^2 \Rightarrow Z = C_5 e^{\gamma z} + C_6 e^{-\gamma z}$;
-      a wave along $+z$ only $\Rightarrow C_5 = 0$.
-  \end{itemize}
-  \item Adding the constants back: $-k_x^2 - k_y^2 + \gamma^2 = -k^2$, so
-    $\boxed{h^2 = k_x^2 + k_y^2 = \gamma^2 + k^2}$.
-  \item General solution:
-    $E_z = (A_1\cos k_x x + A_2\sin k_x x)(A_3\cos k_y y + A_4\sin k_y y)\,e^{-\gamma z}$.
-  \item $H_z$ has the same form with its own constants $B_1, B_2, B_3, B_4$; the
-    working below reuses the letters $A$ for brevity.
+  \item \mk{This block is the whole trick}: find $H_z$ (TE) or $E_z$ (TM) and the other four
+    components follow by differentiation. The guide prints only the TE half (4.22) and the TM
+    half (4.28 to 4.31); this is both at once.
 \end{itemize}
 
 \par\penalty0\Needspace{16\baselineskip}
 \sbs{%
-\lead{Step 4 (TM): $H_z = 0$, apply $E_z = 0$ on the walls}
+\lead{Step 5 (TE): $E_z = 0$, $H_z \ne 0$, so $\psi = H_z$}
+\begin{itemize}
+  \item With $E_z = 0$: $E_x \propto \partial H_z/\partial y$, $E_y \propto \partial H_z/\partial x$;
+    tangential $E$ vanishes on the walls.
+  \item $x = 0$: $E_y = 0 \Rightarrow \partial H_z/\partial x = 0 \Rightarrow A = 0$.
+  \item $y = 0$: $E_x = 0 \Rightarrow \partial H_z/\partial y = 0 \Rightarrow C = 0$.
+  \item $x = a$: $\sin k_x a = 0 \Rightarrow k_x = m\pi/a$.
+  \item $y = b$: $\sin k_y b = 0 \Rightarrow k_y = n\pi/b$.
+\end{itemize}
+\[ H_z = H_{0z} \cos\frac{m\pi x}{a}\,\cos\frac{n\pi y}{b}\,e^{-j\beta_g z} \]
+{\color{sub}\footnotesize $H_{0z} = BD$; $m, n \ge 0$, not both zero.}}{%
+\lead{Step 5 (TM): $H_z = 0$, $E_z \ne 0$, so $\psi = E_z$}
 \begin{itemize}
   \item $E_z$ is tangential to every wall, so it must vanish there.
-  \item $x = 0$: $E_z = 0 \Rightarrow A_1 = 0$.
-  \item $y = 0$: $E_z = 0 \Rightarrow A_3 = 0$.
+  \item $x = 0$: $E_z = 0 \Rightarrow B = 0$.
+  \item $y = 0$: $E_z = 0 \Rightarrow D = 0$.
   \item $x = a$: $\sin k_x a = 0 \Rightarrow k_x = m\pi/a$.
   \item $y = b$: $\sin k_y b = 0 \Rightarrow k_y = n\pi/b$.
 \end{itemize}
-\[ E_z = E_0 \sin\frac{m\pi x}{a}\,\sin\frac{n\pi y}{b}\,e^{-\gamma z} \]}{%
-\lead{Step 4 (TE): $E_z = 0$, apply $E_x, E_y = 0$ on the walls}
-\begin{itemize}
-  \item With $E_z = 0$: $E_x \propto \partial H_z/\partial y$, $E_y \propto \partial H_z/\partial x$.
-  \item $x = 0$: $E_y = 0 \Rightarrow \partial H_z/\partial x = 0 \Rightarrow A_2 = 0$.
-  \item $y = 0$: $E_x = 0 \Rightarrow \partial H_z/\partial y = 0 \Rightarrow A_4 = 0$.
-  \item $x = a$: $\sin k_x a = 0 \Rightarrow k_x = m\pi/a$.
-  \item $y = b$: $\sin k_y b = 0 \Rightarrow k_y = n\pi/b$.
-\end{itemize}
-\[ H_z = H_0 \cos\frac{m\pi x}{a}\,\cos\frac{n\pi y}{b}\,e^{-\gamma z} \]
-{\color{sub}\footnotesize Deck slide 18 prints $k_y = n\pi/a$ in the last line; it is $n\pi/b$.}}
+\[ E_z = E_{0z} \sin\frac{m\pi x}{a}\,\sin\frac{n\pi y}{b}\,e^{-j\beta_g z} \]
+{\color{sub}\footnotesize $E_{0z} = AC$; $m, n \ge 1$; $m = 0$ or $n = 0$ kills
+every component.}}
 
-\par\penalty0\Needspace{18\baselineskip}
-\lead{Step 5: substitute into Step 1 (write $e^{-\gamma z}$ on every line in the exam)}
-\sbs{%
-\textbf{TM$_{mn}$} \quad ($H_z = 0$)
-\[
-\begin{aligned}
-E_x &= -\frac{\gamma}{h^2}\frac{m\pi}{a}E_0\cos\frac{m\pi x}{a}\sin\frac{n\pi y}{b} \\
-E_y &= -\frac{\gamma}{h^2}\frac{n\pi}{b}E_0\sin\frac{m\pi x}{a}\cos\frac{n\pi y}{b} \\
-H_x &= \phantom{-}\frac{j\omega\epsilon}{h^2}\frac{n\pi}{b}E_0\sin\frac{m\pi x}{a}\cos\frac{n\pi y}{b} \\
-H_y &= -\frac{j\omega\epsilon}{h^2}\frac{m\pi}{a}E_0\cos\frac{m\pi x}{a}\sin\frac{n\pi y}{b}
-\end{aligned}
-\]}{%
+\par\penalty0\Needspace{12\baselineskip}
+\lead{Step 6: substitute into Step 4 (write $e^{-j\beta_g z}$ on every line in the exam)}
 \textbf{TE$_{mn}$} \quad ($E_z = 0$)
 \[
 \begin{aligned}
-E_x &= \phantom{-}\frac{j\omega\mu}{h^2}\frac{n\pi}{b}H_0\cos\frac{m\pi x}{a}\sin\frac{n\pi y}{b} \\
-E_y &= -\frac{j\omega\mu}{h^2}\frac{m\pi}{a}H_0\sin\frac{m\pi x}{a}\cos\frac{n\pi y}{b} \\
-H_x &= \phantom{-}\frac{\gamma}{h^2}\frac{m\pi}{a}H_0\sin\frac{m\pi x}{a}\cos\frac{n\pi y}{b} \\
-H_y &= \phantom{-}\frac{\gamma}{h^2}\frac{n\pi}{b}H_0\cos\frac{m\pi x}{a}\sin\frac{n\pi y}{b}
+H_x &= -\frac{j\beta_g}{k_c^2}\frac{\partial H_z}{\partial x} = H_{0x}\sin\frac{m\pi x}{a}\cos\frac{n\pi y}{b}\,e^{-j\beta_g z}, &
+H_{0x} &= \phantom{-}\frac{j\beta_g}{k_c^2}\frac{m\pi}{a}H_{0z} \\
+H_y &= -\frac{j\beta_g}{k_c^2}\frac{\partial H_z}{\partial y} = H_{0y}\cos\frac{m\pi x}{a}\sin\frac{n\pi y}{b}\,e^{-j\beta_g z}, &
+H_{0y} &= \phantom{-}\frac{j\beta_g}{k_c^2}\frac{n\pi}{b}H_{0z} \\
+E_x &= -\frac{j\omega\mu}{k_c^2}\frac{\partial H_z}{\partial y} = E_{0x}\cos\frac{m\pi x}{a}\sin\frac{n\pi y}{b}\,e^{-j\beta_g z}, &
+E_{0x} &= \phantom{-}\frac{j\omega\mu}{k_c^2}\frac{n\pi}{b}H_{0z} \\
+E_y &= \phantom{-}\frac{j\omega\mu}{k_c^2}\frac{\partial H_z}{\partial x} = E_{0y}\sin\frac{m\pi x}{a}\cos\frac{n\pi y}{b}\,e^{-j\beta_g z}, &
+E_{0y} &= -\frac{j\omega\mu}{k_c^2}\frac{m\pi}{a}H_{0z}
 \end{aligned}
-\]}
+\]
+
+\par\penalty0\Needspace{8\baselineskip}
+\textbf{TM$_{mn}$} \quad ($H_z = 0$)
+\[
+\begin{aligned}
+E_x &= -\frac{j\beta_g}{k_c^2}\frac{\partial E_z}{\partial x} = E_{0x}\cos\frac{m\pi x}{a}\sin\frac{n\pi y}{b}\,e^{-j\beta_g z}, &
+E_{0x} &= -\frac{j\beta_g}{k_c^2}\frac{m\pi}{a}E_{0z} \\
+E_y &= -\frac{j\beta_g}{k_c^2}\frac{\partial E_z}{\partial y} = E_{0y}\sin\frac{m\pi x}{a}\cos\frac{n\pi y}{b}\,e^{-j\beta_g z}, &
+E_{0y} &= -\frac{j\beta_g}{k_c^2}\frac{n\pi}{b}E_{0z} \\
+H_x &= \phantom{-}\frac{j\omega\epsilon}{k_c^2}\frac{\partial E_z}{\partial y} = H_{0x}\sin\frac{m\pi x}{a}\cos\frac{n\pi y}{b}\,e^{-j\beta_g z}, &
+H_{0x} &= \phantom{-}\frac{j\omega\epsilon}{k_c^2}\frac{n\pi}{b}E_{0z} \\
+H_y &= -\frac{j\omega\epsilon}{k_c^2}\frac{\partial E_z}{\partial x} = H_{0y}\cos\frac{m\pi x}{a}\sin\frac{n\pi y}{b}\,e^{-j\beta_g z}, &
+H_{0y} &= -\frac{j\omega\epsilon}{k_c^2}\frac{m\pi}{a}E_{0z}
+\end{aligned}
+\]
 {\color{sub}\footnotesize All eight components are checked in \code{src/wg.py} against both curl
 equations and against tangential $E = 0$ on all four walls; a single flipped sign fails the
 check.}
 
 \par\penalty0\Needspace{20\baselineskip}
-\lead{Step 6: the characteristic equations (the ``+2'' or ``+3'' of every version)}
-\begin{tabularx}{\linewidth}{@{}L{3.1cm}L{6.1cm}X@{}}
+\lead{Step 7: the characteristic equations (the ``+2'' or ``+3'' of every version)}
+\begin{tabularx}{\linewidth}{@{}L{3.8cm}L{7.2cm}X@{}}
 \toprule
 \hrow \thead{Quantity} & \thead{Expression} & \thead{Note} \\
 \midrule
-Propagation constant & $\gamma = \sqrt{h^2 - k^2} = \sqrt{\left(\tfrac{m\pi}{a}\right)^2 + \left(\tfrac{n\pi}{b}\right)^2 - \omega^2\mu\epsilon}$ & real below cut-off, imaginary above \\
-Cut-off frequency & $f_c = \dfrac{1}{2\sqrt{\mu\epsilon}}\sqrt{\left(\tfrac{m}{a}\right)^2 + \left(\tfrac{n}{b}\right)^2}$ & set $\gamma = 0$; air: $\tfrac{c}{2}\sqrt{\cdot}$ \\
-Cut-off wavelength & $\lambda_c = \dfrac{2}{\sqrt{(m/a)^2 + (n/b)^2}}$ & TE$_{10}$: $\lambda_c = 2a$ \\
-Phase constant & $\beta = \omega\sqrt{\mu\epsilon}\sqrt{1 - (f_c/f)^2}$ & above cut-off \\
-Guide wavelength & $\lambda_g = \dfrac{\lambda}{\sqrt{1 - (f_c/f)^2}}$ & $\dfrac{1}{\lambda^2} = \dfrac{1}{\lambda_g^2} + \dfrac{1}{\lambda_c^2}$ \\
-Phase velocity & $v_p = \dfrac{\omega}{\beta} = \dfrac{v}{\sqrt{1 - (f_c/f)^2}}$ & $> v$, carries no energy \\
-Group velocity & $v_g = \dfrac{d\omega}{d\beta} = v\sqrt{1 - (f_c/f)^2}$ & $< v$; $v_p v_g = v^2$ \\
-Wave impedance, TE & $Z_{TE} = \dfrac{E_x}{H_y} = -\dfrac{E_y}{H_x} = \dfrac{\omega\mu}{\beta} = \dfrac{\eta}{\sqrt{1 - (f_c/f)^2}}$ & $> \eta$ \\
-Wave impedance, TM & $Z_{TM} = \dfrac{E_x}{H_y} = -\dfrac{E_y}{H_x} = \dfrac{\beta}{\omega\epsilon} = \eta\sqrt{1 - (f_c/f)^2}$ & $< \eta$ \\
+Cut-off wave number & $k_c^2 = \left(\tfrac{m\pi}{a}\right)^2 + \left(\tfrac{n\pi}{b}\right)^2 = \omega_c^2\mu\epsilon$ & TE and TM alike \\
+Cut-off frequency & $f_c = \dfrac{1}{2\sqrt{\mu\epsilon}}\sqrt{\left(\tfrac{m}{a}\right)^2 + \left(\tfrac{n}{b}\right)^2}$ & from $k_c = \omega_c\sqrt{\mu\epsilon}$; air: $\tfrac{c}{2}\sqrt{\cdot}$ \\
+Cut-off wavelength & $\lambda_c = \dfrac{2\pi}{k_c} = \dfrac{1}{\sqrt{(m/2a)^2 + (n/2b)^2}}$ & TE$_{10}$: $\lambda_c = 2a$ \\
+Phase constant & $\beta_g = \sqrt{\omega^2\mu\epsilon - k_c^2} = \omega\sqrt{\mu\epsilon}\sqrt{1 - (f_c/f)^2}$ & above cut-off \\
+Guide wavelength & $\lambda_g = \dfrac{2\pi}{\beta_g} = \dfrac{\lambda}{\sqrt{1 - (f_c/f)^2}}$ & $\dfrac{1}{\lambda^2} = \dfrac{1}{\lambda_g^2} + \dfrac{1}{\lambda_c^2}$ \\
+Phase velocity in guide & $v_g = \dfrac{\omega}{\beta_g} = \dfrac{v_p}{\sqrt{1 - (f_c/f)^2}}$ & $> v_p$; guide's name, see below \\
+Group velocity & $v_{gr} = \dfrac{d\omega}{d\beta_g} = v_p\sqrt{1 - (f_c/f)^2}$ & $< v_p$; $v_g v_{gr} = v_p^2$ \\
+Wave impedance, TE & $Z_g = \dfrac{E_x}{H_y} = -\dfrac{E_y}{H_x} = \dfrac{\omega\mu}{\beta_g} = \dfrac{\eta}{\sqrt{1 - (f_c/f)^2}}$ & $> \eta$ \\
+Wave impedance, TM & $Z_g = \dfrac{E_x}{H_y} = -\dfrac{E_y}{H_x} = \dfrac{\beta_g}{\omega\epsilon} = \eta\sqrt{1 - (f_c/f)^2}$ & $< \eta$ \\
 \bottomrule
 \end{tabularx}
 \vspace{2pt}
 \begin{itemize}
-  \item Three regimes from $\gamma^2 = h^2 - \omega^2\mu\epsilon$:
-  \begin{itemize}
-    \item $f < f_c$: $\gamma = \alpha$, real $\rightarrow$ \textbf{evanescent}, the field
-      decays and carries no power. A waveguide is a \textbf{high-pass filter}.
-    \item $f = f_c$: $\gamma = 0$, cut-off.
-    \item $f > f_c$: $\gamma = j\beta$ $\rightarrow$ \textbf{propagates}.
-  \end{itemize}
-  \item $v = 1/\sqrt{\mu\epsilon}$, $\eta = \sqrt{\mu/\epsilon}$; for air $v = c$ and
+  \item $v_p = 1/\sqrt{\mu\epsilon}$ is the phase velocity in the unbounded dielectric,
+    $\eta = \sqrt{\mu/\epsilon}$ the intrinsic impedance; for air $v_p = c$ and
     $\eta_0 = 120\pi \approx 377\,\Omega$.
+  \item \mk{Name clash}: the guide's $v_g$ is the phase velocity \textbf{in the guide}
+    (Liao's name). The companion and most books use $v_p$ for that and $v_g$ for group
+    velocity. Say which one you mean in the exam.
+  \item Other decks: Gangaju writes $h$ for $k_c$ and $\gamma$ for $\gamma_g$; Pozar writes
+    $k_c$, $\beta$, $Z_{TE}$ / $Z_{TM}$.
 \end{itemize}
+
+\par\penalty0\Needspace{14\baselineskip}
+\lead{RF guide misprints (book pp.\ 32 to 36), corrected above}
+{\footnotesize
+\begin{itemize}
+  \item (4.1) $\gamma = \sqrt{j\omega\mu(\sigma + \omega\epsilon)}$: the $j$ is missing,
+    $\sigma + j\omega\epsilon$.
+  \item (4.6) prints $\frac{1}{X}$ in front of all three terms: it is $\frac{1}{X}$,
+    $\frac{1}{Y}$, $\frac{1}{Z}$.
+  \item (4.9), (4.12) $Z'' = -k_z^2 Z$ with a $\sin$/$\cos$ solution contradict its own
+    $\gamma_g$ in (4.14) and $e^{-j\beta_g z}$ in (4.19): $Z'' = \gamma_g^2 Z$, $Z = e^{-\gamma_g z}$.
+  \item (4.15) $\gamma_g = \pm\sqrt{\omega_c^2\mu\epsilon - k_c^2}$: root inverted and $\omega_c$
+    for $\omega$; it is $\pm\sqrt{k_c^2 - \omega^2\mu\epsilon}$. Cases II and III also print
+    $\omega_c$ where $\omega$ is meant.
+  \item (4.18) $\gamma_g = \pm j\alpha_g$: attenuation is real, $\gamma_g = \pm\alpha_g$.
+  \item (4.19) prints $\sin$ in all four places: second term of each bracket is $\cos$.
+  \item (4.22) $E_y = -\frac{j\omega\mu}{k_c^2}\frac{\partial H_z}{\partial y}$: two errors, it is
+    $+\frac{j\omega\mu}{k_c^2}\frac{\partial H_z}{\partial x}$.
+    TE boundary conditions are skipped entirely; Step 5 supplies them.
+  \item (4.24), (4.35) $\lambda_g = 1/\sqrt{1 - (f_c/f)^2}$: numerator $\lambda$ is missing.
+  \item (4.26) $Z_g = E_x/E_y$: it is $E_x/H_y$.
+  \item (4.29) TM $E_y$ amplitude labelled $H_{0y}$: it is $E_{0y}$.
+  \item (4.31) $H_y = +\frac{j\omega\epsilon}{k_c^2}\frac{\partial E_z}{\partial x}$: sign is $-$.
+\end{itemize}}
+{\color{sub}\footnotesize Gangaju deck slide 18 prints $k_y = n\pi/a$; it is $n\pi/b$.}
 
 \par\penalty0\Needspace{12\baselineskip}
 \creamq{Answer skeleton for the 4 to 5 mark short-note version}{\m{4}\m{5}}
 \begin{itemize}
   \item Figure of the guide with $a$, $b$, $z$ (1 line).
-  \item Step 1 block, then the one boundary-condition result ($E_z = E_0\sin\sin$ for TM,
-    $H_z = H_0\cos\cos$ for TE).
-  \item The four transverse components from Step 5, without re-deriving them.
-  \item $f_c$ and one of $Z_{TE}$ / $Z_{TM}$. For the 10-mark version add Steps 2 to 4 in
-    full and the whole Step 6 table.
+  \item Helmholtz equation, $\psi = XYZ$, and $\gamma_g^2 = \gamma^2 + k_c^2$ in two lines.
+  \item The one boundary-condition result ($H_z = H_{0z}\cos\cos$ for TE,
+    $E_z = E_{0z}\sin\sin$ for TM).
+  \item The four transverse components from Step 6, without re-deriving them.
+  \item $f_c$ and $Z_g$. For the 10-mark version add Steps 2 to 5 in full and the whole
+    Step 7 table.
 \end{itemize}
 
 \penalty0\vspace{2pt}
@@ -243,9 +301,9 @@ TM arrows below the line sit on their TE twins: degeneracy. \added{}}}
 \creamq{Prove that TM$_{01}$ and TM$_{10}$ modes do not exist}{\m{3}}
 {\color{sub}\footnotesize \yr{70 Ma}}
 \begin{itemize}
-  \item TM: $H_z = 0$ and $E_z = E_0\sin(m\pi x/a)\sin(n\pi y/b)e^{-\gamma z}$.
+  \item TM: $H_z = 0$ and $E_z = E_{0z}\sin(m\pi x/a)\sin(n\pi y/b)e^{-j\beta_g z}$.
   \item $m = 0$ or $n = 0$ $\Rightarrow$ $\sin 0 = 0$ $\Rightarrow$ $E_z = 0$ everywhere.
-  \item Every transverse component is a derivative of $E_z$ (Step 1 with $H_z = 0$)
+  \item Every transverse component is a derivative of $E_z$ (Step 4 with $H_z = 0$)
     $\Rightarrow$ $E_x = E_y = H_x = H_y = 0$.
   \item All six components vanish $\Rightarrow$ \mk{no field, no mode}. TM$_{mn}$ needs
     $m \ge 1$ \textbf{and} $n \ge 1$.
@@ -266,7 +324,7 @@ TM arrows below the line sit on their TE twins: degeneracy. \added{}}}
 {\color{sub}\footnotesize \yr{\textbf{71 Bh}, \textbf{\texttt{81 Bh}}}}
 \sbs{%
 \begin{itemize}
-  \item TE: $H_z = H_0\cos\cos$ survives with one index zero ($\cos 0 = 1$); only
+  \item TE: $H_z = H_{0z}\cos\cos$ survives with one index zero ($\cos 0 = 1$); only
     TE$_{00}$ is excluded (constant $H_z$, all transverse components zero).
   \item Two candidates for the lowest $f_c$:
     $f_{c,10} = \dfrac{c}{2a}$, \quad $f_{c,01} = \dfrac{c}{2b}$.
@@ -1211,7 +1269,7 @@ Gangaju slide 62.}
     \yr{70 Ma \m{7}, \textbf{71 Bh} \m{8}, 72 Ma \m{5}, \textbf{74 Bh} \m{10},
     \textbf{76 Bh} \m{10}, \texttt{81 Ba} \m{8}, \textbf{\texttt{81 Bh}} \m{8}}
   \item \textbf{Rectangular waveguide: modes of propagation and critical parameters}
-    $\rightarrow$ $\S$4.1 Step 6 and $\S$4.2. \yr{\textbf{69 Bh} \m{8}}
+    $\rightarrow$ $\S$4.1 Step 7 and $\S$4.2. \yr{\textbf{69 Bh} \m{8}}
   \item \textbf{Prove TM$_{01}$ / TM$_{10}$ do not exist} $\rightarrow$ $\S$4.2. \yr{70 Ma \m{3}}
   \item \textbf{Lowest TM mode is TM$_{11}$} $\rightarrow$ $\S$4.2. \yr{\textbf{\texttt{82 Bh}} \m{3}}
   \item \textbf{TE$_{10}$ dominant; TE$_{10}$ vs TE$_{20}$} $\rightarrow$ $\S$4.2, with the

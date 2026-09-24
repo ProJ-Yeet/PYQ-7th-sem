@@ -40,42 +40,54 @@ def _close(a, b, tol=1e-9, what=""):
 def rect_fields(kind, m, n):
     """Printed rectangular-guide components, exactly as ch4.tex sets them.
 
-    Common factor exp(-gamma z) is kept explicit so the z-derivatives are real.
-    h^2 = (m pi/a)^2 + (n pi/b)^2 and gamma^2 = h^2 - w^2 mu eps.
+    Notation is the RF guide's (Liao's): propagating wave exp(-j beta_g z),
+    k_c^2 = (m pi/a)^2 + (n pi/b)^2 and beta_g^2 = w^2 mu eps - k_c^2.
+    Each transverse component is built from its printed amplitude
+    (H_0x, E_0y, ... in terms of H_0z or E_0z), so a wrong amplitude sign fails.
     """
     x, y, z = sp.symbols("x y z", real=True)
-    a, b, w, mu, eps, E0, H0 = sp.symbols("a b omega mu epsilon E0 H0", positive=True)
-    g = sp.Symbol("gamma")
+    a, b, w, mu, eps, E0, H0 = sp.symbols("a b omega mu epsilon E0z H0z", positive=True)
+    bg = sp.Symbol("beta_g", positive=True)
     j = sp.I
     kx, ky = m * sp.pi / a, n * sp.pi / b
-    h2 = kx**2 + ky**2
-    ez = sp.exp(-g * z)
+    kc2 = kx**2 + ky**2
+    ez = sp.exp(-j * bg * z)
     if kind == "TM":
         Ez = E0 * sp.sin(kx * x) * sp.sin(ky * y) * ez
         Hz = sp.Integer(0)
-        Ex = -(g / h2) * kx * E0 * sp.cos(kx * x) * sp.sin(ky * y) * ez
-        Ey = -(g / h2) * ky * E0 * sp.sin(kx * x) * sp.cos(ky * y) * ez
-        Hx = (j * w * eps / h2) * ky * E0 * sp.sin(kx * x) * sp.cos(ky * y) * ez
-        Hy = -(j * w * eps / h2) * kx * E0 * sp.cos(kx * x) * sp.sin(ky * y) * ez
+        E0x = -(j * bg / kc2) * kx * E0
+        E0y = -(j * bg / kc2) * ky * E0
+        H0x = (j * w * eps / kc2) * ky * E0
+        H0y = -(j * w * eps / kc2) * kx * E0
     else:
         Ez = sp.Integer(0)
         Hz = H0 * sp.cos(kx * x) * sp.cos(ky * y) * ez
-        Ex = (j * w * mu / h2) * ky * H0 * sp.cos(kx * x) * sp.sin(ky * y) * ez
-        Ey = -(j * w * mu / h2) * kx * H0 * sp.sin(kx * x) * sp.cos(ky * y) * ez
-        Hx = (g / h2) * kx * H0 * sp.sin(kx * x) * sp.cos(ky * y) * ez
-        Hy = (g / h2) * ky * H0 * sp.cos(kx * x) * sp.sin(ky * y) * ez
-    syms = dict(x=x, y=y, z=z, a=a, b=b, w=w, mu=mu, eps=eps, g=g, h2=h2)
+        H0x = (j * bg / kc2) * kx * H0
+        H0y = (j * bg / kc2) * ky * H0
+        E0x = (j * w * mu / kc2) * ky * H0
+        E0y = -(j * w * mu / kc2) * kx * H0
+    if kind == "TM":
+        Ex = E0x * sp.cos(kx * x) * sp.sin(ky * y) * ez
+        Ey = E0y * sp.sin(kx * x) * sp.cos(ky * y) * ez
+        Hx = H0x * sp.sin(kx * x) * sp.cos(ky * y) * ez
+        Hy = H0y * sp.cos(kx * x) * sp.sin(ky * y) * ez
+    else:
+        Hx = H0x * sp.sin(kx * x) * sp.cos(ky * y) * ez
+        Hy = H0y * sp.cos(kx * x) * sp.sin(ky * y) * ez
+        Ex = E0x * sp.cos(kx * x) * sp.sin(ky * y) * ez
+        Ey = E0y * sp.sin(kx * x) * sp.cos(ky * y) * ez
+    syms = dict(x=x, y=y, z=z, a=a, b=b, w=w, mu=mu, eps=eps, bg=bg, kc2=kc2)
     return (Ex, Ey, Ez), (Hx, Hy, Hz), syms
 
 
 def rect_general_transverse(Ez, Hz, s):
-    """The deck's slide-10 equations, applied to arbitrary Ez, Hz."""
-    j, g, h2, w, mu, eps, x, y = (sp.I, s["g"], s["h2"], s["w"], s["mu"],
-                                  s["eps"], s["x"], s["y"])
-    Hx = -(g / h2) * sp.diff(Hz, x) + (j * w * eps / h2) * sp.diff(Ez, y)
-    Hy = -(g / h2) * sp.diff(Hz, y) - (j * w * eps / h2) * sp.diff(Ez, x)
-    Ex = -(g / h2) * sp.diff(Ez, x) - (j * w * mu / h2) * sp.diff(Hz, y)
-    Ey = -(g / h2) * sp.diff(Ez, y) + (j * w * mu / h2) * sp.diff(Hz, x)
+    """Step 4 of ch4.tex section 4.1, applied to arbitrary Ez, Hz."""
+    j, bg, kc2, w, mu, eps, x, y = (sp.I, s["bg"], s["kc2"], s["w"], s["mu"],
+                                    s["eps"], s["x"], s["y"])
+    Ex = -(j * bg / kc2) * sp.diff(Ez, x) - (j * w * mu / kc2) * sp.diff(Hz, y)
+    Ey = -(j * bg / kc2) * sp.diff(Ez, y) + (j * w * mu / kc2) * sp.diff(Hz, x)
+    Hx = -(j * bg / kc2) * sp.diff(Hz, x) + (j * w * eps / kc2) * sp.diff(Ez, y)
+    Hy = -(j * bg / kc2) * sp.diff(Hz, y) - (j * w * eps / kc2) * sp.diff(Ez, x)
     return (Ex, Ey), (Hx, Hy)
 
 
@@ -93,27 +105,46 @@ def test_rect_fields():
                 continue
             E, H, s = rect_fields(kind, m, n)
             x, y, z, a, b = s["x"], s["y"], s["z"], s["a"], s["b"]
-            w, mu, eps, g, h2 = s["w"], s["mu"], s["eps"], s["g"], s["h2"]
-            # 1. the printed components ARE the slide-10 equations applied
+            w, mu, eps, bg, kc2 = s["w"], s["mu"], s["eps"], s["bg"], s["kc2"]
+            # 1. the printed amplitudes ARE the Step-4 derivative forms applied
             (gEx, gEy), (gHx, gHy) = rect_general_transverse(E[2], H[2], s)
             for got, printed in ((gEx, E[0]), (gEy, E[1]), (gHx, H[0]), (gHy, H[1])):
                 assert sp.simplify(got - printed) == 0, (kind, m, n, "transverse")
-            # 2. both curl equations, with gamma^2 = h^2 - w^2 mu eps
-            sub = {g**2: h2 - w**2 * mu * eps}
+            # 2. both curl equations, with beta_g^2 = w^2 mu eps - k_c^2
             cE = curl_xyz(E, x, y, z)
             cH = curl_xyz(H, x, y, z)
             for i in range(3):
                 r1 = sp.expand(cE[i] + sp.I * w * mu * H[i])
                 r2 = sp.expand(cH[i] - sp.I * w * eps * E[i])
                 for r in (r1, r2):
-                    r = sp.simplify(r.subs(g**2, h2 - w**2 * mu * eps))
-                    r = sp.simplify(sp.expand(r).subs(sub))
+                    r = sp.simplify(sp.expand(r).subs(bg**2, w**2 * mu * eps - kc2))
                     assert r == 0, (kind, m, n, i, r)
             # 3. tangential E vanishes on all four walls
             Ex, Ey, Ez = E
             for expr, var, val in ((Ey, x, 0), (Ey, x, a), (Ez, x, 0), (Ez, x, a),
                                    (Ex, y, 0), (Ex, y, b), (Ez, y, 0), (Ez, y, b)):
                 assert sp.simplify(expr.subs(var, val)) == 0, (kind, m, n, var, val)
+            # 4. wave impedance E_x/H_y = -E_y/H_x: w mu/beta_g (TE), beta_g/(w eps) (TM)
+            Z = w * mu / bg if kind == "TE" else bg / (w * eps)
+            if E[0] != 0:
+                assert sp.simplify(E[0] / H[1] - Z) == 0, (kind, m, n, "Zg Ex/Hy")
+            if E[1] != 0:
+                assert sp.simplify(-E[1] / H[0] - Z) == 0, (kind, m, n, "Zg -Ey/Hx")
+    return True
+
+
+def test_rect_guide_misprints():
+    """The RF guide's printed forms that ch4.tex lists as misprints really fail."""
+    E, H, s = rect_fields("TE", 2, 1)
+    j, bg, kc2, w, mu, x, y = (sp.I, s["bg"], s["kc2"], s["w"], s["mu"], s["x"], s["y"])
+    Hz = H[2]
+    # (4.22) E_y = -(j w mu/kc^2) dHz/dy
+    assert sp.simplify(-(j * w * mu / kc2) * sp.diff(Hz, y) - E[1]) != 0
+    E, H, s = rect_fields("TM", 2, 1)
+    w, eps, x = s["w"], s["eps"], s["x"]
+    Ez = E[2]
+    # (4.31) H_y = +(j w eps/kc^2) dEz/dx
+    assert sp.simplify((j * w * eps / kc2) * sp.diff(Ez, x) - H[1]) != 0
     return True
 
 
@@ -475,7 +506,9 @@ def test_coupler_params():
 
 def main():
     test_rect_fields()
-    print("rect TE/TM fields  ok  (slide-10 transverse eqns, both curls, all walls)")
+    print("rect TE/TM fields  ok  (Step-4 transverse eqns, amplitudes, both curls, walls, Z_g)")
+    test_rect_guide_misprints()
+    print("RF guide misprints ok  ((4.22) E_y and (4.31) H_y as printed fail the check)")
     test_rect_mode_existence()
     print("mode existence     ok  (TM_m0, TM_0n vanish; TE_00 has no transverse field)")
     r = test_rect_numericals()
