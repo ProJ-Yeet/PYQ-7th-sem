@@ -280,12 +280,15 @@ Trough, $\cos\omega_m t = -1$ & $0.5(1-0.6) = 0.20$
 \end{itemize}
 \lead{Notes worth adding}
 \begin{itemize}
-  \item \textbf{Balanced realisation}: build the modulator on a magic tee, carrier into the
-    H-arm, matched PIN diodes in the two collinear arms and the modulating bias on the
-    E-arm. The two diodes reflect equally, the reflections recombine into the E-arm and
-    the output amplitude follows the bias. The device is then a magic tee with two
-    variable terminations, and the algebra is Ch4 companion Problem 12 with $\Gamma$ set by the bias
-    instead of fixed at $-1$.
+  \item \textbf{Balanced (reflection-type) realisation}: carrier into the H-arm of a magic
+    tee, identical PIN diodes as reflecting terminations on the two collinear arms, both
+    driven by the modulating bias, and \textbf{one diode set back by $\lambda_g/4$} so its
+    round-trip reflection returns $180^\circ$ shifted, $\Gamma_2 = -\Gamma_1$. A tee with
+    loads $\Gamma_1, \Gamma_2$ gives $S_{44} = (\Gamma_1 + \Gamma_2)/2 = 0$ and
+    $S_{34} = (\Gamma_1 - \Gamma_2)/2 = \Gamma_1$ (Ch4 $\S$4.5, asserted in \code{wg.py}):
+    the input stays matched and the E-arm output is $\Gamma_1(t)$, which follows the bias.
+    \mk{Without the offset} ($\Gamma_1 = \Gamma_2$) every reflection returns to the
+    H-arm input and nothing reaches the E-arm. \added{}
   \item \textbf{$S_{11}$ is the figure of merit}: a good modulator keeps $S_{11}$ small at
     \emph{every} bias point. If it does not, the source sees a varying load and the output
     picks up incidental phase modulation.

@@ -511,11 +511,50 @@ diagonal (matched), one unit entry per column (lossless), and $[S] \neq [S]^T$. 
   \item Matched attenuator of $L$ dB:
     $[S] = \left[\begin{smallmatrix}0&\alpha\\ \alpha&0\end{smallmatrix}\right]$,
     $\alpha = 10^{-L/20}$. Reciprocal but lossy.
-  \item \textbf{Amplitude modulator} (\textbf{78 Ch}): a matched, reciprocal two-port
-    whose transmission is \textbf{driven by the modulating signal},
-    \[ [S] = \begin{bmatrix} 0 & \alpha(t) \\ \alpha(t) & 0 \end{bmatrix},
-       \qquad \alpha(t) = \alpha_0\left(1 + m\cos\omega_m t\right) \]
-    Problem 3 of the companion derives it and evaluates the numbers.
+  \item \textbf{Amplitude modulator} (\textbf{78 Ch}): the attenuator with $\alpha$
+    \textbf{driven by the modulating signal}; the 7-mark answer is below.
+\end{itemize}}
+
+\par\penalty0\Needspace{16\baselineskip}
+\creamq{Amplitude modulator: the 7-mark evaluation}{\m{7}}
+{\color{sub}\footnotesize \yr{\textbf{78 Ch}} \gap$\cdot$\gap \added{} no source note carries it; companion Problem 3 has the same working}
+\sbs{%
+\lead{Model and matrix}
+\begin{itemize}
+  \item A two-port in the RF path: carrier in at port 1, modulated carrier out at port 2.
+    The modulating signal is a \textbf{control} (bias) input, not a third RF port.
+  \item Realisation: a \textbf{PIN-diode variable attenuator}. Bias sets the diode's RF
+    resistance, so the modulating waveform steers the transmission.
+  \item \textbf{Matched}, $S_{11} = S_{22} = 0$: built as a matched pad at every bias
+    point; otherwise it pulls the source and adds incidental phase modulation.
+  \item \textbf{Reciprocal}, $S_{12} = S_{21}$: a diode resistance is bilateral; no
+    ferrite, no gain.
+  \item \textbf{Transmission follows the message}:
+    \[ \boxed{\;[S] = \begin{bmatrix} 0 & \alpha(t) \\ \alpha(t) & 0 \end{bmatrix},
+       \quad \alpha(t) = \alpha_0\left(1 + m\cos\omega_m t\right)\;} \]
+    $\alpha_0$ carrier-level transmission, $m$ modulation index, $\omega_m$ modulating
+    frequency.
+\end{itemize}}{%
+\lead{Evaluate: $\alpha_0 = 0.5$, $m = 0.6$, 1 W in}
+\begin{tabularx}{\linewidth}{@{}L{1.7cm}L{1.9cm}X@{}}
+\toprule
+\hrow \thead{Instant} & \thead{$\alpha = S_{21}$} & \thead{$IL$, $P_{out}$} \\
+\midrule
+Peak & $0.5(1.6) = 0.80$ & 1.94 dB, 0.64 W \\
+Carrier & $0.50$ & 6.02 dB, 0.25 W \\
+Trough & $0.5(0.4) = 0.20$ & 13.98 dB, 0.04 W \\
+\bottomrule
+\end{tabularx}
+\vspace{2pt}
+\begin{itemize}
+  \item Column power $|S_{21}|^2 = \alpha^2 < 1$: \mk{lossy by design}. The fraction
+    $1 - \alpha^2(t)$ is burnt in the diode; AM works by throwing power away in step with
+    the message.
+  \item Check from the matrix:
+    $m = \dfrac{|S_{21}|_{\max} - |S_{21}|_{\min}}{|S_{21}|_{\max} + |S_{21}|_{\min}}
+       = \dfrac{0.8 - 0.2}{0.8 + 0.2} = 0.6$ \checkmark
+  \item $\alpha$ switched between 1 and 0: the same matrix is an on-off (ASK) modulator,
+    $m = 1$.
 \end{itemize}}
 
 \penalty0\vspace{2pt}
