@@ -13,13 +13,12 @@ A lossless $50\,\Omega$ line is terminated by $75+j100\,\Omega$. Using the Smith
 \begin{itemize}
   \item $z_L = Z_L/Z_0 = 75.00 + j100.00$ over $50$ $=1.50 + j2.00$.
   \item Plot it where the $r = 1.50$ circle cuts the $x = +2.00$ arc; it reads $0.198\lambda$ on the WTG scale.
-  \item $\Gamma_L = (z_L-1)/(z_L+1) = 0.644\angle 37.3^\circ$, so $|\Gamma_L| = 0.644$ sets the SWR-circle radius and $S = 4.62$.
 \end{itemize}
 \lead{Step 2 --- draw the SWR circle and read (a) and (b)}
 \begin{itemize}
-  \item Centre the compass on the chart centre and swing a circle through $z_L$. Its radius is $|\Gamma_L| = 0.644$ of the chart radius.
-  \item \textbf{(a)} $\Gamma_L = 0.644\angle 37.3^\circ$ --- read the angle on the \emph{angle of reflection coefficient} scale.
-  \item \textbf{(b)} The circle cuts the right-hand real axis at $r = 4.62$, and on that axis $r = S$, so $\boxed{S = 4.62}$.
+  \item Compass on chart centre, swing a circle through $z_L$: the SWR circle. Lay its radius (dividers) on the radially scaled scales below the chart.
+  \item \textbf{(a)} \emph{Refl.\ coeff.\ E or I} scale: $|\Gamma_L| = 0.644$; straight edge through $z_L$ to the \emph{angle of refl.\ coeff.} scale: $37.3^\circ$. $\boxed{\Gamma_L = 0.644\angle 37.3^\circ}$.
+  \item \textbf{(b)} \emph{SWR} scale: $\boxed{S = 4.62}$, also the $r$ where the circle cuts the right-hand real axis. \textit{Check:} $(z_L-1)/(z_L+1) = 0.644\angle 37.3^\circ$, $(1+|\Gamma_L|)/(1-|\Gamma_L|) = 4.62$.
 \end{itemize}
 \lead{Step 3 --- rotate $0.375\lambda$ toward the generator for (c)}
 \begin{itemize}
@@ -35,7 +34,7 @@ A lossless $50\,\Omega$ line is terminated by $75+j100\,\Omega$. Using the Smith
   \item \textbf{(e)} At a voltage maximum the normalised resistance is $r = S = 4.62$, so $R = 50 \times 4.617 = \boxed{230.8\,\Omega}$.
 \end{itemize}
 
-\figC{c2num_p01.png}{0.55\textwidth}
+\figC{c2num_p01.png}{0.52\textwidth}
 {\footnotesize\color{sub} Problem 1 --- Smith chart construction. Arcs are numbered in the order of the steps above.}
 
 \penalty0\vspace{2pt}
@@ -55,7 +54,7 @@ Design single-stub shunt tuning networks (short-circuited and open-circuited) fo
 \begin{itemize}
   \item $z_L = Z_L/Z_0 = 80.00 + j100.00$ over $50$ $=1.60 + j2.00$.
   \item Plot it where the $r = 1.60$ circle cuts the $x = +2.00$ arc; it reads $0.200\lambda$ on the WTG scale.
-  \item $\Gamma_L = (z_L-1)/(z_L+1) = 0.637\angle 35.7^\circ$, so $|\Gamma_L| = 0.637$ sets the SWR-circle radius and $S = 4.50$.
+  \item Dividers from centre to $z_L$ (the SWR-circle radius), laid on the radially scaled scales below the chart: $|\Gamma_L| = 0.637$ on \emph{refl.\ coeff.\ E or I}, $S = 4.50$ on \emph{SWR}. \textit{Check:} $(z_L-1)/(z_L+1) = 0.637\angle 35.7^\circ$, $(1+|\Gamma_L|)/(1-|\Gamma_L|) = 4.50$.
 \end{itemize}
 \lead{Step 2 --- convert to admittance}
 \begin{itemize}
@@ -67,8 +66,8 @@ Design single-stub shunt tuning networks (short-circuited and open-circuited) fo
   \item Swing the SWR circle (radius $|\Gamma_L| = 0.637$) through $y_L$.
   \item Rotate \textbf{clockwise} (toward the generator) to each intersection with the \textbf{$g=1$ circle}. There are always two:
   \begin{itemize}
-    \item $y_1 = 1.00 + j1.65$ at $0.180\lambda$ WTG, so $d_1 = 0.180\lambda - 0.450\lambda = 0.230\lambda$.
-    \item $y_2 = 1.00 - j1.65$ at $0.320\lambda$ WTG, so $d_2 = 0.320\lambda - 0.450\lambda = 0.370\lambda$.
+    \item $y_1 = 1.00 + j1.65$ at $0.180\lambda$ WTG, so $d_1 = (0.500 - 0.450) + 0.180 = 0.230\lambda$.
+    \item $y_2 = 1.00 - j1.65$ at $0.320\lambda$ WTG, so $d_2 = (0.500 - 0.450) + 0.320 = 0.370\lambda$.
   \end{itemize}
   \item Only the \emph{susceptance} is left to cancel: the conductance is already 1.
 \end{itemize}
@@ -127,7 +126,7 @@ A load presents $\Gamma_L = 0.5\angle 51^\circ$ on a $50\,\Omega$ line. Design s
 \begin{itemize}
   \item $z_L = Z_L/Z_0 = 60.42 + j62.60$ over $50$ $=1.21 + j1.25$.
   \item Plot it where the $r = 1.21$ circle cuts the $x = +1.25$ arc; it reads $0.179\lambda$ on the WTG scale.
-  \item $\Gamma_L = (z_L-1)/(z_L+1) = 0.500\angle 51.0^\circ$, so $|\Gamma_L| = 0.500$ sets the SWR-circle radius and $S = 3.00$.
+  \item Dividers from centre to $z_L$ (the SWR-circle radius), laid on the radially scaled scales below the chart: $|\Gamma_L| = 0.500$ on \emph{refl.\ coeff.\ E or I}, $S = 3.00$ on \emph{SWR}. \textit{Check:} $(z_L-1)/(z_L+1) = 0.500\angle 51.0^\circ$, $(1+|\Gamma_L|)/(1-|\Gamma_L|) = 3.00$.
 \end{itemize}
 \lead{Step 2 --- convert to admittance}
 \begin{itemize}
@@ -139,8 +138,8 @@ A load presents $\Gamma_L = 0.5\angle 51^\circ$ on a $50\,\Omega$ line. Design s
   \item Swing the SWR circle (radius $|\Gamma_L| = 0.500$) through $y_L$.
   \item Rotate \textbf{clockwise} (toward the generator) to each intersection with the \textbf{$g=1$ circle}. There are always two:
   \begin{itemize}
-    \item $y_1 = 1.00 + j1.15$ at $0.167\lambda$ WTG, so $d_1 = 0.167\lambda - 0.429\lambda = 0.237\lambda$.
-    \item $y_2 = 1.00 - j1.15$ at $0.333\lambda$ WTG, so $d_2 = 0.333\lambda - 0.429\lambda = 0.404\lambda$.
+    \item $y_1 = 1.00 + j1.15$ at $0.167\lambda$ WTG, so $d_1 = (0.500 - 0.429) + 0.167 \approx 0.237\lambda$.
+    \item $y_2 = 1.00 - j1.15$ at $0.333\lambda$ WTG, so $d_2 = (0.500 - 0.429) + 0.333 = 0.404\lambda$.
   \end{itemize}
   \item Only the \emph{susceptance} is left to cancel: the conductance is already 1.
 \end{itemize}
@@ -192,7 +191,7 @@ A $100\,\Omega$ lossless line feeds a complex load $120-j160\,\Omega$. Give all 
 \begin{itemize}
   \item $z_L = Z_L/Z_0 = 120.00 - j160.00$ over $100$ $=1.20 - j1.60$.
   \item Plot it where the $r = 1.20$ circle cuts the $x = -1.60$ arc; it reads $0.315\lambda$ on the WTG scale.
-  \item $\Gamma_L = (z_L-1)/(z_L+1) = 0.593\angle -46.8^\circ$, so $|\Gamma_L| = 0.593$ sets the SWR-circle radius and $S = 3.91$.
+  \item Dividers from centre to $z_L$ (the SWR-circle radius), laid on the radially scaled scales below the chart: $|\Gamma_L| = 0.593$ on \emph{refl.\ coeff.\ E or I}, $S = 3.91$ on \emph{SWR}. \textit{Check:} $(z_L-1)/(z_L+1) = 0.593\angle -46.8^\circ$, $(1+|\Gamma_L|)/(1-|\Gamma_L|) = 3.91$.
 \end{itemize}
 \lead{Step 2 --- convert to admittance}
 \begin{itemize}
@@ -204,8 +203,8 @@ A $100\,\Omega$ lossless line feeds a complex load $120-j160\,\Omega$. Give all 
   \item Swing the SWR circle (radius $|\Gamma_L| = 0.593$) through $y_L$.
   \item Rotate \textbf{clockwise} (toward the generator) to each intersection with the \textbf{$g=1$ circle}. There are always two:
   \begin{itemize}
-    \item $y_1 = 1.00 + j1.47$ at $0.175\lambda$ WTG, so $d_1 = 0.175\lambda - 0.065\lambda = 0.110\lambda$.
-    \item $y_2 = 1.00 - j1.47$ at $0.325\lambda$ WTG, so $d_2 = 0.325\lambda - 0.065\lambda = 0.259\lambda$.
+    \item $y_1 = 1.00 + j1.47$ at $0.175\lambda$ WTG, so $d_1 = 0.175 - 0.065 = 0.110\lambda$.
+    \item $y_2 = 1.00 - j1.47$ at $0.325\lambda$ WTG, so $d_2 = 0.325 - 0.065 \approx 0.259\lambda$.
   \end{itemize}
   \item Only the \emph{susceptance} is left to cancel: the conductance is already 1.
 \end{itemize}
@@ -259,7 +258,7 @@ Design a single short-circuited matching stub with self-defined line and load im
 \begin{itemize}
   \item $z_L = Z_L/Z_0 = 35.00 - j60.00$ over $50$ $=0.70 - j1.20$.
   \item Plot it where the $r = 0.70$ circle cuts the $x = -1.20$ arc; it reads $0.346\lambda$ on the WTG scale.
-  \item $\Gamma_L = (z_L-1)/(z_L+1) = 0.594\angle -68.8^\circ$, so $|\Gamma_L| = 0.594$ sets the SWR-circle radius and $S = 3.93$.
+  \item Dividers from centre to $z_L$ (the SWR-circle radius), laid on the radially scaled scales below the chart: $|\Gamma_L| = 0.594$ on \emph{refl.\ coeff.\ E or I}, $S = 3.93$ on \emph{SWR}. \textit{Check:} $(z_L-1)/(z_L+1) = 0.594\angle -68.8^\circ$, $(1+|\Gamma_L|)/(1-|\Gamma_L|) = 3.93$.
 \end{itemize}
 \lead{Step 2 --- convert to admittance}
 \begin{itemize}
@@ -271,8 +270,8 @@ Design a single short-circuited matching stub with self-defined line and load im
   \item Swing the SWR circle (radius $|\Gamma_L| = 0.594$) through $y_L$.
   \item Rotate \textbf{clockwise} (toward the generator) to each intersection with the \textbf{$g=1$ circle}. There are always two:
   \begin{itemize}
-    \item $y_1 = 1.00 + j1.48$ at $0.176\lambda$ WTG, so $d_1 = 0.176\lambda - 0.096\lambda = 0.080\lambda$.
-    \item $y_2 = 1.00 - j1.48$ at $0.324\lambda$ WTG, so $d_2 = 0.324\lambda - 0.096\lambda = 0.229\lambda$.
+    \item $y_1 = 1.00 + j1.48$ at $0.176\lambda$ WTG, so $d_1 = 0.176 - 0.096 = 0.080\lambda$.
+    \item $y_2 = 1.00 - j1.48$ at $0.324\lambda$ WTG, so $d_2 = 0.324 - 0.096 \approx 0.229\lambda$.
   \end{itemize}
   \item Only the \emph{susceptance} is left to cancel: the conductance is already 1.
 \end{itemize}
@@ -319,7 +318,7 @@ Design a single-stub tuner matching a lossless line to an antenna load (any assu
 \begin{itemize}
   \item $z_L = Z_L/Z_0 = 73.00 + j42.50$ over $50$ $=1.46 + j0.85$.
   \item Plot it where the $r = 1.46$ circle cuts the $x = +0.85$ arc; it reads $0.191\lambda$ on the WTG scale.
-  \item $\Gamma_L = (z_L-1)/(z_L+1) = 0.371\angle 42.5^\circ$, so $|\Gamma_L| = 0.371$ sets the SWR-circle radius and $S = 2.18$.
+  \item Dividers from centre to $z_L$ (the SWR-circle radius), laid on the radially scaled scales below the chart: $|\Gamma_L| = 0.371$ on \emph{refl.\ coeff.\ E or I}, $S = 2.18$ on \emph{SWR}. \textit{Check:} $(z_L-1)/(z_L+1) = 0.371\angle 42.5^\circ$, $(1+|\Gamma_L|)/(1-|\Gamma_L|) = 2.18$.
 \end{itemize}
 \lead{Step 2 --- convert to admittance}
 \begin{itemize}
@@ -331,8 +330,8 @@ Design a single-stub tuner matching a lossless line to an antenna load (any assu
   \item Swing the SWR circle (radius $|\Gamma_L| = 0.371$) through $y_L$.
   \item Rotate \textbf{clockwise} (toward the generator) to each intersection with the \textbf{$g=1$ circle}. There are always two:
   \begin{itemize}
-    \item $y_1 = 1.00 + j0.80$ at $0.155\lambda$ WTG, so $d_1 = 0.155\lambda - 0.441\lambda = 0.214\lambda$.
-    \item $y_2 = 1.00 - j0.80$ at $0.345\lambda$ WTG, so $d_2 = 0.345\lambda - 0.441\lambda = 0.404\lambda$.
+    \item $y_1 = 1.00 + j0.80$ at $0.155\lambda$ WTG, so $d_1 = (0.500 - 0.441) + 0.155 = 0.214\lambda$.
+    \item $y_2 = 1.00 - j0.80$ at $0.345\lambda$ WTG, so $d_2 = (0.500 - 0.441) + 0.345 = 0.404\lambda$.
   \end{itemize}
   \item Only the \emph{susceptance} is left to cancel: the conductance is already 1.
 \end{itemize}
@@ -385,7 +384,7 @@ Design shunt short- and open-stub matching networks using the Smith chart for $Z
 \begin{itemize}
   \item $z_L = Z_L/Z_0 = 78.27 + j60.93$ over $75$ $=1.04 + j0.81$.
   \item Plot it where the $r = 1.04$ circle cuts the $x = +0.81$ arc; it reads $0.159\lambda$ on the WTG scale.
-  \item $\Gamma_L = (z_L-1)/(z_L+1) = 0.370\angle 65.2^\circ$, so $|\Gamma_L| = 0.370$ sets the SWR-circle radius and $S = 2.17$.
+  \item Dividers from centre to $z_L$ (the SWR-circle radius), laid on the radially scaled scales below the chart: $|\Gamma_L| = 0.370$ on \emph{refl.\ coeff.\ E or I}, $S = 2.17$ on \emph{SWR}. \textit{Check:} $(z_L-1)/(z_L+1) = 0.370\angle 65.2^\circ$, $(1+|\Gamma_L|)/(1-|\Gamma_L|) = 2.17$.
 \end{itemize}
 \lead{Step 2 --- convert to admittance}
 \begin{itemize}
@@ -397,8 +396,8 @@ Design shunt short- and open-stub matching networks using the Smith chart for $Z
   \item Swing the SWR circle (radius $|\Gamma_L| = 0.370$) through $y_L$.
   \item Rotate \textbf{clockwise} (toward the generator) to each intersection with the \textbf{$g=1$ circle}. There are always two:
   \begin{itemize}
-    \item $y_1 = 1.00 + j0.80$ at $0.155\lambda$ WTG, so $d_1 = 0.155\lambda - 0.409\lambda = 0.246\lambda$.
-    \item $y_2 = 1.00 - j0.80$ at $0.345\lambda$ WTG, so $d_2 = 0.345\lambda - 0.409\lambda = 0.435\lambda$.
+    \item $y_1 = 1.00 + j0.80$ at $0.155\lambda$ WTG, so $d_1 = (0.500 - 0.409) + 0.155 = 0.246\lambda$.
+    \item $y_2 = 1.00 - j0.80$ at $0.345\lambda$ WTG, so $d_2 = (0.500 - 0.409) + 0.345 \approx 0.435\lambda$.
   \end{itemize}
   \item Only the \emph{susceptance} is left to cancel: the conductance is already 1.
 \end{itemize}
@@ -457,7 +456,7 @@ Design a double-stub tuner ($3\lambda/8$ spacing) for $Z_L = 300+j300\,\Omega$ o
 \begin{itemize}
   \item $z_L = Z_L/Z_0 = 300.00 + j300.00$ over $300$ $=1.00 + j1.00$.
   \item Plot it where the $r = 1.00$ circle cuts the $x = +1.00$ arc; it reads $0.162\lambda$ on the WTG scale.
-  \item $\Gamma_L = (z_L-1)/(z_L+1) = 0.447\angle 63.4^\circ$, so $|\Gamma_L| = 0.447$ sets the SWR-circle radius and $S = 2.62$.
+  \item Dividers from centre to $z_L$ (the SWR-circle radius), laid on the radially scaled scales below the chart: $|\Gamma_L| = 0.447$ on \emph{refl.\ coeff.\ E or I}, $S = 2.62$ on \emph{SWR}. \textit{Check:} $(z_L-1)/(z_L+1) = 0.447\angle 63.4^\circ$, $(1+|\Gamma_L|)/(1-|\Gamma_L|) = 2.62$.
 \end{itemize}
 \lead{Step 2 --- convert to admittance}
 \begin{itemize}
@@ -533,7 +532,7 @@ Design a double-stub tuner ($3\lambda/8$ spacing) for $Z_L = 80+j180\,\Omega$ on
 \begin{itemize}
   \item $z_L = Z_L/Z_0 = 80.00 + j180.00$ over $100$ $=0.80 + j1.80$.
   \item Plot it where the $r = 0.80$ circle cuts the $x = +1.80$ arc; it reads $0.179\lambda$ on the WTG scale.
-  \item $\Gamma_L = (z_L-1)/(z_L+1) = 0.711\angle 51.3^\circ$, so $|\Gamma_L| = 0.711$ sets the SWR-circle radius and $S = 5.93$.
+  \item Dividers from centre to $z_L$ (the SWR-circle radius), laid on the radially scaled scales below the chart: $|\Gamma_L| = 0.711$ on \emph{refl.\ coeff.\ E or I}, $S = 5.93$ on \emph{SWR}. \textit{Check:} $(z_L-1)/(z_L+1) = 0.711\angle 51.3^\circ$, $(1+|\Gamma_L|)/(1-|\Gamma_L|) = 5.93$.
 \end{itemize}
 \lead{Step 2 --- convert to admittance}
 \begin{itemize}
@@ -609,7 +608,7 @@ Design a double-stub tuner ($3\lambda/8$ spacing) for $Z_L = 190+j110\,\Omega$ o
 \begin{itemize}
   \item $z_L = Z_L/Z_0 = 190.00 + j110.00$ over $100$ $=1.90 + j1.10$.
   \item Plot it where the $r = 1.90$ circle cuts the $x = +1.10$ arc; it reads $0.208\lambda$ on the WTG scale.
-  \item $\Gamma_L = (z_L-1)/(z_L+1) = 0.458\angle 29.9^\circ$, so $|\Gamma_L| = 0.458$ sets the SWR-circle radius and $S = 2.69$.
+  \item Dividers from centre to $z_L$ (the SWR-circle radius), laid on the radially scaled scales below the chart: $|\Gamma_L| = 0.458$ on \emph{refl.\ coeff.\ E or I}, $S = 2.69$ on \emph{SWR}. \textit{Check:} $(z_L-1)/(z_L+1) = 0.458\angle 29.9^\circ$, $(1+|\Gamma_L|)/(1-|\Gamma_L|) = 2.69$.
 \end{itemize}
 \lead{Step 2 --- convert to admittance}
 \begin{itemize}
@@ -685,7 +684,7 @@ Design a double-stub tuner for an inductive load on a $50\,\Omega$ line. Include
 \begin{itemize}
   \item $z_L = Z_L/Z_0 = 40.00 + j70.00$ over $50$ $=0.80 + j1.40$.
   \item Plot it where the $r = 0.80$ circle cuts the $x = +1.40$ arc; it reads $0.166\lambda$ on the WTG scale.
-  \item $\Gamma_L = (z_L-1)/(z_L+1) = 0.620\angle 60.3^\circ$, so $|\Gamma_L| = 0.620$ sets the SWR-circle radius and $S = 4.27$.
+  \item Dividers from centre to $z_L$ (the SWR-circle radius), laid on the radially scaled scales below the chart: $|\Gamma_L| = 0.620$ on \emph{refl.\ coeff.\ E or I}, $S = 4.27$ on \emph{SWR}. \textit{Check:} $(z_L-1)/(z_L+1) = 0.620\angle 60.3^\circ$, $(1+|\Gamma_L|)/(1-|\Gamma_L|) = 4.27$.
 \end{itemize}
 \lead{Step 2 --- convert to admittance}
 \begin{itemize}
@@ -760,7 +759,7 @@ Design a short-circuited double-stub tuner with $3\lambda/8$ spacing for $Z_L = 
 \begin{itemize}
   \item $z_L = Z_L/Z_0 = 75.00 + j75.00$ over $50$ $=1.50 + j1.50$.
   \item Plot it where the $r = 1.50$ circle cuts the $x = +1.50$ arc; it reads $0.194\lambda$ on the WTG scale.
-  \item $\Gamma_L = (z_L-1)/(z_L+1) = 0.542\angle 40.6^\circ$, so $|\Gamma_L| = 0.542$ sets the SWR-circle radius and $S = 3.37$.
+  \item Dividers from centre to $z_L$ (the SWR-circle radius), laid on the radially scaled scales below the chart: $|\Gamma_L| = 0.542$ on \emph{refl.\ coeff.\ E or I}, $S = 3.37$ on \emph{SWR}. \textit{Check:} $(z_L-1)/(z_L+1) = 0.542\angle 40.6^\circ$, $(1+|\Gamma_L|)/(1-|\Gamma_L|) = 3.37$.
 \end{itemize}
 \lead{Step 2 --- convert to admittance}
 \begin{itemize}
@@ -836,7 +835,7 @@ Design a short-circuited double-stub tuner for a complex inductive load on a $78
 \begin{itemize}
   \item $z_L = Z_L/Z_0 = 95.00 + j85.00$ over $78$ $=1.22 + j1.09$.
   \item Plot it where the $r = 1.22$ circle cuts the $x = +1.09$ arc; it reads $0.177\lambda$ on the WTG scale.
-  \item $\Gamma_L = (z_L-1)/(z_L+1) = 0.450\angle 52.5^\circ$, so $|\Gamma_L| = 0.450$ sets the SWR-circle radius and $S = 2.63$.
+  \item Dividers from centre to $z_L$ (the SWR-circle radius), laid on the radially scaled scales below the chart: $|\Gamma_L| = 0.450$ on \emph{refl.\ coeff.\ E or I}, $S = 2.63$ on \emph{SWR}. \textit{Check:} $(z_L-1)/(z_L+1) = 0.450\angle 52.5^\circ$, $(1+|\Gamma_L|)/(1-|\Gamma_L|) = 2.63$.
 \end{itemize}
 \lead{Step 2 --- convert to admittance}
 \begin{itemize}
@@ -911,7 +910,7 @@ A $75\,\Omega$ coaxial line feeds a load of normalised impedance $z_L = 0.4+j0.8
 \begin{itemize}
   \item $z_L = Z_L/Z_0 = 30.00 + j63.75$ over $75$ $=0.40 + j0.85$.
   \item Plot it where the $r = 0.40$ circle cuts the $x = +0.85$ arc; it reads $0.120\lambda$ on the WTG scale.
-  \item $\Gamma_L = (z_L-1)/(z_L+1) = 0.635\angle 94.0^\circ$, so $|\Gamma_L| = 0.635$ sets the SWR-circle radius and $S = 4.48$.
+  \item Dividers from centre to $z_L$ (the SWR-circle radius), laid on the radially scaled scales below the chart: $|\Gamma_L| = 0.635$ on \emph{refl.\ coeff.\ E or I}, $S = 4.48$ on \emph{SWR}. \textit{Check:} $(z_L-1)/(z_L+1) = 0.635\angle 94.0^\circ$, $(1+|\Gamma_L|)/(1-|\Gamma_L|) = 4.48$.
 \end{itemize}
 \lead{Step 2 --- convert to admittance}
 \begin{itemize}
@@ -986,7 +985,7 @@ Design a double-stub shunt tuner using open stubs, $3\lambda/8$ apart, the first
 \begin{itemize}
   \item $z_L = Z_L/Z_0 = 60.00 - j80.00$ over $50$ $=1.20 - j1.60$.
   \item Plot it where the $r = 1.20$ circle cuts the $x = -1.60$ arc; it reads $0.315\lambda$ on the WTG scale.
-  \item $\Gamma_L = (z_L-1)/(z_L+1) = 0.593\angle -46.8^\circ$, so $|\Gamma_L| = 0.593$ sets the SWR-circle radius and $S = 3.91$.
+  \item Dividers from centre to $z_L$ (the SWR-circle radius), laid on the radially scaled scales below the chart: $|\Gamma_L| = 0.593$ on \emph{refl.\ coeff.\ E or I}, $S = 3.91$ on \emph{SWR}. \textit{Check:} $(z_L-1)/(z_L+1) = 0.593\angle -46.8^\circ$, $(1+|\Gamma_L|)/(1-|\Gamma_L|) = 3.91$.
 \end{itemize}
 \lead{Step 2 --- convert to admittance}
 \begin{itemize}
@@ -1069,7 +1068,7 @@ Design a short-circuited double-stub tuner on a $75\,\Omega$ coaxial line for $Z
 \begin{itemize}
   \item $z_L = Z_L/Z_0 = 109.00 + j120.00$ over $75$ $=1.45 + j1.60$.
   \item Plot it where the $r = 1.45$ circle cuts the $x = +1.60$ arc; it reads $0.193\lambda$ on the WTG scale.
-  \item $\Gamma_L = (z_L-1)/(z_L+1) = 0.568\angle 41.1^\circ$, so $|\Gamma_L| = 0.568$ sets the SWR-circle radius and $S = 3.63$.
+  \item Dividers from centre to $z_L$ (the SWR-circle radius), laid on the radially scaled scales below the chart: $|\Gamma_L| = 0.568$ on \emph{refl.\ coeff.\ E or I}, $S = 3.63$ on \emph{SWR}. \textit{Check:} $(z_L-1)/(z_L+1) = 0.568\angle 41.1^\circ$, $(1+|\Gamma_L|)/(1-|\Gamma_L|) = 3.63$.
 \end{itemize}
 \lead{Step 2 --- convert to admittance}
 \begin{itemize}
@@ -1151,7 +1150,7 @@ A load presents $\Gamma_L = 0.64\angle 58^\circ$ on a $100\,\Omega$ line. Design
 \begin{itemize}
   \item $z_L = Z_L/Z_0 = 80.73 + j148.43$ over $100$ $=0.81 + j1.48$.
   \item Plot it where the $r = 0.81$ circle cuts the $x = +1.48$ arc; it reads $0.169\lambda$ on the WTG scale.
-  \item $\Gamma_L = (z_L-1)/(z_L+1) = 0.640\angle 58.0^\circ$, so $|\Gamma_L| = 0.640$ sets the SWR-circle radius and $S = 4.56$.
+  \item Dividers from centre to $z_L$ (the SWR-circle radius), laid on the radially scaled scales below the chart: $|\Gamma_L| = 0.640$ on \emph{refl.\ coeff.\ E or I}, $S = 4.56$ on \emph{SWR}. \textit{Check:} $(z_L-1)/(z_L+1) = 0.640\angle 58.0^\circ$, $(1+|\Gamma_L|)/(1-|\Gamma_L|) = 4.56$.
 \end{itemize}
 \lead{Step 2 --- convert to admittance}
 \begin{itemize}
@@ -1233,7 +1232,7 @@ A $50\,\Omega$ lossless line feeds a load of admittance $0.00813+j0.0065\,\mho$.
 \begin{itemize}
   \item $z_L = Z_L/Z_0 = 75.04 - j59.99$ over $50$ $=1.50 - j1.20$.
   \item Plot it where the $r = 1.50$ circle cuts the $x = -1.20$ arc; it reads $0.308\lambda$ on the WTG scale.
-  \item $\Gamma_L = (z_L-1)/(z_L+1) = 0.469\angle -41.7^\circ$, so $|\Gamma_L| = 0.469$ sets the SWR-circle radius and $S = 2.76$.
+  \item Dividers from centre to $z_L$ (the SWR-circle radius), laid on the radially scaled scales below the chart: $|\Gamma_L| = 0.469$ on \emph{refl.\ coeff.\ E or I}, $S = 2.76$ on \emph{SWR}. \textit{Check:} $(z_L-1)/(z_L+1) = 0.469\angle -41.7^\circ$, $(1+|\Gamma_L|)/(1-|\Gamma_L|) = 2.76$.
 \end{itemize}
 \lead{Step 2 --- convert to admittance}
 \begin{itemize}
@@ -1316,7 +1315,7 @@ A broadband microstrip antenna has load reflection coefficient $0.33\angle 66^\c
 \begin{itemize}
   \item $z_L = Z_L/Z_0 = 79.52 + j53.80$ over $75$ $=1.06 + j0.72$.
   \item Plot it where the $r = 1.06$ circle cuts the $x = +0.72$ arc; it reads $0.158\lambda$ on the WTG scale.
-  \item $\Gamma_L = (z_L-1)/(z_L+1) = 0.330\angle 66.0^\circ$, so $|\Gamma_L| = 0.330$ sets the SWR-circle radius and $S = 1.99$.
+  \item Dividers from centre to $z_L$ (the SWR-circle radius), laid on the radially scaled scales below the chart: $|\Gamma_L| = 0.330$ on \emph{refl.\ coeff.\ E or I}, $S = 1.99$ on \emph{SWR}. \textit{Check:} $(z_L-1)/(z_L+1) = 0.330\angle 66.0^\circ$, $(1+|\Gamma_L|)/(1-|\Gamma_L|) = 1.99$.
 \end{itemize}
 \lead{Step 2 --- convert to admittance}
 \begin{itemize}
@@ -1406,7 +1405,7 @@ An antenna at 10 GHz presents $\Gamma = |0.45|\angle 60^\circ$ on a $100\,\Omega
 \begin{itemize}
   \item $z_L = Z_L/Z_0 = 105.98 + j103.58$ over $100$ $=1.06 + j1.04$.
   \item Plot it where the $r = 1.06$ circle cuts the $x = +1.04$ arc; it reads $0.167\lambda$ on the WTG scale.
-  \item $\Gamma_L = (z_L-1)/(z_L+1) = 0.450\angle 60.0^\circ$, so $|\Gamma_L| = 0.450$ sets the SWR-circle radius and $S = 2.64$.
+  \item Dividers from centre to $z_L$ (the SWR-circle radius), laid on the radially scaled scales below the chart: $|\Gamma_L| = 0.450$ on \emph{refl.\ coeff.\ E or I}, $S = 2.64$ on \emph{SWR}. \textit{Check:} $(z_L-1)/(z_L+1) = 0.450\angle 60.0^\circ$, $(1+|\Gamma_L|)/(1-|\Gamma_L|) = 2.64$.
 \end{itemize}
 \lead{Step 2 --- convert to admittance}
 \begin{itemize}
@@ -1500,7 +1499,7 @@ Design a double-stub tuner ($3\lambda/8$ spacing) for $Z_L = 110+j110\,\Omega$ o
 \begin{itemize}
   \item $z_L = Z_L/Z_0 = 110.00 + j110.00$ over $100$ $=1.10 + j1.10$.
   \item Plot it where the $r = 1.10$ circle cuts the $x = +1.10$ arc; it reads $0.171\lambda$ on the WTG scale.
-  \item $\Gamma_L = (z_L-1)/(z_L+1) = 0.466\angle 57.2^\circ$, so $|\Gamma_L| = 0.466$ sets the SWR-circle radius and $S = 2.74$.
+  \item Dividers from centre to $z_L$ (the SWR-circle radius), laid on the radially scaled scales below the chart: $|\Gamma_L| = 0.466$ on \emph{refl.\ coeff.\ E or I}, $S = 2.74$ on \emph{SWR}. \textit{Check:} $(z_L-1)/(z_L+1) = 0.466\angle 57.2^\circ$, $(1+|\Gamma_L|)/(1-|\Gamma_L|) = 2.74$.
 \end{itemize}
 \lead{Step 2 --- convert to admittance}
 \begin{itemize}
@@ -1575,7 +1574,7 @@ Explain the different impedance matching techniques and give the resulting S-mat
 \begin{itemize}
   \item $z_L = Z_L/Z_0 = 100.00 + j50.00$ over $50$ $=2.00 + j1.00$.
   \item Plot it where the $r = 2.00$ circle cuts the $x = +1.00$ arc; it reads $0.213\lambda$ on the WTG scale.
-  \item $\Gamma_L = (z_L-1)/(z_L+1) = 0.447\angle 26.6^\circ$, so $|\Gamma_L| = 0.447$ sets the SWR-circle radius and $S = 2.62$.
+  \item Dividers from centre to $z_L$ (the SWR-circle radius), laid on the radially scaled scales below the chart: $|\Gamma_L| = 0.447$ on \emph{refl.\ coeff.\ E or I}, $S = 2.62$ on \emph{SWR}. \textit{Check:} $(z_L-1)/(z_L+1) = 0.447\angle 26.6^\circ$, $(1+|\Gamma_L|)/(1-|\Gamma_L|) = 2.62$.
 \end{itemize}
 \lead{Step 2 --- convert to admittance}
 \begin{itemize}
@@ -1658,7 +1657,7 @@ Sketch a double-stub perfectly matched network using microstrip and prepare its 
 \begin{itemize}
   \item $z_L = Z_L/Z_0 = 25.00 - j40.00$ over $50$ $=0.50 - j0.80$.
   \item Plot it where the $r = 0.50$ circle cuts the $x = -0.80$ arc; it reads $0.380\lambda$ on the WTG scale.
-  \item $\Gamma_L = (z_L-1)/(z_L+1) = 0.555\angle -93.9^\circ$, so $|\Gamma_L| = 0.555$ sets the SWR-circle radius and $S = 3.49$.
+  \item Dividers from centre to $z_L$ (the SWR-circle radius), laid on the radially scaled scales below the chart: $|\Gamma_L| = 0.555$ on \emph{refl.\ coeff.\ E or I}, $S = 3.49$ on \emph{SWR}. \textit{Check:} $(z_L-1)/(z_L+1) = 0.555\angle -93.9^\circ$, $(1+|\Gamma_L|)/(1-|\Gamma_L|) = 3.49$.
 \end{itemize}
 \lead{Step 2 --- convert to admittance}
 \begin{itemize}
@@ -1748,7 +1747,7 @@ State the advantages of double-stub matching over single-stub matching, and give
 \begin{itemize}
   \item $z_L = Z_L/Z_0 = 30.00 + j40.00$ over $50$ $=0.60 + j0.80$.
   \item Plot it where the $r = 0.60$ circle cuts the $x = +0.80$ arc; it reads $0.125\lambda$ on the WTG scale.
-  \item $\Gamma_L = (z_L-1)/(z_L+1) = 0.500\angle 90.0^\circ$, so $|\Gamma_L| = 0.500$ sets the SWR-circle radius and $S = 3.00$.
+  \item Dividers from centre to $z_L$ (the SWR-circle radius), laid on the radially scaled scales below the chart: $|\Gamma_L| = 0.500$ on \emph{refl.\ coeff.\ E or I}, $S = 3.00$ on \emph{SWR}. \textit{Check:} $(z_L-1)/(z_L+1) = 0.500\angle 90.0^\circ$, $(1+|\Gamma_L|)/(1-|\Gamma_L|) = 3.00$.
 \end{itemize}
 \lead{Step 2 --- convert to admittance}
 \begin{itemize}

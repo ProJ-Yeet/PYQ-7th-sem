@@ -47,11 +47,14 @@ def emit_ss(pr):
              "intersection with the \\textbf{$g=1$ circle}. There are always two:")
     o.append("  " + B + "begin{itemize}")
     for i, s in enumerate(sols):
-        o.append("    " + B + "item $y_%d = %s$ at $%s$ WTG, so $d_%d = %s - %s = %s$."
-                 % (i + 1, cx(s["y_or_z"]),
-                    lam(smith.wtg(smith.p(s["y_or_z"]))), i + 1,
-                    lam(smith.wtg(smith.p(s["y_or_z"]))),
-                    lam(smith.wtg(smith.p(yn))), lam(s["d"])))
+        a = round(smith.wtg(smith.p(s["y_or_z"])), 3)
+        b = round(smith.wtg(smith.p(yn)), 3)
+        # clockwise from y_L; past the 0.5 mark the WTG scale restarts at 0
+        arith = ("%.3f - %.3f" % (a, b) if a >= b else
+                 "(0.500 - %.3f) + %.3f" % (b, a))
+        eq = "=" if abs(((a - b) % 0.5) - round(s["d"], 3)) < 5e-4 else B + "approx"
+        o.append("    " + B + "item $y_%d = %s$ at $%s$ WTG, so $d_%d = %s %s %s$."
+                 % (i + 1, cx(s["y_or_z"]), lam(a), i + 1, arith, eq, lam(s["d"])))
     o.append("  " + B + "end{itemize}")
     o.append("  " + B + "item Only the \\emph{susceptance} is left to cancel: the "
              "conductance is already 1.")
@@ -281,7 +284,7 @@ def main():
         out.append("%" + "=" * 70)
         out.extend(body)
         out.append("")
-        out.append(B + "figC{%s}{0.55" % fig + B + "textwidth}")
+        out.append(B + "figC{%s}{%.2f" % (fig, pr.get("figw", 0.55)) + B + "textwidth}")
         out.append("{" + B + "footnotesize" + B + "color{sub} Problem %d --- "
                    "Smith chart construction. Arcs are numbered in the order of the "
                    "steps above.}" % pr["n"])

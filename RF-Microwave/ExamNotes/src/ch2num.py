@@ -53,7 +53,7 @@ def esc(s):
 # Every entry carries the paper it came from and the marks as printed.
 P = [
     dict(n=1, kind="read", yr=r"\textbf{79 Ch}", marks=[10], z0=50.0,
-         zl=75 + 100j, d=0.375,
+         zl=75 + 100j, d=0.375, figw=0.52,
          ask="A lossless $50\\,\\Omega$ line is terminated by $75+j100\\,\\Omega$. "
              "Using the Smith chart find (a) $\\Gamma_L$, (b) VSWR, (c) $Z_{in}$ at "
              "$0.375\\lambda$ from the load, (d) the shortest length of line for which "
@@ -90,7 +90,7 @@ P = [
              "sketch the physical diagram considering microstrips."),
 
     # ---------------------------------------------------------- double stub
-    dict(n=8, kind="ds", yr=r"71 Bh", marks=[10], z0=300.0,
+    dict(n=8, kind="ds", yr=r"\textbf{71 Bh}", marks=[10], z0=300.0,
          zl=300 + 300j, sp=0.375, stub="short",
          ask="Design a double-stub tuner ($3\\lambda/8$ spacing) for "
              "$Z_L = 300+j300\\,\\Omega$ on a $300\\,\\Omega$ line. Include the figure."),
@@ -106,7 +106,7 @@ P = [
          zl=40 + 70j, sp=0.375, stub="short", assumed=True,
          ask="Design a double-stub tuner for an inductive load on a "
              "$50\\,\\Omega$ line. Include the figure."),
-    dict(n=12, kind="ds", yr=r"69 Bh", marks=[3, 15], z0=50.0,
+    dict(n=12, kind="ds", yr=r"\textbf{69 Bh}", marks=[3, 15], z0=50.0,
          zl=75 + 75j, sp=0.375, stub="short",
          ask="Design a short-circuited double-stub tuner with $3\\lambda/8$ spacing "
              "for $Z_L = 75+j75\\,\\Omega$ on a $50\\,\\Omega$ line."),
@@ -234,21 +234,36 @@ def step(txt):
     return B + "lead{" + txt + "}"
 
 
-def norm_steps(pr):
-    """Steps 1-2, shared by every problem: normalise and go to admittance."""
-    zn, yn = pr["zn"], pr["yn"]
-    o = []
-    o.append(step("Step 1 --- normalise and plot $z_L$"))
-    o.append(B + "begin{itemize}")
+def gamma_check(zn):
+    """Formula line that confirms the chart readings; never the primary method."""
+    gl = rf.gamma_of(zn)
+    return (B + "textit{Check:} $(z_L-1)/(z_L+1) = " + pol(gl) + "$, $(1+|" + B
+            + "Gamma_L|)/(1-|" + B + "Gamma_L|) = %.2f$." % rf.vswr(gl))
+
+
+def step1(pr, read=True):
+    """Step 1: normalise, plot, and (read=True) take |Gamma| and S off the bottom scales."""
+    zn = pr["zn"]
+    gl = rf.gamma_of(zn)
+    o = [step("Step 1 --- normalise and plot $z_L$"), B + "begin{itemize}"]
     o.append("  " + B + "item $z_L = Z_L/Z_0 = " + cx(pr["zl_ohm"]) + "$ over $%g" % pr["z0"]
              + "$ $=" + cx(zn) + "$.")
     o.append("  " + B + "item Plot it where the $r = %.2f$ circle cuts the $x = %+.2f$ arc; "
              "it reads $%s$ on the WTG scale."
              % (zn.real, zn.imag, lam(smith.wtg(smith.p(zn)))))
-    o.append("  " + B + "item $" + B + "Gamma_L = (z_L-1)/(z_L+1) = " + pol(rf.gamma_of(zn))
-             + "$, so $|" + B + "Gamma_L| = %.3f$ sets the SWR-circle radius and "
-             % abs(rf.gamma_of(zn)) + "$S = %.2f$." % rf.vswr(rf.gamma_of(zn)))
+    if read:
+        o.append("  " + B + "item Dividers from centre to $z_L$ (the SWR-circle radius), laid "
+                 "on the radially scaled scales below the chart: $|" + B + "Gamma_L| = %.3f$ "
+                 "on \\emph{refl.\\ coeff.\\ E or I}, $S = %.2f$ on \\emph{SWR}. "
+                 % (abs(gl), rf.vswr(gl)) + gamma_check(zn))
     o.append(B + "end{itemize}")
+    return o
+
+
+def norm_steps(pr):
+    """Steps 1-2, shared by every problem: normalise and go to admittance."""
+    yn = pr["yn"]
+    o = step1(pr)
     o.append(step("Step 2 --- convert to admittance"))
     o.append(B + "begin{itemize}")
     o.append("  " + B + "item Draw the diameter through $z_L$ and read the opposite "
@@ -334,16 +349,18 @@ def emit_read(pr):
 
     o = head(pr, "Smith chart reading of a mismatched line")
     o += given_block(pr)
-    o += norm_steps(pr)[:6]      # step 1 only; no admittance needed here
+    o += step1(pr, read=False)   # no admittance needed here; (a), (b) read in step 2
     o.append(step("Step 2 --- draw the SWR circle and read (a) and (b)"))
     o.append(B + "begin{itemize}")
-    o.append("  " + B + "item Centre the compass on the chart centre and swing a circle "
-             "through $z_L$. Its radius is $|" + B + "Gamma_L| = %.3f$ of the chart "
-             "radius." % abs(gl))
-    o.append("  " + B + "item \\textbf{(a)} $" + B + "Gamma_L = " + pol(gl) + "$ --- read the "
-             "angle on the " + B + "emph{angle of reflection coefficient} scale.")
-    o.append("  " + B + "item \\textbf{(b)} The circle cuts the right-hand real axis at "
-             "$r = %.2f$, and on that axis $r = S$, so $" % S + B + "boxed{S = %.2f}$." % S)
+    o.append("  " + B + "item Compass on chart centre, swing a circle through $z_L$: the SWR "
+             "circle. Lay its radius (dividers) on the radially scaled scales below the chart.")
+    o.append("  " + B + "item \\textbf{(a)} \\emph{Refl.\\ coeff.\\ E or I} scale: $|" + B +
+             "Gamma_L| = %.3f$; straight edge through $z_L$ to the " % abs(gl) + B +
+             "emph{angle of refl.\\ coeff.} scale: $%.1f^" % math.degrees(cmath.phase(gl))
+             + B + "circ$. $" + B + "boxed{" + B + "Gamma_L = " + pol(gl) + "}$.")
+    o.append("  " + B + "item \\textbf{(b)} \\emph{SWR} scale: $" + B + "boxed{S = %.2f}$, "
+             "also the $r$ where the circle cuts the right-hand real axis. " % S
+             + gamma_check(zn))
     o.append(B + "end{itemize}")
     o.append(step("Step 3 --- rotate $%s$ toward the generator for (c)" % lam(d)))
     o.append(B + "begin{itemize}")
