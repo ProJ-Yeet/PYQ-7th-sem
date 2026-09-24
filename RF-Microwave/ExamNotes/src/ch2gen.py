@@ -13,6 +13,7 @@ import math
 import os
 
 import ch2num as C
+import msfig
 import rf
 import smith
 from ch2num import B, cx, pol, lam, step, head, given_block, norm_steps, \
@@ -288,6 +289,19 @@ def main():
         out.append("{" + B + "footnotesize" + B + "color{sub} Problem %d --- "
                    "Smith chart construction. Arcs are numbered in the order of the "
                    "steps above.}" % pr["n"])
+        if pr.get("micro"):
+            # replay: every value the layout draws must be printed in this problem
+            ms = "c2num_p%02d_ms.png" % pr["n"]
+            text = chr(10).join(body)
+            for what, tex in msfig.layout(pr, ms):
+                assert tex in text, "P%d layout draws %s = %r, not printed" % (
+                    pr["n"], what, tex)
+            out.append("")
+            out.append(B + "figC{%s}{%.2f" % (ms, 0.92 if pr["stub"] == "both" else 0.62)
+                       + B + "textwidth}")
+            out.append("{" + B + "footnotesize" + B + "color{sub} Problem %d --- "
+                       "microstrip layout, top view: stubs as T-junctions off the "
+                       "main line, dimensions from the answer above.}" % pr["n"])
         out.append("")
         out.append(B + "penalty0" + B + "vspace{2pt}")
         out.append("")
