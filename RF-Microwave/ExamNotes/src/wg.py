@@ -406,6 +406,19 @@ def terminate_matched(S, drop):
     return S[np.ix_(keep, keep)], keep
 
 
+def terminate(S, loads):
+    """Terminate ports in arbitrary loads {port: Gamma}, a_k = Gamma_k b_k."""
+    inner = sorted(loads)
+    keep = [i for i in range(S.shape[0]) if i not in inner]
+    G = np.diag([loads[p] for p in inner]).astype(complex)
+    See = S[np.ix_(keep, keep)]
+    Sei = S[np.ix_(keep, inner)]
+    Sie = S[np.ix_(inner, keep)]
+    Sii = S[np.ix_(inner, inner)]
+    M = np.eye(len(inner)) - Sii @ G
+    return See + Sei @ G @ np.linalg.solve(M, Sie), keep
+
+
 def props(S):
     n = S.shape[0]
     return dict(
@@ -472,6 +485,32 @@ def test_junctions():
         _close(pp["col_power"][2], 1.0, what="side arm drive fully delivered")
     assert pc["matched"] and not pc["lossless"]
     out["82Ba"] = (Sa, Sb, Sc)
+    # (c) generalised: loads G1, G2 on the collinear arms. The E/H pair sees
+    #     S33 = S44 = (G1+G2)/2, S34 = (G1-G2)/2 -> bridge null when G1 = G2.
+    for g1, g2 in ((0.3 + 0.4j, 0.3 + 0.4j), (0.5, -0.2j), (-1, -1), (0.6j, -0.6j)):
+        Sg, kg = terminate(T, {0: g1, 1: g2})
+        assert kg == [2, 3]
+        assert np.allclose(Sg, [[(g1 + g2) / 2, (g1 - g2) / 2],
+                                [(g1 - g2) / 2, (g1 + g2) / 2]]), Sg
+    Sg, _ = terminate(T, {0: 0.7 - 0.1j, 1: 0.7 - 0.1j})
+    _close(abs(Sg[0, 1]), 0.0, what="equal loads: E and H stay isolated")
+    Sg, _ = terminate(T, {0: -1, 1: -1})
+    assert np.allclose(Sg, -np.eye(2))               # shorted collinear arms -> -I at E, H
+    # one reflector set back lg/4 (G2 = -G1): H-arm stays matched, all to E-arm
+    Sg, _ = terminate(T, {0: 0.8, 1: -0.8})
+    assert np.allclose(Sg, [[0, 0.8], [0.8, 0]])
+    # magic-tee duplexer: Tx on H (4), Rx on E (3), antenna on 1, dummy load on 2
+    Sd, kd = terminate_matched(T, [1])
+    assert kd == [0, 2, 3]
+    assert np.allclose(Sd, [[0, r, r], [r, 0, 0], [r, 0, 0]])
+    # routing through two joined tees, external order (1, 2, 4|3, 1', 2', 4'|3')
+    dif = np.array([r, -r, 0, 0, 0, 0])
+    sm = np.array([r, r, 0, 0, 0, 0])
+    assert np.allclose(SE @ dif, [0, 0, 0, r, -r, 0])  # E-join: difference crosses
+    assert np.allclose(SE @ sm, [0, 0, 1, 0, 0, 0])     # E-join: sum leaves by own H
+    assert np.allclose(SH @ sm, [0, 0, 0, r, r, 0])     # H-join: sum crosses in phase
+    assert np.allclose(SH @ dif, [0, 0, 1, 0, 0, 0])    # H-join: difference by own E
+    _close(abs(SE[3, 0]) ** 2, 0.25, what="port 1 to port 1' is -6 dB")
     # 75 Bh: a "3-port directional coupler" is the 4-port with its isolated port
     # loaded inside the casing (deck slide 54). Ports: 1 in, 2 through, 3 coupled,
     # 4 isolated -> matched, reciprocal, and necessarily NOT lossless.
@@ -542,6 +581,10 @@ def main():
     print("77 Ch two tees, E  ok  6-port matched, reciprocal, lossless")
     print("78 Ch two tees, H  ok  6-port matched, reciprocal, lossless")
     print("82 Ba terminations ok  (a),(b) matched+reciprocal but lossy; (c) null 2-port")
+    print("tee as a bridge    ok  loads G1, G2: S33=S44=(G1+G2)/2, S34=(G1-G2)/2; "
+          "G2=-G1 routes all to E")
+    print("tee duplexer       ok  dummy load on arm 2: Tx(H)->ant r, Tx->Rx 0")
+    print("two-tee routing    ok  E-join passes difference, H-join passes sum")
     print("75 Bh 3-port DC    ok  matched+reciprocal, lossy only for reverse drive")
     k = test_coupler_params()
     print("coupler params     ok  C=%.2f dB D=%.2f dB I=%.2f dB IL=%.3f dB"

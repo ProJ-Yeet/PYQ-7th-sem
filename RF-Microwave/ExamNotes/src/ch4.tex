@@ -668,43 +668,208 @@ Matrix & $-1/\sqrt{2}$ in row 3 (below) & $-1/2$ at $S_{12}$ (below) \\
     phase relation. The E-tee subtracts, the H-tee adds.
 \end{itemize}}
 
-\par\penalty0\Needspace{8\baselineskip}
-\lead{Duplexer}
+\par\penalty0\Needspace{16\baselineskip}
+\sbs{%
+\lead{Duplexer, the third matrix 81 Ba asks for}
 \begin{itemize}
   \item \textbf{Circulator duplexer} (the usual answer): port 1 transmitter, port 2
-    antenna, port 3 receiver. Ideally lossless, so \textbf{all} the transmitter power
-    reaches the antenna and \textbf{all} the echo reaches the receiver, with the
-    transmitter isolated from the receiver.
-  \item \textbf{Magic-tee duplexer}: transmitter on the H-arm, antenna and a matched
-    dummy load on the collinear arms, receiver on the E-arm. Splits the transmitter power
-    in \textbf{half} and keeps transmitter and receiver isolated. This is the version
-    \textbf{76 Bh} asks for ($\S$4.7).
-\end{itemize}
+    antenna, port 3 receiver; power circulates $1 \rightarrow 2 \rightarrow 3$:
+    \[ [S] = \begin{bmatrix} 0 & 0 & 1 \\ 1 & 0 & 0 \\ 0 & 1 & 0 \end{bmatrix} \]
+  \item Matched ($S_{ii} = 0$), lossless (each column sums to 1) and \textbf{non-reciprocal}
+    ($S_{21} = 1$, $S_{12} = 0$): the only way a 3-port can be both matched and lossless
+    ($\S$3.5).
+  \item \textbf{All} the transmitter power reaches the antenna, \textbf{all} the echo
+    reaches the receiver, and $S_{31} = 0$ keeps the transmitter out of the receiver.
+\end{itemize}}{%
+\lead{Magic-tee duplexer (76 Bh, $\S$4.7)}
+\begin{itemize}
+  \item Transmitter on the H-arm (4), receiver on the E-arm (3), antenna on arm 1, matched
+    dummy load on arm 2. Strike row and column 2; ports $(1, 3, 4)$ = (antenna, Rx, Tx):
+    \[ [S] = \begin{bmatrix} 0 & r & r \\ r & 0 & 0 \\ r & 0 & 0 \end{bmatrix},
+       \quad r = \tfrac{1}{\sqrt{2}} \]
+  \item $S_{34} = 0$: transmitter and receiver \textbf{isolated}. But only \textbf{half}
+    the transmitter power reaches the antenna, and half the echo goes back to the
+    transmitter: a 6 dB round-trip penalty the circulator avoids.
+  \item \textbf{Uses}: radar and any single-antenna transceiver; protects the receiver
+    front end from the transmit pulse.
+\end{itemize}}
 
 \par\penalty0\Needspace{12\baselineskip}
 \creamq{Tee combinations: arms terminated, two tees joined, a 3-port coupler}{\m{4}\m{4+4+2}\m{5}\m{8}\m{10}}
-{\color{sub}\footnotesize \tF{5} \yr{70 Ma, \textbf{75 Bh}, \textbf{77 Ch}, \textbf{78 Ch}, \texttt{82 Ba}} \gap$\cdot$\gap each solved by connecting or terminating ports in \code{wg.py}; full working in the companion, Problems 9 to 11}
+{\color{sub}\footnotesize \tF{5} \yr{70 Ma, \textbf{75 Bh}, \textbf{77 Ch}, \textbf{78 Ch}, \texttt{82 Ba}} \gap$\cdot$\gap every matrix below is asserted in \code{wg.py}; companion Problems 9 to 11 repeat them as step-by-step eliminations}
+\lead{Two rules carry every one of these questions}
 \begin{itemize}
-  \item \textbf{Hybrid tee with a terminated arm} (\texttt{82 Ba}, 70 Ma): a matched load
-    simply deletes that row and column.
-  \begin{itemize}
-    \item E-arm terminated $\Rightarrow$ a matched, reciprocal \textbf{in-phase divider}
-      from the H-arm; collinear ports isolated; lossy only when driven from a collinear arm
-      (half goes to the load).
-    \item H-arm terminated $\Rightarrow$ the same but \textbf{antiphase} from the E-arm.
-    \item Both collinear arms terminated $\Rightarrow$ $[S] = [0]$: E and H arms matched and
-      completely isolated.
-    \item For \textbf{shorted} arms (82 Bh) see the band below: $[S] = -[I]$.
-  \end{itemize}
-  \item \textbf{Two magic tees joined E-arm to E-arm} (77 Ch): a matched, lossless,
-    reciprocal 6-port. The \textbf{difference} signal of one tee crosses to the other and
-    re-appears in antiphase; the \textbf{sum} signal stays in its own H-arm. Joined H to H
-    (78 Ch), the roles swap.
-  \item \textbf{3-port directional coupler} (75 Bh): the 4-port coupler with its isolated
-    port loaded inside the casing. Matched and reciprocal, so by $\S$3.5 it
-    \textbf{must} be lossy, and it is: power driven backwards into the through port loses
-    its coupled share in the internal load.
+  \item Start from the magic tee above: ports 1, 2 collinear (the \textbf{co-planar} arms),
+    3 = E-arm, 4 = H-arm, $r = 1/\sqrt{2}$,
+    $\;[S_T] = r\left[\begin{smallmatrix} 0&0&1&1\\ 0&0&-1&1\\ 1&-1&0&0\\ 1&1&0&0 \end{smallmatrix}\right]$.
+  \item \textbf{Terminate} port $k$ in a load $\Gamma_k$: $a_k = \Gamma_k b_k$. A
+    \textbf{matched} load has $\Gamma_k = 0$, so $a_k = 0$: column $k$ is multiplied by zero,
+    and $b_k$ is absorbed, never seen outside $\Rightarrow$ \mk{strike out row $k$ and
+    column $k$}; nothing else changes.
+  \item \textbf{Join} port $p$ of one junction to port $q$ of another: $a_q = b_p$ and
+    $a_p = b_q$, what leaves one enters the other. Drive one outside port at a time with
+    $a = 1$, follow the wave through, read off one column.
 \end{itemize}
+
+\par\penalty0\Needspace{18\baselineskip}
+\lead{A. Hybrid tee with a terminated arm \gap\yr{\texttt{82 Ba} \m{4+4+2}, 70 Ma \m{8}}}
+\sbs{%
+\textbf{(a) E-arm terminated}: strike row and column 3; ports $(1, 2, 4)$
+\[ [S_a] = \begin{bmatrix} 0 & 0 & r \\ 0 & 0 & r \\ r & r & 0 \end{bmatrix} \]
+\begin{itemize}
+  \item \textbf{Matched}: $S_{11} = S_{22} = S_{44} = 0$. \textbf{Reciprocal}:
+    $[S_a] = [S_a]^T$.
+  \item \textbf{H-arm in}: $b_1 = b_2 = r$, equal ($-3$ dB each) and \textbf{in phase};
+    column 4 power $\tfrac12 + \tfrac12 = 1$, no loss $\Rightarrow$ an \mk{in-phase 3 dB
+    power divider}.
+  \item \textbf{Collinear isolation} kept: $S_{12} = 0$.
+  \item \textbf{Port 1 in}: only $|S_{41}|^2 = \tfrac12$ reaches port 4; the other half
+    ($S_{31} = r$) runs into the E-arm load. Column 1 power $\tfrac12$ $\Rightarrow$
+    \textbf{not lossless}.
+  \item \textbf{As a combiner}: equal in-phase inputs at 1 and 2 add fully at 4; any
+    antiphase (difference) part is dumped in the load.
+\end{itemize}}{%
+\textbf{(b) H-arm terminated}: strike row and column 4; ports $(1, 2, 3)$
+\[ [S_b] = \begin{bmatrix} 0 & 0 & r \\ 0 & 0 & -r \\ r & -r & 0 \end{bmatrix} \]
+\begin{itemize}
+  \item Matched and reciprocal, as in (a).
+  \item \textbf{E-arm in}: $b_1 = r$, $b_2 = -r$, equal and \textbf{$180^\circ$ apart};
+    column 3 power 1 $\Rightarrow$ an \mk{antiphase 3 dB divider}, a balanced feed.
+  \item Ports 1 and 2 isolated, $S_{12} = 0$.
+  \item \textbf{Port 1 in}: half to the E-arm, half ($S_{41} = r$) lost in the H-arm load;
+    column 1 power $\tfrac12$.
+  \item \textbf{As a combiner}: an antiphase pair at 1, 2 leaves entirely by 3; any
+    in-phase (sum) part is absorbed.
+\end{itemize}}
+\begin{itemize}
+  \item \textbf{Why (a) and (b) are lossy}: each is a matched, reciprocal 3-port, and
+    $\S$3.5 proves no such 3-port can be lossless. The load is where the missing half goes,
+    and only a drive from a collinear arm reaches it.
+\end{itemize}
+
+\par\penalty0\Needspace{16\baselineskip}
+\sbs{%
+\textbf{(c) Both co-planar arms terminated}: strike rows and columns 1, 2; ports $(3, 4)$
+\[ [S_c] = \begin{bmatrix} 0 & 0 \\ 0 & 0 \end{bmatrix} \]
+\begin{itemize}
+  \item $S_{33} = S_{44} = 0$: E-arm and H-arm both \textbf{matched}.
+  \item $S_{34} = 0$: E and H \textbf{completely isolated}.
+  \item Power into either side arm splits between the two loads (antiphase from E, in
+    phase from H) and none comes out: the tee is a \textbf{matched termination} for both
+    arms.
+\end{itemize}}{%
+\textbf{Worth writing for the 2 marks}: the isolation does not need matched loads.
+\begin{itemize}
+  \item Loads $\Gamma_1$, $\Gamma_2$ on arms 1, 2. E in ($a_3 = 1$): $b_1 = r$, $b_2 = -r$;
+    reflected $a_1 = r\Gamma_1$, $a_2 = -r\Gamma_2$; then $b_3 = r a_1 - r a_2$,
+    $b_4 = r a_1 + r a_2$:
+    \[ S_{33} = S_{44} = \frac{\Gamma_1 + \Gamma_2}{2}, \qquad
+       S_{34} = \frac{\Gamma_1 - \Gamma_2}{2} \]
+  \item $\Gamma_1 = \Gamma_2$ $\Rightarrow$ $S_{34} = 0$ whatever the loads: E and H
+    \mk{stay isolated}. This is the \textbf{impedance bridge}: unknown on arm 1, standard on
+    arm 2, source on E, detector on H; a null means the two loads are equal.
+  \item $\Gamma_1 = \Gamma_2 = 0$ gives $[S_c]$; $\Gamma_1 = \Gamma_2 = -1$ (shorts) gives
+    $-[I]$, the mirror of the 82 Bh band below.
+\end{itemize}}
+
+\par\penalty0\Needspace{16\baselineskip}
+\lead{B. Two magic tees joined \gap\yr{\textbf{77 Ch} \m{10} E-arm to E-arm, \textbf{78 Ch} \m{5} H-arm to H-arm}}
+\begin{itemize}
+  \item Tee A ports $1, 2, 3, 4$; tee B ports $1', 2', 3', 4'$. \textbf{77 Ch} joins the
+    E-arms: $a_{3'} = b_3$, $a_3 = b_{3'}$. Ports 3 and 3' vanish; six remain,
+    $1, 2, 4, 1', 2', 4'$ $\Rightarrow$ a $6\times6$ matrix.
+  \item \textbf{Drive port 1} ($a_1 = 1$): tee A gives $b_2 = 0$, $b_4 = r$, $b_3 = r$. That
+    $r$ enters tee B's E-arm: $b_{1'} = S_{13}\,r = \tfrac12$,
+    $b_{2'} = S_{23}\,r = -\tfrac12$, $b_{4'} = S_{43}\,r = 0$. Nothing comes back, since
+    tee B's E-arm is matched. Column 1 $= (0,\ 0,\ r,\ \tfrac12,\ -\tfrac12,\ 0)$, power
+    $\tfrac14 + \tfrac14 + \tfrac12 = 1$ \checkmark
+  \item \textbf{Port 2}: $b_3 = S_{32} = -r$ $\Rightarrow$ $b_{1'} = -\tfrac12$,
+    $b_{2'} = +\tfrac12$; and $b_4 = r$.
+  \item \textbf{Port 4} (H-arm A): $b_1 = b_2 = r$ but $b_3 = S_{34} = 0$ $\Rightarrow$
+    \textbf{nothing crosses}.
+  \item Ports $1', 2', 4'$: mirror images, by the symmetry of the join.
+\end{itemize}
+\par\penalty0\Needspace{16\baselineskip}
+\sbsr{0.50}{%
+\textbf{77 Ch: E-arm joined to E-arm}
+\[ [S] = \begin{array}{c} \\ 1 \\ 2 \\ 4 \\ 1' \\ 2' \\ 4' \end{array}
+\!\!\begin{array}{c} \begin{array}{cccccc} 1 & 2 & 4 & 1' & 2' & 4' \end{array} \\
+\left[\begin{array}{cccccc}
+0 & 0 & r & \tfrac12 & -\tfrac12 & 0 \\
+0 & 0 & r & -\tfrac12 & \tfrac12 & 0 \\
+r & r & 0 & 0 & 0 & 0 \\
+\tfrac12 & -\tfrac12 & 0 & 0 & 0 & r \\
+-\tfrac12 & \tfrac12 & 0 & 0 & 0 & r \\
+0 & 0 & 0 & r & r & 0
+\end{array}\right] \end{array} \]}{%
+\lead{Properties (77 Ch)}
+\begin{itemize}
+  \item \textbf{Matched}: all six $S_{ii} = 0$. \textbf{Reciprocal}: $[S] = [S]^T$.
+  \item \textbf{Lossless}: every column's powers sum to 1; nothing is loaded.
+  \item Collinear isolation kept: $S_{12} = S_{1'2'} = 0$. The two H-arms are isolated,
+    $S_{44'} = 0$.
+  \item Port 1 to port $1'$: $|S|^2 = \tfrac14$, $-6$ dB, two 3 dB splits in cascade.
+  \item \mk{Difference crosses}: an antiphase pair $(r, -r)$ at 1, 2 re-appears whole as
+    $(r, -r)$ at $1', 2'$, nothing at 4.
+  \item \mk{Sum stays}: an in-phase pair $(r, r)$ at 1, 2 leaves entirely by its own H-arm
+    4; nothing crosses.
+  \item Use: a sum/difference separator that hands one tee's difference channel to a
+    second tee.
+\end{itemize}}
+
+\par\penalty0\Needspace{16\baselineskip}
+\sbsr{0.50}{%
+\textbf{78 Ch: H-arm joined to H-arm}, $a_{4'} = b_4$, $a_4 = b_{4'}$; outside ports
+$1, 2, 3, 1', 2', 3'$. Port 1: $b_4 = r$ enters tee B's H-arm $\Rightarrow$
+$b_{1'} = b_{2'} = +\tfrac12$, in phase; port 2 gives the same.
+\[ [S] = \begin{array}{c} \\ 1 \\ 2 \\ 3 \\ 1' \\ 2' \\ 3' \end{array}
+\!\!\begin{array}{c} \begin{array}{cccccc} 1 & 2 & 3 & 1' & 2' & 3' \end{array} \\
+\left[\begin{array}{cccccc}
+0 & 0 & r & \tfrac12 & \tfrac12 & 0 \\
+0 & 0 & -r & \tfrac12 & \tfrac12 & 0 \\
+r & -r & 0 & 0 & 0 & 0 \\
+\tfrac12 & \tfrac12 & 0 & 0 & 0 & r \\
+\tfrac12 & \tfrac12 & 0 & 0 & 0 & -r \\
+0 & 0 & 0 & r & -r & 0
+\end{array}\right] \end{array} \]}{%
+\lead{E-join vs H-join, the short-note table}
+\begin{tabularx}{\linewidth}{@{}L{2.0cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\toprule
+\hrow & \thead{E to E (77 Ch)} & \thead{H to H (78 Ch)} \\
+\midrule
+Crosses over & difference (antiphase) & sum (in phase) \\
+At $1', 2'$ & in antiphase & in phase \\
+Stays home & sum, via own H-arm & difference, via own E-arm \\
+Isolated pair & the two H-arms & the two E-arms \\
+Both & \multicolumn{2}{l}{matched at all six ports, reciprocal, lossless} \\
+\bottomrule
+\end{tabularx}}
+
+\par\penalty0\Needspace{16\baselineskip}
+\lead{C. 3-port directional coupler \gap\yr{\textbf{75 Bh} \m{4}}}
+\sbs{%
+\begin{itemize}
+  \item Take the ideal 4-port coupler of $\S$3.6: port 1 input, 2 through, 3 coupled,
+    4 isolated, $\alpha^2 + \beta^2 = 1$.
+  \item A \textbf{3-port coupler} is that coupler with port 4 terminated in a matched load
+    \textbf{inside the casing}. Strike row and column 4:
+    \[ [S] = \begin{bmatrix} 0 & \alpha & j\beta \\ \alpha & 0 & 0 \\ j\beta & 0 & 0
+       \end{bmatrix} \]
+  \item Coupling $C = -20\log\beta$ dB; insertion loss $-20\log\alpha$ dB.
+  \item Use: forward-power monitor, where only the forward sample is wanted.
+\end{itemize}}{%
+\begin{itemize}
+  \item \textbf{Matched} ($S_{ii} = 0$) and \textbf{reciprocal}.
+  \item \textbf{Forward} (port 1 in): $\alpha^2$ to 2, $\beta^2$ to 3; column power 1,
+    \textbf{no loss}.
+  \item \textbf{Ports 2 and 3 isolated}: $S_{23} = 0$.
+  \item \textbf{Backward} (port 2 in): only $\alpha^2$ returns to 1; the coupled share
+    $\beta^2$ goes to the internal load. Port 3 in: $\beta^2$ to 1, $\alpha^2$ absorbed.
+  \item \mk{Must be lossy}: matched and reciprocal 3-port $\Rightarrow$ not lossless
+    ($\S$3.5); the loss shows only for backward drive.
+  \item 10 dB coupler: $\beta = 0.316$, $\alpha = 0.949$. Forward: 90\% through, 10\%
+    coupled. Backward into 2: 90\% reaches 1, 10\% absorbed.
+\end{itemize}}
 
 \par\penalty0\Needspace{10\baselineskip}
 \creamq{\added{} Magic tee with both E- and H-arms short-circuited}{\m{4}}
@@ -712,9 +877,12 @@ Matrix & $-1/\sqrt{2}$ in row 3 (below) & $-1/2$ at $S_{12}$ (below) \\
 
 \sbs{%
 \begin{itemize}
-  \item Shorts at the junction reference plane give $a_3 = -b_3$ and $a_4 = -b_4$.
-  \item Substituting into the magic-tee equations collapses the 4-port to the two-port
-    seen from ports 1 and 2:
+  \item Shorts at the junction reference plane, $\Gamma = -1$: $a_3 = -b_3$, $a_4 = -b_4$.
+  \item Magic-tee rows 3 and 4: $b_3 = r(a_1 - a_2)$, \quad $b_4 = r(a_1 + a_2)$.
+  \item Rows 1 and 2 with the shorts substituted:
+    \[ b_1 = r a_3 + r a_4 = -r(b_3 + b_4) = -r^2 (2a_1) = -a_1 \]
+    \[ b_2 = -r a_3 + r a_4 = r(b_3 - b_4) = r^2(-2a_2) = -a_2 \]
+  \item So the 4-port collapses to the two-port seen from ports 1 and 2:
     \[ [S]_{\text{shorted}} = \begin{bmatrix} -1 & 0 \\ 0 & -1 \end{bmatrix} \]
 \end{itemize}}{%
 \begin{itemize}
