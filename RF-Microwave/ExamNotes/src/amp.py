@@ -177,6 +177,24 @@ def walk(ls, l, kind="open"):
     return G0 * cmath.exp(-1j * 4 * math.pi * l)
 
 
+# ============================================================ resistive stabilisation
+def series_z(z):
+    """S-parameters of a series normalised impedance z between two Z0 ports."""
+    return (z / (2 + z), 2 / (2 + z), 2 / (2 + z), z / (2 + z))
+
+
+def shunt_y(y):
+    return (-y / (2 + y), 2 / (2 + y), 2 / (2 + y), -y / (2 + y))
+
+
+def cascade(A, B):
+    """Two-port A followed by two-port B (A's port 2 into B's port 1)."""
+    a11, a12, a21, a22 = A
+    b11, b12, b21, b22 = B
+    d = 1 - a22 * b11
+    return (a11 + a12 * a21 * b11 / d, a12 * b12 / d, a21 * b21 / d, b22 + b12 * b21 * a22 / d)
+
+
 # ============================================================ oscillator
 def z_of(G, z0=50.0):
     return z0 * (1 + G) / (1 - G)
@@ -343,6 +361,47 @@ def test_71bh_circles():
     return res
 
 
+def test_73ma_stabilised(R=5.0):
+    """73 Ma "modify the S-parameters": a series R at the gate, then redo the design.
+
+    The cascade is checked two ways: against the ABCD product of the resistor and
+    the transistor, and by confirming the composite's G_T,max equals its MAG.
+    """
+    t = SETS["K"]
+    T = t[2:]
+    A = series_z(R / 50.0)
+    C = cascade(A, T)
+    # independent check: ABCD of series R times ABCD of the transistor
+    def abcd(s):
+        s11, s12, s21, s22 = s
+        d = 2 * s21
+        return ((1 + s11) * (1 - s22) + s12 * s21, ((1 + s11) * (1 + s22) - s12 * s21),
+                ((1 - s11) * (1 - s22) - s12 * s21), (1 - s11) * (1 + s22) + s12 * s21), d
+    (a, b, c, dd), n = abcd(T)
+    a, b, c, dd = a / n, b / n, c / n, dd / n
+    r = R / 50.0
+    a2, b2, c2, d2 = a + r * c, b + r * dd, c, dd
+    den = a2 + b2 + c2 + d2
+    ref = ((a2 + b2 - c2 - d2) / den, 2 * (a2 * d2 - b2 * c2) / den, 2 / den,
+           (-a2 + b2 - c2 + d2) / den)
+    for x, y in zip(C, ref):
+        _close(abs(x - y), 0.0, tol=1e-9, what="73 Ma cascade vs ABCD")
+    m = Amp(*C)
+    assert not Amp(*T).uncond and m.uncond, "73 Ma: resistor must make it unconditionally stable"
+    _close(abs(C[2] / C[1]), abs(T[2] / T[1]), tol=1e-12, what="73 Ma MSG unchanged by series R")
+    check_general(m, "73 Ma stabilised")
+    lo, hi = 0.0, 1.0
+    for _ in range(60):
+        mid = (lo + hi) / 2
+        if Amp(*cascade(series_z(mid / 50.0), T)).K > 1:
+            hi = mid
+        else:
+            lo = mid
+    return dict(A=A, d=1 - A[3] * T[0], C=C, amp=m, Rmin=hi,
+                GS=m.conj_match()[0], GL=m.conj_match()[1],
+                netS=stub_line_for(m.conj_match()[0])[0], netL=stub_line_for(m.conj_match()[1])[0])
+
+
 def fmt(z, p=3):
     return "%.*f/%.1f" % (p, abs(z), ang(z))
 
@@ -383,6 +442,15 @@ def main():
           % (h["GS"], h["GL"], h["Gs"], db(h["Gs"]), h["G0"], db(h["G0"]), h["Gl"], db(h["Gl"]),
              h["Gtu"], db(h["Gtu"]), h["Gt"], db(h["Gt"]), h["K"]))
     print("71 Bh circles      " + str(test_71bh_circles()))
+    s = test_73ma_stabilised()
+    m = s["amp"]
+    print("73 Ma + 5 ohm      ok  Rmin %.3f ohm  D %s  S11' %s S12' %s S21' %s S22' %s"
+          % (s["Rmin"], fmt(s["d"], 4), fmt(s["C"][0], 4), fmt(s["C"][1], 4), fmt(s["C"][2], 4), fmt(s["C"][3], 4)))
+    print("                       Delta %s K %.4f mu %.4f  B1 %.4f C1 %s B2 %.4f C2 %s  GS %s GL %s  GTmax %.2f (%.2f dB)"
+          % (fmt(m.delta, 4), m.K, m.mu, m.B1, fmt(m.C1, 4), m.B2, fmt(m.C2, 4), fmt(s["GS"], 4), fmt(s["GL"], 4),
+             m.gt_max(), db(m.gt_max())))
+    print("                       GTU %.2f (%.2f dB) M %.4f  netS %.4f/%.4f  netL %.4f/%.4f"
+          % (m.gtu_max(), db(m.gtu_max()), m.M(), s["netS"][0], s["netS"][1], s["netL"][0], s["netL"][1]))
     print("\nall self-tests passed")
 
 

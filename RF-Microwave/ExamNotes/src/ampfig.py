@@ -132,6 +132,49 @@ def fig_p4(src):
     c.save("c6n_p4_circles.png")
 
 
+def fig_p1(src):
+    """82 Ba: the bilateral design's two networks, with every step in the table."""
+    a = Amp(*amp.SETS["B"][2:])
+    GS, GL = a.conj_match()
+    for sub, G in (("S", GS), ("L", GL)):
+        ls, l, b = amp.stub_line_for(G)[0]
+        assert abs(amp.walk(ls, l) - G) < 1e-9, "P1 %s network does not reach Gamma" % sub
+        y = 1 + 1j * b
+        G0 = (1 - y) / (1 + y)
+        must_print(src, "= %.4f$" % b, "P1 %s b" % sub)
+        must_print(src, "%.2f^%scirc" % (math.degrees(math.atan(b)), BS), "P1 %s atan b" % sub)
+        must_print(src, "0.%04d" % round(ls * 1e4) + BS + "lambda", "P1 %s stub" % sub)
+        must_print(src, "%.4f%sangle{%.2f^%scirc}" % (abs(G0), BS, math.degrees(cmath.phase(G0)), BS),
+                   "P1 %s Gamma after stub" % sub)
+        # the table subtracts the printed (2-decimal) angles, so check that difference
+        rot = (round(math.degrees(cmath.phase(G0)), 2) - round(math.degrees(cmath.phase(G)), 2)) % 360
+        assert abs(rot - 720 * l) < 0.02, "P1 %s rotation" % sub
+        must_print(src, "%.2f^%scirc/720" % (rot, BS), "P1 %s rotation" % sub)
+        must_print(src, "0.%04d" % round(l * 1e4) + BS + "lambda", "P1 %s line" % sub)
+        draw_net("c6n_p1_%s.png" % ("input" if sub == "S" else "output"), "82 Ba", G, ls, l, b, sub)
+
+
+def check_p4_mod(src):
+    """73 Ma, "modify the S-parameters": every printed number of the 5-ohm redesign."""
+    s = amp.test_73ma_stabilised(5.0)
+    m = s["amp"]
+    for what, text in (
+            ("S11'", "0.5169" + BS + "angle{-168.35^" + BS + "circ}"),
+            ("S12'", "0.0277" + BS + "angle49.7^" + BS + "circ"),
+            ("S21'", "9.349" + BS + "angle90.68^" + BS + "circ"),
+            ("S22'", "0.2099" + BS + "angle{-84.60^" + BS + "circ}"),
+            ("Delta'", "0.1789" + BS + "angle{-20.2^" + BS + "circ}"),
+            ("K'", "%.3f" % m.K),
+            ("GS'", "%.4f" % abs(s["GS"]) + BS + "angle%.2f^" % math.degrees(cmath.phase(s["GS"])) + BS + "circ"),
+            ("GL'", "%.4f" % abs(s["GL"]) + BS + "angle%.2f^" % math.degrees(cmath.phase(s["GL"])) + BS + "circ"),
+            ("GTmax'", "%.1f = %.2f" % (m.gt_max(), amp.db(m.gt_max()))),
+            ("GTU'", "%.1f = %.2f" % (m.gtu_max(), amp.db(m.gtu_max()))),
+            ("Rmin", "%.2f" % s["Rmin"] + BS + "," + BS + "Omega"),
+            ("netS", "0.%04d" % round(s["netS"][0] * 1e4) + BS + "lambda"),
+            ("netL", "0.%04d" % round(s["netL"][1] * 1e4) + BS + "lambda")):
+        must_print(src, text, "P4 modified " + what)
+
+
 def fig_p6(src):
     """79 Ch: open shunt stub at the 50-ohm end, then a line to the device."""
     a = Amp(P(0.45, 163), P(0.04, 40), P(2.55, -106), P(0.46, -65))
@@ -150,31 +193,36 @@ def fig_p6(src):
     must_print(src, "0.%04d" % round(l_o * 1e4) + BS + "lambda", "P6 output line")
     for name, G, ls, l, b, sub in (("c6n_p6_input.png", GS, ls_i, l_i, b_i, "S"),
                                    ("c6n_p6_output.png", GL, ls_o, l_o, b_o, "L")):
-        c = chart(r"79 Ch: %s network, to $\Gamma_%s$" % ("input" if sub == "S" else "output", sub))
-        y = 1 + 1j * b
-        G0 = (1 - y) / (1 + y)
-        # the g = 1 circle of the admittance grid sits at centre -1/2 in the Gamma plane
-        c.ax.add_patch(Circle((-0.5, 0), 0.5, fill=False, lw=1.0, color=GD,
-                              ls="--", zorder=5))
-        c.ax.add_patch(Circle((0, 0), abs(G), fill=False, lw=0.9, color=SUB,
-                              ls=":", zorder=5))
-        # stub: from the centre along g = 1 to G0
-        a0 = 0.0
-        a1 = math.degrees(math.atan2(G0.imag, G0.real + 0.5))
-        if abs(a1 - a0) > 180:
-            a1 -= 360.0
-        arc_arrow(c, -0.5, 0.5, a0, a1, MKC, label="stub %.4f$\\lambda$" % ls)
-        # line: clockwise at constant |Gamma| from G0 to G
-        g0 = math.degrees(cmath.phase(G0))
-        g1 = g0 - 720.0 * l
-        arc_arrow(c, 0.0, abs(G), g0, g1, ACC, label="line %.4f$\\lambda$" % l, off=0.09)
-        gpt(c, 0j, "50 $\\Omega$", color=SUB, dx=0.04, dy=0.04)
-        gpt(c, G0, "after stub", color=MKC, dx=0.04, dy=-0.05, va="top")
-        gpt(c, G, r"$\Gamma_%s = %.4f\angle%.1f^\circ$" % (sub, abs(G), math.degrees(cmath.phase(G))),
-            color=ACC, dx=0.04, dy=0.04)
-        c.note(r"$b = %+.4f$ (open stub), then the line rotates clockwise by $%.1f^\circ$"
-               % (b, 720 * l))
-        c.save(name)
+        draw_net(name, "79 Ch", G, ls, l, b, sub)
+
+
+def draw_net(name, paper, G, ls, l, b, sub):
+    """Open stub from the 50-ohm centre along g = 1, then a line clockwise to G."""
+    c = chart(r"%s: %s network, to $\Gamma_%s$" % (paper, "input" if sub == "S" else "output", sub))
+    y = 1 + 1j * b
+    G0 = (1 - y) / (1 + y)
+    # the g = 1 circle of the admittance grid sits at centre -1/2 in the Gamma plane
+    c.ax.add_patch(Circle((-0.5, 0), 0.5, fill=False, lw=1.0, color=GD,
+                          ls="--", zorder=5))
+    c.ax.add_patch(Circle((0, 0), abs(G), fill=False, lw=0.9, color=SUB,
+                          ls=":", zorder=5))
+    # stub: from the centre along g = 1 to G0
+    a0 = 0.0
+    a1 = math.degrees(math.atan2(G0.imag, G0.real + 0.5))
+    if abs(a1 - a0) > 180:
+        a1 -= 360.0
+    arc_arrow(c, -0.5, 0.5, a0, a1, MKC, label="stub %.4f$\\lambda$" % ls)
+    # line: clockwise at constant |Gamma| from G0 to G
+    g0 = math.degrees(cmath.phase(G0))
+    g1 = g0 - 720.0 * l
+    arc_arrow(c, 0.0, abs(G), g0, g1, ACC, label="line %.4f$\\lambda$" % l, off=0.09)
+    gpt(c, 0j, "50 $\\Omega$", color=SUB, dx=0.04, dy=0.04)
+    gpt(c, G0, "after stub", color=MKC, dx=0.04, dy=-0.05, va="top")
+    gpt(c, G, r"$\Gamma_%s = %.4f\angle%.1f^\circ$" % (sub, abs(G), math.degrees(cmath.phase(G))),
+        color=ACC, dx=0.04, dy=0.04)
+    c.note(r"$b = %+.4f$ (open stub), then the line rotates clockwise by $%.1f^\circ$"
+           % (b, 720 * l))
+    c.save(name)
 
 
 def fig_p7(src):
@@ -195,11 +243,13 @@ def fig_p7(src):
 
 def main():
     src = open(TEX, encoding="utf-8").read()
+    fig_p1(src)
     fig_p3(src)
     fig_p4(src)
+    check_p4_mod(src)
     fig_p6(src)
     fig_p7(src)
-    print("ampfig: 7 charts written, every drawn value found in ch6-num-body.tex")
+    print("ampfig: 9 charts written, every drawn value found in ch6-num-body.tex")
 
 
 if __name__ == "__main__":
