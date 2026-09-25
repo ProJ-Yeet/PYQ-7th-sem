@@ -60,8 +60,10 @@ $G_{S,max}$ & $1/(1 - |S_{11}|^2) = 1/0.6975$ & $1.434 = 1.56$ dB \\
 $G_0$ & $|S_{21}|^2$ & $7.952 = 9.00$ dB \\
 $G_{L,max}$ & $1/(1 - |S_{22}|^2) = 1/0.7975$ & $1.254 = 0.98$ dB \\
 $G_{TU,max}$ & $1.434\times7.952\times1.254$ & $\mathbf{14.30 = 11.55\ dB}$ \\
-$M$ & $\dfrac{0.55\times0.04\times2.82\times0.45}{0.6975\times0.7975}$ & $0.0502$ \\
-Error bound & $\dfrac{1}{(1.0502)^2} < \dfrac{G_T}{G_{TU}} < \dfrac{1}{(0.9498)^2}$ & $-0.43$ to $+0.45$ dB \\
+$M$\rule[-2.3ex]{0pt}{5.4ex} & $\dfrac{|S_{11}||S_{12}||S_{21}||S_{22}|}{(1 - |S_{11}|^2)(1 - |S_{22}|^2)}$ & \\
+\rule[-2.3ex]{0pt}{5.4ex} & $= \dfrac{0.55\times0.04\times2.82\times0.45}{0.6975\times0.7975}$ & $0.0502$ \\
+Error bound\rule[-2.3ex]{0pt}{5.4ex} & $\dfrac{1}{(1 + M)^2} < \dfrac{G_T}{G_{TU}} < \dfrac{1}{(1 - M)^2}$ & \\
+\rule[-2.3ex]{0pt}{5.4ex} & $\dfrac{1}{(1.0502)^2} < \dfrac{G_T}{G_{TU}} < \dfrac{1}{(0.9498)^2}$ & $-0.43$ to $+0.45$ dB \\
 \bottomrule
 \end{tabularx}
 \lead{Step 7: compare}
