@@ -288,6 +288,14 @@ class SmithChart(object):
         a1 = math.degrees(math.atan2(q1.imag, q1.real - cx))
         if abs(a1 - a0) > 180:                 # take the short way round
             a0 += 360.0 if a0 < a1 else -360.0
+        # ...unless that arc runs through b = infinity: the stub's real path is
+        # the monotone sweep of b, so a point half way in b must lie on the arc
+        bm = (complex(v_from).imag + complex(v_to).imag) / 2.0
+        qm = p(complex(g, bm))
+        am_true = math.degrees(math.atan2(qm.imag, qm.real - cx))
+        lo, hi = min(a0, a1), max(a0, a1)
+        if (am_true - lo) % 360.0 > hi - lo + 1e-9:
+            a0 += 360.0 if a0 < a1 else -360.0
         self.ax.add_patch(Arc((cx, 0), 2 * rad, 2 * rad, theta1=min(a0, a1),
                               theta2=max(a0, a1), lw=lw, color=color,
                               ls="-", zorder=7))

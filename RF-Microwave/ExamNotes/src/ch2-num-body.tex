@@ -109,6 +109,9 @@ Design single-stub shunt tuning networks (short-circuited and open-circuited) fo
 \figC{c2num_p02.png}{0.55\textwidth}
 {\footnotesize\color{sub} Problem 2 --- Smith chart construction. Arcs are numbered in the order of the steps above.}
 
+\figC{c2num_p02_line.png}{0.62\textwidth}
+{\footnotesize\color{sub} Problem 2 --- line diagram of the matched network: shunt stub across the line, lengths from the answer above.}
+
 \figC{c2num_p02_ms.png}{0.92\textwidth}
 {\footnotesize\color{sub} Problem 2 --- microstrip layout, top view: stubs as T-junctions off the main line, dimensions from the answer above.}
 
@@ -177,6 +180,12 @@ A load presents $\Gamma_L = 0.5\angle 51^\circ$ on a $50\,\Omega$ line. Design s
 \figC{c2num_p03.png}{0.55\textwidth}
 {\footnotesize\color{sub} Problem 3 --- Smith chart construction. Arcs are numbered in the order of the steps above.}
 
+\figC{c2num_p03_line.png}{0.62\textwidth}
+{\footnotesize\color{sub} Problem 3 --- line diagram of the matched network: shunt stub across the line, lengths from the answer above.}
+
+\figC{c2num_p03_coax.png}{0.89\textwidth}
+{\footnotesize\color{sub} Problem 3 --- coaxial realisation, longitudinal section: each stub a coax tee off the main line; shorted stub closed by a plate, open stub left open.}
+
 \penalty0\vspace{2pt}
 
 %======================================================================
@@ -243,6 +252,12 @@ A $100\,\Omega$ lossless line feeds a complex load $120-j160\,\Omega$. Give all 
 \figC{c2num_p04.png}{0.55\textwidth}
 {\footnotesize\color{sub} Problem 4 --- Smith chart construction. Arcs are numbered in the order of the steps above.}
 
+\figC{c2num_p04_line.png}{0.62\textwidth}
+{\footnotesize\color{sub} Problem 4 --- line diagram of the matched network: shunt stub across the line, lengths from the answer above.}
+
+\figC{c2num_p04_coax.png}{0.69\textwidth}
+{\footnotesize\color{sub} Problem 4 --- coaxial realisation, longitudinal section: each stub a coax tee off the main line; a shorting plate closes each stub.}
+
 \penalty0\vspace{2pt}
 
 %======================================================================
@@ -302,6 +317,12 @@ Design a single short-circuited matching stub with self-defined line and load im
 
 \figC{c2num_p05.png}{0.55\textwidth}
 {\footnotesize\color{sub} Problem 5 --- Smith chart construction. Arcs are numbered in the order of the steps above.}
+
+\figC{c2num_p05_line.png}{0.62\textwidth}
+{\footnotesize\color{sub} Problem 5 --- line diagram of the matched network: shunt stub across the line, lengths from the answer above.}
+
+\figC{c2num_p05_coax.png}{0.69\textwidth}
+{\footnotesize\color{sub} Problem 5 --- coaxial realisation, longitudinal section: each stub a coax tee off the main line; a shorting plate closes each stub.}
 
 \penalty0\vspace{2pt}
 
@@ -369,6 +390,12 @@ Design a single-stub tuner matching a lossless line to an antenna load (any assu
 
 \figC{c2num_p06.png}{0.55\textwidth}
 {\footnotesize\color{sub} Problem 6 --- Smith chart construction. Arcs are numbered in the order of the steps above.}
+
+\figC{c2num_p06_line.png}{0.62\textwidth}
+{\footnotesize\color{sub} Problem 6 --- line diagram of the matched network: shunt stub across the line, lengths from the answer above.}
+
+\figC{c2num_p06_coax.png}{0.69\textwidth}
+{\footnotesize\color{sub} Problem 6 --- coaxial realisation, longitudinal section: each stub a coax tee off the main line; a shorting plate closes each stub.}
 
 \penalty0\vspace{2pt}
 
@@ -442,6 +469,9 @@ Design shunt short- and open-stub matching networks using the Smith chart for $Z
 \figC{c2num_p07.png}{0.55\textwidth}
 {\footnotesize\color{sub} Problem 7 --- Smith chart construction. Arcs are numbered in the order of the steps above.}
 
+\figC{c2num_p07_line.png}{0.62\textwidth}
+{\footnotesize\color{sub} Problem 7 --- line diagram of the matched network: shunt stub across the line, lengths from the answer above.}
+
 \figC{c2num_p07_ms.png}{0.92\textwidth}
 {\footnotesize\color{sub} Problem 7 --- microstrip layout, top view: stubs as T-junctions off the main line, dimensions from the answer above.}
 
@@ -482,10 +512,10 @@ Design a double-stub tuner ($3\lambda/8$ spacing) for $Z_L = 300+j300\,\Omega$ o
 \lead{Step 5 --- stub 1: slide along the constant-$g$ circle}
 \begin{itemize}
   \item A shunt stub adds susceptance only, so the point can move \emph{only along its own $g = 0.500$ circle}.
-  \item Follow that circle to where it cuts the spacing circle. It cuts twice, giving the two standard solutions:
+  \item Follow that circle to where it cuts the spacing circle. It cuts twice, giving the two standard solutions (one chart each below):
   \begin{itemize}
-    \item \textbf{Solution A}: $y_a = 0.50 - j1.87$, so stub 1 must add $b_1 = -1.866 - (-0.500) = -1.366$.
-    \item \textbf{Solution B}: $y_a' = 0.50 - j0.13$, so $b_1' = +0.366$.
+    \item \textbf{Solution A} (outer intersection, nearer the rim): $y_a = 0.50 - j1.87$, so stub 1 must add $b_1 = -1.866 - (-0.500) = -1.366$.
+    \item \textbf{Solution B} (inner intersection, nearer the centre): $y_a' = 0.50 - j0.13$, so $b_1' = +0.366$.
   \end{itemize}
   \item Read $\ell_1$ off the rim, starting at the short-circuit point ($y=\infty$, the right of the chart): $\ell_1 = 0.101\lambda$ (A) and $0.306\lambda$ (B).
 \end{itemize}
@@ -517,8 +547,17 @@ Stub 2 susceptance $b_2$ & $-2.732$ & $+0.732$ \\
 
 \lead{Both are correct.} Quote either, but say which you chose. Solution A uses the shorter stubs here, which is the practical pick: less line at high VSWR means lower loss and wider bandwidth.
 
-\figC{c2num_p08.png}{0.55\textwidth}
-{\footnotesize\color{sub} Problem 8 --- Smith chart construction. Arcs are numbered in the order of the steps above.}
+\begin{center}
+\includegraphics[width=0.495\textwidth]{figs/c2num_p08.png}\hfill
+\includegraphics[width=0.495\textwidth]{figs/c2num_p08b.png}
+\end{center}
+{\footnotesize\color{sub} Problem 8 --- Smith chart construction, left: solution A, the outer intersection of the $g = 0.50$ circle with the spacing circle; right: solution B, the inner intersection of the $g = 0.50$ circle with the spacing circle.}
+
+\figC{c2num_p08_line.png}{0.62\textwidth}
+{\footnotesize\color{sub} Problem 8 --- line diagram of the matched network: shunt stubs across the line, lengths from the answer above.}
+
+\figC{c2num_p08_coax.png}{0.69\textwidth}
+{\footnotesize\color{sub} Problem 8 --- coaxial realisation, longitudinal section: each stub a coax tee off the main line; a shorting plate closes each stub.}
 
 \penalty0\vspace{2pt}
 
@@ -558,10 +597,10 @@ Design a double-stub tuner ($3\lambda/8$ spacing) for $Z_L = 80+j180\,\Omega$ on
 \lead{Step 5 --- stub 1: slide along the constant-$g$ circle}
 \begin{itemize}
   \item A shunt stub adds susceptance only, so the point can move \emph{only along its own $g = 0.206$ circle}.
-  \item Follow that circle to where it cuts the spacing circle. It cuts twice, giving the two standard solutions:
+  \item Follow that circle to where it cuts the spacing circle. It cuts twice, giving the two standard solutions (one chart each below):
   \begin{itemize}
-    \item \textbf{Solution A}: $y_a = 0.21 - j1.61$, so stub 1 must add $b_1 = -1.608 - (-0.464) = -1.144$.
-    \item \textbf{Solution B}: $y_a' = 0.21 - j0.39$, so $b_1' = +0.072$.
+    \item \textbf{Solution A} (outer intersection, nearer the rim): $y_a = 0.21 - j1.61$, so stub 1 must add $b_1 = -1.608 - (-0.464) = -1.144$.
+    \item \textbf{Solution B} (inner intersection, nearer the centre): $y_a' = 0.21 - j0.39$, so $b_1' = +0.072$.
   \end{itemize}
   \item Read $\ell_1$ off the rim, starting at the short-circuit point ($y=\infty$, the right of the chart): $\ell_1 = 0.114\lambda$ (A) and $0.261\lambda$ (B).
 \end{itemize}
@@ -593,8 +632,17 @@ Stub 2 susceptance $b_2$ & $-3.950$ & $+1.950$ \\
 
 \lead{Both are correct.} Quote either, but say which you chose. Solution A uses the shorter stubs here, which is the practical pick: less line at high VSWR means lower loss and wider bandwidth.
 
-\figC{c2num_p09.png}{0.55\textwidth}
-{\footnotesize\color{sub} Problem 9 --- Smith chart construction. Arcs are numbered in the order of the steps above.}
+\begin{center}
+\includegraphics[width=0.495\textwidth]{figs/c2num_p09.png}\hfill
+\includegraphics[width=0.495\textwidth]{figs/c2num_p09b.png}
+\end{center}
+{\footnotesize\color{sub} Problem 9 --- Smith chart construction, left: solution A, the outer intersection of the $g = 0.21$ circle with the spacing circle; right: solution B, the inner intersection of the $g = 0.21$ circle with the spacing circle.}
+
+\figC{c2num_p09_line.png}{0.62\textwidth}
+{\footnotesize\color{sub} Problem 9 --- line diagram of the matched network: shunt stubs across the line, lengths from the answer above.}
+
+\figC{c2num_p09_coax.png}{0.69\textwidth}
+{\footnotesize\color{sub} Problem 9 --- coaxial realisation, longitudinal section: each stub a coax tee off the main line; a shorting plate closes each stub.}
 
 \penalty0\vspace{2pt}
 
@@ -634,10 +682,10 @@ Design a double-stub tuner ($3\lambda/8$ spacing) for $Z_L = 190+j110\,\Omega$ o
 \lead{Step 5 --- stub 1: slide along the constant-$g$ circle}
 \begin{itemize}
   \item A shunt stub adds susceptance only, so the point can move \emph{only along its own $g = 0.394$ circle}.
-  \item Follow that circle to where it cuts the spacing circle. It cuts twice, giving the two standard solutions:
+  \item Follow that circle to where it cuts the spacing circle. It cuts twice, giving the two standard solutions (one chart each below):
   \begin{itemize}
-    \item \textbf{Solution A}: $y_a = 0.39 - j1.80$, so stub 1 must add $b_1 = -1.796 - (-0.228) = -1.567$.
-    \item \textbf{Solution B}: $y_a' = 0.39 - j0.20$, so $b_1' = +0.024$.
+    \item \textbf{Solution A} (outer intersection, nearer the rim): $y_a = 0.39 - j1.80$, so stub 1 must add $b_1 = -1.796 - (-0.228) = -1.567$.
+    \item \textbf{Solution B} (inner intersection, nearer the centre): $y_a' = 0.39 - j0.20$, so $b_1' = +0.024$.
   \end{itemize}
   \item Read $\ell_1$ off the rim, starting at the short-circuit point ($y=\infty$, the right of the chart): $\ell_1 = 0.090\lambda$ (A) and $0.254\lambda$ (B).
 \end{itemize}
@@ -669,8 +717,17 @@ Stub 2 susceptance $b_2$ & $-3.018$ & $+1.018$ \\
 
 \lead{Both are correct.} Quote either, but say which you chose. Solution A uses the shorter stubs here, which is the practical pick: less line at high VSWR means lower loss and wider bandwidth.
 
-\figC{c2num_p10.png}{0.55\textwidth}
-{\footnotesize\color{sub} Problem 10 --- Smith chart construction. Arcs are numbered in the order of the steps above.}
+\begin{center}
+\includegraphics[width=0.495\textwidth]{figs/c2num_p10.png}\hfill
+\includegraphics[width=0.495\textwidth]{figs/c2num_p10b.png}
+\end{center}
+{\footnotesize\color{sub} Problem 10 --- Smith chart construction, left: solution A, the outer intersection of the $g = 0.39$ circle with the spacing circle; right: solution B, the inner intersection of the $g = 0.39$ circle with the spacing circle.}
+
+\figC{c2num_p10_line.png}{0.62\textwidth}
+{\footnotesize\color{sub} Problem 10 --- line diagram of the matched network: shunt stubs across the line, lengths from the answer above.}
+
+\figC{c2num_p10_coax.png}{0.69\textwidth}
+{\footnotesize\color{sub} Problem 10 --- coaxial realisation, longitudinal section: each stub a coax tee off the main line; a shorting plate closes each stub.}
 
 \penalty0\vspace{2pt}
 
@@ -710,10 +767,10 @@ Design a double-stub tuner for an inductive load on a $50\,\Omega$ line. Include
 \lead{Step 5 --- stub 1: slide along the constant-$g$ circle}
 \begin{itemize}
   \item A shunt stub adds susceptance only, so the point can move \emph{only along its own $g = 0.308$ circle}.
-  \item Follow that circle to where it cuts the spacing circle. It cuts twice, giving the two standard solutions:
+  \item Follow that circle to where it cuts the spacing circle. It cuts twice, giving the two standard solutions (one chart each below):
   \begin{itemize}
-    \item \textbf{Solution A}: $y_a = 0.31 - j1.72$, so stub 1 must add $b_1 = -1.722 - (-0.538) = -1.183$.
-    \item \textbf{Solution B}: $y_a' = 0.31 - j0.28$, so $b_1' = +0.260$.
+    \item \textbf{Solution A} (outer intersection, nearer the rim): $y_a = 0.31 - j1.72$, so stub 1 must add $b_1 = -1.722 - (-0.538) = -1.183$.
+    \item \textbf{Solution B} (inner intersection, nearer the centre): $y_a' = 0.31 - j0.28$, so $b_1' = +0.260$.
   \end{itemize}
   \item Read $\ell_1$ off the rim, starting at the short-circuit point ($y=\infty$, the right of the chart): $\ell_1 = 0.112\lambda$ (A) and $0.290\lambda$ (B).
 \end{itemize}
@@ -745,8 +802,17 @@ Stub 2 susceptance $b_2$ & $-3.345$ & $+1.345$ \\
 
 \lead{Both are correct.} Quote either, but say which you chose. Solution A uses the shorter stubs here, which is the practical pick: less line at high VSWR means lower loss and wider bandwidth.
 
-\figC{c2num_p11.png}{0.55\textwidth}
-{\footnotesize\color{sub} Problem 11 --- Smith chart construction. Arcs are numbered in the order of the steps above.}
+\begin{center}
+\includegraphics[width=0.495\textwidth]{figs/c2num_p11.png}\hfill
+\includegraphics[width=0.495\textwidth]{figs/c2num_p11b.png}
+\end{center}
+{\footnotesize\color{sub} Problem 11 --- Smith chart construction, left: solution A, the outer intersection of the $g = 0.31$ circle with the spacing circle; right: solution B, the inner intersection of the $g = 0.31$ circle with the spacing circle.}
+
+\figC{c2num_p11_line.png}{0.62\textwidth}
+{\footnotesize\color{sub} Problem 11 --- line diagram of the matched network: shunt stubs across the line, lengths from the answer above.}
+
+\figC{c2num_p11_coax.png}{0.69\textwidth}
+{\footnotesize\color{sub} Problem 11 --- coaxial realisation, longitudinal section: each stub a coax tee off the main line; a shorting plate closes each stub.}
 
 \penalty0\vspace{2pt}
 
@@ -785,10 +851,10 @@ Design a short-circuited double-stub tuner with $3\lambda/8$ spacing for $Z_L = 
 \lead{Step 5 --- stub 1: slide along the constant-$g$ circle}
 \begin{itemize}
   \item A shunt stub adds susceptance only, so the point can move \emph{only along its own $g = 0.333$ circle}.
-  \item Follow that circle to where it cuts the spacing circle. It cuts twice, giving the two standard solutions:
+  \item Follow that circle to where it cuts the spacing circle. It cuts twice, giving the two standard solutions (one chart each below):
   \begin{itemize}
-    \item \textbf{Solution A}: $y_a = 0.33 - j1.75$, so stub 1 must add $b_1 = -1.745 - (-0.333) = -1.412$.
-    \item \textbf{Solution B}: $y_a' = 0.33 - j0.25$, so $b_1' = +0.079$.
+    \item \textbf{Solution A} (outer intersection, nearer the rim): $y_a = 0.33 - j1.75$, so stub 1 must add $b_1 = -1.745 - (-0.333) = -1.412$.
+    \item \textbf{Solution B} (inner intersection, nearer the centre): $y_a' = 0.33 - j0.25$, so $b_1' = +0.079$.
   \end{itemize}
   \item Read $\ell_1$ off the rim, starting at the short-circuit point ($y=\infty$, the right of the chart): $\ell_1 = 0.098\lambda$ (A) and $0.262\lambda$ (B).
 \end{itemize}
@@ -820,8 +886,17 @@ Stub 2 susceptance $b_2$ & $-3.236$ & $+1.236$ \\
 
 \lead{Both are correct.} Quote either, but say which you chose. Solution A uses the shorter stubs here, which is the practical pick: less line at high VSWR means lower loss and wider bandwidth.
 
-\figC{c2num_p12.png}{0.55\textwidth}
-{\footnotesize\color{sub} Problem 12 --- Smith chart construction. Arcs are numbered in the order of the steps above.}
+\begin{center}
+\includegraphics[width=0.495\textwidth]{figs/c2num_p12.png}\hfill
+\includegraphics[width=0.495\textwidth]{figs/c2num_p12b.png}
+\end{center}
+{\footnotesize\color{sub} Problem 12 --- Smith chart construction, left: solution A, the outer intersection of the $g = 0.33$ circle with the spacing circle; right: solution B, the inner intersection of the $g = 0.33$ circle with the spacing circle.}
+
+\figC{c2num_p12_line.png}{0.62\textwidth}
+{\footnotesize\color{sub} Problem 12 --- line diagram of the matched network: shunt stubs across the line, lengths from the answer above.}
+
+\figC{c2num_p12_coax.png}{0.69\textwidth}
+{\footnotesize\color{sub} Problem 12 --- coaxial realisation, longitudinal section: each stub a coax tee off the main line; a shorting plate closes each stub.}
 
 \penalty0\vspace{2pt}
 
@@ -861,10 +936,10 @@ Design a short-circuited double-stub tuner for a complex inductive load on a $78
 \lead{Step 5 --- stub 1: slide along the constant-$g$ circle}
 \begin{itemize}
   \item A shunt stub adds susceptance only, so the point can move \emph{only along its own $g = 0.456$ circle}.
-  \item Follow that circle to where it cuts the spacing circle. It cuts twice, giving the two standard solutions:
+  \item Follow that circle to where it cuts the spacing circle. It cuts twice, giving the two standard solutions (one chart each below):
   \begin{itemize}
-    \item \textbf{Solution A}: $y_a = 0.46 - j1.84$, so stub 1 must add $b_1 = -1.839 - (-0.408) = -1.431$.
-    \item \textbf{Solution B}: $y_a' = 0.46 - j0.16$, so $b_1' = +0.247$.
+    \item \textbf{Solution A} (outer intersection, nearer the rim): $y_a = 0.46 - j1.84$, so stub 1 must add $b_1 = -1.839 - (-0.408) = -1.431$.
+    \item \textbf{Solution B} (inner intersection, nearer the centre): $y_a' = 0.46 - j0.16$, so $b_1' = +0.247$.
   \end{itemize}
   \item Read $\ell_1$ off the rim, starting at the short-circuit point ($y=\infty$, the right of the chart): $\ell_1 = 0.097\lambda$ (A) and $0.289\lambda$ (B).
 \end{itemize}
@@ -896,8 +971,17 @@ Stub 2 susceptance $b_2$ & $-2.840$ & $+0.840$ \\
 
 \lead{Both are correct.} Quote either, but say which you chose. Solution A uses the shorter stubs here, which is the practical pick: less line at high VSWR means lower loss and wider bandwidth.
 
-\figC{c2num_p13.png}{0.55\textwidth}
-{\footnotesize\color{sub} Problem 13 --- Smith chart construction. Arcs are numbered in the order of the steps above.}
+\begin{center}
+\includegraphics[width=0.495\textwidth]{figs/c2num_p13.png}\hfill
+\includegraphics[width=0.495\textwidth]{figs/c2num_p13b.png}
+\end{center}
+{\footnotesize\color{sub} Problem 13 --- Smith chart construction, left: solution A, the outer intersection of the $g = 0.46$ circle with the spacing circle; right: solution B, the inner intersection of the $g = 0.46$ circle with the spacing circle.}
+
+\figC{c2num_p13_line.png}{0.62\textwidth}
+{\footnotesize\color{sub} Problem 13 --- line diagram of the matched network: shunt stubs across the line, lengths from the answer above.}
+
+\figC{c2num_p13_coax.png}{0.69\textwidth}
+{\footnotesize\color{sub} Problem 13 --- coaxial realisation, longitudinal section: each stub a coax tee off the main line; a shorting plate closes each stub.}
 
 \penalty0\vspace{2pt}
 
@@ -936,10 +1020,10 @@ A $75\,\Omega$ coaxial line feeds a load of normalised impedance $z_L = 0.4+j0.8
 \lead{Step 5 --- stub 1: slide along the constant-$g$ circle}
 \begin{itemize}
   \item A shunt stub adds susceptance only, so the point can move \emph{only along its own $g = 0.453$ circle}.
-  \item Follow that circle to where it cuts the spacing circle. It cuts twice, giving the two standard solutions:
+  \item Follow that circle to where it cuts the spacing circle. It cuts twice, giving the two standard solutions (one chart each below):
   \begin{itemize}
-    \item \textbf{Solution A}: $y_a = 0.45 - j1.84$, so stub 1 must add $b_1 = -1.837 - (-0.963) = -0.874$.
-    \item \textbf{Solution B}: $y_a' = 0.45 - j0.16$, so $b_1' = +0.800$.
+    \item \textbf{Solution A} (outer intersection, nearer the rim): $y_a = 0.45 - j1.84$, so stub 1 must add $b_1 = -1.837 - (-0.963) = -0.874$.
+    \item \textbf{Solution B} (inner intersection, nearer the centre): $y_a' = 0.45 - j0.16$, so $b_1' = +0.800$.
   \end{itemize}
   \item Read $\ell_1$ off the rim, starting at the short-circuit point ($y=\infty$, the right of the chart): $\ell_1 = 0.136\lambda$ (A) and $0.357\lambda$ (B).
 \end{itemize}
@@ -971,8 +1055,17 @@ Stub 2 susceptance $b_2$ & $-2.847$ & $+0.847$ \\
 
 \lead{Both are correct.} Quote either, but say which you chose. Solution A uses the shorter stubs here, which is the practical pick: less line at high VSWR means lower loss and wider bandwidth.
 
-\figC{c2num_p14.png}{0.55\textwidth}
-{\footnotesize\color{sub} Problem 14 --- Smith chart construction. Arcs are numbered in the order of the steps above.}
+\begin{center}
+\includegraphics[width=0.495\textwidth]{figs/c2num_p14.png}\hfill
+\includegraphics[width=0.495\textwidth]{figs/c2num_p14b.png}
+\end{center}
+{\footnotesize\color{sub} Problem 14 --- Smith chart construction, left: solution A, the outer intersection of the $g = 0.45$ circle with the spacing circle; right: solution B, the inner intersection of the $g = 0.45$ circle with the spacing circle.}
+
+\figC{c2num_p14_line.png}{0.62\textwidth}
+{\footnotesize\color{sub} Problem 14 --- line diagram of the matched network: shunt stubs across the line, lengths from the answer above.}
+
+\figC{c2num_p14_coax.png}{0.69\textwidth}
+{\footnotesize\color{sub} Problem 14 --- coaxial realisation, longitudinal section: each stub a coax tee off the main line; a shorting plate closes each stub.}
 
 \penalty0\vspace{2pt}
 
@@ -1012,10 +1105,10 @@ Design a double-stub shunt tuner using open stubs, $3\lambda/8$ apart, the first
 \lead{Step 5 --- stub 1: slide along the constant-$g$ circle}
 \begin{itemize}
   \item A shunt stub adds susceptance only, so the point can move \emph{only along its own $g = 0.268$ circle}.
-  \item Follow that circle to where it cuts the spacing circle. It cuts twice, giving the two standard solutions:
+  \item Follow that circle to where it cuts the spacing circle. It cuts twice, giving the two standard solutions (one chart each below):
   \begin{itemize}
-    \item \textbf{Solution A}: $y_a = 0.27 - j1.68$, so stub 1 must add $b_1 = -1.681 - (-0.208) = -1.473$.
-    \item \textbf{Solution B}: $y_a' = 0.27 - j0.32$, so $b_1' = -0.111$.
+    \item \textbf{Solution A} (outer intersection, nearer the rim): $y_a = 0.27 - j1.68$, so stub 1 must add $b_1 = -1.681 - (-0.208) = -1.473$.
+    \item \textbf{Solution B} (inner intersection, nearer the centre): $y_a' = 0.27 - j0.32$, so $b_1' = -0.111$.
   \end{itemize}
   \item Read $\ell_1$ off the rim, starting at the open-circuit point ($y=0$, the left of the chart): $\ell_1 = 0.345\lambda$ (A) and $0.482\lambda$ (B).
 \end{itemize}
@@ -1054,8 +1147,17 @@ Stub 2 susceptance $b_2$ & $-3.545$ & $+1.545$ \\
   \item Keeping the $e^{-j\theta}$ records the through-path electrical length; either form earns the marks if you say which you mean.
 \end{itemize}
 
-\figC{c2num_p15.png}{0.55\textwidth}
-{\footnotesize\color{sub} Problem 15 --- Smith chart construction. Arcs are numbered in the order of the steps above.}
+\begin{center}
+\includegraphics[width=0.495\textwidth]{figs/c2num_p15.png}\hfill
+\includegraphics[width=0.495\textwidth]{figs/c2num_p15b.png}
+\end{center}
+{\footnotesize\color{sub} Problem 15 --- Smith chart construction, left: solution A, the outer intersection of the $g = 0.27$ circle with the spacing circle; right: solution B, the inner intersection of the $g = 0.27$ circle with the spacing circle.}
+
+\figC{c2num_p15_line.png}{0.62\textwidth}
+{\footnotesize\color{sub} Problem 15 --- line diagram of the matched network: shunt stubs across the line, lengths from the answer above.}
+
+\figC{c2num_p15_coax.png}{0.92\textwidth}
+{\footnotesize\color{sub} Problem 15 --- coaxial realisation, longitudinal section: each stub a coax tee off the main line; each stub's centre conductor stops short of an open end.}
 
 \penalty0\vspace{2pt}
 
@@ -1094,10 +1196,10 @@ Design a short-circuited double-stub tuner on a $75\,\Omega$ coaxial line for $Z
 \lead{Step 5 --- stub 1: slide along the constant-$g$ circle}
 \begin{itemize}
   \item A shunt stub adds susceptance only, so the point can move \emph{only along its own $g = 0.311$ circle}.
-  \item Follow that circle to where it cuts the spacing circle. It cuts twice, giving the two standard solutions:
+  \item Follow that circle to where it cuts the spacing circle. It cuts twice, giving the two standard solutions (one chart each below):
   \begin{itemize}
-    \item \textbf{Solution A}: $y_a = 0.31 - j1.72$, so stub 1 must add $b_1 = -1.725 - (-0.342) = -1.382$.
-    \item \textbf{Solution B}: $y_a' = 0.31 - j0.28$, so $b_1' = +0.067$.
+    \item \textbf{Solution A} (outer intersection, nearer the rim): $y_a = 0.31 - j1.72$, so stub 1 must add $b_1 = -1.725 - (-0.342) = -1.382$.
+    \item \textbf{Solution B} (inner intersection, nearer the centre): $y_a' = 0.31 - j0.28$, so $b_1' = +0.067$.
   \end{itemize}
   \item Read $\ell_1$ off the rim, starting at the short-circuit point ($y=\infty$, the right of the chart): $\ell_1 = 0.100\lambda$ (A) and $0.261\lambda$ (B).
 \end{itemize}
@@ -1136,8 +1238,17 @@ Stub 2 susceptance $b_2$ & $-3.330$ & $+1.330$ \\
   \item Keeping the $e^{-j\theta}$ records the through-path electrical length; either form earns the marks if you say which you mean.
 \end{itemize}
 
-\figC{c2num_p16.png}{0.55\textwidth}
-{\footnotesize\color{sub} Problem 16 --- Smith chart construction. Arcs are numbered in the order of the steps above.}
+\begin{center}
+\includegraphics[width=0.495\textwidth]{figs/c2num_p16.png}\hfill
+\includegraphics[width=0.495\textwidth]{figs/c2num_p16b.png}
+\end{center}
+{\footnotesize\color{sub} Problem 16 --- Smith chart construction, left: solution A, the outer intersection of the $g = 0.31$ circle with the spacing circle; right: solution B, the inner intersection of the $g = 0.31$ circle with the spacing circle.}
+
+\figC{c2num_p16_line.png}{0.62\textwidth}
+{\footnotesize\color{sub} Problem 16 --- line diagram of the matched network: shunt stubs across the line, lengths from the answer above.}
+
+\figC{c2num_p16_coax.png}{0.69\textwidth}
+{\footnotesize\color{sub} Problem 16 --- coaxial realisation, longitudinal section: each stub a coax tee off the main line; a shorting plate closes each stub.}
 
 \penalty0\vspace{2pt}
 
@@ -1176,10 +1287,10 @@ A load presents $\Gamma_L = 0.64\angle 58^\circ$ on a $100\,\Omega$ line. Design
 \lead{Step 5 --- stub 1: slide along the constant-$g$ circle}
 \begin{itemize}
   \item A shunt stub adds susceptance only, so the point can move \emph{only along its own $g = 0.283$ circle}.
-  \item Follow that circle to where it cuts the spacing circle. It cuts twice, giving the two standard solutions:
+  \item Follow that circle to where it cuts the spacing circle. It cuts twice, giving the two standard solutions (one chart each below):
   \begin{itemize}
-    \item \textbf{Solution A}: $y_a = 0.28 - j1.70$, so stub 1 must add $b_1 = -1.697 - (-0.520) = -1.177$.
-    \item \textbf{Solution B}: $y_a' = 0.28 - j0.30$, so $b_1' = +0.217$.
+    \item \textbf{Solution A} (outer intersection, nearer the rim): $y_a = 0.28 - j1.70$, so stub 1 must add $b_1 = -1.697 - (-0.520) = -1.177$.
+    \item \textbf{Solution B} (inner intersection, nearer the centre): $y_a' = 0.28 - j0.30$, so $b_1' = +0.217$.
   \end{itemize}
   \item Read $\ell_1$ off the rim, starting at the short-circuit point ($y=\infty$, the right of the chart): $\ell_1 = 0.112\lambda$ (A) and $0.284\lambda$ (B).
 \end{itemize}
@@ -1218,8 +1329,17 @@ Stub 2 susceptance $b_2$ & $-3.464$ & $+1.464$ \\
   \item Keeping the $e^{-j\theta}$ records the through-path electrical length; either form earns the marks if you say which you mean.
 \end{itemize}
 
-\figC{c2num_p17.png}{0.55\textwidth}
-{\footnotesize\color{sub} Problem 17 --- Smith chart construction. Arcs are numbered in the order of the steps above.}
+\begin{center}
+\includegraphics[width=0.495\textwidth]{figs/c2num_p17.png}\hfill
+\includegraphics[width=0.495\textwidth]{figs/c2num_p17b.png}
+\end{center}
+{\footnotesize\color{sub} Problem 17 --- Smith chart construction, left: solution A, the outer intersection of the $g = 0.28$ circle with the spacing circle; right: solution B, the inner intersection of the $g = 0.28$ circle with the spacing circle.}
+
+\figC{c2num_p17_line.png}{0.62\textwidth}
+{\footnotesize\color{sub} Problem 17 --- line diagram of the matched network: shunt stubs across the line, lengths from the answer above.}
+
+\figC{c2num_p17_coax.png}{0.69\textwidth}
+{\footnotesize\color{sub} Problem 17 --- coaxial realisation, longitudinal section: each stub a coax tee off the main line; a shorting plate closes each stub.}
 
 \penalty0\vspace{2pt}
 
@@ -1259,10 +1379,10 @@ A $50\,\Omega$ lossless line feeds a load of admittance $0.00813+j0.0065\,\mho$.
 \lead{Step 5 --- stub 1: slide along the constant-$g$ circle}
 \begin{itemize}
   \item A shunt stub adds susceptance only, so the point can move \emph{only along its own $g = 0.425$ circle}.
-  \item Follow that circle to where it cuts the spacing circle. It cuts twice, giving the two standard solutions:
+  \item Follow that circle to where it cuts the spacing circle. It cuts twice, giving the two standard solutions (one chart each below):
   \begin{itemize}
-    \item \textbf{Solution A}: $y_a = 0.43 - j1.82$, so stub 1 must add $b_1 = -1.818 - (0.385) = -2.203$.
-    \item \textbf{Solution B}: $y_a' = 0.43 - j0.18$, so $b_1' = -0.567$.
+    \item \textbf{Solution A} (outer intersection, nearer the rim): $y_a = 0.43 - j1.82$, so stub 1 must add $b_1 = -1.818 - (0.385) = -2.203$.
+    \item \textbf{Solution B} (inner intersection, nearer the centre): $y_a' = 0.43 - j0.18$, so $b_1' = -0.567$.
   \end{itemize}
   \item Read $\ell_1$ off the rim, starting at the short-circuit point ($y=\infty$, the right of the chart): $\ell_1 = 0.068\lambda$ (A) and $0.168\lambda$ (B).
 \end{itemize}
@@ -1301,8 +1421,17 @@ Stub 2 susceptance $b_2$ & $-2.925$ & $+0.925$ \\
   \item Keeping the $e^{-j\theta}$ records the through-path electrical length; either form earns the marks if you say which you mean.
 \end{itemize}
 
-\figC{c2num_p18.png}{0.55\textwidth}
-{\footnotesize\color{sub} Problem 18 --- Smith chart construction. Arcs are numbered in the order of the steps above.}
+\begin{center}
+\includegraphics[width=0.495\textwidth]{figs/c2num_p18.png}\hfill
+\includegraphics[width=0.495\textwidth]{figs/c2num_p18b.png}
+\end{center}
+{\footnotesize\color{sub} Problem 18 --- Smith chart construction, left: solution A, the outer intersection of the $g = 0.43$ circle with the spacing circle; right: solution B, the inner intersection of the $g = 0.43$ circle with the spacing circle.}
+
+\figC{c2num_p18_line.png}{0.62\textwidth}
+{\footnotesize\color{sub} Problem 18 --- line diagram of the matched network: shunt stubs across the line, lengths from the answer above.}
+
+\figC{c2num_p18_coax.png}{0.70\textwidth}
+{\footnotesize\color{sub} Problem 18 --- coaxial realisation, longitudinal section: each stub a coax tee off the main line; a shorting plate closes each stub.}
 
 \penalty0\vspace{2pt}
 
@@ -1341,10 +1470,10 @@ A broadband microstrip antenna has load reflection coefficient $0.33\angle 66^\c
 \lead{Step 5 --- stub 1: slide along the constant-$g$ circle}
 \begin{itemize}
   \item A shunt stub adds susceptance only, so the point can move \emph{only along its own $g = 0.647$ circle}.
-  \item Follow that circle to where it cuts the spacing circle. It cuts twice, giving the two standard solutions:
+  \item Follow that circle to where it cuts the spacing circle. It cuts twice, giving the two standard solutions (one chart each below):
   \begin{itemize}
-    \item \textbf{Solution A}: $y_a = 0.65 - j1.94$, so stub 1 must add $b_1 = -1.936 - (-0.438) = -1.498$.
-    \item \textbf{Solution B}: $y_a' = 0.65 - j0.06$, so $b_1' = +0.373$.
+    \item \textbf{Solution A} (outer intersection, nearer the rim): $y_a = 0.65 - j1.94$, so stub 1 must add $b_1 = -1.936 - (-0.438) = -1.498$.
+    \item \textbf{Solution B} (inner intersection, nearer the centre): $y_a' = 0.65 - j0.06$, so $b_1' = +0.373$.
   \end{itemize}
   \item Read $\ell_1$ off the rim, starting at the open-circuit point ($y=0$, the left of the chart): $\ell_1 = 0.344\lambda$ (A) and $0.057\lambda$ (B).
 \end{itemize}
@@ -1390,8 +1519,14 @@ Stub 2 susceptance $b_2$ & $-2.446$ & $+0.446$ \\
   \item Shorten each open stub by the fringing allowance $\Delta\ell \approx 0.3h = 0.48\text{ mm}$.
 \end{itemize}
 
-\figC{c2num_p19.png}{0.55\textwidth}
-{\footnotesize\color{sub} Problem 19 --- Smith chart construction. Arcs are numbered in the order of the steps above.}
+\begin{center}
+\includegraphics[width=0.495\textwidth]{figs/c2num_p19.png}\hfill
+\includegraphics[width=0.495\textwidth]{figs/c2num_p19b.png}
+\end{center}
+{\footnotesize\color{sub} Problem 19 --- Smith chart construction, left: solution A, the outer intersection of the $g = 0.65$ circle with the spacing circle; right: solution B, the inner intersection of the $g = 0.65$ circle with the spacing circle.}
+
+\figC{c2num_p19_line.png}{0.62\textwidth}
+{\footnotesize\color{sub} Problem 19 --- line diagram of the matched network: shunt stubs across the line, lengths from the answer above.}
 
 \figC{c2num_p19_ms.png}{0.62\textwidth}
 {\footnotesize\color{sub} Problem 19 --- microstrip layout, top view: stubs as T-junctions off the main line, dimensions from the answer above.}
@@ -1434,10 +1569,10 @@ An antenna at 10 GHz presents $\Gamma = |0.45|\angle 60^\circ$ on a $100\,\Omega
 \lead{Step 5 --- stub 1: slide along the constant-$g$ circle}
 \begin{itemize}
   \item A shunt stub adds susceptance only, so the point can move \emph{only along its own $g = 0.483$ circle}.
-  \item Follow that circle to where it cuts the spacing circle. It cuts twice, giving the two standard solutions:
+  \item Follow that circle to where it cuts the spacing circle. It cuts twice, giving the two standard solutions (one chart each below):
   \begin{itemize}
-    \item \textbf{Solution A}: $y_a = 0.48 - j1.86$, so stub 1 must add $b_1 = -1.856 - (-0.472) = -1.384$.
-    \item \textbf{Solution B}: $y_a' = 0.48 - j0.14$, so $b_1' = +0.327$.
+    \item \textbf{Solution A} (outer intersection, nearer the rim): $y_a = 0.48 - j1.86$, so stub 1 must add $b_1 = -1.856 - (-0.472) = -1.384$.
+    \item \textbf{Solution B} (inner intersection, nearer the centre): $y_a' = 0.48 - j0.14$, so $b_1' = +0.327$.
   \end{itemize}
   \item Read $\ell_1$ off the rim, starting at the short-circuit point ($y=\infty$, the right of the chart): $\ell_1 = 0.100\lambda$ (A) and $0.300\lambda$ (B).
 \end{itemize}
@@ -1488,8 +1623,14 @@ Stub 2 susceptance $b_2$ & $-2.773$ & $+0.773$ \\
   \item Shorten each open stub by the fringing allowance $\Delta\ell \approx 0.3h = 0.48\text{ mm}$.
 \end{itemize}
 
-\figC{c2num_p20.png}{0.55\textwidth}
-{\footnotesize\color{sub} Problem 20 --- Smith chart construction. Arcs are numbered in the order of the steps above.}
+\begin{center}
+\includegraphics[width=0.495\textwidth]{figs/c2num_p20.png}\hfill
+\includegraphics[width=0.495\textwidth]{figs/c2num_p20b.png}
+\end{center}
+{\footnotesize\color{sub} Problem 20 --- Smith chart construction, left: solution A, the outer intersection of the $g = 0.48$ circle with the spacing circle; right: solution B, the inner intersection of the $g = 0.48$ circle with the spacing circle.}
+
+\figC{c2num_p20_line.png}{0.62\textwidth}
+{\footnotesize\color{sub} Problem 20 --- line diagram of the matched network: shunt stubs across the line, lengths from the answer above.}
 
 \figC{c2num_p20_ms.png}{0.62\textwidth}
 {\footnotesize\color{sub} Problem 20 --- microstrip layout, top view: stubs as T-junctions off the main line, dimensions from the answer above.}
@@ -1531,10 +1672,10 @@ Design a double-stub tuner ($3\lambda/8$ spacing) for $Z_L = 110+j110\,\Omega$ o
 \lead{Step 5 --- stub 1: slide along the constant-$g$ circle}
 \begin{itemize}
   \item A shunt stub adds susceptance only, so the point can move \emph{only along its own $g = 0.455$ circle}.
-  \item Follow that circle to where it cuts the spacing circle. It cuts twice, giving the two standard solutions:
+  \item Follow that circle to where it cuts the spacing circle. It cuts twice, giving the two standard solutions (one chart each below):
   \begin{itemize}
-    \item \textbf{Solution A}: $y_a = 0.45 - j1.84$, so stub 1 must add $b_1 = -1.838 - (-0.455) = -1.384$.
-    \item \textbf{Solution B}: $y_a' = 0.45 - j0.16$, so $b_1' = +0.293$.
+    \item \textbf{Solution A} (outer intersection, nearer the rim): $y_a = 0.45 - j1.84$, so stub 1 must add $b_1 = -1.838 - (-0.455) = -1.384$.
+    \item \textbf{Solution B} (inner intersection, nearer the centre): $y_a' = 0.45 - j0.16$, so $b_1' = +0.293$.
   \end{itemize}
   \item Read $\ell_1$ off the rim, starting at the short-circuit point ($y=\infty$, the right of the chart): $\ell_1 = 0.100\lambda$ (A) and $0.295\lambda$ (B).
 \end{itemize}
@@ -1566,8 +1707,17 @@ Stub 2 susceptance $b_2$ & $-2.844$ & $+0.844$ \\
 
 \lead{Both are correct.} Quote either, but say which you chose. Solution A uses the shorter stubs here, which is the practical pick: less line at high VSWR means lower loss and wider bandwidth.
 
-\figC{c2num_p21.png}{0.55\textwidth}
-{\footnotesize\color{sub} Problem 21 --- Smith chart construction. Arcs are numbered in the order of the steps above.}
+\begin{center}
+\includegraphics[width=0.495\textwidth]{figs/c2num_p21.png}\hfill
+\includegraphics[width=0.495\textwidth]{figs/c2num_p21b.png}
+\end{center}
+{\footnotesize\color{sub} Problem 21 --- Smith chart construction, left: solution A, the outer intersection of the $g = 0.45$ circle with the spacing circle; right: solution B, the inner intersection of the $g = 0.45$ circle with the spacing circle.}
+
+\figC{c2num_p21_line.png}{0.62\textwidth}
+{\footnotesize\color{sub} Problem 21 --- line diagram of the matched network: shunt stubs across the line, lengths from the answer above.}
+
+\figC{c2num_p21_coax.png}{0.69\textwidth}
+{\footnotesize\color{sub} Problem 21 --- coaxial realisation, longitudinal section: each stub a coax tee off the main line; a shorting plate closes each stub.}
 
 \penalty0\vspace{2pt}
 
@@ -1606,10 +1756,10 @@ Explain the different impedance matching techniques and give the resulting S-mat
 \lead{Step 5 --- stub 1: slide along the constant-$g$ circle}
 \begin{itemize}
   \item A shunt stub adds susceptance only, so the point can move \emph{only along its own $g = 0.400$ circle}.
-  \item Follow that circle to where it cuts the spacing circle. It cuts twice, giving the two standard solutions:
+  \item Follow that circle to where it cuts the spacing circle. It cuts twice, giving the two standard solutions (one chart each below):
   \begin{itemize}
-    \item \textbf{Solution A}: $y_a = 0.40 - j1.80$, so stub 1 must add $b_1 = -1.800 - (-0.200) = -1.600$.
-    \item \textbf{Solution B}: $y_a' = 0.40 - j0.20$, so $b_1' = +0.000$.
+    \item \textbf{Solution A} (outer intersection, nearer the rim): $y_a = 0.40 - j1.80$, so stub 1 must add $b_1 = -1.800 - (-0.200) = -1.600$.
+    \item \textbf{Solution B} (inner intersection, nearer the centre): $y_a' = 0.40 - j0.20$, so $b_1' = +0.000$.
   \end{itemize}
   \item Read $\ell_1$ off the rim, starting at the short-circuit point ($y=\infty$, the right of the chart): $\ell_1 = 0.089\lambda$ (A) and $0.250\lambda$ (B).
 \end{itemize}
@@ -1649,8 +1799,17 @@ Stub 2 susceptance $b_2$ & $-3.000$ & $+1.000$ \\
 \end{itemize}
 \lead{Theory half} The comparison of matching techniques and the advantages of double-stub over single-stub tuning are in $\S$2.5; the design steps and the forbidden region are in $\S$2.7. The worked example above supplies the ``+Eg'' the paper asks for.
 
-\figC{c2num_p22.png}{0.55\textwidth}
-{\footnotesize\color{sub} Problem 22 --- Smith chart construction. Arcs are numbered in the order of the steps above.}
+\begin{center}
+\includegraphics[width=0.495\textwidth]{figs/c2num_p22.png}\hfill
+\includegraphics[width=0.495\textwidth]{figs/c2num_p22b.png}
+\end{center}
+{\footnotesize\color{sub} Problem 22 --- Smith chart construction, left: solution A, the outer intersection of the $g = 0.40$ circle with the spacing circle; right: solution B, the inner intersection of the $g = 0.40$ circle with the spacing circle.}
+
+\figC{c2num_p22_line.png}{0.62\textwidth}
+{\footnotesize\color{sub} Problem 22 --- line diagram of the matched network: shunt stubs across the line, lengths from the answer above.}
+
+\figC{c2num_p22_coax.png}{0.69\textwidth}
+{\footnotesize\color{sub} Problem 22 --- coaxial realisation, longitudinal section: each stub a coax tee off the main line; a shorting plate closes each stub.}
 
 \penalty0\vspace{2pt}
 
@@ -1689,10 +1848,10 @@ Sketch a double-stub perfectly matched network using microstrip and prepare its 
 \lead{Step 5 --- stub 1: slide along the constant-$g$ circle}
 \begin{itemize}
   \item A shunt stub adds susceptance only, so the point can move \emph{only along its own $g = 0.562$ circle}.
-  \item Follow that circle to where it cuts the spacing circle. It cuts twice, giving the two standard solutions:
+  \item Follow that circle to where it cuts the spacing circle. It cuts twice, giving the two standard solutions (one chart each below):
   \begin{itemize}
-    \item \textbf{Solution A}: $y_a = 0.56 - j1.90$, so stub 1 must add $b_1 = -1.899 - (0.899) = -2.798$.
-    \item \textbf{Solution B}: $y_a' = 0.56 - j0.10$, so $b_1' = -1.000$.
+    \item \textbf{Solution A} (outer intersection, nearer the rim): $y_a = 0.56 - j1.90$, so stub 1 must add $b_1 = -1.899 - (0.899) = -2.798$.
+    \item \textbf{Solution B} (inner intersection, nearer the centre): $y_a' = 0.56 - j0.10$, so $b_1' = -1.000$.
   \end{itemize}
   \item Read $\ell_1$ off the rim, starting at the open-circuit point ($y=0$, the left of the chart): $\ell_1 = 0.305\lambda$ (A) and $0.375\lambda$ (B).
 \end{itemize}
@@ -1739,8 +1898,14 @@ Stub 2 susceptance $b_2$ & $-2.600$ & $+0.600$ \\
 \end{itemize}
 \lead{Theory half} The comparison of matching techniques and the advantages of double-stub over single-stub tuning are in $\S$2.5; the design steps and the forbidden region are in $\S$2.7. The worked example above supplies the ``+Eg'' the paper asks for.
 
-\figC{c2num_p23.png}{0.55\textwidth}
-{\footnotesize\color{sub} Problem 23 --- Smith chart construction. Arcs are numbered in the order of the steps above.}
+\begin{center}
+\includegraphics[width=0.495\textwidth]{figs/c2num_p23.png}\hfill
+\includegraphics[width=0.495\textwidth]{figs/c2num_p23b.png}
+\end{center}
+{\footnotesize\color{sub} Problem 23 --- Smith chart construction, left: solution A, the outer intersection of the $g = 0.56$ circle with the spacing circle; right: solution B, the inner intersection of the $g = 0.56$ circle with the spacing circle.}
+
+\figC{c2num_p23_line.png}{0.62\textwidth}
+{\footnotesize\color{sub} Problem 23 --- line diagram of the matched network: shunt stubs across the line, lengths from the answer above.}
 
 \figC{c2num_p23_ms.png}{0.62\textwidth}
 {\footnotesize\color{sub} Problem 23 --- microstrip layout, top view: stubs as T-junctions off the main line, dimensions from the answer above.}
@@ -1782,10 +1947,10 @@ State the advantages of double-stub matching over single-stub matching, and give
 \lead{Step 5 --- stub 1: slide along the constant-$g$ circle}
 \begin{itemize}
   \item A shunt stub adds susceptance only, so the point can move \emph{only along its own $g = 0.600$ circle}.
-  \item Follow that circle to where it cuts the spacing circle. It cuts twice, giving the two standard solutions:
+  \item Follow that circle to where it cuts the spacing circle. It cuts twice, giving the two standard solutions (one chart each below):
   \begin{itemize}
-    \item \textbf{Solution A}: $y_a = 0.60 - j1.92$, so stub 1 must add $b_1 = -1.917 - (-0.800) = -1.117$.
-    \item \textbf{Solution B}: $y_a' = 0.60 - j0.08$, so $b_1' = +0.717$.
+    \item \textbf{Solution A} (outer intersection, nearer the rim): $y_a = 0.60 - j1.92$, so stub 1 must add $b_1 = -1.917 - (-0.800) = -1.117$.
+    \item \textbf{Solution B} (inner intersection, nearer the centre): $y_a' = 0.60 - j0.08$, so $b_1' = +0.717$.
   \end{itemize}
   \item Read $\ell_1$ off the rim, starting at the short-circuit point ($y=\infty$, the right of the chart): $\ell_1 = 0.116\lambda$ (A) and $0.349\lambda$ (B).
 \end{itemize}
@@ -1818,8 +1983,17 @@ Stub 2 susceptance $b_2$ & $-2.528$ & $+0.528$ \\
 \lead{Both are correct.} Quote either, but say which you chose. Solution A uses the shorter stubs here, which is the practical pick: less line at high VSWR means lower loss and wider bandwidth.
 \lead{Theory half} The comparison of matching techniques and the advantages of double-stub over single-stub tuning are in $\S$2.5; the design steps and the forbidden region are in $\S$2.7. The worked example above supplies the ``+Eg'' the paper asks for.
 
-\figC{c2num_p24.png}{0.55\textwidth}
-{\footnotesize\color{sub} Problem 24 --- Smith chart construction. Arcs are numbered in the order of the steps above.}
+\begin{center}
+\includegraphics[width=0.495\textwidth]{figs/c2num_p24.png}\hfill
+\includegraphics[width=0.495\textwidth]{figs/c2num_p24b.png}
+\end{center}
+{\footnotesize\color{sub} Problem 24 --- Smith chart construction, left: solution A, the outer intersection of the $g = 0.60$ circle with the spacing circle; right: solution B, the inner intersection of the $g = 0.60$ circle with the spacing circle.}
+
+\figC{c2num_p24_line.png}{0.62\textwidth}
+{\footnotesize\color{sub} Problem 24 --- line diagram of the matched network: shunt stubs across the line, lengths from the answer above.}
+
+\figC{c2num_p24_coax.png}{0.69\textwidth}
+{\footnotesize\color{sub} Problem 24 --- coaxial realisation, longitudinal section: each stub a coax tee off the main line; a shorting plate closes each stub.}
 
 \penalty0\vspace{2pt}
 
