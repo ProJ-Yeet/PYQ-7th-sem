@@ -1,0 +1,150 @@
+%=======================================================================
+%  FORMULA SHEET: WHAT THE PAPER GIVES AND WHAT IT DOES NOT
+%  Master-num only, first page after the title. Built from the 15
+%  supplied-formula sheets that survive in the two scans, read from the
+%  rendered pages 2026-09-26; the per-paper table is in
+%  RF-Microwave\ocr\EX-716_EX-752_OCR.md under "Supplied formulas".
+%  House style of this subject: no em dashes.
+%=======================================================================
+\phantomsection
+\addcontentsline{toc}{section}{Formula Sheet: Given, Sometimes, Never}
+{\LARGE\bfseries\color{acc} Formula Sheet: Given, Sometimes, Never}
+\par\vspace{2pt}
+{\color{sub}\footnotesize Read from the \textbf{15 supplied-formula sheets} that survive in
+the scans (9 of the 24 papers have none scanned, though every rubric says one is attached).
+\mk{The sheet only ever covers the amplifier question.} Stub matching, waveguides, S-matrix
+tests, radiation zones, filters and measurements get a blank Smith chart and nothing else.}
+
+\hr
+
+\T{A. Usually given \mk{(on 14 or 15 of 15 sheets): know what each means, no need to memorise}}
+
+\vspace{1pt}
+{\small
+\begin{tabularx}{\textwidth}{@{}X L{2.9cm}@{}}
+\toprule
+\hrow \thead{Formula} & \thead{Sheets} \\
+$\Delta = S_{11}S_{22} - S_{12}S_{21}$ & 14/15 (not 76 Bh) \\
+$K = \dfrac{1 - |S_{11}|^2 - |S_{22}|^2 + |\Delta|^2}{2|S_{12}||S_{21}|}$ & 15/15 \\
+$\mu = \dfrac{1 - |S_{11}|^2}{|S_{22} - \Delta S_{11}^*| + |S_{12}S_{21}|}$ & 14/15 (not 79 Ch) \\
+$\Gamma_S = \dfrac{B_1 \pm \sqrt{B_1^2 - 4|C_1|^2}}{2C_1}$, \ $B_1 = 1 + |S_{11}|^2 - |S_{22}|^2 - |\Delta|^2$, \ $C_1 = S_{11} - \Delta S_{22}^*$ & 15/15 \\
+$G_{T,max} = \dfrac{1}{1-|\Gamma_S|^2}\,|S_{21}|^2\,\dfrac{1-|\Gamma_L|^2}{|1-S_{22}\Gamma_L|^2}$ & 14/15 (not 75 Bh) \\
+$C_L = \dfrac{(S_{22} - \Delta S_{11}^*)^*}{|S_{22}|^2 - |\Delta|^2}$, \ $R_L = \dfrac{|S_{12}S_{21}|}{|S_{22}|^2 - |\Delta|^2}$ & 14/15 (not 79 Ch) \\
+\bottomrule
+\end{tabularx}}
+
+\T{B. Sometimes given, sometimes not \mk{(memorise these)}}
+
+\vspace{1pt}
+{\small
+\begin{tabularx}{\textwidth}{@{}X L{1.4cm} L{3.6cm}@{}}
+\toprule
+\hrow \thead{Formula} & \thead{Sheets} & \thead{Missing from} \\
+$\boxed{G_{TU,max} = \dfrac{|S_{21}|^2}{(1-|S_{11}|^2)(1-|S_{22}|^2)}}$ & \mk{5/15} & Printed only on 80 Ba, 80 Bh, 79 Bh, 74 Ma, 75 Bh; gone from the two newest BEI sheets (81 Ba, 82 Bh) \\
+$\Gamma_L = \dfrac{B_2 \pm \sqrt{B_2^2 - 4|C_2|^2}}{2C_2}$, \ $B_2 = 1 + |S_{22}|^2 - |S_{11}|^2 - |\Delta|^2$, \ $C_2 = S_{22} - \Delta S_{11}^*$ & 11/15 & 79 Ch, 76 Bh, 75 Bh; struck through on 73 Ma \\
+$C_S = \dfrac{(S_{11} - \Delta S_{22}^*)^*}{|S_{11}|^2 - |\Delta|^2}$, \ $R_S = \dfrac{|S_{12}S_{21}|}{|S_{11}|^2 - |\Delta|^2}$ & 11/15 & 79 Ch, 76 Bh, 75 Bh; $R_S$ struck through on 73 Ma \\
+Unilateral design points $\Gamma_S = S_{11}^*$, $\Gamma_L = S_{22}^*$ & \mk{1/15} & Everywhere; the one sheet (73 Ma) has it struck through \\
+General $G_T = \dfrac{1-|\Gamma_S|^2}{|1-\Gamma_{in}\Gamma_S|^2}\,|S_{21}|^2\,\dfrac{1-|\Gamma_L|^2}{|1-S_{22}\Gamma_L|^2}$ & 1/15 & Everywhere but 79 Ch \\
+\bottomrule
+\end{tabularx}}
+
+{\color{sub}\footnotesize Unilateral gain is asked in almost every amplifier question
+(22/24 papers), so \mk{$G_{TU,max}$ is the single most important line on this page.}}
+
+\T{C. Never given \mk{(memorise all of these)}}
+
+\lead{Amplifier: what the sheet leaves out \yr{(Ch 6, 22/24 papers)}}
+\begin{itemize}[leftmargin=12pt, itemsep=0.5pt, topsep=1pt]
+  \item \textbf{Verdict}: unconditionally stable iff $K > 1$ \textbf{and} $|\Delta| < 1$,
+    or equivalently $\mu > 1$. If $K < 1$ say so; do not quote $G_{T,max}$.
+  \item \textbf{Root sign} in $\Gamma_S$, $\Gamma_L$: \textbf{minus when $B > 0$}, plus when
+    $B < 0$, so that $|\Gamma| < 1$.
+  \item Unilateral split: $G_S = \dfrac{1}{1-|S_{11}|^2}$, $G_0 = |S_{21}|^2$,
+    $G_L = \dfrac{1}{1-|S_{22}|^2}$; dB $= 10\log G$.
+  \item Given terminations (76 Bh: $Z_S = 25\,\Omega$, $Z_L = 40\,\Omega$):
+    $\Gamma_S = \dfrac{Z_S - Z_0}{Z_S + Z_0}$, then
+    $G_S = \dfrac{1-|\Gamma_S|^2}{|1-S_{11}\Gamma_S|^2}$, same form for $G_L$.
+  \item $\Gamma_{in} = S_{11} + \dfrac{S_{12}S_{21}\Gamma_L}{1 - S_{22}\Gamma_L}$,
+    $\Gamma_{out} = S_{22} + \dfrac{S_{12}S_{21}\Gamma_S}{1 - S_{11}\Gamma_S}$
+    (74 Bh asks for both).
+  \item Figure of merit $U = \dfrac{|S_{11}||S_{12}||S_{21}||S_{22}|}{(1-|S_{11}|^2)(1-|S_{22}|^2)}$,
+    bound $\dfrac{1}{(1+U)^2} < \dfrac{G_T}{G_{TU}} < \dfrac{1}{(1-U)^2}$: the ``compare
+    unilateral and bilateral'' sentence.
+  \item Check: $G_{max} = \left|\dfrac{S_{21}}{S_{12}}\right|\left(K - \sqrt{K^2-1}\right)$;
+    if $K < 1$ give $\mathrm{MSG} = |S_{21}|/|S_{12}|$.
+  \item Circles (71 Bh prints $C$, $R$ directly): $\big||C| - R\big| > 1$ means the circle
+    misses the chart, that port unconditionally stable; otherwise conditional, and the chart
+    centre is stable when $|S_{11}| < 1$ (or $|S_{22}| < 1$).
+\end{itemize}
+
+\lead{Stub matching \yr{(Ch 2; double stub 17/24, single stub 6/24; only the chart is given)}}
+\begin{itemize}[leftmargin=12pt, itemsep=0.5pt, topsep=1pt]
+  \item $\Gamma = \dfrac{Z_L - Z_0}{Z_L + Z_0}$, $z = Z/Z_0$, $y = 1/z$. Given $\Gamma$
+    (82 Bh, 82 Ba, 81 Ba, 74 Bh): $z = \dfrac{1+\Gamma}{1-\Gamma}$. Given $Y$ (79 Bh):
+    $y = YZ_0$.
+  \item $\mathrm{VSWR} = \dfrac{1+|\Gamma|}{1-|\Gamma|}$,
+    $Z_{in} = Z_0\dfrac{Z_L + jZ_0\tan\beta d}{Z_0 + jZ_L\tan\beta d}$, $\beta = 2\pi/\lambda$,
+    $\lambda = c/f$ (physical lengths at 3 or 10 GHz).
+  \item Stub admittance: short $y = -j\cot\beta\ell$, open $y = +j\tan\beta\ell$.
+    $\lambda/2$ repeats the load; $\lambda/4$ gives $Z_0^2/Z_L$.
+  \item Double-stub forbidden region $g > 1/\sin^2\beta d$; for $3\lambda/8$ spacing
+    \mk{$g > 2$}.
+  \item Network S-matrix (about 10 papers): before, $S_{11} = \Gamma_L$; after,
+    $S_{11} = S_{22} = 0$, $S_{12} = S_{21} = e^{-j\theta}$.
+\end{itemize}
+
+\lead{S-matrix tests and devices \yr{(Ch 3 and Ch 4)}}
+\begin{itemize}[leftmargin=12pt, itemsep=0.5pt, topsep=1pt]
+  \item Reciprocal $[S] = [S]^T$; lossless $[S]^\dagger[S] = [I]$ (unit columns, distinct
+    columns orthogonal).
+  \item $RL = -20\log|S_{11}|$, $IL = -20\log|S_{21}|$, $P_{ref} = |S_{11}|^2P_{in}$
+    (79 Bh, 72 Ash).
+  \item Magic tee $\dfrac{1}{\sqrt2}\begin{bmatrix}0&0&1&1\\0&0&1&-1\\1&1&0&0\\1&-1&0&0\end{bmatrix}$:
+    E-arm column $+,-$; H-arm column $+,+$.
+  \item Directional coupler: $C = 10\log P_1/P_4$, $D = 10\log P_4/P_3$,
+    $I = 10\log P_1/P_3$, $\boxed{I = C + D}$.
+\end{itemize}
+
+\lead{Waveguides \yr{(Ch 4, 14/24 papers)}}
+\begin{itemize}[leftmargin=12pt, itemsep=0.5pt, topsep=1pt]
+  \item $f_c = \dfrac{c}{2}\sqrt{(m/a)^2 + (n/b)^2}$; TE$_{10}$: $f_c = c/2a$, $\lambda_c = 2a$.
+  \item $\lambda_g = \dfrac{\lambda}{\sqrt{1-(f_c/f)^2}}$,
+    $\dfrac{1}{\lambda^2} = \dfrac{1}{\lambda_g^2} + \dfrac{1}{\lambda_c^2}$.
+  \item $v_p = \dfrac{c}{\sqrt{1-(f_c/f)^2}}$, $v_g = c\sqrt{1-(f_c/f)^2}$, $v_pv_g = c^2$.
+  \item $Z_{TE} = \dfrac{\eta}{\sqrt{1-(f_c/f)^2}}$, $Z_{TM} = \eta\sqrt{1-(f_c/f)^2}$,
+    $\eta = 377\,\Omega$.
+  \item TM$_{m0}$, TM$_{0n}$ do not exist, so TM$_{11}$ is the lowest TM. Circular:
+    $f_c = \dfrac{p\,c}{2\pi a}$, $p'_{11} = 1.841$ (TE$_{11}$, dominant),
+    $p_{01} = 2.405$ (TM$_{01}$).
+\end{itemize}
+
+\lead{Radiation hazards \yr{(Ch 7, 5/24 with numbers)}}
+\begin{itemize}[leftmargin=12pt, itemsep=0.5pt, topsep=1pt]
+  \item Zones $R_1 = 0.62\sqrt{D^3/\lambda}$, $R_2 = 2D^2/\lambda$, \textbf{valid only for
+    $D > \lambda$}; small antenna: $\lambda/2\pi$ and $2\lambda$.
+  \item $S = \dfrac{PG}{4\pi R^2}$; $S = E^2/377$ in the far field only;
+    $\mathrm{SAR} = \sigma E^2/\rho$.
+  \item Limits: 4 W/kg whole body, 0.4 workers, 0.08 public; ICNIRP public $f/200$ W/m$^2$
+    ($f$ in MHz, 400 MHz to 2 GHz).
+\end{itemize}
+
+\lead{Filters \yr{(Ch 6, 13/24, asked as design steps)}}
+\begin{itemize}[leftmargin=12pt, itemsep=0.5pt, topsep=1pt]
+  \item Butterworth $P_{LR} = 1 + k^2(\omega/\omega_c)^{2N}$,
+    $g_k = 2\sin\dfrac{(2k-1)\pi}{2N}$; $N$ from the attenuation requirement.
+  \item Scale $L' = R_0L/\omega_c$, $C' = C/(R_0\omega_c)$; LPF to HPF
+    $L' = R_0/(\omega_cC)$, $C' = 1/(R_0\omega_cL)$.
+  \item Microstrip: short high-$Z$ line $=$ series $L$, short low-$Z$ line $=$ shunt $C$.
+\end{itemize}
+
+\lead{Measurements \yr{(Ch 8, theory questions; formulas worth quoting)}}
+\begin{itemize}[leftmargin=12pt, itemsep=0.5pt, topsep=1pt]
+  \item Double minimum, VSWR $> 10$: $S \approx \dfrac{\lambda_g}{\pi\Delta x}$.
+    Static calorimeter $P = \dfrac{4.187\,mC_pT}{t}$.
+  \item Bolometer double bridge $P = \dfrac{E_1^2 - E_2^2}{4R}$;
+    $P_{av} = P_{peak}\times$ duty.
+\end{itemize}
+
+\vspace{3pt}
+{\color{sub}\footnotesize \mk{Short on time?} Section C, then from B: $G_{TU,max}$,
+$\Gamma_L$ with $B_2$ and $C_2$, and $C_S$, $R_S$. None of them is guaranteed on the sheet.}

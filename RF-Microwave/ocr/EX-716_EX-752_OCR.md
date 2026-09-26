@@ -116,9 +116,9 @@ Union of the scans = the 24 papers below.
    blank chart. Recorded as printed.
 5. **Supplied formulas.** Every EX716 and most EX752 papers attach a formula sheet. The set is
    stable across years; the fullest version (2071 Bhadra, 2070 Bhadra) is
-   K, Δ, μ, Γ_s, Γ_L, B₁, B₂, C₁, C₂, C_L, C_S, R_L, R_S and G_Tmax. The BEI sheets from
-   2079 onward carry only Δ, K, μ and the Γ_s root. Transcribed once under "Supplied formulas"
-   at the foot of this file rather than repeated per paper.
+   K, Δ, μ, Γ_s, Γ_L, B₁, B₂, C₁, C₂, C_L, C_S, R_L, R_S and G_Tmax. Transcribed once under
+   "Supplied formulas" at the foot of this file, with a per-paper table of which sheet
+   carries what (checked from the rendered sheets 2026-09-26).
 6. Rubric on every paper: "Candidates are required to give their answers in their own words as
    far as practicable. / Attempt All questions. / The figures in the margin indicate Full Marks.
    / Necessary formulas and Smith Charts are attached herewith. / Assume suitable data if
@@ -566,5 +566,21 @@ The full sheet, as printed sideways on 2071 Bhadra and 2070 Bhadra:
     R_S = |S₁₂S₂₁| / (|S₁₁|² − |Δ|²)
     G_Tmax = (1 − |Γ_S|²)/(|1 − S₁₁Γ_S|²) · |S₂₁|² · (1 − |Γ_L|²)/(|1 − S₂₂Γ_L|²)
 
-The BEI sheets from 2079 onward carry only Δ, K, μ and the Γ_s root.
-2076 Bhadra additionally prints GT_max in the (1 − |Γ_S|²) form and R_L, C_L.
+An earlier version of this file said the BEI sheets from 2079 onward carry only Δ, K, μ
+and the Γ_s root. That was wrong: every BEI sheet in the scans prints the full set.
+Per paper, read from the rendered sheets 2026-09-26:
+
+| Paper | Where | Carries |
+|-------|-------|---------|
+| 82 Bh, 81 Ba | new p2; old p6 | full set |
+| 80 Bh, 80 Ba, 79 Bh | old p4, p2, p8 | full set + unilateral G_TU,max |
+| 74 Ma | old p14 | full set + G_TU,max |
+| 74 Bh, 70 Ma, 69 Bh | old p12, p27; EG-785 p2 | full set |
+| 73 Ma | old p18 | full set, but Γ_L, B₂, C₂, R_L, R_S and a line "For unilateral mode S₁₂ = 0, Γ_S = S*₁₁ and Γ_L = S*₂₂" are struck through by pen on the scan |
+| 71 Bh, 70 Bh | new p22, p24 (sideways) | full set |
+| 79 Ch | new p10 (below questions) | K, Δ, Γ_S, B₁, C₁ and the general G_T written with Γ_in. No μ, Γ_L, circles |
+| 76 Bh | new p13 (below questions) | K, μ, C_L, R_L, Γ_S, B₁, C₁, G_Tmax. No Δ, Γ_L, C_S, R_S |
+| 75 Bh | old p10 | Δ (as a magnitude), K, μ, C_L, R_L, Γ_S, B₁, G_TU,max. No C₁, Γ_L, G_Tmax |
+
+No sheet survives in either scan for 82 Ba, 81 Bh, 80 Ch, 78 Ch, 77 Ch, 73 Bh, 72 Ma,
+72 Ash and 71 Ma, though every rubric says one is attached.
