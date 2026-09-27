@@ -15,6 +15,8 @@ FIGS = os.path.join(HERE, "figs")
 OM = os.path.join(HERE, "..", "..", "Notes", "O _ M.pdf")
 ADD1 = os.path.join(HERE, "..", "..", "Notes", "Additional",
                     "Chapter 1. Organization-and-management-introduction.pdf")
+ADD3 = os.path.join(HERE, "..", "..", "Notes", "Additional",
+                    "Chapter 3. motivation-leadership-entrepreneurship.pdf")
 DPI = 220
 WATERMARK = (225, 135)
 
@@ -41,6 +43,14 @@ SPECS = {
     "c1_models_ioe2.png": (ADD1, 7, None),                    # knowledge-oriented and goal-concentrated
     "c1_line_staff_adv.png": (ADD1, 16, (92, 62, 542, 351)),                # line and staff with advisory staff
     "c1_org_chart.png": (ADD1, 20, (72, 492, 534, 697)),      # organization chart with advisory committee
+    # ---- ch3 expansion (2026-09-27)
+    "c3_erg_table.png": (OM, 215, None),                      # ERG levels with descriptions and examples
+    "c3_herzberg_pair.png": (OM, 217, (10, 195, 705, 520)),   # animal avoiding pain vs human growing
+    "c3_vroom_high.png": (OM, 221, (60, 235, 672, 498)),      # high E, I, V -> high motivation
+    "c3_leadership_what.png": (OM, 224, (10, 90, 690, 495)),  # leading, influencing, commanding, guiding
+    "c3_mgr_leader_plan.png": (OM, 228, (0, 84, 700, 490)),   # manager vs leader in planning
+    "c3_boss_leader.png": (OM, 247, None),                    # a boss says "Go!", a leader "Let's go!"
+    "c3_approaches_ioe.png": (ADD3, 13, None),                # trait, behavioural, contingency, integrated
 }
 
 
