@@ -45,7 +45,7 @@ _fonts()
 
 
 def _wrap(s, n):
-    return "\n".join(textwrap.wrap(s, n)) if s else ""
+    return "\n".join(textwrap.wrap(s, n, break_long_words=False)) if s else ""
 
 
 def _box(ax, x, y, w, h, fc, ec, lw=1.0, r=0.06):
@@ -101,26 +101,36 @@ def flow(name, steps, width=3.3, horizontal=False, box_h=None, tone=0, numbered=
     n = len(steps)
     ec, fc = TONES[tone]
     if horizontal:
-        bw, gap = 1.0, 0.28
-        bh = box_h or 0.9
-        W = n * bw + (n - 1) * gap
-        H = bh + (0.35 if title else 0.1) + (0.3 if loop_back else 0)
-        fig, ax = _canvas(width, width * H / W, W, H)
-        y = bh / 2 + (0.3 if loop_back else 0.05)
-        for i, (h, b) in enumerate(steps):
+        # laid out in real inches so fonts and boxes stay in proportion
+        gap = 0.22
+        bw = (width - (n - 1) * gap) / n
+        cw_h = max(7, int(bw * 72 / (7.8 * 0.6)))       # chars per line, head
+        cw_b = max(9, int(bw * 72 / (6.6 * 0.58)))       # chars per line, body
+        heads = [_wrap(h, min(wrap or 99, cw_h)) for h, _ in steps]
+        bodies = [_wrap(b, cw_b) if b else "" for _, b in steps]
+        lh_h, lh_b = 7.8 * 1.18 / 72, 6.6 * 1.2 / 72
+        NL = chr(10)
+        bh = max(0.19 + (hd.count(NL) + 1) * lh_h + (bd.count(NL) + 1 if bd else 0) * lh_b
+                 + 0.1 for hd, bd in zip(heads, bodies))
+        top_pad = 0.22 if title else 0.03
+        bot_pad = 0.3 if loop_back else 0.03
+        W, H = width, bh + top_pad + bot_pad
+        fig, ax = _canvas(W, H, W, H)
+        y = bot_pad + bh / 2
+        for i in range(n):
             x = bw / 2 + i * (bw + gap)
-            _box(ax, x, y, bw, bh, fc, ec)
-            ax.add_patch(FancyBboxPatch((x - bw / 2, y + bh / 2 - 0.16), bw, 0.16,
-                                        boxstyle="round,pad=0,rounding_size=0.06",
+            _box(ax, x, y, bw, bh, fc, ec, r=0.05)
+            ax.add_patch(FancyBboxPatch((x - bw / 2, y + bh / 2 - 0.15), bw, 0.15,
+                                        boxstyle="round,pad=0,rounding_size=0.05",
                                         fc=ec, ec=ec, lw=1.0, zorder=2))
-            ax.text(x, y + bh / 2 - 0.08, str(i + 1) if numbered else "", ha="center",
-                    va="center", color="white", fontsize=7.5, fontweight="bold", zorder=3)
-            ax.text(x, y + bh / 2 - 0.22, _wrap(h, wrap or 16), ha="center", va="top",
-                    color=ec, fontsize=7.8, fontweight="bold", zorder=3, linespacing=1.05)
-            if b:
-                nl = _wrap(h, wrap or 16).count("\n")
-                ax.text(x, y + bh / 2 - 0.34 - 0.11 * nl, _wrap(b, 20), ha="center",
-                        va="top", color=INK, fontsize=6.6, zorder=3, linespacing=1.12)
+            ax.text(x, y + bh / 2 - 0.075, str(i + 1) if numbered else "", ha="center",
+                    va="center", color="white", fontsize=7.2, fontweight="bold", zorder=3)
+            ax.text(x, y + bh / 2 - 0.2, heads[i], ha="center", va="top", color=ec,
+                    fontsize=7.8, fontweight="bold", zorder=3, linespacing=1.05)
+            if bodies[i]:
+                yb = y + bh / 2 - 0.2 - (heads[i].count(NL) + 1) * lh_h - 0.03
+                ax.text(x, yb, bodies[i], ha="center", va="top", color=INK, fontsize=6.6,
+                        zorder=3, linespacing=1.12)
             if i < n - 1:
                 _arrow(ax, (x + bw / 2 + 0.02, y), (x + bw / 2 + gap - 0.02, y))
         if loop_back:
@@ -131,10 +141,10 @@ def flow(name, steps, width=3.3, horizontal=False, box_h=None, tone=0, numbered=
             ax.add_patch(FancyArrowPatch((xi, yb), (xj, yb), arrowstyle="-|>",
                                          mutation_scale=9, lw=1.0, color=MKC,
                                          connectionstyle="bar,fraction=-0.12", zorder=1))
-            ax.text((xi + xj) / 2, yb - 0.24, lab, ha="center", va="center", color=MKC,
+            ax.text((xi + xj) / 2, 0.06, lab, ha="center", va="center", color=MKC,
                     fontsize=6.8, fontweight="bold")
         if title:
-            ax.text(W / 2, H - 0.12, title, ha="center", va="center", color=SUB,
+            ax.text(W / 2, H - 0.1, title, ha="center", va="center", color=SUB,
                     fontsize=8, fontweight="bold")
     else:
         bw = 1.0
@@ -147,8 +157,9 @@ def flow(name, steps, width=3.3, horizontal=False, box_h=None, tone=0, numbered=
         top = H - (0.1 if title else 0.01)
         for i, (h, b) in enumerate(steps):
             y = top - bh / 2 - i * (bh + gap)
-            _box(ax, x, y, bw, bh, fc, ec)
-            ax.add_patch(Circle((x - bw / 2 + 0.09, y), 0.055, fc=ec, ec=ec, zorder=3))
+            _box(ax, x, y, bw, bh, fc, ec, r=min(0.06, bh * 0.35))
+            ax.add_patch(Circle((x - bw / 2 + 0.09, y), min(0.055, bh * 0.4), fc=ec, ec=ec,
+                                zorder=3))
             ax.text(x - bw / 2 + 0.09, y, str(i + 1) if numbered else "", ha="center",
                     va="center", color="white", fontsize=6.8, fontweight="bold", zorder=4)
             tx = x - bw / 2 + 0.18
@@ -237,8 +248,10 @@ def hub(name, center, spokes, width=3.3, tone=0, wrap=14, ring=1.0, box=(0.62, 0
     cx, cy = W / 2, H / 2
     ec, fc = TONES[tone]
     ax.add_patch(Circle((cx, cy), 0.36, fc=ec, ec=ec, zorder=3))
+    long_word = max(len(w) for w in center.split()) > 11
     ax.text(cx, cy, _wrap(center, 11), ha="center", va="center", color="white",
-            fontsize=fs + 0.6, fontweight="bold", zorder=4, linespacing=1.05)
+            fontsize=fs - 0.8 if long_word else fs + 0.6, fontweight="bold", zorder=4,
+            linespacing=1.05)
     for i, s in enumerate(spokes):
         a = math.pi / 2 - 2 * math.pi * i / n
         x, y = cx + R * math.cos(a), cy + R * 0.92 * math.sin(a)
