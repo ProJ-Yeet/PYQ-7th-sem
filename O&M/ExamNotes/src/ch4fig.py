@@ -129,3 +129,58 @@ K.fishbone("c4_college_fishbone.png", "Low pass rate and weak image", [
     ("Students", ["irregular attendance", "no mentoring", "weak feedback"]),
     ("Management", ["no MIS", "late results", "no QAA plan"]),
 ], width=6.9)
+
+# ------------------------------------------------------------ 4.6 sample report (cement plant)
+K.flow("c4_cem_process.png", [
+    ("Quarry", "limestone: drill, blast, haul 12 km"),
+    ("Crusher", "crush, stockpile, pre-blend"),
+    ("Raw mill", "limestone + clay + iron ore ground to raw meal"),
+    ("Preheater + kiln", "raw meal burnt at 1,450 °C → clinker"),
+    ("Cooler + silo", "clinker air-cooled, stored"),
+    ("Cement mill", "clinker + gypsum (OPC) or + fly ash (PPC)"),
+    ("Packing + dispatch", "50 kg bags; trucks to depots, dealers"),
+], width=6.9, horizontal=True, title="Production process, ABC Cement Industries Ltd.", wrap=14)
+
+K.tree("c4_cem_org.png",
+       ("Board of Directors", [
+           ("Managing Director", [
+               ("Plant Manager (Works)", [
+                   ("Production", []), ("Mechanical", []),
+                   ("Electrical & Instrumentation", []), ("Quality Control", []),
+                   ("Mines", []),
+               ]),
+               ("Marketing & Sales", []), ("Finance & Accounts", []),
+               ("Stores & Purchase", []), ("HR & Admin", []), ("IT / MIS", []),
+               ("Safety & Environment", []),
+           ])]),
+       width=6.9, wrap=12, box_h=0.46, level_gap=0.22, fs=6.4,
+       dashed=("Safety & Environment",))
+
+causes = ["Power\ntrips", "Break-\ndowns", "Planned\nshutdown", "Clinker\nyard full",
+          "Coal,\nmaterial", "Others"]
+hours = [610, 420, 360, 240, 150, 70]
+printed(*hours)
+printed("1,850", "1,490")
+assert sum(hours) == 1850 and sum(hours) - 360 == 1490
+K.chart("c4_cem_stops.png", causes, hours, kind="bar", ylabel="kiln stop hours",
+        highlight=(0, 1), fmt="%d", ylim=(0, 700), width=3.3, height=1.95,
+        note="FY 2082/83, 1,850 h in all. Illustrative plant log; orange = 69% of unplanned stops.")
+
+K.fishbone("c4_cem_fishbone.png", "Plant runs at 69% of capacity", [
+    ("Power", ["trips, voltage dips", "no standby for kiln drives", "shared 33 kV line"]),
+    ("Machines", ["refractory failures", "bearing wear", "old raw mill"]),
+    ("Materials", ["coal import delays", "3-4 month spares lead time", "no min stock"]),
+    ("People", ["contract turnover 28%", "safety-only training", "seniority promotion"]),
+    ("Methods", ["breakdown maintenance", "stores and maintenance unlinked", "no daily KPI"]),
+    ("Market", ["oversupply, price war", "monsoon slump", "clinker yard full"]),
+], width=6.9)
+
+K.gantt("c4_cem_plan.png", [
+    ("Dedicated line + standby DG set for kiln drives", 0, 3, 0),
+    ("Preventive + condition-based maintenance", 0, 4, 1),
+    ("Min-max stock of critical spares; rate contracts", 0, 2, 1),
+    ("ERP: stores, maintenance, production, sales", 1, 5, 3),
+    ("Skill matrix, training; regularize contract operators", 1, 6, 2),
+    ("Shift incentive on kiln run hours", 1, 2, 2),
+    ("New districts, project sales, mason meets", 2, 6, 4),
+], ["Q1", "Q2", "Q3", "Q4", "Yr 2 H1", "Yr 2 H2"], width=6.9, label_w=3.0)

@@ -14,6 +14,8 @@ and the \textbf{5 phases} as two separate numbered lists; examiners use both wor
 paper has set an applied 8-marker (prepare a case study of NEA or Nepal Telecom; recommend
 improvements for your college): answer it by filling in the \textbf{report structure} of
 $\S$4.3. $\S$4.4 and $\S$4.5 are those two cases \mk{written out in full}, as models.
+$\S$4.6 is a \mk{complete sample report} of an industrial visit: the 10-mark internal
+assessment report.
 
 Tier chips count \textbf{papers out of 29}: \tS{n} 8+ \gap \tF{n} 4--7 \gap \tP{n} 1--3
 inside an 8-mark question. Bold year = Regular exam.
@@ -548,7 +550,655 @@ Image & website, social media, results and placement publicity & ongoing \\
 \penalty0\vspace{2pt}
 
 %=======================================================================
-\T{4.6 PYQ Mapping}
+\T{4.6 Sample Case Study Report: Industrial Visit}
+
+{\color{sub}\footnotesize internal assessment \gap$\cdot$\gap \mk{case study report = 10 of the 20 internal marks}
+\gap$\cdot$\gap the course requires one after visiting an industrial organization \gap$\cdot$\gap
+written out in full as a model \gap$\cdot$\gap ``ABC Cement Industries Ltd.'' and every number in it
+are illustrative: put your own visit's facts in \gap \added}
+
+% report chapter heading, used only in this section
+\newcommand{\rch}[1]{\par\vspace{6pt}\Needspace{10\baselineskip}\noindent
+  {\color{acc}\bfseries\large #1}\par\nobreak\vspace{-1pt}%
+  \noindent{\color{acc}\rule{\textwidth}{0.6pt}}\par\nobreak\vspace{1pt}}
+
+\sbs{%
+\lead{How to use this model}
+\begin{itemize}
+  \item Structure = the \textbf{7-step methodology} and the \textbf{report titles} of
+    $\S$4.3, merged into one report.
+  \item Chapters 2--7 = the syllabus applied to one plant:
+    \begin{itemize}
+      \item Ch.\,1: ownership, structure, purchasing, marketing;
+      \item Ch.\,2: manpower, recruitment, training, job evaluation, wages;
+      \item Ch.\,3: motivation, leadership;
+      \item Ch.\,5: MIS.
+    \end{itemize}
+  \item Chapter 8 = the \textbf{case} proper: one problem, hypotheses, data, test.
+  \item Real report: typed, 20--30 pages, figures and tables numbered, 2--3 visit photos
+    if the plant allows.
+  \item Keep every number traceable: say where it came from (log, report, survey).
+\end{itemize}
+\lead{Front matter order}
+\begin{enumerate}
+  \item Title page.
+  \item Acknowledgement.
+  \item Abstract.
+  \item Table of contents, list of figures and tables.
+  \item List of abbreviations.
+\end{enumerate}}{%
+\lead{Table of contents, and the $\S$4.3 step each chapter fills}
+{\small
+\begin{tabularx}{\linewidth}{@{}L{2.3cm}XL{0.95cm}@{}}
+\toprule
+\hrow \thead{Chapter} & \thead{Contents} & \thead{Step} \\
+\midrule
+1 Introduction & background of visit, objectives, methodology, limitations & 4 \\
+2 Organization profile & history, objectives, products, capacity, process & 1 \\
+3 Ownership, structure & public limited company, org chart & 1 \\
+4 Personnel management & manpower, recruitment, training, job evaluation, merit rating, wages & 5 \\
+5 Motivation, leadership & employee survey, theories applied & 5 \\
+6 Purchasing, marketing & materials, spares, channels, promotion & 5 \\
+7 MIS & reports by level, software & 5 \\
+8 The case problem & problem, hypotheses, stoppage analysis, test & 2, 3, 5 \\
+9 Findings & strengths, drawbacks, generalization & 6 \\
+10 Recommendations & action table, plan, checklist & 7 \\
+11 Conclusion & summary; references; appendices & 7 \\
+\bottomrule
+\end{tabularx}}
+{\footnotesize\color{sub} Steps: 1 background, 2 problem, 3 hypothesis, 4 research design,
+5 data and analysis, 6 generalization, 7 conclusions and recommendations.\par}}
+
+\sbs{%
+\lead{Title page}
+\fcolorbox{ruleL}{white}{\begin{minipage}{\dimexpr\linewidth-2\fboxsep-0.8pt\relax}
+\centering\vspace{5pt}
+{\footnotesize TRIBHUVAN UNIVERSITY\\INSTITUTE OF ENGINEERING\\{[}Campus name{]}}\par
+\vspace{7pt}
+{\large\bfseries A Case Study Report on\\ABC Cement Industries Ltd.}\par
+\vspace{1pt}
+{\footnotesize Makwanpur, Nepal}\par
+\vspace{7pt}
+{\footnotesize Submitted as a requirement of\\\textbf{Organization and Management (ME 708)}}\par
+\vspace{7pt}
+{\footnotesize
+\begin{tabular}{@{}ll@{}}
+\textbf{Submitted by} & \textbf{Submitted to} \\
+{[}Name{]}, {[}Roll no.{]} & Department of {[}...{]} \\
+{[}Name{]}, {[}Roll no.{]} & {[}Campus{]} \\
+\end{tabular}}\par
+\vspace{5pt}
+{\footnotesize {[}Date of submission{]}}\par
+\vspace{4pt}
+\end{minipage}}}{%
+\lead{Acknowledgement}
+{\small We thank the management of ABC Cement Industries Ltd.\ for permission to visit the plant
+on {[}date{]}, and the Plant Manager, the HR Officer, the Stores Officer and the shift engineers
+who guided us and answered our questions. We are grateful to {[}teacher{]}, Department of
+{[}...{]}, for guidance throughout, and to the campus for arranging the visit.\par}
+\lead{Abstract}
+{\small This report studies ABC Cement Industries Ltd., an integrated cement plant with a
+1,200 TPD kiln. It describes the company's ownership, structure, personnel practices,
+motivation, leadership, marketing and MIS. The case problem is low capacity use: 64--71\%
+over four years. Kiln logs for FY 2082/83 show 1,490 hours of unplanned stops, 69.1\% of them
+from power trips and breakdowns. The report recommends a standby power supply, preventive
+maintenance, spares planning, training and regularizing contract operators, and an ERP,
+aiming at 80\% capacity use in two years.\par}}
+
+%-----------------------------------------------------------------------
+\rch{Chapter 1. Introduction}
+
+\sbs{%
+\lead{1.1 Background of the visit}
+\begin{itemize}
+  \item One-day visit on {[}date{]}: 32 students of IV-I and 2 teachers.
+  \item Why this plant: a \textbf{continuous-process} industry $\rightarrow$ every O\&M topic
+    is visible: structure, shifts, manpower, maintenance, marketing.
+\end{itemize}
+\lead{1.2 Objectives of the study}
+\begin{enumerate}
+  \item Study the organization: history, ownership, structure.
+  \item Study personnel practices: manpower planning to wages.
+  \item Study motivation, leadership and MIS in practice.
+  \item Identify the plant's main management problem, analyse its causes, recommend
+    solutions.
+\end{enumerate}
+\lead{1.4 Limitations}
+\begin{itemize}
+  \item One-day visit; sample of 60 out of 412 employees.
+  \item Some cost and wage data confidential $\rightarrow$ published figures only.
+  \item Respondents chosen by the HR section $\rightarrow$ possible bias.
+\end{itemize}}{%
+\lead{1.3 Methodology (case research design)}
+{\small
+\begin{tabularx}{\linewidth}{@{}L{1.6cm}X@{}}
+\toprule
+\hrow \thead{Method} & \thead{What and from whom} \\
+\midrule
+Observation & plant tour: quarry, crusher, kiln, central control room, packing, stores \\
+Interviews & Plant Manager, HR Officer, Stores Officer, Marketing Officer, 2 shift engineers \\
+Questionnaire & 60 employees (40 permanent, 20 contract), 5-point scale; Appendix A \\
+Records & annual reports FY 2079/80--2082/83, kiln stoppage log, maintenance log, HR records \\
+Analysis & tables, bar chart, cause-and-effect (fishbone) diagram, hypothesis test \\
+\bottomrule
+\end{tabularx}}}
+
+%-----------------------------------------------------------------------
+\rch{Chapter 2. Organization Profile}
+
+\sbs{%
+\lead{2.1 History}
+\begin{itemize}
+  \item \textbf{2065 BS}: registered as a private limited company (Companies Act 2063).
+  \item \textbf{2068}: commercial production, grinding purchased clinker.
+  \item \textbf{2072}: own 1,200 TPD kiln commissioned $\rightarrow$ integrated plant.
+  \item \textbf{2076}: converted to public limited; IPO of 30\% of shares; listed on NEPSE.
+  \item \textbf{2080}: cement mill expanded to 1,500 TPD.
+\end{itemize}
+\lead{2.2 Vision and objectives}
+\begin{itemize}
+  \item \textbf{Vision}: most trusted cement brand of central Nepal.
+  \item \textbf{Objectives}:
+    \begin{itemize}
+      \item produce cement to Nepal Standard (NS) quality;
+      \item run the plant at 85\% of capacity or more;
+      \item earn profit, pay regular dividend;
+      \item employ local people, substitute imports.
+    \end{itemize}
+\end{itemize}}{%
+\lead{2.3 Products, capacity, performance}
+{\small
+\begin{tabularx}{\linewidth}{@{}L{1.9cm}X@{}}
+\toprule
+\hrow \thead{Item} & \thead{Value} \\
+\midrule
+Products & OPC (53 grade), PPC; brand ``ABC Strong'' \\
+Clinker capacity & 1,200 TPD = 396,000 t a year (330 days) \\
+Cement capacity & 1,500 TPD = 495,000 t a year \\
+Employees & 412 (248 permanent, 164 contract) \\
+Working & 3 shifts of 8 h; kiln runs round the clock \\
+Finance, FY 82/83 & sales Rs 4.2 bn; net profit Rs 180 million; 10\% cash dividend \\
+\bottomrule
+\end{tabularx}}
+\vspace{3pt}
+{\small
+\begin{tabularx}{\linewidth}{@{}XXX@{}}
+\toprule
+\hrow \thead{FY (BS)} & \thead{Cement, '000 t} & \thead{Capacity used} \\
+\midrule
+2079/80 & 351 & 70.9\% \\
+2080/81 & 332 & 67.1\% \\
+2081/82 & 318 & 64.2\% \\
+2082/83 & 342 & \textbf{69.1\%} \\
+\bottomrule
+\end{tabularx}}
+{\footnotesize\color{sub} Capacity used = production $\div$ 495,000 t.\par}}
+
+\lead{2.4 Input, process, output}
+{\small
+\begin{tabularx}{\textwidth}{@{}L{1.4cm}X@{}}
+\toprule
+\hrow \thead{Stage} & \thead{ABC Cement} \\
+\midrule
+Input & limestone (own quarry, 12 km), clay, iron ore, gypsum and coal (imported via Birgunj), fly ash, power (NEA grid, 33 kV), water, 412 staff, capital \\
+Process & quarry $\rightarrow$ crusher $\rightarrow$ raw mill $\rightarrow$ preheater and kiln (1,450\,$^\circ$C) $\rightarrow$ clinker $\rightarrow$ cement mill $\rightarrow$ packing (figure) \\
+Output & OPC and PPC in 50 kg bags; dust (held by bag filters), waste heat; revenue, taxes, jobs \\
+\bottomrule
+\end{tabularx}}
+
+\figC{c4_cem_process.png}{\textwidth}
+{\small\color{sub}\centering Figure 2.1: Dry-process production flow of the plant.\par}
+
+%-----------------------------------------------------------------------
+\rch{Chapter 3. Form of Ownership and Organization Structure}
+
+\sbs{%
+\lead{3.1 Form of ownership: public limited company ($\S$1.4)}
+\begin{itemize}
+  \item Registered with the OCR under the Companies Act 2063; listed on NEPSE.
+  \item Shares: promoters 70\%, general public 30\%.
+  \item Separate legal entity, limited liability, perpetual succession.
+  \item AGM elects a Board of 7 directors (5 promoter, 2 public).
+  \item Board appoints the MD as chief executive.
+  \item Disclosure to SEBON and NEPSE; yearly external audit.
+  \item Suits the plant: large capital raised from the public, professional management.
+\end{itemize}}{%
+\lead{3.2 Organization structure ($\S$1.5)}
+\begin{itemize}
+  \item \textbf{Type}: line and staff.
+    \begin{itemize}
+      \item line: MD $\rightarrow$ Plant Manager $\rightarrow$ department heads
+        $\rightarrow$ shift engineers $\rightarrow$ supervisors $\rightarrow$ operators;
+      \item staff: Safety and Environment advises the MD (dashed in the chart).
+    \end{itemize}
+  \item \textbf{Departmentation}: by function.
+  \item \textbf{Span of control}: MD 7; shift engineer about 12 operators.
+  \item \textbf{Centralization}: purchases above Rs 5 lakh and all hiring decided by the MD;
+    shift decisions delegated.
+  \item \textbf{Levels}: 6, from Board to operator.
+\end{itemize}}
+
+\figC{c4_cem_org.png}{\textwidth}
+{\small\color{sub}\centering Figure 3.1: Organization chart of ABC Cement Industries Ltd.\par}
+
+%-----------------------------------------------------------------------
+\rch{Chapter 4. Personnel Management}
+
+\sbs{%
+\lead{4.1 Personnel policy and manpower planning ($\S$2.2, $\S$2.3)}
+\begin{itemize}
+  \item Written HR bylaws under the Labour Act 2074:
+    \begin{itemize}
+      \item 8 h a day, 48 h a week;
+      \item overtime at 1.5 times the wage rate;
+      \item probation up to 6 months.
+    \end{itemize}
+  \item Manpower plan made yearly with the budget, from the production target.
+  \item No long-term forecast: posts filled only after a vacancy arises.
+\end{itemize}
+\lead{4.2 Recruitment and selection ($\S$2.4)}
+\begin{itemize}
+  \item \textbf{Internal}: promotion to supervisor and officer posts.
+  \item \textbf{External}:
+    \begin{itemize}
+      \item newspaper and website advertisements;
+      \item campus (IOE) for trainee engineers;
+      \item employee referrals;
+      \item labour contractor for packing and loading labour (contract).
+    \end{itemize}
+  \item \textbf{Selection}: screening $\rightarrow$ written test (engineers, officers)
+    $\rightarrow$ panel interview (Plant Manager, HR, department head) $\rightarrow$
+    medical test $\rightarrow$ appointment $\rightarrow$ 6-month probation.
+  \item 60\% of staff from Makwanpur, per agreement with local community.
+\end{itemize}}{%
+\lead{Manpower, FY 2082/83}
+{\small
+\begin{tabularx}{\linewidth}{@{}XL{0.9cm}@{}}
+\toprule
+\hrow \thead{Department} & \thead{Staff} \\
+\midrule
+Production & 142 \\
+Mechanical, Electrical and Instrumentation & 88 \\
+Mines (quarry) & 46 \\
+HR and Admin (incl.\ security, drivers) & 32 \\
+Marketing and Sales & 26 \\
+Quality Control (laboratory) & 24 \\
+Finance and Accounts & 20 \\
+Stores and Purchase & 18 \\
+Safety and Environment & 8 \\
+IT / MIS & 8 \\
+\midrule
+\textbf{Total} & \textbf{412} \\
+\bottomrule
+\end{tabularx}}
+\vspace{3pt}
+{\small
+\begin{tabularx}{\linewidth}{@{}XL{0.9cm}@{}}
+\toprule
+\hrow \thead{Level} & \thead{Staff} \\
+\midrule
+Top (MD, Plant Manager, GMs) & 6 \\
+Middle (department heads, engineers, officers) & 38 \\
+Supervisory & 72 \\
+Operators and workers & 296 \\
+\bottomrule
+\end{tabularx}}}
+
+\sbs{%
+\lead{4.3 Training and development ($\S$2.5)}
+\begin{itemize}
+  \item \textbf{Induction}: 3 days, including safety.
+  \item \textbf{On the job}: new operator works under a senior operator for 3 months.
+  \item \textbf{Off the job}: equipment supplier trains engineers on the kiln and DCS; plant
+    visits abroad for 2 engineers a year.
+  \item FY 2082/83: 14 programmes, 186 participants.
+  \item Contract workers: safety briefing only.
+  \item No training-needs analysis, no skill matrix.
+\end{itemize}
+\lead{4.4 Job evaluation and merit rating ($\S$2.6)}
+\begin{itemize}
+  \item \textbf{Job evaluation}: grading method $\rightarrow$ 10 grades, G1 (helper) to G10
+    (department head).
+  \item Written job descriptions for officer posts only.
+  \item \textbf{Merit rating}: yearly, graphic rating scale, rated by immediate supervisor on
+    6 factors:
+    \begin{itemize}
+      \item quality and quantity of work;
+      \item attendance, safety;
+      \item teamwork, initiative.
+    \end{itemize}
+  \item Used for the annual increment only: promotion mostly by seniority.
+\end{itemize}}{%
+\lead{4.5 Wages, incentives and welfare ($\S$2.7)}
+\begin{itemize}
+  \item \textbf{Time wage}: monthly salary by grade + yearly grade increment.
+  \item \textbf{Allowances}: night-shift, dearness, festival allowance of one month's basic
+    salary (Dashain).
+  \item \textbf{Production incentive}: paid when monthly output exceeds 90\% of target
+    $\rightarrow$ earned in only 3 of 12 months of FY 2082/83.
+  \item \textbf{Bonus}: 10\% of net profit under the Bonus Act 2030 $\rightarrow$ Rs 18 million
+    shared in FY 2082/83.
+  \item \textbf{Social security}: SSF contributions under the Contribution-based Social
+    Security Act 2074; medical insurance.
+  \item \textbf{Welfare}: canteen, staff bus, quarters for 90 families.
+  \item Contract workers paid by the contractor at about the minimum wage, few benefits.
+\end{itemize}
+\lead{4.6 Industrial relations ($\S$2.8)}
+\begin{itemize}
+  \item 2 unions of permanent staff; collective agreement every 2 years.
+  \item 3-day strike in 2081 over regularizing contract workers $\rightarrow$ settled with a
+    promise to review.
+\end{itemize}}
+
+%-----------------------------------------------------------------------
+\rch{Chapter 5. Motivation and Leadership}
+
+\sbs{%
+\lead{5.1 Employee survey (Appendix A)}
+{\small
+\begin{tabularx}{\linewidth}{@{}XL{1.35cm}L{1.3cm}@{}}
+\toprule
+\hrow \thead{Factor (mean, 1--5)} & \thead{Permanent (40)} & \thead{Contract (20)} \\
+\midrule
+Job security & 4.1 & \textbf{1.9} \\
+Pay and allowances & 3.4 & 2.6 \\
+Supervision & 3.3 & 2.9 \\
+Working conditions, safety & 3.2 & 2.8 \\
+Training and growth & 2.7 & \textbf{1.6} \\
+Recognition & \textbf{2.4} & 2.0 \\
+\bottomrule
+\end{tabularx}}
+\vspace{2pt}
+{\small
+\begin{tabularx}{\linewidth}{@{}XL{1.35cm}L{1.3cm}@{}}
+\toprule
+\hrow \thead{HR records} & \thead{Permanent} & \thead{Contract} \\
+\midrule
+Turnover a year & 4\% & \textbf{28\%} \\
+Absenteeism & 3\% & 9\% \\
+\bottomrule
+\end{tabularx}}}{%
+\lead{5.2 Analysis ($\S$3.2)}
+\begin{itemize}
+  \item \textbf{Herzberg}:
+    \begin{itemize}
+      \item permanent staff: hygiene factors met (security 4.1, pay 3.4), motivators weak
+        (recognition 2.4, growth 2.7) $\rightarrow$ not dissatisfied, but not driven;
+      \item contract staff: even hygiene factors unmet (security 1.9) $\rightarrow$
+        dissatisfaction $\rightarrow$ 28\% turnover.
+    \end{itemize}
+  \item \textbf{Maslow}: contract workers stuck at safety needs; permanent staff seek esteem.
+  \item \textbf{Vroom}: incentive earned in 3 months of 12 $\rightarrow$ effort not seen to
+    bring reward $\rightarrow$ low expectancy.
+\end{itemize}
+\lead{5.3 Leadership ($\S$3.3)}
+\begin{itemize}
+  \item \textbf{MD}: sets targets, decides fast; autocratic on purchase and hiring,
+    participative in the monthly production review.
+  \item \textbf{Shift engineers}: task-oriented, 9,1 on Blake--Mouton's grid: output first,
+    little coaching.
+  \item \textbf{Plant Manager}: visits every shift, listens; rated highest by staff
+    $\rightarrow$ closest to 9,9 team management.
+\end{itemize}}
+
+%-----------------------------------------------------------------------
+\rch{Chapter 6. Purchasing and Marketing ($\S$1.6)}
+
+\sbs{%
+\lead{6.1 Purchasing and stores}
+\begin{itemize}
+  \item \textbf{Limestone}: own quarry, reserve for about 30 years.
+  \item \textbf{Clay, iron ore}: local suppliers on yearly contract.
+  \item \textbf{Coal}: imported by tender from 2 suppliers, lead time 6--8 weeks.
+    \begin{itemize}
+      \item stock target 45 days;
+      \item fell to 12 days twice in FY 2082/83 $\rightarrow$ kiln slowed.
+    \end{itemize}
+  \item \textbf{Spares}: mostly imported, lead time 3--4 months.
+    \begin{itemize}
+      \item bought only after a breakdown: no minimum stock $\rightarrow$ long stops.
+    \end{itemize}
+  \item Purchase committee for orders above Rs 5 lakh; quotations or tender.
+\end{itemize}}{%
+\lead{6.2 Marketing}
+\begin{itemize}
+  \item \textbf{Channel}: plant $\rightarrow$ 4 depots $\rightarrow$ 180 dealers
+    $\rightarrow$ retailers $\rightarrow$ users.
+  \item \textbf{Direct sales} to projects (hydropower, roads, bridges): 20\% of volume.
+  \item \textbf{Market}: Nepal self-sufficient in cement, many plants $\rightarrow$
+    oversupply, price competition.
+  \item \textbf{Price}: follows market leader; volume discounts to dealers.
+  \item \textbf{Promotion}: hoardings, FM radio, dealer meets, mason training programmes.
+  \item \textbf{Seasonality}: demand falls in monsoon (Ashad to Bhadra) and at Dashain--Tihar
+    $\rightarrow$ clinker yard fills $\rightarrow$ kiln stopped 240 h.
+\end{itemize}}
+
+%-----------------------------------------------------------------------
+\rch{Chapter 7. Management Information System (Ch.\,5)}
+
+\sbs{%
+\lead{7.1 Reports by level}
+{\small
+\begin{tabularx}{\linewidth}{@{}L{1.6cm}XL{1.55cm}@{}}
+\toprule
+\hrow \thead{Level} & \thead{Report} & \thead{How often} \\
+\midrule
+Operational & shift log, DCS trends, stores issue slips & every shift \\
+Middle & daily production report (DPR), weekly maintenance report & daily, weekly \\
+Top & monthly MIS report to MD; board report; annual report & monthly, quarterly, yearly \\
+\bottomrule
+\end{tabularx}}}{%
+\lead{7.2 Findings}
+\begin{itemize}
+  \item DCS in the central control room logs every kiln parameter.
+  \item Accounts on accounting software; stores, maintenance and sales on separate
+    spreadsheets.
+  \item No link $\rightarrow$ maintenance cannot see spares stock $\rightarrow$ learns of a
+    shortage only after a breakdown.
+  \item DPR reaches the MD at 10 am next day: no real-time KPI.
+\end{itemize}}
+
+%-----------------------------------------------------------------------
+\rch{Chapter 8. The Case Problem: Low Capacity Use}
+
+\sbs{%
+\lead{8.1 Identification of the problem}
+\begin{itemize}
+  \item Capacity used 64--71\% for four years (section 2.3), against the 85\% the budget
+    assumes.
+  \item Every idle kiln hour loses 50 t of clinker (1,200 TPD $\div$ 24): the loss cannot be
+    made up later.
+  \item \textbf{Problem statement}: why does the plant use only about two-thirds of its
+    capacity, and what should management do?
+\end{itemize}
+\lead{8.2 Hypotheses}
+\begin{itemize}
+  \item \textbf{H1}: unplanned kiln stops from power trips and breakdowns are the main cause.
+  \item \textbf{H2}: weak off-season demand adds to it.
+  \item \textbf{H3}: manpower practices (contract turnover, little training) cause many of
+    the breakdowns.
+  \item \textbf{H4}: raw-material shortage is the main cause.
+\end{itemize}}{%
+\lead{8.3 Data: kiln stops, FY 2082/83}
+{\small
+\begin{tabularx}{\linewidth}{@{}XL{0.9cm}L{1.45cm}@{}}
+\toprule
+\hrow \thead{Cause} & \thead{Hours} & \thead{\% of unplanned} \\
+\midrule
+Power trips, voltage dips & 610 & 40.9 \\
+Mechanical breakdowns & 420 & 28.2 \\
+Clinker yard full (market) & 240 & 16.1 \\
+Coal, material shortage & 150 & 10.1 \\
+Others & 70 & 4.7 \\
+\midrule
+\textbf{Unplanned total} & \textbf{1,490} & 100.0 \\
+Planned shutdown & 360 & \\
+\textbf{All stops} & \textbf{1,850} & \\
+\bottomrule
+\end{tabularx}}}
+
+\sbs{%
+\lead{8.4 Analysis}
+\begin{itemize}
+  \item Kiln ran 8,760 $-$ 1,850 = 6,910 h $\rightarrow$ run factor 78.9\%.
+  \item Clinker lost to unplanned stops: 1,490 h $\times$ 50 t = 74,500 t = 18.8\% of the
+    396,000 t capacity.
+  \item Power + breakdowns = 1,030 h = \textbf{69.1\%} of unplanned stops.
+  \item \textbf{Power}: 146 trips in the year.
+    \begin{itemize}
+      \item each trip $\rightarrow$ about 4 h to restart and stabilize the kiln;
+      \item a 5-minute trip costs hours of output.
+    \end{itemize}
+  \item \textbf{Breakdowns}: 29 in the maintenance log.
+    \begin{itemize}
+      \item 11 traced to operating error (missed lubrication, overloading);
+      \item 9 of those 11 on shifts run mainly by contract operators;
+      \item 6 waited for imported spares $\rightarrow$ 180 of the 420 h.
+    \end{itemize}
+  \item \textbf{Market}: yard-full stops all fell in monsoon and festival months.
+\end{itemize}}{%
+\figT{c4_cem_stops.png}
+{\small\color{sub}\centering Figure 8.1: Kiln stop hours by cause.\par}}
+
+\figC{c4_cem_fishbone.png}{\textwidth}
+{\small\color{sub}\centering Figure 8.2: Cause-and-effect analysis of low capacity use.\par}
+
+\needspace{8\baselineskip}
+\lead{8.5 Testing the hypotheses}
+{\small
+\begin{tabularx}{\textwidth}{@{}L{0.7cm}XL{2.2cm}@{}}
+\toprule
+\hrow \thead{H} & \thead{Evidence} & \thead{Result} \\
+\midrule
+H1 & power trips + breakdowns = 1,030 h = 69.1\% of unplanned stops & \textbf{accepted} \\
+H2 & clinker yard full 240 h = 16.1\%, all in monsoon and festival months & partly accepted \\
+H3 & 11 of 29 breakdowns from operating error, 9 of them on contract-run shifts; contract turnover 28\% & \textbf{accepted} \\
+H4 & material shortage 150 h = 10.1\% & rejected as main cause \\
+\bottomrule
+\end{tabularx}}
+
+%-----------------------------------------------------------------------
+\rch{Chapter 9. Findings, Generalization and Interpretation}
+
+\sbs{%
+\lead{9.1 Strengths}
+\begin{itemize}
+  \item Integrated plant with own quarry $\rightarrow$ low raw-material cost.
+  \item NS-marked product; brand known in 30 districts.
+  \item Profitable; regular 10\% dividend.
+  \item Good pay and welfare for permanent staff; lawful HR bylaws.
+  \item Modern kiln with DCS control.
+\end{itemize}
+\lead{9.3 Generalization and interpretation}
+\begin{itemize}
+  \item Capacity is lost mainly \textbf{inside the plant gate} (69.1\% of unplanned stops),
+    not in the market $\rightarrow$ a \textbf{management} problem.
+  \item Holds for continuous-process plants (cement, steel, paper): a lost kiln hour is never
+    recovered $\rightarrow$ reliability of power, maintenance and people decides output.
+  \item Limit: one plant, one year of logs.
+\end{itemize}}{%
+\lead{9.2 Drawbacks (problems found)}
+\begin{enumerate}
+  \item Breakdown maintenance instead of preventive.
+  \item No standby power for kiln drives.
+  \item Spares bought after failure, not stocked.
+  \item Two-tier workforce: contract operators insecure, untrained, 28\% turnover.
+  \item Promotion by seniority; merit rating used for increments only.
+  \item Production incentive too hard to earn (3 of 12 months).
+  \item MIS not integrated; no real-time KPI.
+  \item No off-season marketing plan.
+\end{enumerate}}
+
+%-----------------------------------------------------------------------
+\rch{Chapter 10. Recommendations}
+
+{\small
+\begin{tabularx}{\textwidth}{@{}L{1.6cm}XL{1.5cm}L{2.3cm}@{}}
+\toprule
+\hrow \thead{Area} & \thead{Recommendation} & \thead{Horizon} & \thead{Responsible} \\
+\midrule
+Power & dedicated industrial line from NEA; standby DG set for kiln drive and fans; voltage stabilization & short to medium & Electrical \\
+Maintenance & preventive schedule; vibration monitoring and kiln shell scanner; annual shutdown in monsoon, when demand is low anyway & short & Mechanical \\
+Stores & VED and ABC analysis of spares; min-max stock of critical spares; rate contracts with suppliers & short & Stores and Purchase \\
+People & training-needs analysis, skill matrix, operator certification; regularize long-serving contract operators; merit-weighted promotion & medium & HR \\
+Motivation & shift incentive on kiln run hours; best-shift recognition; suggestion scheme & short & HR, Plant Manager \\
+MIS & ERP linking stores, maintenance, production and sales; daily KPI dashboard & medium & IT / MIS \\
+Marketing & new districts, project sales, pre-monsoon dealer stocking schemes, mason meets & medium & Marketing \\
+\bottomrule
+\end{tabularx}}
+
+\sbs{%
+\lead{Expected result}
+\begin{itemize}
+  \item Unplanned stops 1,490 h $\rightarrow$ under 800 h a year.
+  \item Capacity used 69.1\% $\rightarrow$ \textbf{80\%} within two years.
+\end{itemize}}{%
+\lead{Checklist (step 6)}
+\begin{itemize}
+  \item \textbf{Achieves}: about 80\% capacity use, fewer breakdowns, stable workforce.
+  \item \textbf{Difficulties}: capital for DG set and ERP; contractor and union resistance.
+  \item \textbf{Limits}: NEA grid capacity, market demand, import lead times.
+  \item \textbf{Best alternative?} Yes: more output from the existing plant costs far less
+    than new capacity.
+\end{itemize}}
+
+\figC{c4_cem_plan.png}{\textwidth}
+{\small\color{sub}\centering Figure 10.1: Implementation plan over two years.\par}
+
+%-----------------------------------------------------------------------
+\rch{Chapter 11. Conclusion}
+
+\sbs{%
+\begin{itemize}
+  \item ABC Cement = profitable public limited company, line-and-staff structure, functional
+    departments.
+  \item Personnel practices meet the law for permanent staff; the contract workforce is left
+    out.
+  \item Main problem: only about 69\% of capacity used.
+    \begin{itemize}
+      \item caused mainly by unplanned kiln stops (power, breakdowns);
+      \item not by demand or materials.
+    \end{itemize}
+  \item Remedy lies in management: preventive maintenance, spares planning, trained and
+    stable operators, integrated MIS.
+  \item The visit showed O\&M theory at work in a real plant.
+\end{itemize}
+\lead{References}
+\begin{enumerate}
+  \item ABC Cement Industries Ltd., Annual Reports FY 2079/80--2082/83.
+  \item Government of Nepal: Labour Act 2074; Bonus Act 2030; Companies Act 2063;
+    Contribution-based Social Security Act 2074.
+  \item Adhikari, B., \textit{Organization and Management} slide notes.
+  \item Lecture notes, Organization and Management (ME 708), IOE.
+\end{enumerate}}{%
+\lead{Appendix A: Questionnaire (sample)}
+\begin{itemize}
+  \item \textbf{Part A}: department; permanent or contract; years of service.
+  \item \textbf{Part B}: rate 1 (very poor) to 5 (very good):
+    \begin{itemize}
+      \item job security; pay and allowances;
+      \item supervision; working conditions and safety;
+      \item training and growth; recognition.
+    \end{itemize}
+  \item \textbf{Part C} (open):
+    \begin{itemize}
+      \item What stops the kiln most often, in your experience?
+      \item What one change would most improve your work?
+    \end{itemize}
+\end{itemize}
+\lead{Appendix B: Interview checklist}
+\begin{itemize}
+  \item \textbf{Plant Manager}: capacity, stops, maintenance practice.
+  \item \textbf{HR Officer}: manpower, recruitment, training, appraisal, wages.
+  \item \textbf{Stores Officer}: lead times, stock policy.
+  \item \textbf{Marketing Officer}: channels, prices, seasons.
+  \item \textbf{IT Officer}: reports, software.
+\end{itemize}}
+
+\penalty0\vspace{2pt}
+
+%=======================================================================
+\T{4.7 PYQ Mapping}
 
 \lead{Theory questions, covered in this document}
 \begin{itemize}
@@ -561,6 +1211,8 @@ Image & website, social media, results and placement publicity & ongoing \\
     $\rightarrow$ $\S$4.3 structure, $\S$4.4 full model.
   \item \textbf{Recommendations for your college} \yr{\textbf{74 Ch} \m{8}} $\rightarrow$
     $\S$4.3 structure, $\S$4.5 full model.
+  \item \textbf{Case study report} (internal assessment, 10 marks, not examined)
+    $\rightarrow$ $\S$4.6 complete sample.
   \item 73 Ch and 71 Ch pair case-study objectives with MIS needs; the MIS half is in Ch.\,5.
 \end{itemize}
 
