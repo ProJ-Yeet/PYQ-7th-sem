@@ -1,0 +1,457 @@
+# num_split.py calls made by reading: subject, chapter, paper, marks, statement key, N (numerical) | T (theory)
+AI	1	72 Ma	7	\item If the Turing Test is passed, does this show that comp	T
+AI	1	73 Bh	7	\item If the Turing Test is passed, does this show that comp	T
+AI	1	81 Bh	4+3	\lb If the Turing test is passed, does this show that comput	T
+AI	1	78 Ch	4+4	\lb What are intelligent agents and how can we design an int	T
+AI	1	74 Bh	4+3	\lb What are intelligent agents and how can we design an int	T
+AI	1	82 Ka	2+3	\lb Define Artificial Intelligence. Design the PEAS informat	T
+AI	1	82 Ba	2+6	\lb What is intelligent agent? How can you design an intelli	T
+AI	1	82 Bh	2+5	\lb How can you define AI from the dimension of behavioral p	T
+AI	3	74 Bh	2+7	\lb Why is searching important in problem solving? What are 	T
+AI	3	78 Ch	2+7	\lb Why is searching important in problem solving? What are 	T
+AI	3	79 Ash	4+4	\item On what basis can we evaluate the search algorithms? E	T
+AI	3	73 Ma	8	\item Devise an example to show how the A* algorithm uses pa	T
+AI	3	77 Ch	8	\item Devise an example to show how the A* algorithm uses pa	T
+AI	3	72 Ma	4	\item Short note: A* Search. \hfill [4] (\textit{72 Ma}, 79 	T
+AI	3	79 Jth	4	\item Short note: A* Search. \hfill [4] (\textit{72 Ma}, 79 	T
+AI	3	81 Bh	4	\item Short note: A* Search. \hfill [4] (\textit{72 Ma}, 79 	T
+AI	3	80 Ba	3	\item Short note: A* Search. \hfill [4] (\textit{72 Ma}, 79 	T
+AI	3	76 Ba	3	\item Short note: A* Search. \hfill [4] (\textit{72 Ma}, 79 	T
+AI	3	78 Ba	4	\item Short notes: Minmax algorithm; Alpha-beta pruning; Adv	T
+AI	3	74 Bh	4	\item Short notes: Minmax algorithm; Alpha-beta pruning; Adv	T
+AI	3	74 Ma	4	\item Short notes: Minmax algorithm; Alpha-beta pruning; Adv	T
+AI	3	72 Ash	4	\item Short notes: Minmax algorithm; Alpha-beta pruning; Adv	T
+AI	3	78 Po	4	\item Short notes: Minmax algorithm; Alpha-beta pruning; Adv	T
+AI	3	82 Ba	3	\item Short notes: Minmax algorithm; Alpha-beta pruning; Adv	T
+AI	4	75 Ba	2+6	\lb Why is CNF required? Explain all the steps used to conve	T
+AI	4	79 Ch	2+6	\lb Why is CNF necessary? Represent ``Everyone who loves all	N
+AI	4	75 Bh	2+6	\lb Why is CNF necessary? Represent ``Everyone who loves all	N
+AI	4	78 Ch	3	\lb List the rules of inference. When can we use these rules	T
+AI	4	80 Ash	3	\lb List the rules of inference. When can we use these rules	T
+AI	4	79 Ash	3+6	\lb Why is probabilistic reasoning important in AI? When do 	T
+AI	5	80 Ch	2+2+2+2	\lb Discuss the different approaches to knowledge representa	T
+AI	5	82 Ba	2	\lb When do we use a semantic network? \hfill [2] (\texttt{8	T
+AI	6	81 Ash	3+5	\lb When shall we use a genetic algorithm? Explain with an a	T
+AI	7	69 Bh	8	\item What is a Hopfield Network? Explain all the steps invo	T
+AI	7	75 Bh	8	\item What is a Hopfield Network? Explain all the steps invo	T
+AI	7	71 Bh	8	\lb What are the features of a Hopfield network? How does a 	T
+AI	7	82 Ba	8	\lb You are stuck in a disaster-prone area of Nepal. Give a 	T
+AI	7	80 Ash	2+6	\lb What is machine vision? Create a scenario where we requi	T
+Data Mining	2	74 Ash	5	\item In real-world data, tuples with missing values for sam	T
+Data Mining	2	76 Ash	3	\item Write short notes on: Data smoothing techniques. \hfil	T
+Data Mining	2	72 Ch	10	\lb How do you perform analysis of multidimensional data? Ex	T
+Data Mining	2	80 Ba	3	\item List down the different types of similarity measures b	T
+Data Mining	2	76 Ch	2+1+2	\item (a) Given the following points compute the distance ma	N
+Data Mining	2	71 Ch	10	\item Explain the properties that a Distance Metric needs to	T
+Data Mining	3	71 Shr	10	\item Why is classification a super vised learning method? E	T
+Data Mining	3	80 Bh	3	\item When do we use classifier? (asked with the KNN numeric	T
+Data Mining	3	76 Ch	2+5	\item The following dataset will be used to train a decision	N
+Data Mining	3	73 Shr	8	\item What is a decision tree and how information gain is us	T
+Data Mining	3	80 Ba	1+3+4	\item What is Nearest Neighbor Classifier? What are the main	T
+Data Mining	3	81 Bh	2+4	\lb What is nearest neighbor classifier? When do we use this	T
+Data Mining	3	69 Ch	12	\item Explain Baye's Theorem. How can it be used for classif	T
+Data Mining	3	80 Ba	5	\item Write short notes on: Neural Network Classifier. \hfil	T
+Data Mining	3	82 Bh	5	\item Write short notes on: Neural Network Classifier. \hfil	T
+Data Mining	4	72 Ch	10	\lb What is the use of Apriori Algorithm in market basket an	T
+Data Mining	4	80 Ba	4	\item Generally, we will be more interested in associated ru	T
+Data Mining	4	76 Ash	12	\item For the transactions given below, consider confidence=	N
+Data Mining	4	71 Ch	10	\item How does Apriori Algorithm optimize the brute force ap	T
+Data Mining	4	71 Shr	10	\item What are association rules? How can spriori algorithm 	T
+Data Mining	4	81 Ba	2+5	\lb When do we use Association analysis? Explain FP-Tree wit	T
+Data Mining	4	79 Ba	6	\lb How does FP growth approach generate frequent item sets 	T
+Data Mining	4	73 Ch	10	\lb What is the use of FP-Growth method in market basket ana	T
+Data Mining	4	73 Shr	10	\item What is FP Tree? How FP-growth algorithm eliminate the	N
+Data Mining	4	79 Bh	5	\item Write short notes on: FP-Tree. \hfill [5] (\bo{79 Bh})	T
+Data Mining	4	76 Ch	3+3	\item (a) List all the 4-subsequences contained in the data 	N
+Data Mining	4	79 Bh	2	\item What are subgraph pattern? \hfill [2] (\bo{79 Bh})	T
+Data Mining	5	81 Ba	8	\item What is Cluster Analysis? What are its applications? E	T
+Data Mining	5	72 Ka	5	\lb What is a cluster analysis? How it is different from cla	T
+Data Mining	5	80 Bh	3+4	\lb When do we use clustering? How do you evaluate the clust	T
+Data Mining	5	79 Bh	2+6	\item An internet marketer is interesting in segmenting inte	T
+Data Mining	5	74 Ch	2+8	\item Describe the difference between Hierarchical and parti	T
+Data Mining	5	70 Ch	10	\item What is Hierarchical Clustering? Differentiate between	T
+Data Mining	5	70 Ch	8	\item What is a density based cluster. Explain an algorithm 	T
+Data Mining	5	75 Ash	8	\lb What are outliers? Explain an algorithm that can be used	T
+Data Mining	5	71 Ch	10	\item Explain the different measures of cluster validity. \h	T
+Data Mining	5	69 Ch	6	\lb Explain the issues regarding cluster validation. \hfill 	T
+Data Mining	5	80 Bh	4	\item How do you evaluate the cluster generated? (asked with	T
+Data Mining	5	72 Ka	3	\item Write short notes on: Cluster evaluation. \hfill [3] (	T
+Data Mining	6	79 Ba	6	\lb Describe the strengths and weaknesses of the statistical	T
+Data Mining	7	81 Ba	4+4	\item Explain briefly the key steps in text mining. How do y	T
+Data Mining	7	79 Bh	5	\item Write short notes on: Page Rank algorithm. \hfill [5] 	T
+DSAP	1	69 Ch	2+2	\lb $x[n]=\cos(2\pi n/5)+\sin(\pi n/3)$ \hfill [2+2] (\bo{79	N
+DSAP	1	79 Ba	2+2	\lb $x[n]=e^{j(\pi n/2+4\pi/7)}$: is it an energy signal or 	N
+DSAP	1	68 Bh	6	\lb Find the period of the signal $x[n]=\sum_{m=-\infty}^{\i	N
+DSAP	2	78 Ch	2+4	\lb State the properties of region of convergence (ROC). Obt	N
+DSAP	2	70 Ma	5	\lb Define one sided Z-transform. Find Z-transform of $x[n]=	N
+DSAP	2	74 Ma	3+8	\lb Write the properties for Region of Convergence (ROC). A 	N
+DSAP	2	79 Ba	1+5	\lb $H(z)=\dfrac{z}{3z^2-4z+1}$, $\tfrac13<|z|<1$, by partia	N
+DSAP	2	82 Bh	1+5	\lb $H(z)=\dfrac{z}{3z^2-4z+1}$, $\tfrac13<|z|<1$, by partia	N
+DSAP	2	78 Bh	1+5	\lb $X(z)=\dfrac{z^3+z^2+1.5z+0.5}{z^3+1.5z^2+0.5z}$, ROC $|	N
+DSAP	4	81 Ch	4+2+1	\lb $H(z)=1/(1-0.525z^{-1}+0.6125z^{-2}+0.3z^{-3})$, check s	N
+DSAP	4	75 Ash	7+3	\lb $H(z)=1/(3+(39/24)z^{-1}+(15/8)z^{-2}+(3/9)z^{-3})$; als	N
+DSAP	4	75 Ch	9	\lb $H(z)=1/(1+\tfrac23 z^{-1}+\tfrac58 z^{-2}+\tfrac23 z^{-	N
+DSAP	4	73 Ch	10	\lb $H(z)=\dfrac{1+\tfrac13 z^{-1}+\tfrac98 z^{-2}+\tfrac43 	N
+DSAP	4	72 Ma	8	\lb $H(z)=2.3+\tfrac{3.6}{24}z^{-1}+\tfrac{101}{8}z^{-2}+\tf	N
+DSAP	4	80 Ch	7	\lb Same, but with $K_1=1/4$, $K_2=1/4$, $K_3=1/3$: determin	N
+DSAP	5	81 Ba	3+3/5/6/1+4/2+5	\item Explain Gibbs phenomenon / oscillation --- how it aris	T
+DSAP	5	80 Ba	3+3/5/6/1+4/2+5	\item Explain Gibbs phenomenon / oscillation --- how it aris	T
+DSAP	5	73 Shr	3+3/5/6/1+4/2+5	\item Explain Gibbs phenomenon / oscillation --- how it aris	T
+DSAP	5	71 Shr	3+3/5/6/1+4/2+5	\item Explain Gibbs phenomenon / oscillation --- how it aris	T
+DSAP	5	79 Ch	3+3/5/6/1+4/2+5	\item Explain Gibbs phenomenon / oscillation --- how it aris	T
+DSAP	5	74 Bh	3+3/5/6/1+4/2+5	\item Explain Gibbs phenomenon / oscillation --- how it aris	T
+DSAP	5	71 Bh	3+3/5/6/1+4/2+5	\item Explain Gibbs phenomenon / oscillation --- how it aris	T
+DSAP	5	81 Ba	3/4/7	\item Why is the Kaiser window better than other fixed windo	T
+DSAP	5	74 Ash	3/4/7	\item Why is the Kaiser window better than other fixed windo	T
+DSAP	5	72 Ch	3/4/7	\item Why is the Kaiser window better than other fixed windo	T
+DSAP	5	80 Ch	3/4/7	\item Why is the Kaiser window better than other fixed windo	T
+DSAP	5	72 Ash	3/4/7	\item Why is the Kaiser window better than other fixed windo	T
+DSAP	5	75 Ch	1+5/1+6/2+6/7/9	\item What is an optimum filter? Show the mathematical expre	T
+DSAP	5	72 Ch	1+5/1+6/2+6/7/9	\item What is an optimum filter? Show the mathematical expre	T
+DSAP	5	70 Ch	1+5/1+6/2+6/7/9	\item What is an optimum filter? Show the mathematical expre	T
+DSAP	5	69 Ch	1+5/1+6/2+6/7/9	\item What is an optimum filter? Show the mathematical expre	T
+DSAP	5	73 Ch	1+5/1+6/2+6/7/9	\item What is an optimum filter? Show the mathematical expre	T
+DSAP	5	78 Bh	1+5/1+6/2+6/7/9	\item What is an optimum filter? Show the mathematical expre	T
+DSAP	5	76 Ch	1+5/1+6/2+6/7/9	\item What is an optimum filter? Show the mathematical expre	T
+DSAP	5	82 Bh	1+5/1+6/2+6/7/9	\item What is an optimum filter? Show the mathematical expre	T
+DSAP	5	81 Bh	1+5/1+6/2+6/7/9	\item What is an optimum filter? Show the mathematical expre	T
+DSAP	5	76 Ash	1+5/1+6/2+6/7/9	\item What is an optimum filter? Show the mathematical expre	T
+DSAP	5	73 Shr	1+5/1+6/2+6/7/9	\item What is an optimum filter? Show the mathematical expre	T
+DSAP	5	71 Shr	1+5/1+6/2+6/7/9	\item What is an optimum filter? Show the mathematical expre	T
+DSAP	5	79 Bh	5/1+6	\lb Describe the Remez exchange algorithm for FIR filter des	T
+DSAP	5	79 Ba	5/1+6	\lb Describe the Remez exchange algorithm for FIR filter des	T
+DSAP	5	82 Ba	2+5	\lb Explain the Gibbs phenomenon in FIR filter design, then 	T
+DSAP	5	78 Ch	4/9/5+4/6	\lb Explain a Remez exchange algorithm for FIR filter design	T
+DSAP	5	80 Ch	4/9/5+4/6	\lb Explain a Remez exchange algorithm for FIR filter design	T
+DSAP	5	74 Ma	4/9/5+4/6	\lb Explain a Remez exchange algorithm for FIR filter design	T
+DSAP	5	72 Ma	4/9/5+4/6	\lb Explain a Remez exchange algorithm for FIR filter design	T
+DSAP	5	70 Bh	4	\lb Draw the flow chart of the Remez exchange algorithm for 	T
+DSAP	5	69 Bh	3+10	\lb Why is the Remez exchange algorithm generally considered	T
+DSAP	6	71 Ch	11+4	\lb $W_p=0.25\pi$ rad, $W_s=0.55\pi$ rad, $\delta_p=0.11$, $	N
+DSAP	6	81 Ch	12	\lb passband frequency $0.25\pi$ rad, maximum deviation $0.5	N
+DSAP	6	80 Ch	12	\lb passband frequency $0.25\pi$ rad, maximum deviation $0.5	N
+DSAP	7	79 Ch	4+2	\lb Explain the Fast Fourier transform algorithm. Discuss th	T
+DSAP	7	70 Ma	6	\lb How do you use the DIT FFT Algorithm to compute the 8 po	T
+DSAP	7	67 Mng	8	\item The duality property of the Discrete Fourier Transform	T
+DSAP	7	80 Bh	8	\lb 8-pt DIF, $x(n)=\{2,1,2,1,1,2,1,2\}$ \hfill [8] (\bo{80 	N
+DSAP	7	80 Ba	2+6	\lb 8-pt DIF, $x[n]=\{1,1,0,0,1,1,2\}$ --- 7 entries as prin	N
+DSAP	7	78 Bh	7	\lb 8-pt radix-2 DIT, $x[n]=u[n]-u[n-4]$ \hfill [7] (\bo{78 	N
+DSAP	7	81 Bh	2+7	\lb 8-pt DIT, $x[n]=\{1,-2,-4,3,0,1\}$ \hfill [2+7] (\bo{81 	N
+DSAP	7	80 Ba	2+6	\lb 8-pt DIT, $x[n]=\{1,1,0,0,1,1,2\}$ --- 7 entries as prin	N
+DSAP	7	79 Ba	2+6	\lb 8-pt DIF, $x[n]=\{1,2,4,3,5,-1,3\}$ --- 7 entries as pri	N
+DSAP	7	76 Ch	7	\lb 8-pt DIF, $x[n]=\{1,2,3,3,5,0,4,6\}$ \hfill [7] (\bo{76 	N
+DSAP	7	76 Ash	2+8	\lb 8-pt DIF, $x[n]=\{1,2,3,3,5,1,4,2\}$ \hfill [2+8] (76 As	N
+DSAP	7	82 Bh	8	\lb 8-pt DIT, $x[n]=\{1,\tfrac12,-1,-\tfrac12,2,-\tfrac32\}$	N
+DSAP	7	75 Ash	3+7	\lb butterfly, 8-pt DIT, $x[n]=n+1$ \hfill [3+7] (75 Ash)	N
+DSAP	7	74 Ch	3+7	\lb butterfly, radix-2 DIF, $X(2)$ and $X(1)$ only, $x[n]=\{	N
+DSAP	7	74 Ash	7	\lb 8-pt DIF, $x[n]=\{\tfrac12,\tfrac12,\tfrac12,\tfrac12,0,	N
+DSAP	7	81 Ch	2+6	\lb 8-pt DIF, $x(n)=\{-0.5,-0.5,0.5,0.5,0,0,0,0\}$ \hfill [2	N
+DSAP	7	73 Ch	2+6	\lb 8-pt DIF, $x[n]=\{1,-1,3,2,1,1,3,-2\}$ \hfill [2+6] (\bo	N
+DSAP	7	73 Shr	2+6	\lb 8-pt, $x[n]=\{1,-1,2,2,1,1,2,2\}$ \hfill [2+6] (73 Shr)	N
+DSAP	7	72 Ch	8	\lb DIT, $x[n]=\{1,1,2,4,3,1,2,1\}$ \hfill [8] (\bo{72 Ch})	N
+DSAP	7	72 Ka	7	\lb 8-pt DIT, $x[n]=\{1,1,0,1,0,1,2\}$ --- 7 entries as prin	N
+DSAP	7	71 Ch	2+6	\lb butterfly, $X(7)$ only, 8-pt DIT, $x(n)=\{1,0,0,0,0,0,0,	N
+DSAP	7	71 Shr	6+2	\lb DIT butterfly and plot the spectrum, $x=\{1,1,2,0,1,2,0,	N
+DSAP	7	69 Ch	2+7	\lb 8-pt DIF, $x[n]=\{1,1,2,2,1,1,2,1\}$ \hfill [2+7] (\bo{6	N
+DSAP	7	80 Ch	1+7	\lb 8-pt DIT, $x[n]=\{1,0,2,0,-1,1,1\}$ --- 7 entries as pri	N
+DSAP	7	73 Bh	1+6	\lb 8-pt DIT, $x[n]=\{1,0,2,0,-1,1,1\}$ --- 7 entries as pri	N
+DSAP	7	72 Ma	1+6	\lb 8-pt DIF, $x[n]=\{1,0,0,0,-1,1,1\}$ --- 7 entries as pri	N
+DSAP	7	74 Bh	2+5	\lb DIT, $x[n]=\{1,1,0,0,0\}$ \hfill [2+5] (\bo{\texttt{74 B	N
+DSAP	7	73 Ma	2+5	\lb DIT, $x[n]=\{1,-1,2\}$ \hfill [2+5] (\texttt{73 Ma})	N
+DSAP	7	74 Ma	7	\lb 8-pt, $x[n]=\{1,1,0,-1,2\}$ \hfill [7] (\texttt{74 Ma})	N
+DSAP	7	80 Bh	6	\lb $x_1=\{1,2,3,1\},\quad x_2=\{4,3,2,2\}$ \hfill [6] (\bo{	N
+DSAP	7	80 Ba	2+5	\lb $x_1=\{1,2,3,1\},\quad x_2=\{4,3,2,2\}$ \hfill [6] (\bo{	N
+DSAP	7	81 Ba	6	\lb $x=\{1,2,4,5\},\quad h=\{2,1,6,8\}$ \hfill [6] (81 Ba)	N
+DSAP	7	72 Ch	7	\lb $h(n)=\{1,2,1,-1,1\},\quad x(n)=\{1,2,3,1\}$ \hfill [7] 	N
+DSAP	7	79 Ba	7	\lb $x_1=\{1,-1,-2,3,-1\},\quad x_2=\{1,2,3\}$ \hfill [7] (7	N
+DSAP	7	82 Ba	6	\lb $x_1=\{1,1,-1,-1,2\},\quad x_2=\{1,-1,-2\}$ \hfill [6] (	N
+DSAP	7	78 Bh	2+6	\lb $x_1=\{2,1,2,1\},\quad x_2=\{1,2,3,4\}$ \hfill [2+6] (\b	N
+DSAP	7	74 Ma	1+5	\lb $x_1=\{2,1,2,1\},\quad x_2=\{1,2,3,4\}$ \hfill [2+6] (\b	N
+DSAP	7	78 Ch	5	\lb $x_1=\{2,1,2,1\},\quad x_2=\{1,-2,-1,3\}$ \hfill [5] (\b	N
+DSAP	7	75 Ash	1+5	\lb $x_1=\{1,2,-1,1\},\quad x_2=\{1,3,5,7\}$ \hfill [1+5] (7	N
+DSAP	7	75 Ch	3+7	\lb $x_1=\{0,0,1,1\},\quad x_2=\{1,1,1,1\}$; also differenti	N
+DSAP	7	76 Bh	6	\lb $x_1=\{1,0.5,1,0.5\},\quad x_2=\{0,1,2,3\}$ \hfill [6] (	N
+DSAP	7	71 Bh	5	\lb $x_1=[1,2,0,3,4],\quad x_2=[2,-1,2,-1,2]$ \hfill [5] (\b	N
+DSAP	7	67 Mng	5	\lb $x_1=[1,2,1]$ for $0\le n\le2,\quad x_2=[1,2,0,1]$ for $	N
+DSAP	7	66 Ma	4	\lb $x_1=[1,2]$ for $0\le n\le1,\quad x_2=[1,3,4,5]$ for $0\	N
+DSAP	7	71 Ch	2+5	\lb $x=\{1,2\},\quad y=u[n]-u[n-4]$ \hfill [2+5] (\bo{71 Ch}	N
+DSAP	7	70 Asa	2+5	\lb $x=\{1,2\},\quad y=u[n]-u[n-4]$ \hfill [2+5] (\bo{71 Ch}	N
+DSAP	7	79 Ch	2+5	\lb $x=\{1,2\},\quad y=u[n]-u[n-4]$ \hfill [2+5] (\bo{71 Ch}	N
+DSAP	7	76 Ch	5	\lb 4-pt: $x_1=\{1,2,-2\},\quad x_2=\{1,2,3,-1\}$ \hfill [5]	N
+DSAP	7	69 Ch	6	\lb 4-pt: $x_1=\{1,2,-2\},\quad x_2=\{1,2,3,-1\}$ \hfill [5]	N
+DSAP	7	72 Ma	2+4	\lb 4-pt: $x_1=\{1,2,3,-1\},\quad x_2=\{2,1,-3\}$ \hfill [2+	N
+DSAP	7	79 Bh	7	\lb 4-pt: $x_1=\{1,0,0,1\},\quad x_2=\{2,0,2\}$ \hfill [7] (	N
+DSAP	7	75 Bh	1+5	\lb 4-pt: $x_1[n]=(3)^n$ for $0\le n\le3,\quad x_2[n]=(2)^n$	N
+DSAP	7	81 Bh	6	\lb 5-pt: $x_1(n)=3^n$ for $0\le n\le3,\quad x_2(n)=2^n$ for	N
+DSAP	7	73 Ch	7	\lb 5-pt: $x_1=\{1,-2,5,1,2\},\quad x_2=\{1,2,-3,-2\}$ \hfil	N
+DSAP	7	73 Shr	7	\lb 5-pt: $x_1=\{1,-2,2,1,4\},\quad x_2=\{2,1,-3,-1\}$ \hfil	N
+DSAP	7	80 Ch	7	\lb 5-pt: $x_1=\{1,2,3,-1,5\},\quad x_2=\{2,1,-3\}$ \hfill [	N
+DSAP	7	73 Bh	1+5	\lb 5-pt: $x_1=\{1,2,3,-1,5\},\quad x_2=\{2,1,-3\}$ \hfill [	N
+DSAP	7	73 Ma	6	\lb 5-pt: $x_1=\{3,2,1,-1,-2\},\quad x_2=\{1,2,3\}$ \hfill [	N
+DSAP	7	74 Ash	1+7	\lb 5-pt: $x_1=\{1,2,0,1,-2\},\quad x_2=\{1,0,1,1,2\}$; also	N
+DSAP	7	72 Ka	2+6	\lb $x_1=\{1,2,4\},\quad x_2=\{-1,2,3,1\}$ \hfill [2+6] (72 	N
+DSAP	7	71 Shr	7	\lb A system has input $x[n]=\{1,2,3,4\}$ and impulse respon	N
+DSAP	8	79 Ch	1+3+3	\hfill [1+3+3] (\bo{\texttt{79 Ch}}); [2+5] (\bo{\texttt{72 	N
+DSAP	8	72 Ash	2+5	\hfill [1+3+3] (\bo{\texttt{79 Ch}}); [2+5] (\bo{\texttt{72 	N
+DSAP	8	72 Ma	2+5	\hfill [2+5] (\texttt{72 Ma})	N
+RF-Microwave	1	69 Bh	4	\item Classify microwave frequency bands + major application	T
+RF-Microwave	1	79 Bh	3+3	\lb Classify microwave frequency band + application in major	T
+RF-Microwave	4	80 Bh	4	\lb $\text{TE}_{mn}$ field equations of rectangular waveguid	T
+RF-Microwave	4	81 Bh	8	\lb Express various field components of a rectangular wavegu	T
+RF-Microwave	4	71 Bh	2	\item $\text{TE}_{10}$ Vs $\text{TE}_{20}$: cutoff frequency	T
+RF-Microwave	4	70 Bh	3	\lb Show 1 GHz cannot propagate in $\text{TE}_{10}$, 5 cm wa	N
+RF-Microwave	4	70 Ma	3	\lb Prove $\text{TM}_{01}$ and $\text{TM}_{10}$ modes do not	T
+RF-Microwave	4	82 Bh	3	\lb Prove that the lowest cut-off frequency mode in rectangu	T
+RF-Microwave	4	81 Bh	3	\lb Show that the dominant mode in rectangular waveguides op	T
+RF-Microwave	4	72 Ma	2+2	\lb Dominant Vs degenerate modes; for $a = 3b$ find the domi	N
+RF-Microwave	5	77 Ch	2+6	\item What is transit time effect? Working principles of a m	T
+RF-Microwave	5	80 Ba	6+2	\lb Sketch a cross-sectional magnetron with $45^\circ$ phase	T
+RF-Microwave	5	81 Ba	8	\lb Working principles of a cross-field magnetron with $60^\	T
+RF-Microwave	5	74 Ma	8	\lb Working principle and applications of a cavity magnetron	T
+RF-Microwave	5	72 Ma	3+7	\lb Cross-field effect; design and working principle of a cr	T
+RF-Microwave	6	72 Ash	5	\item LNA cavity device -- insertion loss method for filter 	T
+RF-Microwave	6	75 Bh	5	\item Insertion loss method for filter design \hfill [5] (\b	T
+RF-Microwave	6	73 Bh	8	\item Insertion loss method for filter design \hfill [5] (\b	T
+RF-Microwave	6	73 Ma	8+2	\lb Describe insertion loss method, illustrate passive LPF u	T
+RF-Microwave	6	71 Bh	5	\item Microwave filter design procedures \hfill [5] (\bo{71 	T
+RF-Microwave	6	82 Ba	7+3	\lb Microwave filter designing steps; sketch of a triple-pad	T
+RF-Microwave	6	76 Bh	8+2	\lb LPF prototype (Butterworth \& Chebyshev) via insertion l	T
+RF-Microwave	6	80 Ba	3+5	\lb Why is the insertion loss technique used to design micro	T
+RF-Microwave	6	79 Bh	6+2	\lb How is a LPF prototype (Butterworth) designed using the 	T
+RF-Microwave	6	71 Bh	10	\item Stability + max gain (bilateral + unilateral): $S_{11}	N
+RF-Microwave	6	74 Bh	4+4+4+4	\item Stability + max gain (bilateral + unilateral + $\Gamma	N
+RF-Microwave	6	74 Bh	4	\item Flowchart for microwave amplifier design (GaAsFET) \hf	T
+RF-Microwave	6	82 Ba	4	\lb Microwave Amplifier Design Flow and Stability Analysis (	T
+RF-Microwave	7	81 Ba	4+4	\lb Classify microwave propagation fields of a GSM BTS + rad	T
+RF-Microwave	8	79 Bh	2+6	\lb List major RF/MW measurement parameters; how is the VSWR	T
+Wireless	1	71 Ma	4	\lb Evolution from 1G to 2G, 2.5G in a TDMA-based cellular n	T
+Wireless	1	74 Bh	6	\lb 1G Vs 2G Vs 3G Vs 4G standards, technology advancement \	T
+Wireless	2	76 Bh	3	\lb Cellular concept for $N = 7$ \hfill [3] (\bo{76 Bh})	T
+Wireless	2	80 Ch	1+4	\item What is cell footprint? Explain interference tier in b	T
+Wireless	3	73 Ma	4	mobile radio propagation \hfill [4] (73 Ma, \bo{77 Ch}) [2+5	T
+Wireless	3	77 Ch	4	mobile radio propagation \hfill [4] (73 Ma, \bo{77 Ch}) [2+5	T
+Wireless	3	82 Bh	2+5	mobile radio propagation \hfill [4] (73 Ma, \bo{77 Ch}) [2+5	T
+Wireless	4	71 Bh	5+2	\item OQPSK transmitter \& receiver; why $\pi/4$-QPSK is pre	T
+Wireless	4	77 Ch	2+6	constellation diagrams \hfill [2+6] (\bo{77 Ch})	T
+Wireless	7	81 Ba	3+2	available in the FDMA system \hfill [3+2] (\texttt{80 Ba, 81	N
+Wireless	7	80 Ba	4	\lb CDMA design considerations \hfill [4] (\texttt{80 Ba, 81	T
+Wireless	7	81 Ba	4	\lb CDMA design considerations \hfill [4] (\texttt{80 Ba, 81	T
+Wireless	8	74 Ma	6+2	\item GSM frame structure; show that TDMA frame efficiency c	N
+AI	3	80 Ch	3+4+3	\item How does A* search overcome the problem associated wit	N
+AI	3	76 Bh	5	\item Consider a search tree for a path-finding problem as s	N
+AI	6	79 Jth	1+7	\item How is the best attribute selected in a decision tree?	N
+AI	6	77 Ch	8	\item You are locked on a deserted island. Mushrooms of vari	N
+Data Mining	2	76 Ch	3+3	\item Suppose that a data warehouse for a sales company cons	N
+Data Mining	3	78 Bh	4	\item Write short notes on: Laplacian Correction in Classifi	T
+Data Mining	4	76 Ch	5+3	\item Consider the transaction data shown in the following t	N
+Data Mining	5	76 Ch	4+4	\item The table below is a distance matrix for six objects: 	N
+DSAP	1	81 Ch	1+3+3	\hfill [1+3+3] (\bo{\texttt{81 Ch}}); [7] (\texttt{74 Ma})	N
+DSAP	1	74 Ma	7	\hfill [1+3+3] (\bo{\texttt{81 Ch}}); [7] (\texttt{74 Ma})	N
+DSAP	1	76 Bh	2+1+1+2+2	\hfill [2+1+1+2+2] (\bo{\texttt{76 Bh}})	N
+DSAP	4	74 Ma	7	\lb Cascaded \emph{and parallel} form \hfill [7] (\texttt{74	N
+DSAP	4	80 Ba	4	\lb Cascade of 2nd-order sections \hfill [4] (80 Ba)\\	N
+DSAP	4	76 Ch	4	\lb Cascade of 2nd-order sections \hfill [4] (\bo{76 Ch})\\	N
+DSAP	5	80 Bh	10	\lb using the Hanning window \hfill [10] (\bo{80 Bh}); with 	N
+DSAP	5	73 Bh	2+7	\lb using the Hanning window \hfill [10] (\bo{80 Bh}); with 	N
+DSAP	5	76 Ch	6	\hfill [6] (\bo{76 Ch}); with ``Define Gibbs phenomena'' \hf	N
+DSAP	5	81 Ch	2+6	\hfill [6] (\bo{76 Ch}); with ``Define Gibbs phenomena'' \hf	N
+DSAP	5	73 Ma	4+5	\hfill [6] (\bo{76 Ch}); with ``Define Gibbs phenomena'' \hf	N
+Wireless	2	71 Bh	4+4	\enter\hfill [4+4] (\bo{71 Bh})	N
+Wireless	2	70 Bh	3+4+3	\enter\hfill [3+4+3] (\bo{70 Bh})	N
+Wireless	2	79 Bh	3+5	\enter\hfill [3+5] (\bo{\texttt{79 Bh}})	N
+Wireless	2	80 Ba	5	\enter\hfill [5] (\texttt{80 Ba, 81 Ba}, \bo{79 Ch})	N
+Wireless	2	81 Ba	5	\enter\hfill [5] (\texttt{80 Ba, 81 Ba}, \bo{79 Ch})	N
+Wireless	2	79 Ch	5	\enter\hfill [5] (\texttt{80 Ba, 81 Ba}, \bo{79 Ch})	N
+Wireless	2	81 Ba	2+2+2	\enter\hfill [2+2+2] (\texttt{81 Ba})	N
+Wireless	2	72 Ma	12	\enter\hfill [12] (72 Ma)	N
+Wireless	2	82 Bh	4	\enter\hfill [4] (\bo{\texttt{82 Bh}})	N
+Wireless	2	82 Ba	1+3	non-cellular system \enter\hfill [1+3] (\texttt{82 Ba})	N
+Wireless	3	80 Ba	8	\enter\hfill [8] (\texttt{80 Ba, 81 Ba}) [2+2+2+2] (\bo{78 C	N
+Wireless	3	81 Ba	8	\enter\hfill [8] (\texttt{80 Ba, 81 Ba}) [2+2+2+2] (\bo{78 C	N
+Wireless	3	78 Ch	2+2+2+2	\enter\hfill [8] (\texttt{80 Ba, 81 Ba}) [2+2+2+2] (\bo{78 C	N
+Wireless	3	80 Bh	6	\enter\hfill [6] (\bo{\texttt{80 Bh}})	N
+Wireless	3	72 Ash	8	\enter\hfill [8] (\bo{72 Ash})	N
+Wireless	3	70 Bh	6	path loss exponent 4 \hfill [6] (\bo{70 Bh})	N
+Wireless	3	71 Bh	6	\enter\hfill [6] (\bo{71 Bh})	N
+Wireless	3	81 Ba	1+1+2+2	\enter\hfill [1+1+2+2] (\texttt{81 Ba})	N
+Wireless	3	76 Bh	10	\enter\hfill [10] (\bo{76 Bh})	N
+Wireless	3	74 Bh	12	\enter\hfill [12] (\bo{74 Bh})	N
+Wireless	3	74 Ma	4+4	\enter\hfill [4+4] (74 Ma)	N
+Wireless	3	80 Bh	4+2+2	\enter\hfill [4+2+2] (\bo{\texttt{80 Bh}}) [5] (\bo{\texttt{	N
+Wireless	3	82 Bh	5	\enter\hfill [4+2+2] (\bo{\texttt{80 Bh}}) [5] (\bo{\texttt{	N
+Wireless	3	82 Ba	8	\enter\hfill [8] (\texttt{82 Ba})	N
+Wireless	3	79 Bh	4+4	compare with Hata pathloss \hfill [4+4] (\bo{\texttt{79 Bh}}	N
+Wireless	3	73 Bh	7	\hfill [7] (\bo{73 Bh})	N
+Wireless	3	70 Ma	4+4	compare with the free-space path loss model \hfill [4+4] (70	N
+Wireless	3	70 Ma	4+4	coherence bandwidth of the channel \hfill [4+4] (70 Ma)	N
+Wireless	3	81 Bh	6	\enter\hfill [6] (\bo{\texttt{81 Bh}})	N
+Wireless	7	80 Ba	3+2	available in the FDMA system \hfill [3+2] (\texttt{80 Ba, 81	N
+Wireless	7	80 Bh	4	\hfill [4] (\bo{\texttt{80 Bh}}) [3] (\bo{\texttt{82 Bh}})	N
+Wireless	7	82 Bh	3	\hfill [4] (\bo{\texttt{80 Bh}}) [3] (\bo{\texttt{82 Bh}})	N
+AI	2	81 Ash	8	\lb List down the characteristics of a well-defined problem.	T
+AI	2	71 Bh	4	\lb Define a production system. What are the essential terms	T
+AI	3	81 Ch	8	\item Explain the A* algorithm on the following figure, wher	N
+AI	4	70 Bh	8	\item Explain all the steps involved in conversion to conjun	T
+AI	4	76 Ba	2+8	\lb List down the rule for Inference. Consider the following	N
+AI	4	72 Ma	7	\item What is rule based reasoning? Explain Backward Chainin	T
+AI	4	78 Po	8	\lb Explain forward chaining giving a suitable example. \hfi	T
+AI	4	77 Ch	8	\lb Explain forward chaining giving a suitable example. \hfi	T
+AI	4	80 Ch	3+5	\lb What is Prior Probability and Posterior Probability, and	T
+AI	4	80 Ba	5+3	\lb What is Bayesian network? Describe with an appropriate e	T
+AI	5	72 Ma	7	\lb What is a semantic net? Draw a sample net about your cou	T
+AI	5	75 Ba	2+6	\item Why are semantic networks and frames important in AI? 	T
+AI	6	77 Ch	8	\lb What is a genetic algorithm? Explain all steps in GA wit	T
+AI	6	70 Ma	2+6	\item What is Machine Learning? What is Fuzzy Logic? Explain	T
+AI	6	80 Ash	1+2+5	\item What is Machine Learning? What is Fuzzy Logic? Explain	T
+AI	6	73 Ma	3+7	\lb What is Fuzzy Logic and why is it important? Explain the	T
+AI	6	80 Bh	8	\item Explain all the steps in Fuzzy Learning with a block d	T
+AI	6	79 Bh	2+6	\lb What do you mean by membership of an element in a fuzzy 	T
+AI	7	70 Bh	4+4	\item What is a neural network? Explain the back-propagation	T
+AI	7	72 Ash	2+4+4	\lb What is a neural network? Explain the back propagation a	T
+AI	7	70 Ma	3+5	\lb What is the role of perceptron in neural network? Explai	T
+AI	7	80 Bh	2+2+4	\lb Describe the mathematical model of a neural network. Wha	T
+AI	7	74 Bh	4	\lb Short note: Back Propagation Algorithm. \hfill [4] (\bo{	T
+AI	7	75 Ba	8	\lb What is a McCulloch/Pitts neural network? Explain it wit	N
+AI	7	76 Ba	10	\lb What is a McCulloch/Pitts neuron? Can this neuron be tra	N
+AI	7	79 Ch	2+6	\lb What is perceptron? When do we need the back propagation	T
+AI	7	70 Bh	4+4	\lb What is an expert system? Explain the steps of expert sy	T
+AI	7	73 Bh	2+6	\lb What are the applications of Expert System? Describe the	T
+AI	7	79 Ch	2+6	\lb What is expert system? Create a scenario where we requir	T
+AI	7	79 Jth	1+6	\lb Define NLU and NLG. List the different steps involved in	T
+AI	7	77 Ch	2+6	\lb What are the problems associated with NLP? List down the	T
+AI	7	76 Bh	5+4	\lb Explain the steps of Natural Language Processing. Explai	N
+AI	7	71 Ma	3+5	\item How does machine vision help in Artificial Intelligenc	T
+AI	7	72 Ash	3+5	\lb What is the significant role of machine vision in Artifi	T
+Data Mining	2	79 Ba	6	\item What are nominal and ordinal attributes? Discuss how t	T
+Data Mining	3	75 Ch	6+4	\item Define Decision Tree Classifier with Gini-Index with s	T
+Data Mining	3	71 Ch	10	\lb What is a decision tree? Explain Gini Index with suitabl	T
+Data Mining	3	71 Ch	10	\item Explain a Bayes classifier. In what cases can Naive Ba	T
+Data Mining	3	78 Bh	4	\item Write short notes on: Overfitting problem in classific	T
+Data Mining	4	70 Ch	8	\item Why is pattern evaluation important in association rul	T
+Data Mining	4	74 Ash	8	\lb Explain FP-Growth algorithm with example. \hfill [8] (74	T
+Data Mining	4	81 Bh	2+6	\lb What are the advantages of FP-Growth Algorithm over Apri	T
+DSAP	1	69 Bh	5	\lb Write about the following properties of discrete time sy	T
+DSAP	2	76 Ash	3+3/3+6/2+4	\item State the convolution property of Z-transform (and der	T
+DSAP	2	70 Asa	3+3/3+6/2+4	\item State the convolution property of Z-transform (and der	T
+DSAP	4	71 Ch	3	\item What is the limit cycle effect in a recursive system? 	T
+DSAP	4	70 Asa	1+3	\item What is the limit cycle effect in a recursive system? 	T
+DSAP	4	72 Ma	5	\lb Define limit cycle oscillation. Explain it taking an exa	T
+DSAP	4	70 Bh	3+4/2+4	\lb What are the Round-off effects in Digital Filters? Expla	T
+DSAP	4	71 Shr	1+1+2+1	\item What is the importance of quantization in DSP? Which o	T
+DSAP	4	69 Bh	6	\item Write about the sign magnitude and 2's complement repr	T
+DSAP	6	69 Bh	15	\item Describe digital Butterworth filter design using the i	T
+DSAP	6	73 Shr	3	\item Explain briefly the bilinear transformation method of 	T
+DSAP	6	80 Ba	4	\item Describe digital domain spectral transformation featur	T
+DSAP	6	70 Asa	2	\item Why is spectral transformation required? \hfill [2] (7	T
+RF-Microwave	2	79 Ch	10	\item Differentiate the behavior of a transmission line at c	T
+RF-Microwave	6	82 Bh	3+8+3	\lb Why filters are designed using the Insertion Loss Method	N
+RF-Microwave	7	77 Ch	3+3	\lb How are microwaves hazardous to humans? Define the diffe	N
+Wireless	2	73 Bh	5	\lb How cell splitting and sectoring improve coverage and ca	T
+Wireless	3	80 Ch	2+4	\item What is frequency selective fading? Explain the Raylei	T
+Wireless	5	80 Bh	4	\lb Why interleaving is needed in wireless communication; it	T
+Wireless	5	76 Bh	2	\lb How diversity improves the quality of the network \hfill	T
+Wireless	7	80 Bh	4	\item Explain any two hybrid multiple access techniques \hfi	T
+Wireless	7	78 Ch	4	\lb Compare and contrast TDMA and FDMA \hfill [4] (\texttt{8	T
+RF-Microwave	2	79 Ch	10	\item Single short-circuited matching stub with self-defined	N
+RF-Microwave	2	76 Bh	10	\item Single-stub tuner matching a lossless line to an anten	N
+RF-Microwave	2	78 Ch	4+6	\item Different impedance matching techniques; resulting S-m	N
+RF-Microwave	2	77 Ch	2+8	\item Sketch a double-stub perfectly matched network using m	N
+RF-Microwave	2	74 Ma	2+8	\item (+) of double stub matching over single stub matching;	N
+RF-Microwave	3	82 Bh	4	\lb Three-port network model + its characteristic parameters	T
+RF-Microwave	4	70 Bh	7+3	\item Rectangular waveguide: TE mode field equations \hfill 	T
+RF-Microwave	4	76 Bh	10	\lb Field and characteristics equations of a rectangular wav	T
+RF-Microwave	4	75 Bh	8+2	\item Circular waveguide: TM wave field strength + dominant 	T
+RF-Microwave	4	70 Ma	8	\item Hybrid tee \hfill [8] (70 Ma)	T
+RF-Microwave	4	82 Ba	4+4+2	\item Properties of a Hybrid-Tee, using proper S-Matrices, f	N
+RF-Microwave	4	77 Ch	10	\item Properties of two Magic Tees with their E-arms connect	N
+RF-Microwave	4	78 Ch	5	\item Combitional effect of two magic fees connected in H-pl	T
+RF-Microwave	4	74 Bh	8	\item Identify + explain passive device from S-matrix (4-por	N
+RF-Microwave	4	75 Bh	6	\item Passive device from given S-matrix: judge condition + 	N
+RF-Microwave	4	73 Ma	8	\item Choose device to split power in half + explain propert	N
+RF-Microwave	4	73 Bh	8	\lb Two radar transmitters, double power to antenna: solutio	N
+RF-Microwave	4	81 Ba	8	\item Prepare S-Matrices of a perfectly working E-Plane Tee,	N
+RF-Microwave	4	76 Bh	10	\item Airport Surveillance Radar requiring half the input po	N
+RF-Microwave	4	74 Ma	6	\item Two identical radar transmitters, twice the input powe	N
+RF-Microwave	6	78 Ch	10	\lb Double-section series-arm type micro strip filter design	N
+RF-Microwave	6	70 Ma	10	\lb Same S-parameters: justify conditionally stable \hfill [	N
+RF-Microwave	6	80 Ba	5+5	\lb Same S-parameters (at 6 GHz): investigate the stability 	N
+RF-Microwave	6	81 Ba	6+3+3	\lb Max gains of both bilateral \& unilateral models; sketch	N
+RF-Microwave	6	70 Bh	10	\lb Max gain (bilateral + unilateral): same S-parameters \hf	N
+RF-Microwave	6	78 Ch	10	\lb Max gain of an amplifier in a unilateral model with assu	N
+RF-Microwave	7	74 Ma	4+4	\lb Types of electromagnetic radiation hazard; illustrate th	N
+Wireless	2	74 Bh	4	\lb Minimizing reuse distance maximizes spectral efficiency 	T
+Wireless	2	74 Bh	4	co-channel cells; area of each cell is uniform and equal to 	N
+Wireless	2	75 Bh	5	--- as a cellular planning engineer, which option is best an	N
+Wireless	2	81 Bh	4	--- as a cellular planning engineer, which option is best an	N
+Wireless	3	81 Bh	6	ground-reflected (GR) path in the two-ray model using simple	T
+Wireless	3	82 Bh	5	\item Factors that influence the indoor propagation model \h	T
+Wireless	3	74 Ma	4+4	rms delay spread and coherence time \hfill [4+4] (74 Ma)	N
+Wireless	5	73 Ma	4	that minimizes the effects of ISI \hfill [2+6] (\bo{75 Bh}) 	T
+Wireless	5	79 Bh	8	diagram and derivation \hfill [8] (\bo{\texttt{79 Bh}}) [7] 	T
+Wireless	5	80 Ch	7	diagram and derivation \hfill [8] (\bo{\texttt{79 Bh}}) [7] 	T
+Wireless	5	79 Ch	7	diagram and derivation \hfill [8] (\bo{\texttt{79 Bh}}) [7] 	T
+Wireless	5	81 Bh	4	\lb Working of MLSE \hfill [4] (\bo{\texttt{81 Bh}})	T
+Wireless	5	73 Ma	4	\item Adaptive equalization algorithms (any two) \hfill [4] 	T
+Wireless	5	74 Ma	5	\lb Adaptive Equalization \hfill [5] (74 Ma)	T
+Wireless	5	81 Bh	4	\item Interleaving: working principle +Fig \hfill [4] (\bo{\	T
+Wireless	5	81 Ba	2+6	time-dispersive channel, using an adaptive equalizer as exam	T
+Wireless	5	73 Ma	4	\lb Various space diversity techniques along with block diag	T
+Wireless	6	80 Bh	6	\item Sub-band coding with transmitter and receiver \hfill [	T
+Wireless	6	80 Ch	5	\item 7-bit Hamming code method with a relevant example \hfi	N
+Wireless	6	74 Bh	5	\item Convolutional encoding and decoding \hfill [5] (\bo{74	T
+Wireless	6	72 Ash	3	\item Viterbi decoding algorithm \hfill [3] (\bo{75 Bh}, 70 	T
+Wireless	6	73 Bh	5	\item Viterbi decoding algorithm \hfill [3] (\bo{75 Bh}, 70 	T
+Wireless	7	82 Bh	7	\hfill [7] (\bo{\texttt{82 Bh}}) [2+6] (\bo{77 Ch}) [8] (\bo	N
+Wireless	7	77 Ch	2+6	\hfill [7] (\bo{\texttt{82 Bh}}) [2+6] (\bo{77 Ch}) [8] (\bo	N
+Wireless	7	79 Ch	8	\hfill [7] (\bo{\texttt{82 Bh}}) [2+6] (\bo{77 Ch}) [8] (\bo	N
+Wireless	7	79 Ch	3+5	code satisfying them \hfill [3+5] (\bo{79 Ch})	N
+Wireless	7	78 Ch	4	\hfill [6] (\bo{\texttt{80 Bh}}) [7] (\texttt{80 Ba, 81 Ba})	N
+DSAP	1	75 Ch	3+4	\lb Power Vs energy signal; Fourier Series Vs Fourier Transf	T
+DSAP	4	81 Ba	5	\lb Cascade of 2nd-order sections \hfill [5] (81 Ba)\\	N
+DSAP	5	76 Bh	1+2+7	\lb using the Blackman window, with ``What is windowing? Lis	N
+Data Mining	2	78 Bh	3+3	\item Suppose that a data warehouse consists of the four dim	N
+Data Mining	2	80 Ba	2+2+2+1	\item Consider the following table: \hfill [2+2+2+1] (80 Ba)	N
+AI	2	69 Bh	7	\lb LOGIC + LOGIC = PROLOG \hfill [7] (\bo{69 Bh}) [3+4] (72	N
+AI	2	72 Ma	3+4	\lb LOGIC + LOGIC = PROLOG \hfill [7] (\bo{69 Bh}) [3+4] (72	N
+AI	2	79 Ch	3+5	\lb LOGIC + LOGIC = PROLOG \hfill [7] (\bo{69 Bh}) [3+4] (72	N
+AI	2	69 Po	7	\lb RIGHT + RIGHT = WRONG \hfill [7] (69 Po)	N
+AI	2	70 Bh	5+3	\lb WRONG + WRONG = RIGHT \hfill [5+3] (\bo{70 Bh}) [2+6] (\	N
+AI	2	77 Ch	2+6	\lb WRONG + WRONG = RIGHT \hfill [5+3] (\bo{70 Bh}) [2+6] (\	N
+AI	2	71 Ma	7	\lb ONE + ONE + TWO = FOUR \hfill [7] (71 Ma, \bo{73 Bh}) [2	N
+AI	2	73 Bh	7	\lb ONE + ONE + TWO = FOUR \hfill [7] (71 Ma, \bo{73 Bh}) [2	N
+AI	2	80 Ash	2+6	\lb ONE + ONE + TWO = FOUR \hfill [7] (71 Ma, \bo{73 Bh}) [2	N
+AI	2	78 Ch	2+6	\lb TWO + TWO = FOUR \hfill [2+6] (\bo{78 Ch})	N
+AI	2	72 Ash	1+6	\lb SEND + MORE = MONEY \hfill [1+6] (\bo{72 Ash}) [8] (76 B	N
+AI	2	76 Ba	8	\lb SEND + MORE = MONEY \hfill [1+6] (\bo{72 Ash}) [8] (76 B	N
+AI	2	74 Ma	8	\lb SEND + MORE = MONEY \hfill [1+6] (\bo{72 Ash}) [8] (76 B	N
+AI	2	74 Bh	8	\lb SEND + MORE = MONEY \hfill [1+6] (\bo{72 Ash}) [8] (76 B	N
+AI	2	72 Ash	8	\lb SEND + MORE = MONEY \hfill [1+6] (\bo{72 Ash}) [8] (76 B	N
+AI	2	74 Bh	1+6	\lb SWIM + WEAR = RELAX \hfill [1+6] (\bo{74 Bh}) [3+6] (\bo	N
+AI	2	81 Ch	3+6	\lb SWIM + WEAR = RELAX \hfill [1+6] (\bo{74 Bh}) [3+6] (\bo	N
+AI	2	75 Ba	2+6	\lb BASE + BALL = GAMES \hfill [2+6] (75 Ba, 82 Ka, \texttt{	N
+AI	2	82 Ka	2+6	\lb BASE + BALL = GAMES \hfill [2+6] (75 Ba, 82 Ka, \texttt{	N
+AI	2	82 Ba	2+6	\lb BASE + BALL = GAMES \hfill [2+6] (75 Ba, 82 Ka, \texttt{	N
+AI	2	79 Ash	2+6	\lb BASE + BALL = GAMES \hfill [2+6] (75 Ba, 82 Ka, \texttt{	N
+AI	2	82 Bh	3+5	\lb BASE + BALL = GAMES \hfill [2+6] (75 Ba, 82 Ka, \texttt{	N
+AI	2	79 Jth	1+6	\lb BASE + BALL = GAMES \hfill [2+6] (75 Ba, 82 Ka, \texttt{	N
+AI	2	73 Bh	8	\lb BASE + BALL = GAMES \hfill [2+6] (75 Ba, 82 Ka, \texttt{	N
+AI	2	80 Bh	2+6	\lb TEN + TEN + FORTY = SIXTY \hfill [2+6] (\bo{\texttt{80 B	N
+AI	2	78 Ba	2+6	\lb TEN + TEN + FORTY = SIXTY \hfill [2+6] (\bo{\texttt{80 B	N
+AI	2	78 Po	2+6	\lb FORTY + TEN + TEN = SIXTY \hfill [2+6] (78 Po)	N
+AI	2	80 Ba	2+6	\lb EAT + THAT = APPLE \hfill [2+6] (\texttt{80 Ba}) [2+5] (	N
+AI	2	80 Ch	2+5	\lb EAT + THAT = APPLE \hfill [2+6] (\texttt{80 Ba}) [2+5] (	N
+AI	2	81 Bh	2+6	\lb CROSS + ROADS = DANGER \hfill [2+6] (\bo{\texttt{81 Bh}}	N
+AI	2	76 Bh	4	\item In a correctly worked out crypt-arithmetic problem AB 	N
+AI	2	72 Ma	7	\item Consider a Tic-Tac-Toe game playing as a problem. Prep	N
+AI	4	69 Bh	10	\lb Every American who sells weapons to hostile nations is a	N
+AI	4	82 Bh	6	\lb It is a crime for a Nepali to sell weapons to an enemy o	N
+AI	5	72 Ma	7	\lb i) A person is a mammal. ii) Sakti Gauchan is a person. 	N
+AI	5	78 Po	2+6	\lb A person is a mammal. Sandeep Lamichane is a person. Per	N
+AI	5	79 Bh	2+6	\lb a) Tom is a cat. b) Tom fights with rat. c) Tom is owned	N
+AI	5	82 Bh	2+5	\lb Tom is a cat. Tom caught a bird. Tom is owned by Sudeep.	N
+AI	5	81 Ch	2+6	\lb Tom is a cat. Tom caught a bird. Tom is owned by Sudeep.	N
+AI	5	82 Ka	1+6	\lb Cat is a mammal. Cat has fur. Mammal has vertebra. Mamma	N
+AI	5	81 Bh	2+6	\lb Figo is a dog. Fido is own by Rohit. Fido is ginger in c	N
+AI	5	82 Ba	2+6	\lb i) Employee is a human. ii) Hari is an employee. iii) Si	N
+AI	5	77 Ch	2+6	\lb Tweety and Sweety are birds. Tweety has a red beak. Swee	N
+AI	7	75 Ba	8	\lb Justify that NLP is one of the important parts of AI. Ex	T
