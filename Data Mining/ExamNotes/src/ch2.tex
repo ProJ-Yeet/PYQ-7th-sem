@@ -442,23 +442,9 @@ a non-linear method, \textbf{not} PCA. PCA is purely linear: covariance $\righta
 \end{itemize}
 
 \vspace{2pt}
-\sbsr{0.52}{%
+\Needspace*{7.5cm}
 \lead{OLAP vs OLTP \mk{(asked 4 times)}}
-\begin{itemize}
-  \item \textbf{Users}: OLTP clerks / IT $\cdot$ OLAP knowledge workers.
-  \item \textbf{Function}: OLTP day-to-day ops $\cdot$ OLAP decision support.
-  \item \textbf{DB design}: OLTP application-oriented, normalised (ER) $\cdot$
-        OLAP subject-oriented, de-normalised (star/snowflake).
-  \item \textbf{Data}: OLTP current, detailed, isolated $\cdot$
-        OLAP historical, summarised, multidim, consolidated.
-  \item \textbf{Usage}: OLTP repetitive $\cdot$ OLAP ad-hoc.
-  \item \textbf{Access}: OLTP read/write, index on primary key $\cdot$ OLAP lots of scans.
-  \item \textbf{Unit of work}: OLTP short simple txn $\cdot$ OLAP complex query.
-  \item \textbf{Records accessed}: tens $\cdot$ millions.
-  \item \textbf{Size}: 100 MB--GB $\cdot$ 100 GB--TB.
-  \item \textbf{Metric}: txn throughput $\cdot$ query throughput / response.
-\end{itemize}}{%
-\figT{oltp_vs_olap}}
+\figC{oltp_vs_olap}{0.62\textwidth}
 
 \vspace{2pt}
 \lead{OLAP server types {\footnotesize (detail in Ch 1, DW architecture)}}
