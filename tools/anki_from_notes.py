@@ -286,7 +286,7 @@ WRAP1 = {
 # commands whose arguments are dropped whole
 DROP_ARGS = {
     "vspace": 1, "hspace": 1, "vspace*": 1, "hspace*": 1, "needspace": 1,
-    "Needspace": 1, "setcounter": 2, "rule": 2, "label": 1, "index": 1,
+    "Needspace": 1, "setcounter": 2, "setlength": 2, "rule": 2, "label": 1, "index": 1,
     "addcontentsline": 3, "typeout": 1, "phantom": 1, "input": 1,
     "renewcommand": 2, "newcommand": 2, "hphantom": 1, "raisebox": 1,
     "addlinespace": 0,
