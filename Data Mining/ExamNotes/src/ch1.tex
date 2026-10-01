@@ -454,12 +454,10 @@ Size & 100 MB--GB & 100 GB--TB \\
         Saves space, less redundancy, but more joins $\rightarrow$ slower.
   \item \textbf{Fact constellation (galaxy)}: multiple fact tables sharing dimension tables $=$ collection of stars.
 \end{itemize}
-\lead{Eg: sales DW}
+\lead{Eg: sales DW (figure)}
 \begin{itemize}
-  \item Fact \texttt{Sales}: \texttt{time\_key, item\_key, branch\_key, location\_key, units\_sold, dollars\_sold, avg\_sales}.
-  \item \texttt{location} normalised: \texttt{location} $\rightarrow$ \texttt{city} $\rightarrow$ \texttt{province}.
-  \item \texttt{item} $\rightarrow$ \texttt{supplier}.
-  \item \mk{That normalisation of the dimension hierarchy is what makes it snowflake, not star.}
+  \item \mk{\texttt{location}$\rightarrow$\texttt{city} and \texttt{item}$\rightarrow$\texttt{supplier}
+        split out: that normalisation is what makes it snowflake, not star.}
 \end{itemize}}{%
 \figT{snowflake_schema}}
 
