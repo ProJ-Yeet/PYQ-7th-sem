@@ -1,0 +1,9 @@
+# ch	topic	hours	papers   (hand facts; marks come from tools/num_split.py)
+1	Discrete-Time Signals and Systems	8	44/45
+2	Z-Transform	4	40/45
+3	Analysis of LTI Systems in the Frequency Domain	6	38/45
+4	Discrete Filter Structures	8	43/45
+5	FIR Filter Design	6	42/45
+6	IIR Filter Design	6	44/45
+7	Discrete Fourier Transform and FFT	7	44/45
+8	\textit{Additional topics, \texttt{EX753} only (not in these notes)}		14/45
