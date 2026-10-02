@@ -458,10 +458,14 @@ class Conv(object):
         if name in ("sbs", "sbsr"):
             nargs = 2 if name == "sbs" else 3
             args, i = grab_args(s, i, nargs)
-            left, right = args[-2], args[-1]
+            left, right = self.conv(args[-2]), self.conv(args[-1])
+            # a column whose heading block was cut out to its own card
+            # (parse_theory's block) is empty; don't render a blank half
+            full = [c for c in (left, right) if re.sub(r"<[^>]+>|&nbsp;|\s", "", c)]
+            if len(full) < 2:
+                return "".join(full), i, None
             return ('<div class="cols"><div class="col">%s</div>'
-                    '<div class="col">%s</div></div>'
-                    % (self.conv(left), self.conv(right)), i, None)
+                    '<div class="col">%s</div></div>' % (left, right), i, None)
         if name == "figT":
             (f,), i = grab_args(s, i, 1)
             return self.figure(f), i, None
@@ -824,30 +828,55 @@ def parse_theory(path, chno, chtitle, conv):
             continue
         leads.append((p, aend, lead_end(aend), arg))
 
-    def text(a, b):
-        """src[a:b] with the separately-asked \\lead sections cut out."""
+    def text(a, b, extra=()):
+        """src[a:b] with the separately-asked \\lead sections, and any extra
+        (start, end) ranges, cut out."""
+        cuts = sorted([(p, e) for p, _, e, _ in leads] + list(extra))
         out = []
-        for p, _, e, _ in leads:
+        for p, e in cuts:
             if a <= p < b:
                 out.append(src[a:p])
-                a = e
+                a = max(a, e)
         out.append(src[a:b])
         return "".join(out)
 
     def block(idx):
         """(question, marks, meta, body) for the heading at heads[idx].
 
-        A \\Q owns everything up to the next \\Q or topic band, and its
-        \\creamq sub-headings with it: "Okumura model" and "Hata model" ARE
-        the answer to "explain any two outdoor propagation models", and carry
-        no tag line. A \\creamq with a tag line of its own is different. It
-        is a separate question (AI ch4's knowledge-based agent, 82 Ba, under
-        the 72 Ash KR question; unification under FOPL) with a card of its
-        own, so the \\Q stops there instead of nesting it. Only a top-level
-        one: a \\creamq inside a group, e.g. one column of an \\sbs, is part
-        of the layout around it, and cutting there would split the group's
-        braces. A \\creamq or \\qq owns only up to the next heading of any
-        kind.
+        Every \\creamq and \\qq gets a card of its own, so one left inside a
+        \\Q's answer is a duplicate and a card nested in a card: Data Mining's
+        similarity question carried all eight measure sub-headings, each also
+        a card. A \\Q therefore cuts each sub-heading's own block out of its
+        answer, including one sitting in an \\sbs column, where the cut leaves
+        the column empty rather than splitting its braces, and names the cut
+        cards at the foot of the answer instead.
+        """
+        args, after, stop = span(idx)
+        h = heads[idx]
+        cuts, names = [], []
+        if h.group(1) == "Q":
+            for j in range(idx + 1, len(heads)):
+                if heads[j].start() >= stop:
+                    break
+                if heads[j].group(1) in ("creamq", "qq"):
+                    cuts.append((heads[j].start(), span(j)[2]))
+                    names.append(grab_args(src, heads[j].end() - 1, 2)[0][0])
+        meta, body = meta_split(text(after, stop, cuts))
+        body = re.sub(r"\s*" + re.escape(BS) + r"hr\s*$", "", body)
+        if names:
+            body += ("\n" + BS + "lead{Separate cards}\n" + BS + "begin{itemize}\n"
+                     + "".join("  " + BS + "item " + n + "\n" for n in names)
+                     + BS + "end{itemize}\n")
+        return args[0], args[1], meta, body
+
+    def span(idx):
+        """(args, start of body, end of block) for the heading at heads[idx].
+
+        A \\Q's span runs to the next \\Q or topic band; block() then cuts the
+        sub-headings inside it out. It stops early at a top-level \\creamq
+        with a tag line of its own (AI ch4's knowledge-based agent, 82 Ba,
+        under the 72 Ash KR question). A \\creamq or \\qq owns only up to the
+        next heading of any kind.
         """
         h = heads[idx]
         start = h.end() - 1  # at the '{'
@@ -884,9 +913,7 @@ def parse_theory(path, chno, chtitle, conv):
         if opened:
             m = re.search(r"(\\[a-zA-Z]+\*?(\{[^{}]*\})*\s*)$", src[after:opened[0]])
             stop = opened[0] - (len(m.group(1)) if m else 0)
-        meta, body = meta_split(text(after, stop))
-        body = re.sub(r"\s*" + re.escape(BS) + r"hr\s*$", "", body)
-        return args[0], args[1], meta, body
+        return args, after, stop
 
     band = ""
     pending = list(leads)
@@ -1286,6 +1313,13 @@ def main():
     if unknown:
         log.append("UNHANDLED MACROS: " + ", ".join(
             "%s(%d)" % (k, v) for k, v in unknown.most_common()))
+    # a theory card must not carry another card's heading inside its answer
+    # (numerical cards may: DSAP's per-paper \Q sub-headings are by design)
+    nested = [c for c in cards if c.kind == "theory" and 'class="qh"' in c.answer]
+    if nested:
+        log.append("NESTED CARDS: %d theory answer(s) hold a sub-heading" % len(nested))
+        for c in nested[:5]:
+            log.append("    ch%d %s" % (c.chno, re.sub("<[^>]+>", "", c.question)[:70]))
     runaway = runaway_math()
     if runaway:
         log.append("RUNAWAY MATH: %d inline island(s) contain document "
