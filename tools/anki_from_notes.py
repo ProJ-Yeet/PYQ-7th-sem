@@ -461,7 +461,9 @@ class Conv(object):
             left, right = self.conv(args[-2]), self.conv(args[-1])
             # a column whose heading block was cut out to its own card
             # (parse_theory's block) is empty; don't render a blank half
-            full = [c for c in (left, right) if re.sub(r"<[^>]+>|&nbsp;|\s", "", c)]
+            # a figure-only column is all tag and no text, so <img> counts
+            full = [c for c in (left, right)
+                    if "<img" in c or re.sub(r"<[^>]+>|&nbsp;|\s", "", c)]
             if len(full) < 2:
                 return "".join(full), i, None
             return ('<div class="cols"><div class="col">%s</div>'
