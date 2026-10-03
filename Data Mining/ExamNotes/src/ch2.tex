@@ -330,13 +330,35 @@ The one-figure answer to ``forms of preprocessing''. H\&K Fig 3.1.}}
   \end{itemize}
   \item Also: \textbf{mapping to a new space} (Fourier, wavelet transform).
 \end{itemize}}{%
-\lead{Curse of dimensionality \yr{70 Ch \m{5}}}
+\lead{Curse of dimensionality \yr{70 Ch \m{5}, 81 Bh \m{6}}}
 \begin{itemize}
-  \item As dims $\uparrow$, data becomes increasingly \textbf{sparse} in the space it occupies.
-  \item Density + distance lose meaning $\rightarrow$ breaks clustering + outlier detection.
-  \item All points start looking equidistant.
-  \item \textbf{Avoid by}: dimensionality reduction (PCA/SVD), feature subset selection,
-        feature construction, domain knowledge.
+  \item \textbf{Definition}: problems that appear only when no.\ of attrs (dims) is large;
+        analysis that works in low dims fails in high dims.
+  \item \textbf{Why}: volume of the space grows \mk{exponentially} w/ dims.
+  \begin{itemize}
+    \item Eg 10 bins per attr: 1-D $=10$ cells, 2-D $=100$, 10-D $=10^{10}$ cells.
+    \item Fixed no.\ of records $\rightarrow$ almost every cell empty $\rightarrow$ data \textbf{sparse}.
+    \item Records needed to cover the space grow exponentially too.
+  \end{itemize}
+  \item \textbf{Distance concentration}:
+  \begin{itemize}
+    \item $(d_{max}-d_{min})/d_{min} \rightarrow 0$ as dims $\uparrow$.
+    \item All points look \textbf{equidistant} $\rightarrow$ nearest neighbour meaningless.
+  \end{itemize}
+  \item \textbf{Effects on DM}:
+  \begin{itemize}
+    \item Clustering, KNN, outlier detection break (rely on density + distance).
+    \item Classifiers \textbf{overfit}: many attrs, few records per region.
+    \item Irrelevant + redundant attrs add noise.
+    \item Computation + storage cost $\uparrow$; data cannot be visualised.
+  \end{itemize}
+  \item \textbf{Avoid by}:
+  \begin{itemize}
+    \item dimensionality reduction: PCA, SVD, wavelet transform
+    \item feature subset selection: drop irrelevant/redundant attrs
+    \item feature construction: combine attrs into fewer, better ones
+    \item domain knowledge; subspace clustering
+  \end{itemize}
 \end{itemize}}
 
 %-----------------------------------------------------------------------

@@ -158,18 +158,46 @@ points reassigned; (c) final, once the assignment stops changing. H\&K Fig 10.3.
   \item Minimises the sum of \emph{absolute} distances rather than squared distances.
   \item \mk{Far more robust to outliers} and works with any distance measure.
   \item Cost: $O(K(n-K)^2)$ per iteration $\rightarrow$ much slower; CLARA samples to scale it.
-\end{itemize}}{%
+\end{itemize}
 \creamq{Bisecting K-means \yr{71 Ch \m{10}}}{}
+{\color{sub}\footnotesize Asked w/ ``why is clustering unsupervised'': no class labels, see §5.1.}
 \begin{itemize}
-  \item Hybrid: produces a \textbf{hierarchy} using K-means as the engine.
-  \item Steps:
+  \item Variant of K-means giving a \textbf{partitional} or a \textbf{hierarchical} (divisive) clustering.
+  \item = K-means $+$ divisive hierarchical: K-means w/ $K=2$ is the splitting engine.
+  \item \textbf{Algorithm}:
   \begin{enumerate}
-    \item Start with all points in one cluster.
-    \item Pick a cluster to split (largest, or highest SSE).
-    \item Split it in two with K-means ($K=2$); do this several times and keep the best split.
-    \item Repeat until $K$ clusters exist.
+    \item Init list of clusters $=$ \{one cluster holding all points\}.
+    \item \textbf{Pick} a cluster from the list to split:
+    \begin{itemize}
+      \item largest cluster, or
+      \item cluster w/ highest SSE (least cohesive).
+    \end{itemize}
+    \item \textbf{Bisect}: run basic K-means ($K=2$) on it $\rightarrow$ 2 sub-clusters.
+    \item Repeat step 3 for \textbf{ITER} trials (different initial centroids);
+          keep the split w/ \mk{lowest total SSE}.
+    \item Replace parent by its 2 children in the list.
+    \item Repeat 2--5 until list holds $K$ clusters.
   \end{enumerate}
-  \item \mk{Less sensitive to initialisation} than plain K-means, and gives a dendrogram.
+\end{itemize}}{%
+\begin{itemize}
+  \item \textbf{How the hierarchy forms}:
+  \begin{itemize}
+    \item Each bisection $=$ 1 node split into 2 children.
+    \item Recording the splits gives a top-down tree $=$ \textbf{dendrogram}.
+    \item Run to $K=n$ $\rightarrow$ full hierarchy, 1 point per leaf.
+  \end{itemize}
+  \item \textbf{Advantages}:
+  \begin{itemize}
+    \item \mk{Less sensitive to initialisation} than plain K-means (only 2 centroids per trial, best of ITER).
+    \item Final clusters can be refined by plain K-means using their centroids as seeds.
+    \item Cheaper than agglomerative: $O(n)$ per split vs $O(n^2)$ distance matrix.
+  \end{itemize}
+  \item \textbf{Limitations}:
+  \begin{itemize}
+    \item Split cannot be undone.
+    \item No single global objective minimised (each split is locally optimal).
+    \item Inherits K-means problems: noise, outliers, non-convex shapes, unequal sizes.
+  \end{itemize}
 \end{itemize}}
 
 \hr
@@ -343,11 +371,36 @@ Right: $r$ and $s$ are density-connected through $o$. H\&K Fig 10.14.}}{%
   \item \textbf{Interpretability}: a cluster is only useful if it can be described.
 \end{itemize}
 \lead{Choosing an algorithm \yr{79 Bh \m{2+6}}}
+{\color{sub}\footnotesize Internet marketer: segment users by top search keywords, top URLs, recent purchases,
+usage level, peak hour, peak day.}
 \begin{itemize}
-  \item Mixed attribute types (keywords, URLs, purchases, usage level) and unknown $K$
-        $\rightarrow$ \mk{use a method that needs no $K$ and handles mixed data}: DBSCAN on a
-        suitable dissimilarity measure, or hierarchical clustering.
-  \item Validate with silhouette $+$ domain inspection of the resulting segments.
+  \item \textbf{Read the data first}:
+  \begin{itemize}
+    \item keywords, URLs, vendor, product, day $=$ \textbf{nominal}
+    \item qty, amount, hour $=$ \textbf{numeric}; usage level $=$ \textbf{ordinal}
+    \item no labels, $K$ unknown
+  \end{itemize}
+  \item \textbf{Algorithm \m{2}}: \mk{need a method that handles mixed data}.
+  \begin{itemize}
+    \item \textbf{K-prototypes}: K-means for numeric attrs $+$ K-modes for nominal. Scales to millions of users.
+    \item Or \textbf{hierarchical} / \textbf{DBSCAN} on a \textbf{mixed dissimilarity} (Ch 2, §2.4)
+          $\rightarrow$ no $K$ needed, dendrogram shows natural segment count.
+    \item Plain K-means unsuitable: mean of keywords/URLs undefined.
+  \end{itemize}
+  \item \textbf{Validation \m{6}}:
+  \begin{enumerate}
+    \item \textbf{Cluster tendency}: check structure exists at all (Hopkins statistic) before trusting any segment.
+    \item \textbf{Choose $K$}: run $K = 2$ to $10$; elbow in SSE, peak of avg silhouette.
+    \item \textbf{Internal}: cohesion (within-cluster SSE, low), separation (between, high),
+          silhouette per segment $\rightarrow$ negative values flag misplaced users.
+    \item \textbf{Stability}: re-cluster on random subsamples / different seeds;
+          same segments reappear $\rightarrow$ real.
+    \item \textbf{External}: if some users carry known labels (eg loyal vs churned),
+          purity, entropy, Rand index.
+    \item \textbf{Business validation}: profile each segment (dominant keywords, spend, peak time);
+          segment must be describable $+$ actionable, eg ``weekend night gamers, high spend''.
+    \item \textbf{Test}: run a targeted campaign per segment; response rate difference confirms usefulness.
+  \end{enumerate}
 \end{itemize}}
 
 \hr

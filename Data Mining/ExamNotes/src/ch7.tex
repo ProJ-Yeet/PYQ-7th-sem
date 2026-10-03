@@ -111,11 +111,48 @@ Draw this tree first, then explain each box. Mishra's Ch 6 \& 7 notes, p6.}}{%
         {\footnotesize$\rightarrow$ Ch 3, §3.7}.
 \end{itemize}
 \lead{Challenges of web mining \yr{75 Ch \m{5}}}
+{\color{sub}\footnotesize The 5 textbook challenges (H\&K, Mishra p6) first, then 4 practical ones.}
+\begin{enumerate}
+  \item \textbf{Too huge} for effective warehousing $+$ mining.
+  \begin{itemize}
+    \item Billions of pages, terabytes of new data daily.
+    \item Cannot be copied into 1 DW $\rightarrow$ mining must work on samples or distributed indices.
+  \end{itemize}
+  \item \textbf{Too complex $+$ heterogeneous}.
+  \begin{itemize}
+    \item No standard structure or schema: free HTML, not tables.
+    \item Mixes text, images, audio, video, scripts, many languages.
+    \item Each page has a different layout $\rightarrow$ hard to extract facts uniformly.
+  \end{itemize}
+  \item \textbf{Growing $+$ changing rapidly}.
+  \begin{itemize}
+    \item Pages added, edited, deleted every second; links break.
+    \item News, stock, sports pages are regenerated constantly.
+    \item Mined patterns go stale $\rightarrow$ need incremental re-crawling $+$ re-mining.
+  \end{itemize}
+  \item \textbf{Broad diversity of user communities}.
+  \begin{itemize}
+    \item Users differ in background, interest, purpose.
+    \item Most do not know the structure of the info network or the cost of a search.
+    \item Easily get lost $\rightarrow$ one model of ``relevant'' does not fit all.
+  \end{itemize}
+  \item \textbf{Only a small portion is relevant}.
+  \begin{itemize}
+    \item ``99\% of Web info is useless to 99\% of users.''
+    \item Keyword search returns hundreds of thousands of pages $\rightarrow$ finding
+          \mk{high-quality} pages on a topic is the real problem.
+  \end{itemize}
+\end{enumerate}
 \begin{itemize}
-  \item Scale and growth rate; dynamic content; the deep/hidden web.
-  \item Noise: ads, navigation bars, boilerplate.
-  \item \textbf{Spam}: link farms deliberately gaming the ranking.
-  \item Privacy concerns in usage mining; no schema; duplicates and mirrors.
+  \item \textbf{Noise}: ads, navigation bars, boilerplate surround the real content.
+  \item \textbf{Spam}: link farms $+$ keyword stuffing deliberately game the ranking.
+  \item \textbf{Deep / hidden web}: content behind forms $+$ logins, invisible to crawlers.
+  \item \textbf{Usage mining issues}:
+  \begin{itemize}
+    \item privacy of user logs
+    \item proxies $+$ caching hide real accesses; IP $\neq$ user
+    \item duplicates $+$ mirror sites distort counts
+  \end{itemize}
 \end{itemize}}{%
 \creamq{Mining object and multimedia data}{\m{6}\m{3}\m{4}}
 {\color{sub}\footnotesize \tP{3} \yr{75 Ash, 74 Ch, 75 Ch}}
@@ -126,8 +163,18 @@ Draw this tree first, then explain each box. Mishra's Ch 6 \& 7 notes, p6.}}{%
     \item Image: colour histogram, texture, shape, edges.
     \item Audio: pitch, frequency, MFCC. \quad Video: motion vectors, key frames.
   \end{itemize}
-  \item \textbf{Tasks}: similarity search (content-based retrieval),
-        classification, clustering, association among media features, video-shot detection.
+  \item \textbf{Similarity search}, 2 kinds:
+  \begin{itemize}
+    \item \textbf{Description-based}: on keywords, captions, size, creation time. Manual + subjective.
+    \item \textbf{Content-based}: on visual features. Query by example image or by sketch.
+  \end{itemize}
+  \item \textbf{Multimedia data cube}: dims $=$ colour, texture, size, keyword, format
+        $\rightarrow$ OLAP roll-up / drill-down over media collections.
+  \item \textbf{Other tasks}: classification (eg sky images: galaxy vs star),
+        clustering, association among media features (eg ``blue top + green bottom $\rightarrow$ landscape''),
+        video-shot detection.
+  \item \textbf{Object data} (complex objects): set-valued, list-valued, nested attrs
+        $\rightarrow$ generalise each to a summary (eg set of hobbies $\rightarrow$ hobby category) before mining.
   \item \textbf{Challenges}: very high dimensionality, huge volume, and the
         \mk{semantic gap} --- low-level features do not map cleanly to human meaning.
 \end{itemize}

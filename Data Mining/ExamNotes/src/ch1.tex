@@ -428,7 +428,24 @@ Size & 100 MB--GB & 100 GB--TB \\
     \item each department owns its own structures
   \end{itemize}
   \item \textbf{Eg}: departmental store sales mart, bank loan mart.
+  \item \textbf{Hybrid}: takes data from the enterprise DW \emph{and} from other sources.
 \end{itemize}
+
+\lead{DW vs data mart \mk{(the table that earns the short-note marks)}}
+\begin{tabularx}{\textwidth}{@{}L{2.6cm}XX@{}}
+\toprule
+\hrow & \thead{Data warehouse} & \thead{Data mart} \\
+\midrule
+Scope & Whole enterprise, all subjects & 1 department / subject (sales, finance) \\
+Size & 100s of GB to TB$+$ & Less than 100 GB typically \\
+Sources & Many operational systems & Few sources, or the DW itself \\
+Build time & Months to years & Weeks to months \\
+Approach & Top-down (Inmon) & Bottom-up (Kimball): marts first, joined by shared dims \\
+Schema & Galaxy / fact constellation & Star or snowflake \\
+Users & Whole org, analysts, executives & 1 user group \\
+Detail & Detailed $+$ summarised history & Mostly summarised \\
+\bottomrule
+\end{tabularx}
 
 \lead{3 DW models}
 \begin{itemize}
